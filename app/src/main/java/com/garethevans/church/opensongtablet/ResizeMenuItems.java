@@ -51,9 +51,7 @@ class ResizeMenuItems {
                     break;
             }
             tv.setTextSize(size);
-            if (allCaps) {
-                tv.setAllCaps(true);
-            }
+            tv.setAllCaps(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,9 +71,7 @@ class ResizeMenuItems {
                     break;
             }
             tv.setTextSize(size);
-            if (allCaps) {
-                tv.setAllCaps(true);
-            }
+            tv.setAllCaps(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,9 +95,7 @@ class ResizeMenuItems {
                     break;
             }
             bv.setTextSize(size);
-            if (allCaps) {
-                bv.setAllCaps(true);
-            }
+            bv.setAllCaps(allCaps);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -125,13 +119,10 @@ class ResizeMenuItems {
                     break;
             }
             sw.setTextSize(size);
-            if (allCaps) {
-                sw.setAllCaps(true);
-            }
+            sw.setAllCaps(allCaps);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-}
-*/
+}*/

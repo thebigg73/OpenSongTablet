@@ -24,7 +24,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/removeFromSet"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/remove_item_from_set"
@@ -32,7 +32,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/duplicateItem"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/duplicate"
@@ -40,7 +40,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/makeVariation"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/variation_make"

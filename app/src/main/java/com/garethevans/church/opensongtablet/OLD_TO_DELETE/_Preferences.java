@@ -81,11 +81,11 @@ public class _Preferences extends Activity {
     // Below is an alphabetical list of all the user preferences stored in the app!
     //TODO
     // customLogoSize is specified, but no option in the app to change it
-    */
-/*
+
+    /*
 
     Variable name                   Type        What
-    addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:true)
+    addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:false)
     airTurnMode                     boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     appTheme                        String      The theme to use (dark, light, custom1, custom2) (def:dark)
     autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)
@@ -120,6 +120,9 @@ public class _Preferences extends Activity {
     clock24hFormat                  boolean     Should the clock be shown in 24hr format (def:true)
     clockOn                         boolean     Should the clock be shown in the action bar (def:true)
     clockTextSize                   float       The size of the clock font (def:9.0f)
+    commentFiltering                boolean     Should comment filtering be enabled (def: false) (hide certain sections labelled with a prefix)
+    commentFilters                  String      Which comments should be filtered out looking for (e.g. [guitar:C]). delimited by X__X (def:X__XX__X)
+    commentFilterOnlyShow           boolean     Should the filter mode be used to only show chosen filters (def:false)
     custom1_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
     custom1_lyricsBridgeColor       int         The color for the background for the bridge in the custom1 theme
     custom1_lyricsCapoColor         int         The color for the capo text in the custom1 theme
@@ -209,11 +212,13 @@ public class _Preferences extends Activity {
     dark_stickyBackgroundColor      int         The color for the sticky note background info text in the dark theme
     dark_extraInfoTextColor         int         The color for the extra info text in the dark theme
     dark_extraInfoBgColor           int         The color for the extra info background in the dark theme
+    deviceName                      String      The name used for nearby connections.
     displayCapoChords               boolean     Should capo chords be shown (def:true)
     displayCapoAndNativeChords      boolean     Should both chords be shown at once (def:false)
     displayChords                   boolean     Decides if chords should be shown (def:true)
     displayLyrics                   boolean     Decides if lyrics should be shown (def:true)
     displayNextInSet                String      Should the next song in set be shown (N)o, (T)op inline, (B)ottom inline (def:B)
+    displayBoldChordsHeadings       boolean     Should the chords and headings be shown in a bold font (def:false)
     drawingAutoDisplay              boolean     Should the highlighter drawings be shown on page load (def:true)
     drawingEraserSize               int         The default size of the eraser (def:20)
     drawingHighlighterColor         int         The color of the highlighter (StaticVariables.highlighteryellow)
@@ -278,6 +283,7 @@ public class _Preferences extends Activity {
     metronomeShowVisual             boolean     Should the metronome be visual (flash action bar) (def:false)
     midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically (def:false)
     multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact (def:false)
+    nearbyHostMenuOnly              boolean     Should the host device only accept new client connections when the Connect menu is open (def:true)
     padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time) (def:false)
     padCrossFadeTime                int         The time in ms used to fade out a pad.  Set in the PopUpCrossFade fragment (def::8000)
     padLargeFontInfoBar             boolean     The text size of the floating pad info bar (def:true is 20.0f false is 14.0f)
@@ -327,6 +333,7 @@ public class _Preferences extends Activity {
     pedal6LongPressAction           String      The action called when pedal 6 is long pressed (default is set)
     pedal6ShortPressAction          String      The action called when pedal 6 is short pressed (default is next)
     pedalScrollBeforeMove           boolean     Should the prev/next pedal buttons try to scroll first (makes 2 pedals into 4) (def:true)
+    pedalShowWarningBeforeMove      boolean     Should an 'are you sure' toast warning be shown before moving to next item in the set (def:false)
     popupAlpha                      float       The opacity of the popup windows (def:0.8f)
     popupDim                        float       The darkness of the main window when the popup is open (def:0.8f)
     popupPosition                   String      The position of the popups (tl, tc, tr, l, c, r, bl, bc, br) (def:c)
@@ -351,6 +358,7 @@ public class _Preferences extends Activity {
     presoInfoAlign                  int         The align gravity of the info in presentation mode (Gravity.END)
     presoLyricsAlign                int         The align gravity of the lyrics in presentation mode (Gravity.HORIZONTAL_CENTER)
     presoLyricsVAlign               int         The vertical align gravity of the lyrics in presentation mode (Gravity.TOP)
+    presoLyricsBold                 boolean     Should the presentation text be bold (def:false)
     presoShowChords                 boolean     Should chords be shown in the presentation window (def:false)
     presoTitleTextSize              float       The size of the alert text in Presentation mode (def:14.0f)
     presoTransitionTime             int         The time for transitions between items in presenter mode (ms) (def:800)
@@ -383,15 +391,10 @@ public class _Preferences extends Activity {
     setCurrentLastName              String      The last name used when saving or loading a set(def:"")
     songAuthorSize                  float       The size of the song author text in the action bar (def:11.0f)
     songAutoScale                   String      Choice of autoscale mode (Y)es, (W)idth only or (N)one (def:W)
-    songAutoScaleColumnMaximise     boolean     When autoscale is on full and columns are used, should each column scale independently to maximise font size (def:true)
-    songAutoScaleOverrideFull       boolean     If the app can override full autoscale if the font is too small (def:true)
-    songAutoScaleOverrideWidth      boolean     If the app can override width autoscale if the font is too small (def:false)
+    songAutoScaleColumnMaximise     boolean     When autoscale is on full and columns are used, should each column scale independently to maximise font size
+    songAutoScaleOverrideFull       boolean     If the app can override full autoscale if the font is too small
+    songAutoScaleOverrideWidth      boolean     If the app can override width autoscale if the font is too small
     songfilename                    String      The name of the current song file (def:"")
-    songListSearchByFolder          boolean     Should we search in the song list using a custom folder (def:true)
-    songListSearchByArtist          boolean     Should we search in the song list using a custom artist (def:false)
-    songListSearchByKey             boolean     Should we search in the song list using a custom key (def:false)
-    songListSearchByTag             boolean     Should we search in the song list using a custom folder (def:false)
-    songListSearchByFilter          boolean     Should we search in the song list using a custom filter (def:false)
     songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed) (def:false)
     songMenuAlphaIndexShow          boolean     Should we show the alphabetical index in the song menu (def:true)
     songMenuAlphaIndexSize          float       The text size for the alphabetical index in the song menu (def:14.0f)
@@ -399,9 +402,10 @@ public class _Preferences extends Activity {
     songTitleSize                   float       The size of the song title text in the action bar (def:13.0f)
     soundMeterRange                 int         The volume range of the sound meter (def:400)
     stageModeScale                  float       The max height of each stage mode section (to allow next section to peek at bottom) (def:0.80f)
-    stickyAutoDisplay               String      Where should sticky notes be shown (N)one, (T)op inline, (B)ottom inline, (F)loating window (def:F)
-    stickyWidth                     int         The width of popup sticky notes (def:400)
     stickyAlpha                     float       The alpha of popup sticky notes (def:0.8f)
+    stickyAutoDisplay               String      Where should sticky notes be shown (N)one, (T)op inline, (B)ottom inline, (F)loating window (def:F)
+    stickyBlockInfo                 boolean     To switch on/off the Song info block at the top (Title, author, key, etc for printed look (def:false)
+    stickyWidth                     int         The width of popup sticky notes (def:400)
     stickyLargeFont                 boolean     The text size for the popup sticky notes (true=20.0f, def:false=14.0f)
     stickyXPosition                 int         The x position of the popup sticky note (def: -1 which means figure it out first)
     stickyYPosition                 int         The y position of the popup sticky note (def: -1 which means figure it out first)
@@ -421,7 +425,8 @@ public class _Preferences extends Activity {
     whichMode                       String      Which app mode - Stage, Performance, Presentation (def:Performance)
     whichSongFolder                 String      The song folder we are currently in (def:c.getString(R.string.mainfoldername))
 
-    *//*
+
+
 
 
 }*/

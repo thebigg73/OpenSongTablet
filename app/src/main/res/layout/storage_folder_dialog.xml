@@ -15,18 +15,17 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/currentLocation"
+            <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+                android:id="@+id/dialogHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/storage_change"
-                android:layout_marginBottom="16dp"/>
+                app:title="@string/storage_change" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/changeLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BottomSheetButton"
+                style="@style/IconTextButton"
                 android:text="@string/storage_change"
                 app:icon="@drawable/ic_database_white_36dp" />
 
@@ -34,7 +33,7 @@
                 android:id="@+id/backupFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BottomSheetButton"
+                style="@style/IconTextButton"
                 android:text="@string/backup_osb"
                 app:icon="@drawable/ic_database_export_white_36dp" />
 
@@ -42,7 +41,7 @@
                 android:id="@+id/createSubdirectory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BottomSheetButton"
+                style="@style/IconTextButton"
                 android:text="@string/new_folder"
                 app:icon="@drawable/ic_plus_white_36dp" />
 
@@ -50,7 +49,7 @@
                 android:id="@+id/renameFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BottomSheetButton"
+                style="@style/IconTextButton"
                 android:text="@string/folder_rename"
                 app:icon="@drawable/ic_rename_box_white_36dp" />
 
@@ -58,7 +57,7 @@
                 android:id="@+id/moveContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BottomSheetButton"
+                style="@style/IconTextButton"
                 android:text="@string/folder_move_contents"
                 app:icon="@drawable/ic_content_copy_white_36dp" />
 
@@ -66,7 +65,7 @@
                 android:id="@+id/deleteSubdirectory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/BottomSheetButton"
+                style="@style/IconTextButton"
                 android:text="@string/delete"
                 app:icon="@drawable/ic_delete_white_36dp" />
 

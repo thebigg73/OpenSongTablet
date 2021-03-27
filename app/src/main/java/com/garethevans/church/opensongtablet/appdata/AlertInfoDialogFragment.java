@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.AlertinfoDialogfragmentBinding;
+import com.garethevans.church.opensongtablet.databinding.AlertinfoDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 
@@ -30,7 +30,7 @@ This file shows the user any appropriate warnings.  These can be
 public class AlertInfoDialogFragment extends DialogFragment {
 
     MainActivityInterface mainActivityInterface;
-    AlertinfoDialogfragmentBinding myView;
+    AlertinfoDialogBinding myView;
     Preferences preferences;
     String updateInfo;
     AlertChecks alertChecks;
@@ -49,7 +49,7 @@ public class AlertInfoDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = AlertinfoDialogfragmentBinding.inflate(inflater,container,false);
+        myView = AlertinfoDialogBinding.inflate(inflater,container,false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         // Show/hide the appropriate alerts

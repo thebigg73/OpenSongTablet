@@ -18,6 +18,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.databinding.StorageFolderDisplayBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class StorageManagementFragment extends Fragment {
     private SQLiteHelper sqLiteHelper;
     private StorageAccess storageAccess;
     private ShowCase showCase;
+    private Preferences preferences;
 
     protected GraphView graphView;
     private Graph graph;
@@ -63,8 +65,9 @@ public class StorageManagementFragment extends Fragment {
         graphView = myView.graph;
 
         sqLiteHelper = new SQLiteHelper(requireContext());
-        storageAccess = new StorageAccess();
-        showCase = new ShowCase();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        showCase = mainActivityInterface.getShowCase();
+        preferences = mainActivityInterface.getPreferences();
 
         redColor = requireContext().getResources().getColor(R.color.lightred);
         greenColor = requireContext().getResources().getColor(R.color.lightgreen);
@@ -235,19 +238,16 @@ public class StorageManagementFragment extends Fragment {
         // Called from MainActivity when change has been made from Dialog
         graph = new Graph();
         setUpThread();
+        myView.graph.invalidate();
     }
 
     private ArrayList<String> getFoldersFromFile() {
-        songIDs = storageAccess.getSongIDsFromFile(requireContext());
+        // Scan the storage
+        songIDs = storageAccess.listSongs(requireContext(),preferences);
+        storageAccess.writeSongIDFile(requireContext(),preferences,songIDs);
+        //songIDs = storageAccess.getSongIDsFromFile(requireContext());
         // Each subdir ends with /
-        availableFolders = new ArrayList<>();
-        for (String entry:songIDs) {
-            if (entry.endsWith("/")) {
-                String newtext = entry.substring(0,entry.lastIndexOf("/"));
-                availableFolders.add(newtext);
-            }
-        }
-        return availableFolders;
+        return storageAccess.getSongFolders(requireContext(),songIDs,false,null);
     }
 
     private void makeNodes() {

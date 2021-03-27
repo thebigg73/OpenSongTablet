@@ -8,11 +8,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,10 +22,35 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.peak.salut.SalutDevice;
 
-public class OptionMenuListeners extends AppCompatActivity {
+public class OptionMenuListeners extends AppCompatActivity implements MenuInterface{
+
+    @SuppressLint("StaticFieldLeak")
+    static TextView connectionLog;
+    @SuppressLint("StaticFieldLeak")
+    static Button connectionSearch;
+
+    Context context;
+
+    public OptionMenuListeners() {}
+
+    public OptionMenuListeners(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void updateConnectionsLog() {
+        if (StaticVariables.whichOptionMenu.equals("CONNECT") && connectionLog != null) {
+            try {
+                setTextTextView(connectionLog,StaticVariables.connectionLog);
+            } catch (Exception e) {
+                Log.d("d", "Connections menu closed");
+            }
+        }
+    }
 
     public interface MyInterface {
         void openFragment();
@@ -52,15 +79,21 @@ public class OptionMenuListeners extends AppCompatActivity {
         void updateExtraInfoColorsAndSizes(String s);
         void selectAFileUri(String s);
         void profileWork(String s);
+        boolean requestNearbyPermissions();
+        void installPlayServices();
     }
 
     private static MyInterface mListener;
+
+    private static NearbyInterface nearbyInterface;
 
     private static FragmentManager fm;
     private static float textSize = 14.0f;
 
     static LinearLayout prepareOptionMenu(Context c, FragmentManager fragman) {
         mListener = (MyInterface) c;
+        nearbyInterface = (NearbyInterface) c;
+
         fm = fragman;
         LinearLayout menu;
         switch (StaticVariables.whichOptionMenu) {
@@ -368,7 +401,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                 break;
 
             case "CONNECT":
-                connectOptionListener(v,c);
+                connectOptionListener(v,c,preferences);
                 break;
 
             case "MIDI":
@@ -377,10 +410,6 @@ public class OptionMenuListeners extends AppCompatActivity {
 
             case "MODE":
                 modeOptionListener(v,c,preferences);
-                break;
-
-            case "GESTURES":
-                gestureOptionListener(v,c,preferences);
                 break;
 
             case "AUTOSCROLL":
@@ -413,6 +442,15 @@ public class OptionMenuListeners extends AppCompatActivity {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
     }
+    private static void setRadioButton(RadioButton b, String text) {
+        b.setTextSize(textSize);
+        b.setText(text.toUpperCase(StaticVariables.locale));
+    }
+
+    private static void setTextSwitch(SwitchCompat t, String text) {
+        t.setTextSize(textSize);
+        t.setText(text.toUpperCase(StaticVariables.locale));
+    }
 
     private static void mainOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
@@ -422,7 +460,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         Button menuProfileButton = v.findViewById(R.id.menuProfileButton);
         Button menuChordsButton = v.findViewById(R.id.menuChordsButton);
         Button menuDisplayButton = v.findViewById(R.id.menuDisplayButton);
-        Button menuGesturesButton = v.findViewById(R.id.menuGesturesButton);
         Button menuConnectButton = v.findViewById(R.id.menuConnectButton);
         Button menuModeButton = v.findViewById(R.id.menuModeButton);
         Button menuMidiButton = v.findViewById(R.id.menuMidiButton);
@@ -441,7 +478,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(menuProfileButton,c.getString(R.string.profile));
         setTextButtons(menuChordsButton,c.getString(R.string.chords));
         setTextButtons(menuDisplayButton,c.getString(R.string.display));
-        setTextButtons(menuGesturesButton,c.getString(R.string.gesturesandmenus));
         setTextButtons(menuConnectButton,c.getString(R.string.connections_connect));
         setTextButtons(menuMidiButton,c.getString(R.string.midi));
         setTextButtons(menuModeButton,c.getString(R.string.choose_app_mode));
@@ -453,7 +489,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(menuCCLIButton,c.getString(R.string.edit_song_ccli));
         setTextButtons(menuOtherButton,c.getString(R.string.other));
 
-        // Only allow connection menu for JellyBean+
         menuConnectButton.setVisibility(View.VISIBLE);
 
         // Only allow MIDI menu for Marshmallow+ and if it is available
@@ -494,12 +529,6 @@ public class OptionMenuListeners extends AppCompatActivity {
                 mListener.prepareOptionMenu();
             }
         });
-        menuGesturesButton.setOnClickListener(view -> {
-            StaticVariables.whichOptionMenu = "GESTURES";
-            if (mListener!=null) {
-                mListener.prepareOptionMenu();
-            }
-        });
         menuFindSongsButton.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "FIND";
             if (mListener!=null) {
@@ -527,9 +556,15 @@ public class OptionMenuListeners extends AppCompatActivity {
             });
         }
         menuConnectButton.setOnClickListener(view -> {
-            StaticVariables.whichOptionMenu = "CONNECT";
-            if (mListener!=null) {
-                mListener.prepareOptionMenu();
+            // Check for Google Play availability
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS) {
+                Log.d("d","Success");
+                StaticVariables.whichOptionMenu = "CONNECT";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            } else {
+                mListener.installPlayServices();
             }
         });
         menuModeButton.setOnClickListener(view -> {
@@ -1306,6 +1341,13 @@ public class OptionMenuListeners extends AppCompatActivity {
         Button displayHDMIButton = v.findViewById(R.id.displayHDMIButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
+        Button gesturesPedalButton = v.findViewById(R.id.gesturesPedalButton);
+        Button gesturesCustomButton = v.findViewById(R.id.gesturesCustomButton);
+        Button gesturesMenuOptions = v.findViewById(R.id.gesturesMenuOptions);
+        Button gesturesScrollButton = v.findViewById(R.id.gesturesScrollButton);
+        //SwitchCompat displayMenuToggleSwitch = v.findViewById(R.id.displayMenuToggleSwitch);
+        Button gesturesSongSwipeButton = v.findViewById(R.id.gesturesSongSwipeButton);
+
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.display).toUpperCase(StaticVariables.locale));
         setTextButtons(displayThemeButton,c.getString(R.string.choose_theme));
@@ -1317,6 +1359,15 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(displayActionBarButton,c.getString(R.string.actionbar));
         setTextButtons(displayConnectedDisplayButton,c.getString(R.string.connected_display));
         setTextButtons(displayHDMIButton,c.getString(R.string.hdmi));
+
+        setTextButtons(gesturesPedalButton,c.getString(R.string.footpedal));
+        setTextButtons(gesturesCustomButton,c.getString(R.string.custom_gestures));
+        setTextButtons(gesturesMenuOptions,c.getString(R.string.menu_settings));
+        setTextButtons(gesturesScrollButton,c.getString(R.string.scrollbuttons));
+        setTextButtons(gesturesSongSwipeButton,c.getString(R.string.swipe));
+
+        // Set the switches up based on preferences
+        //displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(c,"hideActionBar",false));
 
         // Set the button listeners
         menuup.setOnClickListener(view -> {
@@ -1401,13 +1452,47 @@ public class OptionMenuListeners extends AppCompatActivity {
                 mListener.connectHDMI();
             }
         });
+        gesturesPedalButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "footpedal";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesCustomButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "gestures";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesMenuOptions.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "menuoptions";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesScrollButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "scrollsettings";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesSongSwipeButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "swipesettings";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
 
         closeOptionsFAB.setOnClickListener(view -> {
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");
             }
         });
-
     }
 
     private static void findSongsOptionListener(View v, final Context c) {
@@ -1663,60 +1748,167 @@ public class OptionMenuListeners extends AppCompatActivity {
         });
     }
 
-    private static void connectOptionListener(View v, final Context c) {
+    private static void connectOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
+        nearbyInterface = (NearbyInterface) c;
 
         // Identify the buttons
         TextView menuUp = v.findViewById(R.id.connectionsMenuTitle);
 
         // We keep a static reference to these in the FullscreenActivity
-        FullscreenActivity.hostButton = v.findViewById(R.id.connectionsHostButton);
-        FullscreenActivity.clientButton = v.findViewById(R.id.connectionsGuestButton);
-        SwitchCompat connectionsReceiveHostFile = v.findViewById(R.id.connectionsReceiveHostFile);
-        FullscreenActivity.connectionsLog = v.findViewById(R.id.options_connections_log);
+        Button deviceName = v.findViewById(R.id.deviceName);
+        RadioButton connectionsOff = v.findViewById(R.id.connectionsOff);
+        RadioButton connectionsHost = v.findViewById(R.id.connectionsHost);
+        RadioButton connectionsClient = v.findViewById(R.id.connectionsClient);
+        SwitchCompat nearbyHostMenuOnly = v.findViewById(R.id.nearbyHostMenuOnly);
+        SwitchCompat receiveHostFiles = v.findViewById(R.id.receiveHostFiles);
+        SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
+        connectionLog = v.findViewById(R.id.options_connections_log);
+        connectionSearch = v.findViewById(R.id.searchForHosts);
 
-        if (FullscreenActivity.salutLog==null || FullscreenActivity.salutLog.equals("")) {
-            FullscreenActivity.salutLog = c.getResources().getString(R.string.connections_log) + "\n\n";
+        LinearLayout hostOptions = v.findViewById(R.id.hostOptions);
+        LinearLayout clientOptions = v.findViewById(R.id.clientOptions);
+
+        deviceName.setText(StaticVariables.deviceName);
+        if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
+            StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
         }
-        setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
 
+        setTextTextView(connectionLog,StaticVariables.connectionLog);
+        setTextTextView(deviceName,StaticVariables.deviceName);
+        setRadioButton(connectionsOff,c.getString(R.string.off));
+        setRadioButton(connectionsClient,c.getString(R.string.connections_actasclient));
+        setRadioButton(connectionsHost,c.getString(R.string.connections_actashost));
+        setTextSwitch(nearbyHostMenuOnly,c.getResources().getString(R.string.nearby_host_menu_only));
+        setTextSwitch(receiveHostFiles,c.getResources().getString(R.string.connections_receive_host));
+        setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
+        setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
-        // Get host/slave text
-        if (FullscreenActivity.hostButtonText==null || FullscreenActivity.hostButtonText.equals("")) {
-            FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_start).toUpperCase(StaticVariables.locale);
+        // Set the default values
+        if (StaticVariables.isHost) {
+            connectionsHost.setChecked(true);
+        } else if (StaticVariables.usingNearby) {
+            connectionsClient.setChecked(true);
+        } else {
+            connectionsOff.setChecked(true);
         }
-        if (FullscreenActivity.clientButtonText==null || FullscreenActivity.clientButtonText.equals("")) {
-            FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
+        nearbyHostMenuOnly.setChecked(preferences.getMyPreferenceBoolean(c,"nearbyHostMenuOnly",false));
+        receiveHostFiles.setChecked(StaticVariables.receiveHostFiles);
+        keepHostFiles.setChecked(StaticVariables.keepHostFiles);
+
+        if (StaticVariables.isHost) {
+            hostOptions.setVisibility(View.VISIBLE);
+            clientOptions.setVisibility(View.GONE);
+        } else if (StaticVariables.usingNearby){
+            hostOptions.setVisibility(View.GONE);
+            clientOptions.setVisibility(View.VISIBLE);
+        } else {
+            hostOptions.setVisibility(View.GONE);
+            clientOptions.setVisibility(View.GONE);
         }
 
-        // Capitalise all the text by locale
-        menuUp.setText(c.getString(R.string.connections_connect).toUpperCase(StaticVariables.locale));
-        setTextButtons(connectionsReceiveHostFile,c.getString(R.string.connections_receive_host));
-        setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
-        setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-        connectionsReceiveHostFile.setChecked(FullscreenActivity.receiveHostFiles);
-
-        // Set the button listeners
+        // Set the listeners
         menuUp.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "MAIN";
             if (mListener!=null) {
                 mListener.prepareOptionMenu();
             }
         });
-        connectionsReceiveHostFile.setOnCheckedChangeListener((compoundButton, b) -> FullscreenActivity.receiveHostFiles = b);
-        FullscreenActivity.connectionsLog.setOnClickListener(view -> {
-            FullscreenActivity.salutLog = c.getResources().getString(R.string.connections_log) + "\n\n";
-            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-        });
-        FullscreenActivity.hostButton.setOnClickListener(view -> setupNetwork(c));
-        FullscreenActivity.clientButton.setOnClickListener(view -> discoverServices(c));
         closeOptionsFAB.setOnClickListener(view -> {
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");
             }
         });
 
+        connectionsOff.setOnCheckedChangeListener((radioButton, isChecked) -> {
+            if (isChecked) {
+                StaticVariables.isHost = false;
+                StaticVariables.usingNearby = false;
+                hostOptions.setVisibility(View.GONE);
+                clientOptions.setVisibility(View.GONE);
+                nearbyInterface.stopDiscovery();
+                nearbyInterface.stopAdvertising();
+                nearbyInterface.turnOffNearby();
+            }
+        });
+
+        connectionsHost.setOnCheckedChangeListener((radioButton, isChecked) -> {
+            if (isChecked) {
+                StaticVariables.isHost = true;
+                StaticVariables.usingNearby = true;
+                hostOptions.setVisibility(View.VISIBLE);
+                clientOptions.setVisibility(View.GONE);
+                nearbyInterface.stopDiscovery();
+                nearbyInterface.startAdvertising();
+            }
+        });
+
+        connectionsClient.setOnCheckedChangeListener((radioButton, isChecked) -> {
+            if (isChecked) {
+                StaticVariables.isHost = false;
+                StaticVariables.usingNearby = true;
+                hostOptions.setVisibility(View.GONE);
+                clientOptions.setVisibility(View.VISIBLE);
+                nearbyInterface.stopAdvertising();
+                // IV - Short delay to help stability
+                Handler h = new Handler();
+                h.postDelayed(() -> connectionSearch.performClick(),2000);
+            }
+        });
+
+        connectionSearch.setOnClickListener(b -> {
+            // IV - User can cause problems by clicking quickly between modes!  Make sure we are still in client mode.
+            if (!StaticVariables.isHost) {
+                // Start discovery and turn it off again after 10 seconds
+                connectionSearch.setEnabled(false);
+                connectionSearch.setText(c.getString(R.string.connections_searching));
+                nearbyInterface.startDiscovery();
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    if (connectionSearch!=null) {
+                        try {
+                            setTextButtons(connectionSearch,c.getString(R.string.connections_discover));
+                            connectionSearch.setEnabled(true);
+                        } catch (Exception e) {
+                            Log.d("OptionMenu","Lost reference to discovery button");
+                        }
+                    }
+                },10000);
+            }
+        });
+
+        nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked));
+        receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
+            StaticVariables.receiveHostFiles = isChecked;
+            keepHostFiles.setEnabled(isChecked);
+            // IV - Re-connect to apply setting
+            Handler h = new Handler();
+            h.postDelayed(() -> connectionSearch.performClick(),2000);
+        });
+
+        keepHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
+            StaticVariables.keepHostFiles = isChecked;
+            // IV - Re-connect to apply setting
+            Handler h = new Handler();
+            h.postDelayed(() -> connectionSearch.performClick(),2000);
+        });
+
+        deviceName.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "connect_name";
+            if (mListener!=null) {
+                mListener.openFragment();
+            }
+        });
+        connectionLog.setOnClickListener(view -> {
+            StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
+            setTextTextView(connectionLog,StaticVariables.connectionLog);
+        });
+
+        if (!mListener.requestNearbyPermissions()) {
+            StaticVariables.whichOptionMenu = "MAIN";
+            mListener.closeMyDrawers("option");
+        }
     }
 
     private static void midiOptionListener(View v, final Context c, final Preferences preferences) {
@@ -1786,122 +1978,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         });
     }
 
-    private static void setupNetwork(final Context c) {
-        Log.d("OptionMenuListener","FullscreenActivity.network="+FullscreenActivity.network);
-        if (FullscreenActivity.network!=null) {
-            Log.d("OptionMenuListener", "FullscreenActivity.network.isRunningAsHost=" + FullscreenActivity.network.isRunningAsHost);
-        }
-
-        if (FullscreenActivity.network!=null && !FullscreenActivity.network.isRunningAsHost) {
-            try {
-                FullscreenActivity.network.startNetworkService(salutDevice -> {
-                    StaticVariables.myToastMessage = salutDevice.readableName + " - " +
-                            c.getResources().getString(R.string.connections_success);
-                    FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                    ShowToast.showToast(c);
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_stop).toUpperCase(StaticVariables.locale);
-            setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
-            FullscreenActivity.clientButton.setAlpha(0.5f);
-            FullscreenActivity.clientButton.setClickable(false);
-            StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_broadcast) +
-                    " " + FullscreenActivity.mBluetoothName;
-            FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-            ShowToast.showToast(c);
-        } else {
-            try {
-                if (FullscreenActivity.network!=null) {
-                    FullscreenActivity.network.stopNetworkService(false);
-                }
-                FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_start).toUpperCase(StaticVariables.locale);
-                setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
-                FullscreenActivity.salutLog += "\n" + c.getResources().getString(R.string.connections_service_stop);
-                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                FullscreenActivity.clientButton.setAlpha(1f);
-                FullscreenActivity.clientButton.setClickable(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static void discoverServices(final Context c) {
-        if(FullscreenActivity.network!=null && !FullscreenActivity.network.isRunningAsHost && !FullscreenActivity.network.isDiscovering) {
-            try {
-                FullscreenActivity.network.discoverNetworkServices(() -> {
-                    SalutDevice hostname = FullscreenActivity.network.foundDevices.get(0);
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_host) +
-                            " " + hostname.readableName;
-                    FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                    ShowToast.showToast(c);
-                    registerWithHost(c,hostname);
-                }, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            FullscreenActivity.salutLog += "\n" + c.getResources().getString(R.string.connections_searching);
-            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-            FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover_stop).toUpperCase(StaticVariables.locale);
-            setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-            FullscreenActivity.hostButton.setAlpha(0.5f);
-            FullscreenActivity.hostButton.setClickable(false);
-        } else {
-            FullscreenActivity.salutLog += "\n" +c.getResources().getString(R.string.connections_discover_stop);
-            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-            try {
-                FullscreenActivity.network.stopServiceDiscovery(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
-            setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-            FullscreenActivity.hostButton.setAlpha(1f);
-            FullscreenActivity.hostButton.setClickable(true);
-        }
-
-    }
-
-    private static void registerWithHost(final Context c, final SalutDevice possibleHost) {
-        try {
-            Log.d("OptionMenu","possibleHost="+possibleHost);
-            FullscreenActivity.network.registerWithHost(possibleHost, () -> {
-                StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_connected) +
-                        " " + possibleHost.readableName;
-                FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                ShowToast.showToast(c);
-                FullscreenActivity.clientButtonText = (c.getResources().getString(R.string.connections_disconnect) +
-                        " " + possibleHost.readableName).toUpperCase(StaticVariables.locale);
-                setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-
-            }, () -> {
-                StaticVariables.myToastMessage = possibleHost.readableName + ": " +
-                        c.getResources().getString(R.string.connections_failure);
-                FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                ShowToast.showToast(c);
-                try {
-                    FullscreenActivity.network.stopServiceDiscovery(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
-                setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-                FullscreenActivity.hostButton.setAlpha(1f);
-                FullscreenActivity.hostButton.setClickable(true);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private static void modeOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
 
@@ -1919,27 +1995,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(modeStageButton,c.getString(R.string.stagemode));
         setTextButtons(modePresentationButton,c.getString(R.string.presentermode));
 
-        // Set a tick next to the current mode
-        switch (StaticVariables.whichMode) {
-            case "Performance":
-                modePerformanceButton.setEnabled(false);
-                modeStageButton.setEnabled(true);
-                modePresentationButton.setEnabled(true);
-                break;
-
-            case "Stage":
-                modePerformanceButton.setEnabled(true);
-                modeStageButton.setEnabled(false);
-                modePresentationButton.setEnabled(true);
-                break;
-
-            case "Presentation":
-                modePerformanceButton.setEnabled(true);
-                modeStageButton.setEnabled(true);
-                modePresentationButton.setEnabled(false);
-                break;
-
-        }
         // Set the button listeners
         menuUp.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "MAIN";
@@ -1948,145 +2003,44 @@ public class OptionMenuListeners extends AppCompatActivity {
             }
         });
         modePerformanceButton.setOnClickListener(view -> {
-            if (!StaticVariables.whichMode.equals("Performance")) {
-                // Switch to performance mode
-                StaticVariables.whichMode = "Performance";
-                preferences.setMyPreferenceString(c,"whichMode","Performance");
-                Intent performmode = new Intent();
-                performmode.setClass(c, StageMode.class);
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("activity", performmode);
-                }
-            }
+            modeOptionListenerActivity(c, preferences, "Performance");
         });
         modeStageButton.setOnClickListener(view -> {
-            if (!StaticVariables.whichMode.equals("Stage")) {
-                // Switch to stage mode
-                StaticVariables.whichMode = "Stage";
-                preferences.setMyPreferenceString(c,"whichMode","Stage");
-                Intent stagemode = new Intent();
-                stagemode.setClass(c, StageMode.class);
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("activity", stagemode);
-                }
-            }
+            modeOptionListenerActivity(c, preferences, "Stage");
         });
         modePresentationButton.setOnClickListener(view -> {
-            if (!StaticVariables.whichMode.equals("Presentation")) {
-                // Switch to presentation mode
-                StaticVariables.whichMode = "Presentation";
-                preferences.setMyPreferenceString(c,"whichMode","Presentation");
-                Intent presentmode = new Intent();
-                presentmode.setClass(c, PresenterMode.class);
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("activity", presentmode);
-                }
-            }
+            modeOptionListenerActivity(c, preferences, "Presentation");
         });
-
         closeOptionsFAB.setOnClickListener(view -> {
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");
             }
         });
-
     }
 
-    private static void gestureOptionListener(View v, final Context c, final Preferences preferences) {
-        mListener = (MyInterface) c;
-
-        // Identify the buttons
-        TextView menuup = v.findViewById(R.id.optionGestureTitle);
-        Button gesturesPedalButton = v.findViewById(R.id.gesturesPedalButton);
-        Button gesturesPageButton = v.findViewById(R.id.gesturesPageButton);
-        Button gesturesCustomButton = v.findViewById(R.id.gesturesCustomButton);
-        Button gesturesMenuOptions = v.findViewById(R.id.gesturesMenuOptions);
-        Button gesturesScrollButton = v.findViewById(R.id.gesturesScrollButton);
-        SwitchCompat displayMenuToggleSwitch = v.findViewById(R.id.displayMenuToggleSwitch);
-        Button gesturesSongSwipeButton = v.findViewById(R.id.gesturesSongSwipeButton);
-        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
-
-        // Capitalise all the text by locale
-        menuup.setText(c.getString(R.string.gesturesandmenus).toUpperCase(StaticVariables.locale));
-        setTextButtons(gesturesPedalButton,c.getString(R.string.footpedal));
-        setTextButtons(gesturesPageButton,c.getString(R.string.quicklaunch_title));
-        setTextButtons(gesturesCustomButton,c.getString(R.string.custom_gestures));
-        setTextButtons(gesturesMenuOptions,c.getString(R.string.menu_settings));
-        setTextButtons(gesturesScrollButton,c.getString(R.string.scrollbuttons));
-        setTextButtons(displayMenuToggleSwitch,c.getString(R.string.hide_actionbar));
-        setTextButtons(gesturesSongSwipeButton,c.getString(R.string.swipe));
-
-        // Set the switches up based on preferences
-        displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(c,"hideActionBar",false));
-
-        // Set the button listeners
-        menuup.setOnClickListener(view -> {
-            StaticVariables.whichOptionMenu = "MAIN";
-            if (mListener!=null) {
-                mListener.prepareOptionMenu();
-            }
-        });
-        gesturesPedalButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "footpedal";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesPageButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "quicklaunch";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesCustomButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "gestures";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesMenuOptions.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "menuoptions";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesScrollButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "scrollsettings";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesSongSwipeButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "swipesettings";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        displayMenuToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(c,"hideActionBar",b);
-            if (mListener!=null) {
-                if (b) {
-                    mListener.hideActionBar();
-                } else {
-                    mListener.showActionBar();
-                }
-                mListener.loadSong();
-            }
-        });
-        closeOptionsFAB.setOnClickListener(view -> {
+    private static void modeOptionListenerActivity(final Context c, final Preferences preferences, final String targetMode) {
+        // IV - Already in the selected mode, just close drawer
+        if (StaticVariables.whichMode.equals(targetMode)) {
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");
             }
-        });
+        } else {
+            StaticVariables.whichMode = targetMode;
+            preferences.setMyPreferenceString(c,"whichMode", StaticVariables.whichMode);
+            Intent appmmode = new Intent();
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                appmmode.setClass(c, PresenterMode.class);
+            } else {
+                appmmode.setClass(c, StageMode.class);
+            }
+            if (mListener != null) {
+                // IV - Go to new mode
+                mListener.callIntent("activity", appmmode);
+                // IV - Kick HDMI after a delay
+                Handler h = new Handler();
+                h.postDelayed(() -> mListener.connectHDMI(), 5000);
+            }
+        }
     }
 
     private static void autoscrollOptionListener(View v, final Context c, final Preferences preferences) {

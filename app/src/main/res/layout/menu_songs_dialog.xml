@@ -28,7 +28,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/editButton"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit"
@@ -36,7 +36,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/duplicateButton"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/duplicate"
@@ -44,7 +44,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/deleteButton"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/delete"
@@ -52,7 +52,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/setButton"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_song_to_set"
@@ -60,7 +60,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/exportButton"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/export"
@@ -82,7 +82,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createButton"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/create_new_song"
@@ -90,7 +90,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/importButton"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/import_main"

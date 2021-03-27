@@ -123,6 +123,9 @@
                 <action
                     android:id="@+id/action_storageManagementFragment_to_backupOSBFragment"
                     app:destination="@id/backupOSBFragment" />
+                <action
+                    android:id="@+id/action_storageManagementFragment_to_moveContentDialog"
+                    app:destination="@id/moveContentFragment" />
             </fragment>
 
             <!-- Choose the storage fragment -->
@@ -142,6 +145,12 @@
                 android:name="com.garethevans.church.opensongtablet.backupandrestore.BackupOSBFragment"
                 android:label="fragment_osbbackup"
                 tools:layout="@layout/fragment_osbbackup" />
+
+            <fragment
+                android:id="@+id/moveContentFragment"
+                android:name="com.garethevans.church.opensongtablet.filemanagement.MoveContentFragment"
+                android:label="MoveContentDialog"
+                tools:layout="@layout/storage_move"/>
 
         </navigation>
 

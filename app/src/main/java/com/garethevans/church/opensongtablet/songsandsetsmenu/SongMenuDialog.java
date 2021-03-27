@@ -127,7 +127,7 @@ public class SongMenuDialog extends DialogFragment {
                     break;
 
                 case "duplicateSong":
-                    dialog = new NewNameDialog(null,"duplicateSong",true,"Songs",mainActivityInterface.getSong().getFolder(),thisSong);
+                    dialog = new NewNameDialog(null,"duplicateSong",true,"Songs",mainActivityInterface.getSong().getFolder(),thisSong,false);
                     dialog.show(getActivity().getSupportFragmentManager(),"NewNameDialog");
                     break;
 
@@ -154,7 +154,7 @@ public class SongMenuDialog extends DialogFragment {
 
                 case "createSong":
                     // The user is first asked for a new song name.  It is then created and then the user is sent to the edit page.
-                    dialog = new NewNameDialog(null,"createNewSong",true,"Songs",mainActivityInterface.getSong().getFolder(),thisSong);
+                    dialog = new NewNameDialog(null,"createNewSong",true,"Songs",mainActivityInterface.getSong().getFolder(),thisSong,false);
                     dialog.show(getActivity().getSupportFragmentManager(),"NewNameDialog");
                     break;
 

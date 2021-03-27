@@ -6,7 +6,6 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -23,29 +22,35 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.ColorUtils;
-
 import com.bumptech.glide.request.RequestOptions;
-
 import java.io.InputStream;
 
-
 class PresentationCommon {
+    // IV - Lyric display is delayed for a change of infobar - not at other times
+    long infoBarChangeDelay;
+    long infoBarUntilTime;
+    String infoBarAlertState;
+    // IV - Support for 'last change only' fade in of content
+    long lyricAfterTime;
+    long lyricDelay;
+    long panicAfterTime;
+    long panicDelay;
+    // IV - doUpdate can run frequently - this supports better transitions
+    boolean doUpdateActive = false;
+    boolean animateOutActive = false;
+    boolean showLogoActive = false;
+    boolean blankActive = false;
 
     // The screen and layout defaults starting the projected display
     void getScreenSizes(Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, float rotation) {
         DisplayMetrics metrics = new DisplayMetrics();
         myscreen.getRealMetrics(metrics);
-        Drawable icon = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            icon = ContextCompat.getDrawable(bottom_infobar.getContext(),R.mipmap.ic_round_launcher);
-        }
         int bottombarheight = 0;
-        if (icon != null) {
-            bottombarheight = icon.getIntrinsicHeight();
+        // IV - Use infobar height (was previously icon height)
+        if (bottom_infobar.getVisibility() == View.VISIBLE) {
+            bottombarheight = bottombarheight + bottom_infobar.getMeasuredHeight();
         }
 
         StaticVariables.cast_padding = 8;
@@ -84,7 +89,6 @@ class PresentationCommon {
         StaticVariables.cast_availableWidth_2col = (int) ((float) StaticVariables.cast_availableScreenWidth / 2.0f) - (StaticVariables.cast_padding * 3);
         StaticVariables.cast_availableWidth_3col = (int) ((float) StaticVariables.cast_availableScreenWidth / 3.0f) - (StaticVariables.cast_padding * 4);
     }
-
     void setDefaultBackgroundImage(Context c) {
         StaticVariables.cast_defimage = ResourcesCompat.getDrawable(c.getResources(),R.drawable.preso_default_bg, null);
     }
@@ -228,7 +232,6 @@ class PresentationCommon {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
-
                 StaticVariables.cast_lyricsCapoColor = preferences.getMyPreferenceInt(c, "dark_lyricsCapoColor", StaticVariables.red);
                 StaticVariables.cast_lyricsChordsColor = preferences.getMyPreferenceInt(c, "dark_lyricsChordsColor", StaticVariables.yellow);
                 StaticVariables.cast_presoFontColor = preferences.getMyPreferenceInt(c, "dark_presoFontColor", StaticVariables.white);
@@ -307,50 +310,36 @@ class PresentationCommon {
         CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
     void presenterThemeSetUp(Context c, Preferences preferences, LinearLayout presentermode_bottombit, TextView presentermode_title,
-                             TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_alert) {
+                             TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert) {
         // Set the text at the bottom of the page to match the presentation text colour
         presentermode_title.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_author.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_copyright.setTypeface(StaticVariables.typefacePresoInfo);
+        presentermode_ccli.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_title.setTextColor(StaticVariables.cast_presoInfoColor);
         presentermode_author.setTextColor(StaticVariables.cast_presoInfoColor);
         presentermode_copyright.setTextColor(StaticVariables.cast_presoInfoColor);
+        presentermode_ccli.setTextColor(StaticVariables.cast_presoInfoColor);
         presentermode_alert.setTextColor(StaticVariables.cast_presoAlertColor);
         presentermode_title.setTextSize(preferences.getMyPreferenceFloat(c,"presoTitleTextSize", 14.0f));
         presentermode_author.setTextSize(preferences.getMyPreferenceFloat(c,"presoAuthorTextSize", 12.0f));
         presentermode_copyright.setTextSize(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 12.0f));
+        presentermode_ccli.setTextSize(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 12.0f));
         presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
         presentermode_title.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoTitleTextSize", 14.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         presentermode_author.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAuthorTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         presentermode_copyright.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 14.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
+        presentermode_ccli.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 14.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         presentermode_title.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         presentermode_author.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         presentermode_copyright.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
-        presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
-        if (PresenterMode.alert_on.equals("Y")) {
-            presentermode_alert.setVisibility(View.VISIBLE);
-        } else {
-            presentermode_alert.setVisibility(View.GONE);
-        }
+        presentermode_ccli.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
+        // IV - Align alert text the same as lyrics
+        presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign", Gravity.END));
         presentermode_bottombit.setBackgroundColor(ColorUtils.setAlphaComponent(StaticVariables.cast_presoShadowColor,100));
     }
-
-    // IV - panic action can cause text to appear with blank and logo display - so support override
-    Boolean panicRequired = true;
-    // IV - Lyric display is delayed for a change of song - not at other times
-    long songChangeDelay;
-    // IV - Support for 'last change only' fade in of content
-    long lyricAfterTime;
-    long lyricDelay;
-    long panicAfterTime;
-    long panicDelay;
-    // IV - doUpdate can run frequently - this supports better transitions
-    Boolean doUpdateActive = false;
-    Boolean animateOutActive = false;
-    Boolean showLogoActive = false;
-
     void presenterStartUp(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
                           final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
         // After the fadeout time, set the background and fade in
@@ -361,9 +350,6 @@ class PresentationCommon {
             // IV - fixBackground does a logo fade in
         }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
     }
-
-
-
     // The logo stuff, animations and blanking the screen
     void setUpLogo(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_Logo, int availableWidth_1col, int availableScreenHeight) {
         // If the customLogo doesn't exist, use the default one
@@ -375,7 +361,7 @@ class PresentationCommon {
         float yscale;
         boolean usingcustom = false;
         Uri customLogo = storageAccess.fixLocalisedUri(c, preferences, preferences.getMyPreferenceString(c, "customLogo", "ost_logo.png"));
-        if (storageAccess.uriExists(c, customLogo)) {
+        if (customLogo!=null && !customLogo.toString().contains("ost_logo") && storageAccess.uriExists(c, customLogo)) {
             InputStream inputStream = storageAccess.getInputStream(c, customLogo);
             // Get the sizes of the custom logo
             BitmapFactory.decodeStream(inputStream, null, options);
@@ -401,7 +387,6 @@ class PresentationCommon {
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(logowidth, logoheight);
         rlp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         projected_Logo.setLayoutParams(rlp);
-
         if (usingcustom) {
             RequestOptions myOptions = new RequestOptions()
                     .fitCenter()
@@ -412,24 +397,25 @@ class PresentationCommon {
         }
         // IV - Logo display removed.  A change meaning showLogo (with all of it's logic) must be explicitly made to display logo
     }
-
     void showLogoPrep () {
         // IV - Indicates the delayed showLogo call will be active unless overridden
         showLogoActive = true;
     }
     void showLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
-                  LinearLayout bottom_infobar, ImageView projected_Logo) {
-        panicRequired = false;
+                  ImageView projected_Logo) {
         if (showLogoActive) {
-            // Fade out the lyrics
-            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                CustomAnimations.faderAnimation(projected_ImageView, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
-
-            } else {
-                CustomAnimations.faderAnimation(projected_LinearLayout, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+            StaticVariables.panicRequired = false;
+            // IV - If the infobar has not completed an 'Until' period, reset
+            if (System.currentTimeMillis() < infoBarUntilTime) {
+                StaticVariables.infoBarChangeRequired = true;
             }
-            // Fade out the infobar
-            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+            // IV - Fade out stale content
+            if (projected_ImageView.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_ImageView, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
+            }
+            if (projected_LinearLayout.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
+            }
 
             Handler h = new Handler();
             h.postDelayed(() -> {
@@ -442,88 +428,81 @@ class PresentationCommon {
                     }
                 }
             }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+            // IV - Another panic!
+            Handler h2 = new Handler();
+            h2.postDelayed(() -> {
+                if (showLogoActive) {
+                    projected_Logo.setAlpha(1.00f);
+                    pageHolder.setAlpha(1.00f);
+                }
+            }, 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
         }
     }
-    void hideLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, ImageView projected_Logo,
-                  LinearLayout bottom_infobar) {
+    void hideLogo(Context c, Preferences preferences, ImageView projected_Logo) {
         // IV - Makes sure any delayed showLogo calls do not undo the fade!
         showLogoActive = false;
+        // IV - Make sure song Alert display is considered (song / alert state may have changed)
+        infoBarAlertState = "";
         CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
     }
-
     void blankUnblankDisplay(Context c, Preferences preferences, RelativeLayout pageHolder, boolean unblank) {
-        panicRequired = false;
-        CustomAnimations.faderAnimation(pageHolder, (int) (preferences.getMyPreferenceInt(c,"presoTransitionTime",800) * 0.97),unblank);
+        blankActive = !unblank;
+        // IV - Make sure song Alert display is considered (song / alert state may have changed)
+        infoBarAlertState = "";
         if (!unblank) {
-            songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
+            StaticVariables.panicRequired = false;
+            // IV - If the infobar has not completed an 'Until' period, reset
+            if (System.currentTimeMillis() < infoBarUntilTime) {
+                StaticVariables.infoBarChangeRequired = true;
+            }
         }
+        CustomAnimations.faderAnimation(pageHolder, (preferences.getMyPreferenceInt(c,"presoTransitionTime",800)),unblank);
+        // IV - Another panic!
+        Handler h2 = new Handler();
+        h2.postDelayed(() -> {
+            if (blankActive) {
+                pageHolder.setAlpha(0.00f);
+            } else {
+                pageHolder.setAlpha(1.00f);
+            }
+        }, 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
     }
     private void animateIn(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
-        // IV  - Fade in the main page using a Delay, songDelay is a full transition delay when there is an info block/song change.
-        Handler h = new Handler();
-        h.postDelayed(() -> {
-            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-                CustomAnimations.faderAnimation(projected_ImageView, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-
-            } else {
-                CustomAnimations.faderAnimation(projected_LinearLayout, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-            }
-        }, songChangeDelay);
-        songChangeDelay = 10;
+        if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+            CustomAnimations.faderAnimation(projected_ImageView, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+        } else {
+            CustomAnimations.faderAnimation(projected_LinearLayout, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+        }
     }
-    private void animateOut(Context c, Preferences preferences, Display myscreen, ImageView projected_Logo, ImageView projected_ImageView,
-                            LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
-        // If the logo is showing, fade it away
+    private void animateOut(Context c, Preferences preferences, ImageView projected_Logo, ImageView projected_ImageView,
+                            LinearLayout projected_LinearLayout, LinearLayout bottom_infobar) {
         if (projected_Logo.getAlpha() > 0.0f) {
+            showLogoActive = false;
             CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
+
+        if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+        }
+        // IV - Song infobar fade and screen sizing processing are handled elsewhere
         // IV - If we are not already doing a lyric fade
         if ((lyricAfterTime - 5) < System.currentTimeMillis()) {
-            // Fade out the lyrics a bit quicker, the info block is always present during fade (no jump should the info block fade first)
-            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-                if (projected_ImageView.getAlpha() > 0.0f) {
-                    CustomAnimations.faderAnimation(projected_ImageView, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
-                }
-            } else {
-                if (projected_LinearLayout.getAlpha() > 0.0f) {
-                    CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
-                }
+            // IV - Fade out stale content
+            // Fade out content a bit quicker, any fading infobar will then always be present during fade (no jump should the info block fade first)
+            if (projected_ImageView.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_ImageView, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
             }
-            getScreenSizes(myscreen, bottom_infobar, projectedPage_RelativeLayout, preferences.getMyPreferenceFloat(c, "castRotation", 0.0f));  // Just in case something changed
+            if (projected_LinearLayout.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
+            }
         }
     }
-    private void presenterFadeOutSongInfo(final Context c, final Preferences preferences, final TextView tv, final String s, final LinearLayout bottom_infobar) {
-        // IV - Delay the following lyric display - so that info block fades in before lyrics to avoid 'jump' of lyrics
-        songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
-        if ((tv.getAlpha() > 0.0f) || (tv.getText().equals("¬"))) {
-            CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        }
-
-        // IV - Longer delay helps fade stability (Hmmm!)
-        Handler h = new Handler();
-        h.postDelayed(() -> {
-            tv.setText(s);
-            // If this is a pdf or image, hide the song info
-            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-                bottom_infobar.setVisibility(View.GONE);
-            } else {
-                bottom_infobar.setVisibility(View.VISIBLE);
-                if (s.length() > 0) {
-                    CustomAnimations.faderAnimation(tv, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-                }
-            }
-            //}
-        }, (long) (1.07 * preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
-    }
-
-
     // Update the screen content
     void doUpdate(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ProcessSong processSong,
                   final Display myscreen, final TextView songinfo_TextView, LinearLayout presentermode_bottombit, final SurfaceView projected_SurfaceView,
                   ImageView projected_BackgroundImage, RelativeLayout pageHolder, ImageView projected_Logo, final ImageView projected_ImageView,
                   final LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, final RelativeLayout projectedPage_RelativeLayout,
-                  TextView presentermode_title, TextView presentermode_author, TextView presentermode_copyright,
+                  TextView presentermode_title, TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert,
                   final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                   final LinearLayout col2_3, final LinearLayout col3_3) {
 
@@ -532,44 +511,31 @@ class PresentationCommon {
 
             // IV - Can be called whilst previous call is still running...  Always do fade out.  Only do fade in if we are not animating out due to a later call
             // First up, animate everything away
+            StaticVariables.panicRequired = false;
             animateOutActive = true;
-            animateOut(c, preferences, myscreen, projected_Logo, projected_ImageView, projected_LinearLayout, bottom_infobar, projectedPage_RelativeLayout);
+            animateOut(c, preferences, projected_Logo, projected_ImageView, projected_LinearLayout, bottom_infobar);
 
             // If we have forced an update due to switching modes, set that up
             if (StaticVariables.forcecastupdate) {
                 matchPresentationToMode(songinfo_TextView, presentermode_bottombit, projected_SurfaceView, projected_BackgroundImage, projected_ImageView);
             }
 
-            // If we had a black screen, fade that in
+            // If we had a black screen, fade page back in
             if (pageHolder.getVisibility() == View.INVISIBLE) {
                 CustomAnimations.faderAnimation(pageHolder, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
             }
 
-            // IV - Restore the info bar if necessary
-            if (bottom_infobar.getAlpha() != 1.0f) {
-                CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-                songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
-            }
-
-            // Set the title of the song and author (if available).  Only does this for changes
-            if (StaticVariables.whichMode.equals("Presentation")) {
-                presenterWriteSongInfo(c, preferences, presentermode_title, presentermode_author, presentermode_copyright, bottom_infobar);
-            } else {
-                setSongTitle(c, preferences, songinfo_TextView);
-            }
-
             // Just in case there is a glitch, make the stuff visible after 5x transition time
             // IV - Panic request is prevented on display of logo or blank by setting panicRequired = false;
-            panicRequired = true;
-            // IV -  There can be multiple postDelayed calls running, each call sets a later 'After' time.
             panicDelay = 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
+            // IV - There can be multiple postDelayed calls running, each call sets a later 'After' time.
             panicAfterTime = System.currentTimeMillis() + panicDelay;
             Handler panic = new Handler();
             panic.postDelayed(() -> {
                 // IV - Quick section moves mean multiple panics are active, a time based test ensures action is only taken for the last call
-                // If after delay the time test fails a newer post has been made
+                // If on running the time test fails a newer postDelayed has been made
                 // After the panic delay time, make sure the correct view is visible regardless of animations
-                if (panicRequired && !animateOutActive && ((panicAfterTime - 5) < System.currentTimeMillis())) {
+                if (StaticVariables.panicRequired && !animateOutActive && ((panicAfterTime - 5) < System.currentTimeMillis())) {
                     if (StaticVariables.whichMode.equals("Presentation")) {
                         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
                             projected_ImageView.setVisibility(View.VISIBLE);
@@ -589,8 +555,16 @@ class PresentationCommon {
                 }
             }, panicDelay);
 
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                // IV - Show the infobar as needed
+                presenterWriteSongInfo(c, preferences, presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, presentermode_alert, bottom_infobar);
+            } else {
+                standardWriteSongInfo(c, preferences, songinfo_TextView, bottom_infobar);
+            }
+
             // IV - There can be multiple postDelayed calls running, each call sets a later 'After' time.
-            lyricDelay = preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
+            lyricDelay = preferences.getMyPreferenceInt(c, "presoTransitionTime", 800) + infoBarChangeDelay;
+            infoBarChangeDelay = 0;
             lyricAfterTime = System.currentTimeMillis() + lyricDelay;
 
             animateOutActive = false;
@@ -598,7 +572,7 @@ class PresentationCommon {
             // Now run the next bit post delayed (to wait for the animate out)
             Handler h = new Handler();
             h.postDelayed(() -> {
-                // IV - Not if animating out and not if the time test fails as newer post has been made
+                // IV - Not if animating out and not if the time test fails as newer postDelayed has been made
                 if (!animateOutActive && (lyricAfterTime - 5) < System.currentTimeMillis()) {
                     // Wipe any current views
                     wipeAllViews(projected_LinearLayout,projected_ImageView);
@@ -609,6 +583,11 @@ class PresentationCommon {
                         projectedPage_RelativeLayout.setBackgroundColor(StaticVariables.cast_lyricsBackgroundColor);
                         songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
                     }
+
+                    // Get the size of the SurfaceView here as any infobar will be visible at this point
+                    getScreenSizes(myscreen,bottom_infobar, projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
+
+                    StaticVariables.panicRequired = true;
                     // Decide on what we are going to show
                     if (FullscreenActivity.isPDF) {
                         doPDFPage(c,preferences,storageAccess,processSong,projected_ImageView,projected_LinearLayout);
@@ -616,6 +595,7 @@ class PresentationCommon {
                         doImagePage(c,preferences,storageAccess,projected_ImageView,projected_LinearLayout);
                     } else {
                         projected_ImageView.setVisibility(View.GONE);
+                        projected_ImageView.setAlpha(0.0f);
                         switch (StaticVariables.whichMode) {
                             case "Stage":
                                 prepareStageProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
@@ -637,71 +617,139 @@ class PresentationCommon {
         }
     }
     private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
-                                        TextView presentermode_copyright, LinearLayout bottom_infobar) {
-        // IV - Adjusted to try to make info block more CCLI compliant
-        String old_title = presentermode_title.getText().toString();
-        String old_author = presentermode_author.getText().toString();
-        String old_copyright = presentermode_copyright.getText().toString();
-        String new_author = StaticVariables.mAuthor;
-        String new_copyright = "";
+                                        TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert, LinearLayout bottom_infobar) {
+        if (!(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF)) {
+            // IV - Exceutes for first section after a change is requested (for a fresh song info display)
+            // IV - AND section changes AFTER the subsequent 'Until' period end (for alert display)
+            // IV - NOT for section changes after the first that occur BEFORE the end of the Until period
+            if ((StaticVariables.infoBarChangeRequired) || (System.currentTimeMillis() > infoBarUntilTime)) {
+                String new_author = "";
+                String new_title = "";
+                String new_copyright = "";
+                String new_ccli = "";
 
-        if (!old_title.contentEquals(StaticVariables.mTitle)) {
-            presenterFadeOutSongInfo(c, preferences, presentermode_title, StaticVariables.mTitle, bottom_infobar);
-        }
+                // IV - Do once for first section after change required
+                if (StaticVariables.infoBarChangeRequired) {
+                    new_author = StaticVariables.mAuthor.trim();
+                    if (!new_author.equals(""))
+                        new_author = c.getString(R.string.wordsandmusicby) + " " + new_author;
 
-        // IV - CCLI would be...
-        //if (!new_author.equals("")) {
-        //    new_author = "words and music by " + new_author;
-        //}
-        // localisation would be needed
-        if (!old_author.contentEquals(new_author)) {
-            presenterFadeOutSongInfo(c, preferences, presentermode_author, new_author, bottom_infobar);
-        }
+                    new_copyright = StaticVariables.mCopyright.trim();
+                    if (!new_copyright.isEmpty() && (!new_copyright.contains("©")))
+                        new_copyright = "© " + new_copyright;
 
-        // IV - CCLI would be...
-        // new_copyright = "Used by permission. CCLI Licence #" + new_copyright;
-        // Instead using 'CCLI #' as this is international(?)
-        // The song must have a CCLI no and the system a CCLI licence number to see display
-        if (StaticVariables.mCCLI.length() > 0) {
-            new_copyright = preferences.getMyPreferenceString(c, "ccliLicence", "");
-            if (new_copyright.length() > 0) {
-                new_copyright = "CCLI #" + new_copyright;
+                    new_ccli = preferences.getMyPreferenceString(c, "ccliLicence", "");
+                    if (!new_ccli.isEmpty() && (!StaticVariables.mCCLI.isEmpty())) {
+                        new_ccli = c.getString(R.string.usedbypermision) + " CCLI " + c.getString(R.string.ccli_licence) + " " + new_ccli;
+                    } else {
+                        new_ccli = "";
+                    }
+
+                    new_title = StaticVariables.mTitle;
+                    if (new_title.startsWith("_")) new_title = "";
+                    else {
+                        // IV - If we have only a title, use without quotes
+                        if ((new_author + new_copyright + new_ccli).equals("")) {
+                            new_title = StaticVariables.mTitle.trim();
+                        } else {
+                            new_title = "\"" + StaticVariables.mTitle.trim() + "\"";
+                        }
+                    }
+                }
+
+                // IV - We will need to animate if we pass this test - no false positives
+                if ((StaticVariables.infoBarChangeRequired) || (!infoBarAlertState.equals(PresenterMode.alert_on))) {
+                    // IV - Fade to 0.01f to keep on screen
+                    CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), 0.01f);
+                    // IV - Delay lyrics to ensure new infobar is available for correct screen sizing - Set also to provide a good transition
+                    infoBarChangeDelay = 200;
+                    // IV - Rapid song changes can see multiple handlers running - ensure that none show an alert
+                    if (StaticVariables.infoBarChangeRequired) {
+                        infoBarAlertState = "N";
+                    } else {
+                        infoBarAlertState = PresenterMode.alert_on;
+                    }
+
+                    // IV - Run the next bit post delayed (to wait for the animate out)
+                    Handler h = new Handler();
+                    String finalNew_title = new_title;
+                    String finalNew_author = new_author;
+                    String finalNew_copyright = new_copyright;
+                    String finalNew_ccli = new_ccli;
+                    h.postDelayed(() -> {
+                        // IV - Finish the fade
+                        bottom_infobar.setAlpha(0.0f);
+                        adjustVisibility(presentermode_author, finalNew_author);
+                        adjustVisibility(presentermode_copyright, finalNew_copyright);
+                        adjustVisibility(presentermode_ccli, finalNew_ccli);
+                        adjustVisibility(presentermode_title, finalNew_title);
+                        if (StaticVariables.infoBarChangeRequired) {
+                            StaticVariables.infoBarChangeRequired = false;
+                            // IV - Make sure song info is seen for at least 10s
+                            infoBarUntilTime = System.currentTimeMillis() + 10000;
+                            presentermode_alert.setVisibility(View.GONE);
+                            // IV - Force consideration of alert state after the Until period
+                            infoBarAlertState = "";
+                            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                        } else {
+                            if (infoBarAlertState.equals("Y")) {
+                                // IV - Align alert text the same as lyrics
+                                presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign", Gravity.END));
+                                presentermode_alert.setVisibility(View.VISIBLE);
+                                CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                            } else {
+                                presentermode_alert.setVisibility(View.GONE);
+                            }
+                        }
+                    }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+                }
             }
-        }
-
-        // IV - © is internationally recognised, so is used without needing localisation
-        if (StaticVariables.mCopyright.length() > 0) {
-            if (new_copyright.length() > 0) {
-                new_copyright = "©" + StaticVariables.mCopyright + "\n" + new_copyright;
-            } else {
-                new_copyright = "©" + StaticVariables.mCopyright;
-            }
-        }
-
-        if (!old_copyright.contentEquals(new_copyright)) {
-            presenterFadeOutSongInfo(c, preferences, presentermode_copyright, new_copyright, bottom_infobar);
         }
     }
-    private void setSongTitle(Context c, Preferences preferences, TextView songinfo_TextView) {
+    private void adjustVisibility(TextView v, String val) {
+        v.setText(val);
+        if (val==null || val.isEmpty()) {
+            v.setVisibility(View.GONE);
+        } else {
+            v.setVisibility(View.VISIBLE);
+        }
+    }
+    private void standardWriteSongInfo(Context c, Preferences preferences, TextView songinfo_TextView, LinearLayout bottom_infobar) {
         String old_title = songinfo_TextView.getText().toString();
         String new_title = StaticVariables.mTitle;
         if (!StaticVariables.mAuthor.equals("")) {
             new_title = new_title + "\n" + StaticVariables.mAuthor;
         }
-        if (!old_title.equals(new_title)) {
-            // It has changed, so make the text update on the screen
-            normalChangeSongInfo(c,preferences,songinfo_TextView,new_title);
+        // IV - If we have something or are not yet displaying, cross fade in
+        if (!old_title.equals(new_title) ||  songinfo_TextView.getAlpha() == 0.0f) {
+            CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            // IV - Now run the next bit post delayed (to wait for the animate out)
+            if (!(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) && (!new_title.isEmpty())) {
+                Handler h = new Handler();
+                String finalNew_title = new_title;
+                h.postDelayed(() -> {
+                    songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
+                    songinfo_TextView.setText(finalNew_title);
+                    songinfo_TextView.setAlpha(1.0f);
+                    CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+                }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+            } else {
+                songinfo_TextView.setText(new_title);
+            }
         }
     }
     private void doPDFPage(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         Bitmap bmp = processSong.createPDFPage(c, preferences, storageAccess, StaticVariables.cast_availableScreenWidth, StaticVariables.cast_availableScreenHeight, "Y");
+        projected_ImageView.setVisibility(View.GONE);
+        projected_ImageView.setAlpha(0.0f);
         projected_ImageView.setBackgroundColor(StaticVariables.white);
         projected_ImageView.setImageBitmap(bmp);
         animateIn(c,preferences,projected_ImageView,projected_LinearLayout);
     }
     private void doImagePage(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         projected_ImageView.setVisibility(View.GONE);
-        projected_ImageView.setBackgroundColor(0x00000000);
+        projected_ImageView.setAlpha(0.0f);
+        projected_ImageView.setBackgroundColor(StaticVariables.white);
         // Process the image location into an URI
         Uri imageUri;
         if (StaticVariables.uriToLoad==null) {
@@ -718,44 +766,21 @@ class PresentationCommon {
         projected_LinearLayout.removeAllViews();
         projected_ImageView.setImageBitmap(null);
     }
-    private void normalChangeSongInfo(final Context c, final Preferences preferences, final TextView songinfo_TextView, final String s) {
-        CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-
-        // After the transition delay, write the new value and fade it back in
-        Handler h = new Handler();
-        h.postDelayed(() -> {
-            songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
-            songinfo_TextView.setText(s);
-            CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-
-        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
-    }
-
-
-
-    // Alert
-    void updateAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, boolean show, TextView presentermode_alert) {
+    void updateAlert(Context c, Preferences preferences, boolean show, TextView presentermode_alert) {
+        // IV - A doUpdate is done elsewhere to handle fades
+        // IV - Set up to ensure no song info display
+        infoBarUntilTime = 0;
+        StaticVariables.infoBarChangeRequired = false;
         if (show) {
             PresenterMode.alert_on = "Y";
-            fadeinAlert(c, preferences, myscreen, bottom_infobar, projectedPage_RelativeLayout, presentermode_alert);
+            presentermode_alert.setText(preferences.getMyPreferenceString(c,"presoAlertText",""));
+            presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
+            presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
+            presentermode_alert.setTextColor(StaticVariables.cast_presoAlertColor);
+            presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         } else {
             PresenterMode.alert_on = "N";
-            fadeoutAlert(c, preferences, presentermode_alert);
         }
-    }
-    private void fadeinAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, TextView presentermode_alert) {
-        presentermode_alert.setText(preferences.getMyPreferenceString(c,"presoAlertText",""));
-        presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
-        presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
-        presentermode_alert.setTextColor(StaticVariables.cast_presoAlertColor);
-        presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
-
-        presentermode_alert.setVisibility(View.VISIBLE);
-        getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
-        CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-    }
-    private void fadeoutAlert(Context c, Preferences preferences, TextView presentermode_alert) {
-        CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
 
 
@@ -933,12 +958,12 @@ class PresentationCommon {
 
                     // Now premeasure the views
                     // GE try to catch errors sometimes occuring
-                    tryMeasure(col1_1,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col1_2,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col2_2,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col1_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col2_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col3_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    tryMeasure(col1_1);
+                    tryMeasure(col1_2);
+                    tryMeasure(col2_2);
+                    tryMeasure(col1_3);
+                    tryMeasure(col2_3);
+                    tryMeasure(col3_3);
                     //col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                     //col1_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                     //col2_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -1346,6 +1371,7 @@ class PresentationCommon {
 
 
 
+
     // Writing the views for PresenterMode
     private void preparePresenterProjected(final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                            final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
@@ -1372,7 +1398,7 @@ class PresentationCommon {
                         col1_1.addView(test1_1);
 
                         // Now premeasure the views
-                        tryMeasure(col1_1,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        tryMeasure(col1_1);
                         // GE Catch error detected
 
                         // Get the widths and heights of the sections
@@ -1442,12 +1468,12 @@ class PresentationCommon {
     }
 
 
-    private void tryMeasure(View view, int x_size, int y_size) {
+    private void tryMeasure(View view) {
         try {
             if (view.getLayoutParams()==null) {
                 view.setLayoutParams(new ViewGroup.LayoutParams(0,0));
             }
-            view.measure(x_size,y_size);
+            view.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
         }

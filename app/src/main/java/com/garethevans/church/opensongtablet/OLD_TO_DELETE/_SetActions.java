@@ -1,18 +1,10 @@
 /*
-package com.garethevans.church.opensongtablet.OLD_TO_DELETE;
+package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
-
-import com.garethevans.church.opensongtablet.PopUpEditSongFragment;
-import com.garethevans.church.opensongtablet.ProcessSong;
-import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-import com.garethevans.church.opensongtablet.songsandsets.CreateNewSet;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -27,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class _SetActions {
+class SetActions {
 
     public interface MyInterface {
         void doMoveSection();
@@ -56,7 +48,7 @@ public class _SetActions {
             }
         }
         // Sort the categories alphabetically
-        if (!StaticVariables.sortAlphabetically) {
+        if (!FullscreenActivity.sortAlphabetically) {
             Collections.sort(cats);
             Collections.reverse(cats);
         } else {
@@ -89,7 +81,7 @@ public class _SetActions {
         collator.setStrength(Collator.SECONDARY);
 
         // Sort the categories alphabetically
-        if (!StaticVariables.sortAlphabetically) {
+        if (!FullscreenActivity.sortAlphabetically) {
             Collections.sort(filtered,collator);
             Collections.reverse(filtered);
         } else {
@@ -124,7 +116,7 @@ public class _SetActions {
                     switch (xpp.getAttributeValue(null, "type")) {
                         case "song":
                             // Get song
-                            getSong(c,preferences);
+                            getSong();
                             break;
                         case "scripture":
                             // Get Scripture
@@ -157,7 +149,7 @@ public class _SetActions {
         //Log.d("SetActions","setCurrent="+preferences.getMyPreferenceString(c,"setCurrent",""));
     }
 
-    public void prepareSetList(Context c, Preferences preferences) {
+    void prepareSetList(Context c, Preferences preferences) {
         try {
             StaticVariables.mSet = null;
             StaticVariables.mSetList = null;
@@ -172,13 +164,6 @@ public class _SetActions {
             // Break the saved set up into a new String[]
             StaticVariables.mSet = setparse.split("%%%");
 
-            //Log.d("SetActions","Preparing Set list.  setparse="+setparse);
-            */
-/*for (String str:StaticVariables.mSet) {
-                Log.d("SetActions","mSet item="+str);
-            }*//*
-
-
             // Fix any MAIN folder saved in set
             for (int s=0; s<StaticVariables.mSet.length; s++) {
                 StaticVariables.mSet[s] = StaticVariables.mSet[s].replace("MAIN/","");
@@ -188,11 +173,6 @@ public class _SetActions {
             StaticVariables.mSetList = StaticVariables.mSet.clone();
 
             StaticVariables.setSize = StaticVariables.mSetList.length;
-
-            */
-/*Log.d("SetActions","mSet.length="+StaticVariables.mSet.length);
-            Log.d("SetActions","mSetList.length="+StaticVariables.mSetList.length);*//*
-
 
             // Get rid of tags before and after folder/filenames
             for (int x = 0; x < StaticVariables.mSetList.length; x++) {
@@ -210,7 +190,7 @@ public class _SetActions {
         }
     }
 
-    public void indexSongInSet() {
+    void indexSongInSet() {
         try {
             if (StaticVariables.mSet!=null && StaticVariables.mSetList!=null && StaticVariables.whatsongforsetwork!=null) {
                 boolean alreadythere = false;
@@ -305,12 +285,12 @@ public class _SetActions {
         } else {
             StaticVariables.nextSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet + 1];
         }
-        StaticVariables.whichDirection = "R2L";
+        FullscreenActivity.whichDirection = "R2L";
     }
 
     void saveSetMessage(Context c, Preferences preferences,
                         StorageAccess storageAccess, ProcessSong processSong) {
-        StaticVariables.whattodo = "";
+        FullscreenActivity.whattodo = "";
         if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
             CreateNewSet createNewSet = new CreateNewSet();
             if (!createNewSet.doCreation(c, preferences, storageAccess, processSong)) {
@@ -379,7 +359,7 @@ public class _SetActions {
         return val;
     }
 
-    public String whatToLookFor(Context c, String folder, String filename) {
+    String whatToLookFor(Context c, String folder, String filename) {
         String whattolookfor;
         if (folder.equals("") || folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN")) {
             whattolookfor = "$**_" + filename + "_**$";
@@ -478,7 +458,7 @@ public class _SetActions {
 
     private void writeTempSlide(String where, String what, Context c, Preferences preferences, StorageAccess storageAccess) {
         // Fix the custom name so there are no illegal characters
-        what = what.replaceAll("[|?*<\":>+\\[\\]']", " ");
+        what = storageAccess.safeFilename(what);
         String set_item;
         String foldername;
         String subfoldername;
@@ -542,11 +522,11 @@ public class _SetActions {
         currentSet = currentSet + set_item;
     }
 
-    private void getSong(Context c, Preferences preferences) {
+    private void getSong() {
         try {
             // Get path and remove leading /
-            String p_name = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path"));
-            String s_name = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
+            String p_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path"));
+            String s_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
             if (p_name.startsWith("/")) {
                 p_name = p_name.replaceFirst("/","");
             }
@@ -598,10 +578,10 @@ public class _SetActions {
                     scripture_title = xpp.nextText();
                     break;
                 case "body":
-                    scripture_text.append("\n[]\n").append(_LoadXML.parseFromHTMLEntities(xpp.nextText()));
+                    scripture_text.append("\n[]\n").append(LoadXML.parseFromHTMLEntities(xpp.nextText()));
                     break;
                 case "subtitle":
-                    scripture_translation = _LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    scripture_translation = LoadXML.parseFromHTMLEntities(xpp.nextText());
                     break;
             }
 
@@ -712,15 +692,15 @@ public class _SetActions {
         writeTempSlide(c.getResources().getString(R.string.scripture), scripture_title, c, preferences, storageAccess);
 
         xpp.nextTag();
-     }
+    }
 
     private void getCustom(Context c, Preferences preferences, StorageAccess storageAccess) throws IOException, XmlPullParserException {
         // Ok parse this bit seperately.  Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
-        String custom_name = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
-        String custom_seconds = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "seconds"));
-        String custom_loop = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "loop"));
+        String custom_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+        String custom_seconds = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "seconds"));
+        String custom_loop = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "loop"));
         String custom_title = "";
         String custom_subtitle = "";
         custom_notes = "";
@@ -730,16 +710,16 @@ public class _SetActions {
         while (!custom_finished) {
             switch (xpp.getName()) {
                 case "title":
-                    custom_title = _LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    custom_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
                     break;
                 case "notes":
-                    custom_notes = _LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
                     break;
                 case "body":
-                    custom_text.append("\n---\n").append(_LoadXML.parseFromHTMLEntities(xpp.nextText()));
+                    custom_text.append("\n---\n").append(LoadXML.parseFromHTMLEntities(xpp.nextText()));
                     break;
                 case "subtitle":
-                    custom_subtitle = _LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
                     break;
             }
 
@@ -772,8 +752,8 @@ public class _SetActions {
             custom_seconds = "";
             noteorslide = c.getResources().getString(R.string.note);
 
-        // If it is a song variation, the full song contents are written to the notes part
-        // The contents will be a compatible slide for OpenSong desktop presentation, not needed in this app
+            // If it is a song variation, the full song contents are written to the notes part
+            // The contents will be a compatible slide for OpenSong desktop presentation, not needed in this app
         } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
             // Prepare for a variation
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.variation) + " # - ", "");
@@ -800,9 +780,9 @@ public class _SetActions {
 
     private void getImage(Context c, Preferences preferences, StorageAccess storageAccess) throws IOException, XmlPullParserException {
         // Ok parse this bit separately.  This could have multiple images
-        String image_name = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
-        String image_seconds = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "seconds"));
-        String image_loop = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "loop"));
+        String image_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+        String image_seconds = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "seconds"));
+        String image_loop = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "loop"));
         StringBuilder image_title = new StringBuilder();
         String image_subtitle = "";
         StringBuilder slide_images;
@@ -829,18 +809,18 @@ public class _SetActions {
                 if (xpp != null) {
                     switch (xpp.getName()) {
                         case "title":
-                            image_title = new StringBuilder(_LoadXML.parseFromHTMLEntities(xpp.nextText()));
+                            image_title = new StringBuilder(LoadXML.parseFromHTMLEntities(xpp.nextText()));
                             break;
 
                         case "subtitle":
-                            image_subtitle = _LoadXML.parseFromHTMLEntities(xpp.nextText());
+                            image_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
                             break;
                         case "notes":
-                            image_notes = _LoadXML.parseFromHTMLEntities(xpp.nextText());
+                            image_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
                             break;
                         case "filename":
-                            image_filename = _LoadXML.parseFromHTMLEntities(xpp.nextText());
-                            if (image_filename != null && !image_filename.equals("") && !image_filename.isEmpty()) {
+                            image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                            if (!image_filename.equals("") && !image_filename.isEmpty()) {
                                 slide_images.append(image_filename).append("\n");
                                 slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
                                         .append("_").append(imagenums + 1).append("]\n").append(image_filename)
@@ -855,7 +835,7 @@ public class _SetActions {
                             encodedimage = true;
                             break;
                         case "description":
-                            String file_name = _LoadXML.parseFromHTMLEntities(xpp.nextText());
+                            String file_name = LoadXML.parseFromHTMLEntities(xpp.nextText());
                             if (file_name.contains(".png") || file_name.contains(".PNG")) {
                                 image_type = ".png";
                             } else if (file_name.contains(".gif") || file_name.contains(".GIF")) {
@@ -872,11 +852,11 @@ public class _SetActions {
                                 }
 
                                 Uri uri = storageAccess.getUriForItem(c, preferences, "Images", "_cache",
-                                        image_title.toString() + imagenums + image_type);
+                                        storageAccess.safeFilename(image_title.toString()) + imagenums + image_type);
 
                                 // Check the uri exists for the outputstream to be valid
                                 storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
-                                        "Images", "_cache", image_title.toString() + imagenums + image_type);
+                                        "Images", "_cache", storageAccess.safeFilename(image_title.toString()) + imagenums + image_type);
 
                                 OutputStream outputStream = storageAccess.getOutputStream(c, uri);
                                 byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
@@ -929,15 +909,15 @@ public class _SetActions {
         return s;
     }
 
-    void prepareFirstItem(Context c, Preferences preferences) {
+    void prepareFirstItem(Context c,Preferences preferences) {
         // If we have just loaded a set, and it isn't empty,  load the first item
-        if (StaticVariables.mSetList.length>0) {
+        if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
             StaticVariables.whatsongforsetwork = StaticVariables.mSetList[0];
             StaticVariables.setView = true;
 
             //Log.d("SetActions","whatsongforsetwork="+StaticVariables.whatsongforsetwork);
-            StaticVariables.linkclicked = StaticVariables.mSetList[0];
-            StaticVariables.pdfPageCurrent = 0;
+            FullscreenActivity.linkclicked = StaticVariables.mSetList[0];
+            FullscreenActivity.pdfPageCurrent = 0;
 
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
@@ -951,35 +931,35 @@ public class _SetActions {
 
     void getSongFileAndFolder(Context c) {
         //Log.d("SetActions","linkclicked="+FullscreenActivity.linkclicked);
-        if (!StaticVariables.linkclicked.contains("/")) {
-            StaticVariables.linkclicked = "/" + StaticVariables.linkclicked;
+        if (!FullscreenActivity.linkclicked.contains("/")) {
+            FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
         }
 
-        if (StaticVariables.linkclicked.equals("/")) {
+        if (FullscreenActivity.linkclicked.equals("/")) {
             // There was no song clicked, so just reload the current one
             if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
                     StaticVariables.whichSongFolder.equals("")) {
-                StaticVariables.linkclicked = "/"+ StaticVariables.songfilename;
+                FullscreenActivity.linkclicked = "/"+ StaticVariables.songfilename;
             } else {
-                StaticVariables.linkclicked = StaticVariables.whichSongFolder + "/" +
+                FullscreenActivity.linkclicked = StaticVariables.whichSongFolder + "/" +
                         StaticVariables.songfilename;
             }
         }
 
         // The song is the bit after the last /
-        int songpos = StaticVariables.linkclicked.lastIndexOf("/");
+        int songpos = FullscreenActivity.linkclicked.lastIndexOf("/");
         if (songpos==0) {
             // Empty folder
             StaticVariables.whichSongFolder = c.getString(R.string.mainfoldername);
         } else {
-            StaticVariables.whichSongFolder = StaticVariables.linkclicked.substring(0,songpos);
+            StaticVariables.whichSongFolder = FullscreenActivity.linkclicked.substring(0,songpos);
         }
 
-        if (songpos>= StaticVariables.linkclicked.length()) {
+        if (songpos>=FullscreenActivity.linkclicked.length()) {
             // Empty song
             StaticVariables.songfilename = "";
         } else {
-            StaticVariables.songfilename = StaticVariables.linkclicked.substring(songpos + 1);
+            StaticVariables.songfilename = FullscreenActivity.linkclicked.substring(songpos + 1);
         }
 
         if (StaticVariables.whichSongFolder.equals("")) {
@@ -1060,10 +1040,10 @@ public class _SetActions {
             if (StaticVariables.setMoveDirection.equals("back")) {
                 if (StaticVariables.indexSongInSet>0) {
                     StaticVariables.indexSongInSet -= 1;
-                    StaticVariables.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = StaticVariables.linkclicked;
-                    if (StaticVariables.linkclicked == null) {
-                        StaticVariables.linkclicked = "";
+                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
+                    if (FullscreenActivity.linkclicked == null) {
+                        FullscreenActivity.linkclicked = "";
                         StaticVariables.whatsongforsetwork = "";
                     }
                 }
@@ -1071,10 +1051,10 @@ public class _SetActions {
             } else if (StaticVariables.setMoveDirection.equals("forward")) {
                 if (StaticVariables.indexSongInSet< StaticVariables.mSetList.length-1) {
                     StaticVariables.indexSongInSet += 1;
-                    StaticVariables.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = StaticVariables.linkclicked;
-                    if (StaticVariables.linkclicked == null) {
-                        StaticVariables.linkclicked = "";
+                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
+                    if (FullscreenActivity.linkclicked == null) {
+                        FullscreenActivity.linkclicked = "";
                         StaticVariables.whatsongforsetwork = "";
                     }
                 }
@@ -1093,7 +1073,7 @@ public class _SetActions {
 
     }
 
-    public String fixIsInSetSearch(String s) {
+    String fixIsInSetSearch(String s) {
         if (s.contains("**_Variations/")) {
             s = s.replace("**_Variations/","**_**Variation/");
         } else if (s.contains("**_Variation/")) {

@@ -8,12 +8,6 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +16,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpSoundLevelMeterFragment extends DialogFragment {
 
@@ -52,14 +51,9 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     private int counts = 0;
     private float avvol = 0.0f;
 
-    private _Preferences preferences;
+    private Preferences preferences;
 
-    private final Runnable r = new Runnable() {
-        @Override
-        public void run() {
-            sampleSound();
-        }
-    };
+    private final Runnable r = this::sampleSound;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,25 +67,24 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
         View V = inflater.inflate(R.layout.popup_soundlevelmeter, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.volume));
+        title.setText(getString(R.string.volume));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getContext());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new _Preferences();
+        preferences = new Preferences();
 
         dBTextView = V.findViewById(R.id.dBTextView);
 
@@ -109,13 +102,10 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         averagevol = V.findViewById(R.id.averagevol);
         Button resetaverage = V.findViewById(R.id.resetaverage);
 
-        resetaverage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                totalvols = 0;
-                counts = 0;
-                avvol = 0.0f;
-            }
+        resetaverage.setOnClickListener(v -> {
+            totalvols = 0;
+            counts = 0;
+            avvol = 0.0f;
         });
 
         volval = V.findViewById(R.id.volval);
@@ -124,7 +114,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         maxvolrange.setMax(7);
         int myprogress;
         String mytext;
-        switch (preferences.getMyPreferenceInt(getActivity(),"soundMeterRange",400)) {
+        switch (preferences.getMyPreferenceInt(getContext(),"soundMeterRange",400)) {
             case 50:
                 myprogress = 0;
                 mytext = "0 - 50";
@@ -213,9 +203,9 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                         volrangechosen = 100;
                         text = "0-100";
                         break;
-                    }
+                }
 
-                preferences.setMyPreferenceInt(getActivity(),"soundMeterRange",volrangechosen);
+                preferences.setMyPreferenceInt(getContext(),"soundMeterRange",volrangechosen);
                 volval.setText(text);
             }
 
@@ -249,13 +239,15 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             e.printStackTrace();
         }
 
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         super.onDismiss(dialog);
+        // IV - Remove any pending callback
+        mHandlerStart.removeCallbacks(r);
         try {
             audio.stop();
             audio.release();
@@ -297,7 +289,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             // Turn the appropriate level lights on or off
             // Assume the highest value is 170
 
-            float maxvolrange = (float) preferences.getMyPreferenceInt(getActivity(),"soundMeterRange",400);
+            float maxvolrange = (float) preferences.getMyPreferenceInt(getContext(),"soundMeterRange",400);
             if (vol>(0.9*maxvolrange)) {
                 // All 10 levels on
                 level_1.setVisibility(View.VISIBLE);
@@ -427,9 +419,8 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 
-}
-*/
+}*/

@@ -250,6 +250,7 @@
     <string name="new_folder_name">Enter a new folder name</string>
     <string name="new_something">New</string>
     <string name="next">Next</string>
+    <string name="no_folders">You need to create a subfolder to allow moving of files</string>
     <string name="no_previous_found">No previous installations found.</string>
     <string name="not_available">Not available</string>
     <string name="not_saved">Not saved</string>
@@ -309,6 +310,7 @@
     <string name="search_index_error">There was an error building your search database</string>
     <string name="search_index_start">Building your song database</string>
     <string name="section_highlighting">Section highlighting</string>
+    <string name="select_all">Select all</string>
     <string name="select_page">Select page</string>
     <string name="set">Set</string>
     <string name="set_current">Current set</string>
@@ -853,4 +855,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
     <string name="import_song">Import a song</string>
     <string name="information">Information</string>
+    <string name="move_to_folder">Move to folder</string>
+    <string name="destination">Destination</string>
+    <string name="move_from">Move from</string>
 </resources>

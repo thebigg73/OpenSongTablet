@@ -16,15 +16,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 // All of the classes after initialisation are the same for the PresentationService and PresentationServiceHDMI files
-// The both call functions in the PresentationCommon file
-// Both files are needed as they initialise and communicate with the display differently, but after that the stuff is identical.
+// They both call functions in the PresentationCommon file
+// Both files are needed as they initialise and communicate with the display differently, but after that the stuff is almost entirely identical
 
+// Indent of common content kept the same across versions
+// This is the HDMI version (so cast commented out)
+
+//static class ExternalDisplay extends CastPresentation
 class PresentationServiceHDMI extends Presentation
         implements MediaPlayer.OnVideoSizeChangedListener,
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener, SurfaceHolder.Callback {
 
-
+    //ExternalDisplay(Context context, Display display, ProcessSong pS) {
     PresentationServiceHDMI(Context context, Display display, ProcessSong pS) {
         super(context, display);
         c = context;
@@ -41,7 +45,8 @@ class PresentationServiceHDMI extends Presentation
     @SuppressLint("StaticFieldLeak")
     private static ImageView projected_ImageView, projected_Logo, projected_BackgroundImage;
     @SuppressLint("StaticFieldLeak")
-    private static TextView songinfo_TextView, presentermode_title, presentermode_author, presentermode_copyright, presentermode_alert;
+    private static TextView songinfo_TextView, presentermode_title, presentermode_author,
+            presentermode_copyright, presentermode_ccli, presentermode_alert;
     @SuppressLint("StaticFieldLeak")
     private static LinearLayout bottom_infobar, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3;
     @SuppressLint("StaticFieldLeak")
@@ -88,6 +93,7 @@ class PresentationServiceHDMI extends Presentation
             setUpLogo();
             if (PresenterMode.logoButton_isSelected) {
                 bottom_infobar.setAlpha(0.0f);
+                showLogoPrep();
                 showLogo();
             }
 
@@ -116,13 +122,14 @@ class PresentationServiceHDMI extends Presentation
         projected_BackgroundImage = findViewById(R.id.projected_BackgroundImage);
         projected_SurfaceView = findViewById(R.id.projected_SurfaceView);
         projected_SurfaceHolder = projected_SurfaceView.getHolder();
-        projected_SurfaceHolder.addCallback(PresentationServiceHDMI.this);
+        projected_SurfaceHolder.addCallback(this);
         projected_Logo = findViewById(R.id.projected_Logo);
         songinfo_TextView = findViewById(R.id.songinfo_TextView);
         presentermode_bottombit = findViewById(R.id.presentermode_bottombit);
         presentermode_title = findViewById(R.id.presentermode_title);
         presentermode_author = findViewById(R.id.presentermode_author);
         presentermode_copyright = findViewById(R.id.presentermode_copyright);
+        presentermode_ccli = findViewById(R.id.presentermode_ccli);
         presentermode_alert = findViewById(R.id.presentermode_alert);
         bottom_infobar = findViewById(R.id.bottom_infobar);
         col1_1 = findViewById(R.id.col1_1);
@@ -132,27 +139,23 @@ class PresentationServiceHDMI extends Presentation
         col2_3 = findViewById(R.id.col2_3);
         col3_3 = findViewById(R.id.col3_3);
     }
-    public static void wipeProjectedLinearLayout() {
+    public static void wipeProjectedLayout() {
         Handler h = new Handler();
         h.postDelayed(() -> {
             // IV - Do the work after a transition delay
             try {
                 projected_LinearLayout.removeAllViews();
-                presentermode_title.setAlpha(0.0f);
-                presentermode_author.setAlpha(0.0f);
-                presentermode_copyright.setAlpha(0.0f);
-                presentermode_alert.setAlpha(0.0f);
-                presentermode_title.setText("¬");
-                presentermode_author.setText("¬");
-                presentermode_copyright.setText("¬");
+                bottom_infobar.setAlpha(0.0f);
+                projected_ImageView.setAlpha(0.0f);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         },preferences.getMyPreferenceInt(c, "presoTransitionTime",800));
         CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
+
     private static void getScreenSizes() {
-        presentationCommon.getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
+        presentationCommon.getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout, preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
     }
     private void setDefaultBackgroundImage() {
         presentationCommon.setDefaultBackgroundImage(c);
@@ -169,12 +172,8 @@ class PresentationServiceHDMI extends Presentation
         presentationCommon.fixBackground(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
         // Just in case there is a glitch, make the stuff visible after a time
         Handler panic = new Handler();
-        panic.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                updateAlpha();
-            }
-        }, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
+        //panic.postDelayed(PresentationService.ExternalDisplay::updateAlpha, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
+        panic.postDelayed(PresentationServiceHDMI::updateAlpha, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
     }
     private static void getDefaultColors() {
         presentationCommon.getDefaultColors(c,preferences);
@@ -194,18 +193,17 @@ class PresentationServiceHDMI extends Presentation
         presenterThemeSetUp();
         presentationCommon.presenterStartUp(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
     }
-    private static void presenterThemeSetUp() {
+    static void presenterThemeSetUp() {
         getDefaultColors();
         // Set the text at the bottom of the page to match the presentation text colour
-        presentationCommon.presenterThemeSetUp(c,preferences,presentermode_bottombit, presentermode_title, presentermode_author,
-                presentermode_copyright,presentermode_alert);
+        presentationCommon.presenterThemeSetUp(c,preferences,presentermode_bottombit, presentermode_title,
+                presentermode_author, presentermode_copyright, presentermode_ccli, presentermode_alert);
     }
     static void updateFonts() {
         getDefaultColors();
         presenterThemeSetUp(); // Sets the bottom info bar for presentation
         doUpdate(); // Updates the page
     }
-
 
     // Video
     @Override
@@ -253,10 +251,13 @@ class PresentationServiceHDMI extends Presentation
         presentermode_alert.setAlpha(1.0f);
         presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
                 projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
-                presentermode_title, presentermode_author, presentermode_copyright, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
+                presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, presentermode_alert, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
     }
-    static void updateAlert(boolean show) {
-        presentationCommon.updateAlert(c, preferences, myscreen, bottom_infobar,projectedPage_RelativeLayout,show, presentermode_alert);
+    static void updateAlert(boolean show, boolean update) {
+        presentationCommon.updateAlert(c, preferences, show, presentermode_alert);
+        if (update) {
+            doUpdate();
+        }
     }
     static void setUpLogo() {
         presentationCommon.setUpLogo(c,preferences,storageAccess,projected_Logo,StaticVariables.cast_availableWidth_1col,StaticVariables.cast_availableScreenHeight);
@@ -265,13 +266,12 @@ class PresentationServiceHDMI extends Presentation
         presentationCommon.showLogoPrep();
     }
     static void showLogo() {
-        presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder,bottom_infobar,projected_Logo);
+        presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder, projected_Logo);
     }
     static void hideLogo() {
-        presentationCommon.hideLogo(c,preferences,projected_ImageView,projected_LinearLayout,projected_Logo,bottom_infobar);
+        presentationCommon.hideLogo(c,preferences, projected_Logo);
     }
     static void blankUnblankDisplay(boolean unblank) {
         presentationCommon.blankUnblankDisplay(c,preferences,pageHolder,unblank);
     }
-
 }*/

@@ -12,6 +12,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -310,14 +312,14 @@ public class StorageAccess {
 
     // Deal with parsing, creating, editing file and folder names
     // This gets the File location for the app as a String (for appending).  PreLollipop only
-    public String[] niceUriTree(Context c, Preferences preferences, Uri uri) {
+    public String[] niceUriTree(Context c, Preferences preferences, Locale locale, Uri uri) {
         if (lollipopOrLater()) {
-            return niceUriTree_SAF(c, preferences, uri, new String[] {"",""});
+            return niceUriTree_SAF(c, preferences, uri, new String[] {"",""}, locale);
         } else {
             return niceUriTree_File(c, uri, new String[] {"",""});
         }
     }
-    private String[] niceUriTree_SAF(Context c, Preferences preferences, Uri uri, String[] storageDetails) {
+    private String[] niceUriTree_SAF(Context c, Preferences preferences, Uri uri, String[] storageDetails, Locale locale) {
         // storageDetails is currently empty, but will be [0]=extra info  [1]=nice location
         if (storageDetails == null) {
             storageDetails = new String[2];
@@ -364,7 +366,7 @@ public class StorageAccess {
 
             // If we have a path try to give extra info of a 'songs' count
             try {
-                ArrayList<String> songIds = listSongs(c, preferences);
+                ArrayList<String> songIds = listSongs(c, preferences,locale);
                 // Only items that don't end with / are songs!
                 int count = 0;
                 for (String s : songIds) {
@@ -592,14 +594,14 @@ public class StorageAccess {
         }
         return path;
     }
-    private String songFolderAndFileOnly(Context c, String uriString) {
+    private String songFolderAndFileOnly(String uriString, String mainfolder) {
         // Get rid of all the uri info up to the end of /OpenSong/Songs
         // Also adds mainfoldername if the song isn't in a subfolder
         if (uriString.contains("OpenSong/Songs/")) {
             uriString = uriString.substring(uriString.indexOf("OpenSong/Songs/")+15);
         }
         if (!uriString.contains("/")) {
-            uriString = c.getString(R.string.mainfoldername) + "/" + uriString;
+            uriString = mainfolder + "/" + uriString;
         }
         uriString = uriString.replace("//","/");
         return uriString;
@@ -1441,7 +1443,6 @@ public class StorageAccess {
         // Now the long bit.  Go through the original folder and copy the files to the new location
         Uri oldUri = getUriForItem(c, preferences, "Songs", oldsubfolder, "");
         Uri newUri = getUriForItem(c, preferences, "Songs", newsubfolder, "");
-
         if (!uriExists(c, newUri)) {
             if (oldUri != null && newUri != null && oldUri.getPath() != null && newUri.getPath() != null) {
                 File oldfile = new File(oldUri.getPath());
@@ -1472,21 +1473,19 @@ public class StorageAccess {
                                      Song song, String oldsubfolder, String newsubfolder) {
         // SAF can only rename final name (can't move within directory structure) - No / allowed!
         Uri oldUri = getUriForItem(c, preferences, "Songs", oldsubfolder, "");
-        if (!newsubfolder.contains("/")) {
-            try {
-                DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
-                showToast.setMessage(c.getString(R.string.rename) + " - " +
-                        c.getString(android.R.string.ok));
-                song.setFolder(newsubfolder);
-                return true;
-            } catch (Exception e) {
-                showToast.setMessage(c.getString(R.string.rename) + " - " +
-                        c.getString(R.string.create_folder_error));
-                return false;
-            }
-        } else {
-            // TODO write a script that iterates through the directory and subdirectories it contains
-            // And copy them to the new location one at a time, then delete the old folder
+        // Only rename the last section
+        if (newsubfolder.contains("/")) {
+            newsubfolder = newsubfolder.substring(newsubfolder.lastIndexOf("/"));
+            newsubfolder = newsubfolder.replace("/","");
+            Log.d("StorageAccess","newsubfolder="+newsubfolder);
+        }
+        try {
+            DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
+            showToast.setMessage(c.getString(R.string.rename) + " - " +
+                    c.getString(android.R.string.ok));
+            song.setFolder(newsubfolder);
+            return true;
+        } catch (Exception e) {
             showToast.setMessage(c.getString(R.string.rename) + " - " +
                     c.getString(R.string.create_folder_error));
             return false;
@@ -1535,20 +1534,41 @@ public class StorageAccess {
         return f.mkdirs();
     }
 
+    public ArrayList<String> getSongFolders(Context c, ArrayList<String> songIDs, boolean addMain, String toIgnore) {
+        ArrayList<String> availableFolders = new ArrayList<>();
+        // Add the MAIN folder
+        if (addMain) {
+            songIDs.add(0, c.getString(R.string.mainfoldername) + "/");
+        }
+        for (String entry:songIDs) {
+            if (entry.endsWith("/")) {
+                String newtext = entry.substring(0,entry.lastIndexOf("/"));
+                if (!newtext.equals(toIgnore) && !availableFolders.contains(newtext)) {
+                    availableFolders.add(newtext);
+                }
+            }
+        }
+        Collections.sort(availableFolders);
+        return availableFolders;
+    }
 
 
 
 
     // This builds an index of all the songs on the device
     @SuppressLint("NewApi")
-    public ArrayList<String> listSongs(Context c, Preferences preferences) {
+    public ArrayList<String> listSongs(Context c, Preferences preferences, Locale locale) {
         ArrayList<String> noSongs = new ArrayList<>();
+        // We need to make sure the locale version of MAIN is correct (change language during run)
+        Configuration configuration = new Configuration(c.getResources().getConfiguration());
+        configuration.setLocale(locale);
+        String mainfolder = c.createConfigurationContext(configuration).getResources().getString(R.string.mainfoldername);
         try {
             // Decide if we are using storage access framework or not
             if (lollipopOrLater()) {
-                return listSongs_SAF(c, preferences);
+                return listSongs_SAF(c, preferences, mainfolder);
             } else {
-                return listSongs_File(c, preferences);
+                return listSongs_File(c, preferences, mainfolder);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1556,7 +1576,7 @@ public class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private ArrayList<String> listSongs_SAF(Context c, Preferences preferences) {
+    private ArrayList<String> listSongs_SAF(Context c, Preferences preferences, String mainfolder) {
         // This gets all songs (including any subfolders)
         ArrayList<String> songIds = new ArrayList<>();
         Uri uri = getUriForItem(c,preferences,"Songs","","");
@@ -1587,10 +1607,10 @@ public class StorageAccess {
                             final Uri newNode = getChildren(children, docId);
                             dirNodes.add(newNode);
                             if (docId.contains("OpenSong/Songs/")) {
-                                songIds.add(songFolderAndFileOnly(c,docId+"/")); // In case the folder is empty add it as a songId
+                                songIds.add(songFolderAndFileOnly(docId+"/",mainfolder)); // In case the folder is empty add it as a songId
                             }
                         } else if (docId.contains("OpenSong/Songs/")) {
-                            songIds.add(songFolderAndFileOnly(c,docId));
+                            songIds.add(songFolderAndFileOnly(docId,mainfolder));
                         }
                     }
                     cursor.close();
@@ -1601,7 +1621,7 @@ public class StorageAccess {
         }
         return songIds;
     }
-    private ArrayList<String> listSongs_File(Context c, Preferences preferences) {
+    private ArrayList<String> listSongs_File(Context c, Preferences preferences, String mainfolder) {
         // We must be using an older version of Android, so stick with File access
         ArrayList<String> songIds = new ArrayList<>();  // These will be the file locations
 
@@ -1620,10 +1640,10 @@ public class StorageAccess {
             for (File item : Objects.requireNonNull(contents)) {
                 if (item.isDirectory()) {
                     foldersToIndex.add(item.getPath());
-                    songIds.add(songFolderAndFileOnly(c,item.getPath())+"/");
+                    songIds.add(songFolderAndFileOnly(item.getPath(),mainfolder)+"/");
                     num = foldersToIndex.size();
                 } else if (item.isFile()) {
-                    songIds.add(songFolderAndFileOnly(c,item.getPath()));
+                    songIds.add(songFolderAndFileOnly(item.getPath(),mainfolder));
                 }
             }
         }
@@ -1641,7 +1661,7 @@ public class StorageAccess {
         StringBuilder stringBuilder = new StringBuilder();
 
         // Sort the array
-        Locale locale = new Locale(preferences.getMyPreferenceString(c,"locale","en"));
+        Locale locale = new Locale(preferences.getMyPreferenceString(c,"language","en"));
         Collator collator = Collator.getInstance(locale);
         collator.setStrength(Collator.SECONDARY);
         Collections.sort(songIds,collator);
@@ -1681,11 +1701,10 @@ public class StorageAccess {
     }
     @SuppressLint("NewApi")
     public ArrayList<String> listFilesInFolder(Context c, Preferences preferences, String folder, String subfolder) {
-        String[] fixedfolders = fixFoldersAndFiles(c,folder,subfolder,"");
         if (lollipopOrLater()) {
-            return listFilesInFolder_SAF(c, preferences, fixedfolders[0], fixedfolders[1]);
+            return listFilesInFolder_SAF(c, preferences, folder, subfolder);
         } else {
-            return listFilesInFolder_File(c, preferences, fixedfolders[0], fixedfolders[1]);
+            return listFilesInFolder_File(c, preferences, folder, subfolder);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -1693,6 +1712,8 @@ public class StorageAccess {
         ArrayList<String> al = new ArrayList<>();
 
         Uri locationtoindex = getUriForItem(c, preferences, folder, subfolder, "");
+
+        Log.d("StorageAccess","uri of folder: "+locationtoindex);
 
         // Now get a documents contract at this location
         String id = getDocumentsContractId(locationtoindex);
@@ -1719,6 +1740,7 @@ public class StorageAccess {
                         final String name = cursor.getString(1);
                         final String mime = cursor.getString(2);
                         if (!DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
+                            Log.d("StorageAccess","name="+name);
                             al.add(name);
                         }
                     }

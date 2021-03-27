@@ -16,7 +16,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createSet"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/set_new"
@@ -24,7 +24,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saveSet"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/save"
@@ -32,7 +32,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/manageSet"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/set_manage"
@@ -40,7 +40,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addCustomSlide"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_custom_slide"
@@ -48,7 +48,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/shuffleSet"
-            style="@style/BottomSheetButton"
+            style="@style/IconTextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/set_shuffle"

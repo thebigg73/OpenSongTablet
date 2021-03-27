@@ -7,10 +7,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +37,7 @@ public class NewNameDialog extends DialogFragment {
     private StorageAccess storageAccess;
     private ProcessSong processSong;
     private NewNameDialogBinding myView;
+    private ShowToast showToast;
     private final boolean isfile;
     private final String currentDir;
     private final String currentSubDir;
@@ -41,14 +45,17 @@ public class NewNameDialog extends DialogFragment {
     private final Fragment callingFragment;
     private String songContent;
     private final Song song;
+    private final boolean rename;
+    private String parentFolder = "";
 
-    public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile, String currentDir, String currentSubDir, Song song) {
+    public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile, String currentDir, String currentSubDir, Song song, boolean rename) {
         this.isfile = isfile;  // True to create a file, false to create a folder
         this.currentDir = currentDir;
         this.currentSubDir = currentSubDir;
         this.fragName = fragName;
         this.callingFragment = callingFragment;
         this.song = song;
+        this.rename = rename;
     }
 
     @Override
@@ -78,6 +85,27 @@ public class NewNameDialog extends DialogFragment {
         // Set listeners
         myView.okButton.setOnClickListener(v -> doSave());
         myView.cancelButton.setOnClickListener(v -> dismiss());
+        if (rename) {
+            String currentName = currentSubDir;
+            // Only show the last section
+            if (currentSubDir.contains("/")) {
+                parentFolder = currentSubDir.substring(0,currentSubDir.lastIndexOf("/"))+"/";
+                Log.d("NewName","parentFolder="+parentFolder);
+                currentName = currentSubDir.substring(currentSubDir.lastIndexOf("/"));
+                currentName = currentName.replace("/","");
+                Log.d("NewName","currentName="+currentName);
+            }
+            myView.title.setText(currentName);
+        }
+
+        myView.title.setOnEditorActionListener((v, actionId, event) -> {
+            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) ||
+                    actionId == EditorInfo.IME_ACTION_DONE) {
+                myView.okButton.performClick();
+            }
+            return false;
+        });
+
         myView.title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -102,6 +130,7 @@ public class NewNameDialog extends DialogFragment {
         storageAccess = mainActivityInterface.getStorageAccess();
         preferences = mainActivityInterface.getPreferences();
         processSong = mainActivityInterface.getProcessSong();
+        showToast = mainActivityInterface.getShowToast();
     }
 
     private void doSave() {
@@ -117,19 +146,28 @@ public class NewNameDialog extends DialogFragment {
             myView.title.setText(newName);
             Uri uri = storageAccess.getUriForItem(getContext(), preferences, currentDir, currentSubDir, newName);
             exists = storageAccess.uriExists(getContext(),uri);
-            if (isfile && !exists) {
-                if (storageAccess.createFile(getContext(),preferences,null, currentDir, currentSubDir, newName)) {
-                    message = success;
+            if (rename) {
+                if (!parentFolder.isEmpty()) {
+                    newName = parentFolder + "/" + newName;
                 }
-            } else if (!isfile && !exists) {
-                if (storageAccess.createFolder(getContext(),preferences,currentDir,currentSubDir,newName)) {
-                    message = success;
-                }
+                Log.d("d","currentSubDir="+currentSubDir+"  newName="+newName);
+                storageAccess.renameFolder(requireContext(),preferences,showToast,song,currentSubDir,newName);
+                message = success;
             } else {
-                message = getString(R.string.file_exists);
+                if (isfile && !exists) {
+                    if (storageAccess.createFile(getContext(), preferences, null, currentDir, currentSubDir, newName)) {
+                        message = success;
+                    }
+                } else if (!isfile && !exists) {
+                    if (storageAccess.createFolder(getContext(), preferences, currentDir, currentSubDir, newName)) {
+                        message = success;
+                    }
+                } else {
+                    message = getString(R.string.file_exists);
+                }
             }
         }
-        ShowToast.showToast(getContext(),message);
+        showToast.doIt(requireContext(),message);
         if (message.equals(success)) {
             ArrayList<String> result = new ArrayList<>();
             result.add("success");
@@ -138,4 +176,6 @@ public class NewNameDialog extends DialogFragment {
             dismiss();
         }
     }
+
+
 }

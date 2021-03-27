@@ -1,4 +1,5 @@
 /*
+
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
@@ -55,11 +56,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.MenuItemCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.app.MediaRouteButton;
 import androidx.mediarouter.media.MediaControlIntent;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
@@ -69,8 +70,13 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
@@ -89,7 +95,6 @@ import lib.folderpicker.FolderPicker;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
 
-
 public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyInterface,
         SongMenuListeners.MyInterface, PopUpChooseFolderFragment.MyInterface,
         PopUpSongDetailsFragment.MyInterface, PopUpEditSongFragment.MyInterface,
@@ -97,7 +102,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpSetViewNew.MyInterface, IndexSongs.MyInterface, SearchView.OnQueryTextListener,
         OptionMenuListeners.MyInterface, PopUpFullSearchFragment.MyInterface,
         PopUpListSetsFragment.MyInterface,
-        PopUpLongSongPressFragment.MyInterface,
+        PopUpLongSongPressFragment.MyInterface, PopUpSwipeSettingsFragment.MyInterface,
         PopUpFileChooseFragment.MyInterface, PopUpBackupPromptFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSongRenameFragment.MyInterface, PopUpImportExportOSBFragment.MyInterface,
@@ -118,6 +123,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface,
         PopUpRandomSongFragment.MyInterface,
+        PopUpConnectFragment.MyInterface,
         PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
@@ -151,7 +157,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
-    private PresentationServiceHDMI hdmi;
 
     // The toolbar and menu
     private Toolbar ab_toolbar;
@@ -174,8 +179,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private AsyncTask<Object, Void, String> shareset_async;
     private AsyncTask<Object, Void, String> load_customreusable;
     private AsyncTask<Object, Void, String> add_slidetoset;
-    private AsyncTask<Object, Void, String> open_drawers;
-    private AsyncTask<Object, Void, String> close_drawers;
     private AsyncTask<Object, Void, String> resize_drawers;
     private AsyncTask<Object, Void, String> do_moveinset;
     private AsyncTask<Object, Void, String> shareactivitylog_async;
@@ -257,8 +260,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private boolean autoslideloop = false;
     private int autoslidetime = 0;
 
-    private OptionMenuListeners optionMenuListeners;
-
     // Battery
     private BroadcastReceiver br;
 
@@ -310,25 +311,27 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(PresenterMode.this);
         processSong = new ProcessSong();
         profileActions = new ProfileActions();
-        optionMenuListeners = new OptionMenuListeners(this);
-        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,optionMenuListeners,sqLiteHelper);
+        OptionMenuListeners optionMenuListeners = new OptionMenuListeners(this);
+        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong, optionMenuListeners,sqLiteHelper);
         makePDF = new MakePDF();
 
-        new Thread(() -> {
-            runOnUiThread(() -> {
-                StaticVariables.myToastMessage = getString(R.string.search_index_start);
-                ShowToast.showToast(PresenterMode.this);
-            });
-            indexSongs.fullIndex(PresenterMode.this,preferences,storageAccess,sqLiteHelper,songXML,
-                    chordProConvert,onSongConvert,textSongConvert,usrConvert);
-            runOnUiThread(() -> {
-                StaticVariables.myToastMessage = getString(R.string.search_index_end);
-                ShowToast.showToast(PresenterMode.this);
-
-                // Now instruct the song menu to be built again.
-                prepareSongMenu();
-            });
-        }).start();
+        // IV - Index at start of session
+        if (FullscreenActivity.doonetimeactions) {
+            new Thread(() -> {
+                runOnUiThread(() -> {
+                    StaticVariables.myToastMessage = getString(R.string.search_index_start);
+                    ShowToast.showToast(PresenterMode.this);
+                });
+                indexSongs.fullIndex(PresenterMode.this,preferences,storageAccess,sqLiteHelper,songXML,
+                        chordProConvert,onSongConvert,textSongConvert,usrConvert);
+                runOnUiThread(() -> {
+                    StaticVariables.myToastMessage = getString(R.string.search_index_end);
+                    ShowToast.showToast(PresenterMode.this);
+                    // Now instruct the song menu to be built again.
+                    prepareSongMenu();
+                });
+            }).start();
+        }
 
         // Get the language
         FixLocale.fixLocale(PresenterMode.this,preferences);
@@ -342,6 +345,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // In order to quickly start, load the minimum variables we need
         loadStartUpVariables();
+        setActions.prepareSetList(PresenterMode.this,preferences);
 
         // Set the fullscreen window flags
         runOnUiThread(() -> {
@@ -358,8 +362,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             Log.d("PresenterMode", "Didn't register battery");
         }
 
-
         // Setup the CastContext
+        MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mediaRouteButton);
+        try {
+            CastContext.getSharedInstance(this);
+        } catch (Exception e) {
+            Log.d("PresenterMode", "No Google Services");
+        }
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
@@ -368,8 +378,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // Since this mode has just been opened, force an update to the cast screen
         StaticVariables.forcecastupdate = true;
-
-
 
         // Set up the toolbar and views
         runOnUiThread(() -> {
@@ -425,10 +433,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             dealWithIntent();
         });
 
-        // Check if we need to remind the user to backup their songs
-        checkBackupState();
+        // IV - Check backups at start of session
+        if (FullscreenActivity.doonetimeactions) {
+            // Check if we need to remind the user to backup their songs
+            checkBackupState();
+        }
 
         setDummyFocus();
+
+        // IV -  One time actions will have been completed
+        FullscreenActivity.doonetimeactions = false;
     }
 
     // Handlers for main page on/off/etc. and window flags
@@ -497,8 +511,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
 
         try {
-            if (hdmi!=null) {
-                hdmi.dismiss();
+            if (FullscreenActivity.hdmi !=null) {
+                FullscreenActivity.hdmi.dismiss();
+                FullscreenActivity.hdmi = null;
             }
         } catch (Exception e) {
             // Ooops
@@ -586,8 +601,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         doCancelAsyncTask(shareset_async);
         doCancelAsyncTask(shareactivitylog_async);
         doCancelAsyncTask(load_customreusable);
-        doCancelAsyncTask(open_drawers);
-        doCancelAsyncTask(close_drawers);
         doCancelAsyncTask(resize_drawers);
         doCancelAsyncTask(do_moveinset);
         doCancelAsyncTask(add_slidetoset);
@@ -678,7 +691,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 presenter_lyrics.clearFocus();
                 InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                if (imm!=null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
                 setWindowFlags();
                 setWindowFlagsAdvanced();
 
@@ -758,6 +773,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     public void loadSong() {
+        StaticVariables.panicRequired = false;
+        StaticVariables.infoBarChangeRequired = true;
+        // IV - Prevent slide shows continuing to be active on change of song(!)
+        prepareStopAutoSlideShow();
+
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.alreadyloading = true;
             // Get the song indexes
@@ -870,12 +890,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(bmp.getWidth(), bmp.getHeight());
             presenter_lyrics_image.setLayoutParams(llp);
             // Set the image to the view
-            presenter_lyrics_image.setBackgroundColor(0xffffffff);
+            presenter_lyrics_image.setBackgroundColor(StaticVariables.white);
             presenter_lyrics_image.setImageBitmap(bmp);
 
         } else {
             // Set the image to the unhappy android
-            Drawable myDrawable = getResources().getDrawable(R.drawable.unhappy_android);
+            Drawable myDrawable = ResourcesCompat.getDrawable(getResources(),R.drawable.unhappy_android,null);
             presenter_lyrics_image.setImageDrawable(myDrawable);
 
             // Set an intent to try and open the pdf with an appropriate application
@@ -937,86 +957,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void openMyDrawers(String which) {
-        doCancelAsyncTask(open_drawers);
-        open_drawers = new OpenMyDrawers(which);
-        try {
-            open_drawers.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new Thread(() -> runOnUiThread(() -> DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which))).start();
     }
-    @SuppressLint("StaticFieldLeak")
-    private class OpenMyDrawers extends AsyncTask<Object, Void, String> {
 
-        final String which;
-
-        OpenMyDrawers(String w) {
-            which = w;
-        }
-
-        @Override
-        protected String doInBackground(Object... obj) {
-            return null;
-        }
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+    @Override
     public void closeMyDrawers(String which) {
-        doCancelAsyncTask(close_drawers);
-        close_drawers = new CloseMyDrawers(which);
-        try {
-            close_drawers.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @SuppressLint("StaticFieldLeak")
-    private class CloseMyDrawers extends AsyncTask<Object, Void, String> {
-
-        final String which;
-
-        CloseMyDrawers(String w) {
-            which = w;
-        }
-
-        @Override
-        protected String doInBackground(Object... obj) {
-            return null;
-        }
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        new Thread(() -> runOnUiThread(() -> DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which))).start();
     }
 
     // The overflow menu and actionbar
@@ -1028,17 +974,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         getMenuInflater().inflate(R.menu.presenter_actions, menu);
 
         // Setup the menu item for connecting to cast devices
-        // Setup the menu item for connecting to cast devices
-        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
-        View mr = menu.findItem(R.id.media_route_menu_item).getActionView();
-        if (mr!=null) {
-            mr.setFocusable(false);
-            mr.setFocusableInTouchMode(false);
-        }
-        MediaRouteActionProvider mediaRouteActionProvider =
-                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
-        if (mMediaRouteSelector != null) {
-            mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
+            CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
         }
 
         // Force overflow icon to show, even if hardware key is present
@@ -1435,10 +1372,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Create a new button for each songSection
         // If the 'song' is custom images, set them as the background
         presenter_song_buttonsListView.removeAllViews();
-        presenter_songtitle.setText(StaticVariables.mTitle);
+        // IV - When there is no song title use filename
+        if (StaticVariables.mTitle.isEmpty()) {
+            presenter_songtitle.setText(StaticVariables.songfilename);
+        } else {
+            presenter_songtitle.setText(StaticVariables.mTitle);
+        }
         presenter_author.setText(StaticVariables.mAuthor);
         presenter_copyright.setText(StaticVariables.mCopyright);
-        if (StaticVariables.mPresentation.isEmpty()) {
+        // IV - PDF files will have null mPresentation
+        if ((StaticVariables.mPresentation == null) || (StaticVariables.mPresentation.isEmpty())) {
             presenter_order_text.setText(getResources().getString(R.string.notset));
         } else {
             presenter_order_text.setText(StaticVariables.mPresentation);
@@ -1457,7 +1400,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (pages > 0) {
                 for (int p = 0; p < pages; p++) {
                     String sectionText = (p + 1) + "";
-                    String buttonText = getResources().getString(R.string.pdf_selectpage) + " " + (p + 1);
+                    // IV - Make the buttons bigger (fudge!)
+                    String buttonText = "▼\n" + getResources().getString(R.string.pdf_selectpage) + " " + (p + 1) + "\n▲";
                     newSongSectionGroup = processSong.makePresenterSongButtonLayout(PresenterMode.this);
                     newSongSectionText = processSong.makePresenterSongButtonSection(PresenterMode.this, sectionText);
                     newSongButton = processSong.makePresenterSongButtonContent(PresenterMode.this, buttonText);
@@ -1551,11 +1495,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         if (StaticVariables.mUser1 != null) {
                             timeEditText.setText(StaticVariables.mUser1);
                         }
-                        if (StaticVariables.mUser2 != null && StaticVariables.mUser2.equals("true")) {
-                            loopCheckBox.setChecked(true);
-                        } else {
-                            loopCheckBox.setChecked(false);
-                        }
+                        loopCheckBox.setChecked(StaticVariables.mUser2 != null && StaticVariables.mUser2.equals("true"));
 
                     } else {
                         // Otherwise, hide them
@@ -1622,56 +1562,40 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         enabledisableButton(nav_nextsong, false);
 
         // Show the previous section button if we currently showing a section higher than 0
-        if (StaticVariables.currentSection > 0) {
-            enabledisableButton(nav_prevsection, true);
-        } else {
-            enabledisableButton(nav_prevsection, false);
-        }
+        enabledisableButton(nav_prevsection, StaticVariables.currentSection > 0);
 
         // Show the next section button if we are currently in a section lower than the count by 1
         int sectionsavailable = presenter_song_buttonsListView.getChildCount();
-        if (StaticVariables.currentSection < sectionsavailable - 1) {
-            enabledisableButton(nav_nextsection, true);
-        } else {
-            enabledisableButton(nav_nextsection, false);
-        }
+        enabledisableButton(nav_nextsection, StaticVariables.currentSection < sectionsavailable - 1);
 
         // Enable the previous set button if we are in set view and indexSongInSet is >0 (but less than set size)
         int numsongsinset = 0;
         if (StaticVariables.mSetList != null) {
             numsongsinset = StaticVariables.mSetList.length;
         }
-        if (StaticVariables.setView && StaticVariables.indexSongInSet > 0 && StaticVariables.indexSongInSet < numsongsinset) {
-            enabledisableButton(nav_prevsong, true);
-        } else {
-            enabledisableButton(nav_prevsong, false);
-        }
+        enabledisableButton(nav_prevsong, StaticVariables.setView && StaticVariables.indexSongInSet > 0 && StaticVariables.indexSongInSet < numsongsinset);
 
         // Enable the next set button if we are in set view and index SongInSet is < set size -1
-        if (StaticVariables.setView && StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < numsongsinset - 1) {
-            enabledisableButton(nav_nextsong, true);
+        enabledisableButton(nav_nextsong, StaticVariables.setView && StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < numsongsinset - 1);
+
+        if (FullscreenActivity.songSections!=null && FullscreenActivity.currentSection>=FullscreenActivity.songSections.length) {
+            enabledisableButton(nav_nextsection,false);
+        } else if (FullscreenActivity.songSections!=null){
+            enabledisableButton(nav_nextsection,true);
         } else {
-            enabledisableButton(nav_nextsong, false);
+            enabledisableButton(nav_nextsection,false);
         }
-
-        //if (FullscreenActivity.songSections!=null && FullscreenActivity.currentSection>=FullscreenActivity.songSections.length) {
-        //    enabledisableButton(nav_nextsection,false);
-        //} else if (FullscreenActivity.songSections!=null){
-        //    enabledisableButton(nav_nextsection,true);
-        //} else {
-        //    enabledisableButton(nav_nextsection,false);
-        // }
         // Initially disable the set buttons
-        //enabledisableButton(nav_prevsong,false);
-        //enabledisableButton(nav_nextsong,false);
+        enabledisableButton(nav_prevsong,false);
+        enabledisableButton(nav_nextsong,false);
 
-        //if (FullscreenActivity.setView && FullscreenActivity.indexSongInSet>0) {
-        //    enabledisableButton(nav_prevsong,true);
-        //}
-        //if (FullscreenActivity.setView && FullscreenActivity.indexSongInSet>=0 &&
-        //        FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
-        //    enabledisableButton(nav_nextsong, true);
-        //}
+        if (FullscreenActivity.setView && FullscreenActivity.indexSongInSet>0) {
+            enabledisableButton(nav_prevsong,true);
+        }
+        if (FullscreenActivity.setView && FullscreenActivity.indexSongInSet>=0 &&
+                FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
+            enabledisableButton(nav_nextsong, true);
+        }
     }
     @Override
     public void goToPreviousItem() {
@@ -1684,20 +1608,28 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         tryClickPreviousSection();
     }
     private void tryClickNextSection() {
-        if (StaticVariables.currentSection < StaticVariables.songSections.length - 1) {
-            StaticVariables.currentSection += 1;
-            autoproject = true;
-            preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
-            selectSectionButtonInSong(StaticVariables.currentSection);
+        // IV - Next and Previous rely on section, The 'fix' for types without valid sections is to not allow!
+        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
+            showToastMessage(getResources().getString(R.string.not_allowed));
+        } else {
+            if (StaticVariables.currentSection < StaticVariables.songSections.length - 1) {
+                StaticVariables.currentSection += 1;
+                autoproject = true;
+                preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
+                selectSectionButtonInSong(StaticVariables.currentSection);
+            }
         }
     }
     private void tryClickPreviousSection() {
-        // Enable or disable the previous section button
-        if (StaticVariables.currentSection > 0) {
-            StaticVariables.currentSection -= 1;
-            autoproject = true;
-            preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
-            selectSectionButtonInSong(StaticVariables.currentSection);
+        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
+            showToastMessage(getResources().getString(R.string.not_allowed));
+        } else {
+            if (StaticVariables.currentSection > 0) {
+                StaticVariables.currentSection -= 1;
+                autoproject = true;
+                preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
+                selectSectionButtonInSong(StaticVariables.currentSection);
+            }
         }
     }
     private void tryClickNextSongInSet() {
@@ -1783,16 +1715,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
 
                 // Remove the item from the SQL database
-                // Get the SQLite stuff
-                try {
-                    if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                        nonOpenSongSQLiteHelper.deleteSong(PresenterMode.this, storageAccess, preferences, nonOpenSongSQLite.getSongid());
-                    }
-                    sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
-                    prepareSongMenu();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                    nonOpenSongSQLiteHelper.deleteSong(PresenterMode.this, storageAccess, preferences, nonOpenSongSQLite.getSongid());
                 }
+                if (sqLite!=null && sqLite.getSongid()!=null) {
+                    sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
+                }
+                prepareSongMenu();
+                // IV - Load song to display as deleted
+                loadSong();
                 break;
 
             case "deleteset":
@@ -1804,6 +1735,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             case "wipeallsongs":
                 // Wipe all songs - Getting rid of this!!!!!
                 Log.d("PresenterMode", "Trying wipe songs folder - ignoring");
+                storageAccess.wipeFolder(PresenterMode.this, preferences, "Songs", "");
+                // Rebuild the song list
+                storageAccess.listSongs(PresenterMode.this, preferences);
+                listSongFiles.songUrisInFolder(PresenterMode.this, preferences);
+                refreshAll();
+                break;
+
+            case "resetcolours":
+                // Reset the theme colours
+                PopUpThemeChooserFragment.getDefaultColours();
+                Preferences.savePreferences();
+                refreshAll();
+                FullscreenActivity.whattodo = "changetheme";
+                openFragment();
                 break;
         }
     }
@@ -1904,7 +1849,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         try {
             projectButton_isSelected = !projectButton_isSelected;
-
+            if (presenter_lyrics.getText()==null) {
+                presenter_lyrics.setText("");
+            }
             if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage && !FullscreenActivity.isImageSlide) {
                 StaticVariables.projectedContents[StaticVariables.currentSection] = presenter_lyrics.getText().toString().split("\n");
                 int linesnow = StaticVariables.projectedContents[StaticVariables.currentSection].length;
@@ -2045,10 +1992,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // This is the built in file picker
                     filelocation = data.getDataString();
                 }
-                Log.d("d","filelocation="+filelocation);
+
+                String filename = storageAccess.getActualFilename(PresenterMode.this,filelocation);
+
                 if (filelocation != null) {
-                    boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
-                            (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
+                    boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filename.endsWith(".osb")) ||
+                            (FullscreenActivity.whattodo.equals("importos") && filename.endsWith(".backup")) ||
                             FullscreenActivity.whattodo.equals("doimport") ||
                             FullscreenActivity.whattodo.equals("doimportset");
 
@@ -2061,6 +2010,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             File f = new File(filelocation);
                             FullscreenActivity.file_uri = FileProvider.getUriForFile(PresenterMode.this,
                                     "OpenSongAppFiles", f);
+                        }
+
+                        // Get persistent permissions
+                        try {
+                            final int takeFlags = data.getFlags()
+                                    & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            // Check for the freshest data.
+                            getContentResolver().takePersistableUriPermission(FullscreenActivity.file_uri, takeFlags);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         openFragment();
                     } else {
@@ -2265,11 +2225,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void profileWork(String s) {
+        closeMyDrawers("option");
         switch (s) {
             case "load":
                 try {
                     Intent i = profileActions.openProfile(PresenterMode.this,preferences,storageAccess);
                     this.startActivityForResult(i, StaticVariables.REQUEST_PROFILE_LOAD);
+                    refreshAll();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -2367,13 +2329,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void doEdit() {
-        if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
-            openFragment();
-        } else if (FullscreenActivity.isSong) {
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
-        }
+        // IV - Was "extractPDF" for PDF which crashed(!), all now get editsong
+        FullscreenActivity.whattodo = "editsong";
+        openFragment();
     }
     private boolean justSong(Context c) {
         boolean isallowed = true;
@@ -2788,9 +2746,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             String imageFileName = "JPEG_" + timeStamp + "_";
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             File image = File.createTempFile(
-                    imageFileName,  // prefix
-                    ".jpg",         // suffix
-                    storageDir      // directory
+                    imageFileName,
+                    ".jpg",
+                    storageDir
             );
 
             Uri imageUri = FileProvider.getUriForFile(PresenterMode.this, "OpenSongAppFiles", image);
@@ -2822,9 +2780,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_lyrics.setText("");
         setupSetButtons();
 
-        prepareSongMenu();
         prepareOptionMenu();
+        prepareSongMenu();
+        setupPageButtons();
 
+        // IV - Update second screen theme
+        if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+            PresentationService.ExternalDisplay.presenterThemeSetUp();
+        }
+        if (FullscreenActivity.isHDMIConnected) {
+            PresentationServiceHDMI.presenterThemeSetUp();
+        }
         // Load the song
         loadSong();
     }
@@ -3018,7 +2984,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 h.postDelayed(() -> {
                     try {
                         PresentationService.ExternalDisplay.showLogo();
-                        PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
+                        PresentationService.ExternalDisplay.wipeProjectedLayout();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -3033,7 +2999,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 h.postDelayed(() -> {
                     try {
                         PresentationServiceHDMI.showLogo();
-                        PresentationServiceHDMI.wipeProjectedLinearLayout();
+                        PresentationServiceHDMI.wipeProjectedLayout();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -3047,12 +3013,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Fade out the logo
             if (mSelectedDevice != null) {
                 try {
+                    PresentationService.ExternalDisplay.wipeProjectedLayout();
                     PresentationService.ExternalDisplay.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
+                    PresentationServiceHDMI.wipeProjectedLayout();
                     PresentationServiceHDMI.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3085,14 +3053,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(false);
-                    PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
+                    PresentationService.ExternalDisplay.wipeProjectedLayout();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
                     PresentationServiceHDMI.blankUnblankDisplay(false);
-                    PresentationServiceHDMI.wipeProjectedLinearLayout();
+                    PresentationServiceHDMI.wipeProjectedLayout();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -3104,12 +3072,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Fade back everything
             if (mSelectedDevice != null) {
                 try {
+                    PresentationService.ExternalDisplay.wipeProjectedLayout();
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
+                    PresentationServiceHDMI.wipeProjectedLayout();
                     PresentationServiceHDMI.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3234,6 +3204,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
+    @Override
+    public void installPlayServices() {
+        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.play_services_error,
+                BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.play_services_how, v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            startActivity(i);
+        })
+                .show();
+    }
+
     // The camera permissions and stuff
     @Override
     public void useCamera() {
@@ -3328,15 +3308,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     // Now that we have generated the song to send to a guest device, decide if we should remove chords, comments, etc.
                     for (int i = 0; i < StaticVariables.songSections.length; i++) {
-                        StaticVariables.songSections[i] = processSong.removeUnderScores(PresenterMode.this,
-                                preferences, StaticVariables.songSections[i]);
                         if (!preferences.getMyPreferenceBoolean(PresenterMode.this,"presoShowChords",false)) {
                             StaticVariables.songSections[i] = processSong.removeChordLines(StaticVariables.songSections[i]);
                         }
                         if (!StaticVariables.isHost || !StaticVariables.isConnected || !StaticVariables.usingNearby) {
                             StaticVariables.songSections[i] = processSong.removeCommentLines(StaticVariables.songSections[i]);
                         }
-
                         StaticVariables.songSections[i] = processSong.removeUnderScores(PresenterMode.this,
                                 preferences, StaticVariables.songSections[i]);
                     }
@@ -3625,13 +3602,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         updateDisplays();
+        // IV - Need to refresh fonts/colours when in this mode
+        refreshAll();
     }
 
-    @SuppressLint("NewApi")
     private class MyMediaRouterCallback extends MediaRouter.Callback {
 
         @Override
-        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
+        public void onRouteSelected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo info, int reason) {
+            super.onRouteSelected(router,info,reason);
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
             isSecondScreen();
             logoButton_isSelected = true;
@@ -3640,7 +3619,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
 
         @Override
-        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info, int reason) {
+            super.onRouteUnselected(router,info,reason);
             teardown();
             mSelectedDevice = null;
             FullscreenActivity.isPresenting = false;
@@ -3655,8 +3635,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
 
             try {
-                if (hdmi!=null) {
-                    hdmi.dismiss();
+                if (FullscreenActivity.hdmi!=null) {
+                    FullscreenActivity.hdmi.dismiss();
+                    FullscreenActivity.hdmi = null;
                 }
             } catch (Exception e) {
                 // Ooops
@@ -3725,7 +3706,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     });
         } else {
             // Might be a hdmi connection
-
+            try {
+                Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
+                if (mDisplay != null) {
+                    hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
+                    hdmi.show();
+                    FullscreenActivity.isHDMIConnected = true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // Try this code (Alternative to use HDMI as Chromebooks not coping with above
             try {
@@ -3736,9 +3726,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // If a Chromebook HDMI, need to do this
                     Display[] displays = dm.getDisplays();
                     for (Display mDisplay : displays) {
-                        if (mDisplay.getDisplayId()==1) {
-                            hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
-                            hdmi.show();
+                        if (mDisplay.getDisplayId() > 0) {
+                            if (FullscreenActivity.hdmi == null) FullscreenActivity.hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
+                            FullscreenActivity.hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
                         }
                     }
@@ -3747,8 +3737,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         // For non-Chromebooks
                         displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
                         for (Display mDisplay : displays) {
-                            hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
-                            hdmi.show();
+                            if (FullscreenActivity.hdmi == null) FullscreenActivity.hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
+                            FullscreenActivity.hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
                         }
                     }
@@ -3767,6 +3757,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
                         try {
                             PresentationService.ExternalDisplay.setUpLogo();
+                            // IV - Do a full showLogo if needed
+                            if (PresenterMode.logoButton_isSelected) {
+                                PresentationService.ExternalDisplay.showLogoPrep();
+                                PresentationService.ExternalDisplay.showLogo();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -3774,6 +3769,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     if (FullscreenActivity.isHDMIConnected) {
                         try {
                             PresentationServiceHDMI.setUpLogo();
+                            if (PresenterMode.logoButton_isSelected) {
+                                PresentationServiceHDMI.showLogoPrep();
+                                PresentationServiceHDMI.showLogo();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -3860,16 +3859,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void updateAlert(boolean ison) {
+        boolean displayAllowed = !(logoButton_isSelected || blankButton_isSelected);
         if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
             try {
-                PresentationService.ExternalDisplay.updateAlert(ison);
+                PresentationService.ExternalDisplay.updateAlert(ison, displayAllowed);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         if (FullscreenActivity.isHDMIConnected) {
             try {
-                PresentationServiceHDMI.updateAlert(ison);
+                PresentationServiceHDMI.updateAlert(ison, displayAllowed);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -4020,7 +4020,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (storageAccess.lollipopOrLater()) {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            //intent.setType("*_/_*"); // TODO IF REUSING REMOVE UNDERSCORES - PUT IN TO STOP COMMENTING OF ALL CODE FAILING
+            intent.setType("* / *");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
             }
@@ -4049,7 +4049,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 resetoptionmenu.postDelayed(() -> {
                     StaticVariables.whichOptionMenu = "MAIN";
                     prepareOptionMenu();
-                }, 300);
+                }, 100);
             }
         };
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);

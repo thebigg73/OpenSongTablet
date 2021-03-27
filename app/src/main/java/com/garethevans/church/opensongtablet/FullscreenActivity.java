@@ -8,22 +8,14 @@ import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SearchViewAdapter;
-import com.peak.salut.Salut;
-import com.peak.salut.SalutDataReceiver;
-import com.peak.salut.SalutServiceData;
 
 import java.util.ArrayList;
 
 @SuppressLint({"DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath"})
 public class FullscreenActivity extends AppCompatActivity {
-
 
     public static Uri file_uri;
 
@@ -53,14 +45,14 @@ public class FullscreenActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     public static Context mContext;
-    public static boolean receiveHostFiles;
 
     public static String emailtext = "";
 
-    public static boolean pressing_button = false;
+    public static String whattodo;
 
     public static String mCurrentPhotoPath;
 
+    public static int pdfPageCurrent = 0, pdfPageCount = 0;
     public static boolean isPDF = false;
     public static boolean isImage = false;
     public static boolean isSong = false;
@@ -69,12 +61,14 @@ public class FullscreenActivity extends AppCompatActivity {
     public static boolean isImageSlide = false;
     public static final boolean isVideo = false;
 
+    // Views and bits on the pages
+    public static int mScreenOrientation;
     public static boolean scrollbutton = false;
 
     // Set variables
     public static boolean wasscrolling = false;
     public static boolean isManualDragging = false;
-    public static String tempswipeSet = "enable";
+    public static String tempswipeSet = "enable", whichDirection = "R2L";
 
     // Song xml data
     public static ArrayList<String> foundSongSections_heading = new ArrayList<>();
@@ -88,6 +82,7 @@ public class FullscreenActivity extends AppCompatActivity {
             thirdsplit_section, twothirdsplit_section;
     public static String myLyrics = "";
     public static String myXML = "", mynewXML = "";
+    public static String linkclicked = "";
     public static int numrowstowrite;
     public static String[] myParsedLyrics, myTransposedLyrics;
 
@@ -98,6 +93,10 @@ public class FullscreenActivity extends AppCompatActivity {
     public static int whichPad = 0;
 
     public static boolean alreadyloading = false;
+    // IV - Some mode oncreate actions are only needed once
+    public static boolean doonetimeactions = true;
+    // IV - Persist knowledge of a current hdmi session
+    public static PresentationServiceHDMI hdmi;
 
     // Flag to indicate that Android Beam is available
     public static final boolean mAndroidBeamAvailable  = false;
@@ -109,8 +108,11 @@ public class FullscreenActivity extends AppCompatActivity {
     public static String currentFolder = "";
     public static String newFolder = "";
     public static boolean appRunning = false;
+    public static int currentSongIndex;
+    public static int previousSongIndex;
+    public static int nextSongIndex;
     @SuppressLint("StaticFieldLeak")
-    public static _SearchViewAdapter sva;
+    public static SearchViewAdapter sva;
     public static int keyindex;
     public static float autoscroll_pixels = 0.0f, newPosFloat = 0.0f;
     public static long time_start, time_passed = 0;
@@ -121,22 +123,8 @@ public class FullscreenActivity extends AppCompatActivity {
     public static final MediaPlayer mPlayer1 = new MediaPlayer();
     public static final MediaPlayer mPlayer2 = new MediaPlayer();
     public static boolean mPlayer1Paused = false, mPlayer2Paused = false;
-    // Salut / connect devices
-    @SuppressLint("StaticFieldLeak")
-    public static Button hostButton, clientButton;
-    @SuppressLint("StaticFieldLeak")
-    public static TextView connectionsLog;
-    @SuppressLint("StaticFieldLeak")
-    public static SalutDataReceiver dataReceiver;
-    public static SalutServiceData serviceData;
-    public static Salut network;
     public static BluetoothAdapter mBluetoothAdapter;
-    public static String hostButtonText="", clientButtonText="", salutLog="",
-            mBluetoothName, mySalutXML = "", presenterSendSong="";
-    public static boolean firstSendingOfSalut = true, firstSendingOfSalutXML = true,
-            firstSendingOfSalutSection = true, firstReceivingOfSalut = true,
-            firstReceivingOfSalutXML = true, firstReceivingOfSalutSection = true,
-            firstSendingOfSalutAutoscroll = true, firstReceivingOfSalutAutoscroll = true;
+    public static String mBluetoothName, presenterSendSong="";
     static NfcAdapter mNfcAdapter;
     // Drawing stuff
     public static boolean highlightOn, saveHighlight = false;
@@ -145,6 +133,7 @@ public class FullscreenActivity extends AppCompatActivity {
     public static String capokey = null;
 
     public static boolean orientationchanged = false;
+    public static boolean sortAlphabetically = true;
 
 
     // Updated scaled view stuff

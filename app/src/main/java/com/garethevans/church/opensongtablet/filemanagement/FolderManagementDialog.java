@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.StorageFolderDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -67,8 +69,9 @@ public class FolderManagementDialog extends DialogFragment {
         StorageAccess storageAccess = mainActivityInterface.getStorageAccess();
         Preferences preferences = mainActivityInterface.getPreferences();
 
+        ((FloatingActionButton)myView.dialogHeading.findViewById(R.id.close)).setOnClickListener(b -> dismiss());
         if (root) {
-            myView.currentLocation.setText(storageAccess.niceUriTree(getContext(), preferences, storageAccess.homeFolder(getContext(),null, preferences))[1]);
+            ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(storageAccess.niceUriTree(getContext(), preferences, storageAccess.homeFolder(getContext(),null, preferences))[1]);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
@@ -77,21 +80,21 @@ public class FolderManagementDialog extends DialogFragment {
             myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage", R.id.setStorageLocationFragment));
         } else if (songs) {
             String s = "OpenSong/Songs";
-            myView.currentLocation.setText(s);
+            ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(s);
             myView.changeLocation.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
-            myView.moveContents.setVisibility(View.GONE);
+            myView.moveContents.setOnClickListener(new ActionClickListener("moveContents",0));
             myView.deleteSubdirectory.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
             myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB", 0));
         } else {
             String s = "OpenSong/Songs/" + subdir;
-            myView.currentLocation.setText(s);
+            ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(s);
             myView.changeLocation.setVisibility(View.GONE);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
-            //myView.moveContents.setOnClickListener(new ActionClickListener(R.id.nav_storage));
-            //myView.renameFolder.setOnClickListener(new ActionClickListener(R.id.nav_storage));
+            myView.moveContents.setOnClickListener(new ActionClickListener("moveContents",0));
+            myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder",0));
             myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem", 0));
         }
 
@@ -103,6 +106,7 @@ public class FolderManagementDialog extends DialogFragment {
         int id;
         String action;
         ArrayList<String> arguments;
+        DialogFragment dialogFragment;
 
 
         ActionClickListener(String what, int id) {
@@ -135,8 +139,21 @@ public class FolderManagementDialog extends DialogFragment {
                     break;
 
                 case "createItem":
-                    DialogFragment dialogFragment = new NewNameDialog(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null);
+                    dialogFragment = new NewNameDialog(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null, false);
                     dialogFragment.show(requireActivity().getSupportFragmentManager(),"createItem");
+                    break;
+
+                case "renameFolder":
+                    dialogFragment = new NewNameDialog(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null, true);
+                    dialogFragment.show(requireActivity().getSupportFragmentManager(),"renameFolder");
+                    break;
+
+                case "moveContents":
+                    Bundle bundle = new Bundle();
+                    bundle.putString("subdir", subdir);
+                    NavHostFragment.findNavController(callingFragment)
+                            .navigate(R.id.moveContentFragment,bundle,null);
+                    break;
             }
 
             dismiss();

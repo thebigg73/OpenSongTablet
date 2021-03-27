@@ -119,7 +119,7 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="BottomSheetButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="IconTextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="iconPadding">16dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="iconGravity">start</item>
@@ -177,18 +177,9 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="IconTextButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="iconPadding">0dp</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconTint">@color/white</item>
-        <item name="strokeColor">@color/colorSecondary</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:padding">0dp</item>
-    </style>
-
     <style name="editTextLayoutOutline" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColor">@color/white</item>
-        <item name="hintTextColor">@color/colorSecondary</item>
+        <item name="hintTextColor">@color/lightgrey</item>
         <item name="backgroundTint">@color/colorPrimary</item>
         <item name="boxStrokeColor">@color/lightgrey</item>
         <item name="colorAccent">@color/lightgrey</item>
@@ -196,11 +187,13 @@
 
     <style name="editTextFieldOutline" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColor">@color/white</item>
-        <item name="hintTextColor">@color/colorSecondary</item>
+        <item name="hintTextColor">@color/lightgrey</item>
         <item name="backgroundTint">@color/colorPrimary</item>
         <item name="boxStrokeColor">@color/lightgrey</item>
         <item name="colorAccent">@color/lightgrey</item>
         <item name="android:textCursorDrawable">@null</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <style name="editTextLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">

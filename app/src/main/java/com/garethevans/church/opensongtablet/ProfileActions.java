@@ -11,8 +11,6 @@ import android.view.Gravity;
 
 import androidx.documentfile.provider.DocumentFile;
 
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -26,7 +24,7 @@ import static android.provider.DocumentsContract.EXTRA_INITIAL_URI;
 
 class ProfileActions {
 
-    boolean doSaveProfile(Context c, _Preferences preferences, StorageAccess storageAccess, Uri to) {
+    boolean doSaveProfile(Context c, Preferences preferences, StorageAccess storageAccess, Uri to) {
         boolean result = true;  // Returns true on success.  Catches throw to false
         try {
             // This is used to copy the current preferences xml file to the chosen name / location
@@ -69,7 +67,7 @@ class ProfileActions {
         return uri;
     }
 
-    boolean doLoadProfile(Context c, _Preferences preferences, StorageAccess storageAccess, Uri uri) {
+    boolean doLoadProfile(Context c, Preferences preferences, StorageAccess storageAccess, Uri uri) {
         // This class will import saved profiles/settings.
         // Old settings will work up to a point
 
@@ -341,6 +339,20 @@ class ProfileActions {
                             preferences.setMyPreferenceFloat(c,"clockTextSize",getFloatValue(xppValue,9.0f));
                             break;
 
+                        case "commentFiltering":
+                            //commentFiltering                boolean     Should comment filtering be enabled (def: false) (hide certain sections labelled with a prefix)
+                            preferences.setMyPreferenceBoolean(c,"commentFiltering",getBooleanValue(xppValue,false));
+                            break;
+
+                        case "commentFilterOnlyShow":
+                            //commentFilterOnlyShow           boolean     Should the filter mode be used to only show chosen filters (def:false)
+                            preferences.setMyPreferenceBoolean(c,"commentFilterOnlyShow",getBooleanValue(xppValue,false));
+                            break;
+
+                        case "commentFilters":
+                            //commentFilters                  String      Which comments should be filtered out looking for (e.g. [guitar:C]). delimited by X__X (def:X__XX__X)
+                            preferences.setMyPreferenceString(c,"commentFiltering",getTextValue(xppValue,"X__XX__X"));
+
                         case "custom1_lyricsBackgroundColor":        // New preference only
                             //custom1_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
                             preferences.setMyPreferenceInt(c,"custom1_lyricsBackgroundColor",getIntegerValue(xppValue,StaticVariables.black));
@@ -375,7 +387,7 @@ class ProfileActions {
                             break;
                         case "custom1_lyricsTagColor":        // New preference only
                             //custom1_lyricsTagColor          int         The color for the background for the tag in the custom1 theme
-                            preferences.setMyPreferenceInt(c,"custom1_lyricsTagColor",getIntegerValue(xppValue, StaticVariables.black));
+                            preferences.setMyPreferenceInt(c,"custom1_lyricsTagColor",getIntegerValue(xppValue,StaticVariables.black));
                             break;
                         case "custom1_lyricsTextColor":        // New preference only
                             //custom1_lyricsTextColor         int         The color for the lyrics text in the custom1 theme
@@ -837,6 +849,11 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"displayNextInSet",getTextValue(xppValue,"B"));
                             break;
 
+                        case "displayBoldChordsHeadings":   //New preference
+                            //displayBoldChordsHeadings    boolean     Should the chords and headings be shown in a bold font (def:false)
+                            preferences.setMyPreferenceBoolean(c,"displayBoldChordsHeadings",getBooleanValue(xppValue,false));
+                            break;
+
                         case "drawingAutoDisplay":        // New preference
                         case "toggleAutoHighlight":       // Old preference
                             //drawingAutoDisplay              boolean     Should the highlighter drawings be shown on page load
@@ -851,7 +868,7 @@ class ProfileActions {
                         case "drawingHighlighterColor":        // New preference
                         case "drawingHighlightColor":          // Old preference
                             //drawingHighlighterColor         int         The color of the highlighter
-                            preferences.setMyPreferenceInt(c,"drawingHighlighterColor",getIntegerValue(xppValue,StaticVariables.highighteryellow));
+                            preferences.setMyPreferenceInt(c,"drawingHighlighterColor",getIntegerValue(xppValue,StaticVariables.highlighteryellow));
                             break;
 
                         case "drawingHighlighterSize":        // New preference
@@ -1185,6 +1202,10 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"multiLineVerseKeepCompact",getBooleanValue(xppValue,false));
                             break;
 
+                        case "nearbyHostMenuOnly":
+                            preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",getBooleanValue(xppValue,false));
+                            break;
+
                         case "padAutoStart":        // New preference
                         case "autostartpad":        // Old preference
                             //padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time)
@@ -1496,6 +1517,11 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"pedalScrollBeforeMove",getBooleanValue(xppValue,true));
                             break;
 
+                        case "pedalShowWarningBeforeMove":        // New preference
+                            //pedalShowWarningBeforeMove      boolean     Should an 'are you sure' toast warning be shown before moving to next item in the set (def:false)
+                            preferences.setMyPreferenceBoolean(c,"pedalShowWarningBeforeMove",getBooleanValue(xppValue,false));
+                            break;
+
                         case "popupAlpha":        // New preference
                         case "popupAlpha_All":        // Old preference
                             //popupAlpha                      float       The opacity of the popup windows
@@ -1684,6 +1710,11 @@ class ProfileActions {
                         case "presoLyricsVAlign":        // New preference
                             //presoLyricsVAlign                int         The vertical align gravity of the lyrics in presentation mode
                             preferences.setMyPreferenceInt(c,"presoLyricsVAlign",getIntegerValue(xppValue,Gravity.TOP));
+                            break;
+
+                        case "presoLyricsBold":   //New preference
+                            //presoLyricsBold    boolean     Should the presentation text be bold (def:false)
+                            preferences.setMyPreferenceBoolean(c,"presoLyricsBold",getBooleanValue(xppValue,false));
                             break;
 
                         case "presoShowChords":        // New preference
@@ -1880,7 +1911,7 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"songAutoScaleOverrideWidth",getBooleanValue(xppValue,false));
                             break;
 
-                            // Don't include the songfilename
+                        // Don't include the songfilename
                        */
 /* case "songfilename":        // New preference
                             //songfilename                    String      The name of the current song file
@@ -2022,7 +2053,7 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"trimLines",getBooleanValue(xppValue,true));
                             break;
 
-                            // Don't include the old storage!!!!!
+                        // Don't include the old storage!!!!!
                         */
 /*case "uriTree":        // New preference
                             //uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent)
@@ -2050,7 +2081,7 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"whichMode",getTextValue(xppValue,"Performance"));
                             break;
 
-                            // Don't include the song folder
+                        // Don't include the song folder
                         */
 /*case "whichSongFolder":        // New preference
                             //whichSongFolder                 String      The song folder we are currently in
@@ -2076,7 +2107,7 @@ class ProfileActions {
         return result;
     }
 
-    Intent openProfile(Context c, _Preferences preferences, StorageAccess storageAccess) {
+    Intent openProfile(Context c, Preferences preferences, StorageAccess storageAccess) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("application/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -2096,7 +2127,7 @@ class ProfileActions {
         return intent;
     }
 
-    Intent saveProfile(Context c, _Preferences preferences, StorageAccess storageAccess) {
+    Intent saveProfile(Context c, Preferences preferences, StorageAccess storageAccess) {
         Intent intent = new Intent();
         intent.setType("application/*");
         String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
@@ -2114,7 +2145,7 @@ class ProfileActions {
             }
         }
         intent.putExtra(Intent.EXTRA_TITLE, preferences.getMyPreferenceString(c,"profileName","Profile"));
-    return intent;
+        return intent;
     }
 
     private String getXppValue(XmlPullParser xpp) {
@@ -2179,11 +2210,11 @@ class ProfileActions {
     }
 
     private String getTextValue(String s, String def) {
-        String text = def;
         if (s!=null && !s.equals("")) {
-            text = s;
+            return s;
+        } else {
+            return def;
         }
-        return text;
     }
 
 }*/
