@@ -58,6 +58,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     private LinearLayout group_maxfontsize;
     private LinearLayout group_manualfontsize;
     private LinearLayout blockShadowAlphaLayout;
+    private TextView blockShadowAlphaText;
     private SeekBar setMaxFontSizeProgressBar, setFontSizeProgressBar, presoAlphaProgressBar,
             setXMarginProgressBar, setYMarginProgressBar, presoTitleSizeSeekBar,
             presoAuthorSizeSeekBar, presoCopyrightSizeSeekBar, setRotationProgressBar,
@@ -65,7 +66,8 @@ public class PopUpLayoutFragment extends DialogFragment {
     private TextView maxfontSizePreview;
     private TextView fontSizePreview;
     private TextView presoAlphaText;
-    private TextView lyrics_title_align;
+    private LinearLayout lyrics_title_align;
+    private LinearLayout group_songinfofontsizes;
     private TextView presoTransitionTimeTextView;
     private TextView rotationTextView;
     private FloatingActionButton lyrics_left_align, lyrics_center_align, lyrics_right_align,
@@ -140,6 +142,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         blockShadow = V.findViewById(R.id.blockShadow);
         blockShadowAlphaLayout = V.findViewById(R.id.blockShadowAlphaLayout);
         blockShadowAlpha = V.findViewById(R.id.blockShadowAlpha);
+        blockShadowAlphaText = V.findViewById(R.id.blockShadowAlphaText);
         toggleChordsButton = V.findViewById(R.id.toggleChordsButton);
         boldTextButton = V.findViewById(R.id.boldTextButton);
         toggleAutoScaleButton = V.findViewById(R.id.toggleAutoScaleButton);
@@ -147,6 +150,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         setMaxFontSizeProgressBar = V.findViewById(R.id.setMaxFontSizeProgressBar);
         maxfontSizePreview = V.findViewById(R.id.maxfontSizePreview);
         group_manualfontsize = V.findViewById(R.id.group_manualfontsize);
+        group_songinfofontsizes = V.findViewById(R.id.group_songinfofontsizes);
         setFontSizeProgressBar = V.findViewById(R.id.setFontSizeProgressBar);
         fontSizePreview = V.findViewById(R.id.fontSizePreview);
         lyrics_title_align = V.findViewById(R.id.lyrics_title_align);
@@ -179,10 +183,18 @@ public class PopUpLayoutFragment extends DialogFragment {
         setXMarginProgressBar = V.findViewById(R.id.setXMarginProgressBar);
         setYMarginProgressBar = V.findViewById(R.id.setYMarginProgressBar);
         TextView modes_TextView = V.findViewById(R.id.modes_TextView);
-        String s = getString(R.string.performancemode) + " " + getString(R.string.separator) + " " +
-                getString(R.string.stagemode) +" " + getString(R.string.separator) + " " +
-                getString (R.string.presentermode);
-        modes_TextView.setText(s);
+        switch (StaticVariables.whichMode) {
+            case "Performance":
+            default:
+                modes_TextView.setText(getString(R.string.performancemode));
+                break;
+            case "Stage":
+                modes_TextView.setText(getString(R.string.stagemode));
+                break;
+            case "Presentation":
+                modes_TextView.setText(getString(R.string.presentermode));
+                break;
+        }
         rotationTextView = V.findViewById(R.id.rotationTextView);
         setRotationProgressBar = V.findViewById(R.id.setRotationProgressBar);
     }
@@ -192,15 +204,36 @@ public class PopUpLayoutFragment extends DialogFragment {
         blockShadow.setChecked(preferences.getMyPreferenceBoolean(getContext(),"blockShadow",false));
         setBlockAlphaVisibility();
         blockShadowAlpha.setMax(100);
-        blockShadowAlpha.setProgress((int)(preferences.getMyPreferenceFloat(getContext(),"blockShadowAlpha",0.7f)*100));
+        float alphaval = preferences.getMyPreferenceFloat(getContext(),"blockShadowAlpha",0.7f);
+        blockShadowAlpha.setProgress((int)(alphaval*100.0f));
+        String newtext = (int) (alphaval * 100.0f) + " %";
+        blockShadowAlphaText.setText(newtext);
         toggleChordsButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoShowChords",false));
-        toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoAutoScale",true));
-        boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoLyricsBold",false));
+        if (StaticVariables.whichMode.equals("Presentation")) {
+            toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoAutoScale",true));
+            showorhideView(group_maxfontsize, toggleAutoScaleButton.isChecked());
+            showorhideView(group_manualfontsize, !toggleAutoScaleButton.isChecked());
+            boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoLyricsBold",false));
+        } else {
+            toggleAutoScaleButton.setVisibility(View.GONE);
+            showorhideView(group_maxfontsize, true);
+            showorhideView(group_manualfontsize, false);
+            boldTextButton.setVisibility(View.GONE);
+            group_songinfofontsizes.setVisibility(View.GONE);
+        }
         setMaxFontSizeProgressBar.setMax(70);
-        setMaxFontSizeProgressBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"fontSizePresoMax",40.0f) - 4);
+        int progress = (int)preferences.getMyPreferenceFloat(getContext(),"fontSizePresoMax",40.0f) - 4;
+        setMaxFontSizeProgressBar.setProgress(progress - 4);
+        newtext = (progress + 4) + " sp";
+        maxfontSizePreview.setText(newtext);
+        maxfontSizePreview.setTextSize(progress + 4);
         maxfontSizePreview.setTypeface(StaticVariables.typefacePreso);
         setFontSizeProgressBar.setMax(70);
-        setFontSizeProgressBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"fontSizePreso",14.0f) - 4);
+        progress = (int)preferences.getMyPreferenceFloat(getContext(),"fontSizePreso",14.0f) - 4;
+        setFontSizeProgressBar.setProgress(progress - 4);
+        newtext = (progress + 4) + " sp";
+        fontSizePreview.setText(newtext);
+        fontSizePreview.setTextSize(progress + 4);
         fontSizePreview.setTypeface(StaticVariables.typefacePreso);
         setUpAlignmentButtons();
         presoTitleSizeSeekBar.setMax(32);
@@ -211,15 +244,18 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoAuthorSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"presoAuthorTextSize", 12.0f));
         presoCopyrightSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"presoCopyrightTextSize", 12.0f));
         presoAlertSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"presoAlertTextSize", 12.0f));
-        float alphaval = preferences.getMyPreferenceFloat(getContext(),"presoBackgroundAlpha",0.8f);
+        alphaval = preferences.getMyPreferenceFloat(getContext(),"presoBackgroundAlpha",0.8f);
         presoAlphaProgressBar.setProgress((int)(alphaval*100.0f));
-        String newtext = (int) (alphaval * 100.0f) + " %";
+        newtext = (int) (alphaval * 100.0f) + " %";
         presoAlphaText.setText(newtext);
         presoTransitionTimeSeekBar.setMax(23);
         presoTransitionTimeSeekBar.setProgress(timeToSeekBarProgress());
         presoTransitionTimeTextView.setText(SeekBarProgressToText());
         setupPreviews();
-        setCheckBoxes();
+        // IV - Only Presentation mode starts with a background
+        if (StaticVariables.whichMode.equals("Presentation")) {
+            setCheckBoxes();
+        }
         setXMarginProgressBar.setMax(150);
         setYMarginProgressBar.setMax(150);
         setXMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getContext(),"presoXMargin",20));
@@ -289,7 +325,10 @@ public class PopUpLayoutFragment extends DialogFragment {
         });
         blockShadowAlpha.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) { }
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                String update = i + " %";
+                blockShadowAlphaText.setText(update);
+            }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) { }
@@ -509,67 +548,57 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     private void setUpAlignmentButtons() {
-        int lyralign = preferences.getMyPreferenceInt(getContext(),"presoLyricsAlign",Gravity.CENTER_HORIZONTAL);
-        int lyrvalign = preferences.getMyPreferenceInt(getContext(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
-        int infalign = preferences.getMyPreferenceInt(getContext(),"presoInfoAlign",Gravity.END);
-        if (lyralign == Gravity.START) {
-            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        } else if (lyralign == Gravity.END) {
-            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-        } else { // CENTER_HORIZONTAL
-            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        }
-        if (lyrvalign == Gravity.TOP) {
-            lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        } else if (lyrvalign == Gravity.BOTTOM) {
-            lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-        } else { // CENTER_VERTICAL
-            lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        }
-        if (infalign == Gravity.START) {
-            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        } else if (infalign == Gravity.END) {
-            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-        } else { // CENTER_HORIZONTAL
-            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        }
 
-        // If chords are being show, hide the lyrics align, otherwise it is ok to show
-        boolean vis = true;
-        if (preferences.getMyPreferenceBoolean(getContext(),"presoShowChords",false)) {
-            vis = false;
-        }
-        lyrics_left_align.setEnabled(vis);
-        lyrics_right_align.setEnabled(vis);
-        lyrics_center_align.setEnabled(vis);
+        // IV  - Only used for specific situations
+        if ((StaticVariables.whichMode.equals("Stage") && !(preferences.getMyPreferenceBoolean(getContext(),"presoShowChords",false))) ||
+                StaticVariables.whichMode.equals("Presentation")) {
 
-        setViewVis(lyrics_title_align,vis);
-    }
+            int lyralign = preferences.getMyPreferenceInt(getContext(), "presoLyricsAlign", Gravity.CENTER_HORIZONTAL);
+            int lyrvalign = preferences.getMyPreferenceInt(getContext(), "presoLyricsVAlign", Gravity.CENTER_VERTICAL);
+            int infalign = preferences.getMyPreferenceInt(getContext(), "presoInfoAlign", Gravity.END);
 
-
-    private void setViewVis(View v, boolean vis) {
-        if (vis) {
-            v.setVisibility(View.VISIBLE);
+            if (lyralign == Gravity.START) {
+                lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+                lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            } else if (lyralign == Gravity.END) {
+                lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+            } else { // CENTER_HORIZONTAL
+                lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+                lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            }
+            if (lyrvalign == Gravity.TOP) {
+                lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+                lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            } else if (lyrvalign == Gravity.BOTTOM) {
+                lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+            } else { // CENTER_VERTICAL
+                lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+                lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            }
+            if (infalign == Gravity.START) {
+                info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+                info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            } else if (infalign == Gravity.END) {
+                info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+            } else { // CENTER_HORIZONTAL
+                info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+                info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+                info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            }
+            lyrics_title_align.setVisibility(View.VISIBLE);
         } else {
-            v.setVisibility(View.GONE);
+            lyrics_title_align.setVisibility(View.GONE);
         }
     }
 
@@ -578,6 +607,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         switch (preferences.getMyPreferenceString(getContext(),"backgroundToUse","img1")) {
             case "img1":
                 image1CheckBox.setChecked(true);
+                image1CheckBox.setTextColor(0xff444488);
                 image2CheckBox.setChecked(false);
                 video1CheckBox.setChecked(false);
                 video2CheckBox.setChecked(false);
@@ -585,6 +615,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             case "img2":
                 image1CheckBox.setChecked(false);
                 image2CheckBox.setChecked(true);
+                image2CheckBox.setTextColor(0xff444488);
                 video1CheckBox.setChecked(false);
                 video2CheckBox.setChecked(false);
                 break;
@@ -592,6 +623,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 image1CheckBox.setChecked(false);
                 image2CheckBox.setChecked(false);
                 video1CheckBox.setChecked(true);
+                video1CheckBox.setTextColor(0xff444488);
                 video2CheckBox.setChecked(false);
                 break;
             case "vid2":
@@ -599,6 +631,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 image2CheckBox.setChecked(false);
                 video1CheckBox.setChecked(false);
                 video2CheckBox.setChecked(true);
+                video2CheckBox.setTextColor(0xff444488);
                 break;
         }
     }

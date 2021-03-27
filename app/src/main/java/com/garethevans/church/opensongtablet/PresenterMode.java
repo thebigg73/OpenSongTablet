@@ -155,7 +155,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
-    private PresentationServiceHDMI hdmi;
 
     // The toolbar and menu
     private Toolbar ab_toolbar;
@@ -314,21 +313,23 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong, optionMenuListeners,sqLiteHelper);
         makePDF = new MakePDF();
 
-        new Thread(() -> {
-            runOnUiThread(() -> {
-                StaticVariables.myToastMessage = getString(R.string.search_index_start);
-                ShowToast.showToast(PresenterMode.this);
-            });
-            indexSongs.fullIndex(PresenterMode.this,preferences,storageAccess,sqLiteHelper,songXML,
-                    chordProConvert,onSongConvert,textSongConvert,usrConvert);
-            runOnUiThread(() -> {
-                StaticVariables.myToastMessage = getString(R.string.search_index_end);
-                ShowToast.showToast(PresenterMode.this);
-
-                // Now instruct the song menu to be built again.
-                prepareSongMenu();
-            });
-        }).start();
+        // IV - Index at start of session
+        if (FullscreenActivity.doonetimeactions) {
+            new Thread(() -> {
+                runOnUiThread(() -> {
+                    StaticVariables.myToastMessage = getString(R.string.search_index_start);
+                    ShowToast.showToast(PresenterMode.this);
+                });
+                indexSongs.fullIndex(PresenterMode.this,preferences,storageAccess,sqLiteHelper,songXML,
+                        chordProConvert,onSongConvert,textSongConvert,usrConvert);
+                runOnUiThread(() -> {
+                    StaticVariables.myToastMessage = getString(R.string.search_index_end);
+                    ShowToast.showToast(PresenterMode.this);
+                    // Now instruct the song menu to be built again.
+                    prepareSongMenu();
+                });
+            }).start();
+        }
 
         // Get the language
         FixLocale.fixLocale(PresenterMode.this,preferences);
@@ -430,10 +431,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             dealWithIntent();
         });
 
-        // Check if we need to remind the user to backup their songs
-        checkBackupState();
+        // IV - Check backups at start of session
+        if (FullscreenActivity.doonetimeactions) {
+            // Check if we need to remind the user to backup their songs
+            checkBackupState();
+        }
 
         setDummyFocus();
+
+        // IV -  One time actions will have been completed
+        FullscreenActivity.doonetimeactions = false;
     }
 
     // Handlers for main page on/off/etc. and window flags
@@ -502,8 +509,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
 
         try {
-            if (hdmi!=null) {
-                hdmi.dismiss();
+            if (FullscreenActivity.hdmi !=null) {
+                FullscreenActivity.hdmi.dismiss();
+                FullscreenActivity.hdmi = null;
             }
         } catch (Exception e) {
             // Ooops
@@ -947,22 +955,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void openMyDrawers(String which) {
-        new Thread(() -> runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-            }
-        })).start();
+        new Thread(() -> runOnUiThread(() -> DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which))).start();
     }
 
     @Override
     public void closeMyDrawers(String which) {
-        new Thread(() -> runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-            }
-        })).start();
+        new Thread(() -> runOnUiThread(() -> DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which))).start();
     }
 
     // The overflow menu and actionbar
@@ -3602,6 +3600,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                     MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         updateDisplays();
+        // IV - Need to refresh fonts/colours when in this mode
+        refreshAll();
     }
 
     private class MyMediaRouterCallback extends MediaRouter.Callback {
@@ -3633,8 +3633,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
 
             try {
-                if (hdmi!=null) {
-                    hdmi.dismiss();
+                if (FullscreenActivity.hdmi!=null) {
+                    FullscreenActivity.hdmi.dismiss();
+                    FullscreenActivity.hdmi = null;
                 }
             } catch (Exception e) {
                 // Ooops
@@ -3723,9 +3724,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // If a Chromebook HDMI, need to do this
                     Display[] displays = dm.getDisplays();
                     for (Display mDisplay : displays) {
-                        if (mDisplay.getDisplayId()==1) {
-                            hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
-                            hdmi.show();
+                        if (mDisplay.getDisplayId() > 0) {
+                            if (FullscreenActivity.hdmi == null) FullscreenActivity.hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
+                            FullscreenActivity.hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
                         }
                     }
@@ -3734,8 +3735,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         // For non-Chromebooks
                         displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
                         for (Display mDisplay : displays) {
-                            hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
-                            hdmi.show();
+                            if (FullscreenActivity.hdmi == null) FullscreenActivity.hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
+                            FullscreenActivity.hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
                         }
                     }
