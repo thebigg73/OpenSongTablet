@@ -21,10 +21,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
+            android:padding="10dp"
             android:text="@string/title" />
 
         <LinearLayout
@@ -32,16 +29,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@drawable/section_box"
+            android:padding="0dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/songTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="0dp"
+                android:padding="12dp"
                 android:text="@string/song_title" />
 
             <LinearLayout
@@ -53,32 +48,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="8dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="0dp"
+                    android:padding="12dp"
                     android:text="@string/size" />
 
                 <SeekBar
                     android:id="@+id/titleTextSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="0dp"
                     android:max="16"
-                    android:padding="16dp" />
+                    android:padding="12dp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/songAuthor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="0dp"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
                 android:text="@string/author" />
 
             <LinearLayout
@@ -90,22 +76,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="8dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="0dp"
+                    android:padding="12dp"
                     android:text="@string/size" />
 
                 <SeekBar
                     android:id="@+id/authorTextSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="0dp"
                     android:max="16"
-                    android:padding="16dp" />
+                    android:padding="12dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -114,10 +93,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
+            android:padding="10dp"
             android:text="@string/battery" />
 
         <LinearLayout
@@ -125,14 +101,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@drawable/section_box"
+            android:padding="0dp"
             android:orientation="vertical">
-
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/batteryDialOnOff"
                 style="@style/PrefSwitch"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:padding="12dp"
                 android:text="@string/image" />
 
             <LinearLayout
@@ -145,29 +120,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="8dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="0dp"
+                    android:padding="12dp"
                     android:text="@string/size" />
 
                 <SeekBar
                     android:id="@+id/batteyDialSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="0dp"
-                    android:max="8"
-                    android:padding="16dp" />
+                    android:padding="12dp"
+                    android:max="8" />
             </LinearLayout>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/batteryTextOnOff"
                 style="@style/PrefSwitch"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:padding="12dp"
                 android:text="@string/text" />
 
             <LinearLayout
@@ -180,22 +148,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="8dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="0dp"
+                    android:padding="12dp"
                     android:text="@string/size" />
 
                 <SeekBar
                     android:id="@+id/batteryTextSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="0dp"
                     android:max="10"
-                    android:padding="16dp" />
+                    android:padding="12dp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -203,10 +164,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
+            android:padding="10dp"
             android:text="@string/time" />
 
         <LinearLayout
@@ -214,13 +172,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@drawable/section_box"
+            android:padding="0dp"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/clockTextOnOff"
                 style="@style/PrefSwitch"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:padding="12dp"
                 android:text="@string/text" />
 
             <LinearLayout
@@ -232,8 +190,7 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/clock24hrOnOff"
                     style="@style/PrefSwitch"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:padding="12dp"
                     android:text="@string/time_format" />
 
                 <LinearLayout
@@ -245,22 +202,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="8dp"
-                        android:paddingTop="0dp"
-                        android:paddingEnd="8dp"
-                        android:paddingBottom="0dp"
+                        android:padding="12dp"
                         android:text="@string/size" />
 
                     <SeekBar
                         android:id="@+id/timeTextSize"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginBottom="0dp"
                         android:max="10"
-                        android:padding="16dp" />
+                        android:padding="12dp" />
                 </LinearLayout>
 
             </LinearLayout>
