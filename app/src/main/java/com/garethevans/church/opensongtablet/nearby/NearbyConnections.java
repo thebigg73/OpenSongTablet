@@ -53,7 +53,6 @@ public class NearbyConnections implements NearbyInterface {
     private final SQLiteHelper sqLiteHelper;
     private final CommonSQL commonSQL;
     private MainActivityInterface mainActivityInterface;
-
     NearbyReturnActionsInterface nearbyReturnActionsInterface;
 
     AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
