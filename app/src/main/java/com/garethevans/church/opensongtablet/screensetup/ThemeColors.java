@@ -23,6 +23,8 @@ public class ThemeColors {
     private int lyricsCustomColor;
     private int presoFontColor;
     private int presoInfoFontColor;
+    private int presoAlertColor;
+    private int presoShadowColor;
     private int metronomeColor;
     private int pageButtonsColor;
     private int stickyTextColor;
@@ -72,6 +74,12 @@ public class ThemeColors {
     }
     public void setPresoInfoFontColor(int i) {
         this.presoInfoFontColor = i;
+    }
+    public void setPresoAlertColor(int i) {
+        this.presoAlertColor = i;
+    }
+    public  void setPresoShadowColor(int i) {
+        this.presoShadowColor = i;
     }
     public void setPageButtonsColor(int i) {
         this.pageButtonsColor = i;
@@ -135,6 +143,12 @@ public class ThemeColors {
     public int getPresoInfoFontColor() {
         return presoInfoFontColor;
     }
+    public int getPresoAlertColor() {
+        return presoAlertColor;
+    }
+    public int getPresoShadowColor() {
+        return presoShadowColor;
+    }
     public int getPageButtonsColor() {
         return pageButtonsColor;
     }
@@ -193,6 +207,8 @@ public class ThemeColors {
         setLyricsCustomColor(preferences.getMyPreferenceInt(c, "dark_lyricsCustomColor",       vdarkyellow));
         setPresoFontColor(preferences.getMyPreferenceInt(c, "dark_presoFontColor",          white));
         setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "dark_presoInfoFontColor", white));
+        setPresoAlertColor(preferences.getMyPreferenceInt(c, "dark_presoAlertColor", red));
+        setPresoShadowColor(preferences.getMyPreferenceInt(c, "dark_presoShadowColor", grey));
     }
     private void setThemeLight(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"light_metronomeColor",         darkishred));
@@ -214,6 +230,8 @@ public class ThemeColors {
         setLyricsCustomColor(preferences.getMyPreferenceInt(c,"light_lyricsCustomColor",      lightishcyan));
         setPresoFontColor(preferences.getMyPreferenceInt(c,"light_presoFontColor",         white));
         setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "light_presoInfoFontColor", white));
+        setPresoAlertColor(preferences.getMyPreferenceInt(c, "light_presoAlertColor", red));
+        setPresoShadowColor(preferences.getMyPreferenceInt(c, "light_presoShadowColor", grey));
     }
     private void setThemeCustom1(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"custom1_metronomeColor",       darkishred));
@@ -235,6 +253,8 @@ public class ThemeColors {
         setLyricsCustomColor(preferences.getMyPreferenceInt(c,"custom1_lyricsCustomColor",    black));
         setPresoFontColor(preferences.getMyPreferenceInt(c,"custom1_presoFontColor",       white));
         setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "custom1_presoInfoFontColor", white));
+        setPresoAlertColor(preferences.getMyPreferenceInt(c, "custom1_presoAlertColor", red));
+        setPresoShadowColor(preferences.getMyPreferenceInt(c, "custom1_presoShadowColor", grey));
     }
     private void setThemeCustom2(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"custom2_metronomeColor",       darkishred));
@@ -256,6 +276,8 @@ public class ThemeColors {
         setLyricsCustomColor(preferences.getMyPreferenceInt(c,"custom2_lyricsCustomColor",    white));
         setPresoFontColor(preferences.getMyPreferenceInt(c,"custom2_presoFontColor",       white));
         setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "custom2_presoInfoFontColor", white));
+        setPresoAlertColor(preferences.getMyPreferenceInt(c, "custom2_presoAlertColor", red));
+        setPresoShadowColor(preferences.getMyPreferenceInt(c, "custom2_presoShadowColor", grey));
     }
 
     public int getValue(String what) {
@@ -270,7 +292,7 @@ public class ThemeColors {
             case "lyricsVerseColor":
                 return getLyricsVerseColor();
             case "lyricsChorusColor":
-                return lyricsVerseColor;
+                return getLyricsChorusColor();
             case "lyricsBridgeColor":
                 return getLyricsBridgeColor();
             case "lyricsCommentColor":
@@ -285,6 +307,12 @@ public class ThemeColors {
                 return getLyricsCustomColor();
             case "presoFontColor":
                 return getPresoFontColor();
+            case "presoInfoFontColor":
+                return getPresoInfoFontColor();
+            case "presoAlertColor":
+                return getPresoAlertColor();
+            case "presoShadowColor":
+                return getPresoShadowColor();
             case "metronomeColor":
                 return getMetronomeColor();
             case "pageButtonsColor":

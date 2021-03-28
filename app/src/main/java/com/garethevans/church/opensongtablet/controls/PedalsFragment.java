@@ -66,7 +66,7 @@ public class PedalsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPedalBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.controls) + " / " + getString(R.string.pedal));
+        mainActivityInterface.updateToolbar(null, getString(R.string.pedal));
 
         // Setup the helper classes
         setupHelpers();
@@ -75,6 +75,7 @@ public class PedalsFragment extends Fragment {
         grabViews();
 
         // Initialise the array items
+        pedalActions.setUpPedalActions(requireContext(),preferences);
         actionCodes = pedalActions.getActionCodes();
         actions = pedalActions.getActions();
         defKeyCodes = pedalActions.defPedalCodes;
@@ -277,8 +278,12 @@ public class PedalsFragment extends Fragment {
         if (keyText==null) {
             keyText = charFromInt(currentPedalCode);
         }
-        buttonCodes[currentListening].setText(keyText);
-        buttonMidis[currentListening].setText(midiText);
+        if (buttonCodes[currentListening]!=null) {
+            buttonCodes[currentListening].setText(keyText);
+        }
+        if (buttonMidis[currentListening]!=null) {
+            buttonMidis[currentListening].setText(midiText);
+        }
     }
 
     private void removePreviouslySetKey(int keyCode) {

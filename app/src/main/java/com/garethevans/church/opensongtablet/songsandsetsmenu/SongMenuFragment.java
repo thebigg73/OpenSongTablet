@@ -35,6 +35,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,6 +44,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     // The helper classes used
     private Preferences preferences;
     private StorageAccess storageAccess;
+    private Locale locale;
     private SQLiteHelper sqLiteHelper;
     private CommonSQL commonSQL;
     private MenuSongsBinding myView;
@@ -93,6 +95,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void initialiseHelpers() {
         preferences = mainActivityInterface.getPreferences();
         storageAccess = mainActivityInterface.getStorageAccess();
+        locale = mainActivityInterface.getLocale();
         sqLiteHelper = mainActivityInterface.getSQLiteHelper();
         commonSQL = mainActivityInterface.getCommonSQL();
         currentSet = mainActivityInterface.getCurrentSet();
@@ -320,7 +323,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         // Build a basic, but quick song menu!
 
         // Update the file
-        storageAccess.listSongs(getContext(),preferences);
+        storageAccess.listSongs(getContext(),preferences,locale);
 
         // Build the basic menu
         sqLiteHelper.insertFast(getContext(),commonSQL,storageAccess);

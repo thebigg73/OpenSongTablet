@@ -25,6 +25,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class FolderManagementDialog extends DialogFragment {
 
@@ -68,10 +69,12 @@ public class FolderManagementDialog extends DialogFragment {
 
         StorageAccess storageAccess = mainActivityInterface.getStorageAccess();
         Preferences preferences = mainActivityInterface.getPreferences();
+        Locale locale = mainActivityInterface.getLocale();
 
         ((FloatingActionButton)myView.dialogHeading.findViewById(R.id.close)).setOnClickListener(b -> dismiss());
         if (root) {
-            ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(storageAccess.niceUriTree(getContext(), preferences, storageAccess.homeFolder(getContext(),null, preferences))[1]);
+            ((TextView)myView.dialogHeading.findViewById(R.id.title)).
+                    setText(storageAccess.niceUriTree(getContext(), preferences, locale, storageAccess.homeFolder(getContext(),null, preferences))[1]);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);

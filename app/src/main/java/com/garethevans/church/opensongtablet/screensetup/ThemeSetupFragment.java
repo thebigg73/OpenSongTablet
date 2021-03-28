@@ -134,6 +134,9 @@ public class ThemeSetupFragment extends Fragment {
         myView.customButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsCustomColor(), PorterDuff.Mode.SRC_IN));
 
         myView.presoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoFontColor(), PorterDuff.Mode.SRC_IN));
+        myView.presoInfoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoInfoFontColor(), PorterDuff.Mode.SRC_IN));
+        myView.presoAlertButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoAlertColor(), PorterDuff.Mode.SRC_IN));
+        myView.presoShadowButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoShadowColor(), PorterDuff.Mode.SRC_IN));
 
         myView.metronomeButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getMetronomeColor(), PorterDuff.Mode.SRC_IN));
         myView.pagebuttonButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPageButtonsColor(), PorterDuff.Mode.SRC_IN));
@@ -146,6 +149,7 @@ public class ThemeSetupFragment extends Fragment {
     private void setListeners() {
         myView.lyricsButton.setOnClickListener(v-> chooseColor("lyricsTextColor"));
         myView.presoButton.setOnClickListener(v-> chooseColor("presoFontColor"));
+        myView.presoInfoButton.setOnClickListener(v -> chooseColor("presoInfoFontColor"));
         myView.chordsButton.setOnClickListener(v-> chooseColor("lyricsChordsColor"));
         myView.capoButton.setOnClickListener(v-> chooseColor("lyricsCapoColor"));
         myView.pageButton.setOnClickListener(v-> chooseColor("lyricsBackgroundColor"));
@@ -162,10 +166,8 @@ public class ThemeSetupFragment extends Fragment {
         myView.stickybackgroundButton.setOnClickListener(v-> chooseColor("stickyBackgroundColor"));
         myView.extratextButton.setOnClickListener(v-> chooseColor("extraInfoTextColor"));
         myView.extrabackgroundButton.setOnClickListener(v-> chooseColor("extraInfoBgColor"));
-
-        /*dark_presoShadowColor           int         The color for the presentation text shadow in the dark theme
-        dark_presoInfoColor             int         The color for the presentation info text in the dark theme
-        dark_presoAlertColor            int         The color for the presentation alert text in the dark theme*/
+        myView.presoAlertButton.setOnClickListener(v -> chooseColor("presoAlertColor"));
+        myView.presoShadowButton.setOnClickListener(v -> chooseColor("presoShadowColor"));
     }
 
     private void chooseColor(String which) {

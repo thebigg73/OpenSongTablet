@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +47,8 @@ public class NewNameDialog extends DialogFragment {
     private final boolean rename;
     private String parentFolder = "";
 
-    public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile, String currentDir, String currentSubDir, Song song, boolean rename) {
+    public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile,
+                         String currentDir, String currentSubDir, Song song, boolean rename) {
         this.isfile = isfile;  // True to create a file, false to create a folder
         this.currentDir = currentDir;
         this.currentSubDir = currentSubDir;
@@ -90,10 +90,8 @@ public class NewNameDialog extends DialogFragment {
             // Only show the last section
             if (currentSubDir.contains("/")) {
                 parentFolder = currentSubDir.substring(0,currentSubDir.lastIndexOf("/"))+"/";
-                Log.d("NewName","parentFolder="+parentFolder);
                 currentName = currentSubDir.substring(currentSubDir.lastIndexOf("/"));
                 currentName = currentName.replace("/","");
-                Log.d("NewName","currentName="+currentName);
             }
             myView.title.setText(currentName);
         }
@@ -150,7 +148,6 @@ public class NewNameDialog extends DialogFragment {
                 if (!parentFolder.isEmpty()) {
                     newName = parentFolder + "/" + newName;
                 }
-                Log.d("d","currentSubDir="+currentSubDir+"  newName="+newName);
                 storageAccess.renameFolder(requireContext(),preferences,showToast,song,currentSubDir,newName);
                 message = success;
             } else {

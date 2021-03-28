@@ -816,6 +816,12 @@ class ProfileActions {
                             preferences.setMyPreferenceInt(c,"dark_extraInfoBgColor",getIntegerValue(xppValue,StaticVariables.grey));
                             break;
 
+                        case "deviceId":                 // New preference
+                        case "deviceName":               // Old preference
+                            //deviceId               String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
+                            preferences.setMyPreferenceString(c,"deviceId",getStringValue(xppValue,StaticVariables.appName));
+                            break;
+
                         case "displayCapoChords":        // New preference
                         case "showCapoChords":           // Old preference
                             //displayCapoChords               boolean     Should capo chords be shown

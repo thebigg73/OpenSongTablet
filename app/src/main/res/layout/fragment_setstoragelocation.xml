@@ -1,103 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/page"
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:text="@string/storage_choose"
+        android:textSize="22sp"
+        android:background="@color/colorAltPrimary"
+        app:drawableStartCompat="@mipmap/ic_round_launcher"
+        android:drawablePadding="12dp"
+        android:layout_alignParentTop="true"/>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_below="@+id/headerText"
+        android:layout_above="@+id/startApp">
+
+
+    <LinearLayout
+        android:id="@+id/page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/headerText"
+            android:id="@+id/firstRun"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:text="@string/welcome"
-            android:textSize="22sp"
-            app:drawableStartCompat="@mipmap/ic_round_launcher" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:padding="12dp"
             android:text="@string/first_run" />
 
-        <TextView
+        <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+            android:id="@+id/progressText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/storage_help" />
+            android:padding="12dp"
+            app:editTextVal="@string/current_location"
+            app:hintTextVal="@string/current_location"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/infoButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_information_outline_white_36dp"
-                app:useCompatPadding="true"
-                android:contentDescription="@string/information" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/current_location" />
 
-                <TextView
-                    android:id="@+id/progressText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/section_box" />
 
-            </LinearLayout>
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/storageInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:text="@string/storage_quicktip"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/warningText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="@color/red"
-            android:text="@string/storage_warning"
-            android:visibility="gone" />
 
         <Button
             android:id="@+id/setStorage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
+            android:layout_margin="6dp"
             android:padding="12dp"
+            android:layout_gravity="center_horizontal"
             android:text="@string/storage_change"
             android:textColor="#fff"
             app:backgroundTint="@color/red" />
@@ -107,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
+            android:layout_margin="12dp"
             android:padding="12dp"
             android:text="@string/find_existing"
             android:textColor="#fff"
@@ -117,6 +80,7 @@
             android:id="@+id/previousStorageTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="12dp"
             android:text="@string/no_previous_found"
             android:visibility="gone" />
 
@@ -124,6 +88,7 @@
             android:id="@+id/previousStorageHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="12dp"
             android:text="@string/existing_found"
             android:visibility="gone" />
 
@@ -134,20 +99,55 @@
             android:background="@drawable/section_box"
             android:orientation="vertical"
             android:padding="12dp"
+            android:layout_margin="12dp"
             android:visibility="gone"/>
 
         <Button
-            android:id="@+id/startApp"
+            android:id="@+id/infoButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="12dp"
             android:padding="12dp"
-            android:text="@string/start"
-            android:textColor="#fff"
-            android:textSize="24sp"
-            app:backgroundTint="@color/green" />
+            android:text="@string/information"/>
+
+        <LinearLayout
+            android:id="@+id/extraInfoSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/storage_help"
+                android:padding="12dp"/>
+
+            <TextView
+                android:id="@+id/storageInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="@string/storage_quicktip"/>
+        </LinearLayout>
+
 
     </LinearLayout>
+    </ScrollView>
 
-</androidx.core.widget.NestedScrollView>
+    <Button
+        android:id="@+id/startApp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="6dp"
+        android:padding="12dp"
+        android:text="@string/start"
+        android:textColor="#fff"
+        android:textSize="24sp"
+        app:backgroundTint="@color/green"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

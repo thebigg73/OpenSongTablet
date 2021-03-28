@@ -19,7 +19,6 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_margin="4dp"
-            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
@@ -32,8 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/colorAltPrimary"
             app:fabSize="mini"
-            android:src="@drawable/ic_close_white_36dp"/>
+            android:src="@drawable/ic_arrow_right_white_36dp"
+            android:contentDescription="@string/close" />
 
     </LinearLayout>
 
@@ -54,11 +55,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/song_separator_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/song" />
+
             <Button
                 android:id="@+id/autoScrollButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableStart="@drawable/ic_rotate_right_white_36dp"
                 android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
@@ -70,10 +79,49 @@
                 tools:ignore="RtlHardcoded" />
 
             <Button
+                android:id="@+id/autoScrollLearnButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_rotate_right_white_36dp"
+                android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/timer_learn"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/autoscrollActivatedSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_check_white_36dp"
+                android:drawableLeft="@drawable/ic_check_white_36dp"
+                android:drawablePadding="4dp"
+                android:text="@string/activated"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:theme="@style/MySwitch"
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/option_separator_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/options" />
+
+            <Button
                 android:id="@+id/autoScrollTimeDefaultsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableLeft="@drawable/ic_update_white_36dp"
                 android:drawablePadding="4dp"
@@ -88,7 +136,7 @@
                 android:id="@+id/autoScrollStartButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableLeft="@drawable/ic_slow_motion_video_white_36dp"
                 android:drawablePadding="4dp"
@@ -100,60 +148,30 @@
                 app:showText="false"
                 tools:ignore="RtlHardcoded" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchTimerSize"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_format_text_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_format_text_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/timer_size"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                app:showText="true"
-                app:textAllCaps="false"
-                android:textOff="@string/size_mini"
-                android:textOn="@string/size_normal"
-                app:splitTrack="false"
-                android:thumb="@drawable/switch_button"
-                app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                tools:ignore="RtlHardcoded" />
-
-            <Button
-                android:id="@+id/autoScrollLearnButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_rotate_right_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/timer_learn"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                tools:ignore="RtlHardcoded" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/autoscrollActivatedSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_check_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_check_white_36dp"
-                android:text="@string/activated"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:theme="@style/MySwitch"
-                app:showText="false"
-                tools:ignore="RtlHardcoded" />
         </LinearLayout>
     </ScrollView>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchTimerSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:background="@drawable/menu_button"
+        android:drawableStart="@drawable/ic_format_text_white_36dp"
+        android:drawableLeft="@drawable/ic_format_text_white_36dp"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:text="@string/timer_size"
+        android:textColor="#fff"
+        android:textOff="@string/size_mini"
+        android:textOn="@string/size_normal"
+        android:textSize="12sp"
+        android:thumb="@drawable/switch_button"
+        app:showText="true"
+        app:splitTrack="false"
+        app:textAllCaps="false"
+        app:thumbTextPadding="4dp"
+        app:thumbTint="#444488"
+        tools:ignore="RtlHardcoded" />
 
 </LinearLayout>

@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,8 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.databinding.SettingsNearbyconnectionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
+import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.TextInputDialogFragment;
 
@@ -22,6 +26,8 @@ public class NearbyConnectionsFragment extends Fragment {
 
     private SettingsNearbyconnectionsBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private NearbyInterface nearbyInterface;
+    private NearbyReturnActionsInterface nearbyReturnActionsInterface;
     private NearbyConnections nearbyConnections;
     private AutoscrollActions autoscrollActions;
     private Preferences preferences;
@@ -30,6 +36,8 @@ public class NearbyConnectionsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        nearbyInterface = (NearbyInterface) context;
+        nearbyReturnActionsInterface = (NearbyReturnActionsInterface) context;
         nearbyConnections = mainActivityInterface.getNearbyConnections(mainActivityInterface);
     }
 
@@ -38,7 +46,7 @@ public class NearbyConnectionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsNearbyconnectionsBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.connections_connect));
+        mainActivityInterface.updateToolbar(null,getString(R.string.connections_connect));
 
         // Set the helpers
         setHelpers();
@@ -57,15 +65,45 @@ public class NearbyConnectionsFragment extends Fragment {
         autoscrollActions = mainActivityInterface.getAutoscrollActions();
         mainActivityInterface.registerFragment(this,"NearbyConnectionsFragment");
         mainActivityInterface.setNearbyOpen(true);
+        nearbyConnections.setNearbyReturnActionsInterface(nearbyReturnActionsInterface);
     }
 
     public void updateViews() {
+        // Set the device name
         ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(nearbyConnections.getUserNickname());
-        myView.actAsHost.setChecked(nearbyConnections.isHost);
+
+        // Set the default values for off/host/client
+        if (nearbyConnections.isHost) {
+            myView.connectionsHost.setChecked(true);
+            offHostClient(true,false);
+        } else if (nearbyConnections.usingNearby) {
+            myView.connectionsClient.setChecked(true);
+            offHostClient(false,true);
+        } else {
+            myView.connectionsOff.setChecked(true);
+            offHostClient(false,false);
+        }
+
+        // Set the host switches
+        myView.nearbyHostMenuOnly.setChecked(nearbyConnections.nearbyHostMenuOnly);
         myView.receiveHostFiles.setChecked(nearbyConnections.receiveHostFiles);
         myView.keepHostFiles.setChecked(nearbyConnections.keepHostFiles);
-        myView.enableNearby.setChecked(nearbyConnections.usingNearby);
+
+        // Show any connection log
         updateConnectionsLog();
+    }
+
+    private void offHostClient(boolean host, boolean client) {
+        if (host) {
+            myView.hostOptions.setVisibility(View.VISIBLE);
+        } else {
+            myView.hostOptions.setVisibility(View.GONE);
+        }
+        if (client) {
+            myView.clientOptions.setVisibility(View.VISIBLE);
+        } else {
+            myView.clientOptions.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -82,26 +120,70 @@ public class NearbyConnectionsFragment extends Fragment {
     }
 
     public void setListeners() {
+        // The deviceId
         myView.deviceButton.setOnClickListener(v -> textInputDialog());
-        myView.enableNearby.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            nearbyConnections.usingNearby = isChecked;
+
+        // The client/host options
+        myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.keepHostFiles = isChecked);
+        myView.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.receiveHostFiles = isChecked);
+        myView.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.setNearbyHostMenuOnly(isChecked));
+
+        // Changing the nearby connection
+        myView.connectionsOff.setOnCheckedChangeListener((radioButton, isChecked) -> {
             if (isChecked) {
-                if (nearbyConnections.isHost) {
-                    nearbyConnections.startAdvertising(autoscrollActions);
-                } else {
-                    nearbyConnections.startDiscovery(autoscrollActions);
-                }
-            } else {
-                // Beacause the host button can be switched on/off as well, when turning off, run both
-                // These will catch errors
+                nearbyConnections.isHost = false;
+                nearbyConnections.usingNearby = false;
+                offHostClient(false,false);
                 nearbyConnections.stopDiscovery();
                 nearbyConnections.stopAdvertising();
                 nearbyConnections.turnOffNearby();
             }
         });
-        myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.keepHostFiles = isChecked);
-        myView.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.receiveHostFiles = isChecked);
-        myView.actAsHost.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.isHost = isChecked);
+        myView.connectionsHost.setOnCheckedChangeListener((radioButton, isChecked) -> {
+            if (isChecked) {
+                nearbyConnections.isHost = true;
+                nearbyConnections.usingNearby = true;
+                offHostClient(true,false);
+                nearbyConnections.stopDiscovery();
+                nearbyConnections.startAdvertising(autoscrollActions);
+            }
+        });
+        myView.connectionsClient.setOnCheckedChangeListener((radioButton, isChecked) -> {
+            if (isChecked) {
+                nearbyConnections.isHost = false;
+                nearbyConnections.usingNearby = true;
+                offHostClient(false,true);
+                nearbyConnections.stopAdvertising();
+                // IV - Short delay to help stability
+                Handler h = new Handler();
+                h.postDelayed(() -> myView.searchForHosts.performClick(),2000);
+            }
+        });
+
+        // Discover hosts
+        myView.searchForHosts.setOnClickListener(b -> {
+            // IV - User can cause problems by clicking quickly between modes!  Make sure we are still in client mode.
+            if (!nearbyConnections.isHost) {
+                // Start discovery and turn it off again after 10 seconds
+                myView.searchForHosts.setEnabled(false);
+                myView.searchForHosts.setText(getString(R.string.connections_searching));
+                nearbyConnections.startDiscovery(autoscrollActions);
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    // Because there is a delay, check the fragment with the view is still available
+                    if (myView.searchForHosts!=null) {
+                        try {
+                            myView.searchForHosts.setText(getString(R.string.connections_discover));
+                            myView.searchForHosts.setEnabled(true);
+                        } catch (Exception e) {
+                            Log.d("OptionMenu","Lost reference to discovery button");
+                        }
+                    }
+                },10000);
+            }
+        });
+
+        // Clear the log
         myView.connectionsLog.setOnClickListener(v -> {
             nearbyConnections.connectionLog = "";
             updateConnectionsLog();
@@ -111,7 +193,7 @@ public class NearbyConnectionsFragment extends Fragment {
     private void textInputDialog() {
         TextInputDialogFragment dialogFragment = new TextInputDialogFragment(preferences, this,
                 "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),
-                "deviceName", nearbyConnections.deviceName);
+                "deviceId", nearbyConnections.deviceId);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");
     }
 
@@ -119,7 +201,7 @@ public class NearbyConnectionsFragment extends Fragment {
     public void updateValue(String which, String value) {
         if (which.equals("deviceName")) {
             ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(value);
-            nearbyConnections.deviceName = value;
+            nearbyConnections.deviceId = value;
         }
     }
 }

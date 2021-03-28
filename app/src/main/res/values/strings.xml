@@ -258,6 +258,7 @@
     <string name="note">Note</string>
     <string name="nothighenoughapi">You need a newer version of Android for this!</string>
     <string name="off">Off</string>
+    <string name="ok">Ok</string>
     <string name="on">On</string>
     <string name="online">Online</string>
     <string name="online_services" translatable="false">UG, SongSelect, Chordie, etc.</string>
@@ -340,7 +341,7 @@
     <string name="storage_change">Change storage location</string>
     <string name="storage_ext">External storage</string>
     <string name="storage_graph_overview_info">Your current OpenSong/Songs folder directory structure is shown below (you can zoom and pan). \nClick on the root (OpenSong) folder to change your storage location.\nClick on the \'Songs\' folder to create a backup or a sub directory. If you already have sub directories, clicking on them will give further options.</string>
-    <string name="storage_help">Please choose the location for your \'OpenSong\' folder.  This is the default storage location for OpenSong files.  You can change this at any time from the Options menu.  Internal storage is recommended.\n\nFor an update or re-install:\nYou can use the yellow button below to find any previous \'OpenSong\' folder.</string>
+    <string name="storage_help">Please choose the location for your \'OpenSong\' folder.  This is the default storage location for OpenSong files.  You can change this at any time from the Options menu.  Internal storage is recommended.  For an update or re-install: You can use the yellow button to find any previous \'OpenSong\' folder.</string>
     <string name="storage_main">This is where your songs are normally stored (often called the MAIN folder).  You can optionally set up subdirectories to better manage your song library.</string>
     <string name="storage_notwritable">Unable to use</string>
     <string name="storage_quicktip">When selecting a location:\nList storage using the menu (you may need to change settings to show all storage).\nSELECT ONLY INTERNAL OR SD CARD storage.\nInternal storage is recommended.  This may list as device storage or with your device\'s name.\nOn Android 10+ you should not select the Downloads or Root folder.  If in doubt, choose the \'Documents\' folder.</string>

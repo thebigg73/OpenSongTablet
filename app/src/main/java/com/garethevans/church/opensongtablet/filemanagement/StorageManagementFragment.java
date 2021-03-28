@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.blox.graphview.Graph;
 import de.blox.graphview.GraphAdapter;
@@ -35,6 +35,7 @@ public class StorageManagementFragment extends Fragment {
     private StorageFolderDisplayBinding myView;
     private SQLiteHelper sqLiteHelper;
     private StorageAccess storageAccess;
+    private Locale locale;
     private ShowCase showCase;
     private Preferences preferences;
 
@@ -68,6 +69,7 @@ public class StorageManagementFragment extends Fragment {
         storageAccess = mainActivityInterface.getStorageAccess();
         showCase = mainActivityInterface.getShowCase();
         preferences = mainActivityInterface.getPreferences();
+        locale = mainActivityInterface.getLocale();
 
         redColor = requireContext().getResources().getColor(R.color.lightred);
         greenColor = requireContext().getResources().getColor(R.color.lightgreen);
@@ -243,7 +245,7 @@ public class StorageManagementFragment extends Fragment {
 
     private ArrayList<String> getFoldersFromFile() {
         // Scan the storage
-        songIDs = storageAccess.listSongs(requireContext(),preferences);
+        songIDs = storageAccess.listSongs(requireContext(),preferences,locale);
         storageAccess.writeSongIDFile(requireContext(),preferences,songIDs);
         //songIDs = storageAccess.getSongIDsFromFile(requireContext());
         // Each subdir ends with /

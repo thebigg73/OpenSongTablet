@@ -150,4 +150,5 @@ public interface MainActivityInterface {
     VersionNumber getVersionNumber();
     Transpose getTranspose();
     AppActionBar getAppActionBar();
+    int getFragmentOpen();
 }

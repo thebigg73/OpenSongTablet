@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -41,6 +42,7 @@ public class BackupOSBFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private StorageAccess storageAccess;
     private Preferences preferences;
+    private Locale locale;
     private CommonSQL commonSQL;
     private SQLiteHelper sqLiteHelper;
     private ExportActions exportActions;
@@ -76,6 +78,7 @@ public class BackupOSBFragment extends Fragment {
     private void getHelpers() {
         storageAccess = mainActivityInterface.getStorageAccess();
         preferences = mainActivityInterface.getPreferences();
+        locale = mainActivityInterface.getLocale();
         commonSQL = mainActivityInterface.getCommonSQL();
         sqLiteHelper = mainActivityInterface.getSQLiteHelper();
         exportActions = mainActivityInterface.getExportActions();
@@ -145,7 +148,7 @@ public class BackupOSBFragment extends Fragment {
             });
 
             // Check the file list is up to date
-            ArrayList<String> allFiles = storageAccess.listSongs(getContext(),preferences);
+            ArrayList<String> allFiles = storageAccess.listSongs(getContext(),preferences,locale);
 
             // Prepare the uris, inputStreams and outputStreams
             Uri fileUriToCopy;

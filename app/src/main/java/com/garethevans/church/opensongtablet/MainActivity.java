@@ -74,6 +74,7 @@ import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
+import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
 import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
@@ -145,7 +146,7 @@ getters and setters.  This also avoids having loads of StaticVariables.
 public class MainActivity extends AppCompatActivity implements LoadSongInterface,
         ShowCaseInterface, MainActivityInterface, MidiAdapterInterface, EditSongFragmentInterface,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, DialogReturnInterface,
-        NearbyInterface {
+        NearbyInterface, NearbyReturnActionsInterface {
 
     ActivityMainBinding activityMainBinding;
     AppBarMainBinding appBarMainBinding;
@@ -561,7 +562,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         fullIndexRequired = true;
         ArrayList<String> songIds = new ArrayList<>();
         try {
-            songIds = storageAccess.listSongs(this, preferences);
+            songIds = storageAccess.listSongs(this, preferences, locale);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1246,7 +1247,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // If sent called from another fragment the fragName and callingFragment are used to run an update listener
         songListBuildIndex.setIndexComplete(false);
         // Get all of the files as an array list
-        ArrayList<String> songIds = storageAccess.listSongs(this, preferences);
+        ArrayList<String> songIds = storageAccess.listSongs(this, preferences, locale);
         // Write this to text file
         storageAccess.writeSongIDFile(this, preferences, songIds);
         // Try to create the basic databases
@@ -1529,6 +1530,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public AppActionBar getAppActionBar() {
         return appActionBar;
     }
+    @Override
+    public int getFragmentOpen() {
+        return fragmentOpen;
+    }
 
     // Nearby
     @Override
@@ -1729,4 +1734,30 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         }
     }
 
+
+    // The return actions from the NearbyReturnActionsInterface
+    @Override
+    public void gesture5() {
+        // TODO
+    }
+    @Override
+    public void selectSection(int i) {
+        // TODO
+    }
+    @Override
+    public void prepareSongMenu() {
+        // TODO
+    }
+    @Override
+    public void loadSong() {
+        // TODO
+    }
+    @Override
+    public void goToPreviousItem() {
+        // TODO
+    }
+    @Override
+    public void goToNextItem() {
+        // TODO
+    }
 }

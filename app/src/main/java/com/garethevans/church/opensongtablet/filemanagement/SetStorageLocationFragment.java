@@ -31,9 +31,11 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import lib.folderpicker.FolderPicker;
 
@@ -57,6 +59,7 @@ public class SetStorageLocationFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private Preferences preferences;
     private StorageAccess storageAccess;
+    private Locale locale;
     private ShowToast showToast;
     private Uri uriTree, uriTreeHome;
 
@@ -105,6 +108,7 @@ public class SetStorageLocationFragment extends Fragment {
     private void initialiseHelpers() {
         storageAccess = mainActivityInterface.getStorageAccess();
         preferences = mainActivityInterface.getPreferences();
+        locale = mainActivityInterface.getLocale();
         showToast = mainActivityInterface.getShowToast();
     }
     private void initialiseViews() {
@@ -113,12 +117,19 @@ public class SetStorageLocationFragment extends Fragment {
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.hideActionButton(true);
 
+        // Set up the storage location currently set in an edit box that acts like a button only
+        ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setFocusable(false);
+        ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setClickable(true);
+        ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setMaxLines(4);
+        ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).
+                setOnClickListener(t -> myView.setStorage.performClick());
+
         // Set the listeners for the buttons
         myView.infoButton.setOnClickListener(v -> {
-            if (myView.storageInfo.getVisibility()==View.VISIBLE) {
-                myView.storageInfo.setVisibility(View.GONE);
+            if (myView.extraInfoSection.getVisibility()==View.VISIBLE) {
+                myView.extraInfoSection.setVisibility(View.GONE);
             } else {
-                myView.storageInfo.setVisibility(View.VISIBLE);
+                myView.extraInfoSection.setVisibility(View.VISIBLE);
             }
         });
         myView.setStorage.setOnClickListener(v -> {
@@ -157,7 +168,8 @@ public class SetStorageLocationFragment extends Fragment {
 
     private void warningCheck() {
         // If the user tries to set the app storage to OpenSong/Songs/ warn them!
-        if (myView.progressText.getText() != null && myView.progressText.getText().toString().contains("OpenSong/Songs/")) {
+        if (((TextInputEditText)myView.progressText.findViewById(R.id.editText)) != null &&
+                ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).getText().toString().contains("OpenSong/Songs/")) {
             Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
                     LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
             });
@@ -178,26 +190,8 @@ public class SetStorageLocationFragment extends Fragment {
         }
     }
 
-    // Checks for the storage being ok to proceed
-    private boolean isStorageSet() {
-        return (uriTreeHome!=null && uriTree!=null && !uriTreeHome.toString().isEmpty() && !uriTree.toString().isEmpty());
-    }
-    private boolean isStorageValid() {
-        return (isStorageSet() && storageAccess.uriTreeValid(getContext(),uriTree));
-    }
 
 
-
-
-
-
-
-    private void notWriteable() {
-        uriTree = null;
-        uriTreeHome = null;
-        showToast.doIt(requireActivity(), getString(R.string.storage_notwritable));
-        showStorageLocation();
-    }
 
 
     // Stuff to search for previous installation locations
@@ -211,7 +205,6 @@ public class SetStorageLocationFragment extends Fragment {
         FindLocations findlocations = new FindLocations();
         findlocations.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-
     private void walkFiles(File root) {
         if (root!=null && root.exists() && root.isDirectory()) {
             File[] list = root.listFiles();
@@ -250,7 +243,6 @@ public class SetStorageLocationFragment extends Fragment {
             }
         }
     }
-
     private void displayWhere(String msg) {
         final String str = msg;
         requireActivity().runOnUiThread(() -> myView.previousStorageTextView.setText(str));
@@ -259,19 +251,18 @@ public class SetStorageLocationFragment extends Fragment {
     // Deal with allowing or hiding the start button
     private void checkStatus() {
         if (isStorageGranted() && isStorageSet() && isStorageValid()) {
+            myView.firstRun.setVisibility(View.GONE);
             myView.startApp.setVisibility(View.VISIBLE);
             pulseButton(myView.startApp);
             myView.setStorage.clearAnimation();
-            myView.scrollView.scrollTo(0, (int) myView.startApp.getY());
         } else {
+            myView.firstRun.setVisibility(View.VISIBLE);
             myView.startApp.setVisibility(View.GONE);
             myView.setStorage.setVisibility(View.VISIBLE);
             pulseButton(myView.setStorage);
-            myView.scrollView.scrollTo(0, (int) myView.setStorage.getY());
             myView.startApp.clearAnimation();
         }
     }
-
     private void setEnabledOrDisabled(boolean what) {
         myView.startApp.setEnabled(what);
         myView.setStorage.setEnabled(what);
@@ -283,14 +274,12 @@ public class SetStorageLocationFragment extends Fragment {
             myView.previousStorageTextView.setVisibility(View.GONE);
         }
     }
-
     private void goToSongs() {
         NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.setStorageLocationFragment, false)
                 .build();
         NavHostFragment.findNavController(this).navigate(R.id.bootUpFragment, null, navOptions);
     }
-
     private void pulseButton(View v) {
         CustomAnimation ca = new CustomAnimation();
         ca.pulse(requireActivity(), v);
@@ -307,12 +296,10 @@ public class SetStorageLocationFragment extends Fragment {
             showStorageLocation();
         }
     }
-
     private boolean isStorageGranted() {
         return ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
-
     private void requestStoragePermission() {
         if (getActivity() != null &&
                 ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
@@ -337,6 +324,20 @@ public class SetStorageLocationFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    // Checks for the storage being ok to proceed
+    private boolean isStorageSet() {
+        return (uriTreeHome!=null && uriTree!=null && !uriTreeHome.toString().isEmpty() && !uriTree.toString().isEmpty());
+    }
+    private boolean isStorageValid() {
+        return (isStorageSet() && storageAccess.uriTreeValid(getContext(),uriTree));
+    }
+    private void notWriteable() {
+        uriTree = null;
+        uriTreeHome = null;
+        showToast.doIt(requireActivity(), getString(R.string.storage_notwritable));
+        showStorageLocation();
     }
 
     // Deal with the permission choice
@@ -460,9 +461,9 @@ public class SetStorageLocationFragment extends Fragment {
         }
 
         if (uriTreeHome != null) {
-            String[] niceLocation = storageAccess.niceUriTree(getContext(), preferences, uriTreeHome);
+            String[] niceLocation = storageAccess.niceUriTree(getContext(), preferences, locale, uriTreeHome);
             String outputText = niceLocation[1] + "\n" + niceLocation[0];
-            myView.progressText.setText(outputText);
+            ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText(outputText);
             warningCheck();
         }
         checkStatus();

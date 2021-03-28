@@ -227,7 +227,7 @@ public class Preferences extends Activity {
     dark_stickyBackgroundColor      int         The color for the sticky note background info text in the dark theme
     dark_extraInfoTextColor         int         The color for the extra info text in the dark theme
     dark_extraInfoBgColor           int         The color for the extra info background in the dark theme
-    deviceName                      String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
+    deviceId                        String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
     displayCapoChords               boolean     Should capo chords be shown (def:true)
     displayCapoAndNativeChords      boolean     Should both chords be shown at once (def:false)
     displayChords                   boolean     Decides if chords should be shown (def:true)
@@ -298,6 +298,7 @@ public class Preferences extends Activity {
     midiAsPedal                     boolean     Should the midi device trigger pedal commands (def:false)
     midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically (def:false)
     multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact (def:false)
+    nearbyHostMenuOnly              boolean     Should the host only listen for clients when the nearby menu is open (def:false)
     padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time) (def:false)
     padCrossFadeTime                int         The time in ms used to fade out a pad.  Set in the PopUpCrossFade fragment (def::8000)
     padLargeFontInfoBar             boolean     The text size of the floating pad info bar (def:true is 20.0f false is 14.0f)

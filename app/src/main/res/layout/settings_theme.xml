@@ -188,6 +188,24 @@
             app:iconGravity="start"
             app:iconSize="32dp" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/presoAlertButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alert"
+            app:icon="@drawable/rectangle"
+            app:iconGravity="start"
+            app:iconSize="32dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/presoShadowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/block_text_shadow"
+            app:icon="@drawable/rectangle"
+            app:iconGravity="start"
+            app:iconSize="32dp" />
+
     </LinearLayout>
 
     <LinearLayout

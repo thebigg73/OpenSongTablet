@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class ChooseColorFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = DisplayColorSettingsBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.updateToolbar(null,getName());
         // Set up the helper classes
         setUpHelpers();
 
@@ -240,5 +242,70 @@ public class ChooseColorFragment extends Fragment {
         // Navigate back
         mainActivityInterface.popTheBackStack(R.id.themeSetupFragment,true);
         mainActivityInterface.navigateToFragment(R.id.themeSetupFragment);
+    }
+
+    private String getName() {
+        String title="";
+        // Get the name of the property from the whatToDo
+        Log.d("ChooseColor","what="+mainActivityInterface.getWhattodo());
+        switch (mainActivityInterface.getWhattodo()) {
+            case "lyricsTextColor":
+                title = getString(R.string.lyrics_color);
+                break;
+            case "lyricsChordsColor":
+                title = getString(R.string.chord_color);
+                break;
+            case "lyricsCapoColor":
+                title = getString(R.string.capo_color);
+                break;
+            case "lyricsBackgroundColor":
+            case "stickyBackgroundColor":
+            case "extraInfoBgColor":
+                title = getString(R.string.background);
+                break;
+            case "lyricsVerseColor":
+                title = getString(R.string.verse_background);
+                break;
+            case "lyricsChorusColor":
+                title = getString(R.string.chorus_background);
+                break;
+            case "lyricsPreChorusColor":
+                title = getString(R.string.prechorus_background);
+                break;
+            case "lyricsBridgeColor":
+                title = getString(R.string.bridge_background);
+                break;
+            case "lyricsTagColor":
+                title = getString(R.string.tag_background);
+                break;
+            case "lyricsCustomColor":
+                title = getString(R.string.custom_background);
+                break;
+            case "lyricsCommentColor":
+                title = getString(R.string.comment_background);
+                break;
+            case "presoInfoFontColor":
+                title = getString(R.string.info_text);
+                break;
+            case "presoFontColor":
+            case "extraInfoTextColor":
+            case "stickyTextColor":
+                title = getString(R.string.text);
+                break;
+            case "metronomeColor":
+                title = getString(R.string.metronome);
+                break;
+            case "pageButtonsColor":
+                title = getString(R.string.page_buttons);
+                break;
+            case "presoAlertColor":
+                title = getString(R.string.alert);
+                break;
+            case "presoShadowColor":
+                title = getString(R.string.block_text_shadow);
+                break;
+
+        }
+        return title;
     }
 }

@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 public class MoveContentFragment extends Fragment {
 
@@ -34,6 +35,7 @@ public class MoveContentFragment extends Fragment {
     MainActivityInterface mainActivityInterface;
     StorageAccess storageAccess;
     Preferences preferences;
+    Locale locale;
     ShowToast showToast;
     StorageMoveBinding myView;
     String subfolder;
@@ -79,6 +81,7 @@ public class MoveContentFragment extends Fragment {
     private void setupHelpers() {
         preferences = mainActivityInterface.getPreferences();
         storageAccess = mainActivityInterface.getStorageAccess();
+        locale = mainActivityInterface.getLocale();
         showToast = mainActivityInterface.getShowToast();
     }
 
@@ -111,7 +114,7 @@ public class MoveContentFragment extends Fragment {
         // Do this in another thread
         new Thread(() -> {
             ArrayList<String> availableFromFolders = storageAccess.getSongFolders(requireContext(),
-                    storageAccess.listSongs(requireContext(), preferences), true, null);
+                    storageAccess.listSongs(requireContext(), preferences, locale), true, null);
             getActivity().runOnUiThread(() -> {
                 if (availableFromFolders.size() != 0) {
                     ExposedDropDownArrayAdapter folderFromArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
@@ -143,7 +146,7 @@ public class MoveContentFragment extends Fragment {
         new Thread(() -> {
             // This lists the folders available (minus the current one)
             ArrayList<String> availableMoveFolders = storageAccess.getSongFolders(requireContext(),
-                    storageAccess.listSongs(requireContext(), preferences), true, subfolder);
+                    storageAccess.listSongs(requireContext(), preferences, locale), true, subfolder);
 
             getActivity().runOnUiThread(() -> {
                 if (availableMoveFolders.size() != 0) {
