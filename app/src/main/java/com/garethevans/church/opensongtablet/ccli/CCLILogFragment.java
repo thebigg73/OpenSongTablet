@@ -1,27 +1,24 @@
 package com.garethevans.church.opensongtablet.ccli;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.databinding.CcliDialogBinding;
+import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.databinding.SettingsCcliLogBinding;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 
-public class CCLIDialogFragment extends DialogFragment {
+public class CCLILogFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private Preferences preferences;
@@ -39,43 +36,32 @@ public class CCLIDialogFragment extends DialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
-    @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
-        super.onCancel(dialog);
-        dismiss();
-        mainActivityInterface.songMenuActionButtonShow(true);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        com.garethevans.church.opensongtablet.databinding.CcliDialogBinding myView = CcliDialogBinding.inflate(inflater, container, false);
-        Window w = requireDialog().getWindow();
-        if (w != null) {
-            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
+        com.garethevans.church.opensongtablet.databinding.SettingsCcliLogBinding myView = SettingsCcliLogBinding.inflate(inflater, container, false);
+
+        mainActivityInterface.updateToolbar(null,getString(R.string.ccli) + " XML");
 
         // Initialise helpers
         initialiseHelpers();
 
-        myView.close.setOnClickListener(v -> dismiss());
-
         // Set up the default values
         Uri uri = storageAccess.getUriForItem(requireContext(), preferences, "Settings", "", "ActivityLog.xml");
-        String logsize = ccliLog.getLogFileSize(requireContext(), storageAccess, uri);
         ccliLog.getCurrentEntries(requireContext(), storageAccess, uri);
-        String table = ccliLog.buildMyTable(requireContext(), preferences, logsize);
+        ccliLog.getLogFileSize(requireContext(),storageAccess,uri, myView.logSize);
+        String churchName = getString(R.string.ccli_church) + ": " +
+                preferences.getMyPreferenceString(requireContext(), "ccliChurchName","");
+        myView.churchLicence.setText(churchName);
+        String churchLicence = getString(R.string.ccli_licence) + ": " +
+                preferences.getMyPreferenceString(requireContext(),"ccliLicence","");
+        myView.churchLicence.setText(churchLicence);
 
-        new Thread(() -> requireActivity().runOnUiThread(() -> {
-            myView.ccliWebView.getSettings().setBuiltInZoomControls(true);
-            myView.ccliWebView.getSettings().setDisplayZoomControls(false);
-            myView.ccliWebView.clearCache(true);
-            myView.ccliWebView.setInitialScale(100);
-            myView.ccliWebView.loadDataWithBaseURL(null, table, "text/html; charset=utf-8", "UTF-8", null);
-        })).start();
+        TableLayout tableLayout = ccliLog.getTableLayout(requireContext());
 
-        Log.d("d", "logsize=" + logsize);
-        Log.d("d", "table=" + table);
+        myView.zoomLayout.addView(tableLayout);
+
+
         return myView.getRoot();
     }
 

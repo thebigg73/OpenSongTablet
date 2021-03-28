@@ -41,7 +41,7 @@ public class AboutAppFragment extends Fragment {
         myView = SettingsAboutBinding.inflate(inflater, container, false);
 
         // Update the toolbar
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.about));
+        mainActivityInterface.updateToolbar(null,getString(R.string.about));
 
         // Set Helpers
         setHelpers();

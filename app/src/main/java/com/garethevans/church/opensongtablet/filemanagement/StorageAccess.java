@@ -30,7 +30,6 @@ import androidx.documentfile.provider.DocumentFile;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -1668,7 +1667,11 @@ public class StorageAccess {
         for (String songId:songIds) {
             stringBuilder.append(songId).append("\n");
         }
+        // Get the file reference
         File songIDFile = new File(c.getExternalFilesDir("Database"),"SongIds.txt");
+        // Let's delete this file and then create a new blank one
+        songIDFile.delete();
+        songIDFile = new File(c.getExternalFilesDir("Database"),"SongIds.txt");
         Uri uri = Uri.fromFile(songIDFile);
         boolean fileexists;
         if (!uriExists(c,uri)) {

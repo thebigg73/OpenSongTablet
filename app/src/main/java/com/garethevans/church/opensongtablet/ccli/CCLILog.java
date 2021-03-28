@@ -2,8 +2,13 @@ package com.garethevans.church.opensongtablet.ccli;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
@@ -85,9 +90,13 @@ public class CCLILog {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<log>\n</log>\n";
 
-        // Check the uri exists for the outputstream to be valid
+        // Delete the old file
+        storageAccess.deleteFile(c,uri);
+
+        // Get the new file ready
         storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Settings", "", "ActivityLog.xml");
 
+        // Write the new file
         OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         return storageAccess.writeFileFromString(blankXML, outputStream);
     }
@@ -210,16 +219,16 @@ public class CCLILog {
         }
     }
 
-    public String getLogFileSize(Context c, StorageAccess storageAccess, Uri uri) {
+    public void getLogFileSize(Context c, StorageAccess storageAccess, Uri uri, TextView logFileSize) {
         // Set the uri if it isn't already done
         float file_size_kb = storageAccess.getFileSizeFromUri(c, uri);
         file_size_kb = Math.round(file_size_kb * 100);
         file_size_kb = file_size_kb / 100.0f;
         String returntext = "ActivityLog.xml ("+ file_size_kb + "kb)";
+        logFileSize.setText(returntext);
         if (file_size_kb > 1024) {
-            returntext = " <font color='#f00'>ActivityLog.xml ("+file_size_kb + "kb)" + "</font>";
+            logFileSize.setTextColor(0xffff0000);
         }
-        return returntext;
     }
 
     private void initialiseTables() {
@@ -325,78 +334,83 @@ public class CCLILog {
         }
     }
 
-    public String buildMyTable(Context c, Preferences preferences, String sizeoffile) {
-        if (title == null || title.size() == 0) {
-            return "<!DOCTYPE html><html><body><h2>" + c.getResources().getString(R.string.ccli) + "</h2>\n" +
-                    "<h3>" + c.getResources().getString(R.string.ccli_church) + ": " +
-                    preferences.getMyPreferenceString(c,"ccliChurchName","") + "</h3>\n" +
-                    "<h3>" + c.getResources().getString(R.string.ccli_licence) + ": " +
-                    preferences.getMyPreferenceString(c,"ccliLicence","")+ "</h3>\n" +
-                    "<h4>" + sizeoffile + "</h4>\n" +
-                    "</body></html>";
+    public TableLayout getTableLayout(Context c) {
+        TableLayout tableLayout = new TableLayout(c);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT);
+        tableLayout.setLayoutParams(layoutParams);
 
-        } else {
-            StringBuilder table = new StringBuilder("<!DOCTYPE html><html><head>\n" +
-                    "<style>\ntable {border-collapse: collapse; width: 100%}\n" +
-                    "th, td {border: 1px solid lightgrey; padding: 2px;}\n" +
-                    "tr:nth-child(even) {background: ghostwhite}\n" +
-                    "th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
-                    "background-color: green; color: white;}\n" +
-                    "</style>\n</head><body>" +
-                    "<h2>" + c.getResources().getString(R.string.ccli) + "</h2>\n" +
-                    "<h3>" + c.getResources().getString(R.string.ccli_church) + ": " +
-                    preferences.getMyPreferenceString(c,"ccliChurchName","") + "</h3>\n" +
-                    "<h3>" + c.getResources().getString(R.string.ccli_licence) + ": " +
-                    preferences.getMyPreferenceString(c,"ccliLicence","")+ "</h3>\n" +
-                    "<h4>" + sizeoffile + "</h4>\n" +
-                    "<table id=\"mytable\">\n<tr>");
-            table.append("<th>").append(c.getResources().getString(R.string.item)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.title)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.author)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.copyright)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.ccli)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.date)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.time)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.action)).append("</th>");
-            table.append("</tr>\n");
-            // Build the table view
-            for (int x = 0; x < title.size(); x++) {
-                table.append("<tr>");
-                table.append("<td>").append(songfile.get(x)).append("</td>");
-                table.append("<td>").append(title.get(x)).append("</td>");
-                table.append("<td>").append(author.get(x)).append("</td>");
-                table.append("<td>").append(copyright.get(x)).append("</td>");
-                table.append("<td>").append(ccli.get(x)).append("</td>");
-                table.append("<td>").append(date.get(x)).append("</td>");
-                table.append("<td>").append(time.get(x)).append("</td>");
-                switch (action.get(x)) {
-                    default:
-                        table.append("<td>").append(c.getResources().getString(R.string.other)).append("</td>");
-                        break;
-                    case "1":
-                        table.append("<td>").append(c.getResources().getString(R.string.new_something)).append("</td>");
-                        break;
-                    case "2":
-                        table.append("<td>").append(c.getResources().getString(R.string.delete)).append("</td>");
-                        break;
-                    case "3":
-                        table.append("<td>").append(c.getResources().getString(R.string.edit)).append("</td>");
-                        break;
-                    case "4":
-                    case "7":
-                        table.append("<td>").append(c.getResources().getString(R.string.rename)).append("</td>");
-                        break;
-                    case "5":
-                        table.append("<td>").append(c.getResources().getString(R.string.project)).append("</td>");
-                        break;
-                    case "6":
-                        table.append("<td>").append(c.getResources().getString(R.string.songsheet)).append("</td>");
-                        break;
-                }
-                table.append("<tr>\n");
+        // If there are no entries, sort that, otherwise add the correct data
+        if (songfile.size() != 0) {
+            // Add the headers
+            String[] headers = new String[]{c.getString(R.string.item), c.getString(R.string.title),
+                    c.getString(R.string.author), c.getString(R.string.copyright),
+                    c.getString(R.string.ccli), c.getString(R.string.date),
+                    c.getString(R.string.time), c.getString(R.string.action)};
+            tableLayout.addView(getRow(c, headers, true));
+
+            // Add the rows
+            for (int x = 0; x < songfile.size(); x++) {
+                String[] rowVals = new String[]{songfile.get(x), title.get(x), author.get(x), copyright.get(x),
+                        ccli.get(x), date.get(x), time.get(x), getActionText(c, action.get(x))};
+                tableLayout.addView(getRow(c, rowVals, false));
             }
-            table.append("</table></body></html>");
-            return table.toString();
+        }
+        return tableLayout;
+    }
+
+
+    public TableRow getRow(Context c, String[] vals, boolean isHeader) {
+        TableRow tableRow = new TableRow(c);
+        for (String val : vals) {
+            TextView textView = new TextView(c);
+            textView.setText(val);
+            textView.setPadding(8,0,8,0);
+            if (isHeader) {
+                textView.setTextSize(16.0f);
+            } else {
+                textView.setTextSize(12.0f);
+            }
+            tableRow.addView(textView);
+        }
+        colorRowColor(c,tableRow);
+        return tableRow;
+    }
+
+    private String getActionText(Context c, String action) {
+        String actionText;
+        switch (action) {
+            default:
+                actionText = c.getString(R.string.other);
+                break;
+            case "1":
+                actionText = c.getString(R.string.new_something);
+                break;
+            case "2":
+                actionText = c.getString(R.string.delete);
+                break;
+            case "3":
+                actionText = c.getString(R.string.edit);
+                break;
+            case "4":
+            case "7":
+                actionText = c.getString(R.string.rename);
+                break;
+            case "5":
+                actionText = c.getString(R.string.project);
+                break;
+            case "6":
+                actionText = c.getString(R.string.songsheet);
+                break;
+        }
+        return actionText;
+    }
+
+    boolean colorRow = true;
+    private void colorRowColor(Context c, TableRow tableRow) {
+        colorRow = !colorRow;
+        if (colorRow) {
+            tableRow.setBackgroundColor(ColorStateList.valueOf(c.getResources().getColor(R.color.colorSecondary)).getDefaultColor());
         }
     }
 

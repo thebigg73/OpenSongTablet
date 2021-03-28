@@ -193,7 +193,7 @@ public class NearbyConnectionsFragment extends Fragment {
     private void textInputDialog() {
         TextInputDialogFragment dialogFragment = new TextInputDialogFragment(preferences, this,
                 "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),
-                "deviceId", nearbyConnections.deviceId);
+                "deviceId", nearbyConnections.deviceId,true);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");
     }
 

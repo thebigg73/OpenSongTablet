@@ -170,7 +170,16 @@
             android:id="@+id/settingsCCLI"
             android:name="com.garethevans.church.opensongtablet.ccli.SettingsCCLI"
             android:label="settings_ccli"
-            tools:layout="@layout/settings_ccli" />
+            tools:layout="@layout/settings_ccli" >
+            <action
+                android:id="@+id/action_settingsCCLI_to_CCLILogFragment"
+                app:destination="@id/settingsCCLILog" />
+        </fragment>
+        <fragment
+            android:id="@+id/settingsCCLILog"
+            android:name="com.garethevans.church.opensongtablet.ccli.CCLILogFragment"
+            android:label="settingsCCLILog"
+            tools:layout="@layout/settings_ccli_log"/>
 
         <!-- Display graph -->
         <navigation
@@ -309,6 +318,7 @@
         <deepLink
             android:id="@+id/deepLink2"
             app:uri="opensongapp://preferences" />
+
 
     </navigation>
 

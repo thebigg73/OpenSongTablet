@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,13 +33,14 @@ public class TextInputDialogFragment extends DialogFragment {
     private final String prefName;
     private String prefVal;
     private ArrayList<String> prefChoices;
-    private final boolean simpleEditText;
+    private final boolean simpleEditText, singleLine;
 
     private TextInputDialogBinding myView;
     private DialogReturnInterface dialogReturnInterface;
 
     public TextInputDialogFragment(Preferences preferences, Fragment fragment, String fragname,
-                                   String title, String hint, String prefName, String prefVal) {
+                                   String title, String hint, String prefName, String prefVal,
+                                   boolean singleLine) {
         this.preferences = preferences;
         this.fragment = fragment;
         this.fragname = fragname;
@@ -45,6 +48,7 @@ public class TextInputDialogFragment extends DialogFragment {
         this.hint = hint;
         this.prefName = prefName;
         this.prefVal = prefVal;
+        this.singleLine = singleLine;
         simpleEditText = true;
     }
 
@@ -60,6 +64,7 @@ public class TextInputDialogFragment extends DialogFragment {
         this.prefVal = prefVal;
         this.prefChoices = prefChoices;
         simpleEditText = false;
+        singleLine = false;
     }
 
     @Override
@@ -93,6 +98,17 @@ public class TextInputDialogFragment extends DialogFragment {
 
             // Set the current values
             myView.prefEditText.getEditText().setText(prefVal);
+            if (singleLine) {
+                myView.prefEditText.getEditText().setLines(1);
+                myView.prefEditText.getEditText().setMaxLines(1);
+                myView.prefEditText.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) ||
+                            actionId == EditorInfo.IME_ACTION_DONE) {
+                        myView.okButton.performClick();
+                    }
+                    return false;
+                });
+            }
             ((TextInputLayout)myView.prefEditText.findViewById(R.id.holderLayout)).setHint(hint);
 
         } else {

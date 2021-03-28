@@ -18,7 +18,6 @@ public class CommonSQL {
     // Only the database itself is different, so as long as that is dealt with separately, we can proceed
     // When we return an SQLite object
 
-
     // Basic string parsing for SQL safety
     public String escapedSQL(String s) {
         // Don't do this if already escaped

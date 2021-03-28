@@ -566,6 +566,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Log.d("MainActivity","songIds.size()="+songIds.size());
         // Write a crude text file (line separated) with the song Ids (folder/file)
         storageAccess.writeSongIDFile(this, preferences, songIds);
 
@@ -765,6 +766,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     navHome();
                 } else {
                     lockDrawer(true);
+                    hideActionButton(true);
                     navController.navigate(Uri.parse("opensongapp://preferences"));
                 }
                 break;
@@ -773,6 +775,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 if (settingsOpen && nearbyOpen) {
                     navHome();
                 } else if (requestNearbyPermissions() && fragmentOpen != R.id.nearbyConnectionsFragment) {
+                    hideActionButton(true);
+                    lockDrawer(true);
                     navController.navigate(Uri.parse("opensongapp://settings/nearby"));
                 }
                 break;
@@ -785,17 +789,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return super.onOptionsItemSelected(item);
     }
 
-    // TODO
-    // Add a feature for an alert button in the toolbar that tells the user something important via
-    // a popup dialogfragment.  This can be the new version notification, backupwarning, Google Play Services warning, etc.
-
-
     private void navHome() {
         lockDrawer(false);
         if (whichMode.equals("Presentation")) {
             navController.navigate(Uri.parse("opensongapp://presentation"));
+            hideActionButton(true);
         } else {
             navController.navigate(Uri.parse("opensongapp://performance"));
+            hideActionButton(false);
         }
     }
 
@@ -1090,9 +1091,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void hideActionButton(boolean hide) {
         if (hide) {
+            Log.d("MainActivity","Hiding actionFAB");
             activityMainBinding.pageButtonsRight.actionFAB.hide();
             activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.GONE);
         } else {
+            Log.d("MainActivity","Showing actionFAB");
             activityMainBinding.pageButtonsRight.actionFAB.show();
             activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.VISIBLE);
         }

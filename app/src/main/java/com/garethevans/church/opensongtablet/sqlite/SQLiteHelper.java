@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.sqlite;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -55,9 +56,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
     public void resetDatabase(Context c) {
+        Log.d("SQLiteHelper","resetDatabase");
         try (SQLiteDatabase db = getDB(c)) {
             emptyTable(db);
+            Log.d("SQLiteHelper","emptyTable");
             onCreate(db);
+            Log.d("SQLiteHelper","onCreate");
         }
     }
 
