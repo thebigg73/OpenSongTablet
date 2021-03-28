@@ -49,23 +49,6 @@ class ProfileActions {
         return result;
     }
 
-    @SuppressLint("SdCardPath")
-    private Uri getPrefsFile(Context c, StorageAccess storageAccess) {
-        Uri uri;
-        File root;
-
-        //Try the Samsung version
-        root = new File("/dbdata/databases/" + c.getPackageName() + "/shared_prefs/");
-        uri = Uri.fromFile(root);
-
-        // If not there, try the default
-        if (uri==null || !storageAccess.uriExists(c,uri)) {
-            // Use the default method
-            root = new File("/data/data/" + c.getPackageName() + "/shared_prefs/CurrentPreferences.xml");
-            uri = Uri.fromFile(root);
-        }
-        return uri;
-    }
 
     boolean doLoadProfile(Context c, Preferences preferences, StorageAccess storageAccess, Uri uri) {
         // This class will import saved profiles/settings.

@@ -1,13 +1,11 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -143,7 +141,6 @@ public class SetStorageLocationFragment extends Fragment {
         myView.startApp.setOnClickListener(v -> goToSongs());
     }
 
-
     // Deal with the storage location set/chosen
     private void getUriTreeFromPreferences() {
         /*
@@ -190,10 +187,6 @@ public class SetStorageLocationFragment extends Fragment {
         }
     }
 
-
-
-
-
     // Stuff to search for previous installation locations
     private void startSearch() {
         // Deactivate the stuff we shouldn't click on while it is being prepared
@@ -202,8 +195,51 @@ public class SetStorageLocationFragment extends Fragment {
         // Initialise the available storage locations
         locations = new ArrayList<>();
 
-        FindLocations findlocations = new FindLocations();
-        findlocations.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        findLocations();
+    }
+    private void findLocations() {
+        // Run in a new thread
+        new Thread(() -> {
+            // Go through the directories recursively and add them to an arraylist
+            folder = new File("/storage");
+            walkFiles(folder);
+
+            folder = Environment.getExternalStorageDirectory();
+            walkFiles(folder);
+
+            // Set up the file list, as long as the user wasn't bored and closed the window!
+            requireActivity().runOnUiThread(() -> {
+                if (locations != null) {
+                    // Hide the  and reenable stuff
+                    setEnabledOrDisabled(true);
+
+                    if (locations.size() < 1) {
+                        // No previous installations found
+                        myView.previousStorageHeading.setVisibility(View.VISIBLE);
+                        myView.previousStorageTextView.setVisibility(View.GONE);
+                        myView.previousStorageLocations.setVisibility(View.GONE);
+                        myView.previousStorageLocations.removeAllViews();
+                    } else {
+                        myView.previousStorageHeading.setVisibility(View.GONE);
+                        myView.previousStorageTextView.setText(getString(R.string.existing_found));
+                        myView.previousStorageTextView.setVisibility(View.VISIBLE);
+                        myView.previousStorageLocations.setVisibility(View.VISIBLE);
+                        myView.previousStorageLocations.removeAllViews();
+                        StringBuilder check = new StringBuilder();
+                        // Add the locations to the textview
+                        for (int x = 0; x < locations.size(); x++) {
+                            if (!check.toString().contains("¬" + locations.get(x) + "¬")) {
+                                check.append("¬").append(locations.get(x)).append("¬");
+                                TextView tv = new TextView(requireContext());
+                                tv.setText(locations.get(x));
+                                myView.previousStorageLocations.addView(tv);
+                            }
+                        }
+                    }
+                }
+            });
+
+        }).start();
     }
     private void walkFiles(File root) {
         if (root!=null && root.exists() && root.isDirectory()) {
@@ -465,56 +501,10 @@ public class SetStorageLocationFragment extends Fragment {
             String outputText = niceLocation[1] + "\n" + niceLocation[0];
             ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText(outputText);
             warningCheck();
+        } else {
+            ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText("");
         }
         checkStatus();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class FindLocations extends AsyncTask<Object, String, String> {
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            // Go through the directories recursively and add them to an arraylist
-            folder = new File("/storage");
-            walkFiles(folder);
-
-            folder = Environment.getExternalStorageDirectory();
-            walkFiles(folder);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            // Set up the file list, as long as the user wasn't bored and closed the window!
-            if (locations != null) {
-                // Hide the  and reenable stuff
-                setEnabledOrDisabled(true);
-
-                if (locations.size() < 1) {
-                    // No previous installations found
-                    myView.previousStorageHeading.setVisibility(View.VISIBLE);
-                    myView.previousStorageTextView.setVisibility(View.GONE);
-                    myView.previousStorageLocations.setVisibility(View.GONE);
-                    myView.previousStorageLocations.removeAllViews();
-                } else {
-                    myView.previousStorageHeading.setVisibility(View.GONE);
-                    myView.previousStorageTextView.setText(getString(R.string.existing_found));
-                    myView.previousStorageTextView.setVisibility(View.VISIBLE);
-                    myView.previousStorageLocations.setVisibility(View.VISIBLE);
-                    myView.previousStorageLocations.removeAllViews();
-                    StringBuilder check = new StringBuilder();
-                    // Add the locations to the textview
-                    for (int x=0;x<locations.size();x++) {
-                        if (!check.toString().contains("¬" + locations.get(x) + "¬")) {
-                            check.append("¬").append(locations.get(x)).append("¬");
-                            TextView tv = new TextView(requireContext());
-                            tv.setText(locations.get(x));
-                            myView.previousStorageLocations.addView(tv);
-                        }
-                    }
-                }
-            }
-        }
     }
 
 }

@@ -1,9 +1,9 @@
 package com.garethevans.church.opensongtablet.preferences;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +11,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsProfilesBinding;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-
-import static android.provider.DocumentsContract.EXTRA_INITIAL_URI;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 public class ProfileFragment extends Fragment {
 
@@ -26,6 +27,8 @@ public class ProfileFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private Preferences preferences;
     private StorageAccess storageAccess;
+    private ProfileActions profileActions;
+    private ShowToast showToast;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,66 +54,64 @@ public class ProfileFragment extends Fragment {
         preferences = mainActivityInterface.getPreferences();
         storageAccess = mainActivityInterface.getStorageAccess();
         mainActivityInterface.registerFragment(this,"ProfileFragment");
+        showToast = mainActivityInterface.getShowToast();
+        profileActions = new ProfileActions();
     }
 
     private void setupListeners() {
         myView.loadButton.setOnClickListener(v -> loadProfile());
-        myView.saveButton.setOnClickListener(v -> saveProfile(new Intent()));
+        myView.saveButton.setOnClickListener(v -> saveProfile());
+        myView.resetButton.setOnClickListener(v -> resetPreferences());
     }
 
     private void loadProfile() {
         // Open the file picker and when the user has picked a file, on activity result will
-
-    }
-
-
-    boolean doSaveProfile(Context c, Preferences preferences, StorageAccess storageAccess, Uri to) {
-        boolean result = true;  // Returns true on success.  Catches throw to false
-        try {
-            // This is used to copy the current preferences xml file to the chosen name / location
-            // Check the file exists, if not create it
-            if (!storageAccess.uriExists(c, to)) {
-                String name = to.getLastPathSegment();
-                storageAccess.lollipopCreateFileForOutputStream(c, preferences, to, null, "Profiles", "", name);
-            }
-
-            // Different versions of Android save the preferences in different locations.
-            //Uri prefsFile = getPrefsFile(c, storageAccess);
-
-            //InputStream inputStream = storageAccess.getInputStream(c, prefsFile);
-            //OutputStream outputStream = storageAccess.getOutputStream(c, to);
-
-
-            //storageAccess.copyFile(inputStream, outputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            result = false;
-        }
-        return result;
-    }
-
-    private void saveProfile(Intent intent) {
-
-    }
-
-    Intent saveIntent() {
-        Intent intent = new Intent();
-        intent.setType("application/*");
+        Intent loadIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Profiles","",null);
+        loadIntent.setDataAndType(uri,"application/xml");
         String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-        intent.setAction(Intent.ACTION_CREATE_DOCUMENT);
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
-            Uri uri = storageAccess.getUriForItem(getContext(), preferences, "Profiles", "", "");
-            DocumentFile file = DocumentFile.fromTreeUri(getContext(), uri);
-            if (file!=null) {
-                intent.putExtra(EXTRA_INITIAL_URI, file.getUri());
-                file = file.findFile("Profiles");
-                if (file!=null) {
-                    intent.putExtra(EXTRA_INITIAL_URI, file.getUri());
-                }
+        loadIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        loadIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
+        loadIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+        startActivityForResult(loadIntent, 5002);
+    }
+
+    private void saveProfile() {
+        // Open the file picker and when the user has picked a file, on activity result will
+        Intent saveIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Profiles","",null);
+        saveIntent.setDataAndType(uri,"application/xml");
+        saveIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
+        saveIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+        saveIntent.putExtra(Intent.EXTRA_TITLE,"MyProfile");
+        startActivityForResult(saveIntent, 5001);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (resultCode == Activity.RESULT_OK && requestCode == 5002) {
+            if (profileActions.loadProfile(requireContext(), storageAccess, preferences, resultData.getData())) {
+                showToast.doIt(requireContext(),getString(R.string.success));
+            } else {
+                showToast.doIt(requireContext(),getString(R.string.error));
+            }
+        } else if (resultCode == Activity.RESULT_OK && requestCode == 5001) {
+            if (profileActions.saveProfile(requireContext(), storageAccess, preferences, resultData.getData())) {
+                showToast.doIt(requireContext(),getString(R.string.success));
+            } else {
+                showToast.doIt(requireContext(),getString(R.string.error));
             }
         }
-        intent.putExtra(Intent.EXTRA_TITLE, preferences.getMyPreferenceString(getContext(),"profileName","Profile"));
-        return intent;
+    }
+
+    private void resetPreferences() {
+        // Reset the preferences and start again
+        profileActions.resetPreferences(requireContext(),preferences);
+
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.setStorageLocationFragment, true)
+                .build();
+        NavHostFragment.findNavController(this)
+                .navigate(Uri.parse("opensongapp://settings/storage/setstorage"),navOptions);
     }
 }

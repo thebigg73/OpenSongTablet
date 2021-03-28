@@ -761,8 +761,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="remindme">Remind me later</string>
     <string name="reset">Reset</string>
     <string name="reset_colours">Reset Colours</string>
-    <string name="reset_text">If you are having difficulties with the app, try resetting your settings using the button below.
-        This will clear your settings, but will not delete your songs.</string>
+    <string name="reset_text">If you are having difficulties with the app, try clearing your preferences. This will not delete your songs.</string>
     <string name="scale_style">Scale style</string>
     <string name="scrollbuttons">Scroll settings</string>
     <string name="scrollbuttons_distance">Scroll amount</string>

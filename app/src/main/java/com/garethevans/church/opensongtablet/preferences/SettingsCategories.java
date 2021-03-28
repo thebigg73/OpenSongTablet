@@ -1,9 +1,7 @@
 package com.garethevans.church.opensongtablet.preferences;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -61,10 +59,8 @@ public class SettingsCategories extends Fragment {
     private void setPlayEnabled(boolean enabled) {
         myView.connectButton.setEnabled(enabled);
         myView.connectLine.setEnabled(enabled);
-        if (enabled) {
-            myView.needPlayServices.setVisibility(View.GONE);
-        } else {
-            myView.needPlayServices.setVisibility(View.VISIBLE);
+        if (!enabled) {
+            ((TextView)myView.connectButton.findViewById(R.id.subText)).setText(getString(R.string.play_services_error));
         }
     }
 
@@ -89,116 +85,10 @@ public class SettingsCategories extends Fragment {
                 mainActivityInterface.navigateToFragment(R.id.nearbyConnectionsFragment);
             }
         });
+        myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.profileFragment));
         myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.midiFragment));
         myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.about_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.control_graph));
-        myView.playServicesHow.setOnClickListener(v -> {
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
-            startActivity(i);
-        });
     }
 
-
-    // TODO - have an option to reset the app preferences and permissions
-    /*private void clearTheCaches() {
-        // Clear the user preferences
-        File cacheDirectory = getCacheDir();
-        File applicationDirectory;
-        if (cacheDirectory!=null && cacheDirectory.getParent()!=null) {
-            applicationDirectory = new File(cacheDirectory.getParent());
-        } else {
-            applicationDirectory = cacheDirectory;
-        }
-        if (applicationDirectory!=null && applicationDirectory.exists()) {
-            String[] fileNames = applicationDirectory.list();
-            if (fileNames!=null) {
-                for (String fileName : fileNames) {
-                    if (!fileName.equals("lib")) {
-                        File ftodel = new File(applicationDirectory,fileName);
-                        doDeleteFile(ftodel);
-                    }
-                }
-            }
-        }
-        try {
-            PreferenceManager.getDefaultSharedPreferences(BootUpCheck.this).edit().clear().apply();
-        } catch (Exception e) {
-            Log.d("d","Error clearing new preferences");
-        }
-
-        // Clear the old preferences (that will eventually get phased out!)
-        try {
-            BootUpCheck.this.getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE).edit().clear().apply();
-        } catch (Exception e) {
-            Log.d("d","Error clearing old preferences");
-            e.printStackTrace();
-        }
-
-
-        // Clear the cache and data folder
-        try {
-            File dir = BootUpCheck.this.getCacheDir();
-            doDeleteCacheFile(dir);
-
-            // Set the last used version to 1 (otherwise we get stuck in a loop!)
-            preferences.setMyPreferenceInt(BootUpCheck.this,"lastUsedVersion",1);
-            // Now restart the BootUp activity
-            BootUpCheck.this.recreate();
-
-        } catch (Exception e) {
-            Log.d("d","Error clearing the cache directory");
-            e.printStackTrace();
-        }
-
-        try {
-            ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-            Log.d("BootUpCheck","Clearing data");
-            if (am!=null) {
-                am.clearApplicationUserData();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private static boolean doDeleteFile(File file) {
-        boolean deletedAll = true;
-        if (file != null) {
-            if (file.isDirectory()) {
-                String[] children = file.list();
-                if (children!=null) {
-                    for (String child : children) {
-                        deletedAll = doDeleteFile(new File(file, child)) && deletedAll;
-                    }
-                }
-            } else {
-                deletedAll = file.delete();
-            }
-        }
-        return deletedAll;
-    }
-
-    private boolean doDeleteCacheFile(File file) {
-
-        if (file != null && file.isDirectory()) {
-            String[] children = file.list();
-            if (children!=null) {
-                for (String child : children) {
-                    boolean success = doDeleteCacheFile(new File(file, child));
-                    if (!success) {
-                        return false;
-                    }
-                }
-            }
-            return file.delete();
-        } else if(file!= null && file.isFile()) {
-            return file.delete();
-        } else {
-            return false;
-        }
-    }
-
-
-    */
 }

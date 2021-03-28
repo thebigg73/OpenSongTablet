@@ -92,7 +92,7 @@ public class MidiFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsMidiBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.midi));
+        mainActivityInterface.updateToolbar(null, getString(R.string.midi));
 
         // Register this fragment with the main activity to deal with listeners
         mainActivityInterface.registerFragment(this,"MidiFragment");

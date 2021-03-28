@@ -8,6 +8,10 @@ public class Preferences extends Activity {
     // This is the way that preferences will be stored
     private SharedPreferences sharedPref;
 
+    public SharedPreferences getSharedPref() {
+        return sharedPref;
+    }
+
     // Get the saved preference values
     public String getMyPreferenceString(Context c, String prefname, String fallback) {
         // Return a string from saved preference
