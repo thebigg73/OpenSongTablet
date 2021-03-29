@@ -85,10 +85,10 @@ public class ProcessSong {
         myNEWXML += "  <link_other>" + parseToHTMLEntities(song.getLinkother()) + "</link_other>\n";
         myNEWXML += "  <abcnotation>" + parseToHTMLEntities(song.getAbc()) + "</abcnotation>\n";
 
-        if (!song.getExtraStuff1().isEmpty()) {
+        if (song!=null && song.getExtraStuff1()!=null && !song.getExtraStuff1().isEmpty()) {
             myNEWXML += "  " + song.getExtraStuff1() + "\n";
         }
-        if (!song.getExtraStuff2().isEmpty()) {
+        if (song!=null && song.getExtraStuff2()!=null && !song.getExtraStuff2().isEmpty()) {
             myNEWXML += "  " + song.getExtraStuff2() + "\n";
         }
         myNEWXML += "</song>";
