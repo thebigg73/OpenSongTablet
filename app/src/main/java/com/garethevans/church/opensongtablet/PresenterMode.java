@@ -396,15 +396,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Make the drawers match half the width of the screen
             resizeDrawers();
 
-            // Set up the page buttons
-            setupSetButtons();
-
-            // Set up the menus
-            //prepareSongMenu();
-            prepareOptionMenu();
-
-            // Set up the song buttons
-            setupSongButtons();
+            // IV - refreshAll call later will perfoem setupButtons, prepareOptionsMenu and setupSongButtons
 
             // Set up the Wifi service
             getBluetoothName();
@@ -418,13 +410,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // IV - Force display of top level of option menu - needed after mode change
             closeMyDrawers("song");
 
-            // Click on the first item in the set
+            // IV - refreshAll includes load of the song
+            // Click on the first item in the set (which calls refreshAll)
             if (presenter_set_buttonsListView.getChildCount() > 0) {
                 presenter_set_buttonsListView.getChildAt(0).performClick();
-
             } else {
-                // Load the song
-                loadSong();
+                refreshAll();
             }
 
             // Deal with any intents from external files/intents

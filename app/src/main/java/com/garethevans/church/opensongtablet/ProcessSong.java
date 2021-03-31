@@ -2628,11 +2628,14 @@ public class ProcessSong extends Activity {
             }
             ll.addView(tl);
         }
-        TextView emptyline = new TextView(c);
-        emptyline.setLayoutParams(linearlayout_params());
-        emptyline.setText(" ");
-        emptyline.setTextSize(fontsize * 0.5f);
-        ll.addView(emptyline);
+        // IV - Add empty line only for multi section performance mode
+        if (StaticVariables.whichMode.equals("Performance")) {
+            TextView emptyline = new TextView(c);
+            emptyline.setLayoutParams(linearlayout_params());
+            emptyline.setText(" ");
+            emptyline.setTextSize(fontsize * 0.5f);
+            ll.addView(emptyline);
+        }
         return ll;
     }
 
@@ -2848,7 +2851,7 @@ public class ProcessSong extends Activity {
         if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
             boxbit.setGravity(Gravity.CENTER_VERTICAL);
         }
-        if (StaticVariables.whichMode.equals("Presentation")) {
+        if (StaticVariables.whichMode.equals("Presentation") || (StaticVariables.whichMode.equals("Stage") && !(preferences.getMyPreferenceBoolean(c, "presoShowChords", false)))) {
             boxbit.setBackground(null);
             boxbit.setHorizontalGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER_HORIZONTAL));
             boxbit.setVerticalGravity(preferences.getMyPreferenceInt(c, "presoLyricsVAlign", Gravity.CENTER_VERTICAL));
