@@ -396,7 +396,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Make the drawers match half the width of the screen
             resizeDrawers();
 
-            // IV - refreshAll call later will perfoem setupButtons, prepareOptionsMenu and setupSongButtons
+            // IV - refreshAll call later will perform setupButtons, prepareOptionsMenu and setupSongButtons
 
             // Set up the Wifi service
             getBluetoothName();
@@ -766,7 +766,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         prepareStopAutoSlideShow();
 
         try {
-            // Only do this once - if we are the process of loading a song already, don't try to do it again!
+            // Only do this once - if we are in the process of loading a song already, don't try to do it again!
             if (!FullscreenActivity.alreadyloading) {
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;

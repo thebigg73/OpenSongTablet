@@ -1272,8 +1272,12 @@ public class ProcessSong extends Activity {
                     // IV -   Remove any bold marker, typical word splits, white space and then trim - beautify!
                     bit = bit.replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
                     // IV - 2 spaces added to reduce occurance of right edge overrun
-                    // And before so that block text shadow has spaces on both sides
-                    bit = "  " + bit + "  ";
+                    if (StaticVariables.whichMode.equals("Performance")) {
+                        bit = bit + "  ";
+                    } else {
+                        // And before so that block text shadow has spaces on both sides
+                        bit = "  " + bit + "  ";
+                    }
                     // IV - flag used to break loop
                     lyricsOnly = true;
                 } else {

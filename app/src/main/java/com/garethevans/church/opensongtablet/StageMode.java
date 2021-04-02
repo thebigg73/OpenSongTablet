@@ -6750,7 +6750,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void loadSong() {
         try {
-            // Only do this once - if we are the process of loading a song already, don't try to do it again!
+            // Only do this once - if we are in the process of loading a song already, don't try to do it again!
             if (!FullscreenActivity.alreadyloading) {
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;

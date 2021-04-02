@@ -215,7 +215,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             showorhideView(group_manualfontsize, !toggleAutoScaleButton.isChecked());
             boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoLyricsBold",false));
         } else {
-            // IV - Stage and Perfomance modes do not support manual font size, bold or show alerts
+            // IV - Stage and Performance modes do not support manual font size, bold or show alerts
             toggleAutoScaleButton.setVisibility(View.GONE);
             showorhideView(group_maxfontsize, true);
             showorhideView(group_manualfontsize, false);
@@ -349,6 +349,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                     e.printStackTrace();
                 }
             }
+            setUpAlignmentButtons();
         });
         boldTextButton.setOnCheckedChangeListener((compoundButton, b) -> {
             preferences.setMyPreferenceBoolean(getContext(),"presoLyricsBold",b);
@@ -549,7 +550,8 @@ public class PopUpLayoutFragment extends DialogFragment {
     private void setUpAlignmentButtons() {
 
 
-        if (StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Presentation")) {
+        if ((StaticVariables.whichMode.equals("Stage") && !preferences.getMyPreferenceBoolean(getContext(), "presoShowChords", false)) ||
+                StaticVariables.whichMode.equals("Presentation")) {
 
             int lyralign = preferences.getMyPreferenceInt(getContext(), "presoLyricsAlign", Gravity.CENTER_HORIZONTAL);
             int lyrvalign = preferences.getMyPreferenceInt(getContext(), "presoLyricsVAlign", Gravity.CENTER_VERTICAL);
