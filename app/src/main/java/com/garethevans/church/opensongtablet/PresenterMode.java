@@ -762,40 +762,49 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     public void loadSong() {
-        StaticVariables.panicRequired = false;
-        StaticVariables.infoBarChangeRequired = true;
         // IV - Prevent slide shows continuing to be active on change of song(!)
         prepareStopAutoSlideShow();
 
-        if (!FullscreenActivity.alreadyloading) {
-            FullscreenActivity.alreadyloading = true;
-            // Get the song indexes
-            //listSongFiles.getCurrentSongIndex();
+        try {
+            // Only do this once - if we are the process of loading a song already, don't try to do it again!
+            if (!FullscreenActivity.alreadyloading) {
+                // It will get set back to false in the post execute of the async task
+                FullscreenActivity.alreadyloading = true;
 
-            // Don't do this for a blacklisted filetype (application, video, audio)
-            Uri uri = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", StaticVariables.whichSongFolder,
-                    StaticVariables.songfilename);
-            if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
-                StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
-                ShowToast.showToast(PresenterMode.this);
-            } else {
-                // Declare we have loaded a new song (for the ccli log).
-                // This stops us reporting projecting every section
-                newsongloaded = true;
+                // IV - Set presenting options
+                StaticVariables.panicRequired = false;
+                StaticVariables.infoBarChangeRequired = true;
 
-                // Send Nearby payload
-                if (StaticVariables.isHost && StaticVariables.isConnected) {
-                    nearbyConnections.sendSongPayload();
-                }
+                // Get the song indexes
+                //listSongFiles.getCurrentSongIndex();
 
-                doCancelAsyncTask(loadsong_async);
-                loadsong_async = new LoadSong();
-                try {
-                    loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } catch (Exception e) {
-                    // Error loading the song
+                // Don't do this for a blacklisted filetype (application, video, audio)
+                Uri uri = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", StaticVariables.whichSongFolder,
+                        StaticVariables.songfilename);
+                if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
+                    StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
+                    ShowToast.showToast(PresenterMode.this);
+                } else {
+                    // Declare we have loaded a new song (for the ccli log).
+                    // This stops us reporting projecting every section
+                    newsongloaded = true;
+
+                    // Send Nearby payload
+                    if (StaticVariables.isHost && StaticVariables.isConnected) {
+                        nearbyConnections.sendSongPayload();
+                    }
+
+                    doCancelAsyncTask(loadsong_async);
+                    loadsong_async = new LoadSong();
+                    try {
+                        loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } catch (Exception e) {
+                        // Error loading the song
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void findSongInFolders() {
@@ -3588,10 +3597,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
+        StaticVariables.infoBarChangeRequired = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                     MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         updateDisplays();
-        // IV - Need to refresh fonts/colours when in this mode
+        // IV - Need to refresh all when in this mode
         refreshAll();
     }
 

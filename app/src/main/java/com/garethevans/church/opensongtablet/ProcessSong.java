@@ -2833,7 +2833,7 @@ public class ProcessSong extends Activity {
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
         drawable.setColor(StaticVariables.transparent);                             // Makes the box transparent
         if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-            drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+            drawable.setStroke(1, StaticVariables.transparent); // set stroke width and make transparent
         } else {
             drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
         }
@@ -2860,7 +2860,7 @@ public class ProcessSong extends Activity {
             GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
             drawable.setColor(StaticVariables.transparent);                                    // Makes the box transparent
             if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-                drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+                drawable.setStroke(1, StaticVariables.transparent); // set stroke width and make transparent
             } else {
                 drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
             }
@@ -2879,7 +2879,7 @@ public class ProcessSong extends Activity {
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
         drawable.setColor(StaticVariables.transparent);  // Makes the box transparent
         if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-            drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+            drawable.setStroke(1, StaticVariables.transparent); // set stroke width and make transparent
         } else {
             drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
         }

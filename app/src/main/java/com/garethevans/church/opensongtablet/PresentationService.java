@@ -101,7 +101,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         @SuppressLint("StaticFieldLeak")
         private static ImageView projected_ImageView, projected_Logo, projected_BackgroundImage;
         @SuppressLint("StaticFieldLeak")
-        private static TextView songinfo_TextView, presentermode_title, presentermode_author,
+        private static TextView presentermode_title, presentermode_author,
                 presentermode_copyright, presentermode_ccli, presentermode_alert;
         @SuppressLint("StaticFieldLeak")
         private static LinearLayout bottom_infobar, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3;
@@ -156,11 +156,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 // Prepare the display after 2 secs (a chance for stuff to be measured and show the logo
                 Handler h = new Handler();
                 h.postDelayed(() -> {
+                    presenterStartUp();
                     if (!StaticVariables.whichMode.equals("Presentation")) {
                         normalStartUp();
-                    } else {
-                        // Switch to the user background and logo
-                        presenterStartUp();
                     }
                 }, 2000);
 
@@ -180,7 +178,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             projected_SurfaceHolder = projected_SurfaceView.getHolder();
             projected_SurfaceHolder.addCallback(this);
             projected_Logo = findViewById(R.id.projected_Logo);
-            songinfo_TextView = findViewById(R.id.songinfo_TextView);
             presentermode_bottombit = findViewById(R.id.presentermode_bottombit);
             presentermode_title = findViewById(R.id.presentermode_title);
             presentermode_author = findViewById(R.id.presentermode_author);
@@ -217,12 +214,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentationCommon.setDefaultBackgroundImage(c);
         }
         private static void matchPresentationToMode() {
-            if (presentationCommon.matchPresentationToMode(songinfo_TextView,presentermode_bottombit,projected_SurfaceView,projected_BackgroundImage,projected_ImageView)) {
+            if (presentationCommon.matchPresentationToMode(presentermode_bottombit,projected_SurfaceView,projected_BackgroundImage,projected_ImageView)) {
                 fixBackground();
             }
         }
         static void changeMargins() {
-            presentationCommon.changeMargins(c,preferences,songinfo_TextView,projectedPage_RelativeLayout,StaticVariables.cast_presoInfoColor);
+            presentationCommon.changeMargins(c,preferences,projectedPage_RelativeLayout,StaticVariables.cast_presoInfoColor);
         }
         static void fixBackground() {
             presentationCommon.fixBackground(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
@@ -305,7 +302,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         // Update the screen content
         static void doUpdate() {
             presentermode_alert.setAlpha(1.0f);
-            presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
+            presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,presentermode_bottombit,projected_SurfaceView,
                     projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
                     presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, presentermode_alert, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
         }

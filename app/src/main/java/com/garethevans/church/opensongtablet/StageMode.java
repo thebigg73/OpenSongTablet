@@ -523,18 +523,12 @@ public class StageMode extends AppCompatActivity implements
                 // Restore Drawer Swipe preference
                 toggleDrawerSwipe();
 
-                // Prepare the song menu
-                prepareSongMenu();
-
-                // Prepare the MAIN option menu
+                // IV - RefreshAll calls setupButtons, prepareOptionsMenu and setupSongButtons
+                // Start with MAIN option menu
                 StaticVariables.whichOptionMenu="MAIN";
-                prepareOptionMenu();
-
-                // Set up the page buttons
-                setupPageButtons();
 
                 // Load the song and get started
-                loadSong();
+                refreshAll();
 
                 // Prepare abhide listener
                 setupAbHide();
@@ -6761,6 +6755,10 @@ public class StageMode extends AppCompatActivity implements
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
 
+                // IV - Set presenting options
+                StaticVariables.panicRequired = false;
+                StaticVariables.infoBarChangeRequired = true;
+
                 // Clear any queued 'after song display' activity - we are moving to a new song
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
                 startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
@@ -8211,6 +8209,7 @@ public class StageMode extends AppCompatActivity implements
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
+        StaticVariables.infoBarChangeRequired = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         updateDisplays();
