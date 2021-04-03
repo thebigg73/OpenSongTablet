@@ -3448,10 +3448,10 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.myToastMessage = getString(R.string.switchtoperformmode);
             ShowToast.showToast(StageMode.this);
         } else {
+            FullscreenActivity.bmScreen = null;
             if (StaticVariables.thisSongScale == null || !StaticVariables.thisSongScale.equals("Y")) {
                 StaticVariables.myToastMessage = getString(R.string.highlight_notallowed);
                 ShowToast.showToast(StageMode.this);
-                FullscreenActivity.bmScreen = null;
             } else {
                 boolean vis = false;
                 if (highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
@@ -3465,7 +3465,7 @@ public class StageMode extends AppCompatActivity implements
                     glideimage_ScrollView.destroyDrawingCache();
                     glideimage_ScrollView.setDrawingCacheEnabled(true);
                     glideimage_ScrollView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                    FullscreenActivity.bmScreen = null;
+                    glideimage_ScrollView.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
                     try {
                         FullscreenActivity.bmScreen = glideimage_ScrollView.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
@@ -3478,7 +3478,7 @@ public class StageMode extends AppCompatActivity implements
                     songscrollview.destroyDrawingCache();
                     songscrollview.setDrawingCacheEnabled(true);
                     songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                    FullscreenActivity.bmScreen = null;
+                    songscrollview.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
                     try {
                         FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
@@ -4958,7 +4958,19 @@ public class StageMode extends AppCompatActivity implements
 
                 Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
                 canvas.scale(scale,scale);
+                songscrollview.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.getChildAt(0).draw(canvas);
+                songscrollview.destroyDrawingCache();
+                songscrollview.setDrawingCacheEnabled(true);
+                songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                songscrollview.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
+                try {
+                    FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                } catch (Exception e) {
+                    Log.d("StageMode", "ShareSong error getting the screenshot!");
+                } catch (OutOfMemoryError o) {
+                    Log.d("StageMode", "ShareSong Out of memory");
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
