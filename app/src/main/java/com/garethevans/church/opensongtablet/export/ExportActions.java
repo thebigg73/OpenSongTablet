@@ -20,12 +20,15 @@ public class ExportActions {
     }
 
     public Intent exportBackup(Context c, Uri uri, String filename) {
-        Intent emailIntent = setEmailIntent(c.getString(R.string.backup_info),filename, filename);
+        Intent intent = setEmailIntent(c.getString(R.string.backup_info),filename, filename);
+        //Intent intent = new Intent(Intent.ACTION_SEND);
+        //intent.setData(uri);
         ArrayList<Uri> uris = new ArrayList<>();
         uris.add(uri);
-        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        return emailIntent;
+        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        intent.setType("*/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        return intent;
     }
 
 }

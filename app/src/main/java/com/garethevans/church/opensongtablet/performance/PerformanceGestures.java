@@ -80,7 +80,7 @@ public class PerformanceGestures {
 
     // Edit song
     private void gesture2() {
-        mainActivityInterface.navigateToFragment(R.id.editSongFragment);
+        mainActivityInterface.navigateToFragment(null,R.id.editSongFragment);
     }
 
     // Add to set

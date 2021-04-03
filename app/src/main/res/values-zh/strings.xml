@@ -116,7 +116,7 @@
     <string name="theme_custom1">"自定义1"</string>
     <string name="theme_custom2">"自定义2"</string>
     <string name="custom_background">"自定义标签的背景"</string>
-    <string name="assign_custom_gestures">"指定自定义手势"</string>
+    <string name="custom_gestures">"指定自定义手势"</string>
     <string name="custom_slide">"自定义幻灯片（有内容）"</string>
     <string name="customchords">定制和弦</string>
     <string name="customchords_code">自定义代码</string>
@@ -140,7 +140,7 @@
     <string name="doubleTap">"选择双击动作"</string>
     <string name="download_new">"点击这里下载新的圣经"</string>
     <string name="close">"关闭"</string>
-    <string name="drawer_open">"打开"</string>
+    <string name="open">"打开"</string>
     <string name="edit">"编辑"</string>
     <string name="edit_default_delaymax">"最大延迟（秒）"</string>
     <string name="save_changes">"保存更改"</string>
@@ -174,7 +174,7 @@
     <string name="error">"错误"</string>
     <string name="error_missingsection">缺少的部分</string>
     <string name="find_existing">"查找OpenSong文件的以前的安装位置"</string>
-    <string name="exit">"您确定要退出程序？"</string>
+    <string name="exit_confirm">"您确定要退出程序？"</string>
     <string name="export">"出口"</string>
     <string name="export_chordpro">"ChordPro歌曲（.cho）"</string>
     <string name="export_desktop">"桌面文件（无文件扩展名）"</string>
@@ -339,14 +339,14 @@
     <string name="pdftotext_extract">"从PDF提取文本"</string>
     <string name="pdftotext_found">"发现文字："</string>
     <string name="pedal">"踏板"</string>
-    <string name="performancemode">"演出模式"</string>
+    <string name="performance_mode">"演出模式"</string>
     <string name="phrasesearch">"输入搜索词组（标题，作者，歌词等）"</string>
     <string name="piano">钢琴</string>
     <string name="pleaseselect">"请选择"</string>
     <string name="position">"位置"</string>
     <string name="prechorus_background">"Prechorus背景"</string>
     <string name="pref_key_text">"选择您喜欢的键设置"</string>
-    <string name="presentermode">"演示模式"</string>
+    <string name="presentation_mode">"演示模式"</string>
     <string name="background">"背景介绍"</string>
     <string name="font_presentation">"演示字体"</string>
     <string name="presoFontShadow">"演示文字阴影"</string>
@@ -395,7 +395,7 @@
     <string name="set_name">"新集名称"</string>
     <string name="set_new">"明确"</string>
     <string name="sethasbeendeleted">"从你的“设置”文件夹已被删除。"</string>
-    <string name="setquickcheck">"在歌曲菜单中显示设置复选框"</string>
+    <string name="song_menu_checkboxes">"在歌曲菜单中显示设置复选框"</string>
     <string name="setxmargins">"水平边距大小"</string>
     <string name="setymargins">"垂直边距大小"</string>
     <string name="show_general_advanced">"切换普通/高级领域"</string>
@@ -421,7 +421,7 @@
     <string name="songsinfolder">"歌曲文件夹"</string>
     <string name="speed">"速度"</string>
     <string name="stage_section_max">"最大截面高度（舞台模式）"</string>
-    <string name="stagemode">"舞台模式"</string>
+    <string name="stage_mode">"舞台模式"</string>
     <string name="start">" 开始"</string>
     <string name="start_screen">"回到开始屏"</string>
     <string name="stickynotes">"宋笔记"</string>

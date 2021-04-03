@@ -241,7 +241,7 @@ public class ChooseColorFragment extends Fragment {
         preferences.setMyPreferenceInt(getContext(),themePrefix+"_"+which,newColorInt);
         // Navigate back
         mainActivityInterface.popTheBackStack(R.id.themeSetupFragment,true);
-        mainActivityInterface.navigateToFragment(R.id.themeSetupFragment);
+        mainActivityInterface.navigateToFragment(null,R.id.themeSetupFragment);
     }
 
     private String getName() {

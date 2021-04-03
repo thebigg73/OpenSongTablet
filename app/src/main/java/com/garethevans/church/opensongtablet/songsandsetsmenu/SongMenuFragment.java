@@ -192,7 +192,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
-    private void setListeners(Song song) {
+    private void setListeners() {
         myView.actionFAB.setOnClickListener(v  -> {
             Log.d("d","myView.actionFAB pressed.  active="+songButtonActive);
             if (songButtonActive) {
@@ -200,7 +200,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 Handler h = new Handler();
                 h.postDelayed(() -> songButtonActive = true,600);
                 showActionButton(false);
-                showActionDialog(song.getFolder(),song.getFilename());
+                showActionDialog();
             }
         });
         myView.songListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -266,8 +266,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
     }
 
-    private void showActionDialog(String folder, String song) {
-        SongMenuDialog dialogFragment = new SongMenuDialog(folder, song);
+    private void showActionDialog() {
+        SongMenuDialog dialogFragment = new SongMenuDialog(myView.actionFAB);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "songMenuActions");
     }
 
@@ -421,7 +421,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         setUpExposedDropDowns(song);
 
         // Set up page buttons
-        setListeners(song);
+        setListeners();
 
         // Prepare the song menu (includes a call to update the prepareSearch
         fixButtons();

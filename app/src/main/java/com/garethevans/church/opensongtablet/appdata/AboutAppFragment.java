@@ -73,7 +73,7 @@ public class AboutAppFragment extends Fragment {
         myView.rateButton.setOnClickListener(v -> webLink(rate+requireActivity().getPackageName()));
         myView.paypalButton.setOnClickListener(v -> webLink(paypal));
         myView.gitbubButton.setOnClickListener(v -> webLink(github));
-        myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.languageFragment));
+        myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.languageFragment));
     }
 
     private void webLink(String location) {

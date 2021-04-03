@@ -65,7 +65,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_microphone_variant_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/performancemode"
+                android:text="@string/performance_mode"
                 android:textColor="#fff"
                 android:layout_toStartOf="@+id/performanceCheck"
                 android:textSize="12sp" />
@@ -95,7 +95,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_lan_connect_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/stagemode"
+                android:text="@string/stage_mode"
                 android:textColor="#fff"
                 android:layout_toStartOf="@+id/stageCheck"
                 android:textSize="12sp" />
@@ -126,7 +126,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_projector_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/presentermode"
+                android:text="@string/presentation_mode"
                 android:textColor="#fff"
                 android:layout_toStartOf="@+id/presentationCheck"
                 android:textSize="12sp"/>

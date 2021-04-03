@@ -117,7 +117,7 @@
     <string name="theme_custom1">"Custom 1"</string>
     <string name="theme_custom2">"Custom 2"</string>
     <string name="custom_background">"Egyéni tag háttér"</string>
-    <string name="assign_custom_gestures">"Rendeljen egyedi gesztusok"</string>
+    <string name="custom_gestures">"Rendeljen egyedi gesztusok"</string>
     <string name="custom_slide">"Egyedi slide (tartalommal)"</string>
     <string name="customchords">Egyedi akkordok</string>
     <string name="customchords_code">Egyedi kódot</string>
@@ -141,7 +141,7 @@
     <string name="doubleTap">"Válassza ki dupla csap akció"</string>
     <string name="download_new">"Kattintson ide egy új Biblia letöltéséhez"</string>
     <string name="close">"Bezár"</string>
-    <string name="drawer_open">"Megnyitás"</string>
+    <string name="open">"Megnyitás"</string>
     <string name="edit">"Szerkesztés"</string>
     <string name="edit_default_delaymax">"Max késleltetés (másodperc)"</string>
     <string name="save_changes">"Változtatások mentése"</string>
@@ -175,7 +175,7 @@
     <string name="error">"Hiba"</string>
     <string name="error_missingsection">Hiányzó szakaszok</string>
     <string name="find_existing">"Az OpenSong fájlok korábbi telepítési helyeinek keresése"</string>
-    <string name="exit">"Biztos benne, hogy ki akar lépni a programot?"</string>
+    <string name="exit_confirm">"Biztos benne, hogy ki akar lépni a programot?"</string>
     <string name="export">"Exportál"</string>
     <string name="export_chordpro">"ChordPro dal (.cho)"</string>
     <string name="export_desktop">"Asztali fájl (nincs fájlkiterjesztés)"</string>
@@ -340,14 +340,14 @@
     <string name="pdftotext_extract">"Szöveg kivonatolása PDF-ből"</string>
     <string name="pdftotext_found">"Talált szöveg:"</string>
     <string name="pedal">"Pedál"</string>
-    <string name="performancemode">"Performance módban"</string>
+    <string name="performance_mode">"Performance módban"</string>
     <string name="phrasesearch">"Adja meg a keresendő kifejezést (cím, szerző , dalszöveg , stb )"</string>
     <string name="piano">Zongora</string>
     <string name="pleaseselect">"Kérlek, válassz"</string>
     <string name="position">"Pozíció"</string>
     <string name="prechorus_background">"Prechorus háttér"</string>
     <string name="pref_key_text">"Válassza ki a kívánt kulcs beállításai"</string>
-    <string name="presentermode">"Bemutató üzemmód"</string>
+    <string name="presentation_mode">"Bemutató üzemmód"</string>
     <string name="background">"Bemutatkozás háttér"</string>
     <string name="font_presentation">"Bemutató font"</string>
     <string name="presoFontShadow">"Bemutató font árnyék"</string>
@@ -396,7 +396,7 @@
     <string name="set_name">"Új nevet"</string>
     <string name="set_new">"Vámkezeltet"</string>
     <string name="sethasbeendeleted">"törölték a \"készletek\" mappába."</string>
-    <string name="setquickcheck">"Itt található készlet jelölőnégyzetet dal menü"</string>
+    <string name="song_menu_checkboxes">"Itt található készlet jelölőnégyzetet dal menü"</string>
     <string name="setxmargins">"Vízszintes margó"</string>
     <string name="setymargins">"Függőleges margó"</string>
     <string name="show_general_advanced">"Váltás általános / speciális területek"</string>
@@ -422,7 +422,7 @@
     <string name="songsinfolder">"Song mappa"</string>
     <string name="speed">"Sebesség"</string>
     <string name="stage_section_max">"Maximális magasság (Stage Mode)"</string>
-    <string name="stagemode">"Stage Mode"</string>
+    <string name="stage_mode">"Stage Mode"</string>
     <string name="start">"Kezdés"</string>
     <string name="start_screen">"Vissza a Start képernyő"</string>
     <string name="stickynotes">"Dal jegyzetek"</string>

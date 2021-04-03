@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    style="@style/PrefScrollView">
 
         <TextView
             android:id="@+id/infoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/storage_graph_overview_info"/>
 
     <com.garethevans.church.opensongtablet.screensetup.MyZoomLayout

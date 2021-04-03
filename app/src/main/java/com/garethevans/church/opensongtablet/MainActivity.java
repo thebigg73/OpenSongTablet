@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -43,7 +44,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
-import com.garethevans.church.opensongtablet.animation.PageButtonFAB;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.AlertInfoDialogFragment;
@@ -66,8 +66,9 @@ import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment;
-import com.garethevans.church.opensongtablet.getnewsongs.OCR;
+import com.garethevans.church.opensongtablet.importsongs.OCR;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
+import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
@@ -82,6 +83,7 @@ import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
+import com.garethevans.church.opensongtablet.pagebuttons.PageButtons;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
@@ -146,7 +148,7 @@ getters and setters.  This also avoids having loads of StaticVariables.
 public class MainActivity extends AppCompatActivity implements LoadSongInterface,
         ShowCaseInterface, MainActivityInterface, MidiAdapterInterface, EditSongFragmentInterface,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, DialogReturnInterface,
-        NearbyInterface, NearbyReturnActionsInterface {
+        NearbyInterface, NearbyReturnActionsInterface, ActionInterface {
 
     ActivityMainBinding activityMainBinding;
     AppBarMainBinding appBarMainBinding;
@@ -178,8 +180,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private CCLILog ccliLog;
     private Midi midi;
     private ExportFiles exportFiles;
-    private PageButtonFAB pageButtonFAB;
     private boolean pageButtonActive = true;
+    private PageButtons pageButtons;
     private PedalActions pedalActions;
     private ExportActions exportActions;
     private WebDownload webDownload;
@@ -257,6 +259,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // Pads
 
+    // Debug fully
+    /*public MainActivity() {
+        if(BuildConfig.DEBUG) {
+            StrictMode.enableDefaults();
+            StrictMode.allowThreadDiskReads();
+            StrictMode.allowThreadDiskWrites();
+        }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,10 +304,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Get the version
         versionNumber = new VersionNumber();
-        Log.d("MainActivity", "versionNumber=" + versionNumber);
 
         // Initialise the start variables we need
         initialiseStartVariables();
+
+        // Set up the page buttons
+        updatePageButtonLayout();
 
         // Battery monitor
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -336,11 +348,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         exportFiles = new ExportFiles();
         showCase = new ShowCase();
         showToast = new ShowToast();
-        pageButtonFAB = new PageButtonFAB(activityMainBinding.pageButtonsRight.actionFAB, activityMainBinding.pageButtonsRight.custom1Button,
+        pageButtons = new PageButtons(this,preferences);
+        pageButtons.setMainFABS(activityMainBinding.pageButtonsRight.actionFAB, activityMainBinding.pageButtonsRight.custom1Button,
                 activityMainBinding.pageButtonsRight.custom2Button,activityMainBinding.pageButtonsRight.custom3Button,
                 activityMainBinding.pageButtonsRight.custom4Button,activityMainBinding.pageButtonsRight.custom5Button,
-                activityMainBinding.pageButtonsRight.custom6Button);
-        pageButtonFAB.animatePageButton(this,false);
+                activityMainBinding.pageButtonsRight.custom6Button,activityMainBinding.pageButtonsRight.pageButtonsLayout,
+                themeColors.getPageButtonsColor());
+        pageButtons.animatePageButton(this,false);
         nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL);
         midi = new Midi(this);
         pedalActions = new PedalActions();
@@ -388,12 +402,18 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         appActionBar.toggleActionBar(wasScrolling,scrollButton,drawerLayout.isOpen());
     }
 
-
-
-
-
-
-
+    @Override
+    public void updatePageButtonLayout() {
+        // We have changed something about the page buttons (or initialising them
+        if (activityMainBinding.pageButtonsRight.actionFAB.getRotation()!=0) {
+            pageButtons.animatePageButton(this,false);
+        }
+        activityMainBinding.pageButtonsRight.actionFAB.setBackgroundTintList(ColorStateList.valueOf(themeColors.getPageButtonsColor()));
+        activityMainBinding.pageButtonsRight.actionFAB.setAlpha(pageButtons.getPageButtonAlpha());
+        for (int x=0; x<6; x++) {
+            pageButtons.setPageButton(this,pageButtons.getFAB(x), themeColors.getPageButtonsColor(), x, false);
+        }
+    }
 
     // The navigation actions
     public void setupNav() {
@@ -428,31 +448,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Set up page buttons
         setListeners();
     }
-
-
-    // TODO - probably want a popup dialogfragment alerting the user that the app has been updated
-    /*private boolean versionCheck() {
-        // Do this as a separate thread.  0 is for fresh installs.  1 is for user choice to return to menu
-        int lastUsedVersion = preferences.getMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", 0);
-        PackageInfo pInfo;
-        try {
-            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            if (android.os.Build.VERSION.SDK_INT >= 28) {
-                thisVersion = (int) pInfo.getLongVersionCode();
-            } else {
-                //noinspection
-                thisVersion = pInfo.versionCode;
-            }
-            versionCode = "V."+pInfo.versionName;
-        } catch (Exception e) {
-            thisVersion = 0;
-            versionCode = "";
-        }
-
-        // If this is a fresh install (or updating from before V4.8.5) clear the cache in case
-
-        return lastUsedVersion >= thisVersion;
-    }*/
 
     private void setUpCast() {
         try {
@@ -499,6 +494,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // ThemeColors
         themeColors.getDefaultColors(this,preferences);
+        pageButtons.setPageButtonAlpha(preferences.getMyPreferenceFloat(this,"pageButtonAlpha",0.6f));
 
         // Typefaces
         setTypeFace.setUpAppFonts(this,preferences,new Handler(),new Handler(),new Handler(),new Handler(),new Handler());
@@ -509,6 +505,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         infos = new ArrayList<>();
         rects = new ArrayList<>();
     }
+
     private void setListeners() {
         activityMainBinding.pageButtonsRight.actionFAB.setOnClickListener(v  -> {
             if (pageButtonActive) {
@@ -518,14 +515,33 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 animatePageButtons();
             }
         });
+
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            float initialVal = -1.0f;
+            boolean decided;
+
+            private void resetVals() {
+                decided = false;
+                initialVal = -1;
+            }
+
             @Override
-            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {}
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+                if (!decided && initialVal==-1.0f) {
+                    // Just started, so set the inital value
+                    initialVal = slideOffset;
+                } else if (!decided && initialVal!=-0.0f) {
+                    // We have our first value, so now compare.
+                    // If we are getting bigger = opening, if smaller, closing
+                    hideActionButton(slideOffset > initialVal);
+                    decided = true;
+                }
+            }
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
+                hideActionButton(true);
                 showTutorial("songsetmenu");
-                activityMainBinding.pageButtonsRight.actionFAB.hide();
                 if (setSongMenuFragment()) {
                     showTutorial("songsetMenu");
                 }
@@ -533,20 +549,22 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-                if (performanceFragment!=null && performanceFragment.isVisible()) {
-                    activityMainBinding.pageButtonsRight.actionFAB.show();
-                }
+                hideActionButton(false);
                 hideKeyboard();
             }
 
             @Override
-            public void onDrawerStateChanged(int newState) {}
+            public void onDrawerStateChanged(int newState) {
+                // Reset the check vals
+                resetVals();
+            }
         });
     }
     private void animatePageButtons() {
         float rotation = activityMainBinding.pageButtonsRight.actionFAB.getRotation();
-        pageButtonFAB.animatePageButton(this, rotation == 0);
+        pageButtons.animatePageButton(this,rotation == 0);
     }
+
     void setWindowFlags() {
         // Fix the page flags
         if (windowFlags==null) {
@@ -566,7 +584,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d("MainActivity","songIds.size()="+songIds.size());
         // Write a crude text file (line separated) with the song Ids (folder/file)
         storageAccess.writeSongIDFile(this, preferences, songIds);
 
@@ -611,6 +628,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         });
         return songMenuFragment != null;
     }
+    @Override
+    public void chooseMenu(boolean showSetMenu) {
+        this.showSetMenu = showSetMenu;
+        setSongMenuFragment();
+        closeDrawer(drawerLayout.isOpen());
+    }
 
     @Override
     public void hideKeyboard() {
@@ -641,7 +664,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        Log.d("MainActivity","hasFocus="+hasFocus);
         // Set the fullscreen window flags]
         if (hasFocus) {
             setWindowFlags();
@@ -745,10 +767,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Decide if an alert should be shown
         if (alertChecks.showBackup(this,preferences) ||
                 alertChecks.showPlayServicesAlert(this) ||
-                alertChecks.updateInfo(this,preferences)!=null) {
+                alertChecks.showUpdateInfo(this,preferences,versionNumber.getVersionCode())) {
             alertButton.setVisible(true);
         } else if (alertButton!=null){
-            alertButton.setVisible(true);
+            alertButton.setVisible(false);
         }
 
         // Decide if we should hide the Google Nearby button
@@ -759,15 +781,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d("d","item="+item);
         switch (item.toString()) {
             case "Settings":
                 if (settingsOpen) {
                     navHome();
                 } else {
-                    lockDrawer(true);
-                    hideActionButton(true);
-                    navController.navigate(Uri.parse("opensongapp://preferences"));
+                    navigateToFragment("opensongapp://preferences",0);
                 }
                 break;
 
@@ -775,28 +794,30 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 if (settingsOpen && nearbyOpen) {
                     navHome();
                 } else if (requestNearbyPermissions() && fragmentOpen != R.id.nearbyConnectionsFragment) {
-                    hideActionButton(true);
-                    lockDrawer(true);
-                    navController.navigate(Uri.parse("opensongapp://settings/nearby"));
+                    navigateToFragment("opensongapp://settings/nearby",0);
                 }
                 break;
 
             case "Alerts":
-                DialogFragment df = new AlertInfoDialogFragment(preferences,alertChecks);
+                DialogFragment df = new AlertInfoDialogFragment(preferences,alertChecks,versionNumber);
                 openDialog(df,"Alerts");
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-
+    @Override
+    public void refreshMenuItems() {
+        invalidateOptionsMenu();
+    }
     private void navHome() {
         lockDrawer(false);
+        if (navController.getCurrentDestination()!=null) {
+            navController.popBackStack(navController.getCurrentDestination().getId(), true);
+        }
         if (whichMode.equals("Presentation")) {
-            navController.navigate(Uri.parse("opensongapp://presentation"));
-            hideActionButton(true);
+            navigateToFragment("opensongapp://presentation",0);
         } else {
-            navController.navigate(Uri.parse("opensongapp://performance"));
-            hideActionButton(false);
+            navigateToFragment("opensongapp://performance",0);
         }
     }
 
@@ -813,7 +834,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Setup the menu item for connecting to cast devices
 
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
-            Log.d("MainActivity","Google Play Services Available");
             mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
         } else {
             Log.d("MainActivity", "Google Play Services Not Available");
@@ -836,7 +856,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-
 
 
     // Using the MaterialShowCase library
@@ -939,7 +958,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             activityMainBinding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             activityMainBinding.drawerLayout.openDrawer(GravityCompat.START);
-
         }
     }
     @Override
@@ -969,14 +987,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 presentationFragment.doSongLoad();
             } else {
                 Log.d("MainActivity", "presentationFragment not available");
-                navigateToFragment(R.id.performanceFragment);
+                navigateToFragment(null,R.id.performanceFragment);
             }
         } else {
             if (performanceFragment!=null && performanceFragment.isAdded()) {
                 performanceFragment.doSongLoad();
             } else {
                 Log.d("MainActivity", "performanceFragment not available");
-                navigateToFragment(R.id.presentationFragment);
+                navigateToFragment(null,R.id.presentationFragment);
             }
         }
         closeDrawer(true);
@@ -1015,7 +1033,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         fragment.setArguments(args);
         fragment.setTargetFragment(caller, 0);
         // Replace the existing Fragment with the new Fragment
-        navigateToFragment(caller.getId());
+        navigateToFragment(null,caller.getId());
         //navController.navigate(caller.getId());
         /*fragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, fragment)
@@ -1091,13 +1109,16 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void hideActionButton(boolean hide) {
         if (hide) {
-            Log.d("MainActivity","Hiding actionFAB");
+            if (activityMainBinding.pageButtonsRight.actionFAB.getRotation()!=0) {
+                activityMainBinding.pageButtonsRight.actionFAB.performClick();
+            }
             activityMainBinding.pageButtonsRight.actionFAB.hide();
             activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.GONE);
         } else {
-            Log.d("MainActivity","Showing actionFAB");
             activityMainBinding.pageButtonsRight.actionFAB.show();
             activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.VISIBLE);
+            // Do this with a delay
+            customAnimation.fadeActionButton(activityMainBinding.pageButtonsRight.actionFAB, pageButtons.getPageButtonAlpha());
         }
     }
     @Override
@@ -1113,22 +1134,22 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         }
     }
     @Override
-    public void navigateToFragment(int id) {
+    public void navigateToFragment(String deepLink, int id) {
+        // Either sent a deeplink string, or a fragment id
+        hideActionButton(true);
         closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         lockDrawer(true);
-        hideActionButton(true);
         try {
-            navController.navigate(id);
-            Fragment f = getSupportFragmentManager().findFragmentById(id);
-            Log.d("MainActivity","f="+f);
-            fragmentOpen = id;
+            if (deepLink!=null) {
+                navController.navigate(Uri.parse(deepLink));
+            } else {
+                navController.navigate(id);
+                fragmentOpen = id;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    @Override
-    public void deepLink(String link) {
-        navController.navigate(Uri.parse(link));
     }
     @Override
     public void popTheBackStack(int id, boolean inclusive) {
@@ -1156,7 +1177,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                         song = processSong.initialiseSong(commonSQL,song.getFolder(),"NEWSONGFILENAME",song);
                         String newSongText = processSong.getXML(song);
                         if (storageAccess.doStringWriteToFile(this,preferences,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
-                            navigateToFragment(R.id.editSongFragment);
+                            navigateToFragment(null,R.id.editSongFragment);
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
                         }
@@ -1204,7 +1225,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
-        Log.d("d","agree="+agree+"  what="+what);
         if (agree) {
             boolean result = false;
             switch(what) {
@@ -1237,11 +1257,22 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     updateSongMenu(fragName, callingFragment, arguments); // Passing the fragment allows an update to be sent to the calling fragment
                     break;
 
+                case "exit":
+                    // Close the app.
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        finishAndRemoveTask();
+                    } else {
+                        finishAffinity();
+                    }
+                    result = true;
+                    break;
+
             }
-            if (result) {
-                ShowToast.showToast(this,getResources().getString(R.string.success));
-            } else {
-                ShowToast.showToast(this, getResources().getString(R.string.error));
+            if (result && !what.equals("exit")) {
+                // Don't show toast for exit, but other successful actions
+                showToast.doIt(this,getString(R.string.success));
+            } else if (!result){
+                showToast.doIt(this,getString(R.string.error));
             }
         }
     }
@@ -1304,7 +1335,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     protected void onActivityResult(int requestCode, int resultCode, final Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        if (intent!=null) {
+        if (requestCode==12345) {
+            // We initiated an OpenSongApp backupt
+            Log.d("MainActivity","OSB created");
+            preferences.setMyPreferenceInt(this,"runssincebackup",0);
+
+        } else if (intent!=null) {
             importUri = intent.getData();
             boolean filetypeerror = false;
             if (intent.getDataString()!=null) {
@@ -1317,7 +1353,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 if (importFilename!=null && importUri!=null &&
                         importFilename.toLowerCase(fixLocale.getLocale()).endsWith(".osb")) {
                     // OSB file detected
-                    navigateToFragment(R.id.importOSBFragment);
+                    navigateToFragment(null,R.id.importOSBFragment);
 
                 } else {
                     filetypeerror = true;
@@ -1480,6 +1516,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public PedalActions getPedalActions() {
         return pedalActions;
+    }
+    @Override
+    public PageButtons getPageButtons() {
+        return pageButtons;
     }
     @Override
     public DoVibrate getDoVibrate() {
@@ -1762,5 +1802,19 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void goToNextItem() {
         // TODO
+    }
+
+
+    // Backpress to exit the app
+    @Override
+    public void onBackPressed() {
+        if (navController.getCurrentDestination()!=null &&
+                navController.getCurrentDestination().getId()==R.id.performanceFragment) {
+            displayAreYouSure("exit", getString(R.string.exit_confirm), null,
+                    navController.getCurrentDestination().getNavigatorName(),
+                    navHostFragment, null);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

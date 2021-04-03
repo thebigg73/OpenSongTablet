@@ -2,21 +2,28 @@ package com.garethevans.church.opensongtablet.pagebuttons;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.PrefTextLinkView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.customviews.PrefTextLinkView;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -27,13 +34,16 @@ public class PageButtonFragment extends Fragment {
 
     private Preferences preferences;
     private MainActivityInterface mainActivityInterface;
+    private ThemeColors themeColors;
     private PageButtons pageButtons;
-    private ArrayList<String> buttonActions;
-    private ArrayList<String> buttonText;
-    private ArrayList<String> shortActionText;
-    private ArrayList<String> longActionText;
+    private ArrayList<FloatingActionButton> myButtons;
+    private ArrayList<LinearLayout> myLayouts;
+    private ArrayList<SwitchCompat> mySwitches;
+    private ArrayList<AutoCompleteTextView> autoCompleteTextViews;
+    private ArrayList<PrefTextLinkView> shortTexts;
+    private ArrayList<PrefTextLinkView> longTexts;
     private SettingsPagebuttonsBinding myView;
-    private int opt1, opt2, opt3, opt4, opt5, opt6;
+    private ExposedDropDownArrayAdapter arrayAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -46,77 +56,182 @@ public class PageButtonFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPagebuttonsBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.updateToolbar(null,getString(R.string.page_buttons));
+
+        // Set up helpers
+        setupHelpers();
+
         // Set up the page button icons
         setupPageButtons();
 
-        // Set the spinner/autocompletetextview options
-        setDropdowns();
+        return myView.getRoot();
+    }
 
-        return super.onCreateView(inflater, container, savedInstanceState);
+    private void setupHelpers() {
+        preferences = mainActivityInterface.getPreferences();
+        pageButtons = mainActivityInterface.getPageButtons();
+        themeColors = mainActivityInterface.getMyThemeColors();
     }
 
     private void setupPageButtons() {
-        new Thread(() -> getActivity().runOnUiThread(() -> {
-            // Use the same method as for the page, but detach the listeners
-            pageButtons.setupButton(myView.button1,preferences.getMyPreferenceString(getContext(),"pageButtonCustom1Action",""));
-            removeListeners(myView.button1);
-            pageButtons.setupButton(myView.button2,preferences.getMyPreferenceString(getContext(),"pageButtonCustom2Action",""));
-            removeListeners(myView.button2);
-            pageButtons.setupButton(myView.button3,preferences.getMyPreferenceString(getContext(),"pageButtonCustom3Action",""));
-            removeListeners(myView.button3);
-            pageButtons.setupButton(myView.button4,preferences.getMyPreferenceString(getContext(),"pageButtonCustom4Action",""));
-            removeListeners(myView.button4);
-            pageButtons.setupButton(myView.button5,preferences.getMyPreferenceString(getContext(),"pageButtonCustom5Action",""));
-            removeListeners(myView.button5);
-            pageButtons.setupButton(myView.button6,preferences.getMyPreferenceString(getContext(),"pageButtonCustom6Action",""));
-            removeListeners(myView.button6);
-        })).start();
-    }
-
-    private void removeListeners(FloatingActionButton fab) {
-        fab.setOnClickListener(null);
-        fab.setOnLongClickListener(null);
-    }
-
-    private void setDropdowns() {
         new Thread(() -> {
-            buttonActions = pageButtons.setupButtonActions();
-            buttonText = pageButtons.setUpButtonText();
-            shortActionText = pageButtons.shortActionText();
-            longActionText = pageButtons.longActionText();
+            requireActivity().runOnUiThread(() -> {
+                // We will programatically draw the page buttons and their options based on our preferences
+                // Add the buttons to our array (so we can iterate through)
+                addMyButtons();
+                addButtonLayouts();
+                addVisibleSwitches();
+                addTextViews();
 
-            opt1 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom1Action",""));
-            opt2 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom2Action",""));
-            opt3 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom3Action",""));
-            opt4 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom4Action",""));
-            opt5 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom5Action",""));
-            opt6 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom6Action",""));
-
-            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(), R.layout.exposed_dropdown, buttonActions);
-
-            getActivity().runOnUiThread(() -> {
-
-                setTheText(myView.button1ShortPress, myView.button1LongPress,opt1);
-                setTheText(myView.button2ShortPress, myView.button2LongPress,opt2);
-                setTheText(myView.button3ShortPress, myView.button3LongPress,opt3);
-                setTheText(myView.button4ShortPress, myView.button4LongPress,opt4);
-                setTheText(myView.button5ShortPress, myView.button5LongPress,opt5);
-                setTheText(myView.button6ShortPress, myView.button6LongPress,opt6);
-
+                // Now iterate through each button and set it up
+                for (int x = 0; x < 6; x++) {
+                    pageButtons.setPageButton(requireContext(), myButtons.get(x), themeColors.getPageButtonsColor(), x, true);
+                    myButtons.get(x).setVisibility(View.VISIBLE);
+                    setVisibilityFromBoolean(myLayouts.get(x), pageButtons.getPageButtonVisibility(x));
+                    mySwitches.get(x).setChecked(pageButtons.getPageButtonVisibility(x));
+                    String string = getString(R.string.button) + " " + (x + 1) + ": " + getString(R.string.visible);
+                    mySwitches.get(x).setText(string);
+                    int finalX = x;
+                    mySwitches.get(x).setOnCheckedChangeListener((buttonView, isChecked) -> changeVisibilityPreference(finalX, isChecked));
+                }
+            });
+            arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.exposed_dropdown, pageButtons.getPageButtonAvailableText());
+            requireActivity().runOnUiThread(() -> {
+                for (int x=0;x<6;x++) {
+                    setTheDropDowns(x);
+                    setTheText(x);
+                }
             });
         }).start();
-
     }
 
-    private void setTheText(PrefTextLinkView shortText, PrefTextLinkView longText, int pos) {
-        ((TextView)shortText.findViewById(R.id.subText)).setText(shortActionText.get(pos));
-        if (longActionText.get(pos).isEmpty()) {
-            longText.setVisibility(View.GONE);
-            ((TextView)longText.findViewById(R.id.subText)).setText("");
+    private void addMyButtons() {
+        myButtons = new ArrayList<>();
+        myButtons.add(myView.button1);
+        myButtons.add(myView.button2);
+        myButtons.add(myView.button3);
+        myButtons.add(myView.button4);
+        myButtons.add(myView.button5);
+        myButtons.add(myView.button6);
+    }
 
+    private void addVisibleSwitches() {
+        mySwitches = new ArrayList<>();
+        mySwitches.add(myView.button1Active);
+        mySwitches.add(myView.button2Active);
+        mySwitches.add(myView.button3Active);
+        mySwitches.add(myView.button4Active);
+        mySwitches.add(myView.button5Active);
+        mySwitches.add(myView.button6Active);
+    }
+    private void addButtonLayouts() {
+        myLayouts = new ArrayList<>();
+        myLayouts.add(myView.button1View);
+        myLayouts.add(myView.button2View);
+        myLayouts.add(myView.button3View);
+        myLayouts.add(myView.button4View);
+        myLayouts.add(myView.button5View);
+        myLayouts.add(myView.button6View);
+    }
+    private void addTextViews() {
+        autoCompleteTextViews = new ArrayList<>();
+        shortTexts = new ArrayList<>();
+        longTexts = new ArrayList<>();
+        autoCompleteTextViews.add(myView.button1Opt);
+        autoCompleteTextViews.add(myView.button2Opt);
+        autoCompleteTextViews.add(myView.button3Opt);
+        autoCompleteTextViews.add(myView.button4Opt);
+        autoCompleteTextViews.add(myView.button5Opt);
+        autoCompleteTextViews.add(myView.button6Opt);
+
+        shortTexts.add(myView.button1ShortPress);
+        shortTexts.add(myView.button2ShortPress);
+        shortTexts.add(myView.button3ShortPress);
+        shortTexts.add(myView.button4ShortPress);
+        shortTexts.add(myView.button5ShortPress);
+        shortTexts.add(myView.button6ShortPress);
+
+        longTexts.add(myView.button1LongPress);
+        longTexts.add(myView.button2LongPress);
+        longTexts.add(myView.button3LongPress);
+        longTexts.add(myView.button4LongPress);
+        longTexts.add(myView.button5LongPress);
+        longTexts.add(myView.button6LongPress);
+    }
+
+    private void changeVisibilityPreference(int x, boolean visible) {
+        preferences.setMyPreferenceBoolean(requireContext(),"pageButtonShow"+(x+1), visible);
+        setVisibilityFromBoolean(myLayouts.get(x),visible);
+        pageButtons.setPageButtonVisibility(x,visible);
+        mainActivityInterface.updatePageButtonLayout();
+    }
+
+    private void setVisibilityFromBoolean(View view, boolean visibile) {
+        if (visibile) {
+            view.setVisibility(View.VISIBLE);
         } else {
-            longText.setVisibility(View.VISIBLE);
-            ((TextView)longText.findViewById(R.id.subText)).setText(longActionText.get(pos));
+            view.setVisibility(View.GONE);
         }
+    }
+
+    private void setTheDropDowns(int pos) {
+        autoCompleteTextViews.get(pos).setAdapter(arrayAdapter);
+        autoCompleteTextViews.get(pos).setText(pageButtons.getPageButtonText(pos));
+        autoCompleteTextViews.get(pos).setOnClickListener(new View.OnClickListener() {
+            boolean showing = false;
+            @Override
+            public void onClick(View v) {
+                if (showing) {
+                    autoCompleteTextViews.get(pos).dismissDropDown();
+                    showing = false;
+                } else {
+                    showing = true;
+                    autoCompleteTextViews.get(pos).showDropDown();
+                    autoCompleteTextViews.get(pos).setListSelection(pageButtons.getPositionFromText(pageButtons.getPageButtonText(pos)));
+                }
+            }
+        });
+        autoCompleteTextViews.get(pos).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Get the new values etc. using the position in the list
+                saveDropDownChoice(pos, s.toString());
+            }
+        });
+    }
+    private void setTheText(int pos) {
+        ((TextView)shortTexts.get(pos).findViewById(R.id.subText)).setText(pageButtons.getPageButtonShortText(pos));
+        ((TextView)longTexts.get(pos).findViewById(R.id.subText)).setText(pageButtons.getPageButtonLongText(pos));
+        if (pageButtons.getPageButtonShortText(pos).isEmpty()) {
+            shortTexts.get(pos).setVisibility(View.GONE);
+        } else {
+            shortTexts.get(pos).setVisibility(View.VISIBLE);
+        }
+        if (pageButtons.getPageButtonLongText(pos).isEmpty()) {
+            longTexts.get(pos).setVisibility(View.GONE);
+        } else {
+            longTexts.get(pos).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void saveDropDownChoice(int x, String text) {
+        // x tells us the button we are dealing with and action is, well, the action
+        int foundpos = pageButtons.getPositionFromText(text);
+        Log.d("saveDropDownChoice","x:"+x+"  text="+text+"  foundpos="+foundpos);
+        pageButtons.setPageButtonAction(x,foundpos);
+        pageButtons.setPageButtonText(x,foundpos);
+        pageButtons.setPageButtonShortText(x,foundpos);
+        pageButtons.setPageButtonLongText(x,foundpos);
+        pageButtons.setPageButtonDrawable(requireContext(),x,foundpos);
+        pageButtons.setPageButton(requireContext(),myButtons.get(x),themeColors.getPageButtonsColor(),x, true);
+        setTheText(x);
+        preferences.setMyPreferenceString(requireContext(),"pageButton"+(x+1),pageButtons.getPageButtonAction(x));
+        mainActivityInterface.updatePageButtonLayout();
     }
 }

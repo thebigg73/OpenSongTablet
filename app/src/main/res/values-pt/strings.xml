@@ -117,7 +117,7 @@
     <string name="theme_custom1">"Custom 1"</string>
     <string name="theme_custom2">"Custom 2"</string>
     <string name="custom_background">"Personalizado tag fundo"</string>
-    <string name="assign_custom_gestures">"Atribuir gestos personalizados"</string>
+    <string name="custom_gestures">"Atribuir gestos personalizados"</string>
     <string name="custom_slide">"Slides personalizada (com conteúdo)"</string>
     <string name="customchords">Acordes personalizados</string>
     <string name="customchords_code">Código personalizado</string>
@@ -141,7 +141,7 @@
     <string name="doubleTap">"Selecione dupla ação tap"</string>
     <string name="download_new">"Clique aqui para baixar uma nova Bíblia"</string>
     <string name="close">"Fechar"</string>
-    <string name="drawer_open">"Abrir"</string>
+    <string name="open">"Abrir"</string>
     <string name="edit">"Editar"</string>
     <string name="edit_default_delaymax">"Max Delay (segundos)"</string>
     <string name="save_changes">"Salve as alterações"</string>
@@ -175,7 +175,7 @@
     <string name="error">"Erro"</string>
     <string name="error_missingsection">Seções que faltam</string>
     <string name="find_existing">"Encontre locais de instalação anteriores para arquivos OpenSong"</string>
-    <string name="exit">"Tem certeza de que deseja sair do programa?"</string>
+    <string name="exit_confirm">"Tem certeza de que deseja sair do programa?"</string>
     <string name="export">"Exportar"</string>
     <string name="export_chordpro">"ChordPro song (.cho)"</string>
     <string name="export_desktop">"Arquivo da área de trabalho (sem extensão de arquivo)"</string>
@@ -340,14 +340,14 @@
     <string name="pdftotext_extract">"Extrair texto de PDF"</string>
     <string name="pdftotext_found">"Texto encontrado:"</string>
     <string name="pedal">"Pedal"</string>
-    <string name="performancemode">"Modo de desempenho"</string>
+    <string name="performance_mode">"Modo de desempenho"</string>
     <string name="phrasesearch">"Insira frase de pesquisa ( título, autor, letras, etc )"</string>
     <string name="piano">Piano</string>
     <string name="pleaseselect">"Por favor selecione"</string>
     <string name="position">"Posição"</string>
     <string name="prechorus_background">"Pré-refrão fundo"</string>
     <string name="pref_key_text">"Escolha as configurações de chave preferidos"</string>
-    <string name="presentermode">"Modo de apresentação"</string>
+    <string name="presentation_mode">"Modo de apresentação"</string>
     <string name="background">"Apresentação de fundo"</string>
     <string name="font_presentation">"Fonte de apresentação"</string>
     <string name="presoFontShadow">"Fonte de sombra da apresentação"</string>
@@ -396,7 +396,7 @@
     <string name="set_name">"Novo nome do conjunto"</string>
     <string name="set_new">"Esvaziar"</string>
     <string name="sethasbeendeleted">"foi excluído da sua pasta de \"conjuntos\"."</string>
-    <string name="setquickcheck">"Mostrar caixas de seleção no menu de músicas"</string>
+    <string name="song_menu_checkboxes">"Mostrar caixas de seleção no menu de músicas"</string>
     <string name="setxmargins">"Tamanho da margem horizontal"</string>
     <string name="setymargins">"Tamanho da margem vertical"</string>
     <string name="show_general_advanced">"Campos gerais / avançado Alternar"</string>
@@ -422,7 +422,7 @@
     <string name="songsinfolder">"Pasta de música"</string>
     <string name="speed">"Rapidez"</string>
     <string name="stage_section_max">"Altura máxima da seção (Modo Estágio)"</string>
-    <string name="stagemode">"Modo de estágio"</string>
+    <string name="stage_mode">"Modo de estágio"</string>
     <string name="start">"Iniciar"</string>
     <string name="start_screen">"Voltar à Tela Inicial"</string>
     <string name="stickynotes">"Notas da canção"</string>

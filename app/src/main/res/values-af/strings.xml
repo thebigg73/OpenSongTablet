@@ -116,7 +116,7 @@
     <string name="theme_custom1">"Custom 1"</string>
     <string name="theme_custom2">"Custom 2"</string>
     <string name="custom_background">"Custom tag agtergrond"</string>
-    <string name="assign_custom_gestures">"Ken persoonlike gebare"</string>
+    <string name="custom_gestures">"Ken persoonlike gebare"</string>
     <string name="custom_slide">"Custom slide (met inhoud)"</string>
     <string name="customchords">Custom akkoorde</string>
     <string name="customchords_code">Custom kode</string>
@@ -140,7 +140,7 @@
     <string name="doubleTap">"Kies dubbel tap aksie"</string>
     <string name="download_new">"Klik hier om 'n nuwe Bybel af te laai"</string>
     <string name="close">"Sluit"</string>
-    <string name="drawer_open">"Oop"</string>
+    <string name="open">"Oop"</string>
     <string name="edit">"Wysig"</string>
     <string name="edit_default_delaymax">"Maksimum vertraging (sekondes)"</string>
     <string name="save_changes">"Stoor veranderinge"</string>
@@ -174,7 +174,7 @@
     <string name="error">"fout"</string>
     <string name="error_missingsection">Vermiste artikels</string>
     <string name="find_existing">"Vind vorige installasie plekke vir OpenSong lêers"</string>
-    <string name="exit">"Is jy seker jy wil die program te verlaat?"</string>
+    <string name="exit_confirm">"Is jy seker jy wil die program te verlaat?"</string>
     <string name="export">"Uitvoer"</string>
     <string name="export_chordpro">"ChordPro liedjie (.cho)"</string>
     <string name="export_desktop">"Desktop lêer (geen lêer uitbreiding)"</string>
@@ -339,14 +339,14 @@
     <string name="pdftotext_extract">"Onttrek teks uit PDF"</string>
     <string name="pdftotext_found">"Teks gevind:"</string>
     <string name="pedal">"Pedal"</string>
-    <string name="performancemode">"Prestasie af"</string>
+    <string name="performance_mode">"Prestasie af"</string>
     <string name="phrasesearch">"Gee soek term ( titel, skrywer , lirieke, ens )"</string>
     <string name="piano">Klavier</string>
     <string name="pleaseselect">"Kies asseblief"</string>
     <string name="position">"Posisie"</string>
     <string name="prechorus_background">"Prechorus agtergrond"</string>
     <string name="pref_key_text">"Kies jou voorkeur sleutel instellings"</string>
-    <string name="presentermode">"Aanbieding af"</string>
+    <string name="presentation_mode">"Aanbieding af"</string>
     <string name="background">"Aanbieding agtergrond"</string>
     <string name="font_presentation">"Aanbiedings font"</string>
     <string name="presoFontShadow">"Aanbiedings font skaduwee"</string>
@@ -395,7 +395,7 @@
     <string name="set_name">"Nuwe stel naam"</string>
     <string name="set_new">"Opruim"</string>
     <string name="sethasbeendeleted">"is van jou gids stelle 'verwyder."</string>
-    <string name="setquickcheck">"Wys verstek bokse in die lied menu"</string>
+    <string name="song_menu_checkboxes">"Wys verstek bokse in die lied menu"</string>
     <string name="setxmargins">"Horisontale marge grootte"</string>
     <string name="setymargins">"Vertikale marge grootte"</string>
     <string name="show_general_advanced">"Toggle algemene / gevorderde velde"</string>
@@ -421,7 +421,7 @@
     <string name="songsinfolder">"Song gids"</string>
     <string name="speed">"spoed"</string>
     <string name="stage_section_max">"Maksimum gedeelte hoogte (stadium modus)"</string>
-    <string name="stagemode">"stadium af"</string>
+    <string name="stage_mode">"stadium af"</string>
     <string name="start">"Begin"</string>
     <string name="start_screen">"Gaan Terug na die begin skerm"</string>
     <string name="stickynotes">"Lied notas"</string>

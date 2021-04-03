@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,6 +12,15 @@
         android:orientation="vertical">
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/pageButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:main="@string/page_buttons"
+            app:sub="@string/quicklaunch_title" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/pedals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,6 +28,21 @@
             app:sub="@string/pedal_controls" />
         <TableRow style="@style/DividerLine" />
 
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/customGestures"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/custom_gestures"
+            app:sub="@string/custom_gestures_info" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/swipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/swipe"
+            app:sub="@string/swipe_info" />
+        <TableRow style="@style/DividerLine" />
 
     </LinearLayout>
 

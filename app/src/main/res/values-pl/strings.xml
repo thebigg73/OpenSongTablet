@@ -117,7 +117,7 @@
     <string name="theme_custom1">"Niestandardowy 1"</string>
     <string name="theme_custom2">"Niestandardowy 2"</string>
     <string name="custom_background">"Niestandardowe tło tag"</string>
-    <string name="assign_custom_gestures">"Przypisywanie własnych gestów"</string>
+    <string name="custom_gestures">"Przypisywanie własnych gestów"</string>
     <string name="custom_slide">"Niestandardowe slajdów (z zawartością)"</string>
     <string name="customchords">Własne akordy</string>
     <string name="customchords_code">Kod na zamówienie</string>
@@ -141,7 +141,7 @@
     <string name="doubleTap">"Wybierz podwójne działanie kranu"</string>
     <string name="download_new">"Kliknij tutaj, aby pobrać nową Biblię"</string>
     <string name="close">"Zamknij"</string>
-    <string name="drawer_open">"Otwórz"</string>
+    <string name="open">"Otwórz"</string>
     <string name="edit">"Edytuj"</string>
     <string name="edit_default_delaymax">"Maksymalne opóźnienie (sekundy)"</string>
     <string name="save_changes">"Zapisz zmiany"</string>
@@ -175,7 +175,7 @@
     <string name="error">"Błąd"</string>
     <string name="error_missingsection">Brakujące odcinki</string>
     <string name="find_existing">"Znajdź poprzednie lokalizacje instalacji dla plików OpenSong"</string>
-    <string name="exit">"Czy na pewno chcesz zamknąć program?"</string>
+    <string name="exit_confirm">"Czy na pewno chcesz zamknąć program?"</string>
     <string name="export">"Eksportować"</string>
     <string name="export_chordpro">"Piosenka ChordPro (.cho)"</string>
     <string name="export_desktop">"Plik pulpitu (brak rozszerzenia plików)"</string>
@@ -340,14 +340,14 @@
     <string name="pdftotext_extract">"Wyodrębnij tekst z pliku PDF"</string>
     <string name="pdftotext_found">"Tekst znaleziony:"</string>
     <string name="pedal">"Pedał"</string>
-    <string name="performancemode">"Tryb wydajności"</string>
+    <string name="performance_mode">"Tryb wydajności"</string>
     <string name="phrasesearch">"Wpisz poszukiwaną frazę ( tytuł, autor , słowa, itp )"</string>
     <string name="piano">Pianino</string>
     <string name="pleaseselect">"Proszę wybrać"</string>
     <string name="position">"Pozycja"</string>
     <string name="prechorus_background">"Prechorus tle"</string>
     <string name="pref_key_text">"Wybierz kluczowe preferowane ustawienia"</string>
-    <string name="presentermode">"Tryb prezentacji"</string>
+    <string name="presentation_mode">"Tryb prezentacji"</string>
     <string name="background">"Prezentacja w tle"</string>
     <string name="font_presentation">"Czcionka prezentacji"</string>
     <string name="presoFontShadow">"Cień czcionki prezentacji"</string>
@@ -396,7 +396,7 @@
     <string name="set_name">"Nowy zestaw Nazwa"</string>
     <string name="set_new">"Oczyścić"</string>
     <string name="sethasbeendeleted">"zostało usunięte z folderu 'ustawia."</string>
-    <string name="setquickcheck">"Pokaż zaznaczone pola wyboru w menu piosenki"</string>
+    <string name="song_menu_checkboxes">"Pokaż zaznaczone pola wyboru w menu piosenki"</string>
     <string name="setxmargins">"Wielkość marginesu poziomego"</string>
     <string name="setymargins">"Pionowy rozmiar margines"</string>
     <string name="show_general_advanced">"Przełącz pola ogólne / zaawansowany"</string>
@@ -422,7 +422,7 @@
     <string name="songsinfolder">"Folder piosenki"</string>
     <string name="speed">"Prędkość"</string>
     <string name="stage_section_max">"Maksymalna wysokość sekcji (tryb sceniczny)"</string>
-    <string name="stagemode">"Tryb Stage"</string>
+    <string name="stage_mode">"Tryb Stage"</string>
     <string name="start">"Początek"</string>
     <string name="start_screen">Wróć do Start ekranu</string>
     <string name="stickynotes">"Nuty piosenki"</string>

@@ -116,7 +116,7 @@
     <string name="theme_custom1">"Custom 1"</string>
     <string name="theme_custom2">"Custom 2"</string>
     <string name="custom_background">"Vlastní tag na pozadí"</string>
-    <string name="assign_custom_gestures">"Přiřadit vlastní gesta"</string>
+    <string name="custom_gestures">"Přiřadit vlastní gesta"</string>
     <string name="custom_slide">"Vlastní slide (s obsahem)"</string>
     <string name="customchords">Vlastní akordy</string>
     <string name="customchords_code">Vlastní kód</string>
@@ -140,7 +140,7 @@
     <string name="doubleTap">"Vyberte dvojí akci klepněte na položku"</string>
     <string name="download_new">"Klikněte zde pro stažení nové Bible"</string>
     <string name="close">"Zavřít"</string>
-    <string name="drawer_open">"Otevřít"</string>
+    <string name="open">"Otevřít"</string>
     <string name="edit">"Upravit"</string>
     <string name="edit_default_delaymax">"Max. Zpoždění (vteřin)"</string>
     <string name="save_changes">"Uložit změny"</string>
@@ -174,7 +174,7 @@
     <string name="error">"Chyba"</string>
     <string name="error_missingsection">Chybějící sekce</string>
     <string name="find_existing">"Najít předchozí umístění instalace pro soubory OpenSong"</string>
-    <string name="exit">"Jste si jisti, že chcete ukončit program?"</string>
+    <string name="exit_confirm">"Jste si jisti, že chcete ukončit program?"</string>
     <string name="export">"Exportovat"</string>
     <string name="export_chordpro">"ChordPro song (.cho)"</string>
     <string name="export_desktop">"Soubor plochy (bez přípony souboru)"</string>
@@ -339,14 +339,14 @@
     <string name="pdftotext_extract">"Extrahujte text z PDF"</string>
     <string name="pdftotext_found">"Nalezeno:"</string>
     <string name="pedal">"Pedál"</string>
-    <string name="performancemode">"Režim výkonu"</string>
+    <string name="performance_mode">"Režim výkonu"</string>
     <string name="phrasesearch">"Zadejte hledaný výraz ( název, autor , texty , atd )"</string>
     <string name="piano">Klavir</string>
     <string name="pleaseselect">"Prosím vyberte"</string>
     <string name="position">"Pozice"</string>
     <string name="prechorus_background">"Prechorus pozadí"</string>
     <string name="pref_key_text">"Vyberte si své preferované nastavení klíčů"</string>
-    <string name="presentermode">"Režim prezentace"</string>
+    <string name="presentation_mode">"Režim prezentace"</string>
     <string name="background">"Prezentace na pozadí"</string>
     <string name="font_presentation">"Prezentační font"</string>
     <string name="presoFontShadow">"Prezentace písma stín"</string>
@@ -395,7 +395,7 @@
     <string name="set_name">"Nový set jméno"</string>
     <string name="set_new">"Vymazat"</string>
     <string name="sethasbeendeleted">"ze složky svého \"sad\" byl smazán."</string>
-    <string name="setquickcheck">"Zobrazit zaškrtávací políčka v nabídce skladby"</string>
+    <string name="song_menu_checkboxes">"Zobrazit zaškrtávací políčka v nabídce skladby"</string>
     <string name="setxmargins">"Horizontální velikost marže"</string>
     <string name="setymargins">"Vertikální velikost marže"</string>
     <string name="show_general_advanced">"Přepnout obecné / pokročilé pole"</string>
@@ -421,7 +421,7 @@
     <string name="songsinfolder">"Složka písní"</string>
     <string name="speed">"Rychlost"</string>
     <string name="stage_section_max">"Maximální výška sekce (Režim fáze)"</string>
-    <string name="stagemode">"Režim Stage"</string>
+    <string name="stage_mode">"Režim Stage"</string>
     <string name="start">"Počátek"</string>
     <string name="start_screen">"Zpět na Úvodní obrazovka"</string>
     <string name="stickynotes">"Song poznámky"</string>

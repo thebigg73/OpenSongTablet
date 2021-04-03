@@ -352,15 +352,14 @@ public class Song {
 
 
     // The welcome song if there is a problem
-    public Song showWelcomeSong(Context c) {
-        Song song = new Song();
+    public void showWelcomeSong(Context c, Song song) {
         song.setFilename("Welcome to OpenSongApp");
         song.setTitle(c.getString(R.string.welcome));
         song.setLyrics(c.getString(R.string.user_guide_lyrics));
         song.setAuthor("Gareth Evans");
         song.setKey("G");
         song.setLinkweb("https://www.opensongapp.com");
-        return song;
+        song.setFiletype("XML");
     }
 
     public String getFolderNamePair() {

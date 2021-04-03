@@ -26,7 +26,8 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -71,7 +72,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="OpenSongAppFiles"
+            android:authorities="com.garethevans.church.opensongtablet.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true"
             android:permission="android.permission.MANAGE_DOCUMENTS" >

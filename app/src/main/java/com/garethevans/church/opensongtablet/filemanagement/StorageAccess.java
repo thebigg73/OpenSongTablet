@@ -58,7 +58,7 @@ public class StorageAccess {
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
     private final String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
-            "Sets", "Settings", "Slides", "Songs", "Variations"};
+            "Sets", "Settings", "Slides", "Songs", "Variations", "Backups"};
     private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
             "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache"};
 

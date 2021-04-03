@@ -173,7 +173,7 @@ public class ThemeSetupFragment extends Fragment {
     private void chooseColor(String which) {
         // This moves to the color chooser fragment
         mainActivityInterface.setWhattodo(which);
-        mainActivityInterface.navigateToFragment(R.id.chooseColorFragment);
+        mainActivityInterface.navigateToFragment(null,R.id.chooseColorFragment);
     }
 
 }

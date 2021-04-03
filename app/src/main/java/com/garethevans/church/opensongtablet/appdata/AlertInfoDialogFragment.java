@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -32,12 +33,16 @@ public class AlertInfoDialogFragment extends DialogFragment {
     MainActivityInterface mainActivityInterface;
     AlertinfoDialogBinding myView;
     Preferences preferences;
-    String updateInfo;
+    boolean updateInfo;
     AlertChecks alertChecks;
+    VersionNumber versionNumber;
+    int currentVersion;
 
-    public AlertInfoDialogFragment(Preferences preferences, AlertChecks alertChecks) {
+    public AlertInfoDialogFragment(Preferences preferences, AlertChecks alertChecks, VersionNumber versionNumber) {
         this.alertChecks = alertChecks;
         this.preferences = preferences;
+        this.versionNumber = versionNumber;
+        currentVersion = versionNumber.getVersionCode();
     }
 
     @Override
@@ -50,7 +55,9 @@ public class AlertInfoDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = AlertinfoDialogBinding.inflate(inflater,container,false);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (getDialog()!=null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
 
         // Show/hide the appropriate alerts
         whatAlerts();
@@ -62,24 +69,30 @@ public class AlertInfoDialogFragment extends DialogFragment {
 
     private void whatAlerts() {
         // This decides which alerts are appropriate
-
         // Check for app updates
-        updateInfo = alertChecks.updateInfo(requireContext(),preferences);
-        if (updateInfo==null) {
+        updateInfo = alertChecks.showUpdateInfo(requireContext(),preferences,versionNumber.getVersionCode());
+        if (!updateInfo) {
             myView.appUpdated.setVisibility(View.GONE);
         } else {
             myView.appUpdated.setVisibility(View.VISIBLE);
-            myView.showUpdates.setText(updateInfo);
+            myView.showUpdates.setText(versionNumber.getFullVersionInfo());
             myView.showUpdates.setOnClickListener(b -> webLink("http://www.opensongapp.com/latest-updates"));
+
             // We've seen the warning, so update the preference
-            String val = updateInfo.substring(updateInfo.indexOf("(")+1,updateInfo.indexOf(")"));
-            preferences.setMyPreferenceInt(requireContext(), "lastUsedVersion", Integer.parseInt(val));
+            preferences.setMyPreferenceInt(requireContext(), "lastUsedVersion", currentVersion);
         }
 
         // Check for backup status
         if (alertChecks.showBackup(requireContext(),preferences)) {
             myView.timeToBackup.setVisibility(View.VISIBLE);
-            // TODO Button logic to trigger the backup prompt
+            String s = requireContext().getString(R.string.promptbackup).
+                    replace("10","" +
+                            preferences.getMyPreferenceInt(requireContext(), "runssincebackup", 0));
+            myView.backupDescription.setText(s);
+            myView.backupNowButton.setOnClickListener(v -> {
+                mainActivityInterface.navigateToFragment("opensongapp://settings/storage/backup",0);
+                dismiss();
+            });
         } else {
             myView.timeToBackup.setVisibility(View.GONE);
         }
@@ -94,8 +107,6 @@ public class AlertInfoDialogFragment extends DialogFragment {
         }
     }
 
-
-
     private void webLink(String link) {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(link));
@@ -106,4 +117,9 @@ public class AlertInfoDialogFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mainActivityInterface.refreshMenuItems();
+    }
 }

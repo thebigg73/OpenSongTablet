@@ -23,12 +23,13 @@ import com.garethevans.church.opensongtablet.export.MakePDF;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.getnewsongs.OCR;
+import com.garethevans.church.opensongtablet.importsongs.OCR;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
+import com.garethevans.church.opensongtablet.pagebuttons.PageButtons;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
@@ -59,8 +60,7 @@ public interface MainActivityInterface {
     void initialiseActivity();
     void moveToSongInSongMenu();
     void hideKeyboard();
-    void navigateToFragment(int id);
-    void deepLink(String link);
+    void navigateToFragment(String deepLink, int id);
     void popTheBackStack(int id, boolean inclusive);
     void returnToHome(Fragment fragment, Bundle bundle);
     void songMenuActionButtonShow(boolean show);
@@ -138,6 +138,7 @@ public interface MainActivityInterface {
     Activity getActivity();
     String getWhattodo();
     void setWhattodo(String whattodo);
+    PageButtons getPageButtons();
     AutoscrollActions getAutoscrollActions();
     PadFunctions getPadFunctions();
     Metronome getMetronome();
@@ -151,4 +152,6 @@ public interface MainActivityInterface {
     Transpose getTranspose();
     AppActionBar getAppActionBar();
     int getFragmentOpen();
+    void updatePageButtonLayout();
+    void refreshMenuItems();
 }

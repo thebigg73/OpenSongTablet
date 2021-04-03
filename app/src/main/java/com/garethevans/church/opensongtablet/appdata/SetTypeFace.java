@@ -73,7 +73,6 @@ public class SetTypeFace {
                               Handler chordFontHandler, Handler stickyFontHandler,
                               Handler presoFontHandler, Handler presoInfoFontHandler) {
 
-        Log.d("SetTypeFace","setUpAppFonts");
         // Load up the user preferences
         String fontLyric = preferences.getMyPreferenceString(c, "fontLyric", "Lato");
         String fontChord = preferences.getMyPreferenceString(c, "fontChord", "Lato");
@@ -120,14 +119,12 @@ public class SetTypeFace {
 
     public void getGoogleFont(Context c, Preferences preferences, String fontName, String which,
                                   TextView textView, Handler handler) {
-        Log.d("SetTypeFace","getGoogleFont('"+fontName+"', '"+which+"')");
         FontRequest fontRequest = getFontRequest(fontName);
         FontsContractCompat.FontRequestCallback fontRequestCallback = getFontRequestCallback(c,preferences,fontName,which,textView);
         FontsContractCompat.requestFont(c,fontRequest,fontRequestCallback,handler);
     }
 
     private FontRequest getFontRequest(String fontnamechosen) {
-        Log.d("SetTypeFace","getFontRequest('"+fontnamechosen+"')");
         return new FontRequest("com.google.android.gms.fonts",
                 "com.google.android.gms", fontnamechosen,
                 R.array.com_google_android_gms_fonts_certs);
@@ -138,8 +135,6 @@ public class SetTypeFace {
                                                                            final String fontName,
                                                                            final String which,
                                                                            final TextView textView) {
-        Log.d("SetTypeFace","getFontRequestCallback('"+fontName+"', '"+which+"')");
-
         return new FontsContractCompat.FontRequestCallback() {
             @Override
             public void onTypefaceRetrieved(Typeface typeface) {

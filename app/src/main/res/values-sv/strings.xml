@@ -117,7 +117,7 @@
     <string name="theme_custom1">"Anpassad 1"</string>
     <string name="theme_custom2">"Anpassad 2"</string>
     <string name="custom_background">"Anpassad taggbakgrund"</string>
-    <string name="assign_custom_gestures">"Tilldela anpassade gester"</string>
+    <string name="custom_gestures">"Tilldela anpassade gester"</string>
     <string name="custom_slide">"Anpassad bild (med innehåll)"</string>
     <string name="customchords">"Anpassade ackord"</string>
     <string name="customchords_code">"Anpassad kod"</string>
@@ -141,7 +141,7 @@
     <string name="doubleTap">"Välj dubbelknappsåtgärd"</string>
     <string name="download_new">"Klicka här för att ladda ner en ny Bibel"</string>
     <string name="close">"Stänga"</string>
-    <string name="drawer_open">"Öppen"</string>
+    <string name="open">"Öppen"</string>
     <string name="edit">"Redigera"</string>
     <string name="edit_default_delaymax">"Max fördröjning (sekunder)"</string>
     <string name="save_changes">"Spara ändringar"</string>
@@ -175,7 +175,7 @@
     <string name="error">"Fel"</string>
     <string name="error_missingsection">"Saknade avsnitt"</string>
     <string name="find_existing">"Hitta tidigare installationsplatser för OpenSong-filer"</string>
-    <string name="exit">"Är du säker på att du vill avsluta programmet?"</string>
+    <string name="exit_confirm">"Är du säker på att du vill avsluta programmet?"</string>
     <string name="export">"Exportera"</string>
     <string name="export_chordpro">"ChordPro-låten (.cho)"</string>
     <string name="export_desktop">"Skrivbordsfil (ingen filtillägg)"</string>
@@ -340,14 +340,14 @@
     <string name="pdftotext_extract">"Extrahera text från PDF"</string>
     <string name="pdftotext_found">"Text hittades:"</string>
     <string name="pedal">"Trampa"</string>
-    <string name="performancemode">"Prestanda läge"</string>
+    <string name="performance_mode">"Prestanda läge"</string>
     <string name="phrasesearch">"Ange sökord (titel, författare, texter etc.)"</string>
     <string name="piano">"Piano"</string>
     <string name="pleaseselect">"Vänligen välj"</string>
     <string name="position">"Placera"</string>
     <string name="prechorus_background">"Prechorus bakgrund"</string>
     <string name="pref_key_text">"Välj dina önskade nyckelinställningar"</string>
-    <string name="presentermode">"Presentationsläge"</string>
+    <string name="presentation_mode">"Presentationsläge"</string>
     <string name="background">"Bakgrund"</string>
     <string name="font_presentation">"Presentation typsnitt"</string>
     <string name="presoFontShadow">"Presentation font skugga"</string>
@@ -396,7 +396,7 @@
     <string name="set_name">"Nytt inställt namn"</string>
     <string name="set_new">"Skapa en ny uppsättning"</string>
     <string name="sethasbeendeleted">"Har tagits bort från mappen \"Sets\"."</string>
-    <string name="setquickcheck">"Visa inställda kryssrutor i låtmenyn"</string>
+    <string name="song_menu_checkboxes">"Visa inställda kryssrutor i låtmenyn"</string>
     <string name="setxmargins">"Horisontell marginalstorlek"</string>
     <string name="setymargins">"Vertikal marginalstorlek"</string>
     <string name="show_general_advanced">"Växla allmänna / avancerade fält"</string>
@@ -422,7 +422,7 @@
     <string name="songsinfolder">"Song mapp"</string>
     <string name="speed">"Fart"</string>
     <string name="stage_section_max">"Max sektionshöjd (scenläge)"</string>
-    <string name="stagemode">"Scenläge"</string>
+    <string name="stage_mode">"Scenläge"</string>
     <string name="start">"Start"</string>
     <string name="start_screen">"Gå tillbaka till startskärmen"</string>
     <string name="stickynotes">"Sånganteckningar"</string>

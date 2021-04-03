@@ -40,6 +40,7 @@ public class ControlMenuFragment extends Fragment {
     }
 
     private void setListeners() {
-        myView.pedals.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.pedalsFragment));
+        myView.pedals.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.pedalsFragment));
+        myView.pageButtons.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.pageButtonFragment));
     }
 }

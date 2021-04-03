@@ -132,7 +132,7 @@
     <string name="autoscale_toggle">"Uključiti opcije automatskog skaliranja"</string>
     <string name="choose_fontsize">"Odabrati veličinu fonta"</string>
     <string name="choose_chordformat">"Prikazati format akorada"</string>
-    <string name="assign_custom_gestures">"Dodeliti prilagođene gestove"</string>
+    <string name="custom_gestures">"Dodeliti prilagođene gestove"</string>
     <string name="song_swipe_toggle">"Uklj/isklj. swipe za pomeranje između pesama"</string>
     <string name="menu_swipe_toggle">"Uklj/isklj. swipe za listu pesama i meni opcija"</string>
     <string name="hide_actionbar">"Uklj/isklj. sakrivanje gornjeg menija"</string>
@@ -165,7 +165,7 @@
     <string name="choose_video2">"Odabrati pozadinski video 2"</string>
     <string name="choosechordformat">"Odabrati format akorda (bitno kada se transponuje pesma)"</string>
     <string name="switchtoperformmode">"Prebaciti na mod izvođenja"</string>
-    <string name="presentermode">"Mod prezentacije"</string>
+    <string name="presentation_mode">"Mod prezentacije"</string>
     <string name="project">"Projektovati"</string>
     <string name="background">"Pozadina"</string>
     <string name="show_logo">"Prikazati logo"</string>
@@ -187,10 +187,10 @@
     <string name="intro_app">"OpenSongApp koristi pesme kreirane sa OpenSong i prikazuje ih na Vašem tablet ekranu."</string>
     <string name="song_new_name">"Unesite novo ime datoteke za ovu pesmu (tako će se prikazati u Vašem meniju pesama)"</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="drawer_open">"Otvoriti"</string>
+    <string name="open">"Otvoriti"</string>
     <string name="close">"Zatvoriti"</string>
     <string name="back">"Nazad"</string>
-    <string name="exit">"Da li ste sigurni da želite da izađete iz programa?"</string>
+    <string name="exit_confirm">"Da li ste sigurni da želite da izađete iz programa?"</string>
     <string name="on">"UKLJ"</string>
     <string name="off">"ISKLJ"</string>
     <string name="fontsize">"Trebalo bi da isključite automatsko skaliranje pesama."</string>"
@@ -312,7 +312,7 @@
     <string name="size">"Veličina"</string>
     <string name="websearch">"Pretražiti Internet za trenutnu pesmu"</string>
     <string name="songfolder">"Odaberite fasciklu pesama"</string>
-    <string name="stagemode">"Mod na bini"</string>
+    <string name="stage_mode">"Mod na bini"</string>
     <string name="toobig">"Potrebno je uključiti automatsko podešavanje veličine za png/pdf izvoz"</string>
     <string name="show_capo">"Prikazivanje kapo akorda"</string>
     <string name="show_chords">"Prikazivanje akorda"</string>
@@ -366,7 +366,7 @@
     <string name="pagebutton_extrainfo_group">"Dodatno grupisanje info dugmadi"</string>
     <string name="pagebutton_group">"Grupisanje svih dugmadi strane"</string>
     <string name="pagebutton_visibility">"Prikaz/sakrivanje svih dugmadi strane"</string>
-    <string name="performancemode">"Mod nastupa"</string>
+    <string name="performance_mode">"Mod nastupa"</string>
     <string name="font_presentation">"Font prikaza"</string>
     <string name="font_presentation_info">"Font informacija kod prikaza"</string>
     <string name="presoFontShadow">"Senka fonta prikaza"</string>
@@ -376,7 +376,7 @@
     <string name="quicklaunch_currentaction">"Trenutni zadatak"</string>
     <string name="quicklaunch_title">"Prilagodi dugmad za brzo pokretanje"</string>
     <string name="scale_style">"Skaliranje stila"</string>
-    <string name="setquickcheck">"Prikazivanje ček boksa u meniju pesama"</string>
+    <string name="song_menu_checkboxes">"Prikazivanje ček boksa u meniju pesama"</string>
     <string name="size_mini">"Mini"</string>
     <string name="size_normal">"Normalno"</string>
     <string name="songsinfolder">"Fascikla pesama"</string>

@@ -15,7 +15,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
             android:background="@drawable/section_box"
             android:orientation="vertical">
 
@@ -39,6 +38,7 @@
                         style="@style/exposedDropDownItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:dropDownHeight="200dp"
                         android:background="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,6 +71,7 @@
                         style="@style/exposedDropDownItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:dropDownHeight="200dp"
                         android:background="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,25 +91,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_margin="16dp">
+                android:padding="16dp">
             <TextView
                 android:id="@+id/chordPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="G    D     Em     C"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="0dp"
+                android:padding="0dp"
                 tools:ignore="HardcodedText" />
             <TextView
                 android:id="@+id/lyricPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="16dp"
+                android:padding="0dp"
                 android:text="@string/lorem" />
             </LinearLayout>
         </LinearLayout>
@@ -116,7 +111,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/section_box"
             android:orientation="vertical">
 
@@ -139,6 +134,7 @@
                         style="@style/exposedDropDownItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:dropDownHeight="200dp"
                         android:background="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -172,6 +168,7 @@
                         style="@style/exposedDropDownItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:dropDownHeight="200dp"
                         android:background="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -190,8 +187,7 @@
                 android:id="@+id/presoPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/presoLorem"
@@ -213,7 +209,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="100dp"
             android:background="@drawable/section_box"
             android:orientation="vertical">
 
@@ -238,6 +235,7 @@
                         style="@style/exposedDropDownItem"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:dropDownHeight="200dp"
                         android:background="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -257,7 +255,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:layout_margin="16dp"
+
                 android:text="@string/lorem" />
 
         </LinearLayout>

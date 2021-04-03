@@ -149,7 +149,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
         setTypeFace.changeFont(getContext(),preferences,mainActivityInterface.getWhattodo(),fontName,handler);
         new Thread(() -> requireActivity().runOnUiThread(() -> {
             mainActivityInterface.popTheBackStack(R.id.fontSetupFragment,true);
-            mainActivityInterface.deepLink("opensongapp://settings/display/fonts");
+            mainActivityInterface.navigateToFragment("opensongapp://settings/display/fonts",0);
             dismiss();
         })).start();
     }

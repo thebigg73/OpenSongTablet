@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,10 +53,10 @@ public class CCLILogFragment extends Fragment {
         ccliLog.getLogFileSize(requireContext(),storageAccess,uri, myView.logSize);
         String churchName = getString(R.string.ccli_church) + ": " +
                 preferences.getMyPreferenceString(requireContext(), "ccliChurchName","");
-        myView.churchLicence.setText(churchName);
+        ((TextView)myView.churchDetails.findViewById(R.id.mainText)).setText(churchName);
         String churchLicence = getString(R.string.ccli_licence) + ": " +
                 preferences.getMyPreferenceString(requireContext(),"ccliLicence","");
-        myView.churchLicence.setText(churchLicence);
+        ((TextView)myView.churchDetails.findViewById(R.id.subText)).setText(churchLicence);
 
         TableLayout tableLayout = ccliLog.getTableLayout(requireContext());
 

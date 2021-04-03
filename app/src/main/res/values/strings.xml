@@ -13,6 +13,7 @@
     <string name="actionbar_info">Change the appearance of the information in the actionbar</string>
     <string name="actionbar_autohide">Automatically hide action bar</string>
     <string name="add_custom_slide">Add custom slide to set</string>
+    <string name="add_songs">Add songs</string>
     <string name="add_song_to_set">Add current song to set</string>
     <string name="alert">Alert</string>
     <string name="alert_text">Enter message text</string>
@@ -21,7 +22,6 @@
     <string name="app_name">OpenSongApp</string>
     <string name="areyousure">Are you sure?</string>
     <string name="artist">Artist</string>
-    <string name="assign_custom_gestures">Assign custom gestures</string>
     <string name="audio">Audio</string>
     <string name="author">Author</string>
     <string name="autoscale">Autoscale</string>
@@ -32,6 +32,7 @@
     <string name="backup_and_restore">Backup and restore</string>
     <string name="backup_now">Create a backup now</string>
     <string name="backup_osb">Create a backup of OpenSongApp songs (*.osb)</string>
+    <string name="bible_verse">Bible verse</string>
     <string name="bible_search">Phrase or verse to search</string>
     <string name="black_screen">Black screen</string>
     <string name="blue">Blue</string>
@@ -95,6 +96,8 @@
     <string name="create_new_song">Create new song</string>
     <string name="current_location">Current location</string>
     <string name="custom">Custom</string>
+    <string name="custom_gestures">Assign custom gestures</string>
+    <string name="custom_gestures_info">Double taps and long presses on the song window</string>
     <string name="date">Date</string>
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
     <string name="delete">Delete</string>
@@ -106,7 +109,8 @@
     <string name="ending">Ending</string>
     <string name="error">Error</string>
     <string name="existing_found">You have already used the following install locations.  You will still need to locate and set this manually using the red button above.</string>
-    <string name="exit">Are you sure you want to exit the program?</string>
+    <string name="exit">Exit</string>
+    <string name="exit_confirm">Are you sure you want to exit the program?</string>
     <string name="export">Export</string>
     <string name="extra">Extra information</string>
     <string name="file_exists">File already exists.  Please rename it.</string>
@@ -144,7 +148,7 @@
     <string name="host">Host</string>
     <string name="image">Image</string>
     <string name="image_slide">Image slideshow</string>
-    <string name="import_main">Import songs/backups</string>
+    <string name="import_main">Import or create songs</string>
     <string name="import_file">File</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
@@ -244,6 +248,7 @@
     <string name="midi_test">Test</string>
     <string name="midi_value">Value</string>
     <string name="midi_velocity">Velocity</string>
+    <string name="mode_settings">Settings specific to this mode</string>
     <string name="music_score">Music score</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="new_folder">Create new song folder</string>
@@ -264,9 +269,11 @@
     <string name="online_services" translatable="false">UG, SongSelect, Chordie, etc.</string>
     <string name="onsong" translatable="false">iOS/OnSong</string>
     <string name="onsong_import">"Import OnSong backup file"</string>
+    <string name="open">Open</string>
     <string name="other">Other</string>
     <string name="pad">Pad</string>
     <string name="page_buttons">Page buttons</string>
+    <string name="pause">Pause</string>
     <string name="paypal" translatable="false">PayPal</string>
     <string name="paypal_description">Send me a donation if you find the app useful</string>
     <string name="pedal">Pedal</string>
@@ -276,11 +283,10 @@
     <string name="pedal_midi_warning">To use a midi pedal, make sure you have connected it using the midi settings in the app first.</string>
     <string name="pedal_scroll_before_move">Try to scroll before changing songs</string>
     <string name="pedal_waiting">"Waiting for button…."</string>
-    <string name="performancemode">Performance mode</string>
-    <string name="performancemode_settings">Settings specific to Performance mode</string>
+    <string name="performance_mode">Performance mode</string>
     <string name="prechorus">Pre-Chorus</string>
     <string name="presentation_order">Presentation order</string>
-    <string name="presentermode">Presentation mode</string>
+    <string name="presentation_mode">Presentation mode</string>
     <string name="previous">Previous</string>
     <string name="processing">Files are being processed</string>
     <string name="profile">Profile</string>
@@ -300,6 +306,7 @@
     <string name="rename">Rename</string>
     <string name="reprise">Reprise</string>
     <string name="respect_copyright">Respect copyright - always use legally</string>
+    <string name="resume">Resume</string>
     <string name="root">ROOT</string>
     <string name="save">Save</string>
     <string name="save_changes">Save changes</string>
@@ -324,17 +331,20 @@
     <string name="show_chords">Show chords</string>
     <string name="show_logo">Show logo</string>
     <string name="show_lyrics">Show lyrics</string>
+    <string name="show_songs">Show songs</string>
     <string name="size">Size</string>
     <string name="slide">Slide</string>
     <string name="song">Song</string>
     <string name="song_actions">Song actions</string>
     <string name="song_actions_description">Adjust settings for song actions</string>
     <string name="song_features">Song features</string>
+    <string name="song_menu_checkboxes">Show set checkboxes in song menu</string>
     <string name="song_notes">Song sticky notes</string>
     <string name="song_sections">Song sections</string>
     <string name="song_title">Song title</string>
     <string name="songs">Songs</string>
     <string name="songsheet">Songsheet</string>
+    <string name="stage_mode">Stage Mode</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="storage">Storage</string>
@@ -349,6 +359,7 @@
     <string name="storage_settings">Manage your storage location and song folders</string>
     <string name="storage_warning">Please do not select the \'Songs\' folder as your storage location.  You should select the parent \'OpenSong\' folder location instead.</string>
     <string name="success">Success</string>
+    <string name="swipe_info">Adjust gestures to move between songs</string>
     <string name="tag">Tag</string>
     <string name="tap">Short press/tap</string>
     <string name="text">Text</string>
@@ -608,7 +619,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="display_popups">Customise popup windows</string>
     <string name="doubleTap">Select double tap action</string>
     <string name="download_new">Click here to download a new Bible</string>
-    <string name="drawer_open">Open</string>
     <string name="edit_default_delaymax">Max Delay (seconds)</string>
     <string name="edit_song_aka">Also known as</string>
     <string name="edit_song_availabletags">[V] = Verse, [V1] = Verse 1, [C] = Chorus, [C1] for
@@ -779,7 +789,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="set_manage_swipe">Swipe to remove an item from your set list</string>
     <string name="set_name">New set name</string>
     <string name="sethasbeendeleted">has been deleted from your \'Sets\' folder.</string>
-    <string name="setquickcheck">Show set checkboxes in song menu</string>
     <string name="setxmargins">Horizontal margin size</string>
     <string name="setymargins">Vertical margin size</string>
     <string name="show_general_advanced">Toggle general/advanced fields</string>
@@ -799,7 +808,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="songsinfolder">Song folder</string>
     <string name="speed">Speed</string>
     <string name="stage_section_max">Max section height (Stage Mode)</string>
-    <string name="stagemode">Stage Mode</string>
     <string name="start_screen">Go back to start screen</string>
     <string name="stickynotes">Song notes</string>
     <string name="stickynotes_edit">Edit song sticky note</string>

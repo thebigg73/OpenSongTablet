@@ -14,22 +14,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/section_box"
             android:layout_margin="0dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
                 android:text="@string/connections_connect"
                 style="@style/largeText"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/enableBluetooth"
                 style="@style/PrefSwitch"
-                android:text="@string/midi_bluetooth"
-                android:padding="8dp"/>
+                android:text="@string/midi_bluetooth" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/searchDevices"
@@ -49,7 +46,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true"
-                    android:padding="8dp"
                     android:text="@string/midi_devices"/>
                     
             <LinearLayout
@@ -69,12 +65,12 @@
 
             </RelativeLayout>
         </LinearLayout>
+        <TableRow style="@style/DividerLine"/>
 
         <LinearLayout
             android:id="@+id/connectionStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/section_box"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="8dp"
             android:orientation="vertical">
@@ -83,8 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/connections_device_name"
-                style="@style/largeText"
-                android:padding="8dp"/>
+                style="@style/largeText"/>
             
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/connectedDevice"
@@ -92,8 +87,7 @@
             android:layout_height="wrap_content"
             app:main="@string/connections_device_name"
             app:sub="@string/connections_device_name" />
-        <TableRow style="@style/DividerLine" />
-            
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,15 +116,14 @@
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/midiAsPedal"
                 style="@style/PrefSwitch"
-                android:text="@string/midi_pedal"
-                android:padding="8dp"/>
+                android:text="@string/midi_pedal" />
         </LinearLayout>
+        <TableRow style="@style/DividerLine"/>
 
     <LinearLayout
         android:id="@+id/midiMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/section_box"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="0dp"
         android:orientation="vertical">
@@ -139,14 +132,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/midi_commands"
-            style="@style/largeText"
-            android:padding="8dp"/>
+            style="@style/largeText" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/autoSendBluetooth"
             style="@style/PrefSwitch"
-            android:text="@string/midi_auto"
-            android:padding="8dp"/>
+            android:text="@string/midi_auto"/>
 
             <LinearLayout
                 android:id="@+id/songActionsLayout"
@@ -315,17 +306,15 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/midi_list"
-                    android:padding="8dp"/>
+                    android:text="@string/midi_list" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"/>
+                    android:layout_height="wrap_content"/>
 
         </LinearLayout>
-
+        <TableRow style="@style/DividerLine"/>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

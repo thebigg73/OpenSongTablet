@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class ThemeColors {
@@ -189,7 +190,7 @@ public class ThemeColors {
 
     private void setThemeDark(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c, "dark_metronomeColor",          darkishred));
-        setPageButtonsColor(preferences.getMyPreferenceInt(c, "dark_pageButtonsColor",        purplyblue));
+        setPageButtonsColor(preferences.getMyPreferenceInt(c, "dark_pageButtonsColor",        secondary));
         setStickyTextColor(preferences.getMyPreferenceInt(c, "dark_stickyTextColor",         black));
         setStickyBackgroundColor(preferences.getMyPreferenceInt(c, "dark_stickyBackgroundColor",   lightyellow));
         setExtraInfoBgColor(preferences.getMyPreferenceInt(c, "dark_extraInfoBgColor",        grey));
@@ -212,7 +213,7 @@ public class ThemeColors {
     }
     private void setThemeLight(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"light_metronomeColor",         darkishred));
-        setPageButtonsColor(preferences.getMyPreferenceInt(c,"light_pageButtonsColor",       purplyblue));
+        setPageButtonsColor(preferences.getMyPreferenceInt(c,"light_pageButtonsColor",       secondary));
         setStickyTextColor(preferences.getMyPreferenceInt(c,"light_stickyTextColor",        black));
         setStickyBackgroundColor(preferences.getMyPreferenceInt(c,"light_stickyBackgroundColor",  lightyellow));
         setExtraInfoBgColor(preferences.getMyPreferenceInt(c,"light_extraInfoBgColor",       grey));
@@ -235,7 +236,7 @@ public class ThemeColors {
     }
     private void setThemeCustom1(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"custom1_metronomeColor",       darkishred));
-        setPageButtonsColor(preferences.getMyPreferenceInt(c,"custom1_pageButtonsColor",     purplyblue));
+        setPageButtonsColor(preferences.getMyPreferenceInt(c,"custom1_pageButtonsColor",     secondary));
         setStickyTextColor(preferences.getMyPreferenceInt(c,"custom1_stickyTextColor",      black));
         setStickyBackgroundColor(preferences.getMyPreferenceInt(c,"custom1_stickyBackgroundColor",lightyellow));
         setExtraInfoBgColor(preferences.getMyPreferenceInt(c,"custom1_extraInfoBgColor",     grey));
@@ -258,7 +259,7 @@ public class ThemeColors {
     }
     private void setThemeCustom2(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"custom2_metronomeColor",       darkishred));
-        setPageButtonsColor(preferences.getMyPreferenceInt(c,"custom2_pageButtonsColor",     purplyblue));
+        setPageButtonsColor(preferences.getMyPreferenceInt(c,"custom2_pageButtonsColor",     secondary));
         setStickyTextColor(preferences.getMyPreferenceInt(c,"custom2_stickyTextColor",      black));
         setStickyBackgroundColor(preferences.getMyPreferenceInt(c,"custom2_stickyBackgroundColor",lightyellow));
         setExtraInfoBgColor(preferences.getMyPreferenceInt(c,"custom2_extraInfoBgColor",     grey));
@@ -336,6 +337,7 @@ public class ThemeColors {
     }
 
     // Default colours
+    private final int secondary = R.color.colorSecondary;
     private final int darkblue = 0xff0000dd;
     private final int vdarkblue = 0xff000022;
     private final int purplyblue = 0xff452277;

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.animation;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -10,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 import com.garethevans.church.opensongtablet.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CustomAnimation {
 
@@ -32,6 +34,13 @@ public class CustomAnimation {
         AnimationSet animation = new AnimationSet(false); //change to false
         animation.addAnimation(fader);
         v.setAnimation(animation);
+    }
+
+    public void fadeActionButton(FloatingActionButton fab, float fadeTo) {
+        new Handler().postDelayed(() -> {
+            fab.setAlpha(1.0f);
+            fab.animate().alpha(fadeTo).setDuration(800);
+            },400);
     }
 
     public void pulse(Context c, View v) {

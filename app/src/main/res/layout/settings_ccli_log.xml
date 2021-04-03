@@ -2,28 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/PrefScrollView"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/churchName"
+    <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+        android:id="@+id/churchDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:text="@string/ccli_church" />
-
-    <TextView
-        android:id="@+id/churchLicence"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:text="@string/ccli_licence" />
+        android:layout_marginTop="16dp"
+        app:main="@string/ccli_church"
+        app:sub="@string/ccli_licence" />
+    <TableRow style="@style/DividerLine" />
 
     <TextView
         android:id="@+id/logSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
         android:text="@string/filename" />
 
     <com.otaliastudios.zoom.ZoomLayout

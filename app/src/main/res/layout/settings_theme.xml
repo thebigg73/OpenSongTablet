@@ -13,7 +13,6 @@
             style="@style/exposedDropDown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             android:hint="@string/theme_choose"
             android:labelFor="@+id/themeName">
 
@@ -30,7 +29,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/section_box"
             android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -82,7 +82,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/section_box"
             android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -161,14 +162,15 @@
         android:layout_height="wrap_content"
         android:background="@drawable/section_box"
         android:orientation="vertical"
-        android:layout_margin="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="@string/presentermode" />
+            android:text="@string/presentation_mode" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/presoButton"
@@ -213,7 +215,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/section_box"
         android:orientation="vertical"
-        android:layout_margin="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
@@ -247,7 +250,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/section_box"
         android:orientation="vertical"
-        android:layout_margin="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
@@ -281,7 +285,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/section_box"
             android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"

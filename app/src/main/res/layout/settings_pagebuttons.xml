@@ -1,27 +1,24 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrefScrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ccli.SettingsCCLI">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/MyWhiteHeadingText"
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button1Active"
+            style="@style/PrefSwitch"
+            android:text="@string/visible" />
+
+        <LinearLayout
+            android:id="@+id/button1View"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="32dp"
-            android:text="@string/page_buttons" />
-
+            android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,14 +31,25 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="false" />
+                app:useCompatPadding="true" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/button1OptLayout"
+                style="@style/exposedDropDown"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="16dp"
-                android:text="@string/button" />
+                android:layout_height="wrap_content"
+                android:hint="@string/action"
+                android:labelFor="@+id/button1Opt">
+
+                <AutoCompleteTextView
+                    android:id="@+id/button1Opt"
+                    style="@style/exposedDropDownItem"
+                    android:dropDownHeight="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
@@ -59,14 +67,20 @@
             android:layout_height="match_parent"
             app:main="Additional long press action"
             app:sub="" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button1Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
+        </LinearLayout>
 
         <TableRow style="@style/DividerLine" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button2Active"
+            style="@style/PrefSwitch"
+            android:text="@string/visible" />
+
+    <LinearLayout
+        android:id="@+id/button2View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,15 +94,25 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="false" />
+                app:useCompatPadding="true" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/button2OptLayout"
+                style="@style/exposedDropDown"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="16dp"
-                android:text="@string/button" />
+                android:layout_height="wrap_content"
+                android:hint="@string/action"
+                android:labelFor="@+id/button2Opt">
 
+                <AutoCompleteTextView
+                    android:id="@+id/button2Opt"
+                    style="@style/exposedDropDownItem"
+                    android:dropDownHeight="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
@@ -106,13 +130,21 @@
             app:main="Additional long press action"
             app:sub="" />
 
+
+
+    </LinearLayout>
+        <TableRow style="@style/DividerLine" />
+
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button2Active"
+            android:id="@+id/button3Active"
             style="@style/PrefSwitch"
             android:text="@string/visible" />
 
-        <TableRow style="@style/DividerLine" />
-
+    <LinearLayout
+        android:id="@+id/button3View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,14 +157,26 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="false" />
+                app:useCompatPadding="true" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/button3OptLayout"
+                style="@style/exposedDropDown"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="16dp"
-                android:text="@string/button" />
+                android:layout_height="wrap_content"
+                android:hint="@string/action"
+                android:labelFor="@+id/button3Opt">
+
+                <AutoCompleteTextView
+                    android:id="@+id/button3Opt"
+                    style="@style/exposedDropDownItem"
+                    android:dropDownHeight="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
 
         </LinearLayout>
@@ -151,14 +195,21 @@
             app:main="Additional long press action"
             app:sub="" />
 
+
+
+    </LinearLayout>
+        <TableRow style="@style/DividerLine" />
+
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button3Active"
+            android:id="@+id/button4Active"
             style="@style/PrefSwitch"
             android:text="@string/visible" />
 
-        <TableRow style="@style/DividerLine" />
-
-
+    <LinearLayout
+        android:id="@+id/button4View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -171,14 +222,26 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="false" />
+                app:useCompatPadding="true" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/button4OptLayout"
+                style="@style/exposedDropDown"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="16dp"
-                android:text="@string/button" />
+                android:layout_height="wrap_content"
+                android:hint="@string/action"
+                android:labelFor="@+id/button4Opt">
+
+                <AutoCompleteTextView
+                    android:id="@+id/button4Opt"
+                    style="@style/exposedDropDownItem"
+                    android:dropDownHeight="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
 
 
         </LinearLayout>
@@ -197,14 +260,22 @@
             app:main="Additional long press action"
             app:sub="" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button4Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
 
+
+    </LinearLayout>
         <TableRow style="@style/DividerLine" />
 
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button5Active"
+            style="@style/PrefSwitch"
+            android:text="@string/visible" />
+
+    <LinearLayout
+        android:id="@+id/button5View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -217,15 +288,25 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="false" />
+                app:useCompatPadding="true" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/button5OptLayout"
+                style="@style/exposedDropDown"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="16dp"
-                android:text="@string/button" />
+                android:layout_height="wrap_content"
+                android:hint="@string/action"
+                android:labelFor="@+id/button5Opt">
 
+                <AutoCompleteTextView
+                    android:id="@+id/button5Opt"
+                    style="@style/exposedDropDownItem"
+                    android:dropDownHeight="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
@@ -243,13 +324,21 @@
             app:main="Additional long press action"
             app:sub="" />
 
+
+
+    </LinearLayout>
+        <TableRow style="@style/DividerLine" />
+
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button5Active"
+            android:id="@+id/button6Active"
             style="@style/PrefSwitch"
             android:text="@string/visible" />
 
-        <TableRow style="@style/DividerLine" />
-
+    <LinearLayout
+        android:id="@+id/button6View"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -263,14 +352,25 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="false" />
+                app:useCompatPadding="true" />
 
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/button6OptLayout"
+                style="@style/exposedDropDown"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="16dp"
-                android:text="@string/button" />
+                android:layout_height="wrap_content"
+                android:hint="@string/action"
+                android:labelFor="@+id/button6Opt">
+
+                <AutoCompleteTextView
+                    android:id="@+id/button6Opt"
+                    style="@style/exposedDropDownItem"
+                    android:dropDownHeight="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
         </LinearLayout>
@@ -289,11 +389,8 @@
             app:main="Additional long press action"
             app:sub="" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button6Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
-
+    </LinearLayout>
+        <TableRow style="@style/DividerLine" />
 
     </LinearLayout>
 

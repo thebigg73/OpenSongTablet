@@ -44,7 +44,6 @@ public class LoadSong {
 
         if (!songListBuildIndex.getIndexComplete() || song.getFolder().contains("../")) {
             // This is set to true once the index is completed
-            Log.d("LoadSong","Loading from the xml file");
             return doLoadSongFile(c,storageAccess,preferences,processSong,showToast,locale,
                     sqLiteHelper,commonSQL,song,convertOnSong,convertChoPro,indexing);
         } else {
@@ -65,6 +64,12 @@ public class LoadSong {
 
         // Once indexing has finished, we load from the database instead, so this is only for indexing and impatient users!
 
+        if (song.getFolder()==null || song.getFolder().isEmpty()) {
+            song.setFolder(c.getString(R.string.mainfoldername));
+        }
+        if (song.getFilename()==null || song.getFilename().isEmpty()) {
+            song.setFilename("Welcome to OpenSongApp");
+        }
         if (!indexing) {
             preferences.setMyPreferenceBoolean(c,"songLoadSuccess",false);
         }
@@ -95,7 +100,10 @@ public class LoadSong {
         String utf = getUTF(c, storageAccess, preferences, song.getFolder(), song.getFilename(), song.getFiletype());
 
         // Try to load the song as an xml
-        if (song.getFiletype().equals("XML") && !song.getFilename().equals("Welcome to OpenSongApp")) {
+        if (song.getFilename().equals("Welcome to OpenSongApp")) {
+            song.showWelcomeSong(c,song);
+
+        } else if (song.getFiletype().equals("XML")) {
             // Here we go loading the song
             // This returns an update sqLite song object if it works
             try {
@@ -151,12 +159,7 @@ public class LoadSong {
             if (!song.getFilename().equals("Welcome to OpenSongApp") && song.getLyrics()!=null && !song.getLyrics().isEmpty()) {
                 // Song was loaded correctly and was xml format
                 preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
-
-            } else {
-                song.setFolder(c.getResources().getString(R.string.mainfoldername));
-                song.setFilename("Welcome to OpenSongApp");
             }
-
             preferences.setMyPreferenceString(c,"songfilename",song.getFilename());
             preferences.setMyPreferenceString(c,"whichSongFolder",song.getFolder());
         }
@@ -580,7 +583,8 @@ public class LoadSong {
 
         // Get the android version
         boolean nextisxml = true;
-        if (filename.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
+        if (filename==null || filename.isEmpty() ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
                 filename.toLowerCase(Locale.ROOT).endsWith(".doc") ||
                 filename.toLowerCase(Locale.ROOT).endsWith(".docx") ||
                 filename.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
@@ -631,6 +635,8 @@ public class LoadSong {
                         }
                     }
                 }
+                inputStream.close();
+
             }
         } catch (Exception e) {
             Log.d("LoadXML","Error trying to read XML from "+uri);

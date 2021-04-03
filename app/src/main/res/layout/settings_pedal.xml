@@ -9,15 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="500dp"
+        android:layout_marginBottom="200dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pedal_instructions"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"/>
 
@@ -26,8 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pedal_midi_warning"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"/>
 
@@ -53,8 +49,6 @@
             android:padding="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/section_box">
 
             <RelativeLayout
@@ -110,7 +104,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,7 +122,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -142,8 +136,6 @@
             android:padding="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/section_box">
 
             <RelativeLayout
@@ -199,7 +191,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -217,7 +209,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -233,8 +225,6 @@
             android:padding="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/section_box">
 
             <RelativeLayout
@@ -290,7 +280,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -308,7 +298,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -323,8 +313,6 @@
             android:padding="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/section_box">
 
             <RelativeLayout
@@ -380,7 +368,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -398,7 +386,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -413,8 +401,6 @@
             android:padding="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/section_box">
 
             <RelativeLayout
@@ -470,7 +456,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -488,7 +474,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -502,8 +488,6 @@
             android:padding="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/section_box">
 
             <RelativeLayout
@@ -559,7 +543,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -577,7 +561,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -593,8 +577,6 @@
             android:padding="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/section_box">
 
             <RelativeLayout
@@ -650,7 +632,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -668,7 +650,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
@@ -682,8 +664,6 @@
             android:padding="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/section_box">
 
             <RelativeLayout
@@ -739,7 +719,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -757,7 +737,7 @@
                     style="@style/exposedDropDownItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="300dp"
+                    android:dropDownHeight="200dp"
                     android:background="@null" />
             </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>

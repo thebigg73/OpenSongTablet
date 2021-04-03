@@ -144,7 +144,11 @@
                 android:id="@+id/backupOSBFragment"
                 android:name="com.garethevans.church.opensongtablet.backupandrestore.BackupOSBFragment"
                 android:label="fragment_osbbackup"
-                tools:layout="@layout/fragment_osbbackup" />
+                tools:layout="@layout/fragment_osbbackup">
+                <deepLink
+                    android:id="@+id/deepLink15"
+                    app:uri="opensongapp://settings/storage/backup" />
+            </fragment>
 
             <fragment
                 android:id="@+id/moveContentFragment"
@@ -201,6 +205,9 @@
                 <action
                     android:id="@+id/action_displayMenuFragment_to_actionBarSettingsFragment"
                     app:destination="@id/actionBarSettingsFragment" />
+                <action
+                    android:id="@+id/action_displayMenuFragment_to_menuSettingsFragment"
+                    app:destination="@id/menuSettingsFragment" />
             </fragment>
 
             <!-- Theme fragment -->
@@ -212,6 +219,9 @@
                 <action
                     android:id="@+id/action_themeSetupFragment_to_chooseColorFragment"
                     app:destination="@id/chooseColorFragment" />
+                <deepLink
+                    android:id="@+id/deepLink11"
+                    app:uri="opensongapp://settings/display/theme" />
             </fragment>
 
             <!-- Colour chooser -->
@@ -246,6 +256,11 @@
                 android:name="com.garethevans.church.opensongtablet.screensetup.ActionBarSettingsFragment"
                 android:label="settings_actionbar"
                 tools:layout="@layout/settings_actionbar"/>
+            <fragment
+                android:id="@+id/menuSettingsFragment"
+                android:name="com.garethevans.church.opensongtablet.screensetup.MenuSettingsFragment"
+                android:label="MenuSettingsFragment"
+                tools:layout="@layout/settings_menu"/>
 
         </navigation>
 
@@ -254,14 +269,22 @@
             android:id="@+id/midiFragment"
             android:name="com.garethevans.church.opensongtablet.midi.MidiFragment"
             android:label="settings_midi"
-            tools:layout="@layout/settings_midi" />
+            tools:layout="@layout/settings_midi">
+            <deepLink
+                android:id="@+id/deepLink14"
+                app:uri="opensongapp://settings/midi" />
+        </fragment>
 
         <!-- Profiles -->
         <fragment
             android:id="@+id/profileFragment"
             android:name="com.garethevans.church.opensongtablet.preferences.ProfileFragment"
             android:label="settings_profiles"
-            tools:layout="@layout/settings_profiles" />
+            tools:layout="@layout/settings_profiles">
+            <deepLink
+                android:id="@+id/deepLink12"
+                app:uri="opensongapp://settings/profiles" />
+        </fragment>
 
         <!-- Controls graph -->
         <navigation
@@ -280,6 +303,9 @@
                 <deepLink
                     android:id="@+id/deepLink8"
                     app:uri="opensongapp://settings/controls" />
+                <action
+                    android:id="@+id/action_controlMenuFragment_to_pageButtonFragment"
+                    app:destination="@id/pageButtonFragment" />
             </fragment>
 
             <!-- Pedal settings -->
@@ -287,7 +313,20 @@
                 android:id="@+id/pedalsFragment"
                 android:name="com.garethevans.church.opensongtablet.controls.PedalsFragment"
                 android:label="settings_pedal"
-                tools:layout="@layout/settings_pedal" />
+                tools:layout="@layout/settings_pedal">
+                <deepLink
+                    android:id="@+id/deepLink13"
+                    app:uri="opensongapp://settings/controls/pedals" />
+            </fragment>
+            <fragment
+                android:id="@+id/pageButtonFragment"
+                android:name="com.garethevans.church.opensongtablet.pagebuttons.PageButtonFragment"
+                android:label="PageButtonFragment"
+                tools:layout="@layout/settings_pagebuttons">
+                <deepLink
+                    android:id="@+id/deepLink9"
+                    app:uri="opensongapp://settings/controls/pagebuttons" />
+            </fragment>
 
         </navigation>
 
@@ -367,7 +406,8 @@
     </navigation>
 
     <!-- Import options -->
-    <navigation android:id="@+id/import_graph"
+    <navigation
+        android:id="@+id/import_graph"
         app:startDestination="@id/importOptionsFragment">
 
         <!-- The import options fragment -->
@@ -386,7 +426,12 @@
             android:id="@+id/importOSBFragment"
             android:name="com.garethevans.church.opensongtablet.backupandrestore.ImportOSBFragment"
             android:label="fragment_osbbackup"
-            tools:layout="@layout/fragment_osbbackup"/>
+            tools:layout="@layout/fragment_osbbackup">
+
+        </fragment>
+        <deepLink
+            android:id="@+id/deepLink10"
+            app:uri="opensongapp://songs/import" />
 
     </navigation>
     <dialog

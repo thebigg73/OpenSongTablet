@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.getnewsongs;
+package com.garethevans.church.opensongtablet.importsongs;
 
 import android.content.Context;
 import android.graphics.Bitmap;

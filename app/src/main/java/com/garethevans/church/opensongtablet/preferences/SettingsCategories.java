@@ -76,19 +76,19 @@ public class SettingsCategories extends Fragment {
     }
 
     private void setListeners() {
-        myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.settingsCCLI));
-        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.storage_graph));
-        myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.display_graph));
+        myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.settingsCCLI));
+        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.storage_graph));
+        myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.display_graph));
         myView.connectButton.setOnClickListener(v -> {
             // Check we have the required permissions
             if (mainActivityInterface.requestNearbyPermissions()) {
-                mainActivityInterface.navigateToFragment(R.id.nearbyConnectionsFragment);
+                mainActivityInterface.navigateToFragment(null,R.id.nearbyConnectionsFragment);
             }
         });
-        myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.profileFragment));
-        myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.midiFragment));
-        myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.about_graph));
-        myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.control_graph));
+        myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.profileFragment));
+        myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.midiFragment));
+        myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.about_graph));
+        myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.control_graph));
     }
 
 }

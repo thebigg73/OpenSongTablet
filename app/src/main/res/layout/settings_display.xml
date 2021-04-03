@@ -17,6 +17,7 @@
             android:id="@+id/themeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:sub="@string/theme_dark"
             app:main="@string/theme_choose" />
         <TableRow style="@style/DividerLine" />
@@ -33,8 +34,32 @@
             android:id="@+id/performanceMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="@string/performancemode"
-            app:sub="@string/performancemode_settings" />
+            app:main="@string/performance_mode"
+            app:sub="@string/mode_settings" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/stageMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/stage_mode"
+            app:sub="@string/mode_settings" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/presentationMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/presentation_mode"
+            app:sub="@string/mode_settings" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/connectedDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/connected_display"
+            app:sub="@string/connected_display_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -52,16 +77,6 @@
             app:main="@string/menu_settings"
             app:sub="@string/menu_settings_description" />
         <TableRow style="@style/DividerLine" />
-
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/connectedDisplay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/connected_display"
-            app:sub="@string/connected_display_description" />
-        <TableRow style="@style/DividerLine" />
-
-
 
     </LinearLayout>
 

@@ -27,7 +27,7 @@
     </style>
 
     <style name="AppTheme.ActionBar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="android:background">@color/colorAltPrimary</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="android:fontFamily">@font/lato</item>
@@ -52,7 +52,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/white</item>
         <item name="trackTint">@color/colorSecondary</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
     </style>
 
     <style name="PrefTextInputLayout">
@@ -72,10 +73,10 @@
         <item name="android:layout_height">2dp</item>
         <item name="android:background">@color/colorSecondary</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginStart">8dp</item>
-        <item name="android:layout_marginEnd">8dp</item>
-        <item name="android:layout_marginTop">0dp</item>
-        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
     </style>
 
     <!--For the song and set menu -->

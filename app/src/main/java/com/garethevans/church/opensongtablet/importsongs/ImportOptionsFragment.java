@@ -45,7 +45,7 @@ public class ImportOptionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsImportBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.import_file));
+        mainActivityInterface.updateToolbar(null,getString(R.string.import_main));
 
         // Set the helpers
         setHelpers();
@@ -99,7 +99,7 @@ public class ImportOptionsFragment extends Fragment {
                 mainActivityInterface.setImportFilename(filename);
                 mainActivityInterface.setImportUri(Uri.parse(messages[1]));
                 if (alive) {
-                    requireActivity().runOnUiThread(() -> mainActivityInterface.navigateToFragment(R.id.importOSBFragment));
+                    requireActivity().runOnUiThread(() -> mainActivityInterface.navigateToFragment(null,R.id.importOSBFragment));
                 }
             }
         };
@@ -129,3 +129,15 @@ public class ImportOptionsFragment extends Fragment {
     }
 
 }
+
+/*
+
+// TODO for now try reading in a pdf
+                    Log.d("SongMwnuDialog","Getting here");
+                            mainActivityInterface.navigateToFragment(R.id.importOptionsFragment);
+                    */
+/*NavHostFragment.findNavController(callingFragment)
+                            .navigate(R.id.ac,null,null);*//*
+
+                            //ocr.getTextFromPDF(getContext(),preferences,storageAccess,processSong,mainActivityInterface,"test","MAIN_Give thanks.pdf");
+                            break;*/

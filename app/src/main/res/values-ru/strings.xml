@@ -117,7 +117,7 @@
     <string name="theme_custom1">"Тема 1"</string>
     <string name="theme_custom2">"Тема 2"</string>
     <string name="custom_background">"Фон пользовательского тэга"</string>
-    <string name="assign_custom_gestures">"Настройка жестов"</string>
+    <string name="custom_gestures">"Настройка жестов"</string>
     <string name="custom_slide">"Пользовательский слайд"</string>
     <string name="customchords">Аккорды пользователя</string>
     <string name="customchords_code">Пользовательский код</string>
@@ -141,7 +141,7 @@
     <string name="doubleTap">"Действие при двойном касании"</string>
     <string name="download_new">"Нажмите здесь, чтобы загрузить новую Библию"</string>
     <string name="close">"Закрыть"</string>
-    <string name="drawer_open">"Открыть"</string>
+    <string name="open">"Открыть"</string>
     <string name="edit">"Изменить"</string>
     <string name="edit_default_delaymax">"Максимальная задержка (в секундах)"</string>
     <string name="save_changes">"Сохранить изменения"</string>
@@ -175,7 +175,7 @@
     <string name="error">"ошибка"</string>
     <string name="error_missingsection">Недостающие части</string>
     <string name="find_existing">"Найти места предыдущих установок файлов OpenSong"</string>
-    <string name="exit">"Вы уверены, что хотите выйти?"</string>
+    <string name="exit_confirm">"Вы уверены, что хотите выйти?"</string>
     <string name="export">"Экспорт"</string>
     <string name="export_chordpro">"Файл в формате ChordPro (.cho)"</string>
     <string name="export_desktop">"Файл настольной версии Open Song (без расширения)"</string>
@@ -340,14 +340,14 @@
     <string name="pdftotext_extract">"Извлечение текста из PDF"</string>
     <string name="pdftotext_found">"Текст найден:"</string>
     <string name="pedal">"Педаль"</string>
-    <string name="performancemode">"Режим Выступления"</string>
+    <string name="performance_mode">"Режим Выступления"</string>
     <string name="phrasesearch">"Введите ключевую фразу ( название, автор , текст и т.д. )"</string>
     <string name="piano">пианино</string>
     <string name="pleaseselect">"Пожалуйста выберите"</string>
     <string name="position">"Позиция"</string>
     <string name="prechorus_background">"Фон предприпева"</string>
     <string name="pref_key_text">"Выберите предпочтительные параметры тональности"</string>
-    <string name="presentermode">"режим презентации"</string>
+    <string name="presentation_mode">"режим презентации"</string>
     <string name="background">"Показать фон"</string>
     <string name="font_presentation">"Шрифт презентации"</string>
     <string name="presoFontShadow">"Тень шрифта презентации"</string>
@@ -396,7 +396,7 @@
     <string name="set_name">"Переименование"</string>
     <string name="set_new">"Новый / Очистка текущего"</string>
     <string name="sethasbeendeleted">"Удалено из папки \"Sets\"."</string>
-    <string name="setquickcheck">"Показывать установленные флажки в меню песен"</string>
+    <string name="song_menu_checkboxes">"Показывать установленные флажки в меню песен"</string>
     <string name="setxmargins">"Горизонтальный отступ"</string>
     <string name="setymargins">"Вертикальный отступ"</string>
     <string name="show_general_advanced">"Переключение Общие / расширенные поля"</string>
@@ -422,7 +422,7 @@
     <string name="songsinfolder">"Папка с песнями"</string>
     <string name="speed">"скорость"</string>
     <string name="stage_section_max">"Максимальная высота секции (режим Сцены)"</string>
-    <string name="stagemode">"Режим Сцена"</string>
+    <string name="stage_mode">"Режим Сцена"</string>
     <string name="start">"Пуск"</string>
     <string name="start_screen">"Вернуться к Стартовому экран"</string>
     <string name="stickynotes">"Примечания к песне"</string>

@@ -84,7 +84,7 @@ public class SettingsCCLI extends Fragment {
     }
 
     private void showDialog() {
-        mainActivityInterface.navigateToFragment(R.id.settingsCCLILog);
+        mainActivityInterface.navigateToFragment(null,R.id.settingsCCLILog);
     }
 
     // Called from MainActivity after TextInputDialogFragment save

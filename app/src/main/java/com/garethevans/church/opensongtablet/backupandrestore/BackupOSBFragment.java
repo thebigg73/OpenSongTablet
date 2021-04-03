@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,7 +140,11 @@ public class BackupOSBFragment extends Fragment {
             requireActivity().runOnUiThread(() -> {
                 if (alive) {
                     // Check the backup file name
-                    backupFilename = myView.backupName.getEditText().getText().toString();
+                    if (myView.backupName.getEditText().getText()!=null) {
+                        backupFilename = myView.backupName.getEditText().getText().toString();
+                    } else {
+                        backupFilename = defaultFilename();
+                    }
                     // Make the progressText Visible
                     myView.progressText.setVisibility(View.VISIBLE);
                     myView.progressBar.setVisibility(View.VISIBLE);
@@ -148,7 +153,7 @@ public class BackupOSBFragment extends Fragment {
             });
 
             // Check the file list is up to date
-            ArrayList<String> allFiles = storageAccess.listSongs(getContext(),preferences,locale);
+            ArrayList<String> allFiles = storageAccess.listSongs(requireContext(),preferences,locale);
 
             // Prepare the uris, inputStreams and outputStreams
             Uri fileUriToCopy;
@@ -156,7 +161,8 @@ public class BackupOSBFragment extends Fragment {
 
             // The zip stuff
             byte[] tempBuff = new byte[1024];
-            File backupFile = new File(getContext().getExternalFilesDir("Backup"),backupFilename);
+            // Check the temp folder exists
+            File backupFile = new File(requireContext().getExternalFilesDir("Backups"), backupFilename);
             FileOutputStream outputStream;
             ZipOutputStream zipOutputStream = null;
             try {
@@ -218,7 +224,9 @@ public class BackupOSBFragment extends Fragment {
                 }
             }
             try {
-                zipOutputStream.close();
+                if (zipOutputStream!=null) {
+                    zipOutputStream.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 error = true;
@@ -247,10 +255,13 @@ public class BackupOSBFragment extends Fragment {
     }
 
     private void exportBackup() {
-        File backupFile = new File(getContext().getExternalFilesDir("Backup"),backupFilename);
-        Uri uri = FileProvider.getUriForFile(getContext(),"OpenSongAppFiles",backupFile);
-        Intent intent = exportActions.exportBackup(getContext(),uri,backupFilename);
-        requireActivity().startActivityForResult(Intent.createChooser(intent, getString(R.string.backup_info)), 12345);
+        // Make sure we have an available backup folder
+        File backupFile = new File(requireContext().getExternalFilesDir("Backups"), backupFilename);
+
+        Log.d("BackupOSBFrag","File="+backupFile);
+        Uri uri = FileProvider.getUriForFile(requireContext(), "com.garethevans.church.opensongtablet.fileprovider",backupFile);
+        Intent intent = exportActions.exportBackup(requireContext(),uri,backupFilename);
+        requireActivity().startActivityForResult(Intent.createChooser(intent,getString(R.string.backup_info)), 12345);
     }
 
     @Override

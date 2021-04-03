@@ -161,7 +161,7 @@ public class FontSetupFragment extends Fragment {
         // Only allow if an internet connection is detected
         new CheckInternet(internet -> {
             mainActivityInterface.setWhattodo(which);
-            mainActivityInterface.navigateToFragment(R.id.fontSetupPreviewFragment);
+            mainActivityInterface.navigateToFragment(null,R.id.fontSetupPreviewFragment);
         });
     }
 
