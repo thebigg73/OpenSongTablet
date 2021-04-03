@@ -2835,9 +2835,9 @@ public class ProcessSong extends Activity {
         boxbit.setLayoutParams(llp);
         boxbit.setBackgroundResource(R.drawable.lyrics_box);
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
-        drawable.setColor(StaticVariables.transparent);                             // Makes the box transparent
+        drawable.setColor(StaticVariables.transparent); // Makes the box transparent
         if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-            drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+            drawable.setStroke(1, StaticVariables.transparent); // set stroke width and transparent stroke
         } else {
             drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
         }
@@ -2862,9 +2862,9 @@ public class ProcessSong extends Activity {
         } else {
             boxbit.setBackgroundResource(R.drawable.lyrics_box);
             GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
-            drawable.setColor(StaticVariables.transparent);                                    // Makes the box transparent
+            drawable.setColor(StaticVariables.transparent);  // Makes the box transparent
             if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-                drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+                drawable.setStroke(1, StaticVariables.transparent); // set stroke width and transparent stroke
             } else {
                 drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
             }
@@ -2883,7 +2883,7 @@ public class ProcessSong extends Activity {
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
         drawable.setColor(StaticVariables.transparent);  // Makes the box transparent
         if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-            drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+            drawable.setStroke(1, StaticVariables.transparent); // set stroke width and transparent stroke
         } else {
             drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
         }
