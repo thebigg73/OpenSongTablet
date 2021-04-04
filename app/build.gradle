@@ -30,7 +30,7 @@ android {
         targetSdkVersion 29
         multiDexEnabled true
     }
-    
+
     dexOptions {
         jumboMode = true
         productFlavors {}
