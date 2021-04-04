@@ -367,6 +367,8 @@ public class BootUpCheck extends AppCompatActivity {
         try {
             text = u.getPath();
             assert text != null;
+
+
             // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
             // This is due to the content using a document contract
             // IV: Exclude raw storage
@@ -385,6 +387,9 @@ public class BootUpCheck extends AppCompatActivity {
                 } else if (warningText!=null){
                     warningText.setVisibility(View.GONE);
                 }
+            } else if (uriTree.getPath().startsWith("/storage") || uriTreeHome.getPath().startsWith("file:///")){
+                // GE - For KitKat, the uriTreeHome will start with file:/// and the uri will start with /storage
+                text = text.replace("file:///","");
             } else {
                 uriTree = null;
             }
@@ -464,7 +469,6 @@ public class BootUpCheck extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode,resultCode,resultData);
         if (resultCode == Activity.RESULT_OK) {
-
             if (requestCode==7789 && resultData!=null && resultData.getExtras()!=null) {
                 kitKatDealWithUri(resultData);
             } else {
@@ -494,6 +498,7 @@ public class BootUpCheck extends AppCompatActivity {
                 folderLocation = null;
             }
         }
+
         if (folderLocation!=null) {
             uriTree = Uri.parse(folderLocation);
             uriTreeHome = storageAccess.homeFolder(BootUpCheck.this,uriTree,preferences);
@@ -550,12 +555,19 @@ public class BootUpCheck extends AppCompatActivity {
         // Since the OpenSong folder may not yet exist, we check for the uriTree and if it is writeable
         try {
             if (uriTree != null) {
-                DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
-                if (df==null || !df.canWrite()) {
-                    String s = getString(R.string.currentstorage) + ": " + getString(R.string.pleaseselect);
-                    progressText.setText(s);
+                // GE - added after 5.3.1 users on KitKat had problems
+                if (storageAccess.lollipopOrLater()) {
+                    DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
+                    if (df == null || !df.canWrite()) {
+                        String s = getString(R.string.currentstorage) + ": " + getString(R.string.pleaseselect);
+                        progressText.setText(s);
+                    }
+                    return df != null && df.canWrite();
+                } else {
+                    // This if for KitKat users
+                    File f = new File(uriTree.getPath());
+                    return f.canWrite();
                 }
-                return df != null && df.canWrite();
             }
         } catch (Exception e) {
             return false;

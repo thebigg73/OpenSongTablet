@@ -30,7 +30,6 @@ android {
         targetSdkVersion 29
         multiDexEnabled true
     }
-
     
     dexOptions {
         jumboMode = true
@@ -59,7 +58,6 @@ android {
         maven { url 'https://jitpack.io' }
         jcenter()
     }
-
 }
 
 dependencies {
@@ -77,14 +75,13 @@ dependencies {
     implementation 'org.apache.commons:commons-compress:1.20'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-    implementation 'androidx.annotation:annotation:1.1.0'
-    annotationProcessor 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.annotation:annotation:1.2.0'
+    annotationProcessor 'androidx.annotation:annotation:1.2.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
     implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.annimon:stream:1.2.1'
     implementation 'lib.kashif:folderpicker:2.4'
     implementation 'com.github.mmin18:realtimeblurview:1.2.1'
-
     testImplementation 'junit:junit:4.13'
 }

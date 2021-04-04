@@ -572,14 +572,15 @@ class StorageAccess {
             File folder = new File(foldersToIndex.get(i));
             File[] contents = folder.listFiles();
             // Go through each item and add songs or folders
-            assert contents != null;
-            for (File item : Objects.requireNonNull(contents)) {
-                if (item.isDirectory()) {
-                    foldersToIndex.add(item.getPath());
-                    songIds.add(songFolderAndFileOnly(item.getPath(),mainfolder)+"/");
-                    num = foldersToIndex.size();
-                } else if (item.isFile()) {
-                    songIds.add(songFolderAndFileOnly(item.getPath(),mainfolder));
+            if (contents!=null) {
+                for (File item : Objects.requireNonNull(contents)) {
+                    if (item.isDirectory()) {
+                        foldersToIndex.add(item.getPath());
+                        songIds.add(songFolderAndFileOnly(item.getPath(), mainfolder) + "/");
+                        num = foldersToIndex.size();
+                    } else if (item.isFile()) {
+                        songIds.add(songFolderAndFileOnly(item.getPath(), mainfolder));
+                    }
                 }
             }
         }
