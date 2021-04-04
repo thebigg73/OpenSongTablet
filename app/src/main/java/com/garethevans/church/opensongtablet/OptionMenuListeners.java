@@ -1881,8 +1881,17 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;
             keepHostFiles.setEnabled(isChecked);
+            // IV - Re-connect to apply setting
+            Handler h = new Handler();
+            h.postDelayed(() -> connectionSearch.performClick(),2000);
         });
-        keepHostFiles.setOnCheckedChangeListener((view,isChecked) -> StaticVariables.keepHostFiles = isChecked);
+
+        keepHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
+            StaticVariables.keepHostFiles = isChecked;
+            // IV - Re-connect to apply setting
+            Handler h = new Handler();
+            h.postDelayed(() -> connectionSearch.performClick(),2000);
+        });
 
         deviceName.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "connect_name";
@@ -1985,27 +1994,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextButtons(modeStageButton,c.getString(R.string.stagemode));
         setTextButtons(modePresentationButton,c.getString(R.string.presentermode));
 
-        // Set a tick next to the current mode
-        switch (StaticVariables.whichMode) {
-            case "Performance":
-                modePerformanceButton.setEnabled(false);
-                modeStageButton.setEnabled(true);
-                modePresentationButton.setEnabled(true);
-                break;
-
-            case "Stage":
-                modePerformanceButton.setEnabled(true);
-                modeStageButton.setEnabled(false);
-                modePresentationButton.setEnabled(true);
-                break;
-
-            case "Presentation":
-                modePerformanceButton.setEnabled(true);
-                modeStageButton.setEnabled(true);
-                modePresentationButton.setEnabled(false);
-                break;
-
-        }
         // Set the button listeners
         menuUp.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "MAIN";
@@ -2014,51 +2002,44 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             }
         });
         modePerformanceButton.setOnClickListener(view -> {
-            if (!StaticVariables.whichMode.equals("Performance")) {
-                // Switch to performance mode
-                StaticVariables.whichMode = "Performance";
-                preferences.setMyPreferenceString(c,"whichMode","Performance");
-                Intent performmode = new Intent();
-                performmode.setClass(c, StageMode.class);
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("activity", performmode);
-                }
-            }
+            modeOptionListenerActivity(c, preferences, "Performance");
         });
         modeStageButton.setOnClickListener(view -> {
-            if (!StaticVariables.whichMode.equals("Stage")) {
-                // Switch to stage mode
-                StaticVariables.whichMode = "Stage";
-                preferences.setMyPreferenceString(c,"whichMode","Stage");
-                Intent stagemode = new Intent();
-                stagemode.setClass(c, StageMode.class);
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("activity", stagemode);
-                }
-            }
+            modeOptionListenerActivity(c, preferences, "Stage");
         });
         modePresentationButton.setOnClickListener(view -> {
-            if (!StaticVariables.whichMode.equals("Presentation")) {
-                // Switch to presentation mode
-                StaticVariables.whichMode = "Presentation";
-                preferences.setMyPreferenceString(c,"whichMode","Presentation");
-                Intent presentmode = new Intent();
-                presentmode.setClass(c, PresenterMode.class);
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("activity", presentmode);
-                }
-            }
+            modeOptionListenerActivity(c, preferences, "Presentation");
         });
-
         closeOptionsFAB.setOnClickListener(view -> {
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");
             }
         });
+   }
 
+    private static void modeOptionListenerActivity(final Context c, final Preferences preferences, final String targetMode) {
+        // IV - Already in the selected mode, just close drawer
+        if (StaticVariables.whichMode.equals(targetMode)) {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+            }
+        } else {
+            StaticVariables.whichMode = targetMode;
+            preferences.setMyPreferenceString(c,"whichMode", StaticVariables.whichMode);
+            Intent appmmode = new Intent();
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                appmmode.setClass(c, PresenterMode.class);
+            } else {
+                appmmode.setClass(c, StageMode.class);
+            }
+            if (mListener != null) {
+                // IV - Go to new mode
+                mListener.callIntent("activity", appmmode);
+                // IV - Kick HDMI after a delay
+                Handler h = new Handler();
+                h.postDelayed(() -> mListener.connectHDMI(), 5000);
+            }
+        }
     }
 
     private static void autoscrollOptionListener(View v, final Context c, final Preferences preferences) {

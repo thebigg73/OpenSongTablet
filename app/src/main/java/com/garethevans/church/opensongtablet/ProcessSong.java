@@ -1265,20 +1265,15 @@ public class ProcessSong extends Activity {
                         sb.append(lyrics[i]);
                     }
                     bit = sb.toString();
-                    if (StaticVariables.whichMode.equals("Presentation")) {
+                    if (!StaticVariables.whichMode.equals("Performance")) {
                         // IV - Remove (....) comments when presenting lyrics only
                         bit = bit.replaceAll("\\(.*?\\)","");
                     }
                     // IV -   Remove any bold marker, typical word splits, white space and then trim - beautify!
                     bit = bit.replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
                     // IV - 2 spaces added to reduce occurance of right edge overrun
-                    if (StaticVariables.whichMode.equals("Presentation")) {
-                        // And before as well for presentation mode, so that block text shadow has spaces on both sides
-                        bit = "  " + bit + "  ";
-
-                    } else {
-                        bit = bit + "  ";
-                    }
+                    // And before so that block text shadow has spaces on both sides
+                    bit = "  " + bit + "  ";
                     // IV - flag used to break loop
                     lyricsOnly = true;
                 } else {
@@ -2460,7 +2455,13 @@ public class ProcessSong extends Activity {
 
         final LinearLayout ll = new LinearLayout(c);
 
-        if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
+        boolean showchordspreso = preferences.getMyPreferenceBoolean(c, "presoShowChords", false);
+        boolean showcapochords = preferences.getMyPreferenceBoolean(c, "displayCapoChords", true);
+        boolean shownativeandcapochords = preferences.getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
+        boolean transposablechordformat = StaticVariables.detectedChordFormat != 4 && StaticVariables.detectedChordFormat != 5;
+        boolean stagelyricsonly = StaticVariables.whichMode.equals("Stage") && !showchordspreso;
+
+        if (StaticVariables.whichMode.equals("Presentation") || stagelyricsonly) {
             ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             ll.setGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER));
@@ -2482,7 +2483,9 @@ public class ProcessSong extends Activity {
             if (x < StaticVariables.songSectionsTypes.length) {
                 StaticVariables.songSectionsTypes[x] = returnvals[1];
             }
-            ll.addView(titletoTextView(c, preferences, lyricsTextColor, returnvals[0], fontsize));
+            if (!stagelyricsonly) {
+                ll.addView(titletoTextView(c, preferences, lyricsTextColor, returnvals[0], fontsize));
+            }
             whattoprocess = StaticVariables.sectionContents[x];
             linetypes = StaticVariables.sectionLineTypes[x];
             linenums = StaticVariables.sectionContents[x].length;
@@ -2498,10 +2501,6 @@ public class ProcessSong extends Activity {
             mCapo = "0";
         }
         int mcapo = Integer.parseInt(mCapo);
-        boolean showchordspreso = preferences.getMyPreferenceBoolean(c, "presoShowChords", false);
-        boolean showcapochords = preferences.getMyPreferenceBoolean(c, "displayCapoChords", true);
-        boolean shownativeandcapochords = preferences.getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
-        boolean transposablechordformat = StaticVariables.detectedChordFormat != 4 && StaticVariables.detectedChordFormat != 5;
 
         // Decide if capo chords are valid and should be shown
         boolean docapochords = showchordspreso && showcapochords && mcapo > 0 && mcapo < 12 && transposablechordformat;
@@ -2529,7 +2528,7 @@ public class ProcessSong extends Activity {
             String[] lyrics_returned;
             TableLayout tl = createTableLayout(c);
 
-            if (StaticVariables.whichMode.equals("Presentation") && !showchordspreso) {
+            if (StaticVariables.whichMode.equals("Presentation") || stagelyricsonly) {
                 tl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
             }
@@ -2570,8 +2569,12 @@ public class ProcessSong extends Activity {
                     if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
                         // IV - Lyric processing moved here to be done when required
                         lyrics_returned = getLyricSections(nextLine, positions_returned);
-                        tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
-                                lyrics_returned, fontsize, storageAccess, preferences, true));
+                        // IV - For stage lyrics only mode, ignore the lyric line if it is commented out
+                        // IV - Some songs have alternatives for lines, they can be commented out
+                        if (!(stagelyricsonly && (nextlinetype.equals("comment")))) {
+                            tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
+                                    lyrics_returned, fontsize, storageAccess, preferences, true));
+                        }
                     }
                     break;
 
@@ -2599,7 +2602,7 @@ public class ProcessSong extends Activity {
                 case "comment_no_chord":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = thisLine;
-                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false));
+                    if (!stagelyricsonly) tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false));
                     break;
 
                 case "extra_info":
@@ -2607,14 +2610,16 @@ public class ProcessSong extends Activity {
                     lyrics_returned[0] = thisLine;
                     TableRow tr = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false);
                     tr.setGravity(Gravity.END);
-                    tl.addView(tr);
-                    tl.setGravity(Gravity.END);
+                    if (!stagelyricsonly) {
+                        tl.addView(tr);
+                        tl.setGravity(Gravity.END);
+                    }
                     break;
 
                 case "guitar_tab":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = thisLine;
-                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, true));
+                    if (!stagelyricsonly) tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, true));
                     break;
 
             }
