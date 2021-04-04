@@ -153,7 +153,6 @@ public class BootUpCheck extends AppCompatActivity {
             // Check our state of play (based on if location is set and valid)
             checkReadiness();
         }
-
     }
 
     private void identifyViews() {
