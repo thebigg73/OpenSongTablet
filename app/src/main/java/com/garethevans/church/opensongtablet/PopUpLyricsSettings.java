@@ -176,15 +176,6 @@ public class PopUpLyricsSettings extends DialogFragment {
             preferences.setMyPreferenceBoolean(getContext(),"trimLines",b);
         });
         songPresentationOrderSwitch.setOnCheckedChangeListener(new SaveCheckedState("usePresentationOrder"));
-        songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
-        songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
-        songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
-        songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
-        songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
-        songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
-        songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
-        songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
-
         scaleHeading_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

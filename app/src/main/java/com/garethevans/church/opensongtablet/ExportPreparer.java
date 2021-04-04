@@ -211,7 +211,6 @@ class ExportPreparer {
         Uri onsong = null;
         Uri image = null;
         Uri pdf = null;
-        // IV - Moved pdfbmp into relevant PDF section
 
         // Prepare the song uri and input stream
         Uri uriinput = storageAccess.getUriForItem(c, preferences, "Songs", StaticVariables.whichSongFolder,

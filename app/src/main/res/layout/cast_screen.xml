@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/projectedPage_RelativeLayout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/projectedPage_RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="#000">
 
     <RelativeLayout
         android:id="@+id/pageHolder"
@@ -14,31 +14,29 @@
         android:layout_centerInParent="true"
         tools:ignore="UselessParent">
 
-    <ImageView
-        android:id="@+id/projected_BackgroundImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/app_name"
-        android:visibility="invisible"/>
+        <ImageView
+            android:id="@+id/projected_BackgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:visibility="invisible" />
 
         <SurfaceView
             android:id="@+id/projected_SurfaceView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_margin="0dp"
-            android:padding="0dp"
             android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/projected_ImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name"
-        android:visibility="invisible"/>
+        <ImageView
+            android:id="@+id/projected_ImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/projected_LinearLayout"
@@ -51,7 +49,6 @@
             android:orientation="vertical"
             android:visibility="visible" />
 
-
         <LinearLayout
             android:id="@+id/bottom_infobar"
             android:layout_width="match_parent"
@@ -59,33 +56,16 @@
             android:layout_alignParentBottom="true"
             android:orientation="horizontal">
 
-
-            <TextView
-                android:id="@+id/songinfo_TextView"
-                style="@style/MyWhiteHeadingText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="0dp"
-                android:drawablePadding="12dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:paddingTop="8dp"
-                android:paddingRight="24dp"
-                android:paddingBottom="8dp"
-                android:visibility="visible"
-                android:drawableStart="@mipmap/ic_round_launcher" />
-
             <LinearLayout
                 android:id="@+id/presentermode_bottombit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingStart="24dp"
                 android:paddingTop="4dp"
                 android:paddingEnd="24dp"
-                android:paddingStart="24dp"
                 android:paddingBottom="8dp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/presentermode_title"
@@ -116,84 +96,97 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false" />
+
             </LinearLayout>
+
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/col1_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:visibility="gone" />
 
+        <LinearLayout
+            android:id="@+id/col1_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/col1_1"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:visibility="invisible" />
+        <LinearLayout
+            android:id="@+id/col2_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/col1_2"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:visibility="invisible" />
+        <LinearLayout
+            android:id="@+id/col1_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/col2_2"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:visibility="invisible" />
+        <LinearLayout
+            android:id="@+id/col2_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/col1_3"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:visibility="invisible" />
+        <LinearLayout
+            android:id="@+id/col3_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/col2_3"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:visibility="invisible" />
-
-    <LinearLayout
-        android:id="@+id/col3_3"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:visibility="invisible" />
-
-    <ImageView
-        android:id="@+id/projected_Logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ost_logo"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name" />
+        <ImageView
+            android:id="@+id/projected_Logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ost_logo"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

@@ -1272,8 +1272,12 @@ public class ProcessSong extends Activity {
                     // IV -   Remove any bold marker, typical word splits, white space and then trim - beautify!
                     bit = bit.replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
                     // IV - 2 spaces added to reduce occurance of right edge overrun
-                    // And before so that block text shadow has spaces on both sides
-                    bit = "  " + bit + "  ";
+                    if (StaticVariables.whichMode.equals("Performance")) {
+                        bit = bit + "  ";
+                    } else {
+                        // And before so that block text shadow has spaces on both sides
+                        bit = "  " + bit + "  ";
+                    }
                     // IV - flag used to break loop
                     lyricsOnly = true;
                 } else {
@@ -2628,11 +2632,14 @@ public class ProcessSong extends Activity {
             }
             ll.addView(tl);
         }
-        TextView emptyline = new TextView(c);
-        emptyline.setLayoutParams(linearlayout_params());
-        emptyline.setText(" ");
-        emptyline.setTextSize(fontsize * 0.5f);
-        ll.addView(emptyline);
+        // IV - Add empty line only for multi section performance mode
+        if (StaticVariables.whichMode.equals("Performance")) {
+            TextView emptyline = new TextView(c);
+            emptyline.setLayoutParams(linearlayout_params());
+            emptyline.setText(" ");
+            emptyline.setTextSize(fontsize * 0.5f);
+            ll.addView(emptyline);
+        }
         return ll;
     }
 
@@ -2828,9 +2835,9 @@ public class ProcessSong extends Activity {
         boxbit.setLayoutParams(llp);
         boxbit.setBackgroundResource(R.drawable.lyrics_box);
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
-        drawable.setColor(StaticVariables.transparent);                             // Makes the box transparent
+        drawable.setColor(StaticVariables.transparent); // Makes the box transparent
         if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-            drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+            drawable.setStroke(1, StaticVariables.transparent); // set stroke width and transparent stroke
         } else {
             drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
         }
@@ -2848,16 +2855,16 @@ public class ProcessSong extends Activity {
         if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
             boxbit.setGravity(Gravity.CENTER_VERTICAL);
         }
-        if (StaticVariables.whichMode.equals("Presentation")) {
+        if (StaticVariables.whichMode.equals("Presentation") || (StaticVariables.whichMode.equals("Stage") && !(preferences.getMyPreferenceBoolean(c, "presoShowChords", false)))) {
             boxbit.setBackground(null);
             boxbit.setHorizontalGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER_HORIZONTAL));
             boxbit.setVerticalGravity(preferences.getMyPreferenceInt(c, "presoLyricsVAlign", Gravity.CENTER_VERTICAL));
         } else {
             boxbit.setBackgroundResource(R.drawable.lyrics_box);
             GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
-            drawable.setColor(StaticVariables.transparent);                                    // Makes the box transparent
+            drawable.setColor(StaticVariables.transparent);  // Makes the box transparent
             if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-                drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+                drawable.setStroke(1, StaticVariables.transparent); // set stroke width and transparent stroke
             } else {
                 drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
             }
@@ -2876,7 +2883,7 @@ public class ProcessSong extends Activity {
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
         drawable.setColor(StaticVariables.transparent);  // Makes the box transparent
         if (preferences.getMyPreferenceBoolean(c, "hideLyricsBox", false)) {
-            drawable.setStroke(1, lyricsBackgroundColor); // set stroke width and stroke color
+            drawable.setStroke(1, StaticVariables.transparent); // set stroke width and transparent stroke
         } else {
             drawable.setStroke(1, lyricsTextColor); // set stroke width and stroke color
         }

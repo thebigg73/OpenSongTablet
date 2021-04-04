@@ -67,7 +67,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     private TextView fontSizePreview;
     private TextView presoAlphaText;
     private LinearLayout lyrics_title_align;
-    private LinearLayout group_songinfofontsizes;
+    private TextView presoAlertText;
     private TextView presoTransitionTimeTextView;
     private TextView rotationTextView;
     private FloatingActionButton lyrics_left_align, lyrics_center_align, lyrics_right_align,
@@ -150,7 +150,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         setMaxFontSizeProgressBar = V.findViewById(R.id.setMaxFontSizeProgressBar);
         maxfontSizePreview = V.findViewById(R.id.maxfontSizePreview);
         group_manualfontsize = V.findViewById(R.id.group_manualfontsize);
-        group_songinfofontsizes = V.findViewById(R.id.group_songinfofontsizes);
+        presoAlertText = V.findViewById(R.id.presoAlertText);
         setFontSizeProgressBar = V.findViewById(R.id.setFontSizeProgressBar);
         fontSizePreview = V.findViewById(R.id.fontSizePreview);
         lyrics_title_align = V.findViewById(R.id.lyrics_title_align);
@@ -215,11 +215,13 @@ public class PopUpLayoutFragment extends DialogFragment {
             showorhideView(group_manualfontsize, !toggleAutoScaleButton.isChecked());
             boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoLyricsBold",false));
         } else {
+            // IV - Stage and Performance modes do not support manual font size, bold or show alerts
             toggleAutoScaleButton.setVisibility(View.GONE);
             showorhideView(group_maxfontsize, true);
             showorhideView(group_manualfontsize, false);
             boldTextButton.setVisibility(View.GONE);
-            group_songinfofontsizes.setVisibility(View.GONE);
+            presoAlertText.setVisibility(View.GONE);
+            presoAlertSizeSeekBar.setVisibility(View.GONE);
         }
         setMaxFontSizeProgressBar.setMax(70);
         int progress = (int)preferences.getMyPreferenceFloat(getContext(),"fontSizePresoMax",40.0f) - 4;
@@ -252,12 +254,11 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoTransitionTimeSeekBar.setProgress(timeToSeekBarProgress());
         presoTransitionTimeTextView.setText(SeekBarProgressToText());
         setupPreviews();
-        // IV - Only Presentation mode starts with a background
-        if (StaticVariables.whichMode.equals("Presentation")) {
-            setCheckBoxes();
-        }
+        setCheckBoxes();
+
         setXMarginProgressBar.setMax(150);
-        setYMarginProgressBar.setMax(150);
+        // IV - Allow bigger margin to give smaller active height suitable for use as bottom 3rd overlay of words over video
+        setYMarginProgressBar.setMax(250);
         setXMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getContext(),"presoXMargin",20));
         setYMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getContext(),"presoYMargin",10));
         setRotationProgressBar.setMax(3);
@@ -348,7 +349,6 @@ public class PopUpLayoutFragment extends DialogFragment {
                     e.printStackTrace();
                 }
             }
-            sendUpdateToScreen("chords");
             setUpAlignmentButtons();
         });
         boldTextButton.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -549,13 +549,12 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void setUpAlignmentButtons() {
 
-        // IV  - Only used for specific situations
-        if ((StaticVariables.whichMode.equals("Stage") && !(preferences.getMyPreferenceBoolean(getContext(),"presoShowChords",false))) ||
+
+        if ((StaticVariables.whichMode.equals("Stage") && !preferences.getMyPreferenceBoolean(getContext(), "presoShowChords", false)) ||
                 StaticVariables.whichMode.equals("Presentation")) {
 
             int lyralign = preferences.getMyPreferenceInt(getContext(), "presoLyricsAlign", Gravity.CENTER_HORIZONTAL);
             int lyrvalign = preferences.getMyPreferenceInt(getContext(), "presoLyricsVAlign", Gravity.CENTER_VERTICAL);
-            int infalign = preferences.getMyPreferenceInt(getContext(), "presoInfoAlign", Gravity.END);
 
             if (lyralign == Gravity.START) {
                 lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
@@ -583,22 +582,26 @@ public class PopUpLayoutFragment extends DialogFragment {
                 lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
                 lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             }
-            if (infalign == Gravity.START) {
-                info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
-                info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-                info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            } else if (infalign == Gravity.END) {
-                info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-                info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-                info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
-            } else { // CENTER_HORIZONTAL
-                info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-                info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
-                info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            }
             lyrics_title_align.setVisibility(View.VISIBLE);
         } else {
             lyrics_title_align.setVisibility(View.GONE);
+        }
+
+        // IV - Info is always shown
+        int infalign = preferences.getMyPreferenceInt(getContext(), "presoInfoAlign", Gravity.END);
+
+        if (infalign == Gravity.START) {
+            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+        } else if (infalign == Gravity.END) {
+            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+        } else { // CENTER_HORIZONTAL
+            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff444488));
+            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
         }
     }
 

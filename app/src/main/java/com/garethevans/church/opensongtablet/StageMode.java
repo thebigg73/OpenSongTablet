@@ -523,18 +523,12 @@ public class StageMode extends AppCompatActivity implements
                 // Restore Drawer Swipe preference
                 toggleDrawerSwipe();
 
-                // Prepare the song menu
-                prepareSongMenu();
-
-                // Prepare the MAIN option menu
+                // IV - RefreshAll calls setupButtons, prepareOptionsMenu and setupSongButtons
+                // Start with MAIN option menu
                 StaticVariables.whichOptionMenu="MAIN";
-                prepareOptionMenu();
-
-                // Set up the page buttons
-                setupPageButtons();
 
                 // Load the song and get started
-                loadSong();
+                refreshAll();
 
                 // Prepare abhide listener
                 setupAbHide();
@@ -3454,10 +3448,10 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.myToastMessage = getString(R.string.switchtoperformmode);
             ShowToast.showToast(StageMode.this);
         } else {
+            FullscreenActivity.bmScreen = null;
             if (StaticVariables.thisSongScale == null || !StaticVariables.thisSongScale.equals("Y")) {
                 StaticVariables.myToastMessage = getString(R.string.highlight_notallowed);
                 ShowToast.showToast(StageMode.this);
-                FullscreenActivity.bmScreen = null;
             } else {
                 boolean vis = false;
                 if (highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
@@ -3471,7 +3465,7 @@ public class StageMode extends AppCompatActivity implements
                     glideimage_ScrollView.destroyDrawingCache();
                     glideimage_ScrollView.setDrawingCacheEnabled(true);
                     glideimage_ScrollView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                    FullscreenActivity.bmScreen = null;
+                    glideimage_ScrollView.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
                     try {
                         FullscreenActivity.bmScreen = glideimage_ScrollView.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
@@ -3484,7 +3478,7 @@ public class StageMode extends AppCompatActivity implements
                     songscrollview.destroyDrawingCache();
                     songscrollview.setDrawingCacheEnabled(true);
                     songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                    FullscreenActivity.bmScreen = null;
+                    songscrollview.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
                     try {
                         FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
@@ -4964,7 +4958,19 @@ public class StageMode extends AppCompatActivity implements
 
                 Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
                 canvas.scale(scale,scale);
+                songscrollview.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.getChildAt(0).draw(canvas);
+                songscrollview.destroyDrawingCache();
+                songscrollview.setDrawingCacheEnabled(true);
+                songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                songscrollview.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
+                try {
+                    FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                } catch (Exception e) {
+                    Log.d("StageMode", "ShareSong error getting the screenshot!");
+                } catch (OutOfMemoryError o) {
+                    Log.d("StageMode", "ShareSong Out of memory");
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -6756,10 +6762,14 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void loadSong() {
         try {
-            // Only do this once - if we are the process of loading a song already, don't try to do it again!
+            // Only do this once - if we are in the process of loading a song already, don't try to do it again!
             if (!FullscreenActivity.alreadyloading) {
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
+
+                // IV - Set presenting options
+                StaticVariables.panicRequired = false;
+                StaticVariables.infoBarChangeRequired = true;
 
                 // Clear any queued 'after song display' activity - we are moving to a new song
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
@@ -8211,6 +8221,7 @@ public class StageMode extends AppCompatActivity implements
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
+        StaticVariables.infoBarChangeRequired = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         updateDisplays();
