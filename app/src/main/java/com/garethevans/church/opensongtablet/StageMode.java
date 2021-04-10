@@ -6768,10 +6768,6 @@ public class StageMode extends AppCompatActivity implements
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
 
-                // IV - Set presenting options
-                StaticVariables.panicRequired = false;
-                StaticVariables.infoBarChangeRequired = true;
-
                 // Clear any queued 'after song display' activity - we are moving to a new song
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
                 startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);

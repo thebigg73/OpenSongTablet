@@ -213,17 +213,23 @@ public class PopUpLayoutFragment extends DialogFragment {
         String newtext = (int) (alphaval * 100.0f) + " %";
         blockShadowAlphaText.setText(newtext);
         toggleChordsButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoShowChords",false));
+        boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoLyricsBold",false));
         if (StaticVariables.whichMode.equals("Presentation")) {
             toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoAutoScale",true));
-            showorhideView(group_maxfontsize, toggleAutoScaleButton.isChecked());
-            showorhideView(group_manualfontsize, !toggleAutoScaleButton.isChecked());
-            boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoLyricsBold",false));
+            // IV - Autocscale (no manual) when showing chords
+            if (preferences.getMyPreferenceBoolean(getContext(), "presoShowChords", false)) {
+                toggleAutoScaleButton.setVisibility(View.GONE);
+                showorhideView(group_maxfontsize, true);
+                showorhideView(group_manualfontsize, false);
+            } else {
+                showorhideView(group_maxfontsize, toggleAutoScaleButton.isChecked());
+                showorhideView(group_manualfontsize, !toggleAutoScaleButton.isChecked());
+            }
         } else {
-            // IV - Stage and Performance modes do not support manual font size, bold or show alerts
+            // IV - Stage and Performance modes do not support manual font size or show alerts
             toggleAutoScaleButton.setVisibility(View.GONE);
             showorhideView(group_maxfontsize, true);
             showorhideView(group_manualfontsize, false);
-            boldTextButton.setVisibility(View.GONE);
             presoAlertText.setVisibility(View.GONE);
             presoAlertSizeSeekBar.setVisibility(View.GONE);
         }
@@ -351,6 +357,18 @@ public class PopUpLayoutFragment extends DialogFragment {
         });
         toggleChordsButton.setOnCheckedChangeListener((compoundButton, b) -> {
             preferences.setMyPreferenceBoolean(getContext(),"presoShowChords",b);
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                // IV - Autocscale (no manual) when showing chords
+                if (b) {
+                    toggleAutoScaleButton.setVisibility(View.GONE);
+                    showorhideView(group_maxfontsize, true);
+                    showorhideView(group_manualfontsize, false);
+                } else {
+                    toggleAutoScaleButton.setVisibility(View.VISIBLE);
+                    showorhideView(group_maxfontsize,toggleAutoScaleButton.isChecked());
+                    showorhideView(group_manualfontsize,!toggleAutoScaleButton.isChecked());
+                }
+            }
             if (mListener!=null) {
                 try {
                     mListener.loadSong();
