@@ -849,6 +849,7 @@ public class BootUpCheck extends AppCompatActivity {
     }
 
     private void startSearch() {
+        MyQuicktip.setVisibility(View.VISIBLE);
         // Deactivate the stuff we shouldn't click on while it is being prepared
         setEnabledOrDisabled(false);
 

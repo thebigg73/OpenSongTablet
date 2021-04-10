@@ -1308,20 +1308,16 @@ public class ProcessSong extends Activity {
                 lyricbit.setTypeface(StaticVariables.typefacePreso);
 
                 int w = StaticVariables.cast_availableWidth_1col;
-                // If we have turned off autoscale and aren't showing the chords, allow wrapping
+                // IV - Manual font size supported for lyrics only (wrapping removed as not working!)
                 if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) &&
                         !preferences.getMyPreferenceBoolean(c, "presoShowChords", false) && w > 0) {
-                    TableRow.LayoutParams tllp = new TableRow.LayoutParams(w, TableRow.LayoutParams.WRAP_CONTENT);
-                    lyricbit.setLayoutParams(tllp);
-                    lyricbit.setSingleLine(false);
                     lyricbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
-                } else {
-                    lyricbit.setSingleLine(true);
                 }
 
             } else {
                 lyricbit.setTextColor(lyricsTextColor);
-                if (fakeBold) {
+                // IV - Support bold lyrics when presentation
+                if ((presentation && preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false)) || fakeBold) {
                     lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
                 }
                 lyricbit.setTypeface(StaticVariables.typefaceLyrics);

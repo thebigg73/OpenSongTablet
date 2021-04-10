@@ -1231,8 +1231,10 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.appRunning = true;
         if (mMediaRouter != null && mMediaRouteSelector != null) {
             try {
+                StaticVariables.infoBarChangeRequired = true;
                 mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                         MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+                updateDisplays();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -4958,7 +4960,6 @@ public class StageMode extends AppCompatActivity implements
 
                 Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
                 canvas.scale(scale,scale);
-                songscrollview.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.getChildAt(0).draw(canvas);
                 songscrollview.destroyDrawingCache();
                 songscrollview.setDrawingCacheEnabled(true);
@@ -6767,10 +6768,6 @@ public class StageMode extends AppCompatActivity implements
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
 
-                // IV - Set presenting options
-                StaticVariables.panicRequired = false;
-                StaticVariables.infoBarChangeRequired = true;
-
                 // Clear any queued 'after song display' activity - we are moving to a new song
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
                 startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
@@ -6906,6 +6903,8 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... params) {
             StaticVariables.myToastMessage = "";
             try {
+                StaticVariables.panicRequired = false;
+                StaticVariables.infoBarChangeRequired = true;
                 FullscreenActivity.scalingfiguredout = false;
                 sectionpresented = false;
 
@@ -8221,7 +8220,9 @@ public class StageMode extends AppCompatActivity implements
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
+        StaticVariables.panicRequired = false;
         StaticVariables.infoBarChangeRequired = true;
+        StaticVariables.forcecastupdate = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         updateDisplays();

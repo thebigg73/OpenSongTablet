@@ -135,7 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/information"
-                        android:src="@drawable/ic_information_outline_white_36dp"
+                        android:src="@drawable/ic_help_outline_white_36dp"
                         app:backgroundTint="@color/grey"
                         app:borderWidth="0dp"
                         android:layout_marginStart="4dp"
