@@ -440,10 +440,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         super.onStart();
         FullscreenActivity.appRunning = true;
         StaticVariables.activity = PresenterMode.this;
+        StaticVariables.infoBarChangeRequired = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         // Fix the page flags
         windowFlags();
+        updateDisplays();
     }
     @Override
     protected void onStop() {
@@ -582,7 +584,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
     private void tryCancelAsyncTasks() {
-        doCancelAsyncTask(loadsong_async);
         doCancelAsyncTask(loadsong_async);
         doCancelAsyncTask(preparesongmenu_async);
         doCancelAsyncTask(prepareoptionmenu_async);
@@ -770,10 +771,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (!FullscreenActivity.alreadyloading) {
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
-
-                // IV - Set presenting options
-                StaticVariables.panicRequired = false;
-                StaticVariables.infoBarChangeRequired = true;
 
                 // Get the song indexes
                 //listSongFiles.getCurrentSongIndex();
@@ -3252,6 +3249,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... objects) {
             try {
+                StaticVariables.panicRequired = false;
+                StaticVariables.infoBarChangeRequired = true;
                 // Load up the song
                 try {
                     LoadXML.loadXML(PresenterMode.this, preferences, storageAccess, processSong);
@@ -3597,7 +3596,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
+        StaticVariables.panicRequired = false;
         StaticVariables.infoBarChangeRequired = true;
+        StaticVariables.forcecastupdate = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                     MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         updateDisplays();
