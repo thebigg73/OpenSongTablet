@@ -48,7 +48,7 @@
             android:layout_alignParentTop="true"
             android:contentDescription="@string/song" />
 
-        <com.garethevans.church.opensongtablet.DrawNotes
+        <com.garethevans.church.opensongtablet.customviews.DrawNotes
             android:id="@+id/drawView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -83,21 +83,7 @@ public class PopUpGesturesFragment extends DialogFragment {
         screenDoubleTap = V.findViewById(R.id.screenDoubleTap);
         screenLongPress = V.findViewById(R.id.screenLongPress);
 
-        // Set up the spinner options
-        ArrayList<String> vals = new ArrayList<>();
-        vals.add(getString(R.string.off));
-        vals.add(getString(R.string.gesture1));
-        vals.add(getString(R.string.gesture2));
-        vals.add(getString(R.string.gesture3));
-        vals.add(getString(R.string.gesture4));
-        vals.add(getString(R.string.autoscrollPedalText));
-        vals.add(getString(R.string.padPedalText));
-        vals.add(getString(R.string.metronomePedalText));
-        vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.padPedalText));
-        vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.metronomePedalText));
-        vals.add(getString(R.string.padPedalText)+" + "+getString(R.string.metronomePedalText));
-        vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.padPedalText) + " + " + getString(R.string.metronomePedalText));
-        vals.add(getActivity().getString(R.string.currentset));
+
 
         // Set up the spinners
         ArrayAdapter<String> gestures = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, vals);
