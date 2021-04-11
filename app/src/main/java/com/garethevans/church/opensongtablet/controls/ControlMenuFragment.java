@@ -40,8 +40,8 @@ public class ControlMenuFragment extends Fragment {
     }
 
     private void setListeners() {
-        myView.pedals.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.pedalsFragment));
         myView.pageButtons.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.pageButtonFragment));
+        myView.pedals.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.pedalsFragment));
         myView.customGestures.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.gesturesFragment));
         myView.swipe.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.swipeFragment));
     }
