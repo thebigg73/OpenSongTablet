@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.pagebuttons;
+package com.garethevans.church.opensongtablet.controls;
 
 // This is used to set up the correct page button icons based on what the user wants them to be
 // It supports the main page buttons on the song window, but also the edit buttons fragment
@@ -366,7 +366,12 @@ public class PageButtons {
             if (!editing) {
                 fab.setOnClickListener(v -> {
                     int pos = actions.indexOf(pageButtonAction.get(buttonNum));
-                    sendPageAction(pos);
+                    sendPageAction(pos,false);
+                });
+                fab.setOnLongClickListener(v -> {
+                    int pos = actions.indexOf(pageButtonAction.get(buttonNum));
+                    sendPageAction(pos,true);
+                    return true;
                 });
             } else {
                 fab.setOnClickListener(null);
@@ -430,7 +435,7 @@ public class PageButtons {
     }
 
     // This deals with the actions from the page buttons
-    public void sendPageAction(int x) {
+    public void sendPageAction(int x, boolean isLongPress) {
         // Get the action we are trying to run
         switch(actions.get(x)) {
             case "":
@@ -444,6 +449,11 @@ public class PageButtons {
                 break;
             case "pad":
                 //TODO
+                if (isLongPress) {
+
+                } else {
+
+                }
                 break;
             case "metronome":
                 //TODO
@@ -465,6 +475,11 @@ public class PageButtons {
                 break;
             case "highlight":
                 //TODO
+                if (isLongPress) {
+                    actionInterface.navigateToFragment("opensongapp://songactions/highlighter/edit",0);
+                } else {
+
+                }
                 break;
             case "editsong":
                 //TODO
@@ -525,4 +540,5 @@ public class PageButtons {
                 break;
         }
     }
+
 }

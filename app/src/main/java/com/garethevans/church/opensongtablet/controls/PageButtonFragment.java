@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.pagebuttons;
+package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,12 +19,14 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.customviews.PrefTextLinkView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -39,11 +41,13 @@ public class PageButtonFragment extends Fragment {
     private ArrayList<FloatingActionButton> myButtons;
     private ArrayList<LinearLayout> myLayouts;
     private ArrayList<SwitchCompat> mySwitches;
+    private ArrayList<TextInputLayout> textInputLayouts;
     private ArrayList<AutoCompleteTextView> autoCompleteTextViews;
     private ArrayList<PrefTextLinkView> shortTexts;
     private ArrayList<PrefTextLinkView> longTexts;
     private SettingsPagebuttonsBinding myView;
     private ExposedDropDownArrayAdapter arrayAdapter;
+    private ExposedDropDownSelection exposedDropDownSelection;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,6 +75,7 @@ public class PageButtonFragment extends Fragment {
         preferences = mainActivityInterface.getPreferences();
         pageButtons = mainActivityInterface.getPageButtons();
         themeColors = mainActivityInterface.getMyThemeColors();
+        exposedDropDownSelection = new ExposedDropDownSelection();
     }
 
     private void setupPageButtons() {
@@ -135,6 +140,7 @@ public class PageButtonFragment extends Fragment {
     }
     private void addTextViews() {
         autoCompleteTextViews = new ArrayList<>();
+        textInputLayouts = new ArrayList<>();
         shortTexts = new ArrayList<>();
         longTexts = new ArrayList<>();
         autoCompleteTextViews.add(myView.button1Opt);
@@ -143,6 +149,13 @@ public class PageButtonFragment extends Fragment {
         autoCompleteTextViews.add(myView.button4Opt);
         autoCompleteTextViews.add(myView.button5Opt);
         autoCompleteTextViews.add(myView.button6Opt);
+
+        textInputLayouts.add(myView.button1OptLayout);
+        textInputLayouts.add(myView.button2OptLayout);
+        textInputLayouts.add(myView.button3OptLayout);
+        textInputLayouts.add(myView.button4OptLayout);
+        textInputLayouts.add(myView.button5OptLayout);
+        textInputLayouts.add(myView.button6OptLayout);
 
         shortTexts.add(myView.button1ShortPress);
         shortTexts.add(myView.button2ShortPress);
@@ -177,7 +190,8 @@ public class PageButtonFragment extends Fragment {
     private void setTheDropDowns(int pos) {
         autoCompleteTextViews.get(pos).setAdapter(arrayAdapter);
         autoCompleteTextViews.get(pos).setText(pageButtons.getPageButtonText(pos));
-        autoCompleteTextViews.get(pos).setOnClickListener(new View.OnClickListener() {
+        exposedDropDownSelection.keepSelectionPosition(textInputLayouts.get(pos),autoCompleteTextViews.get(pos),pageButtons.getPageButtonAvailableText());
+        /*autoCompleteTextViews.get(pos).setOnClickListener(new View.OnClickListener() {
             boolean showing = false;
             @Override
             public void onClick(View v) {
@@ -190,7 +204,7 @@ public class PageButtonFragment extends Fragment {
                     autoCompleteTextViews.get(pos).setListSelection(pageButtons.getPositionFromText(pageButtons.getPageButtonText(pos)));
                 }
             }
-        });
+        });*/
         autoCompleteTextViews.get(pos).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
