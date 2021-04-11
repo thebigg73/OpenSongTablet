@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class ChooseColorFragment extends Fragment {
 
+    private final String TAG = "ChooseColorFrament";
     private MainActivityInterface mainActivityInterface;
     private DisplayColorSettingsBinding myView;
     private Preferences preferences;
@@ -121,15 +122,19 @@ public class ChooseColorFragment extends Fragment {
     private void setupOriginalColor(String which) {
         themePrefix = preferences.getMyPreferenceString(getContext(), "appTheme", "dark");
 
+        Log.d(TAG,"themePrefix="+themePrefix);
+        Log.d(TAG,themeColors.getThemeName());
         // Load the chosen colours up
         themeColors.getDefaultColors(getContext(),preferences);
         int oldColorInt;
         try {
             oldColorInt = themeColors.getValue(which);
         } catch (Exception e) {
+            e.printStackTrace();
             oldColorInt = -1;
         }
 
+        Log.d("d", "oldColorInt="+oldColorInt);
         String oldColorHex = String.format("%08X", (oldColorInt));
         newColorHex = String.format("%08X",(oldColorInt));
         newColorInt = oldColorInt;
@@ -304,7 +309,12 @@ public class ChooseColorFragment extends Fragment {
             case "presoShadowColor":
                 title = getString(R.string.block_text_shadow);
                 break;
-
+            case "highlightChordColor":
+                title = getString(R.string.chords);
+                break;
+            case "highlightHeadingColor":
+                title = getString(R.string.title);
+                break;
         }
         return title;
     }

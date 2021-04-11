@@ -155,6 +155,24 @@
                 app:iconGravity="start"
                 app:iconSize="32dp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/titleHighlighting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chordHighlighting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chords"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
         </LinearLayout>
 
     <LinearLayout

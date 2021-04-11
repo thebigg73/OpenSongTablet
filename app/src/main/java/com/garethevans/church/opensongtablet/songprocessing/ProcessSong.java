@@ -2,7 +2,9 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +15,10 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -31,6 +37,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -38,8 +45,10 @@ import java.util.Locale;
 
 public class ProcessSong {
 
-    public Song initialiseSong(CommonSQL commonSQL, String newFolder, String newFilename, Song song) {
-        song = new Song();
+    private final String TAG = "ProcessSong";
+
+    public Song initialiseSong(CommonSQL commonSQL, String newFolder, String newFilename) {
+        Song song = new Song();
         song.setFilename(newFilename);
         song.setFolder(newFolder);
         song.setSongid(commonSQL.getAnySongId(newFolder,newFilename));
@@ -832,7 +841,8 @@ public class ProcessSong {
 
     private TableLayout groupTable(Context c, String string, float headingScale, float commentScale,
                                    float chordScale, int lyricColor, int chordColor, SetTypeFace setTypeFace,
-                                   boolean trimLines, float lineSpacing, boolean boldChordHeading) {
+                                   boolean trimLines, float lineSpacing, boolean boldChordHeading,
+                                   int highlightChordColor) {
         TableLayout tableLayout = newTableLayout(c);
         // Split the group into lines
         String[] lines = string.split("____groupline_____");
@@ -882,8 +892,8 @@ public class ProcessSong {
             int startpos = 0;
             for (int endpos : pos) {
                 if (endpos != 0) {
-                    TextView textView = newTextView(c, linetype, typeface, size, color, trimLines, lineSpacing, boldChordHeading);
-
+                    TextView textView = newTextView(c, linetype, typeface, size, color, trimLines,
+                            lineSpacing, boldChordHeading);
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(c, linetype, str);
@@ -891,13 +901,19 @@ public class ProcessSong {
                     if (t == 0) {
                         str = str.trim() + " "; // Chords lines are the splitters, only have one blank space after the chord
                     }
-                    textView.setText(str);
+                    Log.d(TAG,"linetype="+linetype);
+                    if (linetype.equals("chord") && highlightChordColor!=0x00000000) {
+                        textView.setText(highlightChords(str,highlightChordColor));
+                    } else {
+                        textView.setText(str);
+                    }
                     tableRow.addView(textView);
                     startpos = endpos;
                 }
             }
             // Add the final position
-            TextView textView = newTextView(c, linetype, typeface, size, color, trimLines, lineSpacing, boldChordHeading);
+            TextView textView = newTextView(c, linetype, typeface, size, color, trimLines,
+                    lineSpacing, boldChordHeading);
             String str = lines[t].substring(startpos);
             if (str.startsWith(".")) {
                 str = str.replaceFirst(".", "");
@@ -905,14 +921,25 @@ public class ProcessSong {
             if (t == 0) {
                 str = str.trim() + " ";
             }
-            textView.setText(str);
+            if (linetype.equals("chord") && highlightChordColor!=0x00000000) {
+                textView.setText(highlightChords(str,highlightChordColor));
+            } else {
+                textView.setText(str);
+            }
             tableRow.addView(textView);
-
             tableLayout.addView(tableRow);
         }
         return tableLayout;
     }
 
+    private Spannable highlightChords(String str, int highlightChordColor) {
+        // Draw the backgrounds to the chords
+        Spannable span = new SpannableString(str);
+        int x = 0;
+        int y = str.indexOf(" ");
+        span.setSpan(new BackgroundColorSpan(highlightChordColor), x, y, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return span;
+    }
     private boolean isMultiLineFormatSong(Locale locale, String string) {
         // Best way to determine if the song is in multiline format is
         // Look for [v] or [c] case insensitive
@@ -1083,10 +1110,21 @@ public class ProcessSong {
 
 
     private TextView lineText(Context c, String linetype, String string, Typeface typeface, float size,
-                              int color, boolean trimLines, float lineSpacing, boolean boldChordHeading) {
-        TextView textView = newTextView(c,linetype,typeface,size,color,trimLines,lineSpacing,boldChordHeading);
+                              int color, boolean trimLines, float lineSpacing, boolean boldChordHeading,
+                              int highlightHeadingColor) {
+        TextView textView = newTextView(c,linetype,typeface,size,color,trimLines,lineSpacing,
+                boldChordHeading);
         string = trimOutLineIdentifiers(c,linetype,string);
-        textView.setText(string);
+        if (linetype.equals("heading") && highlightHeadingColor!=0x00000000) {
+            Spannable span = new SpannableString(string);
+            int x = 0;
+            int y = string.length();
+            span.setSpan(new BackgroundColorSpan(highlightHeadingColor), x, y, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.setText(span);
+        } else {
+            textView.setText(string);
+        }
+        Log.d(TAG,"linetype="+linetype+ "  string="+string);
         return textView;
     }
 
@@ -1170,10 +1208,13 @@ public class ProcessSong {
                 int color = getFontColor(linetype,themeColors.getLyricsTextColor(),themeColors.getLyricsChordsColor());
                 if (line.contains("____groupline_____")) {
                     linearLayout.addView(groupTable(c,line,headingScale,commentScale,chordScale,
-                            themeColors.getLyricsTextColor(),themeColors.getLyricsChordsColor(),setTypeFace,trimLines,lineSpacing,boldChordHeading));
+                            themeColors.getLyricsTextColor(),themeColors.getLyricsChordsColor(),
+                            setTypeFace,trimLines,lineSpacing,boldChordHeading,
+                            themeColors.getHighlightChordColor()));
                 } else {
                     linearLayout.addView(lineText(c,linetype,line,typeface,size,color,
-                            trimLines,lineSpacing,boldChordHeading));
+                            trimLines,lineSpacing,boldChordHeading,
+                            themeColors.getHighlightHeadingColor()));
                 }
             }
             linearLayout.setBackgroundColor(backgroundColor);
@@ -1409,7 +1450,7 @@ public class ProcessSong {
 
 
     // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
-    public void addViewsToScreen(Context c, RelativeLayout testPane, RelativeLayout pageHolder, LinearLayout songView,
+    public float addViewsToScreen(Context c, RelativeLayout testPane, RelativeLayout pageHolder, LinearLayout songView,
                                  int screenWidth, int screenHeight, LinearLayout column1,
                                  LinearLayout column2, LinearLayout column3, String autoScale,
                                  boolean songAutoScaleOverrideFull, boolean songAutoScaleOverrideWidth,
@@ -1479,6 +1520,7 @@ public class ProcessSong {
                 setThreeColumns(c,sectionViews,column1,column2,column3,sectionWidths,sectionWidths,scaleSize_3cols,fontSizeMax);
                 break;
         }
+        return scaleSize_1col;
     }
 
 
@@ -1989,4 +2031,46 @@ public class ProcessSong {
         ArrayList<String> arrayList = new ArrayList<>();
         return arrayList;
     }
+
+
+    // This stuff deals with the highlighter notes
+    public String getHighlighterFilename(Song song, boolean portrait) {
+        // The highlighter song file is encoded as FOLDER_FILENAME_{p or l LANDSCAPE}_.png
+        String filename = song.getFolder().replace("/","_")  + "_" +
+                song.getFilename();
+        if (portrait) {
+            filename += "_p.png";
+        } else {
+            filename += "_l.png";
+        }
+        Log.d(TAG,"filname="+filename);
+        return filename;
+    }
+    public Bitmap getHighlighterFile(Context c, Preferences preferences, StorageAccess storageAccess,
+                                     Song song) {
+        String filename;
+        int orientation = c.getResources().getConfiguration().orientation;
+        if (orientation== Configuration.ORIENTATION_PORTRAIT) {
+            filename = getHighlighterFilename(song,true);
+        } else {
+            filename = getHighlighterFilename(song,false);
+        }
+        Uri uri = storageAccess.getUriForItem(c,preferences,"Highlighter","",filename);
+        Log.d(TAG,"uri="+uri);
+        if (storageAccess.uriExists(c,uri)) {
+            // Load in the bitmap
+            try {
+                InputStream inputStream = storageAccess.getInputStream(c, uri);
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                inputStream.close();
+                return bitmap;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
 }
