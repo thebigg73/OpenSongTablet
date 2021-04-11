@@ -132,6 +132,8 @@ public class ThemeSetupFragment extends Fragment {
         myView.prechorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsPreChorusColor(), PorterDuff.Mode.SRC_IN));
         myView.tagButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsTagColor(), PorterDuff.Mode.SRC_IN));
         myView.customButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsCustomColor(), PorterDuff.Mode.SRC_IN));
+        myView.chordHighlighting.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getHighlightChordColor(), PorterDuff.Mode.SRC_IN));
+        myView.titleHighlighting.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getHighlightHeadingColor(), PorterDuff.Mode.SRC_IN));
 
         myView.presoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoFontColor(), PorterDuff.Mode.SRC_IN));
         myView.presoInfoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoInfoFontColor(), PorterDuff.Mode.SRC_IN));
@@ -160,6 +162,8 @@ public class ThemeSetupFragment extends Fragment {
         myView.tagButton.setOnClickListener(v-> chooseColor("lyricsTagColor"));
         myView.commentButton.setOnClickListener(v-> chooseColor("lyricsCommentColor"));
         myView.customButton.setOnClickListener(v-> chooseColor("lyricsCustomColor"));
+        myView.chordHighlighting.setOnClickListener(v -> chooseColor("highlightChordColor"));
+        myView.titleHighlighting.setOnClickListener(v -> chooseColor("highlightHeadingColor"));
         myView.metronomeButton.setOnClickListener(v-> chooseColor("metronomeColor"));
         myView.pagebuttonButton.setOnClickListener(v-> chooseColor("pageButtonsColor"));
         myView.stickytextButton.setOnClickListener(v-> chooseColor("stickyTextColor"));

@@ -32,6 +32,8 @@ public class ThemeColors {
     private int stickyBackgroundColor;
     private int extraInfoBgColor;
     private int extraInfoTextColor;
+    private int highlightChordColor;
+    private int highlightHeadingColor;
 
     // Set the values with updates
     public void setThemeName(String themeName) {
@@ -79,7 +81,7 @@ public class ThemeColors {
     public void setPresoAlertColor(int i) {
         this.presoAlertColor = i;
     }
-    public  void setPresoShadowColor(int i) {
+    public void setPresoShadowColor(int i) {
         this.presoShadowColor = i;
     }
     public void setPageButtonsColor(int i) {
@@ -99,6 +101,12 @@ public class ThemeColors {
     }
     public void setExtraInfoTextColor(int i) {
         this.extraInfoTextColor = i;
+    }
+    public void setHighlightChordColor(int i) {
+        this.highlightChordColor = i;
+    }
+    public void setHighlightHeadingColor(int i) {
+        this.highlightHeadingColor = i;
     }
     
     // Get the values
@@ -168,6 +176,12 @@ public class ThemeColors {
     public int getExtraInfoTextColor() {
         return extraInfoTextColor;
     }
+    public int getHighlightChordColor() {
+        return highlightChordColor;
+    }
+    public int getHighlightHeadingColor() {
+        return highlightHeadingColor;
+    }
 
     public void getDefaultColors(Context c, Preferences preferences) {
         String theme = preferences.getMyPreferenceString(c,"appTheme","dark");
@@ -210,6 +224,8 @@ public class ThemeColors {
         setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "dark_presoInfoFontColor", white));
         setPresoAlertColor(preferences.getMyPreferenceInt(c, "dark_presoAlertColor", red));
         setPresoShadowColor(preferences.getMyPreferenceInt(c, "dark_presoShadowColor", grey));
+        setHighlightChordColor(preferences.getMyPreferenceInt(c, "dark_highlightChordColor",transparent));
+        setHighlightHeadingColor(preferences.getMyPreferenceInt(c, "dark_highlightHeadingColor",transparent));
     }
     private void setThemeLight(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"light_metronomeColor",         darkishred));
@@ -233,6 +249,8 @@ public class ThemeColors {
         setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "light_presoInfoFontColor", white));
         setPresoAlertColor(preferences.getMyPreferenceInt(c, "light_presoAlertColor", red));
         setPresoShadowColor(preferences.getMyPreferenceInt(c, "light_presoShadowColor", grey));
+        setHighlightChordColor(preferences.getMyPreferenceInt(c, "light_highlightChordColor",transparent));
+        setHighlightHeadingColor(preferences.getMyPreferenceInt(c, "light_highlightHeadingColor",transparent));
     }
     private void setThemeCustom1(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"custom1_metronomeColor",       darkishred));
@@ -256,6 +274,9 @@ public class ThemeColors {
         setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "custom1_presoInfoFontColor", white));
         setPresoAlertColor(preferences.getMyPreferenceInt(c, "custom1_presoAlertColor", red));
         setPresoShadowColor(preferences.getMyPreferenceInt(c, "custom1_presoShadowColor", grey));
+        setHighlightChordColor(preferences.getMyPreferenceInt(c, "custom1_highlightChordColor",transparent));
+        setHighlightHeadingColor(preferences.getMyPreferenceInt(c, "custom1_highlightHeadingColor",transparent));
+
     }
     private void setThemeCustom2(Context c, Preferences preferences) {
         setMetronomeColor(preferences.getMyPreferenceInt(c,"custom2_metronomeColor",       darkishred));
@@ -279,6 +300,8 @@ public class ThemeColors {
         setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "custom2_presoInfoFontColor", white));
         setPresoAlertColor(preferences.getMyPreferenceInt(c, "custom2_presoAlertColor", red));
         setPresoShadowColor(preferences.getMyPreferenceInt(c, "custom2_presoShadowColor", grey));
+        setHighlightChordColor(preferences.getMyPreferenceInt(c, "custom2_highlightChordColor",transparent));
+        setHighlightHeadingColor(preferences.getMyPreferenceInt(c, "custom2_highlightHeadingColor",transparent));
     }
 
     public int getValue(String what) {
@@ -326,6 +349,10 @@ public class ThemeColors {
                 return getExtraInfoBgColor();
             case "extraInfoTextColor":
                 return getExtraInfoTextColor();
+            case "highlightChordColor":
+                return getHighlightChordColor();
+            case "highlightHeadingColor":
+                return getHighlightHeadingColor();
         }
     }
     private String which;
@@ -350,6 +377,7 @@ public class ThemeColors {
     private final int lightgrey = 0xff222222;
     private final int lightyellow = 0xffddaa00;
     private final int yellow = 0xffffff00;
+    private final int darkyellow = 0xffaaaa00;;
     private final int vdarkyellow = 0xff111100;
     private final int red = 0xffff0000;
     private final int vdarkred = 0xff220000;
@@ -363,10 +391,6 @@ public class ThemeColors {
     private final int darkpurple = 0xff220022;
     private final int vlightpurple = 0xffffeeff;
     private final int lightishcyan = 0xffddeeff;
-    private final int highlighterblack = 0x66000000;
-    private final int highlighterwhite = 0x66ffffff;
-    private final int highlighterblue = 0x660000ff;
-    private final int highlighterred = 0x66ff0000;
-    private final int highlightergreen = 0x6600ff00;
-    private final int highighteryellow = 0x66ffff00;
+
+
 }
