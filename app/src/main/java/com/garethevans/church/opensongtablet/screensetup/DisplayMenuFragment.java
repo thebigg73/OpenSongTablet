@@ -77,6 +77,12 @@ public class DisplayMenuFragment extends Fragment {
     private void setListeners() {
         myView.themeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.themeSetupFragment));
         myView.fontButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.fontSetupFragment));
+        // TODO - Add settings for the 3 modes
+        //myView.performanceMode.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.performanceDisplaySetup));
+        //myView.stageMode.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.stageDisplaySetup));
+        //myView.presentationMode.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.presentationDisplaySetup));
+        // TODO - Connected display settings
+        //myView.connectedDisplay.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.connectedDisplaySetup));
         myView.actionBarSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.actionBarSettingsFragment));
         myView.menuSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.menuSettingsFragment));
     }
