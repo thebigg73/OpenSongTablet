@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/PrefScrollView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/pad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:main="@string/pad"
+            app:sub="@string/pad_info" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/autoscroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/autoscroll"
+            app:sub="@string/autoscroll_info" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/metronome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/metronome"
+            app:sub="@string/metronome_info" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/stickyNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/stickynotes"
+            app:sub="@string/stickynotes_edit" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/highlighter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/highlight"
+            app:sub="@string/highlight_info" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/notation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/music_score"
+            app:sub="@string/music_score_info" />
+        <TableRow style="@style/DividerLine" />
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,70 @@
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PrefScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:text="@string/doubleTap" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/doubleTapLayout"
+            style="@style/exposedDropDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/action"
+            android:labelFor="@+id/doubleTap"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/doubleTap"
+                style="@style/exposedDropDownItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:dropDownHeight="200dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TableRow style="@style/DividerLine" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/longPress" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/longPressLayout"
+            style="@style/exposedDropDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/action"
+            android:labelFor="@+id/longPress"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/longPress"
+                style="@style/exposedDropDownItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:dropDownHeight="200dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TableRow
+            style="@style/DividerLine"
+            android:layout_marginBottom="200dp" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
