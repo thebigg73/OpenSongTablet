@@ -70,7 +70,7 @@
     android:layout_margin="8dp">
 
         <include android:id="@+id/songmenualpha"
-            layout="@layout/_song_menu_alphaindex" />
+            layout="@layout/song_menu_alphaindex" />
 
         <LinearLayout
             android:layout_width="match_parent"

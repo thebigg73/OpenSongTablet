@@ -594,7 +594,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_midi" />
+                    android:text="@string/midi_message_sent" />
 
                 <EditText
                     android:id="@+id/edit_song_midi"
@@ -604,7 +604,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_midi"
+                    android:hint="@string/midi_message_sent"
                     android:inputType="text"
                     tools:ignore="Autofill" />
 
@@ -615,7 +615,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_midi_index" />
+                    android:text="@string/midi_message_receive" />
 
                 <EditText
                     android:id="@+id/edit_song_midi_index"
@@ -625,7 +625,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_midi_index"
+                    android:hint="@string/midi_message_receive"
                     android:inputType="text"
                     tools:ignore="Autofill" />
 
