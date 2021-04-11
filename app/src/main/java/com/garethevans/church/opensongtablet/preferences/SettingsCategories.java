@@ -89,6 +89,7 @@ public class SettingsCategories extends Fragment {
         myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.midiFragment));
         myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.about_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.control_graph));
+        myView.actionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.actions_graph));
     }
 
 }

@@ -59,10 +59,10 @@ public class PedalActions {
         addString("pad",pad);
         addString("autoscroll",autoscroll);
         addString("metronome",metronome);
-        addString("pad_autoscroll",pad + " & " + autoscroll);
-        addString("pad_metronome",pad + " & " + metronome);
-        addString("autoscroll_metronome",autoscroll + " & " + metronome);
-        addString("pad_autoscroll_metronome",pad + " & " + autoscroll + " & " + metronome);
+        addString("pad_autoscroll",pad + " & " + c.getString(R.string.autoscroll));
+        addString("pad_metronome",pad + " & " + c.getString(R.string.metronome));
+        addString("autoscroll_metronome",autoscroll + " & " + c.getString(R.string.metronome));
+        addString("pad_autoscroll_metronome",pad + " & " + c.getString(R.string.autoscroll) + " & " + c.getString(R.string.metronome));
         addString("editsong",c.getString(R.string.edit));
         addString("transpose",c.getString(R.string.transpose));
         addString("showchords",c.getString(R.string.show_chords));
