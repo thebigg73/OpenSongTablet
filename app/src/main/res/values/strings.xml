@@ -286,10 +286,12 @@
     <string name="pedal_scroll_before_move">Try to scroll before changing songs</string>
     <string name="pedal_waiting">"Waiting for button…."</string>
     <string name="performance_mode">Performance mode</string>
+    <string name="performance_mode_info">Use your device as a songbook</string>
     <string name="portrait">Portrait</string>
     <string name="prechorus">Pre-Chorus</string>
     <string name="presentation_order">Presentation order</string>
     <string name="presentation_mode">Presentation mode</string>
+    <string name="presentation_mode_info">Control the display to a projector</string>
     <string name="previous">Previous</string>
     <string name="processing">Files are being processed</string>
     <string name="profile">Profile</string>
@@ -349,6 +351,7 @@
     <string name="songs">Songs</string>
     <string name="songsheet">Songsheet</string>
     <string name="stage_mode">Stage Mode</string>
+    <string name="stage_mode_info">Display songs split into sections or as a stage monitor</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="start_stop_autoscroll">Start/stop autoscroll</string>
