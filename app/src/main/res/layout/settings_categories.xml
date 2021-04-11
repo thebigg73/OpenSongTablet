@@ -56,8 +56,8 @@
             android:id="@+id/modeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="@string/performance_mode"
-            app:sub="@string/choose_app_mode" />
+            app:main="@string/choose_app_mode"
+            app:sub="@string/performance_mode" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView

@@ -71,7 +71,7 @@ public class SettingsCategories extends Fragment {
                 mode = getString(R.string.presentation_mode);
                 break;
         }
-        ((TextView)myView.modeButton.findViewById(R.id.mainText)).setText(mode);
+        ((TextView)myView.modeButton.findViewById(R.id.subText)).setText(mode);
     }
 
     private void setPlayEnabled(boolean enabled) {
