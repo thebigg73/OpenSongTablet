@@ -59,8 +59,12 @@ public class Song {
     private boolean isPDF;
     private boolean isImage;
     private String nextDirection = "R2L";
-    public int pdfPageCurrent;
+    private int pdfPageCurrent;
     private String songXML;
+    private String highlighterPortrait = "";
+    private String highlighterLandscape = "";
+
+
 
     // The getters
     public int getId() {
@@ -168,6 +172,12 @@ public class Song {
     public String getSongXML() {
         return songXML;
     }
+    public String getHighlighterPortrait() {
+        return highlighterPortrait;
+    }
+    public String getHighlighterLandscape() {
+        return highlighterLandscape;
+    }
 
     // The setters
     public void setId(int id) {
@@ -267,6 +277,12 @@ public class Song {
     public void setSongXML(String songXML) {
         this.songXML = songXML;
     }
+    public void setHighlighterPortrait(String highlighterPortrait) {
+        this.highlighterPortrait = highlighterPortrait;
+    }
+    public void setHighlighterLandscape(String highlighterLandscape) {
+        this.highlighterLandscape = highlighterLandscape;
+    }
 
 
 
@@ -323,6 +339,9 @@ public class Song {
         this.extraStuff2 = toCopy.extraStuff2;
         this.detectedChordFormat = toCopy.detectedChordFormat;
         this.encoding = toCopy.encoding;
+        this.songXML = toCopy.songXML;
+        this.highlighterPortrait = toCopy.highlighterPortrait;
+        this.highlighterLandscape = toCopy.highlighterLandscape;
     }
 
     // This is used when comparing song objects for changes (when editing a song)
@@ -348,7 +367,6 @@ public class Song {
                     filetype.equals(song.filetype);
         }
     }
-
 
 
     // The welcome song if there is a problem

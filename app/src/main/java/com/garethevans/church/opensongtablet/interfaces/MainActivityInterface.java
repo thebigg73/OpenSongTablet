@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.interfaces;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +18,10 @@ import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.chords.Transpose;
+import com.garethevans.church.opensongtablet.controls.Gestures;
+import com.garethevans.church.opensongtablet.controls.PageButtons;
 import com.garethevans.church.opensongtablet.controls.PedalActions;
+import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
@@ -29,7 +33,6 @@ import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
-import com.garethevans.church.opensongtablet.pagebuttons.PageButtons;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
@@ -120,6 +123,7 @@ public interface MainActivityInterface {
     CommonSQL getCommonSQL();
     CCLILog getCCLILog();
     PedalActions getPedalActions();
+    Gestures getGestures();
     DoVibrate getDoVibrate();
     String getImportFilename();
     Uri getImportUri();
@@ -151,7 +155,10 @@ public interface MainActivityInterface {
     VersionNumber getVersionNumber();
     Transpose getTranspose();
     AppActionBar getAppActionBar();
+    Swipes getSwipes();
     int getFragmentOpen();
     void updatePageButtonLayout();
     void refreshMenuItems();
+    void setScreenshot(Bitmap bitmap);
+    Bitmap getScreenshot();
 }

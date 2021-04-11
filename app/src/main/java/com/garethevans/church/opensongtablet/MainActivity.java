@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -54,8 +55,12 @@ import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
 import com.garethevans.church.opensongtablet.chords.Transpose;
+import com.garethevans.church.opensongtablet.controls.Gestures;
+import com.garethevans.church.opensongtablet.controls.PageButtons;
 import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.PedalsFragment;
+import com.garethevans.church.opensongtablet.controls.SwipeFragment;
+import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
@@ -66,6 +71,7 @@ import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment;
+import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
 import com.garethevans.church.opensongtablet.importsongs.OCR;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
@@ -77,13 +83,13 @@ import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
 import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
+import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
-import com.garethevans.church.opensongtablet.pagebuttons.PageButtons;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
@@ -148,7 +154,7 @@ getters and setters.  This also avoids having loads of StaticVariables.
 public class MainActivity extends AppCompatActivity implements LoadSongInterface,
         ShowCaseInterface, MainActivityInterface, MidiAdapterInterface, EditSongFragmentInterface,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, DialogReturnInterface,
-        NearbyInterface, NearbyReturnActionsInterface, ActionInterface {
+        NearbyInterface, NearbyReturnActionsInterface, ActionInterface, SwipeDrawingInterface {
 
     ActivityMainBinding activityMainBinding;
     AppBarMainBinding appBarMainBinding;
@@ -183,6 +189,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private boolean pageButtonActive = true;
     private PageButtons pageButtons;
     private PedalActions pedalActions;
+    private Swipes swipes;
+    private Gestures gestures;
     private ExportActions exportActions;
     private WebDownload webDownload;
     private AutoscrollActions autoscrollActions;
@@ -212,10 +220,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     EditSongFragment editSongFragment;
     EditSongFragmentMain editSongFragmentMain;
     NearbyConnectionsFragment nearbyConnectionsFragment;
+    SwipeFragment swipeFragment;
     Fragment registeredFragment;
     int fragmentOpen;
     boolean fullIndexRequired = true;
     String whattodo = "";
+    private Bitmap screenShot;
 
     NavHostFragment navHostFragment;
     NavController navController;
@@ -324,8 +334,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // Set up the helpers
     private void initialiseHelpers() {
+        // The first two are used in other helpers often, so they get done first!
         storageAccess = new StorageAccess();
         preferences = new Preferences();
+
         setTypeFace = new SetTypeFace();
         themeColors = new ThemeColors();
         sqLiteHelper = new SQLiteHelper(this);
@@ -378,6 +390,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         transpose = new Transpose();
         gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
         alertChecks = new AlertChecks();
+        gestures = new Gestures(this,preferences);
+        swipes = new Swipes(this,preferences);
     }
 
     // The actionbar
@@ -1020,6 +1034,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             case "NearbyConnectionsFragment":
                 nearbyConnectionsFragment = (NearbyConnectionsFragment) frag;
                 break;
+            case "SwipeFragment":
+                swipeFragment = (SwipeFragment) frag;
+                break;
         }
         registeredFragment = frag;
     }
@@ -1172,9 +1189,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     // Check this was successful (saved as arguments)
                     if (arguments!=null && arguments.size()>0 && arguments.get(0).equals("success")) {
                         // Write a blank xml file with the song name in it
-                        Song song = new Song();
                         // TODO
-                        song = processSong.initialiseSong(commonSQL,song.getFolder(),"NEWSONGFILENAME",song);
+                        song = processSong.initialiseSong(commonSQL,song.getFolder(),"NEWSONGFILENAME");
                         String newSongText = processSong.getXML(song);
                         if (storageAccess.doStringWriteToFile(this,preferences,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
@@ -1227,6 +1243,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
         if (agree) {
             boolean result = false;
+            boolean allowToast = true;
             switch(what) {
                 case "deleteSong":
                     result = storageAccess.doDeleteFile(this,preferences,"Songs",
@@ -1257,6 +1274,16 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     updateSongMenu(fragName, callingFragment, arguments); // Passing the fragment allows an update to be sent to the calling fragment
                     break;
 
+                case "deleteHighlighter":
+                    // Try to send the info back to the highlighter edit fragment
+                    try {
+                        ((HighlighterEditFragment)callingFragment).doDelete(agree);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    allowToast = false;
+                    break;
+
                 case "exit":
                     // Close the app.
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -1264,14 +1291,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     } else {
                         finishAffinity();
                     }
-                    result = true;
+                    allowToast = false;
                     break;
 
             }
-            if (result && !what.equals("exit")) {
+            if (result && allowToast) {
                 // Don't show toast for exit, but other successful actions
                 showToast.doIt(this,getString(R.string.success));
-            } else if (!result){
+            } else if (allowToast){
                 showToast.doIt(this,getString(R.string.error));
             }
         }
@@ -1522,6 +1549,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return pageButtons;
     }
     @Override
+    public Swipes getSwipes() {
+        return swipes;
+    }
+    @Override
     public DoVibrate getDoVibrate() {
         return doVibrate;
     }
@@ -1576,6 +1607,19 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public int getFragmentOpen() {
         return fragmentOpen;
+    }
+    @Override
+    public Gestures getGestures() {
+        return gestures;
+    }
+    @Override
+    public void setScreenshot(Bitmap bitmap) {
+        screenShot = Bitmap.createBitmap(bitmap);
+        bitmap.recycle();
+    }
+    @Override
+    public Bitmap getScreenshot() {
+        return screenShot;
     }
 
     // Nearby
@@ -1815,6 +1859,18 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     navHostFragment, null);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void getSwipeValues(int minDistance, int minHeight, int minTime) {
+        Log.d("MainActivity", "minDistance:"+minDistance+" minSpeed:"+minTime+" maxYerror:"+minHeight);
+        if (swipeFragment!=null) {
+            try {
+                ((SwipeFragment) swipeFragment).getSwipeValues(minDistance, minHeight, minTime);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

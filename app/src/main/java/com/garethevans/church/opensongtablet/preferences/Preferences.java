@@ -163,6 +163,8 @@ public class Preferences extends Activity {
     custom1_stickyBackgroundColor   int         The color for the sticky note background info text in the custom1 theme
     custom1_extraInfoTextColor      int         The color for the extra info text in the custom1 theme
     custom1_extraInfoBgColor        int         The color for the extra info background in the custom1 theme
+    custom1_highlightChordColor     int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
+    custom1_highlightHeadingColor   int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     custom2_lyricsBackgroundColor   int         The color for the lyrics background in the custom2 theme
     custom2_lyricsBridgeColor       int         The color for the background for the bridge in the custom2 theme
     custom2_lyricsCapoColor         int         The color for the capo text in the custom2 theme
@@ -184,6 +186,8 @@ public class Preferences extends Activity {
     custom2_stickyBackgroundColor   int         The color for the sticky note background info text in the custom2 theme
     custom2_extraInfoTextColor      int         The color for the extra info text in the custom2 theme
     custom2_extraInfoBgColor        int         The color for the extra info background in the custom2 theme
+    custom2_highlightChordColor     int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
+    custom2_highlightHeadingColor   int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     customLogo                      String      The uri of the user logo for presentations (def:"")
     customLogoSize                  float       Size of the custom logo (% of screen)
     customPadAb                     String      Custom pad uri for the key specified
@@ -231,6 +235,8 @@ public class Preferences extends Activity {
     dark_stickyBackgroundColor      int         The color for the sticky note background info text in the dark theme
     dark_extraInfoTextColor         int         The color for the extra info text in the dark theme
     dark_extraInfoBgColor           int         The color for the extra info background in the dark theme
+    dark_highlightChordColor        int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
+    dark_highlightHeadingColor      int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     deviceId                        String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
     displayCapoChords               boolean     Should capo chords be shown (def:true)
     displayCapoAndNativeChords      boolean     Should both chords be shown at once (def:false)
@@ -292,6 +298,8 @@ public class Preferences extends Activity {
     light_stickyBackgroundColor     int         The color for the sticky note background info text in the light theme
     light_extraInfoTextColor        int         The color for the extra info text in the light theme
     light_extraInfoBgColor          int         The color for the extra info background in the light theme
+    light_highlightChordColor       int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
+    light_highlightHeadingColor     int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     lineSpacing                     float       The line spacing trim value to use (def:0.1f)
     menuSize                        int         The width of the side menus (min 100 max 400) (def:250)
     metronomeAutoStart              boolean     Should the metronome autostart with song (after manually starting first time) (def:false)

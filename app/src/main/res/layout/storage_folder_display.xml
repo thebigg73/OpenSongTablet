@@ -12,7 +12,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/storage_graph_overview_info"/>
 
-    <com.garethevans.church.opensongtablet.screensetup.MyZoomLayout
+    <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
         android:id="@+id/zoomLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,6 +29,6 @@
             android:padding="12dp"
             app:useMaxSize="true" />
 
-    </com.garethevans.church.opensongtablet.screensetup.MyZoomLayout>
+    </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>
 
 </LinearLayout>

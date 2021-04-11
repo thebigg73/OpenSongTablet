@@ -101,7 +101,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.lockDrawer(true);
 
-        song = processSong.initialiseSong(commonSQL,song.getFolder(),song.getFilename(),song);
+        song = processSong.initialiseSong(commonSQL,song.getFolder(),song.getFilename());
 
         // The folder and filename were passed in the starting song object.  Now update with the file contents
         song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,processSong, showToast,

@@ -75,8 +75,6 @@ public class StorageAccess {
 
     // Used to decide on the best storage method (using tree or not)
     public boolean lollipopOrLater() {
-        //boolean testingKitKat = true;
-        //return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !testingKitKat;
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
@@ -385,19 +383,6 @@ public class StorageAccess {
         }
         return storageDetails;
     }
-
-    public Uri fixBadStorage(Uri uri) {
-        if (uri!=null) {
-            String text = uri.getPath();
-            // IV: Exclude raw storage
-            if (text.startsWith("/tree/raw:") || text.startsWith("/tree/msd:")) {
-                uri = null;
-                uriTree = null;
-                uriTreeHome = null;
-            }
-        }
-        return uri;
-    }
     public String[] niceUriTree_File(Context c, Uri uri, String[] storageDetails) {
         storageDetails[1] = uri.getPath();
         storageDetails[1] = "¬" + storageDetails[1];
@@ -446,7 +431,18 @@ public class StorageAccess {
 
         return storageDetails;
     }
-
+    public Uri fixBadStorage(Uri uri) {
+        if (uri!=null) {
+            String text = uri.getPath();
+            // IV: Exclude raw storage
+            if (text.startsWith("/tree/raw:") || text.startsWith("/tree/msd:")) {
+                uri = null;
+                uriTree = null;
+                uriTreeHome = null;
+            }
+        }
+        return uri;
+    }
     private String stringForFile(Context c, Preferences preferences, String folderpath) {
         if (uriTreeHome==null) {
             String uriTreeHome_String = preferences.getMyPreferenceString(c, "uriTreeHome", "");
@@ -1113,7 +1109,7 @@ public class StorageAccess {
             e.printStackTrace();
         }
     }
-    void writeImage(OutputStream outputStream, Bitmap bmp) {
+    public void writeImage(OutputStream outputStream, Bitmap bmp) {
         try {
             bmp.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.flush();

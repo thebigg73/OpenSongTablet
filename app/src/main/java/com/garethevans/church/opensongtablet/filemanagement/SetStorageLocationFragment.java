@@ -24,7 +24,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
-import com.garethevans.church.opensongtablet.databinding.FragmentSetstoragelocationBinding;
+import com.garethevans.church.opensongtablet.databinding.StorageSetstoragelocationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
@@ -64,7 +64,7 @@ public class SetStorageLocationFragment extends Fragment {
     private ArrayList<String> locations;
     private File folder;
 
-    private FragmentSetstoragelocationBinding myView;
+    private StorageSetstoragelocationBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -84,7 +84,7 @@ public class SetStorageLocationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        myView = FragmentSetstoragelocationBinding.inflate(inflater, container, false);
+        myView = StorageSetstoragelocationBinding.inflate(inflater, container, false);
 
         // Initialise the helper classes
         initialiseHelpers();

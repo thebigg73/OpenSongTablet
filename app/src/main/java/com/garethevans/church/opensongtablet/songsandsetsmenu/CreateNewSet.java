@@ -357,7 +357,7 @@ public class CreateNewSet {
                              ProcessSong processSong, ConvertChoPro convertChoPro,
                              ConvertOnSong convertOnSong, LoadSong loadSong, ShowToast showToast,
                              SongListBuildIndex songListBuildIndex, String folder, String name) {
-        Song tempSong = processSong.initialiseSong(commonSQL,folder, name, song);
+        Song tempSong = processSong.initialiseSong(commonSQL,folder, name);
         try {
             tempSong = loadSong.doLoadSong(c, storageAccess, preferences, processSong, showToast, locale,
                     songListBuildIndex, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
