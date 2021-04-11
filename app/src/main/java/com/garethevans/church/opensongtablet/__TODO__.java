@@ -19,12 +19,5 @@ public class __TODO__ {
 
     Song actions - all
 
-    Controls - custom gestures
-    Controls - page buttons
-    Controls - swipe settings
-
-
-
-
      */
 }
