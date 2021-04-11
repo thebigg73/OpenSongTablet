@@ -157,8 +157,8 @@
     <string name="key">"Tonalité"</string>
     <string name="edit_song_keyline">"Touche de ligne"</string>
     <string name="lyrics">"Paroles"</string>
-    <string name="edit_song_midi">"Message MIDI envoyé par la chanson"</string>
-    <string name="edit_song_midi_index">"Message MIDI pour activer chanson"</string>
+    <string name="midi_message_sent">"Message MIDI envoyé par la chanson"</string>
+    <string name="midi_message_receive">"Message MIDI pour activer chanson"</string>
     <string name="song_notes">"Notes de la chanson"</string>
     <string name="edit_song_pitch">"Diapason de la chanson"</string>
     <string name="presentation_order">"Ordre de présentation"</string>

@@ -158,8 +158,8 @@
     <string name="key">"Clave"</string>
     <string name="edit_song_keyline">"Línea de Clave"</string>
     <string name="lyrics">"Letras"</string>
-    <string name="edit_song_midi">"Mensaje MIDI enviado desde canción"</string>
-    <string name="edit_song_midi_index">"Mensaje MIDI para activar canción"</string>
+    <string name="midi_message_sent">"Mensaje MIDI enviado desde canción"</string>
+    <string name="midi_message_receive">"Mensaje MIDI para activar canción"</string>
     <string name="song_notes">"Canción notas adhesivas"</string>
     <string name="edit_song_pitch">"Notas diapasón de canción"</string>
     <string name="presentation_order">"Orden de presentación"</string>

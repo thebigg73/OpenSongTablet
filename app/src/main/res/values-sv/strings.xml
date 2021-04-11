@@ -158,8 +158,8 @@
     <string name="key">"Nyckel"</string>
     <string name="edit_song_keyline">"Nyckelrad"</string>
     <string name="lyrics">"Text"</string>
-    <string name="edit_song_midi">"MIDI-meddelande skickat från låt"</string>
-    <string name="edit_song_midi_index">"MIDI-meddelande för att aktivera låt"</string>
+    <string name="midi_message_sent">"MIDI-meddelande skickat från låt"</string>
+    <string name="midi_message_receive">"MIDI-meddelande för att aktivera låt"</string>
     <string name="song_notes">"Sånghäftor"</string>
     <string name="edit_song_pitch">"Pitch pip notes för låt"</string>
     <string name="presentation_order">"Presentationsorder"</string>

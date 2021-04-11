@@ -158,8 +158,8 @@
     <string name="key">"Klucz"</string>
     <string name="edit_song_keyline">"Klawisz linii"</string>
     <string name="lyrics">"Teksty"</string>
-    <string name="edit_song_midi">"Komunikat MIDI przesyłane z piosenką"</string>
-    <string name="edit_song_midi_index">"Komunikat MIDI aktywować piosenkę"</string>
+    <string name="midi_message_sent">"Komunikat MIDI przesyłane z piosenką"</string>
+    <string name="midi_message_receive">"Komunikat MIDI aktywować piosenkę"</string>
     <string name="song_notes">"Piosenka karteczki"</string>
     <string name="edit_song_pitch">"Pitch notatki rur do piosenki"</string>
     <string name="presentation_order">"Kolejność prezentacji"</string>

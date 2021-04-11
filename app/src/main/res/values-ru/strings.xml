@@ -158,8 +158,8 @@
     <string name="key">"Тональность"</string>
     <string name="edit_song_keyline">"Заголовок в одну строку"</string>
     <string name="lyrics">"Текст"</string>
-    <string name="edit_song_midi">"MIDI сообщение, отправленное из песни"</string>
-    <string name="edit_song_midi_index">"MIDI сообщение, чтобы активировать песню"</string>
+    <string name="midi_message_sent">"MIDI сообщение, отправленное из песни"</string>
+    <string name="midi_message_receive">"MIDI сообщение, чтобы активировать песню"</string>
     <string name="song_notes">"Заметки"</string>
     <string name="edit_song_pitch">"Примечания труб шаг за песню"</string>
     <string name="presentation_order">"Порядок презентации"</string>

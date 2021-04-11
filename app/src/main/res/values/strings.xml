@@ -639,8 +639,8 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="edit_song_duration">Song duration (seconds)</string>
     <string name="edit_song_hymn">Hymn number</string>
     <string name="edit_song_keyline">Key line</string>
-    <string name="edit_song_midi">MIDI message sent from song</string>
-    <string name="edit_song_midi_index">MIDI message to activate song</string>
+    <string name="midi_message_sent">MIDI message sent from song</string>
+    <string name="midi_message_receive">MIDI message to activate song</string>
     <string name="edit_song_pitch">Pitch pipe notes for song</string>
     <string name="edit_song_restrictions">Restrictions</string>
     <string name="edit_song_tempo">Tempo</string>

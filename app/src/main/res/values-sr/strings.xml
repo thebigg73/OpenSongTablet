@@ -220,8 +220,8 @@
     <string name="edit_song_availabletags">"[V] = Strofa (Verse), [V1] = Strofa 1 (Verse 1), [C] = Refren (Chorus), [C1] za Refren 1 (Chorus 1), [P] = Predrefren, [T] = Oznaka (Tag), [B] = Most (Bridge), [&#8230;(šta god želite)&#8230;] = prilagođena oznaka.\n Linije teksta počinju sa razmakom, linije akroda sa tačkom, linije komentara sa zarezom."</string>
     <string name="edit_song_duration">"Dužina pesme (sec)"</string>
     <string name="song_notes">"Beleška uz pesmu"</string>
-    <string name="edit_song_midi">"MIDI poruka poslata od pesme"</string>
-    <string name="edit_song_midi_index">"MIDI poruka da se aktivira pesma"</string>
+    <string name="midi_message_sent">"MIDI poruka poslata od pesme"</string>
+    <string name="midi_message_receive">"MIDI poruka da se aktivira pesma"</string>
     <string name="edit_song_restrictions">"Restrikcije"</string>
     <string name="edit_song_books">"Knjige kojima pesma pripada"</string>
     <string name="edit_song_pitch">"Promene tonaliteta za pesmu"</string>"

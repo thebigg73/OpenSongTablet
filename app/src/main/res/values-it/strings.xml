@@ -158,8 +158,8 @@
     <string name="key">"Chiavetta"</string>
     <string name="edit_song_keyline">"Linea Key"</string>
     <string name="lyrics">"Testi"</string>
-    <string name="edit_song_midi">"Messaggio MIDI inviato da canzone"</string>
-    <string name="edit_song_midi_index">"Messaggio MIDI per attivare canzone"</string>
+    <string name="midi_message_sent">"Messaggio MIDI inviato da canzone"</string>
+    <string name="midi_message_receive">"Messaggio MIDI per attivare canzone"</string>
     <string name="song_notes">"Canzone note appiccicose"</string>
     <string name="edit_song_pitch">"Nota diapason per canzone"</string>
     <string name="presentation_order">"Presentazione ordine"</string>

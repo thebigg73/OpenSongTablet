@@ -158,8 +158,8 @@
     <string name="key">"Kulcs"</string>
     <string name="edit_song_keyline">"Key vonal"</string>
     <string name="lyrics">"Dalszöveg"</string>
-    <string name="edit_song_midi">"MIDI üzenetet küldött dal"</string>
-    <string name="edit_song_midi_index">"MIDI üzenetet, hogy aktiválja a dalt"</string>
+    <string name="midi_message_sent">"MIDI üzenetet küldött dal"</string>
+    <string name="midi_message_receive">"MIDI üzenetet, hogy aktiválja a dalt"</string>
     <string name="song_notes">"Song cetlik"</string>
     <string name="edit_song_pitch">"Hangolósípon megjegyzések dalt"</string>
     <string name="presentation_order">"Bemutatása érdekében,"</string>

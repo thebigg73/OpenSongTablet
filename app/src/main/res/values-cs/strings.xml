@@ -157,8 +157,8 @@
     <string name="key">"Klíč"</string>
     <string name="edit_song_keyline">"Key linka"</string>
     <string name="lyrics">"Text"</string>
-    <string name="edit_song_midi">"MIDI zpráva odeslána z písně"</string>
-    <string name="edit_song_midi_index">"MIDI zpráva pro aktivaci píseň"</string>
+    <string name="midi_message_sent">"MIDI zpráva odeslána z písně"</string>
+    <string name="midi_message_receive">"MIDI zpráva pro aktivaci píseň"</string>
     <string name="song_notes">"Poznámky song"</string>
     <string name="edit_song_pitch">"Osová vzdálenost trubek poznámky k písni"</string>
     <string name="presentation_order">"Objednávka prezentace"</string>

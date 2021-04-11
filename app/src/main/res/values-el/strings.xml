@@ -158,8 +158,8 @@
     <string name="key">"Key"</string>
     <string name="edit_song_keyline">"Key line"</string>
     <string name="lyrics">"Lyrics"</string>
-    <string name="edit_song_midi">"MIDI message sent from song"</string>
-    <string name="edit_song_midi_index">"MIDI message to activate song"</string>
+    <string name="midi_message_sent">"MIDI message sent from song"</string>
+    <string name="midi_message_receive">"MIDI message to activate song"</string>
     <string name="song_notes">"Song sticky notes"</string>
     <string name="edit_song_pitch">"Pitch pipe notes for song"</string>
     <string name="presentation_order">"Σειρά παρουσίασης"</string>

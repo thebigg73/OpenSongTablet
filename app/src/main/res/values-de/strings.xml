@@ -158,8 +158,8 @@
     <string name="key">"Tonart"</string>
     <string name="edit_song_keyline">"Schlüsselzeile"</string>
     <string name="lyrics">"Lyrics"</string>
-    <string name="edit_song_midi">"MIDI-Meldung vom Lied geschickt"</string>
-    <string name="edit_song_midi_index">"MIDI-Befehle zum Lied aktivieren"</string>
+    <string name="midi_message_sent">"MIDI-Meldung vom Lied geschickt"</string>
+    <string name="midi_message_receive">"MIDI-Befehle zum Lied aktivieren"</string>
     <string name="song_notes">"Song-Notizen"</string>
     <string name="edit_song_pitch">"Stimmpfeife Noten für Gesang"</string>
     <string name="presentation_order">"Reihenfolge ändern"</string>

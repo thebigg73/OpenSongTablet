@@ -158,8 +158,8 @@
     <string name="key">"キー (key)"</string>
     <string name="edit_song_keyline">"キーライン"</string>
     <string name="lyrics">"歌詞"</string>
-    <string name="edit_song_midi">"MIDIメッセージが歌から送信された"</string>
-    <string name="edit_song_midi_index">"MIDIメッセージは、曲を活性化するため"</string>
+    <string name="midi_message_sent">"MIDIメッセージが歌から送信された"</string>
+    <string name="midi_message_receive">"MIDIメッセージは、曲を活性化するため"</string>
     <string name="song_notes">"ソング付箋"</string>
     <string name="edit_song_pitch">"曲のピッチパイプノート"</string>
     <string name="presentation_order">"提示順序"</string>
