@@ -107,6 +107,9 @@
             <action
                 android:id="@+id/action_preferencesFragment_to_actions_graph"
                 app:destination="@id/actions_graph" />
+            <action
+                android:id="@+id/action_preferencesFragment_to_modeFragment"
+                app:destination="@id/modeFragment" />
         </fragment>
 
         <!-- The storage graph -->
@@ -416,6 +419,11 @@
                     app:uri="opensongapp://songactions/highlighter/edit" />
             </fragment>
         </navigation>
+        <fragment
+            android:id="@+id/modeFragment"
+            android:name="com.garethevans.church.opensongtablet.appdata.ModeFragment"
+            android:label="ModeFragment"
+            tools:layout="@layout/settings_mode"/>
 
 
     </navigation>
