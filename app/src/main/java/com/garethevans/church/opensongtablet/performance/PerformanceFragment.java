@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -16,9 +18,10 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.GlideApp;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
-import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBinding;
+import com.garethevans.church.opensongtablet.databinding.PerformanceBinding;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -43,6 +46,7 @@ import java.util.ArrayList;
 
 public class PerformanceFragment extends Fragment {
 
+    private final String TAG = "PerformanceFragment";
     // Helper classes for the heavy lifting
     private StorageAccess storageAccess;
     private Preferences preferences;
@@ -74,7 +78,8 @@ public class PerformanceFragment extends Fragment {
             lineSpacing;
     private int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
     private boolean trimLines, trimSections, addSectionSpace, songAutoScaleColumnMaximise,
-            songAutoScaleOverrideFull, songAutoScaleOverrideWidth, boldChordHeading;
+            songAutoScaleOverrideFull, songAutoScaleOverrideWidth, boldChordHeading,
+            highlightChords,highlightHeadings;
     static boolean wasScaling, R2L, loadNextSong, loadPrevSong;
     private static int screenHeight;
     public static int songViewWidth, songViewHeight, screenWidth;
@@ -82,7 +87,7 @@ public class PerformanceFragment extends Fragment {
     private ArrayList<View> sectionViews;
     private ArrayList<Integer> sectionWidths, sectionHeights;
     private String autoScale;
-    private FragmentPerformanceBinding myView;
+    private PerformanceBinding myView;
 
     private Song song;
 
@@ -111,7 +116,7 @@ public class PerformanceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        myView = FragmentPerformanceBinding.inflate(inflater, container, false);
+        myView = PerformanceBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
 
         // Initialise the helper classes that do the heavy lifting
@@ -195,6 +200,8 @@ public class PerformanceFragment extends Fragment {
         swipeMinimumDistance = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250);
         swipeMaxDistanceYError = preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200);
         swipeMinimumVelocity = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600);
+        highlightChords = preferences.getMyPreferenceBoolean(requireContext(),"highlightChords",false);
+        highlightHeadings = preferences.getMyPreferenceBoolean(requireContext(),"highlightHeadings",false);
         fontSizeMax = 90.0f;
         songAutoScaleOverrideWidth = false;
         songAutoScaleOverrideFull = false;
@@ -223,6 +230,8 @@ public class PerformanceFragment extends Fragment {
                     animSlide = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
                 }
                 myView.songView.startAnimation(animSlide);
+                //myView.highlighterView.startAnimation(animSlide);
+                //myView.imageView.startAnimation(animSlide);
                 myView.zoomLayout.moveTo(1,0,0,false);
             });
             // Load up the song
@@ -230,7 +239,7 @@ public class PerformanceFragment extends Fragment {
                 sectionViews.clear();
             }
             song = mainActivityInterface.getSong();
-            song = processSong.initialiseSong(commonSQL,song.getFolder(), song.getFilename(), song);
+            song = processSong.initialiseSong(commonSQL,song.getFolder(), song.getFilename());
             song = loadSong.doLoadSong(getContext(),storageAccess,preferences,processSong,
                     showToast, mainActivityInterface.getLocale(), songListBuildIndex, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro, false);
 
@@ -258,8 +267,8 @@ public class PerformanceFragment extends Fragment {
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 // All views have now been drawn, so measure the arraylist views
+                // First up, remove the listener
                 sectionWidths = new ArrayList<>();
                 sectionHeights = new ArrayList<>();
                 for (View v:sectionViews)  {
@@ -271,12 +280,12 @@ public class PerformanceFragment extends Fragment {
                 screenWidth = myView.mypage.getMeasuredWidth();
                 screenHeight = myView.mypage.getMeasuredHeight();
 
-                scaleFactor = 1.0f;
-
-                processSong.addViewsToScreen(getActivity(), testPane, myView.pageHolder, myView.songView, screenWidth, screenHeight,
+                scaleFactor = processSong.addViewsToScreen(getActivity(), testPane, myView.pageHolder, myView.songView, screenWidth, screenHeight,
                         myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
                         songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax,
                         sectionViews, sectionWidths, sectionHeights);
+
+
 
                 Animation animSlide;
                 if (R2L) {
@@ -284,17 +293,52 @@ public class PerformanceFragment extends Fragment {
                 } else {
                     animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
                 }
+                // Load up the highlighter file if it exists and the user wants it
+                dealWithHighlighterFile(animSlide);
+
                 myView.songView.startAnimation(animSlide);
-                //myView.songscrollview.setLayoutParams(new HorizontalScrollView.LayoutParams(HorizontalScrollView.LayoutParams.WRAP_CONTENT, HorizontalScrollView.LayoutParams.WRAP_CONTENT));
-                //myView.horizontalscrollview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                //scrollButtons.showScrollButtons(myView.songscrollview,myView.upArrow,myView.pageButtonsBottom.downArrow);
+                testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
         for (View view:sectionViews) {
             testPane.addView(view);
         }
+        screenGrab = myView.songView;
+        ViewTreeObserver screenShotObs = screenGrab.getViewTreeObserver();
+        screenShotObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (myView!=null && myView.songView!=null) {
+                    screenGrab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    // Now take a screenshot if we've passed the first layout pass
+                    screenGrab.postDelayed(() -> getActivity().runOnUiThread(() -> getScreenshot()), 2000);
+                    screenShotReady = true;
+                }
+            }
+        });
     }
 
+    private void dealWithHighlighterFile(Animation animSlide) {
+        Bitmap highlighterBitmap = processSong.getHighlighterFile(requireContext(),preferences,storageAccess,song);
+        Log.d(TAG,"Bitmap="+highlighterBitmap);
+        if (highlighterBitmap!=null && preferences.getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay", true)) {
+            myView.highlighterView.setVisibility(View.VISIBLE);
+            float scale = (float)highlighterBitmap.getWidth()/(float)screenWidth;
+            int w = (int)(highlighterBitmap.getWidth()*scale);
+            int h = (int)(highlighterBitmap.getHeight()*scale);
+            GlideApp.with(requireContext()).load(highlighterBitmap).
+                    override(w,h).into(myView.highlighterView);
+            //myView.highlighterView.startAnimation(animSlide);
+            // Hide after a certain length of time
+            int timetohide = preferences.getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
+            Log.d(TAG,"timetohide="+timetohide);
+            if (timetohide !=0) {
+                new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE),timetohide);
+            }
+        } else {
+            //myView.highlighterView.setVisibility(View.GONE);
+        }
+    }
 
     // The scale and gesture bits of the code
     //private ScaleGestureDetector scaleDetector;
@@ -342,7 +386,7 @@ public class PerformanceFragment extends Fragment {
         }*/
     }
     public void onBackPressed() {
-        Log.d("PerformanceFragment","On back press!!!");
+        Log.d(TAG,"On back press!!!");
     }
 
     private boolean oktoRegisterGesture() {
@@ -350,5 +394,25 @@ public class PerformanceFragment extends Fragment {
         return true;
     }
 
+    boolean screenShotReady = false;
+    View screenGrab;
+    private void getScreenshot() {
+        if (screenShotReady) {
+            screenGrab.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            Bitmap bitmap = Bitmap.createBitmap(screenGrab.getMeasuredWidth(), screenGrab.getMeasuredHeight(),
+                    Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            screenGrab.layout(0, 0, screenGrab.getMeasuredWidth(), screenGrab.getMeasuredHeight());
+            screenGrab.draw(canvas);
+            mainActivityInterface.setScreenshot(bitmap);
+            /*
+            myView.songView.destroyDrawingCache();
+            myView.songView.setDrawingCacheEnabled(true);
+            myView.songView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);*/
 
+            //GlideApp.with(screenGrab).load(mainActivityInterface.getScreenshot()).into(myView.glideimage);
+
+            //Log.d("d","song.getScreenshot:"+mainActivityInterface.getScreenshot());
+        }
+    }
 }
