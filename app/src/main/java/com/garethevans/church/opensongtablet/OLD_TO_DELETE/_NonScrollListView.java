@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet;
+package com.garethevans.church.opensongtablet.OLD_TO_DELETE;
 
 import android.content.Context;
 import android.util.AttributeSet;

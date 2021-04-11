@@ -125,7 +125,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     public SetItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout._setitem_cardview, viewGroup, false);
+                inflate(R.layout.setitem_cardview, viewGroup, false);
 
         return new SetItemViewHolder(itemView);
     }
