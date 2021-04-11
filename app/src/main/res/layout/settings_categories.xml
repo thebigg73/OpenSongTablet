@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".preferences.SettingsCategories"
     style="@style/PrefScrollView">
 
     <LinearLayout
@@ -52,6 +51,14 @@
             app:main="@string/connections_connect"
             app:sub="@string/connections_description" />
         <TableRow android:id="@+id/connectLine" style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/modeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/performance_mode"
+            app:sub="@string/choose_app_mode" />
+        <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/midiButton"
