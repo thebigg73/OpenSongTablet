@@ -18,7 +18,7 @@
         app:borderWidth="0dp"
         app:fabSize="mini" />
 
-    <com.garethevans.church.opensongtablet.NonScrollListView
+    <com.garethevans.church.opensongtablet._NonScrollListView
         android:id="@+id/set_ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
