@@ -22,7 +22,6 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class ChooseColorFragment extends Fragment {
 
-    private final String TAG = "ChooseColorFrament";
     private MainActivityInterface mainActivityInterface;
     private DisplayColorSettingsBinding myView;
     private Preferences preferences;
@@ -122,8 +121,6 @@ public class ChooseColorFragment extends Fragment {
     private void setupOriginalColor(String which) {
         themePrefix = preferences.getMyPreferenceString(getContext(), "appTheme", "dark");
 
-        Log.d(TAG,"themePrefix="+themePrefix);
-        Log.d(TAG,themeColors.getThemeName());
         // Load the chosen colours up
         themeColors.getDefaultColors(getContext(),preferences);
         int oldColorInt;
