@@ -59,6 +59,14 @@
             app:main="@string/music_score"
             app:sub="@string/music_score_info" />
         <TableRow style="@style/DividerLine" />
-    </LinearLayout>
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/midi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/midi"
+            app:sub="@string/midi_commands" />
+        <TableRow style="@style/DividerLine" />
+</LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

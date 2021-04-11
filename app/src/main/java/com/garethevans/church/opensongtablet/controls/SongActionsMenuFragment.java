@@ -54,6 +54,7 @@ public class SongActionsMenuFragment extends Fragment {
         //myView.notation.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.notationFragment));
         //myView.stickyNotes.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.stickynotesFragment));
         //myView.pad.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.padFragment));
+        //myView.midi.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.songMidiFragment));
     }
 
 }
