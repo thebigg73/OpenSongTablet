@@ -41,19 +41,37 @@ public class SettingsCategories extends Fragment {
         // Hide the features not available to this device
         hideUnavailable();
 
+        // Set the mode in the button
+        setModeText();
+
         // Set listeners
         setListeners();
 
         return myView.getRoot();
     }
 
-
-
     private void hideUnavailable() {
         // If the user doesn't have Google API availability, they can't use the connect feature
         setPlayEnabled(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireContext()) == ConnectionResult.SUCCESS);
         // If they don't have midi functionality, remove this
         setMidiEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI));
+    }
+
+    private void setModeText() {
+        String mode;
+        switch (mainActivityInterface.getMode()) {
+            case "Performance":
+            default:
+                mode = getString(R.string.performance_mode);
+                break;
+            case "Stage":
+                mode = getString(R.string.stage_mode);
+                break;
+            case "Presentation":
+                mode = getString(R.string.presentation_mode);
+                break;
+        }
+        ((TextView)myView.modeButton.findViewById(R.id.mainText)).setText(mode);
     }
 
     private void setPlayEnabled(boolean enabled) {
@@ -76,9 +94,10 @@ public class SettingsCategories extends Fragment {
     }
 
     private void setListeners() {
-        myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.settingsCCLI));
         myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.storage_graph));
         myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.display_graph));
+        myView.actionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.actions_graph));
+        myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {
             // Check we have the required permissions
             if (mainActivityInterface.requestNearbyPermissions()) {
@@ -86,11 +105,10 @@ public class SettingsCategories extends Fragment {
             }
         });
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.modeFragment));
-        myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.profileFragment));
         myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.midiFragment));
+        myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.profileFragment));
+        myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.settingsCCLI));
         myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.about_graph));
-        myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.control_graph));
-        myView.actionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.actions_graph));
-    }
+        }
 
 }
