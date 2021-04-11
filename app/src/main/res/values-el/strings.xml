@@ -19,7 +19,7 @@
     <string name="autoscale">"Αυτόματη κλίμακα"</string>
     <string name="autoscale_toggle">"Αυτόματη προσαρμογή κειμένου"</string>
     <string name="autoscroll">"Αυτόματη κύλιση"</string>
-    <string name="autoscrollPedalText">"Start/stop autoscroll"</string>
+    <string name="start_stop_autoscroll">"Start/stop autoscroll"</string>
     <string name="autoscroll_default_or_prompt">"Εάν δεν έχει οριστεί διάρκεια τραγουδιού να χρησιμοποιηθούν οι προεπιλεγμένες τιμές ή να γίνεται ερώτηση κάθε φορά;"</string>
     <string name="autoscroll_time">"Autoscroll delay time"</string>
     <string name="autoshow_highlight">"Αυτόματη εμφάνιση σημειώσεων σήμανσης"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">Έχετε ήδη χρησιμοποιήσει τις ακόλουθες τοποθεσίες εγκατάστασης. Θα χρειαστεί να εντοπίσετε και να ρυθμίσετε αυτό το χέρι χρησιμοποιώντας το κόκκινο κουμπί παραπάνω.</string>
     <string name="full">"Γεμάτος"</string>
     <string name="open_song_menu">"Ανοίξτε το μενού του τραγουδιού"</string>
-    <string name="gesture2">"Edit song"</string>
+    <string name="edit_song">"Edit song"</string>
     <string name="gesture3">"Add song to set"</string>
     <string name="refresh_song">"Refresh current song"</string>
     <string name="gesturesandmenus">"Gestures and menus"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"Toggle song list and option menus swipe on/off"</string>
     <string name="menu_width">Εύρος μενού</string>
     <string name="metronome">"Metronome"</string>
-    <string name="metronomePedalText">"Start/stop metronome"</string>
+    <string name="start_stop_metronome">"Start/stop metronome"</string>
     <string name="microphone_rationale">"Για πρόσβαση στον έλεγχο έντασης ήχου απαιτείται Μικρόφωνο / εγγραφή ήχου."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Προσθήκη εντολής"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"Override width only scaling to no autoscale"</string>
     <string name="overwrite">"Αντικατάσταση του υπάρχοντος αντικειμένου"</string>
     <string name="pad">"Pad"</string>
-    <string name="padPedalText">"Start/stop pad"</string>
+    <string name="start_stop_pad">"Start/stop pad"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Please select the key of this song"</string>
     <string name="pad_error">"The key of this song has not been set"</string>

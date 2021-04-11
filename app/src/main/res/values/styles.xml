@@ -130,9 +130,10 @@
     </style>
 
     <style name="BottomSheetDialogTheme" parent="Widget.Design.BottomSheet.Modal">
-        <item name="backgroundTint">@color/colorSecondary</item>
-        <item name="android:windowIsFloating">false</item>
+        <item name="android:background">@color/colorAltPrimary</item>
+        <item name="android:windowIsFloating">true</item>
         <item name="shapeAppearanceOverlay">@style/RoundedBox</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="RoundedBox" parent="ShapeAppearance.MaterialComponents.LargeComponent">
@@ -223,6 +224,7 @@
         <item name="colorAccent">@color/lightgrey</item>
         <item name="boxBackgroundMode">outline</item>
         <item name="boxStrokeWidth">1dp</item>
+        <item name="android:dropDownHeight">200dp</item>
 
     </style>
 

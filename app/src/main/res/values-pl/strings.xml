@@ -19,7 +19,7 @@
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Przełącz piosenka skala auto włącz / wyłącz"</string>
     <string name="autoscroll">"Auto-scroll"</string>
-    <string name="autoscrollPedalText">"Rozpocząć / Zatrzymać auto Scroll"</string>
+    <string name="start_stop_autoscroll">"Rozpocząć / Zatrzymać auto Scroll"</string>
     <string name="autoscroll_default_or_prompt">"Jeśli nie ustawić czas trwania utworu domyślne wartości powinny być używane lub chcesz się pytanie za każdym razem?"</string>
     <string name="autoscroll_time">"Auto-scroll czas opóźnienia"</string>
     <string name="autoshow_highlight">"Autoshow notatki podkreślające"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">Użyłeś już następujących lokalizacji instalacji. Nadal będziesz musiał zlokalizować i ustawić to ręcznie za pomocą czerwonego przycisku powyżej.</string>
     <string name="full">"Pełny"</string>
     <string name="open_song_menu">"Otwórz menu piosenka"</string>
-    <string name="gesture2">"Edycja piosenki"</string>
+    <string name="edit_song">"Edycja piosenki"</string>
     <string name="gesture3">"Dodaj piosenkę ustawić"</string>
     <string name="refresh_song">Odśwież bieżącą piosenkę</string>
     <string name="gesturesandmenus">"Gesty i menu"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"Przełącz listy utworów i opcji menu przesuń włącz / wyłącz"</string>
     <string name="menu_width">Szerokość menu</string>
     <string name="metronome">"Metronom"</string>
-    <string name="metronomePedalText">"Rozpocząć / Zatrzymać metronom"</string>
+    <string name="start_stop_metronome">"Rozpocząć / Zatrzymać metronom"</string>
     <string name="microphone_rationale">"Mikrofon / nagrywanie dźwięku jest niezbędny do korzystania z miernika poziomu dźwięku."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Dodaj polecenie"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"Szerokość Zastąp skalowania tylko bez automatycznego skalowania"</string>
     <string name="overwrite">"Zastąp istniejący element"</string>
     <string name="pad">"Podkład muzyczny"</string>
-    <string name="padPedalText">"Rozpocząć / Zatrzymać pad"</string>
+    <string name="start_stop_pad">"Rozpocząć / Zatrzymać pad"</string>
     <string name="pad_auto">"Automatyczny"</string>
     <string name="pad_choose_key">"Proszę wybrać klawisz dźwiękowego"</string>
     <string name="pad_error">"Kluczem tego utworu nie został ustawiony"</string>

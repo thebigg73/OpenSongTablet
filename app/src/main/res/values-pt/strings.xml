@@ -19,7 +19,7 @@
     <string name="autoscale">"Escala automática"</string>
     <string name="autoscale_toggle">"Canção escala auto Alternar ligar / desligar"</string>
     <string name="autoscroll">"Auto-scroll"</string>
-    <string name="autoscrollPedalText">"Começar / Parar auto rolagem"</string>
+    <string name="start_stop_autoscroll">"Começar / Parar auto rolagem"</string>
     <string name="autoscroll_default_or_prompt">"Se você não tiver definido uma duração da música deve ser utilizado os valores padrão ou você quer ser solicitado a cada vez?"</string>
     <string name="autoscroll_time">"Auto-scroll tempo de atraso"</string>
     <string name="autoshow_highlight">"Autoshow notas de marcadores"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">Você já usou os seguintes locais de instalação. Você ainda precisará localizar e definir isso manualmente usando o botão vermelho acima.</string>
     <string name="full">"Cheio"</string>
     <string name="open_song_menu">"Abra o menu música"</string>
-    <string name="gesture2">"Editar música"</string>
+    <string name="edit_song">"Editar música"</string>
     <string name="gesture3">"Adicionar música para definir"</string>
     <string name="refresh_song">Refresque música atual</string>
     <string name="gesturesandmenus">"Gestos e menus"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"Lista de músicas e menus de opções de alternância furto ligar / desligar"</string>
     <string name="menu_width">Largura do menu</string>
     <string name="metronome">"Metrónomo"</string>
-    <string name="metronomePedalText">"Começar / Parar metrónomo"</string>
+    <string name="start_stop_metronome">"Começar / Parar metrónomo"</string>
     <string name="microphone_rationale">"Microfone / gravação de áudio é necessário para acessar o medidor de nível de som."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Adicionar comando"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"Width override única escala para não autoscale"</string>
     <string name="overwrite">"Substituir item existente"</string>
     <string name="pad">"Música de fundo"</string>
-    <string name="padPedalText">"Começar / Parar de música de fundo"</string>
+    <string name="start_stop_pad">"Começar / Parar de música de fundo"</string>
     <string name="pad_auto">"Automático"</string>
     <string name="pad_choose_key">"Por favor, selecione a chave desta canção"</string>
     <string name="pad_error">"A chave desta canção não foi definido"</string>

@@ -19,7 +19,7 @@
     <string name="autoscale">"Autoskalierung"</string>
     <string name="autoscale_toggle">"Autoskalierung für Songs ein / aus"</string>
     <string name="autoscroll">"Autoscroll"</string>
-    <string name="autoscrollPedalText">"Autoscroll start/stop"</string>
+    <string name="start_stop_autoscroll">"Autoscroll start/stop"</string>
     <string name="autoscroll_default_or_prompt">"Wenn Sie keine Song Dauer eingestellt haben, die Standardwerte verwenden oder jedes Mal nachfragen?"</string>
     <string name="autoscroll_time">"Autoscroll Verzögerungszeit"</string>
     <string name="autoshow_highlight">"Autoshow Highlighter Notizen"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">Sie haben bereits die folgenden Installationsverzeichnisse verwendet.  Sie müssen dies weiterhin manuell mit der roten Taste oben suchen und einstellen.</string>
     <string name="full">"Komplett"</string>
     <string name="open_song_menu">"Song-Menü öffnen"</string>
-    <string name="gesture2">"Song bearbeiten"</string>
+    <string name="edit_song">"Song bearbeiten"</string>
     <string name="gesture3">"Song zum Set hinzufügen"</string>
     <string name="refresh_song">Aktuellen Song aktualisieren</string>
     <string name="gesturesandmenus">"Gesten und Menüs"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"Wischen um seitliche Menüs anzuzeigen ein / aus"</string>
     <string name="menu_width">Menübreite</string>
     <string name="metronome">"Metronom"</string>
-    <string name="metronomePedalText">"Metronom start/stop"</string>
+    <string name="start_stop_metronome">"Metronom start/stop"</string>
     <string name="microphone_rationale">"Um den Schallpegelmesser benutzen zu können ist der Zugriff auf Mikrofon bzw. Audioaufnahme erforderlich."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"MIDI-Befehl hinzufügen"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"Automatische Skalierung auf Breite ignorieren und nicht automatisch skalieren"</string>
     <string name="overwrite">"Existierendes Element überschreiben"</string>
     <string name="pad">"Hintergrundmusik"</string>
-    <string name="padPedalText">"Hintergrundmusik start/stop"</string>
+    <string name="start_stop_pad">"Hintergrundmusik start/stop"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Bitte Tonart des Songs wählen"</string>
     <string name="pad_error">"Es wurde keine Tonart für diesen Song festgelegt"</string>

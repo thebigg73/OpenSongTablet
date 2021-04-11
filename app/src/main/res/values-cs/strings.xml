@@ -18,7 +18,7 @@
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Přepnout autoscale"</string>
     <string name="autoscroll">"Auto-scroll"</string>
-    <string name="autoscrollPedalText">"Start / zastavit autoscroll"</string>
+    <string name="start_stop_autoscroll">"Start / zastavit autoscroll"</string>
     <string name="autoscroll_default_or_prompt">"Pokud jste nenastavili dobu trvání píseň by měla být použita výchozí hodnoty, nebo chcete být pokaždé zeptat?"</string>
     <string name="autoscroll_time">"Auto-scroll zpoždění"</string>
     <string name="autoshow_highlight">"Automatické poznámky zvýrazňovače"</string>
@@ -207,7 +207,7 @@
     <string name="existing_found">Již jste použili následující umístění instalace. Stále to budete muset vyhledat a nastavit ručně pomocí červeného tlačítka výše.</string>
     <string name="full">"Plný"</string>
     <string name="open_song_menu">"Otevřete menu píseň"</string>
-    <string name="gesture2">"Edit song"</string>
+    <string name="edit_song">"Edit song"</string>
     <string name="gesture3">"Přidat skladbu do nastavení"</string>
     <string name="refresh_song">Obnovit aktuální skladbu</string>
     <string name="gesturesandmenus">"Gesta a menu"</string>
@@ -266,7 +266,7 @@
     <string name="menu_swipe_toggle">"Přepnout Seznam písní a volba menu přejeďte zap / vyp"</string>
     <string name="menu_width">Šířka nabídky</string>
     <string name="metronome">"Metronom"</string>
-    <string name="metronomePedalText">"Start / zastavit metronom"</string>
+    <string name="start_stop_metronome">"Start / zastavit metronom"</string>
     <string name="microphone_rationale">"Mikrofon / zvukový záznam je vyžadován pro přístup Zvukoměr."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Přidat příkaz"</string>
@@ -315,7 +315,7 @@
     <string name="override_widthautoscale">"Šířka Přepis pouze škálování žádné škálování"</string>
     <string name="overwrite">"Přepsat existující položku"</string>
     <string name="pad">"Hudba na pozadí"</string>
-    <string name="padPedalText">"Start / zastavit hudba na pozadí"</string>
+    <string name="start_stop_pad">"Start / zastavit hudba na pozadí"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Vyberte klíč této písně"</string>
     <string name="pad_error">"Klíčem této písně nebyl nastaven"</string>

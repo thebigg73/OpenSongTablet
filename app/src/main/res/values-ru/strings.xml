@@ -19,7 +19,7 @@
     <string name="autoscale">"Автомасштабирование"</string>
     <string name="autoscale_toggle">"Вкл. / Выкл. автомасштаб"</string>
     <string name="autoscroll">"Автопрокрутка"</string>
-    <string name="autoscrollPedalText">"Старт / Стоп автопрокрутку"</string>
+    <string name="start_stop_autoscroll">"Старт / Стоп автопрокрутку"</string>
     <string name="autoscroll_default_or_prompt">"Если не задана продолжительность песни, будут использованы значения по умолчанию, или вы хотите уточнять каждый раз?"</string>
     <string name="autoscroll_time">"Время автопрокрутки"</string>
     <string name="autoshow_highlight">"Автопоказ заметок маркером"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">Ранее вы использовали следующие места. Вам все еще нужно будет найти и установить это вручную, используя красную кнопку выше.</string>
     <string name="full">"Полный"</string>
     <string name="open_song_menu">"Открыть меню песни"</string>
-    <string name="gesture2">"Правка песни"</string>
+    <string name="edit_song">"Правка песни"</string>
     <string name="gesture3">"Добавить песню для установки"</string>
     <string name="refresh_song">Обновить текущую песню</string>
     <string name="gesturesandmenus">"Жесты и касания"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"Закрыть список песни и опция меню проведите вкл / выкл"</string>
     <string name="menu_width">Ширина меню</string>
     <string name="metronome">"Метроном"</string>
-    <string name="metronomePedalText">"Старт / стоп метронома"</string>
+    <string name="start_stop_metronome">"Старт / стоп метронома"</string>
     <string name="microphone_rationale">"Доступ к Микрофону/ аудио записи требуется работы измерителя уровня."</string>
     <string name="midi">"миди"</string>
     <string name="midi_add">"Добавить команду"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"Автомасштабирование по ширине"</string>
     <string name="overwrite">"Переписать существующий"</string>
     <string name="pad">"подложка"</string>
-    <string name="padPedalText">"Старт / Стоп подложки"</string>
+    <string name="start_stop_pad">"Старт / Стоп подложки"</string>
     <string name="pad_auto">"Авто"</string>
     <string name="pad_choose_key">"Пожалуйста, выберите тональность этой песни"</string>
     <string name="pad_error">"Ошибка  песни не было установлено"</string>

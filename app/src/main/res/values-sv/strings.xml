@@ -19,7 +19,7 @@
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Växla autoskala"</string>
     <string name="autoscroll">"Auto-scrolla"</string>
-    <string name="autoscrollPedalText">"Starta / stoppa autoscroll"</string>
+    <string name="start_stop_autoscroll">"Starta / stoppa autoscroll"</string>
     <string name="autoscroll_default_or_prompt">"Om du inte har angett en låtperiod bör standardvärdena användas eller vill du bli frågad varje gång?"</string>
     <string name="autoscroll_time">"Autoscroll fördröjningstid"</string>
     <string name="autoshow_highlight">"Autoshow highlighter anteckningar"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">Du har redan använt följande installationsplatser. Du måste fortfarande hitta och ställa in detta manuellt med den röda knappen ovan.</string>
     <string name="full">"Full"</string>
     <string name="open_song_menu">"Öppna låtmenyn"</string>
-    <string name="gesture2">"Redigera låt"</string>
+    <string name="edit_song">"Redigera låt"</string>
     <string name="gesture3">"Lägg till sång för att ställa in"</string>
     <string name="refresh_song">"Uppdatera aktuell sång"</string>
     <string name="gesturesandmenus">"Gester och menyer"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"Växla låtlista och alternativmenyer svep på / av"</string>
     <string name="menu_width">Menybredd</string>
     <string name="metronome">"Metronom"</string>
-    <string name="metronomePedalText">"Starta / stoppa metronomen"</string>
+    <string name="start_stop_metronome">"Starta / stoppa metronomen"</string>
     <string name="microphone_rationale">"Mikrofon / ljudinspelning krävs för att komma åt ljudnivåmätaren."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Lägg till kommando"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"Åsidosätt bredd endast skalning utan autoskala"</string>
     <string name="overwrite">"Skriv om befintligt objekt"</string>
     <string name="pad">"Vaddera"</string>
-    <string name="padPedalText">"Start / stoppplatta"</string>
+    <string name="start_stop_pad">"Start / stoppplatta"</string>
     <string name="pad_auto">"Bil"</string>
     <string name="pad_choose_key">"Vänligen välj nyckeln till den här låten"</string>
     <string name="pad_error">"Nyckeln till den här låten har inte ställts in"</string>

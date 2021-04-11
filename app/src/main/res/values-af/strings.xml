@@ -18,7 +18,7 @@
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Toggle motor skaal lied op / af"</string>
     <string name="autoscroll">"Auto-boek"</string>
-    <string name="autoscrollPedalText">"Begin / stop autoscroll"</string>
+    <string name="start_stop_autoscroll">"Begin / stop autoscroll"</string>
     <string name="autoscroll_default_or_prompt">"As jy \'n duur lied moet die standaard waardes gebruik word nie gestel het of wil jy elke keer gevra word?"</string>
     <string name="autoscroll_time">"Auto-scroll vertraging tyd"</string>
     <string name="autoshow_highlight">"Outo-skerm-aantekeninge"</string>
@@ -207,7 +207,7 @@
     <string name="existing_found">Jy het al die volgende installeer plekke gebruik. U sal dit steeds met die hand van die rooi knoppie hierbo moet opspoor en instel.</string>
     <string name="full">"volle"</string>
     <string name="open_song_menu">"Oop lied spyskaart"</string>
-    <string name="gesture2">"Wysig lied"</string>
+    <string name="edit_song">"Wysig lied"</string>
     <string name="gesture3">"Voeg liedjie te stel"</string>
     <string name="refresh_song">Verfris huidige liedjie</string>
     <string name="gesturesandmenus">"Gebare en spyskaarte"</string>
@@ -266,7 +266,7 @@
     <string name="menu_swipe_toggle">"Toggle lietjie en opsies menu deur swipe ap / af"</string>
     <string name="menu_width">Spyskaart breedte</string>
     <string name="metronome">"Metronoom"</string>
-    <string name="metronomePedalText">"Begin / stop metronoom"</string>
+    <string name="start_stop_metronome">"Begin / stop metronoom"</string>
     <string name="microphone_rationale">"Mikrofoon / audio opname is nodig om toegang tot die klank vlak meter."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Voeg opdrag by"</string>
@@ -315,7 +315,7 @@
     <string name="override_widthautoscale">"Ignoreer breedte net skalering geen autoscale"</string>
     <string name="overwrite">"Oorskryf bestaande item"</string>
     <string name="pad">"Agtergrond musiek"</string>
-    <string name="padPedalText">"Begin / stop agtergrond musiek"</string>
+    <string name="start_stop_pad">"Begin / stop agtergrond musiek"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Kies die sleutel van hierdie lied"</string>
     <string name="pad_error">"Die sleutel van hierdie lied is nog nie vasgestel"</string>

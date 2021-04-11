@@ -18,7 +18,7 @@
     <string name="autoscale">"Échelle automatique"</string>
     <string name="autoscale_toggle">"Activer / desactiver la mise en page automatique"</string>
     <string name="autoscroll">"Auto-défilement"</string>
-    <string name="autoscrollPedalText">"Commencer / arrêter autoscroll"</string>
+    <string name="start_stop_autoscroll">"Commencer / arrêter autoscroll"</string>
     <string name="autoscroll_default_or_prompt">"Si vous ne l\'avez pas fixée, voulez vous que la durée de la chanson soit la valeur par défaut ou voulez-vous que l\'on vous demande ?"</string>
     <string name="autoscroll_time">"Retard au démmarage"</string>
     <string name="autoshow_highlight">"Autoshow points surligneur"</string>
@@ -207,7 +207,7 @@
     <string name="existing_found">Vous avez déjà utilisé les emplacements d\'installation suivants. Vous aurez toujours besoin de localiser et de régler ceci manuellement en utilisant le bouton rouge ci-dessus.</string>
     <string name="full">"Plein"</string>
     <string name="open_song_menu">"Ouvrir le menu de la chanson"</string>
-    <string name="gesture2">"Modifier la chanson"</string>
+    <string name="edit_song">"Modifier la chanson"</string>
     <string name="gesture3">"Ajouter le morceau à la liste"</string>
     <string name="refresh_song">Actualiser la chanson en cours</string>
     <string name="gesturesandmenus">"Gestes et menus"</string>
@@ -266,7 +266,7 @@
     <string name="menu_swipe_toggle">"Activer / desactiver l\'affichage de la Liste des chansons et du menu par balayage"</string>
     <string name="menu_width">Largeur du menu</string>
     <string name="metronome">"Métronome"</string>
-    <string name="metronomePedalText">"Commencer / arrêter métronome"</string>
+    <string name="start_stop_metronome">"Commencer / arrêter métronome"</string>
     <string name="microphone_rationale">"Un microphone est nécessaire pour accéder à l\'indicateur de niveau sonore."</string>
     <string name="midi">"Midi"</string>
     <string name="midi_add">"Ajouter une commande"</string>
@@ -315,7 +315,7 @@
     <string name="override_widthautoscale">"Largeur remplacer seulement mise à l\'échelle ne autoscale"</string>
     <string name="overwrite">"Ecraser l\'élément existant"</string>
     <string name="pad">"Musique de fond"</string>
-    <string name="padPedalText">"Commencer / arrêter la musique de fond"</string>
+    <string name="start_stop_pad">"Commencer / arrêter la musique de fond"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"S\'il vous plaît sélectionnez la tonalité de cette chanson"</string>
     <string name="pad_error">"La tonalité de cette chanson n\'a pas été réglée"</string>

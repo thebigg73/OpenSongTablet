@@ -90,9 +90,9 @@
     <string name="linespacing">"Skratiti razmak za"</string>
     <string name="currentkeycode">"Trenutni kod tastature"</string>
     <string name="not_set">"Nije zadato"</string>
-    <string name="padPedalText">"Početak/kraj pad"</string>
-    <string name="autoscrollPedalText">"Početak/kraj automatski skrol"</string>"
-    <string name="metronomePedalText">"Početak/kraj metronom"</string>
+    <string name="start_stop_pad">"Početak/kraj pad"</string>
+    <string name="start_stop_autoscroll">"Početak/kraj automatski skrol"</string>"
+    <string name="start_stop_metronome">"Početak/kraj metronom"</string>
     <string name="autoscroll_time">"Odloženi početak automatskog skrola"</string>
     <string name="song_functionnotavailable">"Ova funkcija nije moguća za pesme"</string>
     <string name="latest_updates">"Poslednje izmene"</string>
@@ -144,7 +144,7 @@
     <string name="doubleTap">"Odaberi akciju za dupli tap"</string>
     <string name="longPress">"Odaberi akciju za dugi pritisak"</string>
     <string name="open_song_menu">"Otvoriti pesma meni"</string>
-    <string name="gesture2">"Izmena pesme"</string>
+    <string name="edit_song">"Izmena pesme"</string>
     <string name="gesture3">"Dodati pesmu na set listu"</string>
     <string name="refresh_song">"Osvežiti trenutnu pesmu"</string>
     <string name="transpose">"Transponovati"</string>

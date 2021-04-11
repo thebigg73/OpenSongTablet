@@ -19,7 +19,7 @@
     <string name="autoscale">"Auto escala"</string>
     <string name="autoscale_toggle">"Canción auto escala activado / desactivado"</string>
     <string name="autoscroll">"Auto-scroll"</string>
-    <string name="autoscrollPedalText">"Comencar / detener autoscroll"</string>
+    <string name="start_stop_autoscroll">"Comencar / detener autoscroll"</string>
     <string name="autoscroll_default_or_prompt">"Si no ha configurado una duración canción se deben utilizar los valores por defecto o quieres que se le pregunte cada vez?"</string>
     <string name="autoscroll_time">"Auto-scroll tiempo de retardo"</string>
     <string name="autoshow_highlight">"Notas del resaltador de autoshow"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">Ya ha utilizado las siguientes ubicaciones de instalación. Aún necesitará localizar y configurar esto manualmente usando el botón rojo de arriba.</string>
     <string name="full">"Completo"</string>
     <string name="open_song_menu">"Menú canción abierto"</string>
-    <string name="gesture2">"Editar canción"</string>
+    <string name="edit_song">"Editar canción"</string>
     <string name="gesture3">"Añadir canción a establecer"</string>
     <string name="refresh_song">Actualizar canción actual</string>
     <string name="gesturesandmenus">"Gestos y menús"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"Lista de canciones y menús de opción Toggle deslizar encendido / apagado"</string>
     <string name="menu_width">Ancho del menú</string>
     <string name="metronome">"Metrónomo"</string>
-    <string name="metronomePedalText">"Comencar / detener metrónomo"</string>
+    <string name="start_stop_metronome">"Comencar / detener metrónomo"</string>
     <string name="microphone_rationale">"Se requiere micrófono / grabación de audio para acceder al medidor de nivel de sonido."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Agregar comando"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"Ancho de anulación únicamente el escalado a ninguna autoescala"</string>
     <string name="overwrite">"Sobrescribir elemento existente"</string>
     <string name="pad">"Música de fondo"</string>
-    <string name="padPedalText">"Comencar / detener música de fondo"</string>
+    <string name="start_stop_pad">"Comencar / detener música de fondo"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Por favor seleccione la clave de esta canción"</string>
     <string name="pad_error">"La clave de esta canción no se ha establecido"</string>

@@ -19,7 +19,7 @@
     <string name="autoscale">"autoscale"</string>
     <string name="autoscale_toggle">"Toggle Auto Scale dal be / ki"</string>
     <string name="autoscroll">"Auto-scroll"</string>
-    <string name="autoscrollPedalText">"Kezdeni / megállni autoscroll"</string>
+    <string name="start_stop_autoscroll">"Kezdeni / megállni autoscroll"</string>
     <string name="autoscroll_default_or_prompt">"Ha még nem állította be a dalt időtartama legyen az alapértelmezett értékeket lehet használni, vagy szeretne kérni, minden egyes alkalommal?"</string>
     <string name="autoscroll_time">"Auto-scroll késleltetési idő"</string>
     <string name="autoshow_highlight">"Autoshow kiemelő jegyzetek"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">Már használta a következő telepítési helyeket. A fenti piros gombbal továbbra is meg kell találnia és beállítania ezt manuálisan.</string>
     <string name="full">"Teljes"</string>
     <string name="open_song_menu">"Nyílt dal menü"</string>
-    <string name="gesture2">"Szerkesztés song"</string>
+    <string name="edit_song">"Szerkesztés song"</string>
     <string name="gesture3">"Add dal beállítani"</string>
     <string name="refresh_song">Frissítés aktuális zeneszám</string>
     <string name="gesturesandmenus">"Gesztusok és menük"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"Váltás dal lista és menük húzza be / ki"</string>
     <string name="menu_width">Menü szélessége</string>
     <string name="metronome">"Metronóm"</string>
-    <string name="metronomePedalText">"Kezdeni / megállni metronóm"</string>
+    <string name="start_stop_metronome">"Kezdeni / megállni metronóm"</string>
     <string name="microphone_rationale">"Mikrofon / hangfelvétel eléréséhez szükséges a zajszintmérő."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Parancs hozzáadása"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"Felülírása szélessége csak skálázott nem autoscale"</string>
     <string name="overwrite">"Felülírja a meglévő elem"</string>
     <string name="pad">"Háttérzene"</string>
-    <string name="padPedalText">"Kezdeni / megállni pad"</string>
+    <string name="start_stop_pad">"Kezdeni / megállni pad"</string>
     <string name="pad_auto">"Kocsi"</string>
     <string name="pad_choose_key">"Kérjük, válassza ki a kulcsot, ezt a dalt"</string>
     <string name="pad_error">"A kulcs ennek a dalnak nincs beállítva"</string>

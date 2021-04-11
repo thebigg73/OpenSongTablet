@@ -18,7 +18,7 @@
     <string name="autoscale">"自动定标"</string>
     <string name="autoscale_toggle">"切换自动缩放"</string>
     <string name="autoscroll">"自动滚动"</string>
-    <string name="autoscrollPedalText">"启动/停止自动滚屏"</string>
+    <string name="start_stop_autoscroll">"启动/停止自动滚屏"</string>
     <string name="autoscroll_default_or_prompt">"如果你还没有设置一首歌的持续时间应使用默认值，或者你想每次都问？"</string>
     <string name="autoscroll_time">"自动滚动延迟时间"</string>
     <string name="autoshow_highlight">"自动显示荧光笔记"</string>
@@ -207,7 +207,7 @@
     <string name="existing_found">您已经使用了以下安装位置。您仍然需要使用上面的红色按钮手动定位和设置。</string>
     <string name="full">"充分"</string>
     <string name="open_song_menu">"打开菜单歌"</string>
-    <string name="gesture2">"编辑歌曲"</string>
+    <string name="edit_song">"编辑歌曲"</string>
     <string name="gesture3">"添加歌曲设置"</string>
     <string name="refresh_song">刷新当前歌曲</string>
     <string name="gesturesandmenus">"手势和菜单"</string>
@@ -266,7 +266,7 @@
     <string name="menu_swipe_toggle">"切换歌曲列表和选项菜单轻扫开/关"</string>
     <string name="menu_width">菜单宽度</string>
     <string name="metronome">"节拍器"</string>
-    <string name="metronomePedalText">"启动/停止节拍器"</string>
+    <string name="start_stop_metronome">"启动/停止节拍器"</string>
     <string name="microphone_rationale">"麦克风/音频记录才能访问声级计。"</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"添加命令"</string>
@@ -315,7 +315,7 @@
     <string name="override_widthautoscale">"覆盖宽度仅扩展到不自动缩放"</string>
     <string name="overwrite">"覆盖现有项目"</string>
     <string name="pad">"背景音乐"</string>
-    <string name="padPedalText">"启动/停止背景音乐"</string>
+    <string name="start_stop_pad">"启动/停止背景音乐"</string>
     <string name="pad_auto">"汽车"</string>
     <string name="pad_choose_key">"请选择这首歌的关键"</string>
     <string name="pad_error">"这首歌的密钥尚未设置"</string>

@@ -19,7 +19,7 @@
     <string name="autoscale">"オートスケール"</string>
     <string name="autoscale_toggle">"トグルオートスケール"</string>
     <string name="autoscroll">"自動スクロール"</string>
-    <string name="autoscrollPedalText">"開始/自動スクロールを停止する"</string>
+    <string name="start_stop_autoscroll">"開始/自動スクロールを停止する"</string>
     <string name="autoscroll_default_or_prompt">"あなたはデフォルト値が使用されるべき曲の時間を設定したり、それぞれの時間を求められることがしたいですしていない場合は？"</string>
     <string name="autoscroll_time">"自動スクロール遅延時間"</string>
     <string name="autoshow_highlight">"オートショーハイライターノート"</string>
@@ -208,7 +208,7 @@
     <string name="existing_found">既に以下のインストール場所を使用しています。上記の赤いボタンを使って手動でこれを見つけて設定する必要があります。</string>
     <string name="full">"フル"</string>
     <string name="open_song_menu">"オープンソングメニュー"</string>
-    <string name="gesture2">"編集歌"</string>
+    <string name="edit_song">"編集歌"</string>
     <string name="gesture3">"設定するために曲を追加"</string>
     <string name="refresh_song">現在の曲をリフレッシュ</string>
     <string name="gesturesandmenus">"ジェスチャーとメニュー"</string>
@@ -267,7 +267,7 @@
     <string name="menu_swipe_toggle">"トグル曲のリストとオプションメニューがオン/オフにスワイプ"</string>
     <string name="menu_width">メニュー幅</string>
     <string name="metronome">"メトロノーム"</string>
-    <string name="metronomePedalText">"/ストップメトロノームを開始"</string>
+    <string name="start_stop_metronome">"/ストップメトロノームを開始"</string>
     <string name="microphone_rationale">"マイク/オーディオ録音はサウンドレベルメーターにアクセスする必要があります。"</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"コマンドを追加"</string>
@@ -316,7 +316,7 @@
     <string name="override_widthautoscale">"オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。""オーバーライド幅のみなしオートスケールへのスケーリング"</string>
     <string name="overwrite">"既存のアイテムを上書き"</string>
     <string name="pad">"バックグラウンドミュージック"</string>
-    <string name="padPedalText">"スタート/ストップ·バックグラウンドミュージック"</string>
+    <string name="start_stop_pad">"スタート/ストップ·バックグラウンドミュージック"</string>
     <string name="pad_auto">"オート"</string>
     <string name="pad_choose_key">"この曲のキーを選択してください"</string>
     <string name="pad_error">"この曲のキーが設定されていません"</string>

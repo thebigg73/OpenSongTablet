@@ -106,6 +106,7 @@
     <string name="display_settings">Change display settings (what you see on screen)</string>
     <string name="duplicate">Duplicate</string>
     <string name="edit">Edit</string>
+    <string name="edit_song">Edit song</string>
     <string name="ending">Ending</string>
     <string name="error">Error</string>
     <string name="existing_found">You have already used the following install locations.  You will still need to locate and set this manually using the red button above.</string>
@@ -196,6 +197,7 @@
         <item>G#m</item>
         <item>Abm</item>
     </array>
+    <string name="landscape">Landscape</string>
     <string name="language">Language</string>
     <array name="languagelist" translatable="false">
         <item>(af) Afrikaans</item>
@@ -284,6 +286,7 @@
     <string name="pedal_scroll_before_move">Try to scroll before changing songs</string>
     <string name="pedal_waiting">"Waiting for button…."</string>
     <string name="performance_mode">Performance mode</string>
+    <string name="portrait">Portrait</string>
     <string name="prechorus">Pre-Chorus</string>
     <string name="presentation_order">Presentation order</string>
     <string name="presentation_mode">Presentation mode</string>
@@ -341,12 +344,16 @@
     <string name="song_menu_checkboxes">Show set checkboxes in song menu</string>
     <string name="song_notes">Song sticky notes</string>
     <string name="song_sections">Song sections</string>
+    <string name="song_swipe_toggle">Allow swiping between songs</string>
     <string name="song_title">Song title</string>
     <string name="songs">Songs</string>
     <string name="songsheet">Songsheet</string>
     <string name="stage_mode">Stage Mode</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="start_stop_autoscroll">Start/stop autoscroll</string>
+    <string name="start_stop_metronome">Start/stop metronome</string>
+    <string name="start_stop_pad">Start/stop pad</string>
     <string name="storage">Storage</string>
     <string name="storage_change">Change storage location</string>
     <string name="storage_ext">External storage</string>
@@ -511,7 +518,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="autoRepeatCount">Number of key repeats required to emulate long press</string>
     <string name="autoRepeatRationale">Some pedals (such as AirTurn) send auto repeat key signals which stops the long press actions working. If you are using one of these pedals, switch on the AirTurn long press mode and adjust the slider to the number of repeated signals needed for a simulated long press action.  Most keyboards have a delay of 500ms and a repeat rate of about 25ms. This means that holding down a key for 1 second will record 20 key presses. AirTurn pedals allow you to adjust the repeat rate and delay time using their companion app. Higher numbers for the key repeat count mean holding the pedal for longer to register as a long press.</string>
     <string name="autoscale_toggle">Toggle autoscale</string>
-    <string name="autoscrollPedalText">Start/stop autoscroll</string>
     <string name="autoscroll_default_or_prompt">If you haven\'t set a song duration should the default values be used or do you want to be asked each time?</string>
     <string name="autoscroll_time">Autoscroll delay time</string>
     <string name="autoshow_highlight">Autoshow highlighter notes</string>
@@ -668,8 +674,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="fontsize">You need to turn off auto scale song.</string>
     <string name="footpedal">Assign foot pedal</string>
     <string name="full">Full</string>
-    <string name="gesture2">Edit song</string>
-    <string name="gesture3">Add song to set</string>
     <string name="gesturesandmenus">Gestures and menus</string>
     <string name="grabchordpro">Extract ChordPro data</string>
     <string name="guitar">Guitar</string>
@@ -712,7 +716,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="menu_text_size">Menu text size</string>
     <string name="menu_width">Menu width</string>
     <string name="metronome_duration">Metronome duration (bars)</string>
-    <string name="metronomePedalText">Start/stop metronome</string>
     <string name="microphone_rationale">Microphone / audio recording is required to access the sound level meter.</string>
     <string name="midi_send">Send MIDI</string>
     <string name="midi_usb">Connect USB device</string>
@@ -731,7 +734,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
     <string name="overwrite">Overwrite existing item</string>
-    <string name="padPedalText">Start/stop pad</string>
     <string name="pad_auto">Auto</string>
     <string name="pad_choose_key">Please select the key of this song</string>
     <string name="pad_error">The key of this song has not been set</string>
@@ -800,7 +802,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="song_display">Song display</string>
     <string name="song_functionnotavailable">This function is not available for songs</string>
     <string name="song_new_name">Enter a new file name for this song (this is how it will appear in your song menu)</string>
-    <string name="song_swipe_toggle">Toggle swipe to move between songs on/off</string>
     <string name="songdoesntexist">That song isn\'t on your device.  Have you deleted it?</string>
     <string name="songfolder">Select song folder</string>
     <string name="songnamealreadytaken">Unfortunately this song title / filename has already been used (a suggestion could be to add a version number to the end).</string>
@@ -866,4 +867,11 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="move_to_folder">Move to folder</string>
     <string name="destination">Destination</string>
     <string name="move_from">Move from</string>
+    <string name="pad_info">Control or edit the current pad or backing track</string>
+    <string name="autoscroll_info">Adjust the autoscroll settings</string>
+    <string name="metronome_info">Adjust the metronome settings</string>
+    <string name="highlight_info">Edit highlighter notes / annotations</string>
+    <string name="music_score_info">Edit score notes</string>
+    <string name="tool">Tool</string>
+    <string name="chromecast">Chromecast</string>
 </resources>
