@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
-import com.garethevans.church.opensongtablet.databinding.FragmentPresentationBinding;
+import com.garethevans.church.opensongtablet.databinding.PresentationBinding;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
@@ -34,12 +34,12 @@ public class PresentationFragment extends Fragment {
     private ThemeColors themeColors;
 
 
-    private FragmentPresentationBinding myView;
+    private PresentationBinding myView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        myView = FragmentPresentationBinding.inflate(inflater, container, false);
+        myView = PresentationBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
 
         // Initialise the helper classes for the heavy lifting
