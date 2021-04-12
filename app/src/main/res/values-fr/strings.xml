@@ -522,8 +522,6 @@
     <string name="connections_device_name">Nom de l\'appareil</string>
     <string name="controls">Contrôle</string>
 
-    <string name="accept_connection">Se connecter avec</string>
-    <string name="accept_code">Confirmez que le code correspond sur les deux appareils:</string>
     <string name="warn_before_changing_song">Afficher un avertissement avant de passer à la chanson suivante (utile pour éviter les pressions accidentelles)</string>
     <string name="bold_chords_headings">Afficher les accords et les titres en gras</string>
     <string name="connections_enable">Activer les connexions à proximité</string>
@@ -531,19 +529,15 @@
     <string name="connections_keephostsongs">Conserver les chansons des hôtes</string>
     <string name="location_rationale">Cette fonction est requise pour localiser d\'autres périphériques réseau</string>
     <string name="bold_text">Afficher les paroles en gras</string>
-    <string name="respectcopyright">Respectez les droits d\'auteur - utilisez toujours légalement</string>
     <string name="wordsandmusicby">Paroles et musique de</string>
     <string name="usedbypermision">Utilisé avec permission.</string>
     <string name="play_services_how">Me montrer comment</string>
     <string name="play_services_error">Pour utiliser Google Cast, les polices et les connexions à proximité, vous devrez installer les services Google Play.</string>
-    <string name="filter_info">Vous pouvez filtrer les sections en utilisant des préfixes.\\nSi vous sélectionnez «masquer» et ajoutez le filtre «guitare», les sections utilisant ce préfixe seront masquées. par exemple. [*guitare: instrumentale]</string>
-    <string name="filter_label">Masquer ou afficher les sections filtrées</string>
     <string name="filter_entry">Ajoutez chaque filtre sur une nouvelle ligne ci-dessous.</string>
     <string name="filter_section">Filtrage de section</string>
     <string name="show">Spectacle</string>
     <string name="hide">Cacher</string>
     <string name="filter_structure">[*filter:V] = section de vers filtrée</string>
-    <string name="nofound">Aucun dossier précédent trouvé. Utilisez le bouton rouge pour choisir un emplacement.</string>
     <string name="storage_quicktip">Lors de la sélection d\'un emplacement:\nRépertoriez le stockage à l\'aide du menu (vous devrez peut-être modifier les paramètres pour afficher tout le stockage).\nSÉLECTIONNEZ UNIQUEMENT le stockage INTERNE OU CARTE SD.\nLe stockage interne est recommandé. Cela peut être répertorié comme stockage de l\'appareil ou avec le nom de votre appareil.\nSur Android 10+, vous ne devez pas sélectionner le dossier Téléchargements ou racine. En cas de doute, choisissez le dossier «Documents».</string>
     <string name="storage_help">Veuillez choisir l\'emplacement de votre dossier «OpenSong». Il s\'agit de l\'emplacement de stockage par défaut des fichiers OpenSong. Vous pouvez modifier cela à tout moment dans le menu Options. Le stockage interne est recommandé.\n\nPour une mise à jour ou une réinstallation:\nvous pouvez utiliser le bouton jaune ci-dessous pour trouver n\'importe quel dossier \'OpenSong\' précédent.</string>
     <string name="information">Information</string>
@@ -551,4 +545,5 @@
     <string name="client">Client</string>
     <string name="host">Hôte</string>
     <string name="connections_actasclient">Agir en tant que client</string>
+    <string name="respect_copyright">Respectez les droits d\'auteur - utilisez toujours légalement</string>
 </resources>

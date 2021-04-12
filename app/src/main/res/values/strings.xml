@@ -114,6 +114,7 @@
     <string name="exit_confirm">Are you sure you want to exit the program?</string>
     <string name="export">Export</string>
     <string name="extra">Extra information</string>
+    <string name="extra_settings">Advanced settings</string>
     <string name="file_exists">File already exists.  Please rename it.</string>
     <string name="filename">Filename</string>
     <string name="filter_by_this_value">Further filter by this value.  This filter searches titles, filenames, user fields and hymn numbers</string>
@@ -315,6 +316,9 @@
     <string name="root">ROOT</string>
     <string name="save">Save</string>
     <string name="save_changes">Save changes</string>
+    <string name="scale_width">Maximum width (ignoring height)</string>
+    <string name="scaling">Scaling</string>
+    <string name="scaling_info">Autoscale settings and section scaling</string>
     <string name="scripture">Scripture</string>
     <string name="scroll_down">Scroll down</string>
     <string name="scroll_up">"Scroll up</string>
@@ -666,11 +670,12 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="extradisplay">Secondary display detected.  Songs will be displayed on the secondary display.</string>
     <string name="file_chooser">File chooser</string>
     <string name="file_type">File type</string>
-    <string name="filter_info">You can filter sections by using prefixes.  If you selecting \'hide\' and add the filter \'guitar\' and sections using this prefix would be hidden. e.g. [*guitar:Instrumental]</string>
-    <string name="filter_label">Hide or show filtered sections</string>
+    <string name="filter_info">You can filter sections by using prefixes.  If you add the filter \'guitar\', any sections using this prefix would be filtered. e.g. [*guitar:Instrumental]</string>
+    <string name="filter_mode_info">By default filtered sections are hidden, but you can set this to only show these filtered sections instead</string>
     <string name="filter_section">Section filtering</string>
     <string name="filter_entry">Add each filter on a new line below.</string>
     <string name="filter_structure">[*filter:V] = filtered verse section</string>
+    <string name="filters">Filters</string>
     <string name="findnewsongs">Find new songs</string>
     <string name="firstsong">Displaying first item</string>
     <string name="floating_window">Floating window</string>
@@ -877,4 +882,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="music_score_info">Edit score notes</string>
     <string name="tool">Tool</string>
     <string name="chromecast">Chromecast</string>
+    <string name="warn_before_changing_song">Show a warning before moving on to the next song (useful to avoid accidental presses)</string>
+    <string name="gesture3">Add song to set</string>
 </resources>

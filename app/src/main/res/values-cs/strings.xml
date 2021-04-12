@@ -540,8 +540,6 @@
     <string name="font_choose_preview">Vyberte si pomocí webového náhledu</string>
     <string name="forum">Fórum</string>
 
-    <string name="accept_connection">Spojit s</string>
-    <string name="accept_code">Potvrďte shodu kódu na obou zařízeních:</string>
     <string name="connections_enable">Povolit blízká připojení</string>
     <string name="bold_chords_headings">Zobrazit akordy a nadpisy tučně</string>
     <string name="warn_before_changing_song">Před přechodem na další skladbu zobrazit varování (užitečné, aby se zabránilo náhodnému stisknutí)</string>
@@ -549,19 +547,15 @@
     <string name="connections_keephostsongs">Udržujte hostitelské písně</string>
     <string name="location_rationale">Tato funkce je vyžadována k nalezení dalších síťových zařízení</string>
     <string name="bold_text">Zobrazit text tučně</string>
-    <string name="respectcopyright">Respektujte autorská práva - vždy používejte legálně</string>
     <string name="usedbypermision">Používáno se svolením.</string>
     <string name="wordsandmusicby">Slova a hudba od</string>
     <string name="play_services_error">Abyste mohli používat Google Cast, písma a připojení v okolí, budete si muset nainstalovat služby Google Play.</string>
     <string name="play_services_how">Ukaž mi jak</string>
-    <string name="filter_info">Sekce můžete filtrovat pomocí předpon.\\nPokud vyberete možnost „skrýt“ a přidáte filtr „kytara“, sekce s touto předponou se skryjí. např. [*kytara: Instrumentální]</string>
-    <string name="filter_label">Skrýt nebo zobrazit filtrované sekce</string>
     <string name="hide">Skrýt</string>
     <string name="show">Ukázat</string>
     <string name="filter_section">Filtrování sekcí</string>
     <string name="filter_entry">Přidejte každý filtr na nový řádek níže.</string>
     <string name="filter_structure">[*filtr:V] = filtrovaná část verše</string>
-    <string name="nofound">Nebyla nalezena žádná předchozí složka. Pomocí červeného tlačítka vyberte místo.</string>
     <string name="storage_quicktip">Při výběru umístění:\nSeznam úložiště pomocí nabídky (pro zobrazení celého úložiště bude pravděpodobně nutné změnit nastavení).\nVYBERTE POUZE VNITŘNÍ NEBO SD KARTU.\nDoporučuje se interní úložiště. Může se zobrazit jako úložiště zařízení nebo s názvem vašeho zařízení.\nV systému Android 10+ byste neměli vybírat složku Stahování nebo Kořen. V případě pochybností vyberte složku „Dokumenty“.</string>
     <string name="storage_help">Vyberte umístění složky „OpenSong“. Toto je výchozí umístění úložiště pro soubory OpenSong. Toto můžete kdykoli změnit v nabídce Možnosti. Doporučuje se interní úložiště.\n\nPro aktualizaci nebo opětovnou instalaci:\nPomocí žlutého tlačítka níže můžete vyhledat předchozí složku „OpenSong“.</string>
     <string name="information">" Informace"</string>
@@ -569,4 +563,5 @@
     <string name="host">Hostitel</string>
     <string name="client">Klient</string>
     <string name="connections_actasclient">Působit jako klient</string>
+    <string name="respect_copyright">Respektujte autorská práva - vždy používejte legálně</string>
 </resources>

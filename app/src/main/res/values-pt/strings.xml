@@ -522,8 +522,6 @@
     <string name="connections_device_name">Nome do dispositivo</string>
     <string name="controls">Controlar</string>
 
-    <string name="accept_connection">Conectar com</string>
-    <string name="accept_code">Confirme se o código corresponde nos dois dispositivos:</string>
     <string name="warn_before_changing_song">Mostre um aviso antes de passar para a próxima música (útil para evitar pressionamentos acidentais)</string>
     <string name="bold_chords_headings">Exibir acordes e títulos em negrito</string>
     <string name="connections_enable">Ativar conexões próximas</string>
@@ -531,19 +529,15 @@
     <string name="connections_keephostsongs">Mantenha as músicas do host</string>
     <string name="location_rationale">Esse recurso é necessário para localizar outros dispositivos de rede</string>
     <string name="bold_text">Exibir letras em negrito</string>
-    <string name="respectcopyright">Respeite os direitos autorais - use sempre legalmente</string>
     <string name="usedbypermision">Usado com permissão.</string>
     <string name="wordsandmusicby">Palavras e música de</string>
     <string name="play_services_how">Mostre-me como</string>
     <string name="play_services_error">Para usar o Google Cast, fontes e conexões próximas, você precisará instalar o Google Play Services.</string>
-    <string name="filter_info">Você pode filtrar as seções usando prefixos.\\nSe você selecionar \\\'ocultar\\\' e adicionar o filtro \\\'guitarra\\\', as seções usando este prefixo serão ocultadas. por exemplo. [*guitarra: instrumental]</string>
-    <string name="filter_label">Ocultar ou mostrar seções filtradas</string>
     <string name="filter_entry">Adicione cada filtro em uma nova linha abaixo.</string>
     <string name="filter_section">Filtragem de seção</string>
     <string name="show">Exposição</string>
     <string name="hide">Ocultar</string>
     <string name="filter_structure">[*filtro:V] = seção verso filtrada</string>
-    <string name="nofound">Nenhuma pasta anterior encontrada. Use o botão vermelho para escolher um local.</string>
     <string name="storage_quicktip">Ao selecionar um local:\nListe o armazenamento usando o menu (pode ser necessário alterar as configurações para mostrar todo o armazenamento).\nSELECIONE APENAS armazenamento INTERNO OU SD CARD.\nO armazenamento interno é recomendado. Isso pode ser listado como armazenamento do dispositivo ou com o nome do seu dispositivo.\nNo Android 10+, você não deve selecionar a pasta Downloads ou Root. Em caso de dúvida, escolha a pasta \'Documentos\'.</string>
     <string name="storage_help">Escolha o local para sua pasta \'OpenSong\'. Este é o local de armazenamento padrão para arquivos OpenSong. Você pode alterar isso a qualquer momento no menu Opções. O armazenamento interno é recomendado.\n\nPara uma atualização ou reinstalação:\nVocê pode usar o botão amarelo abaixo para localizar qualquer pasta \'OpenSong\' anterior.</string>
     <string name="information">" Em formação"</string>
@@ -551,4 +545,5 @@
     <string name="client">Cliente</string>
     <string name="host">Hospedeiro</string>
     <string name="connections_actasclient">Atuar como cliente</string>
+    <string name="respect_copyright">Respeite os direitos autorais - use sempre legalmente</string>
 </resources>

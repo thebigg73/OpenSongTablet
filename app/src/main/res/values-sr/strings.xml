@@ -542,8 +542,6 @@
     <string name="forum_description">Prijavite greške, potražite pomoć i zatražite funkcije</string>
     <string name="github_description">Doprineti razvoju aplikacija</string>
 
-    <string name="accept_connection">Povezivanje sa</string>
-    <string name="accept_code">Potvrdite podudaranje koda na oba uređaja:</string>
     <string name="location_rationale">Ova funkcija je potrebna za pronalaženje drugih mrežnih uređaja</string>
     <string name="connections_keephostsongs">Zadržite domaćinske pesme</string>
     <string name="connections_actashost">Ponašajte se kao domaćin</string>
@@ -551,19 +549,15 @@
     <string name="bold_chords_headings">Prikažite akorde i naslove podebljano</string>
     <string name="warn_before_changing_song">Pokažite upozorenje pre prelaska na sledeću pesmu (korisno da izbegnete slučajne pritiske)</string>
     <string name="bold_text">Prikažite tekst podebljano</string>
-    <string name="respectcopyright">Poštujte autorska prava - uvek ih koristite legalno</string>
     <string name="wordsandmusicby">Reči i muzika</string>
     <string name="usedbypermision">Koristi se uz dozvolu.</string>
     <string name="play_services_error">Da biste koristili Google Cast, fontove i veze u blizini, moraćete da instalirate Google Plai usluge.</string>
     <string name="play_services_how">Pokaži mi kako</string>
-    <string name="filter_info">Odeljke možete filtrirati pomoću prefiksa.\\nAko odaberete „sakrij“ i dodate filter „gitara“, a odeljci koji koriste ovaj prefiks biće sakriveni. na primer. [*gitara: Instrumental]</string>
-    <string name="filter_label">Sakrij ili prikaži filtrirane odeljke</string>
     <string name="hide">Sakriti</string>
     <string name="show">Prikaži</string>
     <string name="filter_section">Filtriranje sekcija</string>
     <string name="filter_entry">Dodajte svaki filter u novi red ispod.</string>
     <string name="filter_structure">[*filter:V] = filtrirani odeljak stiha</string>
-    <string name="nofound">Nije pronađena nijedna prethodna fascikla. Pomoću crvenog dugmeta odaberite lokaciju.</string>
     <string name="storage_quicktip">Када бирате локацију:\nНаведите меморијски простор помоћу менија (можда ћете морати да промените поставке да бисте приказали сву меморију).\nОДАБЕРИТЕ САМО УНУТРАШЊУ ИЛИ СД КАРТИЦУ.\nПрепоручује се интерно складиштење. Ово може бити наведено као складиште уређаја или са именом вашег уређаја.\nНа Андроиду 10+ не би требало да изаберете директоријум Преузимања или Роот. Ако сумњате, изаберите фасциклу „Документи“.</string>
     <string name="storage_help">Изаберите место за директоријум \'OpenSong\'. Ово је подразумевано место за складиштење датотека ОпенСонг. То можете променити у било ком тренутку из менија Опције. Препоручује се интерно складиштење.\n\nЗа ажурирање или поновну инсталацију:\nПомоћу жутог дугмета у наставку можете пронаћи било коју претходну фасциклу „OpenSong“.</string>
     <string name="information">Информације</string>
@@ -571,4 +565,5 @@
     <string name="host">Domaćin</string>
     <string name="client">Klijent</string>
     <string name="connections_actasclient">Понашајте се као клијент</string>
+    <string name="respect_copyright">Poštujte autorska prava - uvek ih koristite legalno</string>
 </resources>

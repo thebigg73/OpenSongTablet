@@ -69,6 +69,10 @@
         <item name="android:inputType">none</item>
     </style>
 
+    <style name="EditTextMultiLine" parent="PrefTextInputEditText">
+        <item name="android:singleLine">false</item>
+    </style>
+
     <style name="DividerLine">
         <item name="android:layout_height">2dp</item>
         <item name="android:background">@color/colorSecondary</item>
