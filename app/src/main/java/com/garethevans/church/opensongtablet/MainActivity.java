@@ -776,7 +776,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public boolean onPrepareOptionsMenu(Menu menu) {
         settingsButton = menu.findItem(R.id.settings_menu_item);
         MenuItem alertButton = menu.findItem(R.id.alert_info_item);
-        MenuItem nearbyConnectButton = menu.findItem(R.id.nearby_menu_item);
 
         // Decide if an alert should be shown
         if (alertChecks.showBackup(this,preferences) ||
@@ -785,11 +784,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             alertButton.setVisible(true);
         } else if (alertButton!=null){
             alertButton.setVisible(false);
-        }
-
-        // Decide if we should hide the Google Nearby button
-        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
-            nearbyConnectButton.setVisible(false);
         }
         return true;
     }
@@ -801,14 +795,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     navHome();
                 } else {
                     navigateToFragment("opensongapp://preferences",0);
-                }
-                break;
-
-            case "Nearby":
-                if (settingsOpen && nearbyOpen) {
-                    navHome();
-                } else if (requestNearbyPermissions() && fragmentOpen != R.id.nearbyConnectionsFragment) {
-                    navigateToFragment("opensongapp://settings/nearby",0);
                 }
                 break;
 
@@ -1119,7 +1105,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else {
             settingsOpen = false;
-            nearbyOpen = false;
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
     }
@@ -1709,7 +1694,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void updateConnectionsLog() {
         // Send the command to the Nearby Connections fragment (if it exists!)
         try {
-            if (nearbyConnectionsFragment!=null) {
+            if (nearbyConnectionsFragment!=null && nearbyOpen) {
                 try {
                     nearbyConnectionsFragment.updateConnectionsLog();
                 } catch (Exception e) {

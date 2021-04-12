@@ -204,6 +204,7 @@ public class NearbyConnectionsFragment extends Fragment {
             nearbyConnections.deviceId = value;
         }
     }
+
 }
 
 
