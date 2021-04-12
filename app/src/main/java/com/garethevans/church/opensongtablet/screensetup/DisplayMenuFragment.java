@@ -77,8 +77,7 @@ public class DisplayMenuFragment extends Fragment {
     private void setListeners() {
         myView.themeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.themeSetupFragment));
         myView.fontButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.fontSetupFragment));
-        // TODO - Add settings for autoscale/scaling
-        //myView.performanceMode.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.scalingFragment));
+        myView.scalingButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.displayScalingFragment));
         myView.extraSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.displayExtraFragment));
         // TODO - Connected display settings
         //myView.connectedDisplay.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.connectedDisplaySetup));

@@ -18,9 +18,9 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class DisplayExtraFragment extends Fragment {
 
-    MainActivityInterface mainActivityInterface;
-    Preferences preferences;
-    SettingsDisplayExtraBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private Preferences preferences;
+    private SettingsDisplayExtraBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -84,7 +84,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.trimLineSpacingText.setText(string);
     }
     private void setListeners() {
-        // The switched
+        // The switches
         myView.songSheet.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songSheet",isChecked,null));
         myView.nextInSet.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("nextInSet",isChecked,null));
         myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("displayBoldChordsHeadings",isChecked,null));

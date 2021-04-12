@@ -262,7 +262,7 @@ public class Preferences extends Activity {
     filterSections                  boolean     Should we enable filter by section tags (def:false)
     filterShow                      boolean     If filtering should only show current filters rather than hide (def:false)
     filterText                      String      Filter text split by line breaks
-    fontSize                        float       The non-scaled font size (def:42.0f)
+    fontSize                        float       The non-scaled font size (def:20.0f)
     fontSizeMax                     float       The max font size (def:50.0f)
     fontSizeMin                     float       The min font size (def:8.0f)
     fontChord                       String      The name of the font used for the chords.  From fonts.google.com (def:lato)

@@ -9,6 +9,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/largeText"
+            android:text="@string/autoscale"/>
         <!--Autoscroll on/off-->
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/useAutoscale"
@@ -28,7 +33,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
+                android:layout_weight="0.6"
                 android:orientation="vertical">
 
                 <TextView
@@ -50,7 +55,7 @@
                 android:id="@+id/manualFontSizeText"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
+                android:layout_weight="0.4"
                 android:gravity="center"
                 android:paddingStart="16dp"
                 android:paddingEnd="0dp" />
@@ -180,6 +185,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/largeText"
+            android:text="@string/song_sections"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/headingline_scale" />
         <LinearLayout
@@ -193,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="199"
+                android:max="200"
                 android:padding="16dp" />
 
             <TextView
@@ -204,7 +214,6 @@
                 android:paddingEnd="0dp" />
 
         </LinearLayout>
-        <TableRow style="@style/DividerLine" />
 
         <!--Scale chords-->
         <TextView
@@ -223,7 +232,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="199"
+                android:max="200"
                 android:padding="16dp" />
 
             <TextView
@@ -234,7 +243,6 @@
                 android:paddingEnd="0dp" />
 
         </LinearLayout>
-        <TableRow style="@style/DividerLine" />
 
         <!--Scale comments-->
         <TextView
@@ -253,7 +261,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="199"
+                android:max="200"
                 android:padding="16dp" />
 
             <TextView
@@ -264,78 +272,6 @@
                 android:paddingEnd="0dp" />
 
         </LinearLayout>
-        <TableRow style="@style/DividerLine" />
-
-        <!--Bold chords and headings-->
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/boldChordsHeadings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bold_chords_headings" />
-        <TableRow style="@style/DividerLine" />
-
-        <!--Hide lyrics box-->
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/hideLyricsBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hidelyricsbox" />
-        <TableRow style="@style/DividerLine" />
-
-        <!--Section trimming and spaces-->
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/trimSections"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/trim_sections" />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/addSectionSpace"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/section_space" />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/trimLineSpacing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/linespacing" />
-        <LinearLayout
-            android:id="@+id/trimLineSpacingLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <SeekBar
-                android:id="@+id/trimLineSpacingSeekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:max="199"
-                android:padding="16dp" />
-
-            <TextView
-                android:id="@+id/trimLineSpacingText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="0dp" />
-
-        </LinearLayout>
-        <TableRow style="@style/DividerLine" />
-
-        <!--Extra info-->
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/songSheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/songsheet" />
-        <TableRow style="@style/DividerLine" />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/nextInSet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/shownextinset" />
         <TableRow style="@style/DividerLine" />
 
     </LinearLayout>
