@@ -214,6 +214,9 @@
                 <action
                     android:id="@+id/action_displayMenuFragment_to_menuSettingsFragment"
                     app:destination="@id/menuSettingsFragment" />
+                <action
+                    android:id="@+id/action_displayMenuFragment_to_displayExtraFragment"
+                    app:destination="@id/displayExtraFragment" />
             </fragment>
 
             <!-- Theme fragment -->
@@ -267,6 +270,11 @@
                 android:name="com.garethevans.church.opensongtablet.screensetup.MenuSettingsFragment"
                 android:label="MenuSettingsFragment"
                 tools:layout="@layout/settings_menu"/>
+            <fragment
+                android:id="@+id/displayExtraFragment"
+                android:name="com.garethevans.church.opensongtablet.screensetup.DisplayExtraFragment"
+                android:label="DisplayExtraFragment"
+                tools:layout="@layout/settings_display_extra"/>
 
         </navigation>
 

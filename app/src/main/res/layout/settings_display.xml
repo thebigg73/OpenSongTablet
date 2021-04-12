@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--//TODO Extract the text strings -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".preferences.SettingsCategories"
     style="@style/PrefScrollView">
 
     <LinearLayout
@@ -31,27 +28,19 @@
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/performanceMode"
+            android:id="@+id/scalingButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="@string/performance_mode"
-            app:sub="@string/mode_settings" />
+            app:main="@string/scaling"
+            app:sub="@string/scaling_info" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/stageMode"
+            android:id="@+id/extraSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="@string/stage_mode"
-            app:sub="@string/mode_settings" />
-        <TableRow style="@style/DividerLine" />
-
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/presentationMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/presentation_mode"
-            app:sub="@string/mode_settings" />
+            app:main="@string/song_display"
+            app:sub="@string/extra_settings" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView

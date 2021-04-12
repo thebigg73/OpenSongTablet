@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PrefScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--Autoscroll on/off-->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/useAutoscale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/autoscale" />
+
+        <!--Manual font size-->
+        <LinearLayout
+            android:id="@+id/manualFontSizeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/choose_fontsize" />
+
+                <SeekBar
+                    android:id="@+id/manualFontSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="94"
+                    android:padding="16dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/manualFontSizeText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp" />
+
+        </LinearLayout>
+
+        <!--Auto font size-->
+        <LinearLayout
+            android:id="@+id/autoFontSizeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/scaleWidth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/scale_width" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/scaleColumns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/maximise_columns" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/maxfontsize" />
+
+                    <SeekBar
+                        android:id="@+id/maxFontSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="94"
+                        android:padding="16dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/maxFontSizeText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="0dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/minfontsize" />
+
+                    <SeekBar
+                        android:id="@+id/minFontSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="94"
+                        android:padding="16dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/minFontSizeText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="0dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/override_scale_explanation" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/overrideFull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/override_fullautoscale" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/overrideWidth_Switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/override_fullautoscale" />
+
+        </LinearLayout>
+
+        <TableRow style="@style/DividerLine" />
+
+        <!--Scale headings-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/headingline_scale" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <SeekBar
+                android:id="@+id/scaleHeading"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="199"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/scaleHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp" />
+
+        </LinearLayout>
+        <TableRow style="@style/DividerLine" />
+
+        <!--Scale chords-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/chordline_scale" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <SeekBar
+                android:id="@+id/scaleChords"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="199"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/scaleChordsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp" />
+
+        </LinearLayout>
+        <TableRow style="@style/DividerLine" />
+
+        <!--Scale comments-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/commentline_scale" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <SeekBar
+                android:id="@+id/scaleComments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="199"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/scaleCommentsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp" />
+
+        </LinearLayout>
+        <TableRow style="@style/DividerLine" />
+
+        <!--Bold chords and headings-->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/boldChordsHeadings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bold_chords_headings" />
+        <TableRow style="@style/DividerLine" />
+
+        <!--Hide lyrics box-->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/hideLyricsBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hidelyricsbox" />
+        <TableRow style="@style/DividerLine" />
+
+        <!--Section trimming and spaces-->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/trimSections"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/trim_sections" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/addSectionSpace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/section_space" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/trimLineSpacing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/linespacing" />
+        <LinearLayout
+            android:id="@+id/trimLineSpacingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <SeekBar
+                android:id="@+id/trimLineSpacingSeekBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="199"
+                android:padding="16dp" />
+
+            <TextView
+                android:id="@+id/trimLineSpacingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="0dp" />
+
+        </LinearLayout>
+        <TableRow style="@style/DividerLine" />
+
+        <!--Extra info-->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/songSheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/songsheet" />
+        <TableRow style="@style/DividerLine" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/nextInSet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/shownextinset" />
+        <TableRow style="@style/DividerLine" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
