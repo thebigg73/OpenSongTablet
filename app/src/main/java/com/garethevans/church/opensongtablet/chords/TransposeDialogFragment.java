@@ -315,7 +315,7 @@ public class TransposeDialogFragment extends DialogFragment {
                     OutputStream outputStream = storageAccess.getOutputStream(requireContext(),uri);
                     storageAccess.writeFileFromString(newXML,outputStream);
                 }
-                requireActivity().runOnUiThread(() -> mainActivityInterface.doSongLoad());
+                requireActivity().runOnUiThread(() -> mainActivityInterface.doSongLoad(song.getFolder(),song.getFilename()));
             }
             dismiss();
         }).start();

@@ -104,8 +104,8 @@ public class PerformanceGestures {
     }
 
     // Redraw the lyrics page
-    private void gesture4() {
-        mainActivityInterface.doSongLoad();
+    private void gesture4(Song song) {
+        mainActivityInterface.doSongLoad(song.getFolder(),song.getFilename());
     }
 
     // Stop or start autoscroll

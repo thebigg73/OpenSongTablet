@@ -220,6 +220,7 @@
     </array>
     <string name="latest_updates">Latest updates</string>
     <string name="link">Link</string>
+    <string name="link_info">Link files, audio, etc. to songs</string>
     <string name="link_audio">Audio file link</string>
     <string name="load">Load</string>
     <string name="long_press">Long press/hold</string>

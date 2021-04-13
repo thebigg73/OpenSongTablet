@@ -419,6 +419,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_highlighterFragment"
                     app:destination="@id/highlighterFragment" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_musicScoreFragment"
+                    app:destination="@id/musicScoreFragment" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -437,6 +440,15 @@
                 <deepLink
                     android:id="@+id/deepLink18"
                     app:uri="opensongapp://songactions/highlighter/edit" />
+            </fragment>
+            <fragment
+                android:id="@+id/musicScoreFragment"
+                android:name="com.garethevans.church.opensongtablet.abcnotation.MusicScoreFragment"
+                android:label="MusicScoreFragment"
+                tools:layout="@layout/settings_abcnotation">
+                <deepLink
+                    android:id="@+id/deepLink20"
+                    app:uri="opensongapp://settings/actions/abcnotation" />
             </fragment>
         </navigation>
         <fragment

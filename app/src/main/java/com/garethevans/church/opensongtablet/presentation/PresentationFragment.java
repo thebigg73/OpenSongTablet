@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.databinding.PresentationBinding;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
@@ -45,7 +46,8 @@ public class PresentationFragment extends Fragment {
         // Initialise the helper classes for the heavy lifting
         initialiseHelpers();
 
-        doSongLoad();
+        doSongLoad(preferences.getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
+                preferences.getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
         return root;
     }
@@ -67,7 +69,7 @@ public class PresentationFragment extends Fragment {
 
 
     // Displaying the song
-    public void doSongLoad() {
+    public void doSongLoad(String folder,String filename) {
         new Thread(() -> {/*
             // Quick fade the current page
             Objects.requireNonNull(getActivity()).runOnUiThread(() -> customAnimation.faderAnimation(myView.pageHolder,100,false));
