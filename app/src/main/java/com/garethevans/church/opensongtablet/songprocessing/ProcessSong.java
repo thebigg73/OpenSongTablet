@@ -901,7 +901,6 @@ public class ProcessSong {
                     if (t == 0) {
                         str = str.trim() + " "; // Chords lines are the splitters, only have one blank space after the chord
                     }
-                    Log.d(TAG,"linetype="+linetype);
                     if (linetype.equals("chord") && highlightChordColor!=0x00000000) {
                         textView.setText(highlightChords(str,highlightChordColor));
                     } else {
@@ -1124,7 +1123,6 @@ public class ProcessSong {
         } else {
             textView.setText(string);
         }
-        Log.d(TAG,"linetype="+linetype+ "  string="+string);
         return textView;
     }
 
@@ -2047,7 +2045,7 @@ public class ProcessSong {
         return filename;
     }
     public Bitmap getHighlighterFile(Context c, Preferences preferences, StorageAccess storageAccess,
-                                     Song song) {
+                                     Song song, int w, int h) {
         String filename;
         int orientation = c.getResources().getConfiguration().orientation;
         if (orientation== Configuration.ORIENTATION_PORTRAIT) {
@@ -2061,7 +2059,10 @@ public class ProcessSong {
             // Load in the bitmap
             try {
                 InputStream inputStream = storageAccess.getInputStream(c, uri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.outWidth = w;
+                options.outHeight = h;
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream,null,options);
                 inputStream.close();
                 return bitmap;
             } catch (Exception e) {

@@ -18,9 +18,9 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.PerformanceBinding;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
@@ -36,7 +36,6 @@ import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
@@ -89,8 +88,6 @@ public class PerformanceFragment extends Fragment {
     private String autoScale;
     private PerformanceBinding myView;
 
-    private Song song;
-
     // Attaching and destroying
     @Override
     public void onAttach(@NonNull Context context) {
@@ -132,7 +129,8 @@ public class PerformanceFragment extends Fragment {
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         mainActivityInterface.fullIndex();
 
-        doSongLoad();
+        doSongLoad(preferences.getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
+                preferences.getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
         // Set listeners for the scroll/scale/gestures
         //setGestureListeners();
@@ -218,7 +216,7 @@ public class PerformanceFragment extends Fragment {
                 preferences.getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f),true);
     }
     // Displaying the song
-    public void doSongLoad() {
+    public void doSongLoad(String folder, String filename) {
         // Loading the song is dealt with in this fragment as specific actions are required
         new Thread(() -> {
             // Quick fade the current page
@@ -230,18 +228,23 @@ public class PerformanceFragment extends Fragment {
                     animSlide = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
                 }
                 myView.songView.startAnimation(animSlide);
-                //myView.highlighterView.startAnimation(animSlide);
-                //myView.imageView.startAnimation(animSlide);
+                myView.highlighterView.startAnimation(animSlide);
+                myView.imageView.startAnimation(animSlide);
                 myView.zoomLayout.moveTo(1,0,0,false);
             });
             // Load up the song
             if (sectionViews!=null) {
                 sectionViews.clear();
             }
-            song = mainActivityInterface.getSong();
-            song = processSong.initialiseSong(commonSQL,song.getFolder(), song.getFilename());
-            song = loadSong.doLoadSong(getContext(),storageAccess,preferences,processSong,
-                    showToast, mainActivityInterface.getLocale(), songListBuildIndex, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro, false);
+            // Now reset the song
+            mainActivityInterface.setSong(processSong.initialiseSong(commonSQL,folder, filename));
+
+            Log.d(TAG, "mainActivityInterface.getSong().getFolder()="+mainActivityInterface.getSong().getFolder());
+            Log.d(TAG, "mainActivityInterface.getSong().getFilename()="+mainActivityInterface.getSong().getFilename());
+
+            mainActivityInterface.setSong(loadSong.doLoadSong(getContext(),storageAccess,preferences,processSong,
+                    showToast, mainActivityInterface.getLocale(), songListBuildIndex, sqLiteHelper, commonSQL,
+                    mainActivityInterface.getSong(), convertOnSong, convertChoPro, false));
 
             requireActivity().runOnUiThread(this::prepareSongViews);
             mainActivityInterface.moveToSongInSongMenu();
@@ -251,15 +254,16 @@ public class PerformanceFragment extends Fragment {
         // This is called on UI thread above;
         myView.pageHolder.setBackgroundColor(themeColors.getLyricsBackgroundColor());
         // Get the song in the layout
-        sectionViews = processSong.setSongInLayout(getActivity(),preferences, mainActivityInterface.getLocale(),
-                trimSections, addSectionSpace, trimLines, lineSpacing, themeColors, setTypeFace,
-                scaleHeadings, scaleChords, scaleComments, song.getLyrics(), boldChordHeading);
+        sectionViews = processSong.setSongInLayout(getActivity(),preferences,
+                mainActivityInterface.getLocale(), trimSections, addSectionSpace, trimLines, lineSpacing,
+                themeColors, setTypeFace, scaleHeadings, scaleChords, scaleComments,
+                mainActivityInterface.getSong().getLyrics(), boldChordHeading);
 
         // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
         setUpVTO();
 
         // Update the toolbar
-        mainActivityInterface.updateToolbar(song,null);
+        mainActivityInterface.updateToolbar(mainActivityInterface.getSong(),null);
     }
     private void setUpVTO() {
         testPane = myView.testPane;
@@ -319,25 +323,43 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void dealWithHighlighterFile(Animation animSlide) {
-        Bitmap highlighterBitmap = processSong.getHighlighterFile(requireContext(),preferences,storageAccess,song);
-        Log.d(TAG,"Bitmap="+highlighterBitmap);
-        if (highlighterBitmap!=null && preferences.getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay", true)) {
-            myView.highlighterView.setVisibility(View.VISIBLE);
-            float scale = (float)highlighterBitmap.getWidth()/(float)screenWidth;
-            int w = (int)(highlighterBitmap.getWidth()*scale);
-            int h = (int)(highlighterBitmap.getHeight()*scale);
-            GlideApp.with(requireContext()).load(highlighterBitmap).
-                    override(w,h).into(myView.highlighterView);
-            //myView.highlighterView.startAnimation(animSlide);
-            // Hide after a certain length of time
-            int timetohide = preferences.getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
-            Log.d(TAG,"timetohide="+timetohide);
-            if (timetohide !=0) {
-                new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE),timetohide);
+        // Get the dimensions of the songview once it has drawn
+        ViewTreeObserver viewTreeObserver = myView.songView.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int w = myView.songView.getMeasuredWidth();
+                int h = myView.songView.getMeasuredHeight();
+                Log.d(TAG,"w="+w+"  h="+h);
+
+                // Set the highlighter image view to match
+                ViewGroup.LayoutParams layoutParams = myView.highlighterView.getLayoutParams();
+                layoutParams.width = w;
+                layoutParams.height = h;
+                myView.highlighterView.setLayoutParams(layoutParams);
+                // Load in the bitmap with these dimensions
+                Bitmap highlighterBitmap = processSong.getHighlighterFile(requireContext(),preferences,
+                        storageAccess,mainActivityInterface.getSong(),w,h);
+                Log.d(TAG,"Bitmap="+highlighterBitmap);
+                if (highlighterBitmap!=null &&
+                        preferences.getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay", true)) {
+                    myView.highlighterView.setVisibility(View.VISIBLE);
+                    GlideApp.with(requireContext()).load(highlighterBitmap).
+                            override(w,h).into(myView.highlighterView);
+                    myView.highlighterView.startAnimation(animSlide);
+                    // Hide after a certain length of time
+                    int timetohide = preferences.getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
+                    Log.d(TAG,"timetohide="+timetohide);
+                    if (timetohide !=0) {
+                        new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE),timetohide);
+                    }
+                } else {
+                    myView.highlighterView.setVisibility(View.GONE);
+                }
+                // Remove the listener now we're done with it
+                myView.songView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
-        } else {
-            //myView.highlighterView.setVisibility(View.GONE);
-        }
+        });
     }
 
     // The scale and gesture bits of the code

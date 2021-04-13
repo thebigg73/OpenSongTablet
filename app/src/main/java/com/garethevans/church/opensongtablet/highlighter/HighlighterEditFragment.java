@@ -21,9 +21,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
+import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterEditBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
@@ -119,8 +119,6 @@ public class HighlighterEditFragment extends Fragment {
         drawNotes = myView.drawNotes;
         drawNotes.resetVars();
 
-        GlideApp.with(this).load(mainActivityInterface.getScreenshot()).into(myView.glideImage);
-
         setToolPreferences();
 
         // Set the drawNotes to be the same height as the image
@@ -129,18 +127,38 @@ public class HighlighterEditFragment extends Fragment {
             @Override
             public void onGlobalLayout() {
                 // Get the width (match parent) in pixels
-                int w = myView.glideImage.getMeasuredWidth();
+                int viewWidth = myView.glideImage.getWidth();
+                int viewHeight = myView.glideImage.getHeight();
+                int w = mainActivityInterface.getScreenshot().getWidth();
+                int h = mainActivityInterface.getScreenshot().getHeight();
+                float scaledX = (float)viewWidth/(float)w;
+                float scaledY = (float)viewHeight/(float)h;
+                float scale = Math.min(scaledX,scaledY);
+                int imgW = (int)(w*scale);
+                int imgH = (int)(h*scale);
+                Log.d(TAG,"screenshot="+w+","+h);
+                Log.d(TAG,"glideImage="+viewWidth+","+viewHeight);
+                Log.d(TAG, "Scale="+scale);
+                Log.d(TAG,"imgW="+imgW+"  imgH="+imgH);
+                ViewGroup.LayoutParams layoutParams = myView.glideImage.getLayoutParams();
+                layoutParams.width = imgW;
+                layoutParams.height = imgH;
+                myView.glideImage.setLayoutParams(layoutParams);
+                GlideApp.with(myView.glideImage).
+                        load(mainActivityInterface.getScreenshot()).
+                        override(imgW,imgH).
+                        into(myView.glideImage);
+
                 // Get a scaled width and height of the bitmap being drawn
-                float scaled = (float)mainActivityInterface.getScreenshot().getWidth()/(float)w;
-                int h = (int) ((float)mainActivityInterface.getScreenshot().getHeight()*scaled);
-                ViewGroup.LayoutParams layoutParams = myView.drawNotes.getLayoutParams();
-                layoutParams.width = w;
-                layoutParams.height = h;
-                myView.drawNotes.setLayoutParams(layoutParams);
-                Log.d(TAG, "w=" + w);
-                Log.d(TAG, "h=" + h);
+                ViewGroup.LayoutParams layoutParams2 = myView.drawNotes.getLayoutParams();
+                layoutParams2.width = imgW;
+                layoutParams2.height = imgH;
+                myView.drawNotes.setLayoutParams(layoutParams2);
+                Log.d(TAG, "w=" + w + "  imgW="+imgW);
+                Log.d(TAG, "h=" + h + "  imgH="+imgH);
                 // Set the original highlighter file if it exists
-                drawNotes.loadExistingHighlighter(requireContext(), preferences, storageAccess, processSong, song);
+                drawNotes.loadExistingHighlighter(requireContext(), preferences, storageAccess,
+                        processSong, song, imgW, imgH);
                 myView.glideImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });

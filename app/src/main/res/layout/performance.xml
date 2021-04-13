@@ -108,8 +108,8 @@
                     <!-- This is where highlighter notes go -->
                     <ImageView
                         android:id="@+id/highlighterView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:contentDescription="@string/image"

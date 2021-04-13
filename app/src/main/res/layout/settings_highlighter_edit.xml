@@ -13,15 +13,17 @@
 
         <ImageView
             android:id="@+id/glideImage"
+            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/image" />
 
         <com.garethevans.church.opensongtablet.customviews.DrawNotes
             android:id="@+id/drawNotes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:background="@color/transparent" />
 
         <FrameLayout
