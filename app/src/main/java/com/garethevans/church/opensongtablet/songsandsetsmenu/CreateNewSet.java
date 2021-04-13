@@ -7,6 +7,7 @@ import android.util.Base64;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
@@ -24,7 +25,7 @@ import java.util.Locale;
 
 public class CreateNewSet {
 
-    boolean doCreation(Context c, Preferences preferences, StorageAccess storageAccess,
+    boolean doCreation(Context c, MainActivityInterface mainActivityInterface,Preferences preferences, StorageAccess storageAccess,
                        SongListBuildIndex songListBuildIndex, ProcessSong processSong, LoadSong loadSong,
                        ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, Song song,
                        CurrentSet currentSet, SetActions setActions, SQLiteHelper sqLiteHelper,
@@ -56,35 +57,35 @@ public class CreateNewSet {
 
                 if (isImage) {
                     // Adding an image
-                    Song tempSong = getTempSong(c,storageAccess,preferences,locale,
+                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
                             commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
                             loadSong, showToast, songListBuildIndex, "../Images/_cache", name);
                     sb.append(buildImage(c,storageAccess,tempSong,processSong));
 
                 } else if (isScripture) {
                     // Adding a scripture
-                    Song tempSong = getTempSong(c,storageAccess,preferences,locale,
+                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
                             commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
                             loadSong, showToast, songListBuildIndex, "../Scripture/_cache", name);
                     sb.append(buildScripture(tempSong,processSong));
 
                 } else if (isVariation) {
                     // Adding a variation
-                    Song tempSong = getTempSong(c,storageAccess,preferences,locale,
+                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
                             commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
                             loadSong, showToast, songListBuildIndex, "../Variations", name);
                     sb.append(buildVariation(c,tempSong,processSong));
 
                 } else if (isSlide) {
                     // Adding a slide
-                    Song tempSong = getTempSong(c,storageAccess,preferences,locale,
+                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
                             commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
                             loadSong, showToast, songListBuildIndex, "../Slides/_cache", name);
                     sb.append(buildSlide(tempSong,processSong));
 
                 } else if (isNote) {
                     // Adding a note
-                    Song tempSong = getTempSong(c,storageAccess,preferences,locale,
+                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
                             commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
                             loadSong, showToast, songListBuildIndex, "../Notes/_cache", name);
                     sb.append(buildNote(c,tempSong,processSong));
@@ -352,14 +353,15 @@ public class CreateNewSet {
     }
 
 
-    private Song getTempSong(Context c, StorageAccess storageAccess, Preferences preferences,
+    private Song getTempSong(Context c, MainActivityInterface mainActivityInterface,
+                             StorageAccess storageAccess, Preferences preferences,
                              Locale locale, CommonSQL commonSQL, SQLiteHelper sqLiteHelper, Song song,
                              ProcessSong processSong, ConvertChoPro convertChoPro,
                              ConvertOnSong convertOnSong, LoadSong loadSong, ShowToast showToast,
                              SongListBuildIndex songListBuildIndex, String folder, String name) {
         Song tempSong = processSong.initialiseSong(commonSQL,folder, name);
         try {
-            tempSong = loadSong.doLoadSong(c, storageAccess, preferences, processSong, showToast, locale,
+            tempSong = loadSong.doLoadSong(c, mainActivityInterface, storageAccess, preferences, processSong, showToast, locale,
                     songListBuildIndex, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
         } catch (Exception e) {
             e.printStackTrace();

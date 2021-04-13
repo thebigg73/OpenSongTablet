@@ -836,7 +836,7 @@ public class StorageAccess {
         }
         return isvalid;
     }
-    boolean determineFileTypeByExtension(Song song) {
+    public boolean determineFileTypeByExtension(Song song) {
         // Determines if we can load song as text, image or pdf
         String file_ext = song.getFilename();
         boolean isImgOrPDF = false;

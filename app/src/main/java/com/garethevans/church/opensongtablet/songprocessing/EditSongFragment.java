@@ -104,7 +104,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         song = processSong.initialiseSong(commonSQL,song.getFolder(),song.getFilename());
 
         // The folder and filename were passed in the starting song object.  Now update with the file contents
-        song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,processSong, showToast,
+        song = loadSong.doLoadSong(getActivity(),mainActivityInterface,storageAccess,preferences,processSong, showToast,
                 mainActivityInterface.getLocale(),songListBuildIndex,sqLiteHelper,commonSQL,song,
                 convertOnSong,convertChoPro,false);
 

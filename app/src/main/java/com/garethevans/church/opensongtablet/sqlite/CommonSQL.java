@@ -28,6 +28,7 @@ public class CommonSQL {
         }
         return s;
     }
+
     public String unescapedSQL(String s) {
         if (s != null) {
             while (s.contains("''")) {
@@ -80,6 +81,7 @@ public class CommonSQL {
         // Double '' to make SQL safe
         return escapedSQL(folder) + "/" + escapedSQL(filename);
     }
+
     boolean songIdExists(SQLiteDatabase db, String songid) {
         String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = \"" + escapedSQL(songid) + "\"";
         Cursor cursor = db.rawQuery(Query, null);
@@ -90,6 +92,7 @@ public class CommonSQL {
         cursor.close();
         return true;
     }
+
     private String getSetString(Context c, String folder, String filename) {
         if (folder == null || folder.equals(c.getString(R.string.mainfoldername)) || folder.isEmpty()) {
             return "$**_" + filename + "_**$";
@@ -124,11 +127,13 @@ public class CommonSQL {
             }
         }
     }
+
     int deleteSong(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
         return db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " = ?",
                 new String[]{String.valueOf(escapedSQL(songId))});
     }
+
     public void updateSong(SQLiteDatabase db, Song song) {
         // Values have already been set to sqLite, just need updated in the table
         ContentValues values = new ContentValues();
@@ -173,7 +178,8 @@ public class CommonSQL {
             db.insert(SQLite.TABLE_NAME, null, values);
         }
     }
-    void insertFast(Context c, SQLiteDatabase db, StorageAccess storageAccess){
+
+    void insertFast(Context c, SQLiteDatabase db, StorageAccess storageAccess) {
         // Insert new values or ignore rows that exist already
         String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " ( songid, filename, folder ) VALUES ( ?, ?, ?)";
         db.beginTransactionNonExclusive();
@@ -207,15 +213,16 @@ public class CommonSQL {
             }
         }
     }
-    String getValue(Cursor cursor,String index) {
+
+    String getValue(Cursor cursor, String index) {
         return unescapedSQL(cursor.getString(cursor.getColumnIndex(index)));
     }
 
     // Search for values in the table
     ArrayList<Song> getSongsByFilters(Context c, SQLiteDatabase db, boolean searchByFolder,
-                                        boolean searchByArtist, boolean searchByKey, boolean searchByTag,
-                                        boolean searchByFilter, String folderVal, String artistVal,
-                                        String keyVal, String tagVal, String filterVal) {
+                                      boolean searchByArtist, boolean searchByKey, boolean searchByTag,
+                                      boolean searchByFilter, String folderVal, String artistVal,
+                                      String keyVal, String tagVal, String filterVal) {
         ArrayList<Song> songs = new ArrayList<>();
 
         String sqlMatch = "";
@@ -301,8 +308,9 @@ public class CommonSQL {
         Log.d("SQLiteHelper", "QUERY:  " + selectQuery);
         return songs;
     }
+
     Song getSpecificSong(SQLiteDatabase db, String folder, String filename) {
-        String songId = getAnySongId(folder,filename);
+        String songId = getAnySongId(folder, filename);
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "=\"" + songId + "\"";
         Song thisSong = new Song();
 
@@ -312,40 +320,40 @@ public class CommonSQL {
         if (cursor.moveToFirst()) {
             thisSong.setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
             thisSong.setSongid(unescapedSQL(songId));
-            thisSong.setFilename(getValue(cursor,SQLite.COLUMN_FILENAME));
-            thisSong.setFolder(getValue(cursor,SQLite.COLUMN_FOLDER));
-            thisSong.setTitle(getValue(cursor,SQLite.COLUMN_TITLE));
-            thisSong.setAuthor(getValue(cursor,SQLite.COLUMN_AUTHOR));
-            thisSong.setCopyright(getValue(cursor,SQLite.COLUMN_COPYRIGHT));
-            thisSong.setLyrics(getValue(cursor,SQLite.COLUMN_LYRICS));
-            thisSong.setHymnnum(getValue(cursor,SQLite.COLUMN_HYMNNUM));
-            thisSong.setCcli(getValue(cursor,SQLite.COLUMN_CCLI));
-            thisSong.setTheme(getValue(cursor,SQLite.COLUMN_THEME));
-            thisSong.setAlttheme(getValue(cursor,SQLite.COLUMN_ALTTHEME));
-            thisSong.setUser1(getValue(cursor,SQLite.COLUMN_USER1));
-            thisSong.setUser2(getValue(cursor,SQLite.COLUMN_USER2));
-            thisSong.setUser3(getValue(cursor,SQLite.COLUMN_USER3));
-            thisSong.setKey(getValue(cursor,SQLite.COLUMN_KEY));
-            thisSong.setTimesig(getValue(cursor,SQLite.COLUMN_TIMESIG));
-            thisSong.setAka(getValue(cursor,SQLite.COLUMN_AKA));
-            thisSong.setAutoscrolldelay(getValue(cursor,SQLite.COLUMN_AUTOSCROLL_DELAY));
-            thisSong.setAutoscrolllength(getValue(cursor,SQLite.COLUMN_AUTOSCROLL_LENGTH));
-            thisSong.setMetronomebpm(getValue(cursor,SQLite.COLUMN_METRONOME_BPM));
-            thisSong.setPadfile(getValue(cursor,SQLite.COLUMN_PAD_FILE));
-            thisSong.setPadloop(getValue(cursor,SQLite.COLUMN_PAD_LOOP));
-            thisSong.setMidi(getValue(cursor,SQLite.COLUMN_MIDI));
-            thisSong.setMidiindex(getValue(cursor,SQLite.COLUMN_MIDI_INDEX));
-            thisSong.setCapo(getValue(cursor,SQLite.COLUMN_CAPO));
-            thisSong.setCapoprint(getValue(cursor,SQLite.COLUMN_CAPO_PRINT));
-            thisSong.setCustomChords((getValue(cursor,SQLite.COLUMN_CUSTOM_CHORDS)));
-            thisSong.setNotes(getValue(cursor,SQLite.COLUMN_NOTES));
-            thisSong.setAbc(getValue(cursor,SQLite.COLUMN_ABC));
-            thisSong.setLinkyoutube(getValue(cursor,SQLite.COLUMN_LINK_YOUTUBE));
-            thisSong.setLinkweb(getValue(cursor,SQLite.COLUMN_LINK_WEB));
-            thisSong.setLinkaudio(getValue(cursor,SQLite.COLUMN_LINK_AUDIO));
-            thisSong.setLinkother(getValue(cursor,SQLite.COLUMN_LINK_OTHER));
-            thisSong.setPresentationorder(getValue(cursor,SQLite.COLUMN_PRESENTATIONORDER));
-            thisSong.setFiletype(getValue(cursor,SQLite.COLUMN_FILETYPE));
+            thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
+            thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
+            thisSong.setTitle(getValue(cursor, SQLite.COLUMN_TITLE));
+            thisSong.setAuthor(getValue(cursor, SQLite.COLUMN_AUTHOR));
+            thisSong.setCopyright(getValue(cursor, SQLite.COLUMN_COPYRIGHT));
+            thisSong.setLyrics(getValue(cursor, SQLite.COLUMN_LYRICS));
+            thisSong.setHymnnum(getValue(cursor, SQLite.COLUMN_HYMNNUM));
+            thisSong.setCcli(getValue(cursor, SQLite.COLUMN_CCLI));
+            thisSong.setTheme(getValue(cursor, SQLite.COLUMN_THEME));
+            thisSong.setAlttheme(getValue(cursor, SQLite.COLUMN_ALTTHEME));
+            thisSong.setUser1(getValue(cursor, SQLite.COLUMN_USER1));
+            thisSong.setUser2(getValue(cursor, SQLite.COLUMN_USER2));
+            thisSong.setUser3(getValue(cursor, SQLite.COLUMN_USER3));
+            thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
+            thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));
+            thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
+            thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));
+            thisSong.setAutoscrolllength(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_LENGTH));
+            thisSong.setMetronomebpm(getValue(cursor, SQLite.COLUMN_METRONOME_BPM));
+            thisSong.setPadfile(getValue(cursor, SQLite.COLUMN_PAD_FILE));
+            thisSong.setPadloop(getValue(cursor, SQLite.COLUMN_PAD_LOOP));
+            thisSong.setMidi(getValue(cursor, SQLite.COLUMN_MIDI));
+            thisSong.setMidiindex(getValue(cursor, SQLite.COLUMN_MIDI_INDEX));
+            thisSong.setCapo(getValue(cursor, SQLite.COLUMN_CAPO));
+            thisSong.setCapoprint(getValue(cursor, SQLite.COLUMN_CAPO_PRINT));
+            thisSong.setCustomChords((getValue(cursor, SQLite.COLUMN_CUSTOM_CHORDS)));
+            thisSong.setNotes(getValue(cursor, SQLite.COLUMN_NOTES));
+            thisSong.setAbc(getValue(cursor, SQLite.COLUMN_ABC));
+            thisSong.setLinkyoutube(getValue(cursor, SQLite.COLUMN_LINK_YOUTUBE));
+            thisSong.setLinkweb(getValue(cursor, SQLite.COLUMN_LINK_WEB));
+            thisSong.setLinkaudio(getValue(cursor, SQLite.COLUMN_LINK_AUDIO));
+            thisSong.setLinkother(getValue(cursor, SQLite.COLUMN_LINK_OTHER));
+            thisSong.setPresentationorder(getValue(cursor, SQLite.COLUMN_PRESENTATIONORDER));
+            thisSong.setFiletype(getValue(cursor, SQLite.COLUMN_FILETYPE));
         }
 
         try {
@@ -356,12 +364,13 @@ public class CommonSQL {
 
         return thisSong;
     }
+
     public boolean songExists(SQLiteDatabase db, String folder, String filename) {
-        String songId = getAnySongId(folder,filename);
+        String songId = getAnySongId(folder, filename);
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "=\"" + songId + "\"";
         Cursor cursor = db.rawQuery(sql, null);
         int count;
-        if (cursor!=null) {
+        if (cursor != null) {
             // Error, so not found
             return false;
         } else {
@@ -370,7 +379,8 @@ public class CommonSQL {
         cursor.close();
         return count > 0;
     }
-    public ArrayList<String> getFolders (SQLiteDatabase db) {
+
+    public ArrayList<String> getFolders(SQLiteDatabase db) {
         ArrayList<String> folders = new ArrayList<>();
         String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
                 SQLite.COLUMN_FOLDER + " ASC";
@@ -379,14 +389,22 @@ public class CommonSQL {
         cursor.moveToFirst();
         do {
             String s = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
-            if (s!=null && !s.isEmpty()) {
+            if (s != null && !s.isEmpty()) {
                 folders.add(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER))));
             }
         } while (cursor.moveToNext());
         cursor.close();
         return folders;
     }
+
+
+
+
+    // TODO go through the non-opensong database and populate that data
+    // TODO delete stuff from the non-opensong database where the file has gone
 }
+
+
 
 
 /*

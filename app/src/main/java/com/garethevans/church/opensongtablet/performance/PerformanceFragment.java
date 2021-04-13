@@ -242,9 +242,10 @@ public class PerformanceFragment extends Fragment {
             Log.d(TAG, "mainActivityInterface.getSong().getFolder()="+mainActivityInterface.getSong().getFolder());
             Log.d(TAG, "mainActivityInterface.getSong().getFilename()="+mainActivityInterface.getSong().getFilename());
 
-            mainActivityInterface.setSong(loadSong.doLoadSong(getContext(),storageAccess,preferences,processSong,
-                    showToast, mainActivityInterface.getLocale(), songListBuildIndex, sqLiteHelper, commonSQL,
-                    mainActivityInterface.getSong(), convertOnSong, convertChoPro, false));
+            mainActivityInterface.setSong(loadSong.doLoadSong(getContext(),mainActivityInterface,
+                    storageAccess,preferences,processSong, showToast, mainActivityInterface.getLocale(),
+                    songListBuildIndex, sqLiteHelper, commonSQL, mainActivityInterface.getSong(),
+                    convertOnSong, convertChoPro, false));
 
             requireActivity().runOnUiThread(this::prepareSongViews);
             mainActivityInterface.moveToSongInSongMenu();

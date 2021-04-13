@@ -1,12 +1,11 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
@@ -33,7 +32,8 @@ public class LoadSong {
     private boolean needtoloadextra = false;
     private Uri uri;
 
-    public Song doLoadSong(Context c, StorageAccess storageAccess, Preferences preferences,
+    public Song doLoadSong(Context c, MainActivityInterface mainActivityInterface,
+                           StorageAccess storageAccess, Preferences preferences,
                            ProcessSong processSong, ShowToast showToast, Locale locale,
                            SongListBuildIndex songListBuildIndex, SQLiteHelper sqLiteHelper,
                            CommonSQL commonSQL, Song song, ConvertOnSong convertOnSong,
@@ -43,51 +43,63 @@ public class LoadSong {
         // If not, we load up from the xml file
         // We also load from the file if it is a custom file (pdf and images are dealt with separately)
 
+        // Get the song folder/filename from the sent song object
+        String folder = song.getFolder();
+        String filename = song.getFilename();
+
+        // Clear the song object then add the folder filename back
+        song = new Song();
+        song.setFolder(folder);
+        song.setFilename(filename);
+
+        // We will add to this song and then return it to the MainActivity object
+
         if (!songListBuildIndex.getIndexComplete() || song.getFolder().contains("../")) {
             // This is set to true once the index is completed
             Log.d(TAG, "Load from file");
-            return doLoadSongFile(c,storageAccess,preferences,processSong,showToast,locale,
-                    sqLiteHelper,commonSQL,song,convertOnSong,convertChoPro,indexing);
+            doLoadSongFile(c, mainActivityInterface, storageAccess, preferences, processSong,
+                    showToast, locale, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro, indexing);
         } else {
-            Log.d("LoadSong","Loading from the database");
-            return sqLiteHelper.getSpecificSong(c,commonSQL,song.getFolder(),song.getFilename());
+            Log.d("LoadSong", "Loading from the database");
+            song = sqLiteHelper.getSpecificSong(c, commonSQL, song.getFolder(), song.getFilename());
         }
-
-
+        return song;
     }
-    public Song doLoadSongFile(Context c, StorageAccess storageAccess, Preferences preferences,
-                             ProcessSong processSong, ShowToast showToast, Locale locale,
-                             SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song,
-                             ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, boolean indexing) {
 
-        // This extracts what it can from the song, and returning an updated SQLite song object.
+    public void doLoadSongFile(Context c, MainActivityInterface mainActivityInterface,
+                               StorageAccess storageAccess, Preferences preferences,
+                               ProcessSong processSong, ShowToast showToast, Locale locale,
+                               SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song,
+                               ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, boolean indexing) {
+
+        // This extracts what it can from the song, and returning an updated song object.
         // If we are indexing, that's it.  If not, we update the statics with the SQL values
         // Set the song load status to false (helps check if it didn't load).  This is set to true after success
 
         // Once indexing has finished, we load from the database instead, so this is only for indexing and impatient users!
 
-        Log.d(TAG, "song.getFilename()="+song.getFilename());
+        Log.d(TAG, "song.getFilename()=" + song.getFilename());
 
-        if (song.getFolder()==null || song.getFolder().isEmpty()) {
+        if (song.getFolder() == null || song.getFolder().isEmpty()) {
             song.setFolder(c.getString(R.string.mainfoldername));
         }
-        if (song.getFilename()==null || song.getFilename().isEmpty()) {
+        if (song.getFilename() == null || song.getFilename().isEmpty()) {
             song.setFilename("Welcome to OpenSongApp");
         }
         if (!indexing) {
-            preferences.setMyPreferenceBoolean(c,"songLoadSuccess",false);
+            preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
         }
 
         String where = "Songs";
         if (song.getFolder().startsWith("../")) {
             where = song.getFolder();
-            where = where.replace("../","");
+            where = where.replace("../", "");
             String folder = "";
             if (where.contains("/")) {
                 folder = where.substring(where.indexOf("/"));
-                where = where.substring(0,where.indexOf("/"));
-                folder = folder.replace("/","");
-                where = where.replace("/","");
+                where = where.substring(0, where.indexOf("/"));
+                folder = folder.replace("/", "");
+                where = where.replace("/", "");
 
             }
             song.setFolder(folder);
@@ -97,21 +109,24 @@ public class LoadSong {
         song.setFiletype(getFileTypeByExtension(song.getFilename()));
 
         // Get the uri for the song - we know it exists as we found it!
-        uri = storageAccess.getUriForItem(c,preferences,where,song.getFolder(),song.getFilename());
+        uri = storageAccess.getUriForItem(c, preferences, where, song.getFolder(),
+                song.getFilename());
 
         // Get the file encoding (this also tests that the file exists)
         //private String filetype, utf, where = "Songs", folder, origfolder;
-        String utf = getUTF(c, storageAccess, preferences, song.getFolder(), song.getFilename(), song.getFiletype());
+        String utf = getUTF(c, storageAccess, preferences, song.getFolder(),
+                song.getFilename(), song.getFiletype());
 
         // Try to load the song as an xml
         if (song.getFilename().equals("Welcome to OpenSongApp")) {
-            song.showWelcomeSong(c,song);
+            song.showWelcomeSong(c, song);
 
         } else if (song.getFiletype().equals("XML")) {
             // Here we go loading the song
             // This returns an update sqLite song object if it works
             try {
-                song = readFileAsXML(c, storageAccess, preferences, processSong, showToast, where, song, uri, utf, indexing);
+                readFileAsXML(c, mainActivityInterface, storageAccess, preferences, processSong,
+                        song, showToast, where, uri, utf, indexing);
             } catch (XmlPullParserException | IOException e) {
                 e.printStackTrace();
             }
@@ -121,53 +136,54 @@ public class LoadSong {
         if (!song.getFiletype().equals("XML") && !song.getFiletype().equals("PDF") &&
                 !song.getFiletype().equals("IMG") && !song.getFiletype().equals("DOC")) {
             // This will try to import text, chordpro or onsong and update the lyrics field
-            song.setLyrics(getSongAsText(c,storageAccess,preferences, where, song.getFolder(), song.getFilename()));
+            song.setLyrics(getSongAsText(c, storageAccess, preferences, where, song.getFolder(), song.getFilename()));
             song.setTitle(song.getFilename());
-            if (song.getLyrics()!=null && !song.getLyrics().isEmpty()) {
-                preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
+            if (song.getLyrics() != null && !song.getLyrics().isEmpty()) {
+                preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
             }
         }
 
         if (song.getFiletype().equals("iOS")) {
             // Run the OnSongConvert script
-            convertOnSong.convertTextToTags(c,storageAccess,preferences,processSong,
-                    convertChoPro,sqLiteHelper,commonSQL,uri,song);
+            convertOnSong.convertTextToTags(c, storageAccess, preferences, processSong,
+                    convertChoPro, sqLiteHelper, commonSQL, uri, song);
 
             // Now read in the proper OpenSong xml file
             try {
-                readFileAsXML(c,storageAccess,preferences,processSong,showToast, where, song, uri, utf, indexing);
+                readFileAsXML(c, mainActivityInterface, storageAccess, preferences, processSong, song,
+                        showToast, where, uri, utf, indexing);
             } catch (Exception e) {
                 Log.d("LoadXML", "Error performing grabOpenSongXML()");
             }
         } else if (song.getFiletype().equals("CHO") || lyricsHaveChoProTags(song.getLyrics())) {
             // Run the ChordProConvert script
-            song = convertChoPro.convertTextToTags(c,storageAccess,preferences,processSong,sqLiteHelper,
+            song = convertChoPro.convertTextToTags(c, storageAccess, preferences, processSong, sqLiteHelper,
                     commonSQL, uri, song);
 
             // Now read in the proper OpenSong xml file
             try {
-                readFileAsXML(c,storageAccess,preferences,processSong,showToast,where,song,uri, utf,indexing);
+                readFileAsXML(c, mainActivityInterface, storageAccess, preferences, processSong, song,
+                        showToast, where, uri, utf, indexing);
             } catch (Exception e) {
                 Log.d("LoadXML", "Error performing grabOpenSongXML()");
             }
         }
 
         // Fix all the rogue code
-        song.setLyrics(processSong.parseLyrics(c,locale,song));
+        song.setLyrics(processSong.parseLyrics(c, locale, song));
 
 
         // Finally if we aren't indexing, set the static variables to match the SQLite object
         // Also build the XML file back incase we've updated content
         if (!indexing) {
             // Check if the song has been loaded (will now have a lyrics value)
-            if (!song.getFilename().equals("Welcome to OpenSongApp") && song.getLyrics()!=null && !song.getLyrics().isEmpty()) {
+            if (!song.getFilename().equals("Welcome to OpenSongApp") && song.getLyrics() != null && !song.getLyrics().isEmpty()) {
                 // Song was loaded correctly and was xml format
                 preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
             }
-            preferences.setMyPreferenceString(c,"songfilename",song.getFilename());
-            preferences.setMyPreferenceString(c,"whichSongFolder",song.getFolder());
+            preferences.setMyPreferenceString(c, "songfilename", song.getFilename());
+            preferences.setMyPreferenceString(c, "whichSongFolder", song.getFolder());
         }
-    return song;
     }
 
     private boolean lyricsHaveChoProTags(String lyrics) {
@@ -221,7 +237,7 @@ public class LoadSong {
             folder = folder.replace("../", "");
         }
         uri = storageAccess.getUriForItem(c, preferences, where, folder, filename);
-        if (storageAccess.uriExists(c,uri)) {
+        if (storageAccess.uriExists(c, uri)) {
             if (filetype.equals("XML") && !filename.equals("Welcome to OpenSongApp")) {
                 return storageAccess.getUTFEncoding(c, uri);
             } else {
@@ -232,12 +248,14 @@ public class LoadSong {
         }
     }
 
-    public Song readFileAsXML(Context c, StorageAccess storageAccess, Preferences preferences,
-                              ProcessSong processSong, ShowToast showToast, String where, Song song, Uri uri, String utf, boolean indexing)
+    public void readFileAsXML(Context c, MainActivityInterface mainActivityInterface,
+                              StorageAccess storageAccess, Preferences preferences,
+                              ProcessSong processSong, Song song, ShowToast showToast, String where,
+                              Uri uri, String utf, boolean indexing)
             throws XmlPullParserException, IOException {
 
         // Extract all of the key bits of the song
-        if (storageAccess.uriIsFile(c,uri)) {
+        if (storageAccess.uriIsFile(c, uri)) {
             InputStream inputStream = storageAccess.getInputStream(c, uri);
             XmlPullParserFactory factory;
             factory = XmlPullParserFactory.newInstance();
@@ -258,7 +276,7 @@ public class LoadSong {
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 // Try to read in the xml
-                                song.setAuthor(fixXML(c, preferences, storageAccess, showToast, song,"author",where));
+                                song.setAuthor(fixXML(c, preferences, storageAccess, showToast, song, "author", where));
                             }
                             break;
                         case "copyright":
@@ -278,7 +296,7 @@ public class LoadSong {
                             } catch (Exception e) {
                                 // Try to read in the xml
                                 e.printStackTrace();
-                                song.setLyrics(fixXML(c, preferences, storageAccess,showToast, song,"lyrics",where));
+                                song.setLyrics(fixXML(c, preferences, storageAccess, showToast, song, "lyrics", where));
                             }
                             break;
                         case "ccli":
@@ -379,82 +397,59 @@ public class LoadSong {
                     song.setFiletype("?");
                 }
             }
+            inputStream.close();
 
             if (song.getFilename().equals("Welcome to OpenSongApp")) {
-                song = setNotFound(c);
+                mainActivityInterface.setSong(setNotFound(c));
             }
 
             // If we really have to load extra stuff, lets do it as an asynctask
+            // The results are sent back via mainActivityInterface
             if (needtoloadextra && !indexing) {
-                inputStream = storageAccess.getInputStream(c, uri);
-                SideTask loadextra = new SideTask(c,storageAccess,inputStream,song,uri);
-                loadextra.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            }
-        }
-        return song;
-    }
+                String filename = song.getFilename();
+                new Thread(() -> {
+                    InputStream extraIinputStream = storageAccess.getInputStream(c, uri);
+                    String full_text;
+                    try {
+                        if (validReadableFile(c, storageAccess, uri, filename)) {
+                            full_text = storageAccess.readTextFileToString(extraIinputStream);
+                        } else {
+                            full_text = "";
+                        }
+                    } catch (Exception e) {
+                        Log.d("LoadXML", "Error reading text file");
+                        full_text = "";
+                    }
 
-
-
-    // Deal with the additional mExtraStuff1&2 - only needed if we are editing/saving the song
-    @SuppressLint("StaticFieldLeak")
-    private static class SideTask extends AsyncTask<String, Void, String> {
-
-        final InputStream inputStream;
-        StorageAccess storageAccess;
-        String filename;
-        final Uri uri;
-        final Context c;
-        Song song;
-
-        SideTask(Context c, StorageAccess storageAccess, InputStream inputStream, Song song, Uri uri) {
-            this.inputStream = inputStream;
-            this.c = c;
-            this.storageAccess = storageAccess;
-            this.uri = uri;
-            this.song = song;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String full_text;
-            try {
-                if (validReadableFile(c, storageAccess, uri, filename)) {
-                    full_text = storageAccess.readTextFileToString(inputStream);
-                } else {
-                    full_text = "";
-                }
-            } catch (Exception e) {
-                Log.d("LoadXML", "Error reading text file");
-                full_text = "";
-            }
-
-            return full_text;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            try {
-                int style_start = result.indexOf("<style");
-                int style_end = result.indexOf("</style>");
-                if (style_end > style_start && style_start > -1) {
-                    song.setExtraStuff1(result.substring(style_start, style_end + 8));
-                }
-                int backgrounds_start = result.indexOf("<backgrounds");
-                int backgrounds_end = result.indexOf("</backgrounds>");
-                if (backgrounds_end < 0) {
-                    backgrounds_end = result.indexOf("/>", backgrounds_start) + 2;
-                } else {
-                    backgrounds_end += 14;
-                }
-                if (backgrounds_end > backgrounds_start && backgrounds_start > -1) {
-                    song.setExtraStuff2(result.substring(backgrounds_start, backgrounds_end));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                    try {
+                        int style_start = full_text.indexOf("<style");
+                        int style_end = full_text.indexOf("</style>");
+                        if (style_end > style_start && style_start > -1) {
+                            mainActivityInterface.getSong().setExtraStuff1(full_text.substring(style_start, style_end + 8));
+                        }
+                        int backgrounds_start = full_text.indexOf("<backgrounds");
+                        int backgrounds_end = full_text.indexOf("</backgrounds>");
+                        if (backgrounds_end < 0) {
+                            backgrounds_end = full_text.indexOf("/>", backgrounds_start) + 2;
+                        } else {
+                            backgrounds_end += 14;
+                        }
+                        if (backgrounds_end > backgrounds_start && backgrounds_start > -1) {
+                            mainActivityInterface.getSong().setExtraStuff2(full_text.substring(backgrounds_start, backgrounds_end));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        extraIinputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).start();
             }
         }
     }
+
     private static boolean validReadableFile(Context c, StorageAccess storageAccess, Uri uri, String filename) {
         boolean isvalid = false;
         // Get length of file in Kb

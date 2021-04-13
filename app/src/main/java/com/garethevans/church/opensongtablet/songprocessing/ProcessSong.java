@@ -18,7 +18,6 @@ import android.os.ParcelFileDescriptor;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -2041,7 +2040,6 @@ public class ProcessSong {
         } else {
             filename += "_l.png";
         }
-        Log.d(TAG,"filname="+filename);
         return filename;
     }
     public Bitmap getHighlighterFile(Context c, Preferences preferences, StorageAccess storageAccess,
@@ -2054,7 +2052,6 @@ public class ProcessSong {
             filename = getHighlighterFilename(song,false);
         }
         Uri uri = storageAccess.getUriForItem(c,preferences,"Highlighter","",filename);
-        Log.d(TAG,"uri="+uri);
         if (storageAccess.uriExists(c,uri)) {
             // Load in the bitmap
             try {

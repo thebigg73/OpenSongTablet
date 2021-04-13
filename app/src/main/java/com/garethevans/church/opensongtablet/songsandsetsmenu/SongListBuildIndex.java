@@ -7,6 +7,7 @@ import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
@@ -47,12 +48,14 @@ public class SongListBuildIndex {
         return indexComplete;
     }
 
-    public void fullIndex(Context c, Preferences preferences, StorageAccess storageAccess,
+    public void fullIndex(Context c,
+                          Preferences preferences, StorageAccess storageAccess,
                           SQLiteHelper sqLiteHelper, NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper,
                           CommonSQL commonSQL, ProcessSong processSong,
                           ConvertChoPro convertChoPro, ConvertOnSong convertOnSong,
                           ConvertTextSong textSongConvert, ShowToast showToast, LoadSong loadSong) {
 
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) c;
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
 
@@ -87,7 +90,9 @@ public class SongListBuildIndex {
                         if (filenameIsOk(song.getFilename())) {
                             try {
                                 // All going well all the other details for sqLite are now set!
-                                song = loadSong.readFileAsXML(c, storageAccess, preferences, processSong, showToast, "Songs", song, uri, utf, true);
+                                loadSong.readFileAsXML(c, mainActivityInterface,storageAccess,
+                                        preferences, processSong, song,showToast, "Songs",
+                                        uri, utf, true);
 
                             } catch (Exception e) {
                                 // OK, so this wasn't an XML file.  Try to extract as something else
@@ -106,6 +111,7 @@ public class SongListBuildIndex {
                         if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
                             nonOpenSongSQLiteHelper.updateSong(c, commonSQL, storageAccess, preferences, song);
                         }
+                        inputStream.close();
                     }
                 }
             } while (cursor.moveToNext());

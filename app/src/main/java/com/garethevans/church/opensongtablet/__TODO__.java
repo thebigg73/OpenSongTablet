@@ -25,5 +25,8 @@ public class __TODO__ {
 
     Need to figure out where to add..
     section filtering (currently in old extra information
+
+    storage - when moving or renaming files.  fix highlighter notes to match
+    storage - when moving pdf/img files, update the persistent nonopensong database
      */
 }

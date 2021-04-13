@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,7 +124,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         if (songListSearchByFolder && folderSearchVal.isEmpty()) {
             // Likely the first run
             folderSearchVal = song.getFolder();
-            myView.filters.folderSearch.setText(folderSearchVal);
+            // Do on the UI thread
+            myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(folderSearchVal));
         }
         songListSearchByArtist = preferences.getMyPreferenceBoolean(getActivity(), "songListSearchByArtist", false);
         songListSearchByKey = preferences.getMyPreferenceBoolean(getActivity(), "songListSearchByKey", false);
@@ -195,7 +195,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void setListeners() {
         myView.actionFAB.setOnClickListener(v  -> {
-            Log.d("d","myView.actionFAB pressed.  active="+songButtonActive);
             if (songButtonActive) {
                 songButtonActive = false;
                 Handler h = new Handler();
@@ -274,9 +273,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void showHideRows(TextInputLayout tr, boolean show) {
         if (show) {
-            tr.setVisibility(View.VISIBLE);
+            tr.post(() -> tr.setVisibility(View.VISIBLE));
         } else {
-            tr.setVisibility(View.GONE);
+            tr.post(() -> tr.setVisibility(View.GONE));
         }
     }
     // Get the values from the spinners and edit texts for filtering
@@ -313,7 +312,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                        artistSearchVal, keySearchVal, tagSearchVal, filterSearchVal);
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("SongMenu","No songs found.  Could just be that storage isn't set properly yet");
             }
             requireActivity().runOnUiThread(this::updateSongList);
         }).start();
@@ -373,8 +371,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                             myView.songListRecyclerView.getLayoutManager()!=null) {
                         String myval = selectedIndex.getText().toString();
                         Integer obj = map.get(myval);
-                        Log.d("SongMenuFragment","obj="+obj);
-                       
+
                         songListLayoutManager.scrollToPositionWithOffset(obj,0);
                         mainActivityInterface.hideKeyboard();
                     }
@@ -388,7 +385,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     @Override
     public void onItemClicked(int position, String folder, String filename) {
-        Log.d(TAG, "psotion="+position);
         mainActivityInterface.hideKeyboard();
         mainActivityInterface.doSongLoad(folder,filename);
     }
@@ -432,7 +428,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void moveToSongInMenu(Song song) {
         //scroll to the song in the song menu
         int index = indexOfSongInMenu(song);
-        Log.d("d","index="+index);
         try {
             if (index>=0) {
                 new Thread(() -> requireActivity().runOnUiThread(() -> songListLayoutManager.scrollToPositionWithOffset(index,0))).start();

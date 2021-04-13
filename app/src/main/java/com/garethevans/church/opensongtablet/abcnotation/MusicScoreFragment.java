@@ -18,7 +18,6 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -28,7 +27,6 @@ public class MusicScoreFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private Preferences preferences;
     private ABCNotation abcNotation;
-    private Song song;
     private ProcessSong processSong;
     private StorageAccess storageAccess;
     private SQLiteHelper sqLiteHelper;
@@ -63,7 +61,6 @@ public class MusicScoreFragment extends Fragment {
     private void setHelpers() {
         preferences = mainActivityInterface.getPreferences();
         abcNotation = new ABCNotation();
-        song = mainActivityInterface.getSong();
         processSong = mainActivityInterface.getProcessSong();
         storageAccess = mainActivityInterface.getStorageAccess();
         sqLiteHelper = mainActivityInterface.getSQLiteHelper();
@@ -72,7 +69,7 @@ public class MusicScoreFragment extends Fragment {
     }
 
     private void setViews() {
-        abcNotation.setWebView(myView.abcWebView,song,mainActivityInterface.getWhattodo().equals("editabc"));
+        abcNotation.setWebView(myView.abcWebView,mainActivityInterface.getSong(),mainActivityInterface.getWhattodo().equals("editabc"));
         myView.abcWebView.post(() -> myView.abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp"));
     }
 
@@ -80,21 +77,21 @@ public class MusicScoreFragment extends Fragment {
         @JavascriptInterface
         public void receiveString(String myJsString) {
             // String received from WebView
-            if (!myJsString.equals(abcNotation.getSongInfo(song))) {
+            if (!myJsString.equals(abcNotation.getSongInfo(mainActivityInterface.getSong()))) {
                 // Something has changed
-                song.setAbc(myJsString);
-                String songXML = processSong.getXML(song);
+                mainActivityInterface.getSong().setAbc(myJsString);
+                String songXML = processSong.getXML(mainActivityInterface.getSong());
 
                 // Write the updated song file
                 storageAccess.doStringWriteToFile(requireContext(), preferences, "Songs",
-                        song.getFolder(), song.getFilename(), songXML);
+                        mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(), songXML);
 
                 // Update the database
-                if (song.getIsSong()) {
-                    sqLiteHelper.updateSong(requireContext(), commonSQL, song);
+                if (mainActivityInterface.getSong().getIsSong()) {
+                    sqLiteHelper.updateSong(requireContext(), commonSQL, mainActivityInterface.getSong());
                 } else {
                     nonOpenSongSQLiteHelper.updateSong(requireContext(), commonSQL, storageAccess,
-                            preferences, song);
+                            preferences, mainActivityInterface.getSong());
                 }
                 vieworedit(false);
             }
@@ -114,9 +111,7 @@ public class MusicScoreFragment extends Fragment {
         } else {
             mainActivityInterface.setWhattodo("viewabc");
             myView.editABC.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_pencil_white_36dp,null));
-            myView.editABC.setOnClickListener(v -> {
-                vieworedit(true);
-            });
+            myView.editABC.setOnClickListener(v -> vieworedit(true));
         }
         setViews();
     }

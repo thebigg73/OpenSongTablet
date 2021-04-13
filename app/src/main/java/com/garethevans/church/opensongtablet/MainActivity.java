@@ -62,7 +62,6 @@ import com.garethevans.church.opensongtablet.controls.PedalsFragment;
 import com.garethevans.church.opensongtablet.controls.SwipeFragment;
 import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
-import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
@@ -158,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     private final String TAG = "MainActivity";
     private ActivityMainBinding activityMainBinding;
-    private AppBarMainBinding appBarMainBinding;
 
     private AppBarConfiguration mAppBarConfiguration;
     private StorageAccess storageAccess;
@@ -285,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Initialise the views for the activity
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        appBarMainBinding = activityMainBinding.appBarMain;
         drawerLayout = activityMainBinding.drawerLayout;
 
         View view = activityMainBinding.getRoot();
@@ -406,7 +403,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     @Override
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
-        Log.d(TAG,"ChangeActionBarVisisble");
         if (!whichMode.equals("Presentation") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
             // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
             activityMainBinding.appBarMain.contentMain.getRoot().setTop(0);
@@ -592,6 +588,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     // Deal with the song menu
     @Override
     public void quickSongMenuBuild() {
+        Log.d(TAG,"quickSongMenuBuild()");
         fullIndexRequired = true;
         ArrayList<String> songIds = new ArrayList<>();
         try {
@@ -620,9 +617,18 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void fullIndex() {
         if (fullIndexRequired) {
-            fullIndexRequired = false;
-            // TODO - Code to run full index and update the song menu
-            Log.d(TAG,"About to run a full index - TODO");
+            Log.d(TAG,"About to run a full index");
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    songListBuildIndex.fullIndex(getActivity(),preferences,storageAccess,sqLiteHelper,
+                            nonOpenSongSQLiteHelper,commonSQL,processSong,convertChoPro,convertOnSong,
+                            convertTextSong,showToast,loadSong);
+                    Log.d(TAG,"index done");
+                    songMenuFragment.updateSongMenu(song);
+                }
+            }).start();
+
         }
     }
     @Override
@@ -981,24 +987,16 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void doSongLoad(String folder, String filename) {
-        Log.d(TAG,"doSongLoad() called");
-        Log.d(TAG, "song.getFolder()="+song.getFolder());
-        Log.d(TAG, "song.getFilename()="+song.getFilename());
-
-
         if (whichMode.equals("Presentation")) {
             if (presentationFragment!=null && presentationFragment.isAdded()) {
                 presentationFragment.doSongLoad(folder,filename);
             } else {
-                Log.d(TAG, "presentationFragment not available");
                 navigateToFragment(null,R.id.performanceFragment);
             }
         } else {
-            Log.d(TAG,"Sending info to performance frag");
             if (performanceFragment!=null && performanceFragment.isAdded()) {
                 performanceFragment.doSongLoad(folder,filename);
             } else {
-                Log.d(TAG, "performanceFragment not available");
                 navigateToFragment(null,R.id.presentationFragment);
             }
         }
@@ -1318,7 +1316,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             updateFragment(fragName,callingFragment,arguments);
         }
         // Now build it properly
-        //indexSongs();
+        indexSongs();
     }
     @Override
     public void doExport(String what) {
@@ -1358,7 +1356,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         if (requestCode==12345) {
             // We initiated an OpenSongApp backupt
-            Log.d(TAG,"OSB created");
             preferences.setMyPreferenceInt(this,"runssincebackup",0);
 
         } else if (intent!=null) {
@@ -1367,7 +1364,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             if (intent.getDataString()!=null) {
                 importFilename = storageAccess.getActualFilename(this,intent.getDataString());
             }
-            Log.d("d","importFilename="+importFilename+"  importUri="+importUri);
             if (requestCode == preferences.getFinalInt("REQUEST_FILE_CHOOSER")) {
                 Log.d(TAG,"File chosen: "+intent.getData());
             } else if (requestCode == preferences.getFinalInt("REQUEST_OSB_FILE")) {
@@ -1858,7 +1854,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     @Override
     public void getSwipeValues(int minDistance, int minHeight, int minTime) {
-        Log.d(TAG, "minDistance:"+minDistance+" minSpeed:"+minTime+" maxYerror:"+minHeight);
         if (swipeFragment!=null) {
             try {
                 ((SwipeFragment) swipeFragment).getSwipeValues(minDistance, minHeight, minTime);
