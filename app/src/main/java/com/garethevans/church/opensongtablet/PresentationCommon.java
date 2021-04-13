@@ -296,9 +296,11 @@ class PresentationCommon {
                 break;
         }
     }
-    void updateAlpha(Context c, Preferences preferences, ImageView projected_BackgroundImage, SurfaceView projected_SurfaceView) {
+    void updateAlpha(Context c, Preferences preferences, ImageView projected_BackgroundImage,
+                     SurfaceView projected_SurfaceView, LinearLayout projected_InfoBar) {
         projected_BackgroundImage.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
         projected_SurfaceView.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
+        projected_InfoBar.setAlpha(preferences.getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f));
     }
     void normalStartUp(Context c, Preferences preferences, ImageView projected_Logo) {
         // Animate out the default logo
@@ -333,7 +335,8 @@ class PresentationCommon {
         presentermode_ccli.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         // IV - Align alert text the same as lyrics
         presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign", Gravity.END));
-        presentermode_bottombit.setBackgroundColor(ColorUtils.setAlphaComponent(StaticVariables.cast_presoShadowColor, 100));
+        presentermode_bottombit.setBackgroundColor(ColorUtils.setAlphaComponent(StaticVariables.cast_presoShadowColor,
+                (int)(255*preferences.getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f))));
     }
     void presenterStartUp(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
                           final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
@@ -645,7 +648,8 @@ class PresentationCommon {
                 }
 
                 // IV - We will need to animate if we pass this test - no false positives
-                if ((StaticVariables.infoBarChangeRequired) || (!infoBarAlertState.equals(PresenterMode.alert_on))) {
+                boolean hide = preferences.getMyPreferenceBoolean(c,"presoInfoBarHide",true);
+                if (StaticVariables.infoBarChangeRequired || !infoBarAlertState.equals(PresenterMode.alert_on)) {
                     // IV - Fade to 0.01f to keep on screen
                     CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), 0.01f);
                     // IV - Delay lyrics to ensure new infobar is available for correct screen sizing - Set also to provide a good transition
@@ -681,7 +685,7 @@ class PresentationCommon {
                         } else {
                             if (infoBarAlertState.equals("Y")) {
                                 // IV - Align alert text the same as lyrics
-                                presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign", Gravity.END));
+                                presentermode_alert.setGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.END));
                                 presentermode_alert.setVisibility(View.VISIBLE);
                                 CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                             } else {

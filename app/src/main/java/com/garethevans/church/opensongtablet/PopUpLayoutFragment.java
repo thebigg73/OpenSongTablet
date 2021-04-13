@@ -54,7 +54,8 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private boolean firsttime = true;
 
-    private SwitchCompat toggleChordsButton, toggleAutoScaleButton, blockShadow, boldTextButton;
+    private SwitchCompat toggleChordsButton, toggleAutoScaleButton, blockShadow, boldTextButton,
+            presoInfoBarHide;
     private LinearLayout group_maxfontsize;
     private LinearLayout group_manualfontsize;
     private LinearLayout blockShadowAlphaLayout;
@@ -62,10 +63,10 @@ public class PopUpLayoutFragment extends DialogFragment {
     private SeekBar setMaxFontSizeProgressBar, setFontSizeProgressBar, presoAlphaProgressBar,
             setXMarginProgressBar, setYMarginProgressBar, presoTitleSizeSeekBar,
             presoAuthorSizeSeekBar, presoCopyrightSizeSeekBar, setRotationProgressBar,
-            presoAlertSizeSeekBar, presoTransitionTimeSeekBar, blockShadowAlpha;
+            presoAlertSizeSeekBar, presoTransitionTimeSeekBar, blockShadowAlpha, presoInfoBarAlphaSeekBar;
     private TextView maxfontSizePreview;
     private TextView fontSizePreview;
-    private TextView presoAlphaText;
+    private TextView presoAlphaText, presoInfoBarAlphaText;
     private LinearLayout lyrics_title_align;
     private TextView presoAlertText;
     private TextView presoTransitionTimeTextView;
@@ -163,6 +164,9 @@ public class PopUpLayoutFragment extends DialogFragment {
         info_left_align = V.findViewById(R.id.info_left_align);
         info_center_align = V.findViewById(R.id.info_center_align);
         info_right_align = V.findViewById(R.id.info_right_align);
+        presoInfoBarAlphaText = V.findViewById(R.id.presoInfoBarAlphaText);
+        presoInfoBarAlphaSeekBar = V.findViewById(R.id.presoInfoBarAlphaSeekBar);
+        presoInfoBarHide = V.findViewById(R.id.presoInfoBarHide);
         presoTitleSizeSeekBar = V.findViewById(R.id.presoTitleSizeSeekBar);
         presoAuthorSizeSeekBar = V.findViewById(R.id.presoAuthorSizeSeekBar);
         presoCopyrightSizeSeekBar = V.findViewById(R.id.presoCopyrightSizeSeekBar);
@@ -250,6 +254,11 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoAlphaProgressBar.setProgress((int)(alphaval*100.0f));
         newtext = (int) (alphaval * 100.0f) + " %";
         presoAlphaText.setText(newtext);
+        alphaval = preferences.getMyPreferenceFloat(getContext(),"presoInfoBarAlpha",0.5f);
+        presoInfoBarAlphaSeekBar.setProgress((int)(alphaval*100.0f));
+        newtext = (int) (alphaval * 100.0f) + " %";
+        presoInfoBarAlphaText.setText(newtext);
+        presoInfoBarHide.setChecked(!preferences.getMyPreferenceBoolean(getContext(),"presoInfoBarHide",true));
         presoTransitionTimeSeekBar.setMax(23);
         presoTransitionTimeSeekBar.setProgress(timeToSeekBarProgress());
         presoTransitionTimeTextView.setText(SeekBarProgressToText());
@@ -438,6 +447,11 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoCopyrightSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
         presoAlertSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
         presoAlphaProgressBar.setOnSeekBarChangeListener(new presoAlphaListener());
+        presoInfoBarAlphaSeekBar.setOnSeekBarChangeListener(new presoInfoBarAlphaListener());
+        presoInfoBarHide.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getContext(),"presoInfoBarHide",!b);
+            sendUpdateToScreen("info");
+        });
         setXMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
         setYMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
         chooseLogoButton.setOnClickListener(v -> {
@@ -747,6 +761,21 @@ public class PopUpLayoutFragment extends DialogFragment {
         public void onStopTrackingTouch(SeekBar seekBar) {
 
             preferences.setMyPreferenceFloat(getContext(),"presoBackgroundAlpha",((float)seekBar.getProgress() / 100f));
+            sendUpdateToScreen("backgrounds");
+        }
+    }
+    private class presoInfoBarAlphaListener implements SeekBar.OnSeekBarChangeListener {
+
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            String update = progress + " %";
+            presoInfoBarAlphaText.setText(update);
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+            preferences.setMyPreferenceFloat(getContext(),"presoInfoBarAlpha",((float)seekBar.getProgress() / 100f));
             sendUpdateToScreen("backgrounds");
         }
     }

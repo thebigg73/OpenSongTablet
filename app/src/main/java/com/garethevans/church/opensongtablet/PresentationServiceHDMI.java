@@ -175,7 +175,7 @@ import android.widget.TextView;
             presentationCommon.getDefaultColors(c,preferences);
         }
         private static void updateAlpha() {
-            presentationCommon.updateAlpha(c,preferences,projected_BackgroundImage,projected_SurfaceView);
+            presentationCommon.updateAlpha(c,preferences,projected_BackgroundImage,projected_SurfaceView,bottom_infobar);
         }
         private void normalStartUp() {
             // Animate out the default logo

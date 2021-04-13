@@ -739,4 +739,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="host">Host</string>
     <string name="client">Client</string>
     <string name="connections_actasclient">Act as client</string>
+    <string name="information_bar_opacity">Information bar opacity</string>
 </resources>

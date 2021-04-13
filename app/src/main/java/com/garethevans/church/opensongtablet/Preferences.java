@@ -353,6 +353,8 @@ public class Preferences extends Activity {
     presoBackgroundAlpha            float       The alpha value for the presentation background (def:1.0f)
     presoCopyrightTextSize          float       The size of the alert text in Presentation mode (def:12.0f)
     presoInfoAlign                  int         The align gravity of the info in presentation mode (Gravity.END)
+    presoInfoBarAlpha               float       The alpha of the preso info bar (def:0.5f)
+    presoInfoBarHide                boolean     Should the info bar automatically hide (def:true)
     presoLyricsAlign                int         The align gravity of the lyrics in presentation mode (Gravity.HORIZONTAL_CENTER)
     presoLyricsVAlign               int         The vertical align gravity of the lyrics in presentation mode (Gravity.TOP)
     presoLyricsBold                 boolean     Should the presentation text be bold (def:false)
