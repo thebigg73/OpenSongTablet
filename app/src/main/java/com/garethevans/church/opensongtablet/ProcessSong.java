@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfRenderer;
+import android.graphics.text.LineBreaker;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -1172,7 +1174,17 @@ public class ProcessSong extends Activity {
     private TableRow chordlinetoTableRow(Context c, Preferences preferences, int lyricsChordsColor,
                                          String[] chords, float fontsize) {
         TableRow chordrow = new TableRow(c);
-        chordrow.setLayoutParams(tablelayout_params());
+
+        int presoLyricsAlign = preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER);
+
+        if (StaticVariables.whichMode.equals("Presentation")) {
+            TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams();
+            layoutParams.width = TableLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            layoutParams.gravity = presoLyricsAlign;
+        } else {
+            chordrow.setLayoutParams(tablelayout_params());
+        }
 
         chordrow.setPadding(0, 0, 0, 0);
         int trimval = (int) (fontsize * preferences.getMyPreferenceFloat(c, "scaleChords", 1.0f) * preferences.getMyPreferenceFloat(c, "lineSpacing", 0.1f));
@@ -1189,17 +1201,28 @@ public class ProcessSong extends Activity {
                 bit = bit.substring(1);
             }
             TextView chordbit = new TextView(c);
-
             chordbit.setText(bit);
             chordbit.setTextSize(fontsize * preferences.getMyPreferenceFloat(c, "scaleChords", 1.0f));
             chordbit.setTextColor(lyricsChordsColor);
             chordbit.setTypeface(StaticVariables.typefaceChords);
-            if (preferences.getMyPreferenceBoolean(c, "displayBoldChordsHeadings", false)) {
-                chordbit.setPaintFlags(chordbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) &&
+                        !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
+                    chordbit.setSingleLine(true);
+                    chordbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
+                } else if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) &&
+                        preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
+                    chordbit.setSingleLine(true);
+                    chordbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
+                } else {
+                    chordbit.setSingleLine(true);
+                }
             }
 
+
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c, "trimLines", false)) {
-                chordbit.setSingleLine();
+                //chordbit.setSingleLine();
                 chordbit.setIncludeFontPadding(false);
                 chordbit.setGravity(Gravity.CENTER_VERTICAL);
                 chordbit.setPadding(0, -trimval, 0, -trimval);
@@ -1214,11 +1237,14 @@ public class ProcessSong extends Activity {
                                          String[] lyrics, float fontsize,
                                          StorageAccess storageAccess, Preferences preferences, Boolean presentation) {
         TableRow lyricrow = new TableRow(c);
-        if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
-                !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-            lyricrow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            lyricrow.setGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER));
+        int presoLyricsAlign = preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER);
+        int presotextAlign = presotextAlignFromGravity(presoLyricsAlign);
+        if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout) {
+            TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams();
+            layoutParams.width = TableLayout.LayoutParams.MATCH_PARENT;
+            layoutParams.height = TableLayout.LayoutParams.WRAP_CONTENT;
+            layoutParams.gravity = presoLyricsAlign;
+            lyricrow.setLayoutParams(layoutParams);
         } else {
             lyricrow.setLayoutParams(tablelayout_params());
         }
@@ -1258,7 +1284,7 @@ public class ProcessSong extends Activity {
 
             if (!StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
                 // IV - If lyric line only, assemble and do the line in one go
-                if ((presentation && !preferences.getMyPreferenceBoolean(c, "presoShowChords", true)) || (!presentation && !preferences.getMyPreferenceBoolean(c,"displayChords",true))) {
+                if ((presentation && !preferences.getMyPreferenceBoolean(c, "presoShowChords", true)) || (!presentation && !preferences.getMyPreferenceBoolean(c, "displayChords", true))) {
                     final StringBuilder sb = new StringBuilder();
                     sb.append(lyrics[0]);
                     for (int i = 1; i < lyrics.length; i++) {
@@ -1267,10 +1293,10 @@ public class ProcessSong extends Activity {
                     bit = sb.toString();
                     if (!StaticVariables.whichMode.equals("Performance")) {
                         // IV - Remove (....) comments when presenting lyrics only
-                        bit = bit.replaceAll("\\(.*?\\)","");
+                        bit = bit.replaceAll("\\(.*?\\)", "");
                     }
                     // IV -   Remove any bold marker, typical word splits, white space and then trim - beautify!
-                    bit = bit.replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
+                    bit = bit.replace("B_", "").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
                     // IV - 2 spaces added to reduce occurance of right edge overrun
                     if (StaticVariables.whichMode.equals("Performance")) {
                         bit = bit + "  ";
@@ -1289,14 +1315,15 @@ public class ProcessSong extends Activity {
 
             if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                     !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-                lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
-                lyricbit.setGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER));
+                lyricbit.setGravity(presoLyricsAlign);
+            } else {
+                lyricbit.setLayoutParams(tablerow_params());
             }
-            lyricbit.setLayoutParams(tablerow_params());
             // IV - Only use if the bit is not 'empty'.  This means the chord line spacing is used
             if (!bit.replace(" ", "").isEmpty()) {
-                lyricbit.setText(bit);
+                lyricbit.setText(bit.trim());
             }
 
             lyricbit.setTextSize(fontsize);
@@ -1313,7 +1340,22 @@ public class ProcessSong extends Activity {
                         !preferences.getMyPreferenceBoolean(c, "presoShowChords", false) && w > 0) {
                     TableRow.LayoutParams tllp = new TableRow.LayoutParams(w, TableRow.LayoutParams.WRAP_CONTENT);
                     lyricbit.setLayoutParams(tllp);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        lyricbit.setBreakStrategy(LineBreaker.BREAK_STRATEGY_BALANCED);
+                    }
                     lyricbit.setSingleLine(false);
+                    lyricbit.setGravity(presoLyricsAlign);
+                    lyricbit.setTextAlignment(presotextAlign);
+                    lyricbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
+                } else if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) &&
+                        preferences.getMyPreferenceBoolean(c, "presoShowChords", false)){
+                    TableRow.LayoutParams tllp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                    lyricbit.setLayoutParams(tllp);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        lyricbit.setBreakStrategy(LineBreaker.BREAK_STRATEGY_BALANCED);
+                    }
+                    lyricbit.setSingleLine(true);
+                    lyricbit.setTextAlignment(presotextAlign);
                     lyricbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
                 } else {
                     lyricbit.setSingleLine(true);
@@ -2643,6 +2685,26 @@ public class ProcessSong extends Activity {
         return ll;
     }
 
+    private int presotextAlignFromGravity(int gravity) {
+        int align = 1000;
+        switch (gravity) {
+            case Gravity.START:
+                Log.d("d","align=START");
+                align = View.TEXT_ALIGNMENT_VIEW_START;
+                break;
+            case Gravity.END:
+                Log.d("d","align=END");
+                align = TextView.TEXT_ALIGNMENT_VIEW_END;
+                break;
+            case Gravity.CENTER:
+            case Gravity.CENTER_HORIZONTAL:
+                Log.d("d","align=CENTER");
+                align = TextView.TEXT_ALIGNMENT_CENTER;
+                break;
+        }
+        Log.d("d","align="+align);
+        return align;
+    }
     public static int getColorWithAlpha(int color, float ratio) {
         int alpha = Math.round(Color.alpha(color) * ratio);
         int r = Color.red(color);
@@ -2855,7 +2917,7 @@ public class ProcessSong extends Activity {
         if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
             boxbit.setGravity(Gravity.CENTER_VERTICAL);
         }
-        if (StaticVariables.whichMode.equals("Presentation") || (StaticVariables.whichMode.equals("Stage") && !(preferences.getMyPreferenceBoolean(c, "presoShowChords", false)))) {
+        if (StaticVariables.whichMode.equals("Presentation") || (StaticVariables.whichMode.equals("Stage") && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false))) {
             boxbit.setBackground(null);
             boxbit.setHorizontalGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER_HORIZONTAL));
             boxbit.setVerticalGravity(preferences.getMyPreferenceInt(c, "presoLyricsVAlign", Gravity.CENTER_VERTICAL));
