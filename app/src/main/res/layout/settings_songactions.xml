@@ -53,6 +53,22 @@
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/links"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/link"
+            app:sub="@string/link_info" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/chords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/chords"
+            app:sub="@string/chord_settings" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/notation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
