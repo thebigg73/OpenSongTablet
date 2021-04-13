@@ -69,7 +69,7 @@ public interface MainActivityInterface {
     void songMenuActionButtonShow(boolean show);
     void lockDrawer(boolean lock);
     void closeDrawer(boolean close);
-    void doSongLoad();
+    void doSongLoad(String folder, String filename);
     void loadSongFromSet();
     void updateKeyAndLyrics(Song song);
     void editSongSaveButtonAnimation(boolean pulse);
@@ -118,6 +118,7 @@ public interface MainActivityInterface {
     ConvertOnSong getConvertOnSong();
     ProcessSong getProcessSong();
     Song getSong();
+    void setSong(Song song);
     SQLiteHelper getSQLiteHelper();
     NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper();
     CommonSQL getCommonSQL();

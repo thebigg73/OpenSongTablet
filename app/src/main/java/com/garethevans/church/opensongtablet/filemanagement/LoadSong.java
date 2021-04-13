@@ -29,6 +29,7 @@ import java.util.Locale;
 public class LoadSong {
 
     //private boolean isXML, isPDF, isIMG, isCustom,
+    private final String TAG = "LoadSong";
     private boolean needtoloadextra = false;
     private Uri uri;
 
@@ -44,6 +45,7 @@ public class LoadSong {
 
         if (!songListBuildIndex.getIndexComplete() || song.getFolder().contains("../")) {
             // This is set to true once the index is completed
+            Log.d(TAG, "Load from file");
             return doLoadSongFile(c,storageAccess,preferences,processSong,showToast,locale,
                     sqLiteHelper,commonSQL,song,convertOnSong,convertChoPro,indexing);
         } else {
@@ -63,6 +65,8 @@ public class LoadSong {
         // Set the song load status to false (helps check if it didn't load).  This is set to true after success
 
         // Once indexing has finished, we load from the database instead, so this is only for indexing and impatient users!
+
+        Log.d(TAG, "song.getFilename()="+song.getFilename());
 
         if (song.getFolder()==null || song.getFolder().isEmpty()) {
             song.setFolder(c.getString(R.string.mainfoldername));

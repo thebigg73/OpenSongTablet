@@ -156,8 +156,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, DialogReturnInterface,
         NearbyInterface, NearbyReturnActionsInterface, ActionInterface, SwipeDrawingInterface {
 
-    ActivityMainBinding activityMainBinding;
-    AppBarMainBinding appBarMainBinding;
+    private final String TAG = "MainActivity";
+    private ActivityMainBinding activityMainBinding;
+    private AppBarMainBinding appBarMainBinding;
 
     private AppBarConfiguration mAppBarConfiguration;
     private StorageAccess storageAccess;
@@ -290,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         View view = activityMainBinding.getRoot();
         /*view.setOnSystemUiVisibilityChangeListener(
                 visibility -> {
-                    Log.d("MainActivity","UiVisibility changed");
+                    Log.d(TAG,"UiVisibility changed");
                     if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                         appActionBar.showActionBar(settingsOpen);
                         setWindowFlags();
@@ -405,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     @Override
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
-        Log.d("MainActivity","ChangeActionBarVisisble");
+        Log.d(TAG,"ChangeActionBarVisisble");
         if (!whichMode.equals("Presentation") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
             // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
             activityMainBinding.appBarMain.contentMain.getRoot().setTop(0);
@@ -473,7 +474,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         } catch (Exception e) {
             // No Google Service available
             // Do nothing as the user will see a warning in the settings menu
-            Log.d("MainActivity","No Google Services");
+            Log.d(TAG,"No Google Services");
         }
     }
     private void recoverCastState() {
@@ -621,7 +622,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         if (fullIndexRequired) {
             fullIndexRequired = false;
             // TODO - Code to run full index and update the song menu
-            Log.d("MainActivity","About to run a full index - TODO");
+            Log.d(TAG,"About to run a full index - TODO");
         }
     }
     @Override
@@ -710,7 +711,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             try {
                 this.unregisterReceiver(batteryStatus);
             } catch (Exception e) {
-                Log.d("MainActivity", "No need to close battery monitor");
+                Log.d(TAG, "No need to close battery monitor");
             }
         }
     }
@@ -730,7 +731,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             // Set the current orientation
             padFunctions.setCurrentOrientation(newConfig.orientation);
             closeDrawer(true);
-            doSongLoad();
+            doSongLoad(song.getFolder(),song.getFilename());
         }
     }
 
@@ -836,7 +837,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
             mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
         } else {
-            Log.d("MainActivity", "Google Play Services Not Available");
+            Log.d(TAG, "Google Play Services Not Available");
             // TODO
             // Alert the user about the Google Play issues and give them an option to fix it
             // Add it to the menu alerts
@@ -896,7 +897,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         if (setSongMenuFragment()) {
             songMenuFragment.moveToSongInMenu(song);
         } else {
-            Log.d("MainActivity", "songMenuFragment not available");
+            Log.d(TAG, "songMenuFragment not available");
         }
     }
     @Override
@@ -913,7 +914,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 if (setSongMenuFragment()) {
                     songMenuFragment.updateSongMenu(song);
                 } else {
-                    Log.d("MainActivity", "songMenuFragment not available");
+                    Log.d(TAG, "songMenuFragment not available");
                 }
             });
         }).start();
@@ -972,28 +973,32 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     // Overrides called from fragments (Performance and Presentation) using interfaces
     @Override
     public void loadSongFromSet() {
-        Log.d("MainActivity","loadSongFromSet() called");
+        Log.d(TAG,"loadSongFromSet() called");
     }
     @Override
     public void refreshAll() {
-        Log.d("MainActivity","refreshAll() called");
+        Log.d(TAG,"refreshAll() called");
     }
     @Override
-    public void doSongLoad() {
-        Log.d("MainActivity","doSongLoad() called");
+    public void doSongLoad(String folder, String filename) {
+        Log.d(TAG,"doSongLoad() called");
+        Log.d(TAG, "song.getFolder()="+song.getFolder());
+        Log.d(TAG, "song.getFilename()="+song.getFilename());
+
 
         if (whichMode.equals("Presentation")) {
             if (presentationFragment!=null && presentationFragment.isAdded()) {
-                presentationFragment.doSongLoad();
+                presentationFragment.doSongLoad(folder,filename);
             } else {
-                Log.d("MainActivity", "presentationFragment not available");
+                Log.d(TAG, "presentationFragment not available");
                 navigateToFragment(null,R.id.performanceFragment);
             }
         } else {
+            Log.d(TAG,"Sending info to performance frag");
             if (performanceFragment!=null && performanceFragment.isAdded()) {
-                performanceFragment.doSongLoad();
+                performanceFragment.doSongLoad(folder,filename);
             } else {
-                Log.d("MainActivity", "performanceFragment not available");
+                Log.d(TAG, "performanceFragment not available");
                 navigateToFragment(null,R.id.presentationFragment);
             }
         }
@@ -1075,6 +1080,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public Song getSong() {
         return song;
+    }
+    @Override
+    public void setSong(Song song) {
+        this.song = song;
     }
     @Override
     public void setOriginalSong(Song originalSong) {
@@ -1191,7 +1200,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     if (arguments!=null && arguments.size()>1 && arguments.get(0).equals("success")) {
                         // We now need to copy the original file.  It's contents are saved in arguments.get(1)
                         if (storageAccess.doStringWriteToFile(this,preferences,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
-                            doSongLoad();
+                            doSongLoad(song.getFolder(),song.getFilename());
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
                         }
@@ -1322,23 +1331,23 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void updateSetList() {
-        Log.d("MainActivity","Update set list");
+        Log.d(TAG,"Update set list");
     }
     @Override
     public void startAutoscroll (){
-        Log.d("MainActivity","Start auto scroll");
+        Log.d(TAG,"Start auto scroll");
     }
     @Override
     public void stopAutoscroll (){
-        Log.d("MainActivity","Stop auto scroll");
+        Log.d(TAG,"Stop auto scroll");
     }
     @Override
     public void fadeoutPad() {
-        Log.d("MainActivity","fadeoutPad()");
+        Log.d(TAG,"fadeoutPad()");
     }
     @Override
     public void playPad() {
-        Log.d("MainActivity","playPad()");
+        Log.d(TAG,"playPad()");
     }
     @Override
     public void fixOptionsMenu() {invalidateOptionsMenu();}
@@ -1349,7 +1358,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         if (requestCode==12345) {
             // We initiated an OpenSongApp backupt
-            Log.d("MainActivity","OSB created");
+            Log.d(TAG,"OSB created");
             preferences.setMyPreferenceInt(this,"runssincebackup",0);
 
         } else if (intent!=null) {
@@ -1360,7 +1369,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
             Log.d("d","importFilename="+importFilename+"  importUri="+importUri);
             if (requestCode == preferences.getFinalInt("REQUEST_FILE_CHOOSER")) {
-                Log.d("MainActivity","File chosen: "+intent.getData());
+                Log.d(TAG,"File chosen: "+intent.getData());
             } else if (requestCode == preferences.getFinalInt("REQUEST_OSB_FILE")) {
                 if (importFilename!=null && importUri!=null &&
                         importFilename.toLowerCase(fixLocale.getLocale()).endsWith(".osb")) {
@@ -1849,7 +1858,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     @Override
     public void getSwipeValues(int minDistance, int minHeight, int minTime) {
-        Log.d("MainActivity", "minDistance:"+minDistance+" minSpeed:"+minTime+" maxYerror:"+minHeight);
+        Log.d(TAG, "minDistance:"+minDistance+" minSpeed:"+minTime+" maxYerror:"+minHeight);
         if (swipeFragment!=null) {
             try {
                 ((SwipeFragment) swipeFragment).getSwipeValues(minDistance, minHeight, minTime);

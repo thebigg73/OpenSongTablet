@@ -30,7 +30,7 @@ public class SaveSong {
         String filename = storageAccess.safeFilename(song.getFilename());
 
         String oldwhere = storageAccess.safeFilename(processSong.getLocation(song.getFolder()));
-        String oldfolder = storageAccess.safeFilename(song.getFolder()).replace(".."+where+"/","");
+        String oldfolder = storageAccess.safeFilename(originalSong.getFolder()).replace(".."+where+"/","");
         String oldfilename = storageAccess.safeFilename(originalSong.getFilename());
 
         // If we are editing as chordpro, convert the lyrics back to back to OpenSong first

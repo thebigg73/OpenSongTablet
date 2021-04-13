@@ -36,8 +36,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     AdapterCallback callback;
 
     public interface AdapterCallback{
-        void onItemClicked(int position);
-        void onItemLongClicked(int position);
+        void onItemClicked(int position,String folder,String filename);
+        void onItemLongClicked(int position,String folder, String filename);
     }
 
     public SongListAdapter(Context c, List<Song> songList, Preferences preferences,
@@ -120,7 +120,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             song.setFolder(songfolder);
             setActions.setSongForSetWork(c,song.getFolder(),song.getFilename());
             if (callback!=null) {
-                callback.onItemClicked(i);
+                callback.onItemClicked(i,songfolder,mfilename);
             }
         });
 
@@ -131,7 +131,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 song.setFolder(songfolder);
                 setActions.setSongForSetWork(c,song.getFolder(),song.getFilename());
                 if (callback!=null) {
-                    callback.onItemLongClicked(i);
+                    callback.onItemLongClicked(i,songfolder,mfilename);
                 }
                 return true;
             });
@@ -142,7 +142,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             song.setFolder(songfolder);
             setActions.setSongForSetWork(c,song.getFolder(),song.getFilename());
             if (callback!=null) {
-                callback.onItemLongClicked(i);
+                callback.onItemLongClicked(i,songfolder,mfilename);
             }
             return true;
         });

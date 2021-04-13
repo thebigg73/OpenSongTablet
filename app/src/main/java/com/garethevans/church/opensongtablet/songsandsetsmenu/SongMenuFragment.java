@@ -41,6 +41,7 @@ import java.util.Set;
 
 public class SongMenuFragment extends Fragment implements SongListAdapter.AdapterCallback {
 
+    private final String TAG = "SongMenuFragment";
     // The helper classes used
     private Preferences preferences;
     private StorageAccess storageAccess;
@@ -386,13 +387,14 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     @Override
-    public void onItemClicked(int position) {
+    public void onItemClicked(int position, String folder, String filename) {
+        Log.d(TAG, "psotion="+position);
         mainActivityInterface.hideKeyboard();
-        mainActivityInterface.doSongLoad();
+        mainActivityInterface.doSongLoad(folder,filename);
     }
 
     @Override
-    public void onItemLongClicked(int position) {
+    public void onItemLongClicked(int position, String folder, String filename) {
         mainActivityInterface.hideKeyboard();
         myView.actionFAB.performClick();
     }
