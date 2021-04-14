@@ -422,6 +422,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_musicScoreFragment"
                     app:destination="@id/musicScoreFragment" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_stickyNotesFragment"
+                    app:destination="@id/stickyNotesFragment" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -449,6 +452,15 @@
                 <deepLink
                     android:id="@+id/deepLink20"
                     app:uri="opensongapp://settings/actions/abcnotation" />
+            </fragment>
+            <fragment
+                android:id="@+id/stickyNotesFragment"
+                android:name="com.garethevans.church.opensongtablet.stickynotes.StickyNotesFragment"
+                android:label="StickyNotesFragment"
+                tools:layout="@layout/settings_stickynotes">
+                <deepLink
+                    android:id="@+id/deepLink21"
+                    app:uri="opensongapp://settings/actions/stickynotes" />
             </fragment>
         </navigation>
         <fragment
