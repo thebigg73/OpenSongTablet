@@ -39,6 +39,8 @@ import java.util.Locale;
 
 public class ProcessSong extends Activity {
 
+    private final String TAG = "ProcessSong";
+
     String parseLyrics(String myLyrics, Context c) {
         myLyrics = myLyrics.replace("]\n\n", "]\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
@@ -1972,7 +1974,7 @@ public class ProcessSong extends Activity {
         // Go through each tag in the song
         for (String tag : currentSectionLabels) {
             if (tag.equals("") || tag.equals(" ")) {
-                Log.d("d", "Empty search");
+                Log.d(TAG, "Empty search");
             } else if (tempPresentationOrder.toString().contains(tag)) {
                 tempPresentationOrder = new StringBuilder(tempPresentationOrder.toString().replace(tag + " ", "<__" + tag + "__>"));
             } else {
@@ -2689,20 +2691,16 @@ public class ProcessSong extends Activity {
         int align = 1000;
         switch (gravity) {
             case Gravity.START:
-                Log.d("d","align=START");
                 align = View.TEXT_ALIGNMENT_VIEW_START;
                 break;
             case Gravity.END:
-                Log.d("d","align=END");
                 align = TextView.TEXT_ALIGNMENT_VIEW_END;
                 break;
             case Gravity.CENTER:
             case Gravity.CENTER_HORIZONTAL:
-                Log.d("d","align=CENTER");
                 align = TextView.TEXT_ALIGNMENT_CENTER;
                 break;
         }
-        Log.d("d","align="+align);
         return align;
     }
     public static int getColorWithAlpha(int color, float ratio) {
@@ -3028,7 +3026,7 @@ public class ProcessSong extends Activity {
                     nextinset = ";__" + c.getResources().getString(R.string.lastsong);
                 }
             } catch (Exception e) {
-                Log.d("d", "Problem getting next song info");
+                Log.d(TAG, "Problem getting next song info");
             }
         }
 
@@ -3399,7 +3397,7 @@ public class ProcessSong extends Activity {
                     try {
                         webstring = Uri.encode(s, "UTF-8");
                     } catch  (Exception e) {
-                        Log.d("d","Error encoding");
+                        Log.d(TAG,"Error encoding");
                     }
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                         wv.evaluateJavascript("javascript:displayOnly();", null);
