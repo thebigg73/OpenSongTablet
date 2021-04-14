@@ -44,6 +44,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
@@ -143,9 +144,13 @@ import static com.google.android.material.snackbar.Snackbar.make;
 This file is the Activity - the hub of the app.  Since V6, there is only one activity, which is
 better for memory, lifecycle and passing values between fragments (how the app now works).
 
-Some fragments will contain their own unique tasks, etc. but many of these fragments will call
-common functions in this MainActivity class that all the fragments can get information on using
-getters and setters.  This also avoids having loads of StaticVariables.
+MainActivity is the main gatekeeper of class references and variables.
+All fragments get access to these using getters and setters via the MainActivityInterface
+
+This avoids loads of static variables
+
+Fragments sometimes send info back to the MainActivity and ask this activity to send the details back
+When this happens, the fragment has to be open!!
 */
 
 //TODO Fix unused and local
@@ -204,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private Transpose transpose;
     private GestureDetector gestureDetector;
     private ActivityGestureDetector activityGestureDetector;
+    private ABCNotation abcNotation;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -390,6 +396,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         alertChecks = new AlertChecks();
         gestures = new Gestures(this,preferences);
         swipes = new Swipes(this,preferences);
+        abcNotation = new ABCNotation();
     }
 
     // The actionbar
@@ -1611,6 +1618,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public Bitmap getScreenshot() {
         return screenShot;
     }
+    @Override
+    public ABCNotation getAbcNotation() {
+        return abcNotation;
+    }
 
     // Nearby
     @Override
@@ -1836,6 +1847,17 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void goToNextItem() {
         // TODO
+    }
+    @Override
+    public void showSticky() {
+        // Try to show the sticky note
+        if (!whichMode.equals("Presentation") && performanceFragment!=null) {
+            try {
+                performanceFragment.dealWithStickyNotes(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

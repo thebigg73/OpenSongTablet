@@ -40,6 +40,7 @@ import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
 import java.util.ArrayList;
 
@@ -66,6 +67,7 @@ public class PerformanceFragment extends Fragment {
     private SetTypeFace setTypeFace;
     private SongListBuildIndex songListBuildIndex;
     private AppActionBar appActionBar;
+    private StickyPopUp stickyPopUp;
 
     //private ShowCase showCase;
 
@@ -170,6 +172,7 @@ public class PerformanceFragment extends Fragment {
         setTypeFace = mainActivityInterface.getMyFonts();
         songListBuildIndex = mainActivityInterface.getSongListBuildIndex();
         appActionBar = mainActivityInterface.getAppActionBar();
+        stickyPopUp = new StickyPopUp();
 
         //showCase = new ShowCase();
 /*
@@ -272,36 +275,9 @@ public class PerformanceFragment extends Fragment {
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // All views have now been drawn, so measure the arraylist views
-                // First up, remove the listener
-                sectionWidths = new ArrayList<>();
-                sectionHeights = new ArrayList<>();
-                for (View v:sectionViews)  {
-                    int width = v.getMeasuredWidth();
-                    int height = v.getMeasuredHeight();
-                    sectionWidths.add(width);
-                    sectionHeights.add(height);
-                }
-                screenWidth = myView.mypage.getMeasuredWidth();
-                screenHeight = myView.mypage.getMeasuredHeight();
-
-                scaleFactor = processSong.addViewsToScreen(getActivity(), testPane, myView.pageHolder, myView.songView, screenWidth, screenHeight,
-                        myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
-                        songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax,
-                        sectionViews, sectionWidths, sectionHeights);
-
-
-
-                Animation animSlide;
-                if (R2L) {
-                    animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
-                } else {
-                    animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
-                }
-                // Load up the highlighter file if it exists and the user wants it
-                dealWithHighlighterFile(animSlide);
-
-                myView.songView.startAnimation(animSlide);
+                // The views are ready so prepare to create the song page
+                songIsReadyToDisplay();
+                // We can now remove this listener
                 testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -322,7 +298,41 @@ public class PerformanceFragment extends Fragment {
             }
         });
     }
+    private void songIsReadyToDisplay(){
+        // All views have now been drawn, so measure the arraylist views
 
+        // First up, remove the listener
+        sectionWidths = new ArrayList<>();
+        sectionHeights = new ArrayList<>();
+        for (View v:sectionViews)  {
+            int width = v.getMeasuredWidth();
+            int height = v.getMeasuredHeight();
+            sectionWidths.add(width);
+            sectionHeights.add(height);
+        }
+
+        screenWidth = myView.mypage.getMeasuredWidth();
+        screenHeight = myView.mypage.getMeasuredHeight();
+
+        scaleFactor = processSong.addViewsToScreen(getActivity(), testPane, myView.pageHolder, myView.songView, screenWidth, screenHeight,
+                myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
+                songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax,
+                sectionViews, sectionWidths, sectionHeights);
+
+        Animation animSlide;
+        if (R2L) {
+            animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+        } else {
+            animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+        }
+        myView.songView.startAnimation(animSlide);
+
+        // Load up the highlighter file if it exists and the user wants it
+        dealWithHighlighterFile(animSlide);
+
+        // Load up the sticky notes if the user wants them
+        dealWithStickyNotes(false);
+    }
     private void dealWithHighlighterFile(Animation animSlide) {
         // Get the dimensions of the songview once it has drawn
         ViewTreeObserver viewTreeObserver = myView.songView.getViewTreeObserver();
@@ -361,6 +371,14 @@ public class PerformanceFragment extends Fragment {
                 myView.songView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+    }
+    public void dealWithStickyNotes(boolean forceShow) {
+        // This is called from the MainActivity when we clicked on the page button
+        if ((!mainActivityInterface.getSong().getNotes().isEmpty() &&
+        mainActivityInterface.getPreferences().
+                getMyPreferenceBoolean(requireContext(),"stickyAuto",true)) || forceShow) {
+            stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);
+        }
     }
 
     // The scale and gesture bits of the code
@@ -422,20 +440,15 @@ public class PerformanceFragment extends Fragment {
     private void getScreenshot() {
         if (screenShotReady) {
             screenGrab.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-            Bitmap bitmap = Bitmap.createBitmap(screenGrab.getMeasuredWidth(), screenGrab.getMeasuredHeight(),
-                    Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            screenGrab.layout(0, 0, screenGrab.getMeasuredWidth(), screenGrab.getMeasuredHeight());
-            screenGrab.draw(canvas);
-            mainActivityInterface.setScreenshot(bitmap);
-            /*
-            myView.songView.destroyDrawingCache();
-            myView.songView.setDrawingCacheEnabled(true);
-            myView.songView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);*/
+            if (screenGrab.getMeasuredWidth()!=0 && screenGrab.getMeasuredHeight()!=0) {
+                Bitmap bitmap = Bitmap.createBitmap(screenGrab.getMeasuredWidth(), screenGrab.getMeasuredHeight(),
+                        Bitmap.Config.ARGB_8888);
 
-            //GlideApp.with(screenGrab).load(mainActivityInterface.getScreenshot()).into(myView.glideimage);
-
-            //Log.d("d","song.getScreenshot:"+mainActivityInterface.getScreenshot());
+                Canvas canvas = new Canvas(bitmap);
+                screenGrab.layout(0, 0, screenGrab.getMeasuredWidth(), screenGrab.getMeasuredHeight());
+                screenGrab.draw(canvas);
+                mainActivityInterface.setScreenshot(bitmap);
+            }
         }
     }
 }

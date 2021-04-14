@@ -468,7 +468,11 @@ public class PageButtons {
                 //TODO
                 break;
             case "stickynotes":
-                //TODO
+                if (isLongPress) {
+                    actionInterface.navigateToFragment("opensongapp://settings/actions/stickynotes",0);
+                } else {
+                    actionInterface.showSticky();
+                }
                 break;
             case "pdfpage":
                 //TODO
