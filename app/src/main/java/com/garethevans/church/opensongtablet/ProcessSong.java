@@ -1238,6 +1238,7 @@ public class ProcessSong extends Activity {
     private TableRow lyriclinetoTableRow(Context c, int lyricsTextColor, int presoFontColor,
                                          String[] lyrics, float fontsize,
                                          StorageAccess storageAccess, Preferences preferences, Boolean presentation) {
+
         TableRow lyricrow = new TableRow(c);
         int presoLyricsAlign = preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER);
         int presotextAlign = presotextAlignFromGravity(presoLyricsAlign);
@@ -1325,7 +1326,7 @@ public class ProcessSong extends Activity {
             }
             // IV - Only use if the bit is not 'empty'.  This means the chord line spacing is used
             if (!bit.replace(" ", "").isEmpty()) {
-                lyricbit.setText(bit.trim());
+                lyricbit.setText(bit);
             }
 
             lyricbit.setTextSize(fontsize);
