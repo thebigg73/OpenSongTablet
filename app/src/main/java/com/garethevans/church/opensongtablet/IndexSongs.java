@@ -293,6 +293,11 @@ class IndexSongs {
         } catch (OutOfMemoryError e1) {
             e1.printStackTrace();
         }
+        try {
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private ArrayList<String> tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,
