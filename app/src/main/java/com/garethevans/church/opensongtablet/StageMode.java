@@ -1231,8 +1231,10 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.appRunning = true;
         if (mMediaRouter != null && mMediaRouteSelector != null) {
             try {
+                StaticVariables.infoBarChangeRequired = true;
                 mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                         MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+                updateDisplays();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -4958,7 +4960,6 @@ public class StageMode extends AppCompatActivity implements
 
                 Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
                 canvas.scale(scale,scale);
-                songscrollview.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.getChildAt(0).draw(canvas);
                 songscrollview.destroyDrawingCache();
                 songscrollview.setDrawingCacheEnabled(true);
