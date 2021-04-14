@@ -267,7 +267,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         setXMarginProgressBar.setMax(150);
         // IV - Allow bigger margin to give smaller active height suitable for use as bottom 3rd overlay of words over video
-        setYMarginProgressBar.setMax(250);
+        setYMarginProgressBar.setMax(350);
         setXMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getContext(),"presoXMargin",20));
         setYMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getContext(),"presoYMargin",10));
         setRotationProgressBar.setMax(3);

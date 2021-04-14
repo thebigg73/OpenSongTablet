@@ -6907,6 +6907,8 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... params) {
             StaticVariables.myToastMessage = "";
             try {
+                StaticVariables.panicRequired = false;
+                StaticVariables.infoBarChangeRequired = true;
                 FullscreenActivity.scalingfiguredout = false;
                 sectionpresented = false;
 
@@ -8222,7 +8224,9 @@ public class StageMode extends AppCompatActivity implements
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
+        StaticVariables.panicRequired = false;
         StaticVariables.infoBarChangeRequired = true;
+        StaticVariables.forcecastupdate = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         updateDisplays();

@@ -437,6 +437,10 @@ class PresentationCommon {
         }
     }
     void hideLogo(Context c, Preferences preferences, ImageView projected_Logo) {
+        // IV - On hide after the startup logo, setup to display song info
+        if (infoBarUntilTime == 0) {
+            StaticVariables.infoBarChangeRequired = true;
+        }
         // IV - Makes sure any delayed showLogo calls do not undo the fade!
         showLogoActive = false;
         // IV - Make sure song Alert display is considered (song / alert state may have changed)
@@ -744,10 +748,10 @@ class PresentationCommon {
     }
     void updateAlert(Context c, Preferences preferences, boolean show, TextView presentermode_alert) {
         // IV - A doUpdate is done elsewhere to handle fades
-        // IV - Set up to ensure no song info display
-        infoBarUntilTime = 0;
-        StaticVariables.infoBarChangeRequired = false;
         if (show) {
+            // IV - Set up to ensure no song info display
+            infoBarUntilTime = 0;
+            StaticVariables.infoBarChangeRequired = false;
             PresenterMode.alert_on = "Y";
             presentermode_alert.setText(preferences.getMyPreferenceString(c,"presoAlertText",""));
             presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);

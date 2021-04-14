@@ -1365,7 +1365,8 @@ public class ProcessSong extends Activity {
 
             } else {
                 lyricbit.setTextColor(lyricsTextColor);
-                if (fakeBold) {
+                // IV - Support bold lyrics when presentation
+                if ((presentation && preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false)) || fakeBold) {
                     lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
                 }
                 lyricbit.setTypeface(StaticVariables.typefaceLyrics);
