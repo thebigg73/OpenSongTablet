@@ -102,7 +102,7 @@ public class LoadXML extends Activity {
             if (!StaticVariables.songfilename.endsWith(".sqlite3") && !StaticVariables.songfilename.endsWith(".preferences") &&
                     !StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
                 try {
-                    grabOpenSongXML(c, preferences,processSong);
+                    grabOpenSongXML(c, preferences,storageAccess, processSong);
                 } catch (Exception e) {
                     e.printStackTrace();
                     preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
@@ -151,6 +151,7 @@ public class LoadXML extends Activity {
                     }
                     StaticVariables.mLyrics = FullscreenActivity.myXML;
                     inputStream.close();
+                    streamReader.close();
                     bufferedReader.close();
                     // Set the song load status to true:
                     if (FullscreenActivity.myXML!=null && !FullscreenActivity.myXML.isEmpty()) {
@@ -178,7 +179,7 @@ public class LoadXML extends Activity {
 
                     // Now read in the proper OpenSong xml file
                     try {
-                        grabOpenSongXML(c, preferences,processSong);
+                        grabOpenSongXML(c, preferences,storageAccess, processSong);
                     } catch (Exception e) {
                         Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     }
@@ -196,7 +197,7 @@ public class LoadXML extends Activity {
 
                     // Now read in the proper OpenSong xml file
                     try {
-                        grabOpenSongXML(c, preferences,processSong);
+                        grabOpenSongXML(c, preferences,storageAccess,processSong);
                     } catch (Exception e) {
                         Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     }
@@ -224,7 +225,7 @@ public class LoadXML extends Activity {
 
                     // Now read in the proper OpenSong xml file
                     try {
-                        grabOpenSongXML(c, preferences,processSong);
+                        grabOpenSongXML(c, preferences,storageAccess,processSong);
                     } catch (Exception e) {
                         Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     }
@@ -513,7 +514,8 @@ public class LoadXML extends Activity {
         StaticVariables.mExtraStuff2 = "";
     }
 
-    private static void grabOpenSongXML(Context c, Preferences preferences, ProcessSong processSong) throws Exception {
+    private static void grabOpenSongXML(Context c, Preferences preferences, StorageAccess storageAccess,
+                                        ProcessSong processSong) throws Exception {
         // Extract all of the key bits of the song
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
@@ -526,8 +528,6 @@ public class LoadXML extends Activity {
         initialiseSongTags(c);
 
         // Get the uri and stream of the file
-        StorageAccess storageAccess = new StorageAccess();
-
         String where = "Songs";
         String folder = StaticVariables.whichSongFolder;
         if (StaticVariables.whichSongFolder.startsWith("../")) {
@@ -560,6 +560,8 @@ public class LoadXML extends Activity {
                         utf = enc.toUpperCase();
                     }
                 }
+                buffreader.close();
+                lineReader.close();
             } catch (Exception e) {
                 utf = "UTF-8";
             }
@@ -732,6 +734,11 @@ public class LoadXML extends Activity {
                 FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
             }
 
+            try {
+                inputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // If we really have to load extra stuff, lets do it as an asynctask
             if (needtoloadextra) {
                 inputStream = storageAccess.getInputStream(c, uri);
@@ -811,6 +818,11 @@ public class LoadXML extends Activity {
                     } catch (Exception e) {
                         //Ooops!
                     }
+                }
+                try {
+                    inputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         } catch (Exception e) {
@@ -1008,12 +1020,18 @@ public class LoadXML extends Activity {
                             //Ooops!
                         }
                     }
+                    try {
+                        inputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (Exception e) {
             Log.d("LoadXML","Error trying to read XML from "+uri);
             // Ooops
         }
+
 
         return nextkey;
     }
@@ -1086,6 +1104,11 @@ public class LoadXML extends Activity {
                 if (backgrounds_end > backgrounds_start && backgrounds_start > -1) {
                     StaticVariables.mExtraStuff2 = result.substring(backgrounds_start, backgrounds_end);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                inputStream.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
