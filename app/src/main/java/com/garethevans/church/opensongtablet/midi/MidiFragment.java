@@ -731,7 +731,6 @@ public class MidiFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // Save the song
-        saveSong.doSave(getContext(),preferences,storageAccess,convertChoPro,
-                processSong,song,song,sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,false);
+        saveSong.doSave(getContext(),mainActivityInterface,song,song,false);
     }
 }

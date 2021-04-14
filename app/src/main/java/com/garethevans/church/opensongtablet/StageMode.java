@@ -3381,7 +3381,6 @@ public class StageMode extends AppCompatActivity implements
 
                 if (preferences.getMyPreferenceInt(StageMode.this,"timeToDisplaySticky",5) == 0) {
                     stickydonthide = true;
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

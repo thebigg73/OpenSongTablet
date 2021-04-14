@@ -176,8 +176,8 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     private void doSaveChanges() {
         // Send this off for processing in a new Thread
         new Thread(() -> {
-            saveOK = saveSong.doSave(requireContext(),preferences,storageAccess,convertChoPro,
-                    processSong,song,editContent.getCurrentSong(),sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,imgOrPDF);
+            saveOK = saveSong.doSave(requireContext(),mainActivityInterface,song,
+                    editContent.getCurrentSong(), imgOrPDF);
 
             if (saveOK) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast

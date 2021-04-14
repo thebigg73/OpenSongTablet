@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -14,21 +14,17 @@ public class AlertChecks {
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) != ConnectionResult.SUCCESS;
     }
 
-    public boolean showUpdateInfo(Context c, Preferences preferences, int currentVersion) {
+    public boolean showUpdateInfo(Context c, MainActivityInterface mainActivityInterface) {
         // Decide if the current app version is newer than the previous version.
         // If so, we want the user to be notified of changed
 
-        // Get last saved version
-        int lastUsedVersion = preferences.getMyPreferenceInt(c, "lastUsedVersion", 0);
-
-        // Get the current version
-        return currentVersion > lastUsedVersion;
+        return mainActivityInterface.getVersionNumber().getVersionCode() >
+                mainActivityInterface.getPreferences().getMyPreferenceInt(c,"lastUsedVersion",0);
     }
 
-    public boolean showBackup(Context c, Preferences preferences) {
+    public boolean showBackup(Context c, MainActivityInterface mainActivityInterface) {
         // Check for the number of times the app has run without the user backing up their songs
         // If this is 10 (or more) show the backup prompt window.
-        int runssincebackup = preferences.getMyPreferenceInt(c, "runssincebackup", 0);
-        return runssincebackup >=10;
+        return mainActivityInterface.getPreferences().getMyPreferenceInt(c,"runssincebackup",0) >=10;
     }
 }

@@ -14,24 +14,11 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsAbcnotationBinding;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 public class MusicScoreFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    private Preferences preferences;
-    private ABCNotation abcNotation;
-    private ProcessSong processSong;
-    private StorageAccess storageAccess;
-    private SQLiteHelper sqLiteHelper;
-    private CommonSQL commonSQL;
-    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private SettingsAbcnotationBinding myView;
 
     @Override
@@ -46,9 +33,6 @@ public class MusicScoreFragment extends Fragment {
         myView = SettingsAbcnotationBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(null,getString(R.string.music_score));
 
-        // Set up the helpers
-        setHelpers();
-
         // Set up the views
         setViews();
 
@@ -58,18 +42,10 @@ public class MusicScoreFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        abcNotation = new ABCNotation();
-        processSong = mainActivityInterface.getProcessSong();
-        storageAccess = mainActivityInterface.getStorageAccess();
-        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
-        nonOpenSongSQLiteHelper = mainActivityInterface.getNonOpenSongSQLiteHelper();
-        commonSQL = mainActivityInterface.getCommonSQL();
-    }
 
     private void setViews() {
-        abcNotation.setWebView(myView.abcWebView,mainActivityInterface.getSong(),mainActivityInterface.getWhattodo().equals("editabc"));
+        mainActivityInterface.getAbcNotation().setWebView(myView.abcWebView,mainActivityInterface,
+                mainActivityInterface.getWhattodo().equals("editabc"));
         myView.abcWebView.post(() -> myView.abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp"));
     }
 
@@ -77,21 +53,22 @@ public class MusicScoreFragment extends Fragment {
         @JavascriptInterface
         public void receiveString(String myJsString) {
             // String received from WebView
-            if (!myJsString.equals(abcNotation.getSongInfo(mainActivityInterface.getSong()))) {
+            if (!myJsString.equals(mainActivityInterface.getAbcNotation().getSongInfo(mainActivityInterface))) {
                 // Something has changed
                 mainActivityInterface.getSong().setAbc(myJsString);
-                String songXML = processSong.getXML(mainActivityInterface.getSong());
+                String songXML = mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong());
 
                 // Write the updated song file
-                storageAccess.doStringWriteToFile(requireContext(), preferences, "Songs",
+                mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(), mainActivityInterface.getPreferences(), "Songs",
                         mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(), songXML);
 
                 // Update the database
                 if (mainActivityInterface.getSong().getIsSong()) {
-                    sqLiteHelper.updateSong(requireContext(), commonSQL, mainActivityInterface.getSong());
+                    mainActivityInterface.getSQLiteHelper().updateSong(requireContext(), mainActivityInterface.getCommonSQL(), mainActivityInterface.getSong());
                 } else {
-                    nonOpenSongSQLiteHelper.updateSong(requireContext(), commonSQL, storageAccess,
-                            preferences, mainActivityInterface.getSong());
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),
+                            mainActivityInterface.getCommonSQL(), mainActivityInterface.getStorageAccess(),
+                            mainActivityInterface.getPreferences(), mainActivityInterface.getSong());
                 }
                 vieworedit(false);
             }
@@ -127,5 +104,11 @@ public class MusicScoreFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mainActivityInterface.setWhattodo("");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

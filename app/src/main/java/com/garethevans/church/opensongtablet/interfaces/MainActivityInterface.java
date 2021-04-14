@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
@@ -162,4 +163,5 @@ public interface MainActivityInterface {
     void refreshMenuItems();
     void setScreenshot(Bitmap bitmap);
     Bitmap getScreenshot();
+    ABCNotation getAbcNotation();
 }

@@ -430,7 +430,7 @@ public class Preferences extends Activity {
     songTitleSize                   float       The size of the song title text in the action bar (def:13.0f)
     soundMeterRange                 int         The volume range of the sound meter (def:400)
     stageModeScale                  float       The max height of each stage mode section (to allow next section to peek at bottom) (def:0.80f)
-    stickyAutoDisplay               String      Where should sticky notes be shown (N)one, (T)op inline, (B)ottom inline, (F)loating window (def:F)
+    stickyAuto                      boolean     Should sticky notes be shown automatically (def:true)
     stickyWidth                     int         The width of popup sticky notes (def:400)
     stickyAlpha                     float       The alpha of popup sticky notes (def:0.8f)
     stickyLargeFont                 boolean     The text size for the popup sticky notes (true=20.0f, def:false=14.0f)
@@ -442,7 +442,7 @@ public class Preferences extends Activity {
     swipeMinimumVelocity            int         The minimum speed for a swipe to be registered (dp/s) (def:600)
     swipeMaxDistanceYError          int         The maximum Y movement in a swipe allowed for it to be recognised (def:200)
     timeToDisplayHighlighter        int         The time to show highlighter notes for before hiding (def=0 means keep on) ms
-    timeToDisplaySticky             int         The time to show sticky notes for before hiding (def=0 means keep on) s
+    timeToDisplaySticky             int         The time to show sticky notes for before hiding (def=0 means keep on)
     trimSections                    boolean     Should whitespace be removed from song sections (def:true)
     trimLines                       boolean     Should the lines be trimmed (using the lineSpacing) value (def:true)
     uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent) (def:"")

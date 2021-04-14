@@ -9,13 +9,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ABCNotation {
 
     @SuppressLint("SetJavaScriptEnabled")
-    public void setWebView(WebView webView, Song song, boolean edit) {
-        Log.d("d","song.getAbc()="+song.getAbc());
+    public void setWebView(WebView webView, MainActivityInterface mainActivityInterface,
+                           boolean edit) {
         webView.post(new Runnable() {
             @Override
             public void run() {
@@ -40,7 +40,7 @@ public class ABCNotation {
                         return super.onConsoleMessage(consoleMessage);
                     }
                 });
-                webView.setWebViewClient(new MyWebViewClient(song,edit) {
+                webView.setWebViewClient(new MyWebViewClient(mainActivityInterface,edit) {
 
                 });
                 webView.loadUrl("file:///android_asset/ABC/abc.html");
@@ -49,20 +49,20 @@ public class ABCNotation {
     }
 
     private class MyWebViewClient extends WebViewClient {
-        Song song;
+        MainActivityInterface mainActivityInterface;
         boolean edit;
-        MyWebViewClient(Song song, boolean edit) {
-            this.song = song;
+        MyWebViewClient(MainActivityInterface mainActivityInterface, boolean edit) {
+            this.mainActivityInterface = mainActivityInterface;
             this.edit = edit;
         }
         @Override
         public void onPageFinished(WebView webView, String url) {
             super.onPageFinished(webView, url);
 
-            if (song.getAbc().isEmpty()) {
-                updateContent(webView,getSongInfo(song),edit);
+            if (mainActivityInterface.getSong().getAbc().isEmpty()) {
+                updateContent(webView,getSongInfo(mainActivityInterface),edit);
             } else {
-                updateContent(webView,song.getAbc(),edit);
+                updateContent(webView,mainActivityInterface.getSong().getAbc(),edit);
             }
 
             if (edit) {
@@ -73,22 +73,22 @@ public class ABCNotation {
         }
     }
 
-    String getSongInfo(Song song) {
+    String getSongInfo(MainActivityInterface mainActivityInterface) {
         String info = "";
         // Add the song time signature
-        if (song.getTimesig().isEmpty()) {
+        if (mainActivityInterface.getSong().getTimesig().isEmpty()) {
             info += "M:4/4\n";
         } else {
-            info += "M:" + song.getTimesig() + "\n";
+            info += "M:" + mainActivityInterface.getSong().getTimesig() + "\n";
         }
         // Add the note length
         info += "L:1/8\n";
 
         // Add the song key
-        if (song.getKey().isEmpty()) {
+        if (mainActivityInterface.getSong().getKey().isEmpty()) {
             info += "K:C treble %treble or bass clef\n";
         } else {
-            info += "K: " + song.getKey() + " %treble or bass clef\n";
+            info += "K: " + mainActivityInterface.getSong().getKey() + " %treble or bass clef\n";
         }
         info += "|";
         return info;

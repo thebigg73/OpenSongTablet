@@ -16,15 +16,12 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsAboutBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class AboutAppFragment extends Fragment {
 
     private SettingsAboutBinding myView;
-    private Preferences preferences;
-    private VersionNumber versionNumber;
     private MainActivityInterface mainActivityInterface;
-    private String userguide="https://www.opensongapp.com/user-guide", groups="https://groups.google.com/g/opensongapp",
+    private final String userguide="https://www.opensongapp.com/user-guide", groups="https://groups.google.com/g/opensongapp",
             latest = "https://www.opensongapp.com/latest-updates", paypal="https://www.paypal.me/opensongapp",
             rate = "https://play.google.com/store/apps/details?id=", github="https://github.com/thebigg73/OpenSongTablet",
             website = "https://www.opensongapp.com";
@@ -43,9 +40,6 @@ public class AboutAppFragment extends Fragment {
         // Update the toolbar
         mainActivityInterface.updateToolbar(null,getString(R.string.about));
 
-        // Set Helpers
-        setHelpers();
-
         // Update menu text with version and language
         updateMenuText();
 
@@ -55,13 +49,8 @@ public class AboutAppFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        versionNumber = mainActivityInterface.getVersionNumber();
-    }
-
     private void updateMenuText() {
-        versionNumber.updateMenuVersionNumber(requireContext(),myView.latestVersion.findViewById(R.id.subText));
+        mainActivityInterface.getVersionNumber().updateMenuVersionNumber(requireContext(),myView.latestVersion.findViewById(R.id.subText));
         ((TextView)myView.languageButton.findViewById(R.id.subText)).setText(mainActivityInterface.getLocale().getDisplayLanguage());
     }
 
@@ -85,5 +74,11 @@ public class AboutAppFragment extends Fragment {
             // Probably no browser installed or no internet permission given.
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }
