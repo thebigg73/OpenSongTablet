@@ -612,7 +612,10 @@ class PresentationCommon {
             // IV - Exceutes for first section after a change is requested (for a fresh song info display)
             // IV - AND section changes AFTER the subsequent 'Until' period end (for alert display)
             // IV - NOT for section changes after the first that occur BEFORE the end of the Until period
-            if ((StaticVariables.infoBarChangeRequired) || (System.currentTimeMillis() > infoBarUntilTime)) {
+            // GE - Only hide if above the wait time and we have specified we want to auto hide
+            boolean hide = preferences.getMyPreferenceBoolean(c,"presoInfoBarHide",true);
+
+            if ((StaticVariables.infoBarChangeRequired) || (System.currentTimeMillis() > infoBarUntilTime && hide)) {
                 String new_author = "";
                 String new_title = "";
                 String new_copyright = "";
@@ -648,10 +651,14 @@ class PresentationCommon {
                 }
 
                 // IV - We will need to animate if we pass this test - no false positives
-                boolean hide = preferences.getMyPreferenceBoolean(c,"presoInfoBarHide",true);
                 if (StaticVariables.infoBarChangeRequired || !infoBarAlertState.equals(PresenterMode.alert_on)) {
+                // if (StaticVariables.infoBarChangeRequired || !infoBarAlertState.equals(PresenterMode.alert_on)) {
+
+                        Log.d("d","Fading infobar");
                     // IV - Fade to 0.01f to keep on screen
-                    CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), 0.01f);
+                    if (hide) {
+                        CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), 0.01f);
+                    }
                     // IV - Delay lyrics to ensure new infobar is available for correct screen sizing - Set also to provide a good transition
                     infoBarChangeDelay = 200;
                     // IV - Rapid song changes can see multiple handlers running - ensure that none show an alert
@@ -669,7 +676,9 @@ class PresentationCommon {
                     String finalNew_ccli = new_ccli;
                     h.postDelayed(() -> {
                         // IV - Finish the fade
-                        bottom_infobar.setAlpha(0.0f);
+                        if (hide) {
+                            bottom_infobar.setAlpha(0.0f);
+                        }
                         adjustVisibility(presentermode_author, finalNew_author);
                         adjustVisibility(presentermode_copyright, finalNew_copyright);
                         adjustVisibility(presentermode_ccli, finalNew_ccli);
