@@ -15,13 +15,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class DisplayMenuFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsDisplayBinding myView;
-    private Preferences preferences;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -34,10 +32,7 @@ public class DisplayMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.display));
-
-        // Set helpers
-        setHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.display));
 
         // Set defaults
         setDefaults();
@@ -47,14 +42,10 @@ public class DisplayMenuFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-    }
-
     private void setDefaults() {
         // Get the app theme
         String themeName;
-        switch (preferences.getMyPreferenceString(getContext(),"appTheme","dark")) {
+        switch (mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"appTheme","dark")) {
             case "dark":
             default:
                 themeName = getString(R.string.theme_dark);
@@ -83,5 +74,11 @@ public class DisplayMenuFragment extends Fragment {
         //myView.connectedDisplay.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.connectedDisplaySetup));
         myView.actionBarSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.actionBarSettingsFragment));
         myView.menuSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.menuSettingsFragment));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

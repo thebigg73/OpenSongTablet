@@ -23,8 +23,6 @@ import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.customviews.PrefTextLinkView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -34,10 +32,7 @@ import java.util.ArrayList;
 
 public class PageButtonFragment extends Fragment {
 
-    private Preferences preferences;
     private MainActivityInterface mainActivityInterface;
-    private ThemeColors themeColors;
-    private PageButtons pageButtons;
     private ArrayList<FloatingActionButton> myButtons;
     private ArrayList<LinearLayout> myLayouts;
     private ArrayList<SwitchCompat> mySwitches;
@@ -60,7 +55,7 @@ public class PageButtonFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPagebuttonsBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.page_buttons));
+        mainActivityInterface.updateToolbar(getString(R.string.page_buttons));
 
         // Set up helpers
         setupHelpers();
@@ -72,9 +67,6 @@ public class PageButtonFragment extends Fragment {
     }
 
     private void setupHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        pageButtons = mainActivityInterface.getPageButtons();
-        themeColors = mainActivityInterface.getMyThemeColors();
         exposedDropDownSelection = new ExposedDropDownSelection();
     }
 
@@ -90,17 +82,17 @@ public class PageButtonFragment extends Fragment {
 
                 // Now iterate through each button and set it up
                 for (int x = 0; x < 6; x++) {
-                    pageButtons.setPageButton(requireContext(), myButtons.get(x), themeColors.getPageButtonsColor(), x, true);
+                    mainActivityInterface.getPageButtons().setPageButton(requireContext(), myButtons.get(x), mainActivityInterface.getMyThemeColors().getPageButtonsColor(), x, true);
                     myButtons.get(x).setVisibility(View.VISIBLE);
-                    setVisibilityFromBoolean(myLayouts.get(x), pageButtons.getPageButtonVisibility(x));
-                    mySwitches.get(x).setChecked(pageButtons.getPageButtonVisibility(x));
+                    setVisibilityFromBoolean(myLayouts.get(x), mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
+                    mySwitches.get(x).setChecked(mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
                     String string = getString(R.string.button) + " " + (x + 1) + ": " + getString(R.string.visible);
                     mySwitches.get(x).setText(string);
                     int finalX = x;
                     mySwitches.get(x).setOnCheckedChangeListener((buttonView, isChecked) -> changeVisibilityPreference(finalX, isChecked));
                 }
             });
-            arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.exposed_dropdown, pageButtons.getPageButtonAvailableText());
+            arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.exposed_dropdown, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
             requireActivity().runOnUiThread(() -> {
                 for (int x=0;x<6;x++) {
                     setTheDropDowns(x);
@@ -173,9 +165,9 @@ public class PageButtonFragment extends Fragment {
     }
 
     private void changeVisibilityPreference(int x, boolean visible) {
-        preferences.setMyPreferenceBoolean(requireContext(),"pageButtonShow"+(x+1), visible);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"pageButtonShow"+(x+1), visible);
         setVisibilityFromBoolean(myLayouts.get(x),visible);
-        pageButtons.setPageButtonVisibility(x,visible);
+        mainActivityInterface.getPageButtons().setPageButtonVisibility(x,visible);
         mainActivityInterface.updatePageButtonLayout();
     }
 
@@ -189,8 +181,8 @@ public class PageButtonFragment extends Fragment {
 
     private void setTheDropDowns(int pos) {
         autoCompleteTextViews.get(pos).setAdapter(arrayAdapter);
-        autoCompleteTextViews.get(pos).setText(pageButtons.getPageButtonText(pos));
-        exposedDropDownSelection.keepSelectionPosition(textInputLayouts.get(pos),autoCompleteTextViews.get(pos),pageButtons.getPageButtonAvailableText());
+        autoCompleteTextViews.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
+        exposedDropDownSelection.keepSelectionPosition(textInputLayouts.get(pos),autoCompleteTextViews.get(pos),mainActivityInterface.getPageButtons().getPageButtonAvailableText());
         /*autoCompleteTextViews.get(pos).setOnClickListener(new View.OnClickListener() {
             boolean showing = false;
             @Override
@@ -220,14 +212,14 @@ public class PageButtonFragment extends Fragment {
         });
     }
     private void setTheText(int pos) {
-        ((TextView)shortTexts.get(pos).findViewById(R.id.subText)).setText(pageButtons.getPageButtonShortText(pos));
-        ((TextView)longTexts.get(pos).findViewById(R.id.subText)).setText(pageButtons.getPageButtonLongText(pos));
-        if (pageButtons.getPageButtonShortText(pos).isEmpty()) {
+        ((TextView)shortTexts.get(pos).findViewById(R.id.subText)).setText(mainActivityInterface.getPageButtons().getPageButtonShortText(pos));
+        ((TextView)longTexts.get(pos).findViewById(R.id.subText)).setText(mainActivityInterface.getPageButtons().getPageButtonLongText(pos));
+        if (mainActivityInterface.getPageButtons().getPageButtonShortText(pos).isEmpty()) {
             shortTexts.get(pos).setVisibility(View.GONE);
         } else {
             shortTexts.get(pos).setVisibility(View.VISIBLE);
         }
-        if (pageButtons.getPageButtonLongText(pos).isEmpty()) {
+        if (mainActivityInterface.getPageButtons().getPageButtonLongText(pos).isEmpty()) {
             longTexts.get(pos).setVisibility(View.GONE);
         } else {
             longTexts.get(pos).setVisibility(View.VISIBLE);
@@ -236,16 +228,16 @@ public class PageButtonFragment extends Fragment {
 
     private void saveDropDownChoice(int x, String text) {
         // x tells us the button we are dealing with and action is, well, the action
-        int foundpos = pageButtons.getPositionFromText(text);
+        int foundpos = mainActivityInterface.getPageButtons().getPositionFromText(text);
         Log.d("saveDropDownChoice","x:"+x+"  text="+text+"  foundpos="+foundpos);
-        pageButtons.setPageButtonAction(x,foundpos);
-        pageButtons.setPageButtonText(x,foundpos);
-        pageButtons.setPageButtonShortText(x,foundpos);
-        pageButtons.setPageButtonLongText(x,foundpos);
-        pageButtons.setPageButtonDrawable(requireContext(),x,foundpos);
-        pageButtons.setPageButton(requireContext(),myButtons.get(x),themeColors.getPageButtonsColor(),x, true);
+        mainActivityInterface.getPageButtons().setPageButtonAction(x,foundpos);
+        mainActivityInterface.getPageButtons().setPageButtonText(x,foundpos);
+        mainActivityInterface.getPageButtons().setPageButtonShortText(x,foundpos);
+        mainActivityInterface.getPageButtons().setPageButtonLongText(x,foundpos);
+        mainActivityInterface.getPageButtons().setPageButtonDrawable(requireContext(),x,foundpos);
+        mainActivityInterface.getPageButtons().setPageButton(requireContext(),myButtons.get(x),mainActivityInterface.getMyThemeColors().getPageButtonsColor(),x, true);
         setTheText(x);
-        preferences.setMyPreferenceString(requireContext(),"pageButton"+(x+1),pageButtons.getPageButtonAction(x));
+        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"pageButton"+(x+1),mainActivityInterface.getPageButtons().getPageButtonAction(x));
         mainActivityInterface.updatePageButtonLayout();
     }
 }

@@ -13,9 +13,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.OutputStream;
@@ -35,14 +33,14 @@ public class MakePDF {
     private int dpi;
     private Paint paint;
 
-    public Uri createPDF(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, Song thisSong) {
+    public Uri createPDF(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         String newFilename = thisSong.getFolder().replace("/","_");
         if (!newFilename.endsWith("_")) {
             newFilename = newFilename + "_";
         }
         newFilename = newFilename + thisSong.getFilename() + ".pdf";
-        Uri uri = storageAccess.getUriForItem(c,preferences,"Export","",newFilename);
-        storageAccess.lollipopCreateFileForOutputStream(c,preferences,uri, "application/pdf","Export","",newFilename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Export","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface.getPreferences(),uri, "application/pdf","Export","",newFilename);
 
         // Set the paint values
         setPaintDefaults();
@@ -74,7 +72,7 @@ public class MakePDF {
         clearPage(page);
 
         // Test write the footer to the page to get its height
-        writePDFContent(c,processSong,thisSong,clyrics,0,1.0f);
+        writePDFContent(c,mainActivityInterface,thisSong,clyrics,0,1.0f);
         Log.d("d","lyricWidth="+lyricwidth);
         Log.d("d","lyricHeight="+lyricheight);
         // Wipe it for now
@@ -86,13 +84,13 @@ public class MakePDF {
         // Add the header back in
         writeTheHeader(c,thisSong,canvas,margin);
         // Add the lyrics back in
-        writePDFContent(c,processSong,thisSong,canvas,headerHeight+margin,scaling);
+        writePDFContent(c,mainActivityInterface,thisSong,canvas,headerHeight+margin,scaling);
         // Add the footer back in
         writeTheFooter(canvas,(docHeight-margin));
 
         // write the PDF document
         pdfDocument.finishPage(page);
-        saveThePDF(c,storageAccess,uri,pdfDocument);
+        saveThePDF(c,mainActivityInterface,uri,pdfDocument);
 
         return uri;
     }
@@ -115,8 +113,8 @@ public class MakePDF {
         chordColor = Color.BLACK;
         lyricColor = Color.BLACK;
     }
-    private void saveThePDF(Context c, StorageAccess storageAccess, Uri uri, PdfDocument pdfDocument) {
-        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+    private void saveThePDF(Context c, MainActivityInterface mainActivityInterface, Uri uri, PdfDocument pdfDocument) {
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
         try {
             pdfDocument.writeTo(outputStream);
             pdfDocument.close();
@@ -183,7 +181,7 @@ public class MakePDF {
         footerHeight = bounds.height();
         canvas.drawText(string,margin,(ypos-10),paint);
     }
-    private void writePDFContent(Context c, ProcessSong processSong, Song thisSong, Canvas canvas, int ypos, float scaling) {
+    private void writePDFContent(Context c, MainActivityInterface mainActivityInterface, Song thisSong, Canvas canvas, int ypos, float scaling) {
         // Now go though the lyrics
         int height = 0;
         int width = 0;
@@ -210,7 +208,7 @@ public class MakePDF {
                 paint.setTextSize(scaledPaintSize);
                 paint.setUnderlineText(true);
                 paint.setColor(lyricColor);
-                line = processSong.fixHeading(c,line);
+                line = mainActivityInterface.getProcessSong().fixHeading(c,line);
 
             } else if (line.startsWith(";")) {
                 // Comment or tab line

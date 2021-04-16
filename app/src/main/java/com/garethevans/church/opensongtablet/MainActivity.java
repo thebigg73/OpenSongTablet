@@ -62,6 +62,7 @@ import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.PedalsFragment;
 import com.garethevans.church.opensongtablet.controls.SwipeFragment;
 import com.garethevans.church.opensongtablet.controls.Swipes;
+import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
@@ -92,6 +93,7 @@ import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
 import com.garethevans.church.opensongtablet.screensetup.ActivityGestureDetector;
@@ -167,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private StorageAccess storageAccess;
     private Preferences preferences;
     private ThemeColors themeColors;
+    private DrawNotes drawNotes;
     private SetTypeFace setTypeFace;
     private SQLiteHelper sqLiteHelper;
     private CommonSQL commonSQL;
@@ -210,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private GestureDetector gestureDetector;
     private ActivityGestureDetector activityGestureDetector;
     private ABCNotation abcNotation;
+    private ProfileActions profileActions;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -381,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 themeColors.getPageButtonsColor());
         pageButtons.animatePageButton(this,false);
         nearbyConnections = new NearbyConnections(this,mainActivityInterface);
-        midi = new Midi(this);
+        midi = new Midi();
         pedalActions = new PedalActions();
         exportActions = new ExportActions();
         song = new Song();
@@ -403,9 +407,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         transpose = new Transpose();
         gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
         alertChecks = new AlertChecks();
-        gestures = new Gestures(this,preferences);
-        swipes = new Swipes(this,preferences);
+        gestures = new Gestures(this,mainActivityInterface);
+        swipes = new Swipes(this,mainActivityInterface);
         abcNotation = new ABCNotation();
+        profileActions = new ProfileActions();
     }
 
     // The actionbar
@@ -513,7 +518,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         setActions.setStringToSet(this,mainActivityInterface);
 
         // Set the locale
-        fixLocale.setLocale(this,preferences);
+        fixLocale.setLocale(this,mainActivityInterface);
         locale = fixLocale.getLocale();
 
         // MediaPlayer
@@ -525,7 +530,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         pageButtons.setPageButtonAlpha(preferences.getMyPreferenceFloat(this,"pageButtonAlpha",0.6f));
 
         // Typefaces
-        setTypeFace.setUpAppFonts(this,preferences,new Handler(),new Handler(),new Handler(),new Handler(),new Handler());
+        setTypeFace.setUpAppFonts(this,mainActivityInterface,new Handler(),new Handler(),new Handler(),new Handler(),new Handler());
     }
     private void initialiseArrayLists() {
         targets = new ArrayList<>();
@@ -600,7 +605,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         }
         windowFlags.setWindowFlags();
     }
-
 
     // Deal with the song menu
     @Override
@@ -739,7 +743,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         super.onConfigurationChanged(newConfig);
 
         // Get the language
-        fixLocale.setLocale(this,preferences);
+        fixLocale.setLocale(this,mainActivityInterface);
 
         // Save a static variable that we have rotated the screen.
         // The media player will look for this.  If found, it won't restart when the song loads
@@ -775,21 +779,26 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // The toolbar/menu items
     @Override
-    public void updateToolbar(Song song, String title) {
-        // Null titles are for the default song, author, etc.  A song is sent instead
-        // Otherwise a new title is passed as a string and a null song is sent
+    public void updateToolbar(String title) {
+        // Null titles are for the default song, author, etc.
+        // Otherwise a new title is passed as a string
         windowFlags.setWindowFlags();
-        if (song==null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
+        if (title!=null) {
+            appActionBar.setActionBar(this,mainActivityInterface,title);
+        } else {
+            appActionBar.setActionBar(this,mainActivityInterface,null);
+        }
+
+        if (title!=null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
             // Make sure the content shows below the action bar
             activityMainBinding.appBarMain.contentMain.getRoot().setTop(ab.getHeight());
         }
-        appActionBar.setActionBar(this,preferences,song,title);
     }
     @Override
     public void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible) {
         // If the user changes settings from the ActionBarSettingsFragment, they get sent here to deal with
         // So let's pass them on to the AppActionBar helper
-        appActionBar.updateActionBarSettings(this,locale,preferences,prefName,intval,floatval,isvisible);
+        appActionBar.updateActionBarSettings(this,mainActivityInterface,prefName,intval,floatval,isvisible);
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -865,9 +874,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Set up battery monitor
         batteryStatus = new BatteryStatus();
-        batteryStatus.setUpBatteryMonitor(this,preferences,activityMainBinding.appBarMain.myToolBarNew.digitalclock,
+        batteryStatus.setUpBatteryMonitor(this,mainActivityInterface,activityMainBinding.appBarMain.myToolBarNew.digitalclock,
                 activityMainBinding.appBarMain.myToolBarNew.batterycharge,
-                activityMainBinding.appBarMain.myToolBarNew.batteryimage,ab,locale);
+                activityMainBinding.appBarMain.myToolBarNew.batteryimage,ab);
 
         return true;
     }
@@ -1449,6 +1458,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return themeColors;
     }
     @Override
+    public void setDrawNotes(DrawNotes view) {
+        drawNotes = view;
+    }
+    @Override
+    public DrawNotes getDrawNotes() {
+        return drawNotes;
+    }
+    @Override
     public StorageAccess getStorageAccess() {
         return storageAccess;
     }
@@ -1493,6 +1510,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // First update the mainActivityInterface used in midi
         midi.setMainActivityInterface(mainActivityInterface);
         // Return a reference to midi
+        return midi;
+    }
+    @Override
+    public Midi getMidi() {
         return midi;
     }
     @Override
@@ -1664,6 +1685,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public AlertChecks getAlertChecks() {
         return alertChecks;
+    }
+    @Override
+    public ProfileActions getProfileActions() {
+        return profileActions;
     }
 
     // Nearby

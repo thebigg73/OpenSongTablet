@@ -54,7 +54,7 @@ public class BackupOSBFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = FragmentOsbbackupBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.backup));
+        mainActivityInterface.updateToolbar(getString(R.string.backup));
 
         setupViews();
         

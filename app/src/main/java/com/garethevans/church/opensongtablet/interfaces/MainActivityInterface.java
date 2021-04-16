@@ -24,6 +24,7 @@ import com.garethevans.church.opensongtablet.controls.Gestures;
 import com.garethevans.church.opensongtablet.controls.PageButtons;
 import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.Swipes;
+import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
@@ -36,6 +37,7 @@ import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
@@ -59,7 +61,7 @@ import java.util.Locale;
 public interface MainActivityInterface {
     void hideActionButton(boolean hide);
     void hideActionBar(boolean hide);
-    void updateToolbar(Song song, String what);
+    void updateToolbar(String what);
     void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible);
     void showTutorial(String what);
     void indexSongs();
@@ -110,6 +112,7 @@ public interface MainActivityInterface {
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
     NearbyConnections getNearbyConnections();
     Midi getMidi(MainActivityInterface mainActivityInterface);
+    Midi getMidi();
     DrawerLayout getDrawer();
     ActionBar getAb();
     MediaPlayer getMediaPlayer(int i);
@@ -175,4 +178,7 @@ public interface MainActivityInterface {
     AlertChecks getAlertChecks();
     void setMainActivityInterface(MainActivityInterface mainActivityInterface);
     MainActivityInterface getMainActivityInterface();
+    DrawNotes getDrawNotes();
+    void setDrawNotes(DrawNotes view);
+    ProfileActions getProfileActions();
 }

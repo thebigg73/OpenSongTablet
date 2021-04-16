@@ -3,7 +3,7 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 
@@ -16,11 +16,11 @@ public class Gestures {
     private String longPress;
 
     // Initialise the class
-    public Gestures(Context c, Preferences preferences) {
+    public Gestures(Context c, MainActivityInterface mainActivityInterface) {
         // On start, set up the arrays
         setGestures();
         setGestureDescriptions(c);
-        getPreferences(c,preferences);
+        getPreferences(c,mainActivityInterface);
     }
     private void setGestures() {
         // Set the gesture names for storing in preferences
@@ -65,9 +65,9 @@ public class Gestures {
         gestureDescriptions.add(metronome + " + " + pad + startstop);
         gestureDescriptions.add(autoscroll + " + " + metronome + " + " + pad + startstop);
     }
-    private void getPreferences(Context c, Preferences preferences) {
-        doubleTap = preferences.getMyPreferenceString(c,"gestureDoubleTap","editsong");
-        longPress = preferences.getMyPreferenceString(c,"gestureLongPress","addtoset");
+    private void getPreferences(Context c, MainActivityInterface mainActivityInterface) {
+        doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString(c,"gestureDoubleTap","editsong");
+        longPress = mainActivityInterface.getPreferences().getMyPreferenceString(c,"gestureLongPress","addtoset");
     }
 
     // The getters and setters called by other classes
@@ -94,12 +94,12 @@ public class Gestures {
     public String getLongPress() {
         return longPress;
     }
-    public void setPreferences(Context c, Preferences preferences, String which, String val) {
+    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, String val) {
         if (which.equals("doubleTap")) {
             this.doubleTap = val;
         } else {
             this.longPress = val;
         }
-        preferences.setMyPreferenceString(c, which, val);
+        mainActivityInterface.getPreferences().setMyPreferenceString(c, which, val);
     }
 }

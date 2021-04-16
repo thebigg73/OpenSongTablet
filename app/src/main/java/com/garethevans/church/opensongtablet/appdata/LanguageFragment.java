@@ -14,13 +14,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsLanguageBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.google.android.material.snackbar.Snackbar;
 
 public class LanguageFragment extends Fragment {
 
     private SettingsLanguageBinding myView;
-    private Preferences preferences;
     private MainActivityInterface mainActivityInterface;
     private final String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
 
@@ -36,10 +34,7 @@ public class LanguageFragment extends Fragment {
         myView = SettingsLanguageBinding.inflate(inflater, container, false);
 
         // Update the toolbar
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.about) + " / " + getString(R.string.language));
-
-        // Set the helpers
-        setHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.language));
 
         // Build the radio group
         buildRadioGroup();
@@ -47,12 +42,8 @@ public class LanguageFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-    }
-
     private void buildRadioGroup() {
-        String languageCode = preferences.getMyPreferenceString(getContext(), "language", "en");
+        String languageCode = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "language", "en");
         String[] languages = requireContext().getResources().getStringArray(R.array.languagelist);
         int id = -1;
         for (int x=0; x<languages.length; x++) {
@@ -68,7 +59,7 @@ public class LanguageFragment extends Fragment {
             myView.languageGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 RadioButton button = myView.languageGroup.findViewById(checkedId);
                 String tag = button.getTag().toString();
-                preferences.setMyPreferenceString(getContext(),"language",tag);
+                mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"language",tag);
                 Snackbar.make(requireActivity().findViewById(R.id.coordinator),"You will need to restart the app to see the changes",Snackbar.LENGTH_LONG).show();
             });
             myView.languageGroup.addView(radioButton);

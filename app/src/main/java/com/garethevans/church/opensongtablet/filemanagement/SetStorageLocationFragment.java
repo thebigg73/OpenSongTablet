@@ -26,14 +26,11 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.databinding.StorageSetstoragelocationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import lib.folderpicker.FolderPicker;
 
@@ -55,10 +52,6 @@ It is called under the following conditions:
 public class SetStorageLocationFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    private Preferences preferences;
-    private StorageAccess storageAccess;
-    private Locale locale;
-    private ShowToast showToast;
     private Uri uriTree, uriTreeHome;
 
     private ArrayList<String> locations;
@@ -86,9 +79,6 @@ public class SetStorageLocationFragment extends Fragment {
 
         myView = StorageSetstoragelocationBinding.inflate(inflater, container, false);
 
-        // Initialise the helper classes
-        initialiseHelpers();
-
         // Set up the views
         initialiseViews();
 
@@ -102,13 +92,6 @@ public class SetStorageLocationFragment extends Fragment {
         return myView.getRoot();
     }
 
-    // Set up what we need for the fragment
-    private void initialiseHelpers() {
-        storageAccess = mainActivityInterface.getStorageAccess();
-        preferences = mainActivityInterface.getPreferences();
-        locale = mainActivityInterface.getLocale();
-        showToast = mainActivityInterface.getShowToast();
-    }
     private void initialiseViews() {
         // Lock the menu and hide the actionbar and action button
         mainActivityInterface.lockDrawer(true);
@@ -151,7 +134,7 @@ public class SetStorageLocationFragment extends Fragment {
         Also it could be null!
         */
 
-        String uriTreeString = preferences.getMyPreferenceString(requireContext(), "uriTree", "");
+        String uriTreeString = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "uriTree", "");
         if (!uriTreeString.equals("")) {
             uriTree = Uri.parse(uriTreeString);
         } else {
@@ -159,7 +142,7 @@ public class SetStorageLocationFragment extends Fragment {
             uriTreeHome = null;
         }
         if (uriTree!=null && uriTreeHome==null) {
-            uriTreeHome = storageAccess.homeFolder(requireActivity(),uriTree,preferences);
+            uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(),uriTree,mainActivityInterface.getPreferences());
         }
     }
 
@@ -179,11 +162,11 @@ public class SetStorageLocationFragment extends Fragment {
     private void saveUriLocation() {
         if (uriTree!=null) {
             // Save the preferences
-            preferences.setMyPreferenceString(requireActivity(), "uriTree", uriTree.toString());
-            preferences.setMyPreferenceString(requireActivity(), "uriTreeHome", uriTreeHome.toString());
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireActivity(), "uriTree", uriTree.toString());
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireActivity(), "uriTreeHome", uriTreeHome.toString());
         } else {
-            preferences.setMyPreferenceString(requireActivity(), "uriTree", "");
-            preferences.setMyPreferenceString(requireActivity(), "uriTreeHome", "");
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireActivity(), "uriTree", "");
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireActivity(), "uriTreeHome", "");
         }
     }
 
@@ -252,7 +235,7 @@ public class SetStorageLocationFragment extends Fragment {
                         displayWhere(where);
 
                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
-                            int count = storageAccess.songCountAtLocation(f);
+                            int count = mainActivityInterface.getStorageAccess().songCountAtLocation(f);
                             extra = count + " Songs";
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
                             // IV - Add  a leading ¬ and remove trailing /Songs
@@ -367,12 +350,12 @@ public class SetStorageLocationFragment extends Fragment {
         return (uriTreeHome!=null && uriTree!=null && !uriTreeHome.toString().isEmpty() && !uriTree.toString().isEmpty());
     }
     private boolean isStorageValid() {
-        return (isStorageSet() && storageAccess.uriTreeValid(getContext(),uriTree));
+        return (isStorageSet() && mainActivityInterface.getStorageAccess().uriTreeValid(getContext(),uriTree));
     }
     private void notWriteable() {
         uriTree = null;
         uriTreeHome = null;
-        showToast.doIt(requireActivity(), getString(R.string.storage_notwritable));
+        mainActivityInterface.getShowToast().doIt(requireActivity(), getString(R.string.storage_notwritable));
         showStorageLocation();
     }
 
@@ -392,7 +375,7 @@ public class SetStorageLocationFragment extends Fragment {
     private void chooseStorageLocation() {
         if (isStorageGranted()) {
             Intent intent;
-            if (storageAccess.lollipopOrLater()) {
+            if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
                 intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
                         Intent.FLAG_GRANT_READ_URI_PERMISSION |
@@ -453,10 +436,10 @@ public class SetStorageLocationFragment extends Fragment {
         }
         if (folderLocation != null) {
             uriTree = Uri.parse(folderLocation);
-            uriTreeHome = storageAccess.homeFolder(requireActivity(), uriTree, preferences);
+            uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(), uriTree, mainActivityInterface.getPreferences());
 
             // If we can write to this all is good, if not, tell the user (likely to be SD card)
-            if (!storageAccess.canWrite(requireActivity(), uriTree)) {
+            if (!mainActivityInterface.getStorageAccess().canWrite(requireActivity(), uriTree)) {
                 notWriteable();
             }
         } else {
@@ -479,7 +462,7 @@ public class SetStorageLocationFragment extends Fragment {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
-        uriTreeHome = storageAccess.homeFolder(requireActivity(), uriTree, preferences);
+        uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(), uriTree, mainActivityInterface.getPreferences());
         if (uriTree == null || uriTreeHome == null) {
             notWriteable();
         }
@@ -490,14 +473,14 @@ public class SetStorageLocationFragment extends Fragment {
 
     // Here we deal with displaying (and processing) the chosen storage location
     private void showStorageLocation() {
-        uriTreeHome = storageAccess.fixBadStorage(uriTreeHome);
+        uriTreeHome = mainActivityInterface.getStorageAccess().fixBadStorage(uriTreeHome);
         if (uriTreeHome==null) {
             uriTree = null;
             saveUriLocation();
         }
 
         if (uriTreeHome != null) {
-            String[] niceLocation = storageAccess.niceUriTree(getContext(), preferences, locale, uriTreeHome);
+            String[] niceLocation = mainActivityInterface.getStorageAccess().niceUriTree(getContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale(), uriTreeHome);
             String outputText = niceLocation[1] + "\n" + niceLocation[0];
             ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText(outputText);
             warningCheck();

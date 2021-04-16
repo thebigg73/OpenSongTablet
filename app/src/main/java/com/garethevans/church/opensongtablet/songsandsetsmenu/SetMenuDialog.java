@@ -18,17 +18,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
-import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 
 public class SetMenuDialog extends DialogFragment {
 
     MenuSetsDialogBinding myView;
     MainActivityInterface mainActivityInterface;
-    CurrentSet currentSet;
-    Preferences preferences;
-    SetActions setActions;
 
     String fragName;
     Fragment callingFragment;
@@ -56,9 +50,6 @@ public class SetMenuDialog extends DialogFragment {
             w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        // Get the helpers set up
-        getHelpers();
-
         myView.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,fragName,callingFragment,null));
         //menuSetsDialogBinding.saveSet.setOnClickListener(v -> setActions.saveTheSet());
         //menuSetsDialogBinding.manageSets.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_manageSets));
@@ -66,12 +57,5 @@ public class SetMenuDialog extends DialogFragment {
 
         return myView.getRoot();
     }
-
-    private void getHelpers() {
-        currentSet = mainActivityInterface.getCurrentSet();
-        preferences = mainActivityInterface.getPreferences();
-        setActions = mainActivityInterface.getSetActions();
-    }
-
 
 }

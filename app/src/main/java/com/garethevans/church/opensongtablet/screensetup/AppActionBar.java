@@ -9,10 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
-
-import java.util.Locale;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class AppActionBar {
 
@@ -59,25 +56,27 @@ public class AppActionBar {
     public void setHideActionBar(boolean hideActionBar) {
         this.hideActionBar = hideActionBar;
     }
-    public void setActionBar(Context c, Preferences preferences, Song song, String newtitle) {
-        if (song != null) {
+    public void setActionBar(Context c, MainActivityInterface mainActivityInterface, String newtitle) {
+        if (newtitle == null) {
             // We are in the Performance/Stage mode
             //showActionBar(false);
-            float mainsize = preferences.getMyPreferenceFloat(c,"songTitleSize",13.0f);
+            float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"songTitleSize",13.0f);
 
-            if (title != null && song.getTitle() != null) {
+            if (title != null && mainActivityInterface.getSong().getTitle() != null) {
                 title.setTextSize(mainsize);
-                title.setText(song.getTitle());
+                title.setText(mainActivityInterface.getSong().getTitle());
             }
-            if (author != null && song.getAuthor() != null && !song.getAuthor().isEmpty()) {
-                author.setTextSize(preferences.getMyPreferenceFloat(c,"songAuthorSize",11.0f));
-                author.setText(song.getAuthor());
+            if (author != null && mainActivityInterface.getSong().getAuthor() != null &&
+                    !mainActivityInterface.getSong().getAuthor().isEmpty()) {
+                author.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"songAuthorSize",11.0f));
+                author.setText(mainActivityInterface.getSong().getAuthor());
                 hideView(author, false);
             } else {
                 hideView(author, true);
             }
-            if (key != null && song.getKey() != null && !song.getKey().isEmpty()) {
-                String k = " (" + song.getKey() + ")";
+            if (key != null && mainActivityInterface.getSong().getKey() != null &&
+                    !mainActivityInterface.getSong().getKey().isEmpty()) {
+                String k = " (" + mainActivityInterface.getSong().getKey() + ")";
                 key.setTextSize(mainsize);
                 capo.setTextSize(mainsize);
                 key.setText(k);
@@ -101,7 +100,8 @@ public class AppActionBar {
         capo.setText(string);
     }
 
-    public void updateActionBarSettings(Context c, Locale locale, Preferences preferences, String prefName, int intval, float floatval, boolean isvisible) {
+    public void updateActionBarSettings(Context c, MainActivityInterface mainActivityInterface,
+                                        String prefName, int intval, float floatval, boolean isvisible) {
         switch (prefName) {
             case "batteryDialOn":
                 hideView(batteryDial,!isvisible);
@@ -119,7 +119,7 @@ public class AppActionBar {
                 hideView(clock,!isvisible);
                 break;
             case "clock24hFormat":
-                batteryStatus.updateClock(locale,clock,preferences.getMyPreferenceFloat(c,"clockTextSize",9.0f),
+                batteryStatus.updateClock(mainActivityInterface,clock,mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"clockTextSize",9.0f),
                         clock.getVisibility()==View.VISIBLE,isvisible);
                 break;
             case "clockTextSize":

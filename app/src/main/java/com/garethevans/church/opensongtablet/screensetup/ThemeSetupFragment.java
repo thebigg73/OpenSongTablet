@@ -18,7 +18,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsThemeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
 
@@ -26,9 +25,6 @@ public class ThemeSetupFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsThemeBinding myView;
-
-    private Preferences preferences;
-    private ThemeColors themeColors;
 
     private String myTheme;
     private ArrayList<String> themes;
@@ -43,10 +39,7 @@ public class ThemeSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.theme));
-
-        // Set up the helper classes
-        setUpHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.theme));
 
         // Initialise the themes
         setUpTheme();
@@ -57,11 +50,6 @@ public class ThemeSetupFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setUpHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        themeColors = mainActivityInterface.getMyThemeColors();
-    }
-
     private void setUpTheme() {
         themes = new ArrayList<>();
         themes.add(getString(R.string.theme_dark));
@@ -70,7 +58,7 @@ public class ThemeSetupFragment extends Fragment {
         themes.add(getString(R.string.theme_custom2));
 
         ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.exposed_dropdown,themes);
-        myTheme = preferences.getMyPreferenceString(getContext(),"appTheme","dark");
+        myTheme = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"appTheme","dark");
         switch (myTheme) {
             case "dark":
             default:
@@ -102,7 +90,7 @@ public class ThemeSetupFragment extends Fragment {
                 } else if (s!=null && s.toString().equals(themes.get(3))) {
                     myTheme = "custom2";
                 }
-                preferences.setMyPreferenceString(getContext(),"appTheme",myTheme);
+                mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"appTheme",myTheme);
                 updateColors();
                 updateButtons();
             }
@@ -116,36 +104,36 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     private void updateColors() {
-        themeColors.getDefaultColors(getContext(), mainActivityInterface);
+        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(), mainActivityInterface);
     }
 
     private void updateButtons() {
-        myView.pageButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsBackgroundColor(), PorterDuff.Mode.SRC_IN));
-        myView.lyricsButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsTextColor(), PorterDuff.Mode.SRC_IN));
-        myView.chordsButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsChordsColor(), PorterDuff.Mode.SRC_IN));
-        myView.capoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsCapoColor(), PorterDuff.Mode.SRC_IN));
+        myView.pageButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor(), PorterDuff.Mode.SRC_IN));
+        myView.lyricsButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsTextColor(), PorterDuff.Mode.SRC_IN));
+        myView.chordsButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsChordsColor(), PorterDuff.Mode.SRC_IN));
+        myView.capoButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsCapoColor(), PorterDuff.Mode.SRC_IN));
 
-        myView.verseButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsVerseColor(), PorterDuff.Mode.SRC_IN));
-        myView.chorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsChorusColor(), PorterDuff.Mode.SRC_IN));
-        myView.bridgeButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsBridgeColor(), PorterDuff.Mode.SRC_IN));
-        myView.commentButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsCommentColor(), PorterDuff.Mode.SRC_IN));
-        myView.prechorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsPreChorusColor(), PorterDuff.Mode.SRC_IN));
-        myView.tagButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsTagColor(), PorterDuff.Mode.SRC_IN));
-        myView.customButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsCustomColor(), PorterDuff.Mode.SRC_IN));
-        myView.chordHighlighting.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getHighlightChordColor(), PorterDuff.Mode.SRC_IN));
-        myView.titleHighlighting.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getHighlightHeadingColor(), PorterDuff.Mode.SRC_IN));
+        myView.verseButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsVerseColor(), PorterDuff.Mode.SRC_IN));
+        myView.chorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsChorusColor(), PorterDuff.Mode.SRC_IN));
+        myView.bridgeButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsBridgeColor(), PorterDuff.Mode.SRC_IN));
+        myView.commentButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsCommentColor(), PorterDuff.Mode.SRC_IN));
+        myView.prechorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsPreChorusColor(), PorterDuff.Mode.SRC_IN));
+        myView.tagButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsTagColor(), PorterDuff.Mode.SRC_IN));
+        myView.customButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsCustomColor(), PorterDuff.Mode.SRC_IN));
+        myView.chordHighlighting.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getHighlightChordColor(), PorterDuff.Mode.SRC_IN));
+        myView.titleHighlighting.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(), PorterDuff.Mode.SRC_IN));
 
-        myView.presoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoFontColor(), PorterDuff.Mode.SRC_IN));
-        myView.presoInfoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoInfoFontColor(), PorterDuff.Mode.SRC_IN));
-        myView.presoAlertButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoAlertColor(), PorterDuff.Mode.SRC_IN));
-        myView.presoShadowButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoShadowColor(), PorterDuff.Mode.SRC_IN));
+        myView.presoButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getPresoFontColor(), PorterDuff.Mode.SRC_IN));
+        myView.presoInfoButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor(), PorterDuff.Mode.SRC_IN));
+        myView.presoAlertButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getPresoAlertColor(), PorterDuff.Mode.SRC_IN));
+        myView.presoShadowButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getPresoShadowColor(), PorterDuff.Mode.SRC_IN));
 
-        myView.metronomeButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getMetronomeColor(), PorterDuff.Mode.SRC_IN));
-        myView.pagebuttonButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPageButtonsColor(), PorterDuff.Mode.SRC_IN));
-        myView.stickytextButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getStickyTextColor(), PorterDuff.Mode.SRC_IN));
-        myView.stickybackgroundButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getStickyBackgroundColor(), PorterDuff.Mode.SRC_IN));
-        myView.extratextButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getExtraInfoTextColor(), PorterDuff.Mode.SRC_IN));
-        myView.extrabackgroundButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getExtraInfoBgColor(), PorterDuff.Mode.SRC_IN));
+        myView.metronomeButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getMetronomeColor(), PorterDuff.Mode.SRC_IN));
+        myView.pagebuttonButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getPageButtonsColor(), PorterDuff.Mode.SRC_IN));
+        myView.stickytextButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getStickyTextColor(), PorterDuff.Mode.SRC_IN));
+        myView.stickybackgroundButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor(), PorterDuff.Mode.SRC_IN));
+        myView.extratextButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor(), PorterDuff.Mode.SRC_IN));
+        myView.extrabackgroundButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getExtraInfoBgColor(), PorterDuff.Mode.SRC_IN));
     }
 
     private void setListeners() {
@@ -180,4 +168,9 @@ public class ThemeSetupFragment extends Fragment {
         mainActivityInterface.navigateToFragment(null,R.id.chooseColorFragment);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
+    }
 }

@@ -18,20 +18,14 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
 
 public class FontSetupFragment extends Fragment implements CheckInternet.ConnectedInterface{
 
     private SettingsFontsBinding myView;
-    private Preferences preferences;
-    private SetTypeFace setTypeFace;
-    private ThemeColors themeColors;
-
     private ArrayList<String> fontNames;
     private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, which;
 
@@ -48,16 +42,14 @@ public class FontSetupFragment extends Fragment implements CheckInternet.Connect
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null, getString(R.string.font_choose));
+        mainActivityInterface.updateToolbar(getString(R.string.font_choose));
 
-        setHelpers();
         getPreferences();
 
         new Thread(() -> {
 
-
             // Got the fonts from Google
-            fontNames = setTypeFace.getFontsFromGoogle();
+            fontNames = mainActivityInterface.getMyFonts().getFontsFromGoogle();
 
             requireActivity().runOnUiThread(() -> {
                 // Set up the previews
@@ -76,19 +68,13 @@ public class FontSetupFragment extends Fragment implements CheckInternet.Connect
         return myView.getRoot();
     }
 
-    private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        setTypeFace = mainActivityInterface.getMyFonts();
-        themeColors = mainActivityInterface.getMyThemeColors();
-    }
-
     private void getPreferences() {
-        fontLyric = preferences.getMyPreferenceString(getContext(),"fontLyric","Lato");
-        fontChord = preferences.getMyPreferenceString(getContext(),"fontChord","Lato");
-        fontPreso = preferences.getMyPreferenceString(getContext(),"fontPreso","Lato");
-        fontPresoInfo = preferences.getMyPreferenceString(getContext(),"fontPresoInfo","Lato");
-        fontSticky = preferences.getMyPreferenceString(getContext(),"fontSticky","Lato");
-        themeColors.getDefaultColors(getContext(),mainActivityInterface);
+        fontLyric = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontLyric","Lato");
+        fontChord = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontChord","Lato");
+        fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontPreso","Lato");
+        fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontPresoInfo","Lato");
+        fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontSticky","Lato");
+        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
     }
 
     private void setupDropDowns() {
@@ -122,39 +108,39 @@ public class FontSetupFragment extends Fragment implements CheckInternet.Connect
 
     private void initialisePreviews() {
         // Set up the song preview
-        myView.songPreview.setBackgroundColor(themeColors.getLyricsBackgroundColor());
-        myView.lyricPreview.setTextColor(themeColors.getLyricsTextColor());
-        myView.chordPreview.setTextColor(themeColors.getLyricsChordsColor());
+        myView.songPreview.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+        myView.lyricPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
+        myView.chordPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
         myView.lyricPreview.setTextSize(24.0f);
-        myView.chordPreview.setTextSize(24.0f*preferences.getMyPreferenceFloat(getContext(),"scaleChords",0.8f));
+        myView.chordPreview.setTextSize(24.0f*mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(),"scaleChords",0.8f));
 
         // Set the presentation preview
         myView.presoPreview.setBackground(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.preso_default_bg,null));
-        myView.presoLorem.setTextColor(themeColors.getPresoFontColor());
-        myView.presoInfoLorem.setTextColor(themeColors.getPresoInfoFontColor());
-        myView.presoInfoLorem.setTextColor(themeColors.getPresoInfoFontColor());
+        myView.presoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoFontColor());
+        myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+        myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         myView.presoLorem.setTextSize(24.0f);
         myView.presoInfoLorem.setTextSize(24.0f*0.5f);
-        myView.presoLorem.setGravity(preferences.getMyPreferenceInt(getContext(),"presoInfoAlign", Gravity.CENTER));
-        myView.presoInfoLorem.setGravity(preferences.getMyPreferenceInt(getContext(),"presoInfoAlign", Gravity.END));
+        myView.presoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"presoInfoAlign", Gravity.CENTER));
+        myView.presoInfoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"presoInfoAlign", Gravity.END));
 
         // Set the sticky preview
-        myView.stickyLorem.setBackgroundColor(themeColors.getStickyBackgroundColor());
+        myView.stickyLorem.setBackgroundColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
         myView.stickyLorem.setTextSize(22.0f);
-        myView.stickyLorem.setTextColor(themeColors.getStickyTextColor());
+        myView.stickyLorem.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
     }
 
     private void updatePreviews() {
         // Set up the song preview
-        myView.lyricPreview.setTypeface(setTypeFace.getLyricFont());
-        myView.chordPreview.setTypeface(setTypeFace.getChordFont());
+        myView.lyricPreview.setTypeface(mainActivityInterface.getMyFonts().getLyricFont());
+        myView.chordPreview.setTypeface(mainActivityInterface.getMyFonts().getChordFont());
 
         // Set the presentation preview
-        myView.presoLorem.setTypeface(setTypeFace.getPresoFont());
-        myView.presoInfoLorem.setTypeface(setTypeFace.getPresoInfoFont());
+        myView.presoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoFont());
+        myView.presoInfoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
 
         // Set the sticky preview
-        myView.stickyLorem.setTypeface(setTypeFace.getStickyFont());
+        myView.stickyLorem.setTypeface(mainActivityInterface.getMyFonts().getStickyFont());
     }
 
     private void openWebPreview(String which) {
@@ -187,7 +173,7 @@ public class FontSetupFragment extends Fragment implements CheckInternet.Connect
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // The preview method in setTypeFace deals with saving
-            setTypeFace.changeFont(getContext(),preferences,which,s.toString(),new Handler());
+            mainActivityInterface.getMyFonts().changeFont(getContext(),mainActivityInterface,which,s.toString(),new Handler());
             updatePreviews();
         }
 

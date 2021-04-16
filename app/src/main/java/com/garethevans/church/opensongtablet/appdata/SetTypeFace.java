@@ -10,7 +10,7 @@ import androidx.core.provider.FontRequest;
 import androidx.core.provider.FontsContractCompat;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -69,58 +69,60 @@ public class SetTypeFace {
     }
 
     // Set the fonts used from preferences
-    public void setUpAppFonts(Context c, Preferences preferences, Handler lyricFontHandler,
+    public void setUpAppFonts(Context c, MainActivityInterface mainActivityInterface, Handler lyricFontHandler,
                               Handler chordFontHandler, Handler stickyFontHandler,
                               Handler presoFontHandler, Handler presoInfoFontHandler) {
 
         // Load up the user preferences
-        String fontLyric = preferences.getMyPreferenceString(c, "fontLyric", "Lato");
-        String fontChord = preferences.getMyPreferenceString(c, "fontChord", "Lato");
-        String fontSticky = preferences.getMyPreferenceString(c, "fontSticky", "Lato");
-        String fontPreso = preferences.getMyPreferenceString(c, "fontPreso", "Lato");
-        String fontPresoInfo = preferences.getMyPreferenceString(c, "fontPresoInfo", "Lato");
+        String fontLyric = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontLyric", "Lato");
+        String fontChord = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontChord", "Lato");
+        String fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontSticky", "Lato");
+        String fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontPreso", "Lato");
+        String fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontPresoInfo", "Lato");
 
         // Set the values  (if Lato, use the bundled font)
         // The reason is that KiKat devices don't load the Google Font resource automatically (it requires manually selecting it).
         if (fontLyric.equals("Lato")) {
             lyricFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(c,preferences,fontLyric,"fontLyric",null,lyricFontHandler);
+            getGoogleFont(c,mainActivityInterface,fontLyric,"fontLyric",null,lyricFontHandler);
         }
         if (fontChord.equals("Lato")) {
             chordFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(c,preferences,fontChord,"fontChord",null,chordFontHandler);
+            getGoogleFont(c,mainActivityInterface,fontChord,"fontChord",null,chordFontHandler);
         }
         if (fontSticky.equals("Lato")) {
             stickyFont = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
         } else {
-            getGoogleFont(c,preferences,fontSticky,"fontSticky",null,stickyFontHandler);
+            getGoogleFont(c,mainActivityInterface,fontSticky,"fontSticky",null,stickyFontHandler);
         }
         if (fontPreso.equals("Lato")) {
             presoFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(c,preferences,fontPreso,"fontPreso",null,presoFontHandler);
+            getGoogleFont(c,mainActivityInterface,fontPreso,"fontPreso",null,presoFontHandler);
         }
         if (fontPresoInfo.equals("Lato")) {
             presoInfoFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(c,preferences,fontPresoInfo,"fontPresoInfo",null,presoInfoFontHandler);
+            getGoogleFont(c,mainActivityInterface,fontPresoInfo,"fontPresoInfo",null,presoInfoFontHandler);
         }
         setMonoFont(Typeface.MONOSPACE);
     }
 
-    public void changeFont(Context c,Preferences preferences,String which, String fontName,Handler handler) {
+    public void changeFont(Context c,MainActivityInterface mainActivityInterface,String which, String fontName,Handler handler) {
         // Save the preferences
-        preferences.setMyPreferenceString(c,which,fontName);
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,which,fontName);
         // Update the font
-        getGoogleFont(c,preferences,fontName,which,null,handler);
+        getGoogleFont(c,mainActivityInterface,fontName,which,null,handler);
     }
 
-    public void getGoogleFont(Context c, Preferences preferences, String fontName, String which,
+    public void getGoogleFont(Context c, MainActivityInterface mainActivityInterface,
+                              String fontName, String which,
                                   TextView textView, Handler handler) {
         FontRequest fontRequest = getFontRequest(fontName);
-        FontsContractCompat.FontRequestCallback fontRequestCallback = getFontRequestCallback(c,preferences,fontName,which,textView);
+        FontsContractCompat.FontRequestCallback fontRequestCallback = getFontRequestCallback(c,
+                mainActivityInterface, fontName,which,textView);
         FontsContractCompat.requestFont(c,fontRequest,fontRequestCallback,handler);
     }
 
@@ -131,7 +133,7 @@ public class SetTypeFace {
     }
 
     private FontsContractCompat.FontRequestCallback getFontRequestCallback(final Context c,
-                                                                           final Preferences preferences,
+                                                                           final MainActivityInterface mainActivityInterface,
                                                                            final String fontName,
                                                                            final String which,
                                                                            final TextView textView) {
@@ -168,7 +170,7 @@ public class SetTypeFace {
                         setPresoInfoFont(typeface);
                         break;
                 }
-                preferences.setMyPreferenceString(c,which,thisFont);
+                mainActivityInterface.getPreferences().setMyPreferenceString(c,which,thisFont);
 
                 // If we are previewing the font, update the text (this will be null otherwise)
                 if (textView != null) {

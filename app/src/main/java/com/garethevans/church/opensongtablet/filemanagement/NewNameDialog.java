@@ -22,9 +22,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.NewNameDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
@@ -32,11 +29,7 @@ import java.util.ArrayList;
 public class NewNameDialog extends DialogFragment {
 
     private MainActivityInterface mainActivityInterface;
-    private Preferences preferences;
-    private StorageAccess storageAccess;
-    private ProcessSong processSong;
     private NewNameDialogBinding myView;
-    private ShowToast showToast;
     private final boolean isfile;
     private final String currentDir;
     private final String currentSubDir;
@@ -75,11 +68,9 @@ public class NewNameDialog extends DialogFragment {
 
         myView = NewNameDialogBinding.inflate(inflater,container,false);
 
-        setHelpers();
-
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
         if (song!=null) {
-            songContent = processSong.getXML(requireContext(),mainActivityInterface,song);
+            songContent = mainActivityInterface.getProcessSong().getXML(requireContext(),mainActivityInterface,song);
         }
 
         // Set listeners
@@ -111,7 +102,7 @@ public class NewNameDialog extends DialogFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s != null) {
-                    String string = storageAccess.safeFilename(s.toString());
+                    String string = mainActivityInterface.getStorageAccess().safeFilename(s.toString());
                     if (!s.toString().equals(string)) {
                         myView.title.setText(string);
                     }
@@ -124,13 +115,6 @@ public class NewNameDialog extends DialogFragment {
         return myView.getRoot();
     }
 
-    private void setHelpers() {
-        storageAccess = mainActivityInterface.getStorageAccess();
-        preferences = mainActivityInterface.getPreferences();
-        processSong = mainActivityInterface.getProcessSong();
-        showToast = mainActivityInterface.getShowToast();
-    }
-
     private void doSave() {
         // Check if the file/folder already exists
         boolean exists;
@@ -140,23 +124,23 @@ public class NewNameDialog extends DialogFragment {
 
         if (myView.title!=null && myView.title.getText()!=null && !myView.title.getText().toString().isEmpty()) {
             newName = myView.title.getText().toString();
-            newName = storageAccess.safeFilename(newName);
+            newName = mainActivityInterface.getStorageAccess().safeFilename(newName);
             myView.title.setText(newName);
-            Uri uri = storageAccess.getUriForItem(getContext(), preferences, currentDir, currentSubDir, newName);
-            exists = storageAccess.uriExists(getContext(),uri);
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface.getPreferences(), currentDir, currentSubDir, newName);
+            exists = mainActivityInterface.getStorageAccess().uriExists(getContext(),uri);
             if (rename) {
                 if (!parentFolder.isEmpty()) {
                     newName = parentFolder + "/" + newName;
                 }
-                storageAccess.renameFolder(requireContext(),preferences,showToast,song,currentSubDir,newName);
+                mainActivityInterface.getStorageAccess().renameFolder(requireContext(),mainActivityInterface.getPreferences(),mainActivityInterface.getShowToast(),song,currentSubDir,newName);
                 message = success;
             } else {
                 if (isfile && !exists) {
-                    if (storageAccess.createFile(getContext(), preferences, null, currentDir, currentSubDir, newName)) {
+                    if (mainActivityInterface.getStorageAccess().createFile(getContext(), mainActivityInterface.getPreferences(), null, currentDir, currentSubDir, newName)) {
                         message = success;
                     }
                 } else if (!isfile && !exists) {
-                    if (storageAccess.createFolder(getContext(), preferences, currentDir, currentSubDir, newName)) {
+                    if (mainActivityInterface.getStorageAccess().createFolder(getContext(), mainActivityInterface.getPreferences(), currentDir, currentSubDir, newName)) {
                         message = success;
                     }
                 } else {
@@ -164,7 +148,7 @@ public class NewNameDialog extends DialogFragment {
                 }
             }
         }
-        showToast.doIt(requireContext(),message);
+        mainActivityInterface.getShowToast().doIt(requireContext(),message);
         if (message.equals(success)) {
             ArrayList<String> result = new ArrayList<>();
             result.add("success");
@@ -173,6 +157,5 @@ public class NewNameDialog extends DialogFragment {
             dismiss();
         }
     }
-
 
 }

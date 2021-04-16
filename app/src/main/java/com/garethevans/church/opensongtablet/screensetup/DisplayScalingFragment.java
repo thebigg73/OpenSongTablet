@@ -15,13 +15,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayScalingBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class DisplayScalingFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsDisplayScalingBinding myView;
-    private Preferences preferences;
     private final int minTextSize = 5;
 
     @Override
@@ -34,10 +32,7 @@ public class DisplayScalingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayScalingBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.scaling));
-
-        // Set the helpers
-        setHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.scaling));
 
         // Set up the views
         setViews();
@@ -46,10 +41,6 @@ public class DisplayScalingFragment extends Fragment {
         setListeners();
 
         return myView.getRoot();
-    }
-
-    private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
     }
 
     private void setViews() {
@@ -70,7 +61,7 @@ public class DisplayScalingFragment extends Fragment {
 
     private void setAutoscaleMode() {
         // Autoscale can be Y(es) W(idth) N(o)
-        String mode = preferences.getMyPreferenceString(requireContext(),"songAutoScale","W");
+        String mode = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songAutoScale","W");
         switch (mode) {
             case "Y":
                 modeSwitches(true,false);
@@ -104,7 +95,7 @@ public class DisplayScalingFragment extends Fragment {
     private void setSeekBarProgress(SeekBar seekBar, TextView textView, String prefName,
                                     float fallback, int multiplier, int minVal, String unit) {
         // Get the float
-        float val = multiplier * preferences.getMyPreferenceFloat(requireContext(),prefName,fallback);
+        float val = multiplier * mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),prefName,fallback);
         updateText(textView,val,unit);
         seekBar.setProgress((int)val-minVal);
     }
@@ -134,11 +125,11 @@ public class DisplayScalingFragment extends Fragment {
             visibilityByBoolean(myView.manualFontSizeLayout,true);
             visibilityByBoolean(myView.autoFontSizeLayout,false);
         }
-        preferences.setMyPreferenceString(requireContext(),"songAutoScale",val);
+        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"songAutoScale",val);
     }
 
     private boolean getChecked(String prefName, boolean fallback) {
-        return preferences.getMyPreferenceBoolean(requireContext(),prefName,fallback);
+        return mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),prefName,fallback);
     }
     private void checkMinMaxSizes() {
         // If the min size is bigger than the max size, then swap them
@@ -269,14 +260,14 @@ public class DisplayScalingFragment extends Fragment {
     }
 
     private void updateBooleanPreference(String prefName, boolean isChecked) {
-        preferences.setMyPreferenceBoolean(requireContext(),prefName,isChecked);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),prefName,isChecked);
     }
 
     private void updateSeekBar(SeekBar seekBar, TextView textView, String prefName, int minVal, float multiplier, String unit) {
         // The actual value is the progress + the minVal
         float val = seekBar.getProgress() + minVal;
         // The float to store could be out of 100, or 1.  Use the multiplier to convert
-        preferences.setMyPreferenceFloat(requireContext(),prefName, val/multiplier);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName, val/multiplier);
         updateText(textView,(float)val,unit);
     }
 }

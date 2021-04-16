@@ -22,16 +22,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterEditBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -44,12 +38,6 @@ public class HighlighterEditFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsHighlighterEditBinding myView;
     private Drawable whiteCheck, blackCheck;
-    private Preferences preferences;
-    private StorageAccess storageAccess;
-    private ProcessSong processSong;
-    private ShowToast showToast;
-    private Song song;
-    private DrawNotes drawNotes;
     private int buttonActive, buttonInactive, drawingPenSize, drawingHighlighterSize,
             drawingEraserSize, drawingPenColor, drawingHighlighterColor, size = 0;
     private String activeTool;
@@ -82,10 +70,7 @@ public class HighlighterEditFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsHighlighterEditBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.edit) + " " + getString(R.string.highlight));
-
-        // Set up helpers
-        setupHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.edit) + " " + getString(R.string.highlight));
 
         // Set up views
         setupViews();
@@ -94,14 +79,6 @@ public class HighlighterEditFragment extends Fragment {
         setListeners();
 
         return myView.getRoot();
-    }
-
-    private void setupHelpers() {
-        song = mainActivityInterface.getSong();
-        preferences = mainActivityInterface.getPreferences();
-        storageAccess = mainActivityInterface.getStorageAccess();
-        processSong = mainActivityInterface.getProcessSong();
-        showToast = mainActivityInterface.getShowToast();
     }
 
     private void setupViews() {
@@ -116,9 +93,9 @@ public class HighlighterEditFragment extends Fragment {
             blackCheck.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
         }
 
-        drawNotes = myView.drawNotes;
-        drawNotes.resetVars();
-
+        mainActivityInterface.setDrawNotes(myView.drawNotes);
+        mainActivityInterface.getDrawNotes().resetVars();
+        
         setToolPreferences();
 
         // Set the drawNotes to be the same height as the image
@@ -157,7 +134,7 @@ public class HighlighterEditFragment extends Fragment {
                 Log.d(TAG, "w=" + w + "  imgW="+imgW);
                 Log.d(TAG, "h=" + h + "  imgH="+imgH);
                 // Set the original highlighter file if it exists
-                drawNotes.loadExistingHighlighter(requireContext(), mainActivityInterface, imgW, imgH);
+                mainActivityInterface.getDrawNotes().loadExistingHighlighter(requireContext(), mainActivityInterface, imgW, imgH);
                 myView.glideImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -191,7 +168,7 @@ public class HighlighterEditFragment extends Fragment {
                                       });
 
         myView.handleView.setOnClickListener(v -> {
-            if (drawNotes.isEnabled()) {
+            if (mainActivityInterface.getDrawNotes().isEnabled()) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -229,12 +206,12 @@ public class HighlighterEditFragment extends Fragment {
     }
 
     private void setToolPreferences() {
-        activeTool = preferences.getMyPreferenceString(requireContext(),"drawingTool","pen");
-        drawingPenSize = preferences.getMyPreferenceInt(requireContext(), "drawingPenSize",20);
-        drawingHighlighterSize = preferences.getMyPreferenceInt(requireContext(),"drawingHighlighterSize",20);
-        drawingEraserSize = preferences.getMyPreferenceInt(requireContext(), "drawingEraserSize",20);
-        drawingPenColor = preferences.getMyPreferenceInt(requireContext(),"drawingPenColor",penRed);
-        drawingHighlighterColor = preferences.getMyPreferenceInt(requireContext(),"drawingHighlighterColor",highlighterYellow);
+        activeTool = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"drawingTool","pen");
+        drawingPenSize = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "drawingPenSize",20);
+        drawingHighlighterSize = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"drawingHighlighterSize",20);
+        drawingEraserSize = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "drawingEraserSize",20);
+        drawingPenColor = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"drawingPenColor",penRed);
+        drawingHighlighterColor = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"drawingHighlighterColor",highlighterYellow);
         setActiveTool();
         setColors();
         setSizes();
@@ -251,19 +228,19 @@ public class HighlighterEditFragment extends Fragment {
         if (activeTool.equals("pen")) {
             currentColor = drawingPenSize;
             currentSize = drawingPenSize;
-            drawNotes.setCurrentPaint(drawingPenSize,drawingPenColor);
-            drawNotes.setErase(false);
+            mainActivityInterface.getDrawNotes().setCurrentPaint(drawingPenSize,drawingPenColor);
+            mainActivityInterface.getDrawNotes().setErase(false);
 
         } else if (activeTool.equals("highlighter")) {
             currentColor = drawingHighlighterColor;
             currentSize = drawingHighlighterSize;
-            drawNotes.setCurrentPaint(drawingHighlighterSize, drawingHighlighterColor);
-            drawNotes.setErase(false);
+            mainActivityInterface.getDrawNotes().setCurrentPaint(drawingHighlighterSize, drawingHighlighterColor);
+            mainActivityInterface.getDrawNotes().setErase(false);
         } else {
             currentColor = highlighterBlack;
             currentSize = drawingEraserSize;
-            drawNotes.setCurrentPaint(drawingEraserSize, highlighterBlack);
-            drawNotes.setErase(true);
+            mainActivityInterface.getDrawNotes().setCurrentPaint(drawingEraserSize, highlighterBlack);
+            mainActivityInterface.getDrawNotes().setErase(true);
         }
         hideColors();
     }
@@ -335,7 +312,7 @@ public class HighlighterEditFragment extends Fragment {
         String text = (progress+1) + " px";
         myView.sizeText.setText(text);
         currentSize = progress+1;
-        drawNotes.setCurrentPaint(currentSize,currentColor);
+        mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize,currentColor);
     }
 
     private void setListeners() {
@@ -386,10 +363,10 @@ public class HighlighterEditFragment extends Fragment {
                 }
                 progressToSize(myView.sizeSeekBar.getProgress());
                 if (which!=null) {
-                    preferences.setMyPreferenceInt(requireContext(), which, currentSize);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), which, currentSize);
                 }
-                drawNotes.setCurrentPaint(currentSize,currentColor);
-                drawNotes.postInvalidate();
+                mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize,currentColor);
+                mainActivityInterface.getDrawNotes().postInvalidate();
             }
         });
 
@@ -398,19 +375,19 @@ public class HighlighterEditFragment extends Fragment {
 
     private void undo() {
         // Check undo then check status
-        drawNotes.undo();
+        mainActivityInterface.getDrawNotes().undo();
         checkUndos();
     }
     private void redo() {
         // Check redo then check status
-        drawNotes.redo();
+        mainActivityInterface.getDrawNotes().redo();
         checkRedos();
     }
     private void checkUndos() {
-        myView.undoFAB.setEnabled(drawNotes.getAllPaths().size()>0);
+        myView.undoFAB.setEnabled(mainActivityInterface.getDrawNotes().getAllPaths().size()>0);
     }
     private void checkRedos() {
-        myView.redoFAB.setEnabled(drawNotes.getUndoPaths().size()>0);
+        myView.redoFAB.setEnabled(mainActivityInterface.getDrawNotes().getUndoPaths().size()>0);
     }
 
     private void delete() {
@@ -423,47 +400,47 @@ public class HighlighterEditFragment extends Fragment {
         }
         AreYouSureDialogFragment areYouSureDialogFragment = new AreYouSureDialogFragment("deleteHighlighter",
                 getString(R.string.delete) + " " + getString(R.string.highlight) + " (" + orientation + ")",null,
-                "highlighterEditFragment",this,song);
+                "highlighterEditFragment",this,mainActivityInterface.getSong());
         areYouSureDialogFragment.show(requireActivity().getSupportFragmentManager(),"areyousure");
     }
     public void doDelete(boolean confirmed) {
         if (confirmed) {
             // Set the original highlighter file if it exists
-            Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Highlighter","",
-                    processSong.getHighlighterFilename(song,requireContext().getResources().getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT));
-            if (storageAccess.deleteFile(requireContext(),uri)) {
-                drawNotes.delete();
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface.getPreferences(),"Highlighter","",
+                    mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),requireContext().getResources().getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT));
+            if (mainActivityInterface.getStorageAccess().deleteFile(requireContext(),uri)) {
+                mainActivityInterface.getDrawNotes().delete();
                 checkUndos();
                 checkRedos();
-                showToast.doIt(requireContext(),getString(R.string.success));
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
             } else {
-                showToast.doIt(requireContext(),getString(R.string.error));
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
             }
         } else {
-            showToast.doIt(requireContext(),getString(R.string.cancel));
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.cancel));
         }
     }
     private void changeTool(String tool) {
         activeTool = tool;
-        preferences.setMyPreferenceString(requireContext(), "drawingTool", tool);
+        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "drawingTool", tool);
         setActiveTool();
         setColors();
         setSizes();
-        drawNotes.postInvalidate();
+        mainActivityInterface.getDrawNotes().postInvalidate();
 
     }
     private void changeColor(int colorPen, int colorHighlighter) {
         if (activeTool.equals("pen")) {
             drawingPenColor = colorPen;
             currentColor = colorPen;
-            preferences.setMyPreferenceInt(requireContext(), "drawingPenColor",colorPen);
+            mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), "drawingPenColor",colorPen);
         } else if (activeTool.equals("highlighter")) {
             drawingHighlighterColor = colorHighlighter;
             currentColor = colorHighlighter;
-            preferences.setMyPreferenceInt(requireContext(), "drawingHighlighterColor",colorHighlighter);
+            mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), "drawingHighlighterColor",colorHighlighter);
         }
         setColors();
-        drawNotes.setCurrentPaint(currentSize,currentColor);
+        mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize,currentColor);
     }
 
     Uri uri;
@@ -472,17 +449,17 @@ public class HighlighterEditFragment extends Fragment {
         // Get the bitmap of the drawNotes in a new thread
         int orientation = requireContext().getResources().getConfiguration().orientation;
         new Thread(() -> {
-            String hname = processSong.getHighlighterFilename(song,orientation== Configuration.ORIENTATION_PORTRAIT);
-            uri = storageAccess.getUriForItem(getActivity(), preferences,
+            String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),orientation== Configuration.ORIENTATION_PORTRAIT);
+            uri = mainActivityInterface.getStorageAccess().getUriForItem(getActivity(), mainActivityInterface.getPreferences(),
                     "Highlighter", "", hname);
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getActivity(), mainActivityInterface.getPreferences(), uri, null,
                     "Highlighter", "", hname);
 
             requireActivity().runOnUiThread(() -> {
-                drawNotes.setDrawingCacheEnabled(true);
+                mainActivityInterface.getDrawNotes().setDrawingCacheEnabled(true);
                 try {
-                    bitmap = drawNotes.getDrawingCache();
+                    bitmap = mainActivityInterface.getDrawNotes().getDrawingCache();
                 } catch (Exception e) {
                     Log.d(TAG,"Error extracting the drawing");
                 } catch (OutOfMemoryError e) {
@@ -491,14 +468,20 @@ public class HighlighterEditFragment extends Fragment {
                 if (uri!=null && bitmap!=null) {
                     Log.d(TAG,"newUri="+uri);
                     Log.d(TAG,"bitmap="+bitmap);
-                    OutputStream outputStream = storageAccess.getOutputStream(requireContext(),uri);
+                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),uri);
                     Log.d(TAG,"outputStream="+outputStream);
-                    storageAccess.writeImage(outputStream, bitmap);
-                    showToast.doIt(requireContext(),getString(R.string.success));
+                    mainActivityInterface.getStorageAccess().writeImage(outputStream, bitmap);
+                    mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
                 } else {
-                    showToast.doIt(requireContext(),getString(R.string.error));
+                    mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
                 }
             });
         }).start();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

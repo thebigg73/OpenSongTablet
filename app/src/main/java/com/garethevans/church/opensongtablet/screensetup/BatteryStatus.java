@@ -19,11 +19,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class BatteryStatus extends BroadcastReceiver {
 
@@ -33,40 +32,39 @@ public class BatteryStatus extends BroadcastReceiver {
         void setUpBatteryMonitor();
     }
 
-    public void setUpBatteryMonitor(Context c, Preferences preferences, TextView digitalclock,
-                                    TextView batterycharge, ImageView batteryimage, ActionBar ab,
-                                    Locale locale) {
+    public void setUpBatteryMonitor(Context c, MainActivityInterface mainActivityInterface, TextView digitalclock,
+                                    TextView batterycharge, ImageView batteryimage, ActionBar ab) {
         // Get clock
         try {
             // Get clock
-            updateClock(locale,digitalclock,
-                    preferences.getMyPreferenceFloat(c,"clockTextSize",9.0f),
-                    preferences.getMyPreferenceBoolean(c,"clock24hFormat",true),
-                    preferences.getMyPreferenceBoolean(c,"clockOn",true));
+            updateClock(mainActivityInterface,digitalclock,
+                    mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"clockTextSize",9.0f),
+                    mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"clock24hFormat",true),
+                    mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"clockOn",true));
 
             // Get battery
             int i = (int) (getBatteryStatus(c) * 100.0f);
             String charge = i + "%";
-            if (preferences.getMyPreferenceBoolean(c,"batteryTextOn",true)) {
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"batteryTextOn",true)) {
                 batterycharge.setVisibility(View.VISIBLE);
             } else {
                 batterycharge.setVisibility(View.GONE);
             }
-            batterycharge.setTextSize(preferences.getMyPreferenceFloat(c, "batteryTextSize",9.0f));
+            batterycharge.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "batteryTextSize",9.0f));
             batterycharge.setText(charge);
             int abh = ab.getHeight();
-            if (preferences.getMyPreferenceBoolean(c,"batteryDialOn",true)) {
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"batteryDialOn",true)) {
                 batteryimage.setVisibility(View.VISIBLE);
             } else {
                 batteryimage.setVisibility(View.INVISIBLE);
             }
             if (abh > 0) {
-                setBatteryImage(c,batteryimage,abh,i,preferences.getMyPreferenceInt(c,"batteryDialThickness",4));
+                setBatteryImage(c,batteryimage,abh,i,mainActivityInterface.getPreferences().getMyPreferenceInt(c,"batteryDialThickness",4));
             }
 
             // Ask the app to check again in 60s
             Handler batterycheck = new Handler();
-            batterycheck.postDelayed(() -> setUpBatteryMonitor(c,preferences,digitalclock,batterycharge,batteryimage,ab,locale), 60000);
+            batterycheck.postDelayed(() -> setUpBatteryMonitor(c,mainActivityInterface,digitalclock,batterycharge,batteryimage,ab), 60000);
         } catch (Exception e) {
             // Ooops
         }
@@ -173,13 +171,13 @@ public class BatteryStatus extends BroadcastReceiver {
         return drawable;
     }
 
-    public void updateClock(Locale locale, TextView digitalclock, float textsize, boolean clockon, boolean is24h) {
+    public void updateClock(MainActivityInterface mainActivityInterface, TextView digitalclock, float textsize, boolean clockon, boolean is24h) {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat df;
         if (is24h) {
-            df = new SimpleDateFormat("HH:mm", locale);
+            df = new SimpleDateFormat("HH:mm", mainActivityInterface.getLocale());
         } else {
-            df = new SimpleDateFormat("h:mm", locale);
+            df = new SimpleDateFormat("h:mm", mainActivityInterface.getLocale());
         }
         String formattedTime = df.format(cal.getTime());
         if (clockon) {

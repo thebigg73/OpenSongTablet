@@ -5,50 +5,36 @@ import android.net.Uri;
 import android.util.Base64;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
-import com.garethevans.church.opensongtablet.setprocessing.SetActions;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class CreateNewSet {
 
-    boolean doCreation(Context c, MainActivityInterface mainActivityInterface,Preferences preferences, StorageAccess storageAccess,
-                       SongListBuildIndex songListBuildIndex, ProcessSong processSong, LoadSong loadSong,
-                       ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, Song song,
-                       CurrentSet currentSet, SetActions setActions, SQLiteHelper sqLiteHelper,
-                       CommonSQL commonSQL, ShowToast showToast, Locale locale) {
+    boolean doCreation(Context c, MainActivityInterface mainActivityInterface,
+                       Song thisSong) {
 
         StringBuilder sb = new StringBuilder();
 
         // Only do this if the current set isn't empty
-        if (currentSet.getCurrentSet() != null && currentSet.getCurrentSet().size() > 0) {
+        if (mainActivityInterface.getCurrentSet().getCurrentSet() != null &&
+                mainActivityInterface.getCurrentSet().getCurrentSet().size() > 0) {
             // Check all arrays are the same size!!
-            setActions.checkArraysMatch(c, mainActivityInterface);
+            mainActivityInterface.getSetActions().checkArraysMatch(c, mainActivityInterface);
             sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n").
                     append("<set name=\"").
-                    append(processSong.parseToHTMLEntities(currentSet.getSetName())).
+                    append(mainActivityInterface.getProcessSong().parseToHTMLEntities(mainActivityInterface.getCurrentSet().getSetName())).
                     append("\">\n<slide_groups>\n");
 
-            for (int x = 0; x < currentSet.getCurrentSet().size(); x++) {
-                String path = currentSet.getCurrentSet_Folder().get(x);
+            for (int x = 0; x < mainActivityInterface.getCurrentSet().getCurrentSet().size(); x++) {
+                String path = mainActivityInterface.getCurrentSet().getCurrentSet_Folder().get(x);
                 // If the path isn't empty, add a forward slash to the end
                 if (!path.isEmpty()) {
                     path = path + "/";
                 }
-                String name = currentSet.getCurrentSet_Filename().get(x);
+                String name = mainActivityInterface.getCurrentSet().getCurrentSet_Filename().get(x);
                 boolean isImage = name.contains("**" + c.getString(R.string.image));
                 boolean isVariation = name.contains("**" + c.getString(R.string.variation));
                 boolean isScripture = name.contains("**" + c.getString(R.string.scripture));
@@ -57,51 +43,51 @@ public class CreateNewSet {
 
                 if (isImage) {
                     // Adding an image
-                    Song tempSong = getTempSong(c,mainActivityInterface,song,"../Images/_cache", name);
+                    Song tempSong = getTempSong(c,mainActivityInterface,thisSong,"../Images/_cache", name);
                     sb.append(buildImage(c,mainActivityInterface,tempSong));
 
                 } else if (isScripture) {
                     // Adding a scripture
-                    Song tempSong = getTempSong(c,mainActivityInterface,song, "../Scripture/_cache", name);
-                    sb.append(buildScripture(tempSong,processSong));
+                    Song tempSong = getTempSong(c,mainActivityInterface,thisSong, "../Scripture/_cache", name);
+                    sb.append(buildScripture(mainActivityInterface,tempSong));
 
                 } else if (isVariation) {
                     // Adding a variation
-                    Song tempSong = getTempSong(c,mainActivityInterface,song, "../Variations", name);
+                    Song tempSong = getTempSong(c,mainActivityInterface,thisSong, "../Variations", name);
                     sb.append(buildVariation(c,mainActivityInterface,tempSong));
 
                 } else if (isSlide) {
                     // Adding a slide
-                    Song tempSong = getTempSong(c,mainActivityInterface,song, "../Slides/_cache", name);
+                    Song tempSong = getTempSong(c,mainActivityInterface,thisSong, "../Slides/_cache", name);
                     sb.append(buildSlide(mainActivityInterface,tempSong));
 
                 } else if (isNote) {
                     // Adding a note
-                    Song tempSong = getTempSong(c,mainActivityInterface,song, "../Notes/_cache", name);
+                    Song tempSong = getTempSong(c,mainActivityInterface,thisSong, "../Notes/_cache", name);
                     sb.append(buildNote(c,mainActivityInterface,tempSong));
                 } else {
                     // Adding a song
-                    sb.append(buildSong(processSong,path,name));
+                    sb.append(buildSong(mainActivityInterface,path,name));
 
                 }
             }
             sb.append("</slide_groups>\n</set>");
 
-            currentSet.setCurrentSetXML(sb.toString());
+            mainActivityInterface.getCurrentSet().setCurrentSetXML(sb.toString());
 
             // Write the string to the file
-            Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", currentSet.getSetFile());
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Sets", "", mainActivityInterface.getCurrentSet().getSetFile());
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Sets", "", currentSet.getSetFile());
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), uri, null, "Sets", "", mainActivityInterface.getCurrentSet().getSetFile());
 
-            OutputStream outputStream = storageAccess.getOutputStream(c,uri);
-            if (storageAccess.writeFileFromString(currentSet.getCurrentSetXML(),outputStream)) {
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,uri);
+            if (mainActivityInterface.getStorageAccess().writeFileFromString(mainActivityInterface.getCurrentSet().getCurrentSetXML(),outputStream)) {
                 // Update the last loaded set now it is saved.
-                preferences.setMyPreferenceString(c,"setCurrentBeforeEdits",preferences.getMyPreferenceString(c,"setCurrent",""));
+                mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrentBeforeEdits",mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent",""));
             }
 
-            preferences.setMyPreferenceString(c,"setCurrentLastName",currentSet.getSetFile());
+            mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrentLastName",mainActivityInterface.getCurrentSet().getSetFile());
             return true;
         } else {
             return false;
@@ -109,16 +95,16 @@ public class CreateNewSet {
     }
 
 
-    private StringBuilder buildSong(ProcessSong processSong, String path, String name) {
+    private StringBuilder buildSong(MainActivityInterface mainActivityInterface, String path, String name) {
         StringBuilder sb = new StringBuilder();
         sb.append("  <slide_group name=\"")
-                .append(processSong.parseToHTMLEntities(name))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(name))
                 .append("\" type=\"song\" presentation=\"\" path=\"")
-                .append(processSong.parseToHTMLEntities(path))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(path))
                 .append("\"/>\n");
         return sb;
     }
-    private StringBuilder buildScripture(Song tempSong, ProcessSong processSong) {
+    private StringBuilder buildScripture(MainActivityInterface mainActivityInterface, Song tempSong) {
         StringBuilder sb = new StringBuilder();
 
         // The scripture is loaded to a new, temp song object
@@ -134,10 +120,10 @@ public class CreateNewSet {
             newname = newname+"|"+ tempSong.getAuthor();
         }
         sb.append("  <slide_group type=\"scripture\" name=\"")
-                .append(processSong.parseToHTMLEntities(newname))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(newname))
                 .append("\" print=\"true\">\n")
                 .append("    <title>")
-                .append(processSong.parseToHTMLEntities(tempSong.getFilename()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getFilename()))
                 .append("</title>\n");
 
         sb.append("    <slides>\n");
@@ -146,7 +132,7 @@ public class CreateNewSet {
             if (mySlide != null && mySlide.length() > 0) {
                 sb.append("      <slide>\n")
                         .append("      <body>")
-                        .append(processSong.parseToHTMLEntities(mySlide.trim()))
+                        .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(mySlide.trim()))
                         .append("</body>\n")
                         .append("      </slide>\n");
             }

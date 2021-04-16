@@ -5,8 +5,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
@@ -61,20 +60,23 @@ public class PadFunctions {
         return mediaPlayer!=null && mediaPlayer.isPlaying();
     }
 
-    public boolean isPadValid(Context c, StorageAccess storageAccess, Preferences preferences, Song song) {
+    public boolean isPadValid(Context c, MainActivityInterface mainActivityInterface) {
         // If we are using auto, key needs to be set
         // If we are using audio file link, it needs to exist
         // If we are set to OFF then nope!
 
-        if (song.getPadfile()!=null && song.getPadfile().equals(c.getResources().getString(R.string.off))) {
+        if (mainActivityInterface.getSong().getPadfile()!=null &&
+                mainActivityInterface.getSong().getPadfile().equals(c.getResources().getString(R.string.off))) {
             return false;
-        } else if (song.getPadfile()!=null && song.getPadfile().equals(c.getResources().getString(R.string.link_audio)) &&
-                song.getLinkaudio()!=null && !song.getLinkaudio().isEmpty()) {
-            Uri uri = storageAccess.fixLocalisedUri(c, preferences, song.getLinkaudio());
-            return storageAccess.uriExists(c,uri);
+        } else if (mainActivityInterface.getSong().getPadfile()!=null &&
+                mainActivityInterface.getSong().getPadfile().equals(c.getResources().getString(R.string.link_audio)) &&
+                mainActivityInterface.getSong().getLinkaudio()!=null &&
+                !mainActivityInterface.getSong().getLinkaudio().isEmpty()) {
+            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c, mainActivityInterface.getPreferences(), mainActivityInterface.getSong().getLinkaudio());
+            return mainActivityInterface.getStorageAccess().uriExists(c,uri);
         } else {
             // Using auto
-            return song.getKey()!=null && !song.getKey().isEmpty();
+            return mainActivityInterface.getSong().getKey()!=null && !mainActivityInterface.getSong().getKey().isEmpty();
         }
     }
 

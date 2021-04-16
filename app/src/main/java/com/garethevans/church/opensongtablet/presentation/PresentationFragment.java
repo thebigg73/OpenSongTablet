@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.presentation;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,33 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.databinding.PresentationBinding;
-import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 
 public class PresentationFragment extends Fragment {
 
-    // Helper classes for the heavy lifting
-    private StorageAccess storageAccess;
-    private Preferences preferences;
-    private ProcessSong processSong;
-    private LoadSong loadSong;
-    private SQLiteHelper sqLiteHelper;
-    private ConvertChoPro convertChoPro;
-    private ConvertOnSong convertOnSong;
-    private CustomAnimation customAnimation;
-    private ThemeColors themeColors;
-
-
+    private MainActivityInterface mainActivityInterface;
     private PresentationBinding myView;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,29 +31,11 @@ public class PresentationFragment extends Fragment {
         myView = PresentationBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
 
-        // Initialise the helper classes for the heavy lifting
-        initialiseHelpers();
-
-        doSongLoad(preferences.getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
-                preferences.getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
+                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
         return root;
     }
-
-
-    // Getting the preferences and helpers ready
-    private void initialiseHelpers() {
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        loadSong = new LoadSong();
-        processSong = new ProcessSong();
-        sqLiteHelper = new SQLiteHelper(getActivity());
-        convertOnSong = new ConvertOnSong();
-        convertChoPro = new ConvertChoPro();
-        customAnimation = new CustomAnimation();
-        themeColors = new ThemeColors();
-    }
-
 
 
     // Displaying the song

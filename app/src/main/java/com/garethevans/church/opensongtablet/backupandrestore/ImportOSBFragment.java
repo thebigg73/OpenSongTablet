@@ -66,7 +66,7 @@ public class ImportOSBFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = FragmentOsbbackupBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.storage) +
+        mainActivityInterface.updateToolbar(getString(R.string.settings) + " / " + getString(R.string.storage) +
                 " / " + getString(R.string.import_main));
 
         // Set up helpers

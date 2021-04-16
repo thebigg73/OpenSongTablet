@@ -29,7 +29,7 @@ public class ModeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsModeBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.choose_app_mode));
+        mainActivityInterface.updateToolbar(getString(R.string.choose_app_mode));
 
         // Set the listeners
         setListeners();

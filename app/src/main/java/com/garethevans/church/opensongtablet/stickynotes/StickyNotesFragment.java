@@ -30,7 +30,7 @@ public class StickyNotesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsStickynotesBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.stickynotes));
+        mainActivityInterface.updateToolbar(getString(R.string.stickynotes));
 
         // Set up the views
         setupViews();
@@ -124,5 +124,11 @@ public class StickyNotesFragment extends Fragment {
                         requireContext(),"timeToDisplaySticky",progress);
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

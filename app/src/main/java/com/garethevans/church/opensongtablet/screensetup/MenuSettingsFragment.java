@@ -14,12 +14,10 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsMenuBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class MenuSettingsFragment extends Fragment {
 
     SettingsMenuBinding myView;
-    Preferences preferences;
     MainActivityInterface mainActivityInterface;
 
     @Override
@@ -33,10 +31,7 @@ public class MenuSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsMenuBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.menu_settings));
-
-        // Initialise the helpers
-        setHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.menu_settings));
 
         // Deal with the views
         setupViews();
@@ -45,16 +40,12 @@ public class MenuSettingsFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-    }
-
     private void setupViews() {
-        boolean showAlphabetical = preferences.
+        boolean showAlphabetical = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean(requireContext(),"songMenuAlphaIndexShow",true);
-        float fontSize = preferences.
+        float fontSize = mainActivityInterface.getPreferences().
                 getMyPreferenceFloat(requireContext(),"songMenuAlphaIndexSize",12.0f);
-        boolean showTickBoxes = preferences.
+        boolean showTickBoxes = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean(requireContext(),"songMenuSetTicksShow",true);
 
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
@@ -66,9 +57,9 @@ public class MenuSettingsFragment extends Fragment {
 
     private void setupListeners() {
         myView.songMenuCheckboxes.setOnCheckedChangeListener((buttonView, isChecked) ->
-                preferences.setMyPreferenceBoolean(requireContext(),"songMenuSetTicksShow",isChecked));
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"songMenuSetTicksShow",isChecked));
         myView.songAlphabeticalShow.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(requireContext(),"songMenuAlphaIndexShow",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"songMenuAlphaIndexShow",isChecked);
             showHideSize(isChecked);
         });
         myView.songAlphabeticalSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -81,11 +72,10 @@ public class MenuSettingsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int progress = myView.songAlphabeticalSize.getProgress();
-                preferences.getMyPreferenceFloat(requireContext(),"songMenuAlphaIndexSize", progressToFontFloat(progress));
+                mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songMenuAlphaIndexSize", progressToFontFloat(progress));
             }
         });
     }
-
 
     private float progressToFontFloat(int progress) {
         // The smallest font size allowed is 6dp, the max 22dp = size 16
@@ -104,5 +94,11 @@ public class MenuSettingsFragment extends Fragment {
         } else {
             myView.songAlphabeticalSizeLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

@@ -48,8 +48,6 @@ public class Song {
     private String linkother="";
     private String presentationorder="";
     private boolean hasExtraStuff;
-    private String extraStuff1;
-    private String extraStuff2;
     private String filetype="";
     private int detectedChordFormat=1;
     private String encoding="UTF-8";
@@ -62,9 +60,6 @@ public class Song {
     private String nextDirection = "R2L";
     private int pdfPageCurrent;
     private String songXML;
-    private String highlighterPortrait = "";
-    private String highlighterLandscape = "";
-
 
 
     // The getters
@@ -170,12 +165,6 @@ public class Song {
     public boolean getHasExtraStuff() {
         return hasExtraStuff;
     }
-    public String getHighlighterPortrait() {
-        return highlighterPortrait;
-    }
-    public String getHighlighterLandscape() {
-        return highlighterLandscape;
-    }
 
     // The setters
     public void setId(int id) {
@@ -272,12 +261,6 @@ public class Song {
     public void setSongXML(String songXML) {
         this.songXML = songXML;
     }
-    public void setHighlighterPortrait(String highlighterPortrait) {
-        this.highlighterPortrait = highlighterPortrait;
-    }
-    public void setHighlighterLandscape(String highlighterLandscape) {
-        this.highlighterLandscape = highlighterLandscape;
-    }
 
 
 
@@ -330,13 +313,10 @@ public class Song {
         this.songSectionTypes = toCopy.songSectionTypes;
         this.currentSection = toCopy.currentSection;
         this.presentationorder = toCopy.presentationorder;
-        this.extraStuff1 = toCopy.extraStuff1;
-        this.extraStuff2 = toCopy.extraStuff2;
+        this.hasExtraStuff = toCopy.hasExtraStuff;
         this.detectedChordFormat = toCopy.detectedChordFormat;
         this.encoding = toCopy.encoding;
         this.songXML = toCopy.songXML;
-        this.highlighterPortrait = toCopy.highlighterPortrait;
-        this.highlighterLandscape = toCopy.highlighterLandscape;
     }
 
     // This is used when comparing song objects for changes (when editing a song)

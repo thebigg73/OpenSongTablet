@@ -16,18 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsPreviewBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
 
 public class FontSetupPreviewFragment extends DialogFragment {
 
     private SettingsFontsPreviewBinding myView;
-    private SetTypeFace setTypeFace;
-    private Preferences preferences;
     private MainActivityInterface mainActivityInterface;
 
     private String sampleText;
@@ -46,9 +42,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsPreviewBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.font_browse));
-
-        setHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.font_browse));
 
         sampleText = getString(R.string.lorem);
 
@@ -62,15 +56,10 @@ public class FontSetupPreviewFragment extends DialogFragment {
         return myView.getRoot();
     }
 
-    private void setHelpers() {
-        setTypeFace = mainActivityInterface.getMyFonts();
-        preferences = mainActivityInterface.getPreferences();
-    }
-
     private void setupWebView(String ab) {
         new Thread(() -> {
             if (fontNames==null || fontNames.isEmpty()) {
-                fontNames = setTypeFace.getFontsFromGoogle();
+                fontNames = mainActivityInterface.getMyFonts().getFontsFromGoogle();
                 getAlphaList();
                 requireActivity().runOnUiThread(this::prepareAlphaList);
             }
@@ -146,11 +135,17 @@ public class FontSetupPreviewFragment extends DialogFragment {
 
     private void doSave(String fontName) {
         fontName = fontName.replace("+"," ");
-        setTypeFace.changeFont(getContext(),preferences,mainActivityInterface.getWhattodo(),fontName,handler);
+        mainActivityInterface.getMyFonts().changeFont(getContext(),mainActivityInterface,mainActivityInterface.getWhattodo(),fontName,handler);
         new Thread(() -> requireActivity().runOnUiThread(() -> {
             mainActivityInterface.popTheBackStack(R.id.fontSetupFragment,true);
             mainActivityInterface.navigateToFragment("opensongapp://settings/display/fonts",0);
             dismiss();
         })).start();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

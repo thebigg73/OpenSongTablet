@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class Swipes {
     private int viewWidth;            // The width of the view on screen
@@ -20,8 +20,8 @@ public class Swipes {
     private float swipeHeight;        // User preference for max swipe y axis deviation to ignore (ratio of height:screenwidth)
     private float swipeTime;          // User preference for acceptable swipe time (ratio of time:maxTime);
 
-    public Swipes(Context c, Preferences preferences) {
-        loadPreferences(c,preferences);
+    public Swipes(Context c, MainActivityInterface mainActivityInterface) {
+        loadPreferences(c,mainActivityInterface);
     }
 
     // The setters
@@ -38,25 +38,25 @@ public class Swipes {
         heightPx = (int)(swipeHeight * viewHeight);
         timeMs = (int)(swipeTime * maxTime);
     }
-    public void loadPreferences(Context c, Preferences preferences) {
-        swipeWidth = preferences.getMyPreferenceFloat(c,"swipeWidth",0.4f);
-        swipeHeight = preferences.getMyPreferenceFloat(c,"swipeHeight",0.2f);
-        swipeTime = preferences.getMyPreferenceFloat(c,"swipeTime",0.6f);
+    public void loadPreferences(Context c, MainActivityInterface mainActivityInterface) {
+        swipeWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"swipeWidth",0.4f);
+        swipeHeight = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"swipeHeight",0.2f);
+        swipeTime = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"swipeTime",0.6f);
     }
-    public void fixWidth(Context c, Preferences preferences, int width) {
+    public void fixWidth(Context c, MainActivityInterface mainActivityInterface, int width) {
         widthPx = width;
         swipeWidth = (float) ((float)widthPx/(float)viewWidth);
-        preferences.setMyPreferenceFloat(c,"swipeWidth",swipeWidth);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeWidth",swipeWidth);
     }
-    public void fixHeight(Context c, Preferences preferences, int height) {
+    public void fixHeight(Context c, MainActivityInterface mainActivityInterface, int height) {
         heightPx = height;
         swipeHeight = (float) ((float)heightPx/(float)viewHeight);
-        preferences.setMyPreferenceFloat(c,"swipeHeight",swipeHeight);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeHeight",swipeHeight);
     }
-    public void fixTime(Context c, Preferences preferences, int time) {
+    public void fixTime(Context c, MainActivityInterface mainActivityInterface, int time) {
         timeMs = time;
         swipeTime = (float) ((float)timeMs/(float)maxTime);
-        preferences.setMyPreferenceFloat(c,"swipeTime",swipeTime);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeTime",swipeTime);
     }
 
     // The getters

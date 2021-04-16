@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -18,11 +18,11 @@ import java.io.OutputStream;
 public class ProfileActions {
 
     // Deal with loading and saving the profiles
-    public boolean loadProfile(Context c, StorageAccess storageAccess, Preferences preferences, Uri uri) {
+    public boolean loadProfile(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
         // This is uses to copy the external file on top of the application preferences
         boolean result = true;
 
-        InputStream inputStream = storageAccess.getInputStream(c,uri);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,uri);
 
         try {
             XmlPullParserFactory factory;
@@ -92,7 +92,7 @@ public class ProfileActions {
                         switch (type) {
                             case "boolean":
                                 try {
-                                    preferences.setMyPreferenceBoolean(c, key, value.equals("true"));
+                                    mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, key, value.equals("true"));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -101,7 +101,7 @@ public class ProfileActions {
                                 try {
                                     if (!key.equals("uriTree") && !key.equals("uriTreeHome")) {
                                         // Don't overwrite our storage location reference!!
-                                        preferences.setMyPreferenceString(c, key, value);
+                                        mainActivityInterface.getPreferences().setMyPreferenceString(c, key, value);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -109,14 +109,14 @@ public class ProfileActions {
                                 break;
                             case "int":
                                 try {
-                                    preferences.setMyPreferenceInt(c, key, Integer.parseInt(value));
+                                    mainActivityInterface.getPreferences().setMyPreferenceInt(c, key, Integer.parseInt(value));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 break;
                             case "float":
                                 try {
-                                    preferences.setMyPreferenceFloat(c, key, Float.parseFloat(value));
+                                    mainActivityInterface.getPreferences().setMyPreferenceFloat(c, key, Float.parseFloat(value));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -138,23 +138,23 @@ public class ProfileActions {
         return result;
     }
 
-    public boolean saveProfile(Context c, StorageAccess storageAccess, Preferences preferences, Uri uri) {
+    public boolean saveProfile(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
         boolean result = true;  // Returns true on success.  Catches throw to false
         try {
             // This is used to copy the current preferences xml file to the chosen name / location
             // Check the file exists, if not create it
-            if (!storageAccess.uriExists(c, uri)) {
+            if (!mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
                 String name = uri.getLastPathSegment();
-                storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Profiles", "", name);
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), uri, null, "Profiles", "", name);
             }
 
             // Different versions of Android save the preferences in different locations.
-            Uri prefsFile = getPrefsFile(c, storageAccess);
+            Uri prefsFile = getPrefsFile(c, mainActivityInterface);
 
-            InputStream inputStream = storageAccess.getInputStream(c, prefsFile);
-            OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, prefsFile);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
 
-            storageAccess.copyFile(inputStream, outputStream);
+            mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
         } catch (Exception e) {
             e.printStackTrace();
             result = false;
@@ -163,7 +163,7 @@ public class ProfileActions {
     }
 
     @SuppressLint("SdCardPath")
-    private Uri getPrefsFile(Context c, StorageAccess storageAccess) {
+    private Uri getPrefsFile(Context c, MainActivityInterface mainActivityInterface) {
         Uri uri;
         File root;
 
@@ -172,7 +172,7 @@ public class ProfileActions {
         uri = Uri.fromFile(root);
 
         // If not there, try the default
-        if (uri==null || !storageAccess.uriExists(c,uri)) {
+        if (uri==null || !mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
             // Use the default method
             root = new File("/data/data/" + c.getPackageName() + "/shared_prefs/CurrentPreferences.xml");
             uri = Uri.fromFile(root);
@@ -180,8 +180,8 @@ public class ProfileActions {
         return uri;
     }
 
-    public void resetPreferences(Context c, Preferences preference) {
-        SharedPreferences.Editor editor = preference.getSharedPref().edit();
+    public void resetPreferences(MainActivityInterface mainActivityInterface) {
+        SharedPreferences.Editor editor = mainActivityInterface.getPreferences().getSharedPref().edit();
         editor.clear();
         editor.apply();
     }

@@ -11,22 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.databinding.FragmentEditSong3Binding;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListAdapter;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class EditSongFragmentTags extends Fragment {
 
-    // The helper classes used
-    private Preferences preferences;
-    private SQLiteHelper sqLiteHelper;
-    private SongListAdapter songListAdapter;
-
+    MainActivityInterface mainActivityInterface;
     FragmentEditSong3Binding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
     }
 
     @Override

@@ -16,13 +16,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsActionbarBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class ActionBarSettingsFragment extends Fragment {
 
     SettingsActionbarBinding myView;
     MainActivityInterface mainActivityInterface;
-    Preferences preferences;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -35,10 +33,7 @@ public class ActionBarSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsActionbarBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.actionbar_display));
-
-        // Set up helpers
-        setupHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.actionbar_display));
 
         // Set up preferences and view settings
         setupPreferences();
@@ -46,14 +41,10 @@ public class ActionBarSettingsFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setupHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-    }
-
     private void setupPreferences() {
         // The song title and author
-        myView.songTitle.setTextSize(preferences.getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f));
-        myView.songAuthor.setTextSize(preferences.getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f));
+        myView.songTitle.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f));
+        myView.songAuthor.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f));
 
         // The seekbars
         myView.titleTextSize.setProgress(prefToSeekBarProgress("songTitleSize",6,13,true));
@@ -63,14 +54,14 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.timeTextSize.setProgress(prefToSeekBarProgress("clockTextSize",6,9,true));
 
         // The switches
-        myView.autohideActionBar.setChecked(preferences.getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
-        showOrHideView(preferences.getMyPreferenceBoolean(requireContext(),"batteryDialOn",true),
+        myView.autohideActionBar.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
+        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"batteryDialOn",true),
                 true,myView.batteryDialOnOff,myView.batteryImageLayout);
-        showOrHideView(preferences.getMyPreferenceBoolean(requireContext(),"batteryTextOn",true),
+        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"batteryTextOn",true),
                 true,myView.batteryTextOnOff,myView.batteryTextLayout);
-        showOrHideView(preferences.getMyPreferenceBoolean(requireContext(),"clockOn",true),
+        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"clockOn",true),
                 true,myView.clockTextOnOff,myView.timeLayout);
-        myView.clock24hrOnOff.setChecked(preferences.getMyPreferenceBoolean(requireContext(),"clock24hFormat",true));
+        myView.clock24hrOnOff.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"clock24hFormat",true));
         
         // The listeners
         myView.titleTextSize.setOnSeekBarChangeListener(new MySeekBar("songTitleSize",true,6));
@@ -80,26 +71,26 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.timeTextSize.setOnSeekBarChangeListener(new MySeekBar("clockTextSize",true,6));
         myView.autohideActionBar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateActionBar("hideActionBar",-1,0.0f,!isChecked);
-            preferences.setMyPreferenceBoolean(requireContext(),"hideActionBar",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"hideActionBar",isChecked);
         });
         myView.batteryDialOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             showOrHideView(isChecked,false ,myView.batteryDialOnOff, myView.batteryImageLayout);
             updateActionBar("batteryDialOn",-1,0.0f,isChecked);
-            preferences.setMyPreferenceBoolean(requireContext(),"batteryDialOn",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"batteryDialOn",isChecked);
         });
         myView.batteryTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             showOrHideView(isChecked,false ,myView.batteryTextOnOff, myView.batteryTextLayout);
             updateActionBar("batteryTextOn",-1,0.0f,isChecked);
-            preferences.setMyPreferenceBoolean(requireContext(),"batteryTextOn",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"batteryTextOn",isChecked);
         });
         myView.clockTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             showOrHideView(isChecked,false ,myView.clockTextOnOff, myView.timeLayout);
             updateActionBar("clockOn",-1,0.0f,isChecked);
-            preferences.setMyPreferenceBoolean(requireContext(),"clockOn",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"clockOn",isChecked);
         });
         myView.clock24hrOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateActionBar("clock24hFormat",-1,0.0f,isChecked);
-            preferences.setMyPreferenceBoolean(requireContext(),"clock24hFormat",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"clock24hFormat",isChecked);
         });
     }
 
@@ -117,9 +108,9 @@ public class ActionBarSettingsFragment extends Fragment {
     private int prefToSeekBarProgress(String prefName, int min, int def, boolean isfloat) {
         // Min size is what value 0 on the seekbar actually means (it gets added on later)
         if (isfloat) {
-            return (int) preferences.getMyPreferenceFloat(requireContext(), prefName, (float) def) - min;
+            return (int) mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(), prefName, (float) def) - min;
         } else {
-            return preferences.getMyPreferenceInt(requireContext(), prefName, def) - min;
+            return mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), prefName, def) - min;
         }
     }
     
@@ -162,13 +153,19 @@ public class ActionBarSettingsFragment extends Fragment {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             if (isfloat) {
-                preferences.setMyPreferenceFloat(requireContext(),prefName,(float) progressToInt(seekBar.getProgress(), min));
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName,(float) progressToInt(seekBar.getProgress(), min));
             } else {
-                preferences.setMyPreferenceInt(requireContext(),prefName, progressToInt(seekBar.getProgress(), min));
+                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),prefName, progressToInt(seekBar.getProgress(), min));
             }
         }
     }
     private void updateActionBar(String prefName, int intval, float floatval, boolean isvisible) {
         mainActivityInterface.updateActionBarSettings(prefName, intval, floatval, isvisible);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

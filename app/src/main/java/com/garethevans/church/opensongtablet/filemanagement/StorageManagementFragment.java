@@ -14,14 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.databinding.StorageFolderDisplayBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import de.blox.graphview.Graph;
 import de.blox.graphview.GraphAdapter;
@@ -33,11 +29,6 @@ import de.blox.graphview.tree.BuchheimWalkerConfiguration;
 public class StorageManagementFragment extends Fragment {
 
     private StorageFolderDisplayBinding myView;
-    private SQLiteHelper sqLiteHelper;
-    private StorageAccess storageAccess;
-    private Locale locale;
-    private ShowCase showCase;
-    private Preferences preferences;
 
     protected GraphView graphView;
     private Graph graph;
@@ -61,15 +52,9 @@ public class StorageManagementFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageFolderDisplayBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.storage));
+        mainActivityInterface.updateToolbar(getString(R.string.storage));
 
         graphView = myView.graph;
-
-        sqLiteHelper = new SQLiteHelper(requireContext());
-        storageAccess = mainActivityInterface.getStorageAccess();
-        showCase = mainActivityInterface.getShowCase();
-        preferences = mainActivityInterface.getPreferences();
-        locale = mainActivityInterface.getLocale();
 
         redColor = requireContext().getResources().getColor(R.color.lightred);
         greenColor = requireContext().getResources().getColor(R.color.lightgreen);
@@ -99,7 +84,7 @@ public class StorageManagementFragment extends Fragment {
             initialiseShowcaseArrays();
             requireActivity().runOnUiThread(() -> {
                 prepareShowcaseViews();
-                showCase.sequenceShowCase(requireActivity(),views,dismisses,infos,rects,"storageManagement");
+                mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),views,dismisses,infos,rects,"storageManagement");
             });
         }).start();
     }
@@ -245,11 +230,11 @@ public class StorageManagementFragment extends Fragment {
 
     private ArrayList<String> getFoldersFromFile() {
         // Scan the storage
-        songIDs = storageAccess.listSongs(requireContext(),preferences,locale);
-        storageAccess.writeSongIDFile(requireContext(),preferences,songIDs);
+        songIDs = mainActivityInterface.getStorageAccess().listSongs(requireContext(),mainActivityInterface.getPreferences(),mainActivityInterface.getLocale());
+        mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),mainActivityInterface.getPreferences(),songIDs);
         //songIDs = storageAccess.getSongIDsFromFile(requireContext());
         // Each subdir ends with /
-        return storageAccess.getSongFolders(requireContext(),songIDs,false,null);
+        return mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),songIDs,false,null);
     }
 
     private void makeNodes() {

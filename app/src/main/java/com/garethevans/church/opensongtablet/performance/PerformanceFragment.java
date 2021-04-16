@@ -30,30 +30,8 @@ public class PerformanceFragment extends Fragment {
 
     private final String TAG = "PerformanceFragment";
     // Helper classes for the heavy lifting
-    //private StorageAccess storageAccess;
-    //private Preferences preferences;
-    //private ProcessSong processSong;
-    //private LoadSong loadSong;
-    //private SQLiteHelper sqLiteHelper;
-    //private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
-    //private CommonSQL commonSQL;
-    //private ConvertChoPro convertChoPro;
-    //private ConvertOnSong convertOnSong;
-    //private ThemeColors themeColors;
-    //private ShowToast showToast;
-    //private PerformanceGestures performanceGestures;
-    //private SetActions setActions;
-    //private PadFunctions padFunctions;
-    //private Metronome metronome;
-    //private DoVibrate doVibrate;
-    //private SetTypeFace setTypeFace;
-    //private SongListBuildIndex songListBuildIndex;
-    //private AppActionBar appActionBar;
     private StickyPopUp stickyPopUp;
 
-    //private ShowCase showCase;
-
-    //private LoadSongInterface loadSongInterface;
     private MainActivityInterface mainActivityInterface;
 
     // The variables used in the fragment
@@ -228,8 +206,8 @@ public class PerformanceFragment extends Fragment {
         // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
         setUpTestViewListener();
 
-        // Update the toolbar
-        mainActivityInterface.updateToolbar(mainActivityInterface.getSong(),null);
+        // Update the toolbar with the song (null)
+        mainActivityInterface.updateToolbar(null);
     }
 
     private void setUpTestViewListener() {
@@ -393,11 +371,17 @@ public class PerformanceFragment extends Fragment {
     View screenGrab;
     private void getScreenshot(int w, int h) {
         if (w!=0 && h!=0) {
-            Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            myView.songView.layout(0, 0, w, h);
-            myView.songView.draw(canvas);
-            mainActivityInterface.setScreenshot(bitmap);
+            try {
+                Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(bitmap);
+                if (myView!=null && myView.songView!=null) {
+                    myView.songView.layout(0, 0, w, h);
+                    myView.songView.draw(canvas);
+                    mainActivityInterface.setScreenshot(bitmap);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ package com.garethevans.church.opensongtablet.appdata;
 import android.content.Context;
 import android.content.res.Configuration;
 
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.Locale;
 
@@ -15,11 +15,11 @@ public class FixLocale {
         return userLocale;
     }
 
-    public void setLocale(Context c, Preferences preferences) {
+    public void setLocale(Context c, MainActivityInterface mainActivityInterface) {
         // Locale
         try {
             // Get the user's preference
-            String val = preferences.getMyPreferenceString(c,"language",null);
+            String val = mainActivityInterface.getPreferences().getMyPreferenceString(c,"language",null);
 
             // If this is already set, that' what we will use
             if (val!=null) {
@@ -39,7 +39,7 @@ public class FixLocale {
                 userLocale = new Locale(deviceval);
 
                 // Save our preference
-                preferences.setMyPreferenceString(c,"language",deviceval);
+                mainActivityInterface.getPreferences().setMyPreferenceString(c,"language",deviceval);
             }
 
             // Load the appropriate translations

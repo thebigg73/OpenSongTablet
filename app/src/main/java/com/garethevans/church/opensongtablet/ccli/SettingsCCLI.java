@@ -34,7 +34,7 @@ public class SettingsCCLI extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCcliBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.ccli));
+        mainActivityInterface.updateToolbar(getString(R.string.ccli));
 
         // Set current Values
         setCurrentValues();
@@ -55,11 +55,11 @@ public class SettingsCCLI extends Fragment {
     }
 
     private void setListeners() {
-        myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputDialogFragment(mainActivityInterface.getPreferences(), this,
+        myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputDialogFragment(this,
                 "SettingsCCLI", getString(R.string.ccli_church), getString(R.string.ccli_church),
                 "ccliChurchName", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliChurchName", ""),true)));
-        myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputDialogFragment(mainActivityInterface.getPreferences(), this,
+        myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputDialogFragment(this,
                 "SettingsCCLI", getString(R.string.ccli_licence), getString(R.string.ccli_licence),
                 "ccliLicence", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliLicence", ""),true)));

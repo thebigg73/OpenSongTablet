@@ -23,8 +23,6 @@ import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsPedalBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.midi.Midi;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -32,9 +30,6 @@ import java.util.ArrayList;
 public class PedalsFragment extends Fragment {
 
     private SettingsPedalBinding myView;
-    private Preferences preferences;
-    private PedalActions pedalActions;
-    private Midi midi;
     private MainActivityInterface mainActivityInterface;
 
     private ArrayList<String> actionCodes;
@@ -70,7 +65,7 @@ public class PedalsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPedalBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null, getString(R.string.pedal));
+        mainActivityInterface.updateToolbar(getString(R.string.pedal));
 
         // Setup the helper classes
         setupHelpers();
@@ -79,13 +74,13 @@ public class PedalsFragment extends Fragment {
         grabViews();
 
         // Initialise the array items
-        pedalActions.setUpPedalActions(requireContext(),preferences);
-        actionCodes = pedalActions.getActionCodes();
-        actions = pedalActions.getActions();
-        defKeyCodes = pedalActions.defPedalCodes;
-        defMidiCodes = pedalActions.defPedalMidis;
-        shortActions = pedalActions.defShortActions;
-        longActions = pedalActions.defLongActions;
+        mainActivityInterface.getPedalActions().setUpPedalActions(requireContext(),mainActivityInterface);
+        actionCodes = mainActivityInterface.getPedalActions().getActionCodes();
+        actions = mainActivityInterface.getPedalActions().getActions();
+        defKeyCodes = mainActivityInterface.getPedalActions().defPedalCodes;
+        defMidiCodes = mainActivityInterface.getPedalActions().defPedalMidis;
+        shortActions = mainActivityInterface.getPedalActions().defShortActions;
+        longActions = mainActivityInterface.getPedalActions().defLongActions;
 
         // Decide on midi allowed pedals
         midiPedalAllowed();
@@ -103,15 +98,14 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        pedalActions = mainActivityInterface.getPedalActions();
-        midi = mainActivityInterface.getMidi(mainActivityInterface);
         exposedDropDownSelection = new ExposedDropDownSelection();
     }
 
     private void midiPedalAllowed() {
-        if (midi!=null && midi.getMidiDevice()!=null && preferences.getMyPreferenceBoolean(getContext(),"midiAsPedal",false)) {
-            String message = getString(R.string.midi_pedal) + ": " + midi.getMidiDeviceName();
+        if (mainActivityInterface.getMidi()!=null && mainActivityInterface.getMidi().getMidiDevice()!=null &&
+                mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"midiAsPedal",false)) {
+            String message = getString(R.string.midi_pedal) + ": " +
+                    mainActivityInterface.getMidi().getMidiDeviceName();
             myView.midiPedal.setText(message);
         } else {
             myView.midiPedal.setText(getString(R.string.pedal_midi_warning));
@@ -179,7 +173,7 @@ public class PedalsFragment extends Fragment {
             defpref = longActions[which];
         }
         tv.setAdapter(arrayAdapter);
-        tv.setText(getActionFromActionCode(preferences.getMyPreferenceString(getContext(),
+        tv.setText(getActionFromActionCode(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),
                     pref, defpref)));
         exposedDropDownSelection.keepSelectionPosition(ti,tv,actions);
         tv.addTextChangedListener(new MyTextWatcher(pref));
@@ -205,8 +199,8 @@ public class PedalsFragment extends Fragment {
         }
     }
     private void doButtons(int which) {
-        buttonCodes[which].setText(charFromInt(preferences.getMyPreferenceInt(getContext(), "pedal"+which+"Code",defKeyCodes[which])));
-        buttonMidis[which].setText(preferences.getMyPreferenceString(getContext(), "pedal"+which+"Midi",defMidiCodes[which]));
+        buttonCodes[which].setText(charFromInt(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "pedal"+which+"Code",defKeyCodes[which])));
+        buttonMidis[which].setText(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "pedal"+which+"Midi",defMidiCodes[which]));
         buttonHeaders[which].setOnClickListener(v -> prepareButtonListener(which));
     }
 
@@ -214,8 +208,8 @@ public class PedalsFragment extends Fragment {
         currentListening = which;
         String codePref = "pedal"+which+"Code";
         String midiPref = "midi"+which+"Code";
-        currentPedalCode = preferences.getMyPreferenceInt(getContext(),codePref,defKeyCodes[which]);
-        currentMidiCode = preferences.getMyPreferenceString(getContext(),midiPref,defMidiCodes[which]);
+        currentPedalCode = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),codePref,defKeyCodes[which]);
+        currentMidiCode = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),midiPref,defMidiCodes[which]);
         buttonCodes[which].setText(getString(R.string.pedal_waiting));
         buttonMidis[which].setText(getString(R.string.pedal_waiting));
         pageButtonWaiting = new Handler();
@@ -227,10 +221,10 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupSwitches() {
-        myView.pedalToggleScrollBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",true));
-        myView.pedalToggleWarnBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",false));
-        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",isChecked));
-        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
+        myView.pedalToggleScrollBeforeSwipeButton.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",true));
+        myView.pedalToggleWarnBeforeSwipeButton.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",false));
+        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",isChecked));
+        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
     }
 
     // Key listeners called from MainActivity
@@ -306,7 +300,7 @@ public class PedalsFragment extends Fragment {
     private void removePreviouslySetKey(int keyCode) {
         // Check for any other pedals currently set to this value and remove them.
         for (int x=1; x<=8; x++) {
-            if (currentListening!=x && preferences.getMyPreferenceInt(getContext(),"pedal"+x+"Code",defKeyCodes[x])==keyCode) {
+            if (currentListening!=x && mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"pedal"+x+"Code",defKeyCodes[x])==keyCode) {
                 setPedalPreference(x,defKeyCodes[x],null);
                 buttonCodes[x].setText(R.string.not_set);
             }
@@ -315,8 +309,8 @@ public class PedalsFragment extends Fragment {
     private void removePreviouslySetMidi(String midiCode) {
         // Check for any other pedals currently set to this value and remove them.
         for (int x=1; x<=8; x++) {
-            if (currentListening!=x && preferences.getMyPreferenceString(getContext(),"pedal"+x+"Midi",defMidiCodes[x]).equals(midiCode)) {
-                preferences.setMyPreferenceString(getContext(),"pedal"+x+"Midi","");
+            if (currentListening!=x && mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"pedal"+x+"Midi",defMidiCodes[x]).equals(midiCode)) {
+                mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"pedal"+x+"Midi","");
                 buttonMidis[x].setText(R.string.not_set);
             }
         }
@@ -339,17 +333,17 @@ public class PedalsFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            preferences.setMyPreferenceString(getContext(),which,getActionCodeFromAction(val));
+            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),which,getActionCodeFromAction(val));
         }
     }
 
     private void setPedalPreference(int which, int pedalCode, String pedalMidi) {
         if (pedalMidi==null) {
             // Normal key press
-            preferences.setMyPreferenceInt(getContext(),"pedal"+which+"Code",pedalCode);
+            mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),"pedal"+which+"Code",pedalCode);
         } else {
             // Midi press
-            preferences.setMyPreferenceString(getContext(), "pedal"+which+"Midi", pedalMidi);
+            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(), "pedal"+which+"Midi", pedalMidi);
         }
     }
 }

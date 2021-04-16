@@ -13,13 +13,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsSongactionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class SongActionsMenuFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsSongactionsBinding myView;
-    private Song song;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -31,19 +29,12 @@ public class SongActionsMenuFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSongactionsBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.song_actions));
-
-        // Set helpers
-        setHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.song_actions));
 
         // Set Listeners
         setListeners();
 
         return myView.getRoot();
-    }
-
-    private void setHelpers() {
-        song = mainActivityInterface.getSong();
     }
 
     private void setListeners() {
@@ -57,4 +48,9 @@ public class SongActionsMenuFragment extends Fragment {
         //myView.midi.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.songMidiFragment));
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
+    }
 }

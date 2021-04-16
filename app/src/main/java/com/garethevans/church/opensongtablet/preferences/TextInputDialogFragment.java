@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.TextInputDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class TextInputDialogFragment extends DialogFragment {
 
     private final Fragment fragment;
     private final String fragname;
-    private final Preferences preferences;
     private final String title;
     private final String hint;
     private final String prefName;
@@ -37,11 +37,10 @@ public class TextInputDialogFragment extends DialogFragment {
 
     private TextInputDialogBinding myView;
     private DialogReturnInterface dialogReturnInterface;
+    private MainActivityInterface mainActivityInterface;
 
-    public TextInputDialogFragment(Preferences preferences, Fragment fragment, String fragname,
-                                   String title, String hint, String prefName, String prefVal,
-                                   boolean singleLine) {
-        this.preferences = preferences;
+    public TextInputDialogFragment(Fragment fragment, String fragname, String title, String hint,
+                                   String prefName, String prefVal, boolean singleLine) {
         this.fragment = fragment;
         this.fragname = fragname;
         this.title = title;
@@ -52,10 +51,9 @@ public class TextInputDialogFragment extends DialogFragment {
         simpleEditText = true;
     }
 
-    public TextInputDialogFragment(Preferences preferences, Fragment fragment, String fragname,
+    public TextInputDialogFragment(Fragment fragment, String fragname,
                                    String title, String hint, String prefName, String prefVal,
                                    ArrayList<String> prefChoices) {
-        this.preferences = preferences;
         this.fragment = fragment;
         this.fragname = fragname;
         this.title = title;
@@ -70,6 +68,7 @@ public class TextInputDialogFragment extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
         dialogReturnInterface = (DialogReturnInterface) context;
     }
 
@@ -130,7 +129,7 @@ public class TextInputDialogFragment extends DialogFragment {
             }
 
             // Save the preference
-            preferences.setMyPreferenceString(getContext(),prefName,prefVal);
+            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),prefName,prefVal);
 
             // Update the calling fragment
             dialogReturnInterface.updateValue(fragment,fragname,prefName,prefVal);

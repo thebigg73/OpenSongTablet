@@ -20,7 +20,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         // If the table doesn't exist, create it.

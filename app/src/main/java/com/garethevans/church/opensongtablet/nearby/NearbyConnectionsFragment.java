@@ -37,7 +37,7 @@ public class NearbyConnectionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsNearbyconnectionsBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.connections_connect));
+        mainActivityInterface.updateToolbar(getString(R.string.connections_connect));
 
         // Set the helpers
         setHelpers();
@@ -180,7 +180,7 @@ public class NearbyConnectionsFragment extends Fragment {
     }
 
     private void textInputDialog() {
-        TextInputDialogFragment dialogFragment = new TextInputDialogFragment(mainActivityInterface.getPreferences(), this,
+        TextInputDialogFragment dialogFragment = new TextInputDialogFragment(this,
                 "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),
                 "deviceId", mainActivityInterface.getNearbyConnections().deviceId,true);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");

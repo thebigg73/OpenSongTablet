@@ -38,7 +38,7 @@ public class AboutAppFragment extends Fragment {
         myView = SettingsAboutBinding.inflate(inflater, container, false);
 
         // Update the toolbar
-        mainActivityInterface.updateToolbar(null,getString(R.string.about));
+        mainActivityInterface.updateToolbar(getString(R.string.about));
 
         // Update menu text with version and language
         updateMenuText();

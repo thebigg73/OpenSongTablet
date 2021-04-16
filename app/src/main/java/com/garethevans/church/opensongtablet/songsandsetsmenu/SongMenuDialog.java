@@ -103,4 +103,10 @@ public class SongMenuDialog extends DialogFragment {
             }
         }
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
+    }
 }

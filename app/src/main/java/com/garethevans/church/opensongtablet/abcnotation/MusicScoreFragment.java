@@ -31,7 +31,7 @@ public class MusicScoreFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsAbcnotationBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.music_score));
+        mainActivityInterface.updateToolbar(getString(R.string.music_score));
 
         // Set up the views
         setViews();

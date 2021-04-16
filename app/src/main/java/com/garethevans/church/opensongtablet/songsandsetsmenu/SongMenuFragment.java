@@ -19,22 +19,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
-import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -42,15 +34,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private final String TAG = "SongMenuFragment";
     // The helper classes used
-    private Preferences preferences;
-    private StorageAccess storageAccess;
-    private Locale locale;
-    private SQLiteHelper sqLiteHelper;
-    private CommonSQL commonSQL;
     private MenuSongsBinding myView;
-    private ShowCase showCase;
-    private SetActions setActions;
-    private CurrentSet currentSet;
     private boolean songButtonActive = true;
     private String folderSearchVal="", artistSearchVal="", keySearchVal="", tagSearchVal="", filterSearchVal="";
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
@@ -80,9 +64,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                              Bundle savedInstanceState) {
         myView = MenuSongsBinding.inflate(inflater, container, false);
 
-        // Initialise helpers
-        initialiseHelpers();
-
         // Initialise views
         initialiseRecyclerView();
 
@@ -90,17 +71,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         updateSongMenu(mainActivityInterface.getSong());
 
         return myView.getRoot();
-    }
-
-    private void initialiseHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        storageAccess = mainActivityInterface.getStorageAccess();
-        locale = mainActivityInterface.getLocale();
-        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
-        commonSQL = mainActivityInterface.getCommonSQL();
-        currentSet = mainActivityInterface.getCurrentSet();
-        showCase = mainActivityInterface.getShowCase();
-        setActions = mainActivityInterface.getSetActions();
     }
 
     private void initialiseRecyclerView() {
@@ -120,17 +90,17 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
 
     private void setValues(Song song) {
-        songListSearchByFolder = preferences.getMyPreferenceBoolean(getActivity(), "songListSearchByFolder", false);
+        songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByFolder", false);
         if (songListSearchByFolder && folderSearchVal.isEmpty()) {
             // Likely the first run
             folderSearchVal = song.getFolder();
             // Do on the UI thread
             myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(folderSearchVal));
         }
-        songListSearchByArtist = preferences.getMyPreferenceBoolean(getActivity(), "songListSearchByArtist", false);
-        songListSearchByKey = preferences.getMyPreferenceBoolean(getActivity(), "songListSearchByKey", false);
-        songListSearchByTag = preferences.getMyPreferenceBoolean(getActivity(), "songListSearchByTag", false);
-        songListSearchByFilter = preferences.getMyPreferenceBoolean(getActivity(), "songListSearchByFilter", false);
+        songListSearchByArtist = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByArtist", false);
+        songListSearchByKey = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByKey", false);
+        songListSearchByTag = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByTag", false);
+        songListSearchByFilter = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByFilter", false);
         showHideRows(myView.filters.folderRow,songListSearchByFolder);
         showHideRows(myView.filters.artistRow,songListSearchByArtist);
         showHideRows(myView.filters.keyRow,songListSearchByKey);
@@ -141,7 +111,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void setUpExposedDropDowns(Song song) {
         new Thread(() -> {
             try {
-                foundFolders = sqLiteHelper.getFolders(getContext(), mainActivityInterface);
+                foundFolders = mainActivityInterface.getSQLiteHelper().getFolders(getContext(), mainActivityInterface);
                 folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
                 keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
                 requireActivity().runOnUiThread(() -> {
@@ -216,7 +186,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.folderButton.setOnClickListener(v -> {
             songListSearchByFolder = !songListSearchByFolder;
-            preferences.setMyPreferenceBoolean(requireActivity(),"songListSearchByFolder",songListSearchByFolder);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(),"songListSearchByFolder",songListSearchByFolder);
             fixButtons();
             showHideRows(myView.filters.folderRow,songListSearchByFolder);
             if (songListSearchByFolder) {
@@ -226,7 +196,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.artistButton.setOnClickListener(v -> {
             songListSearchByArtist = !songListSearchByArtist;
-            preferences.setMyPreferenceBoolean(requireActivity(),"songListSearchByArtist",songListSearchByArtist);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(),"songListSearchByArtist",songListSearchByArtist);
             fixButtons();
             showHideRows(myView.filters.artistRow,songListSearchByArtist);
             if (songListSearchByArtist) {
@@ -236,7 +206,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.keyButton.setOnClickListener(v -> {
             songListSearchByKey = !songListSearchByKey;
-            preferences.setMyPreferenceBoolean(requireActivity(),"songListSearchByKey",songListSearchByKey);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(),"songListSearchByKey",songListSearchByKey);
             fixButtons();
             showHideRows(myView.filters.keyRow,songListSearchByKey);
             if (songListSearchByKey) {
@@ -246,7 +216,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.tagButton.setOnClickListener(v -> {
             songListSearchByTag = !songListSearchByTag;
-            preferences.setMyPreferenceBoolean(requireActivity(),"songListSearchByTag",songListSearchByTag);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(),"songListSearchByTag",songListSearchByTag);
             fixButtons();
             showHideRows(myView.filters.tagRow,songListSearchByTag);
             if (songListSearchByTag) {
@@ -256,7 +226,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.filterButton.setOnClickListener(v -> {
             songListSearchByFilter = !songListSearchByFilter;
-            preferences.setMyPreferenceBoolean(requireActivity(),"songListSearchByFilter",songListSearchByFilter);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(),"songListSearchByFilter",songListSearchByFilter);
             fixButtons();
             showHideRows(myView.filters.filterRow,songListSearchByFilter);
             if (songListSearchByFilter) {
@@ -306,7 +276,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> buttonsEnabled(false));
             try {
-                 songsFound = sqLiteHelper.getSongsByFilters(getActivity(), mainActivityInterface,
+                 songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(getActivity(), mainActivityInterface,
                         songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
                         songListSearchByTag, songListSearchByFilter, folderSearchVal,
                        artistSearchVal, keySearchVal, tagSearchVal, filterSearchVal);
@@ -322,10 +292,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         // Build a basic, but quick song menu!
 
         // Update the file
-        storageAccess.listSongs(getContext(),preferences,locale);
+        mainActivityInterface.getStorageAccess().listSongs(getContext(),mainActivityInterface.getPreferences(),mainActivityInterface.getLocale());
 
         // Build the basic menu
-        sqLiteHelper.insertFast(getContext(),mainActivityInterface);
+        mainActivityInterface.getSQLiteHelper().insertFast(getContext(),mainActivityInterface);
 
         // Update the view
         prepareSearch();
@@ -348,7 +318,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
     private void displayIndex(ArrayList<Song> songMenuViewItems,
                               SongListAdapter songListAdapter) {
-        if (preferences.getMyPreferenceBoolean(getActivity(),"songMenuAlphaIndexShow",true)) {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songMenuAlphaIndexShow",true)) {
             myView.songmenualpha.sideIndex.setVisibility(View.VISIBLE);
         } else {
             myView.songmenualpha.sideIndex.setVisibility(View.GONE);
@@ -360,8 +330,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         List<String> indexList = new ArrayList<>(setString);
         for (String index : indexList) {
             textView = (TextView) View.inflate(getActivity(), R.layout.leftmenu, null);
-            textView.setTextSize(preferences.getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f));
-            int i = (int) preferences.getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f) *2;
+            textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f));
+            int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f) *2;
             textView.setPadding(i,i,i,i);
             textView.setText(index);
             textView.setOnClickListener(view -> {
@@ -409,7 +379,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         dismisses.add(null);
         rects.add(rect1);
         rects.add(rect2);
-        showCase.sequenceShowCase(requireActivity(),targets,dismisses,infos,rects,id);
+        mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),targets,dismisses,infos,rects,id);
     }
     public void updateSongMenu(Song song) {
         // Set values
@@ -438,9 +408,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private int indexOfSongInMenu(Song song) {
-        if (setActions!=null && currentSet!=null && song!=null) {
-            setActions.indexSongInSet(mainActivityInterface);
-            return currentSet.getIndexSongInSet();
+        if (mainActivityInterface.getSetActions()!=null && mainActivityInterface.getCurrentSet()!=null && song!=null) {
+            mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface);
+            return mainActivityInterface.getCurrentSet().getIndexSongInSet();
         } else {
             return -1;
         }

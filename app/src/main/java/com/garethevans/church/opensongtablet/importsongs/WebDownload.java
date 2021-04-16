@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,7 +18,7 @@ public class WebDownload {
     // These can be my sample songs, or files from UG, SongSelect, etc.
     // This will be called in a new thread somewhere!
 
-    public String[] doDownload(Context c, StorageAccess storageAccess, String address, String filename) {
+    public String[] doDownload(Context c, String address, String filename) {
         String[] returnMessages = new String[2];
 
         InputStream input = null;

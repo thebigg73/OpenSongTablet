@@ -14,12 +14,10 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayExtraBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class DisplayExtraFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    private Preferences preferences;
     private SettingsDisplayExtraBinding myView;
 
     @Override
@@ -32,10 +30,7 @@ public class DisplayExtraFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayExtraBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.song_display));
-
-        // Set up helpers
-        setHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.song_display));
 
         // Set up views
         setViews();
@@ -44,10 +39,6 @@ public class DisplayExtraFragment extends Fragment {
         setListeners();
 
         return myView.getRoot();
-    }
-
-    private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
     }
 
     private void setViews() {
@@ -60,7 +51,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.addSectionSpace.setChecked(getChecked("addSectionSpace",true));
         myView.trimLineSpacing.setChecked(getChecked("trimLines",false));
         visibilityByBoolean(myView.trimLineSpacingLayout,myView.trimLineSpacing.isChecked());
-        float lineSpacing = preferences.getMyPreferenceFloat(requireContext(),"lineSpacing",0.1f);
+        float lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"lineSpacing",0.1f);
         int percentage = (int)(lineSpacing * 100);
         myView.trimLineSpacingSeekBar.setProgress(percentage-1);
         progressToText(percentage-1);
@@ -70,7 +61,7 @@ public class DisplayExtraFragment extends Fragment {
     }
 
     private boolean getChecked(String prefName, boolean fallback) {
-        return preferences.getMyPreferenceBoolean(requireContext(),prefName,fallback);
+        return mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),prefName,fallback);
     }
     private void visibilityByBoolean(View view, boolean visible) {
         if (visible) {
@@ -109,7 +100,7 @@ public class DisplayExtraFragment extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int percentage = myView.trimLineSpacingSeekBar.getProgress()+1;
                 float val = (float)percentage/100.0f;
-                preferences.setMyPreferenceFloat(requireContext(),"lineSpacing",val);
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),"lineSpacing",val);
             }
         });
 
@@ -131,15 +122,21 @@ public class DisplayExtraFragment extends Fragment {
                 // Put the corrected text back in
                 myView.filters.setText(newText);
                 // Save it
-                preferences.setMyPreferenceString(requireContext(),"filterText",newText);
+                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"filterText",newText);
             }
         });
     }
 
     private void updateBooleanPreference(String prefName, boolean isChecked, View viewToShowHide) {
-        preferences.setMyPreferenceBoolean(requireContext(),prefName,isChecked);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),prefName,isChecked);
         if (viewToShowHide!=null) {
             visibilityByBoolean(viewToShowHide,isChecked);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

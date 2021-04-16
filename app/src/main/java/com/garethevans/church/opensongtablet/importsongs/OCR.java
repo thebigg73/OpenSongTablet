@@ -7,10 +7,7 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
@@ -25,8 +22,7 @@ public class OCR {
     private int pageCount;
     private MainActivityInterface mainActivityInterface;
 
-    public void getTextFromPDF(Context c, Preferences preferences, StorageAccess storageAccess,
-                                 ProcessSong processSong, MainActivityInterface mainActivityInterface,
+    public void getTextFromPDF(Context c, MainActivityInterface mainActivityInterface,
                                String folder, String filename) {
 
         this.mainActivityInterface = mainActivityInterface;
@@ -37,16 +33,16 @@ public class OCR {
         pdfPages = new ArrayList<>();
 
         // Get the pdf uri
-        Uri uri = storageAccess.getUriForItem(c,preferences,"Songs",folder,filename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Songs",folder,filename);
 
         // Get the parcel file descriptor
-        ParcelFileDescriptor parcelFileDescriptor = processSong.getPDFParcelFileDescriptor(c,uri);
+        ParcelFileDescriptor parcelFileDescriptor = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(c,uri);
 
         // Get the pdf renderer
-        PdfRenderer pdfRenderer = processSong.getPDFRenderer(parcelFileDescriptor);
+        PdfRenderer pdfRenderer = mainActivityInterface.getProcessSong().getPDFRenderer(parcelFileDescriptor);
 
         // Get the page count
-        pageCount = processSong.getPDFPageCount(pdfRenderer);
+        pageCount = mainActivityInterface.getProcessSong().getPDFPageCount(pdfRenderer);
 
         Log.d("d","uri"+uri);
         Log.d("d","parcelFileDescriptor="+parcelFileDescriptor);
@@ -62,19 +58,19 @@ public class OCR {
 
             for (int i=0; i<pageCount; i++) {
                 // Get the currentPDF page
-                currentPage = processSong.getPDFPage(pdfRenderer,i);
+                currentPage = mainActivityInterface.getProcessSong().getPDFPage(pdfRenderer,i);
 
                 // Get the currentPDF size
-                ArrayList<Integer> pdfSize = processSong.getPDFPageSize(currentPage);
+                ArrayList<Integer> pdfSize = mainActivityInterface.getProcessSong().getPDFPageSize(currentPage);
 
                 // Get a scaled Bitmap size
-                ArrayList<Integer> bmpSize = processSong.getBitmapScaledSize(pdfSize,1200,1600,"Y");
+                ArrayList<Integer> bmpSize = mainActivityInterface.getProcessSong().getBitmapScaledSize(pdfSize,1200,1600,"Y");
 
                 Log.d("d","bmpWidth="+bmpSize.get(0));
                 Log.d("d","bmpHeight="+bmpSize.get(1));
 
                 // Get a scaled bitmap for these sizes
-                bmp = processSong.createBitmapFromPage(bmpSize,currentPage,false);
+                bmp = mainActivityInterface.getProcessSong().createBitmapFromPage(bmpSize,currentPage,false);
 
                 // Send this page off for processing.  The onSuccessListener knows when it is done
                 extractTextFromBitmap(bmp,0,i);

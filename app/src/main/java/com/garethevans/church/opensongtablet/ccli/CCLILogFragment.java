@@ -38,7 +38,7 @@ public class CCLILogFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsCcliLogBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.ccli) + " XML");
+        mainActivityInterface.updateToolbar(getString(R.string.ccli) + " XML");
 
         // Set up the default values
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),

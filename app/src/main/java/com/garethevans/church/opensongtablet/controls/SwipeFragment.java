@@ -14,20 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.databinding.SettingsSwipesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
 
 public class SwipeFragment extends Fragment {
 
-    private Preferences preferences;
     private MainActivityInterface mainActivityInterface;
     private SettingsSwipesBinding myView;
-    private DrawNotes drawNotes;
-    private Swipes swipes;
 
     // For simulated swipe animation
     private float startX, startY, newX, newY;
@@ -42,10 +37,7 @@ public class SwipeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSwipesBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(null, getString(R.string.swipe));
-
-        // setup the helpers
-        setupHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.swipe));
 
         // register this fragement
         mainActivityInterface.registerFragment(this, "SwipeFragment");
@@ -60,16 +52,12 @@ public class SwipeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mainActivityInterface.registerFragment(null, "SwipeFragment");
-    }
-
-    private void setupHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        swipes = mainActivityInterface.getSwipes();
+        myView = null;
     }
 
     private void setupViews() {
         // The checkbox to enable/disable the settings
-        myView.swipeActive.setChecked(preferences.getMyPreferenceBoolean(requireContext(), "swipeForSongs", true));
+        myView.swipeActive.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "swipeForSongs", true));
         myView.swipeActive.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 myView.swipeOptionsLayout.setVisibility(View.VISIBLE);
@@ -77,22 +65,22 @@ public class SwipeFragment extends Fragment {
             } else {
                 myView.swipeOptionsLayout.setVisibility(View.GONE);
             }
-            preferences.setMyPreferenceBoolean(requireContext(), "swipeForSongs", isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(), "swipeForSongs", isChecked);
         });
 
         // Set up the drawing area - attach the drawNotes to the desired view
-        drawNotes = myView.drawingArea;
-        drawNotes.setCurrentPaint(20,0xffffffff);
-        drawNotes.delayClear = true;
+        mainActivityInterface.setDrawNotes(myView.drawingArea);
+        mainActivityInterface.getDrawNotes().setCurrentPaint(20,0xffffffff);
+        mainActivityInterface.getDrawNotes().delayClear = true;
 
         // Measure the view and set the sizes based on this and user preferences
-        swipes.setSizes(drawNotes.getMeasuredWidth(), drawNotes.getMeasuredHeight());
+        mainActivityInterface.getSwipes().setSizes(mainActivityInterface.getDrawNotes().getMeasuredWidth(), mainActivityInterface.getDrawNotes().getMeasuredHeight());
 
 
         // Set up the seekBars
-        setSeekBar(myView.swipeDistance, "swipeWidth", swipes.getWidthPx(), swipes.getMinWidth(), swipes.getMaxWidth(), true);
-        setSeekBar(myView.swipeHeight, "swipeHeight", swipes.getHeightPx(), swipes.getMinHeight(), swipes.getMaxHeight(), true);
-        setSeekBar(myView.swipeSpeed, "swipeTime", swipes.getTimeMs(), swipes.getMinTime(), swipes.getMaxTime(), true);
+        setSeekBar(myView.swipeDistance, "swipeWidth", mainActivityInterface.getSwipes().getWidthPx(), mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), true);
+        setSeekBar(myView.swipeHeight, "swipeHeight", mainActivityInterface.getSwipes().getHeightPx(), mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), true);
+        setSeekBar(myView.swipeSpeed, "swipeTime", mainActivityInterface.getSwipes().getTimeMs(), mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), true);
     }
 
     private void setSeekBar(SeekBar seekBar, String pref, int myval, int min, int max, boolean createListener) {
@@ -158,15 +146,15 @@ public class SwipeFragment extends Fragment {
         // We've changed a preference.
         switch (pref) {
             case "swipeWidth":
-                swipes.fixWidth(requireContext(), preferences, val);
+                mainActivityInterface.getSwipes().fixWidth(requireContext(), mainActivityInterface, val);
                 break;
 
             case "swipeHeight":
-                swipes.fixHeight(requireContext(), preferences, val);
+                mainActivityInterface.getSwipes().fixHeight(requireContext(), mainActivityInterface, val);
                 break;
 
             case "swipeTime":
-                swipes.fixTime(requireContext(), preferences, val);
+                mainActivityInterface.getSwipes().fixTime(requireContext(), mainActivityInterface, val);
                 break;
         }
     }
@@ -174,9 +162,9 @@ public class SwipeFragment extends Fragment {
     // Get the values back from the drawNotes vies via MainActivity
     public void getSwipeValues(int returnedWidth, int returnedHeight, int returnedTime) {
         // Change the seekbars to match
-        setSeekBar(myView.swipeDistance, "swipeWidth", returnedWidth, swipes.getMinWidth(), swipes.getMaxWidth(), false);
-        setSeekBar(myView.swipeHeight, "swipeHeight", returnedHeight, swipes.getMinHeight(), swipes.getMaxHeight(), false);
-        setSeekBar(myView.swipeSpeed, "swipeTime", returnedTime, swipes.getMinTime(), swipes.getMaxTime(), false);
+        setSeekBar(myView.swipeDistance, "swipeWidth", returnedWidth, mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), false);
+        setSeekBar(myView.swipeHeight, "swipeHeight", returnedHeight, mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), false);
+        setSeekBar(myView.swipeSpeed, "swipeTime", returnedTime, mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), false);
     }
 
     private boolean dealingWith = false;
@@ -185,25 +173,25 @@ public class SwipeFragment extends Fragment {
         // Only do one at a time
         if (!dealingWith) {
             dealingWith = true;
-            startX = (drawNotes.getCanvasWidth() - swipes.getWidthPx()) / 2.0f;
-            startY = (drawNotes.getCanvasHeight() + swipes.getHeightPx()) / 2.0f;
+            startX = (mainActivityInterface.getDrawNotes().getCanvasWidth() - mainActivityInterface.getSwipes().getWidthPx()) / 2.0f;
+            startY = (mainActivityInterface.getDrawNotes().getCanvasHeight() + mainActivityInterface.getSwipes().getHeightPx()) / 2.0f;
 
             // This will be drawn over the time chosen.
             // This will be called in a runnable
             // We will update every 50ms
             int timeBetween = 50;
-            int updatesRequired = swipes.getTimeMs() / timeBetween;
+            int updatesRequired = mainActivityInterface.getSwipes().getTimeMs() / timeBetween;
 
             // How much should the width and height move by each time
-            float moveByX = (float) ((float) swipes.getWidthPx() / (float) updatesRequired);
-            float moveByY = (float) ((float) swipes.getHeightPx() / (float) updatesRequired);
+            float moveByX = (float) ((float) mainActivityInterface.getSwipes().getWidthPx() / (float) updatesRequired);
+            float moveByY = (float) ((float) mainActivityInterface.getSwipes().getHeightPx() / (float) updatesRequired);
 
             // Move to the correct start point
-            drawNotes.resetSwipe();
-            drawNotes.setSwipeAnimate(true);
+            mainActivityInterface.getDrawNotes().resetSwipe();
+            mainActivityInterface.getDrawNotes().setSwipeAnimate(true);
             Path myPath = new Path();
             myPath.moveTo(startX, startY);
-            drawNotes.addToSwipePaths(myPath);
+            mainActivityInterface.getDrawNotes().addToSwipePaths(myPath);
 
             // Now build up a series of postDelayed handlers to build and draw the swipe gesture
             ArrayList<Handler> handlers = new ArrayList<>();
@@ -216,7 +204,7 @@ public class SwipeFragment extends Fragment {
                     newX = startX + moveByX;
                     newY = startY - moveByY;
                     myPath.quadTo(startX, startY, newX, newY);
-                    drawNotes.addToSwipePaths(myPath);
+                    mainActivityInterface.getDrawNotes().addToSwipePaths(myPath);
                     startX = newX;
                     startY = newY;
                 });
@@ -231,8 +219,8 @@ public class SwipeFragment extends Fragment {
 
             // Finally release the animation lock
             new Handler().postDelayed(() -> {
-                drawNotes.setSwipeAnimate(false);
-                drawNotes.resetSwipe();
+                mainActivityInterface.getDrawNotes().setSwipeAnimate(false);
+                mainActivityInterface.getDrawNotes().resetSwipe();
                 dealingWith = false;
             }, timeNow + timeBetween);
 

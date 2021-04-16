@@ -36,7 +36,7 @@ public class SettingsCategories extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCategoriesBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings));
+        mainActivityInterface.updateToolbar(getString(R.string.settings));
 
         // Hide the features not available to this device
         hideUnavailable();
@@ -111,4 +111,9 @@ public class SettingsCategories extends Fragment {
         myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.about_graph));
         }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
+    }
 }

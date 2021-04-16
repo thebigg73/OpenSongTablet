@@ -21,14 +21,11 @@ import java.util.Locale;
 
 public class Midi {
 
-    private final Context c;
     private MainActivityInterface mainActivityInterface;
     private PedalMidiReceiver pedalMidiReceiver;
 
     // Initialise
-    public Midi(Context c) {
-        this.c = c;
-    }
+    public Midi() {}
 
     private MidiDevice midiDevice;
     private MidiManager midiManager;
@@ -308,7 +305,7 @@ public class Midi {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void enableMidiListener() {
+    public void enableMidiListener(Context c) {
         if (midiDevice!=null && midiOutputPort!=null) {
             pedalMidiReceiver = new PedalMidiReceiver(this,mainActivityInterface);
             try {

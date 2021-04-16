@@ -18,14 +18,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.DisplayColorSettingsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class ChooseColorFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private DisplayColorSettingsBinding myView;
-    private Preferences preferences;
-    private ThemeColors themeColors;
 
     private String newColorHex;
     private String alphaHex;
@@ -45,9 +42,7 @@ public class ChooseColorFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = DisplayColorSettingsBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getName());
-        // Set up the helper classes
-        setUpHelpers();
+        mainActivityInterface.updateToolbar(getName());
 
         // Set up colour
         setupOriginalColor(mainActivityInterface.getWhattodo());
@@ -59,11 +54,6 @@ public class ChooseColorFragment extends Fragment {
         setListeners();
 
         return myView.getRoot();
-    }
-
-    private void setUpHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        themeColors = mainActivityInterface.getMyThemeColors();
     }
 
     private void setSliderValues() {
@@ -119,13 +109,13 @@ public class ChooseColorFragment extends Fragment {
     }
 
     private void setupOriginalColor(String which) {
-        themePrefix = preferences.getMyPreferenceString(getContext(), "appTheme", "dark");
+        themePrefix = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "appTheme", "dark");
 
         // Load the chosen colours up
-        themeColors.getDefaultColors(getContext(),mainActivityInterface);
+        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
         int oldColorInt;
         try {
-            oldColorInt = themeColors.getValue(which);
+            oldColorInt = mainActivityInterface.getMyThemeColors().getValue(which);
         } catch (Exception e) {
             e.printStackTrace();
             oldColorInt = -1;
@@ -240,7 +230,7 @@ public class ChooseColorFragment extends Fragment {
 
     private void doSave(String which) {
         // Set the preference
-        preferences.setMyPreferenceInt(getContext(),themePrefix+"_"+which,newColorInt);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),themePrefix+"_"+which,newColorInt);
         // Navigate back
         mainActivityInterface.popTheBackStack(R.id.themeSetupFragment,true);
         mainActivityInterface.navigateToFragment(null,R.id.themeSetupFragment);
@@ -314,5 +304,11 @@ public class ChooseColorFragment extends Fragment {
                 break;
         }
         return title;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

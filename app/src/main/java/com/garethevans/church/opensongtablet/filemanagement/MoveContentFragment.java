@@ -19,24 +19,17 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.StorageMoveBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 
 public class MoveContentFragment extends Fragment {
 
     //private final String fragName;
     //private final Fragment callingFragment;
     MainActivityInterface mainActivityInterface;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    Locale locale;
-    ShowToast showToast;
     StorageMoveBinding myView;
     String subfolder;
     String newFolder;
@@ -54,15 +47,12 @@ public class MoveContentFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = (StorageMoveBinding.inflate(inflater, container, false));
-        mainActivityInterface.updateToolbar(null,getString(R.string.folder_move_contents));
+        mainActivityInterface.updateToolbar(getString(R.string.folder_move_contents));
 
         subfolder = getArguments().get("subdir").toString();
         if (subfolder==null || subfolder.isEmpty()) {
             subfolder = getString(R.string.mainfoldername);
         }
-
-        // Set up helpers
-        setupHelpers();
 
         // Get folders we can move into
         getFromFolders();
@@ -78,20 +68,13 @@ public class MoveContentFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setupHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        storageAccess = mainActivityInterface.getStorageAccess();
-        locale = mainActivityInterface.getLocale();
-        showToast = mainActivityInterface.getShowToast();
-    }
-
     private void listFilesInFolder() {
         // Do this is another thread
         myView.progressBar.setVisibility(View.VISIBLE);
         myView.selectAllCheckBox.setChecked(false);
         myView.folderContentsLayout.removeAllViews();
         new Thread(() -> {
-            files = storageAccess.listFilesInFolder(requireContext(), preferences, "Songs", subfolder);
+            files = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(), mainActivityInterface.getPreferences(), "Songs", subfolder);
             if (files.size() != 0) {
                 Collections.sort(files);
                 getActivity().runOnUiThread(() -> {
@@ -113,8 +96,8 @@ public class MoveContentFragment extends Fragment {
     private void getFromFolders() {
         // Do this in another thread
         new Thread(() -> {
-            ArrayList<String> availableFromFolders = storageAccess.getSongFolders(requireContext(),
-                    storageAccess.listSongs(requireContext(), preferences, locale), true, null);
+            ArrayList<String> availableFromFolders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),
+                    mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale()), true, null);
             getActivity().runOnUiThread(() -> {
                 if (availableFromFolders.size() != 0) {
                     ExposedDropDownArrayAdapter folderFromArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
@@ -145,8 +128,8 @@ public class MoveContentFragment extends Fragment {
         // Do this in another thread
         new Thread(() -> {
             // This lists the folders available (minus the current one)
-            ArrayList<String> availableMoveFolders = storageAccess.getSongFolders(requireContext(),
-                    storageAccess.listSongs(requireContext(), preferences, locale), true, subfolder);
+            ArrayList<String> availableMoveFolders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),
+                    mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale()), true, subfolder);
 
             getActivity().runOnUiThread(() -> {
                 if (availableMoveFolders.size() != 0) {
@@ -182,7 +165,7 @@ public class MoveContentFragment extends Fragment {
             // Go through the checklists and add the checked ones
             uris = new ArrayList<>();
             for (String file : filesChosen) {
-                uris.add(storageAccess.getUriForItem(requireContext(), preferences, "Songs", subfolder, file));
+                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface.getPreferences(), "Songs", subfolder, file));
             }
 
             InputStream inputStream;
@@ -191,16 +174,16 @@ public class MoveContentFragment extends Fragment {
             Log.d("MoveContents","filesChosen.size()="+filesChosen.size());
             try {
                 for (int x = 0; x < filesChosen.size(); x++) {
-                    outputFile = storageAccess.getUriForItem(requireContext(), preferences, "Songs", newFolder, filesChosen.get(x));
-                    storageAccess.lollipopCreateFileForOutputStream(requireContext(), preferences, outputFile,
+                    outputFile = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface.getPreferences(), "Songs", newFolder, filesChosen.get(x));
+                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(), mainActivityInterface.getPreferences(), outputFile,
                             null, "Songs", newFolder, filesChosen.get(x));
-                    inputStream = storageAccess.getInputStream(requireContext(), uris.get(x));
-                    outputStream = storageAccess.getOutputStream(requireContext(), outputFile);
+                    inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), uris.get(x));
+                    outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), outputFile);
                     // Update the progress
                     String finalMessage = subfolder + "/" + filesChosen.get(x) + " > " + newFolder + "/" + filesChosen.get(x);
                     getActivity().runOnUiThread(() -> myView.progressText.setText(finalMessage));
-                    if (storageAccess.copyFile(inputStream, outputStream)) {
-                        storageAccess.deleteFile(requireContext(), uris.get(x));
+                    if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
+                        mainActivityInterface.getStorageAccess().deleteFile(requireContext(), uris.get(x));
                     } else {
                         Log.d("d","error copying "+finalMessage);
                     }
@@ -212,7 +195,7 @@ public class MoveContentFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 myView.progressText.setVisibility(View.GONE);
                 myView.doMove.setVisibility(View.VISIBLE);
-                showToast.doIt(requireContext(),getString(R.string.success));
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
 
                 // Now reload the folder contents
                 listFilesInFolder();
@@ -230,5 +213,11 @@ public class MoveContentFragment extends Fragment {
 
     private int getNumCheckBoxes() {
         return myView.folderContentsLayout.getChildCount();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

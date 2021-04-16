@@ -18,12 +18,8 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.chords.TransposeDialogFragment;
 import com.garethevans.church.opensongtablet.databinding.FragmentEditSong1Binding;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.EditSongMainFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputEditText;
@@ -33,14 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EditSongFragmentMain extends Fragment implements EditSongMainFragmentInterface  {
-
-    // The helper classes used
-    private Preferences preferences;
-    private StorageAccess storageAccess;
-    private SQLiteHelper sqLiteHelper;
-    private CommonSQL commonSQL;
-    private ConvertChoPro convertChoPro;
-    private ProcessSong processSong;
 
     // The variable used in this fragment
     private FragmentEditSong1Binding myView;
@@ -81,9 +69,6 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
 
         myView = FragmentEditSong1Binding.inflate(inflater, container, false);
 
-        // Initialise helpers
-        initialiseHelpers();
-
         // Hide the main action button and send the fragment reference if it was showing
         mainActivityInterface.hideActionButton(true);
 
@@ -91,7 +76,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         song = mainActivityInterface.getSong();
         originalSong = mainActivityInterface.getOriginalSong();
 
-        editAsChoPro = preferences.getMyPreferenceBoolean(requireContext(),"editAsChordPro",false);
+        editAsChoPro = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"editAsChordPro",false);
 
         // Initialise the views
         initialiseViews();
@@ -106,16 +91,6 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         setUpListeners();
 
         return myView.getRoot();
-    }
-
-    // Getting the preferences and helpers ready
-    private void initialiseHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        storageAccess = mainActivityInterface.getStorageAccess();
-        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
-        commonSQL = mainActivityInterface.getCommonSQL();
-        convertChoPro = mainActivityInterface.getConvertChoPro();
-        processSong = mainActivityInterface.getProcessSong();
     }
 
     // Initialise the views
@@ -141,7 +116,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
     // Set up the drop down lists
     private void setUpDropDowns() {
         new Thread(() -> {
-            foundFolders = sqLiteHelper.getFolders(requireContext(),mainActivityInterface);
+            foundFolders = mainActivityInterface.getSQLiteHelper().getFolders(requireContext(),mainActivityInterface);
             folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
             keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
             getActivity().runOnUiThread(() -> {
@@ -196,10 +171,10 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
             setButtonOn(openSongFormat,false);
             // Only process if we are actually changing
             if (!editAsChoPro && text!=null && !text.isEmpty()) {
-                song.setLyrics(convertChoPro.fromOpenSongToChordPro(requireContext(), mainActivityInterface, text));
+                song.setLyrics(mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(requireContext(), mainActivityInterface, text));
                 lyrics.setText(song.getLyrics());
             }
-            preferences.setMyPreferenceBoolean(requireContext(), "editAsChordPro", true);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(), "editAsChordPro", true);
             editAsChoPro = true;
 
         } else if (!choProFormatting && editAsChoPro && text!=null && !text.isEmpty()) {
@@ -209,10 +184,10 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
 
             // Only process if we are actually changing
             if (editAsChoPro && text!=null && !text.isEmpty()) {
-                song.setLyrics(convertChoPro.fromChordProToOpenSong(text));
+                song.setLyrics(mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(text));
                 lyrics.setText(song.getLyrics());
             }
-            preferences.setMyPreferenceBoolean(requireContext(), "editAsChordPro", false);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(), "editAsChordPro", false);
             editAsChoPro = false;
         }
         mainActivityInterface.updateSong(song);
@@ -284,7 +259,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
             if (s != null) {
                 value = s.toString();
                 if (what.equals("filename")) {
-                    value = storageAccess.safeFilename(value);
+                    value = mainActivityInterface.getStorageAccess().safeFilename(value);
                 }
                 saveVal();
             }
@@ -333,4 +308,5 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
             changes = false;
         }
     }
+
 }

@@ -17,18 +17,12 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsProfilesBinding;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 public class ProfileFragment extends Fragment {
 
     private SettingsProfilesBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private Preferences preferences;
-    private StorageAccess storageAccess;
-    private ProfileActions profileActions;
-    private ShowToast showToast;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,7 +35,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsProfilesBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.profile));
+        mainActivityInterface.updateToolbar(getString(R.string.profile));
 
         // Setup helpers
         setupHelpers();
@@ -53,11 +47,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        storageAccess = mainActivityInterface.getStorageAccess();
         mainActivityInterface.registerFragment(this,"ProfileFragment");
-        showToast = mainActivityInterface.getShowToast();
-        profileActions = new ProfileActions();
     }
 
     private void setupListeners() {
@@ -69,7 +59,8 @@ public class ProfileFragment extends Fragment {
     private void loadProfile() {
         // Open the file picker and when the user has picked a file, on activity result will
         Intent loadIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Profiles","",null);
+        Uri uri = mainActivityInterface.getStorageAccess().
+                getUriForItem(requireContext(),mainActivityInterface.getPreferences(),"Profiles","",null);
         loadIntent.setDataAndType(uri,"application/xml");
         String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
         loadIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
@@ -81,7 +72,7 @@ public class ProfileFragment extends Fragment {
     private void saveProfile() {
         // Open the file picker and when the user has picked a file, on activity result will
         Intent saveIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Profiles","",null);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface.getPreferences(),"Profiles","",null);
         saveIntent.setDataAndType(uri,"application/xml");
         saveIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
         saveIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
@@ -92,23 +83,23 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
         if (resultCode == Activity.RESULT_OK && requestCode == 5002) {
-            if (profileActions.loadProfile(requireContext(), storageAccess, preferences, resultData.getData())) {
-                showToast.doIt(requireContext(),getString(R.string.success));
+            if (mainActivityInterface.getProfileActions().loadProfile(requireContext(), mainActivityInterface, resultData.getData())) {
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
             } else {
-                showToast.doIt(requireContext(),getString(R.string.error));
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
             }
         } else if (resultCode == Activity.RESULT_OK && requestCode == 5001) {
-            if (profileActions.saveProfile(requireContext(), storageAccess, preferences, resultData.getData())) {
-                showToast.doIt(requireContext(),getString(R.string.success));
+            if (mainActivityInterface.getProfileActions().saveProfile(requireContext(), mainActivityInterface, resultData.getData())) {
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
             } else {
-                showToast.doIt(requireContext(),getString(R.string.error));
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
             }
         }
     }
 
     private void resetPreferences() {
         // Reset the preferences and start again
-        profileActions.resetPreferences(requireContext(),preferences);
+        mainActivityInterface.getProfileActions().resetPreferences(mainActivityInterface);
 
         NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.setStorageLocationFragment, true)

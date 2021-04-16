@@ -17,16 +17,13 @@ import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsGesturesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
 
 public class GesturesFragment extends Fragment {
 
     private SettingsGesturesBinding myView;
-    private Preferences preferences;
     private MainActivityInterface mainActivityInterface;
-    private Gestures gestures;
     private ExposedDropDownSelection exposedDropDownSelection;
 
     @Override
@@ -39,7 +36,7 @@ public class GesturesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsGesturesBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,requireContext().getString(R.string.custom_gestures));
+        mainActivityInterface.updateToolbar(getString(R.string.custom_gestures));
 
         // Set up the helpers
         setupHelpers();
@@ -51,29 +48,27 @@ public class GesturesFragment extends Fragment {
     }
 
     private void setupHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        gestures = mainActivityInterface.getGestures();
         exposedDropDownSelection = new ExposedDropDownSelection();
     }
 
     private void setupDropDowns() {
         // Get the arrays for the dropdowns
-        ArrayList<String> availableDescriptions = gestures.getGestureDescriptions();
+        ArrayList<String> availableDescriptions = mainActivityInterface.getGestures().getGestureDescriptions();
         ExposedDropDownArrayAdapter descriptionsAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, availableDescriptions);
         myView.doubleTap.setAdapter(descriptionsAdapter);
         myView.longPress.setAdapter(descriptionsAdapter);
 
         // Set the initial values
-        myView.doubleTap.setText(gestures.getDescriptionFromGesture(gestures.getDoubleTap()));
-        myView.longPress.setText(gestures.getDescriptionFromGesture(gestures.getLongPress()));
+        myView.doubleTap.setText(mainActivityInterface.getGestures().getDescriptionFromGesture(mainActivityInterface.getGestures().getDoubleTap()));
+        myView.longPress.setText(mainActivityInterface.getGestures().getDescriptionFromGesture(mainActivityInterface.getGestures().getLongPress()));
 
         // Set the listeners
         myView.doubleTap.addTextChangedListener(new MyTextWatcher("doubleTap"));
         myView.doubleTap.addTextChangedListener(new MyTextWatcher("longPress"));
 
         // Set the position in the list to the chosen value
-        exposedDropDownSelection.keepSelectionPosition(myView.doubleTapLayout,myView.doubleTap, gestures.getGestureDescriptions());
-        exposedDropDownSelection.keepSelectionPosition(myView.longPressLayout,myView.longPress, gestures.getGestureDescriptions());
+        exposedDropDownSelection.keepSelectionPosition(myView.doubleTapLayout,myView.doubleTap, mainActivityInterface.getGestures().getGestureDescriptions());
+        exposedDropDownSelection.keepSelectionPosition(myView.longPressLayout,myView.longPress, mainActivityInterface.getGestures().getGestureDescriptions());
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -95,8 +90,8 @@ public class GesturesFragment extends Fragment {
             } else {
                 mydescription = myView.longPress.getText().toString();
             }
-            String mygesture = gestures.getGestureFromDescription(mydescription);
-            gestures.setPreferences(requireContext(),preferences,which,mygesture);
+            String mygesture = mainActivityInterface.getGestures().getGestureFromDescription(mydescription);
+            mainActivityInterface.getGestures().setPreferences(requireContext(),mainActivityInterface,which,mygesture);
         }
     }
 }

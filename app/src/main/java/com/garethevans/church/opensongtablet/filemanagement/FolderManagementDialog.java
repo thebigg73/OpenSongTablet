@@ -163,5 +163,4 @@ public class FolderManagementDialog extends DialogFragment {
         }
     }
 
-
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -31,9 +31,9 @@ public class PedalActions {
             airTurnPaused = false;
         }
     };
-    public void setUpPedalActions(Context c, Preferences preferences) {
+    public void setUpPedalActions(Context c, MainActivityInterface mainActivityInterface) {
         setActions(c);
-        setPrefs(c,preferences);
+        setPrefs(c,mainActivityInterface);
     }
 
     public ArrayList<String> getActions() {
@@ -84,17 +84,17 @@ public class PedalActions {
         actionCodes.add(id);
         actions.add(val);
     }
-    private void setPrefs(Context c, Preferences preferences) {
+    private void setPrefs(Context c, MainActivityInterface mainActivityInterface) {
         for (int w=1; w<=8; w++) {
-            pedalCode[w] = preferences.getMyPreferenceInt(c, "pedal"+w+"Code", defPedalCodes[w]);
-            pedalMidi[w] = preferences.getMyPreferenceString(c,"pedal"+w+"Midi",defPedalMidis[w]);
-            pedalShortPressAction[w] = preferences.getMyPreferenceString(c,"pedal"+w+"ShortPressAction",defShortActions[w]);
-            pedalLongPressAction[w] = preferences.getMyPreferenceString(c,"pedal"+w+"LongPressAction",defLongActions[w]);
+            pedalCode[w] = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "pedal"+w+"Code", defPedalCodes[w]);
+            pedalMidi[w] = mainActivityInterface.getPreferences().getMyPreferenceString(c,"pedal"+w+"Midi",defPedalMidis[w]);
+            pedalShortPressAction[w] = mainActivityInterface.getPreferences().getMyPreferenceString(c,"pedal"+w+"ShortPressAction",defShortActions[w]);
+            pedalLongPressAction[w] = mainActivityInterface.getPreferences().getMyPreferenceString(c,"pedal"+w+"LongPressAction",defLongActions[w]);
         }
-        airTurnMode = preferences.getMyPreferenceBoolean(c,"airTurnMode", false);
-        keyRepeatCount = preferences.getMyPreferenceInt(c,"keyRepeatCount",20);
-        pedalScrollBeforeMove = preferences.getMyPreferenceBoolean(c,"pedalScrollBeforeMove",true);
-        pedalShowWarningBeforeMove = preferences.getMyPreferenceBoolean(c,"pedalShowWarningBeforeMove",false);
+        airTurnMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"airTurnMode", false);
+        keyRepeatCount = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"keyRepeatCount",20);
+        pedalScrollBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"pedalScrollBeforeMove",true);
+        pedalShowWarningBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"pedalShowWarningBeforeMove",false);
     }
 
     public void commonEventDown(int keyCode, String keyMidi) {

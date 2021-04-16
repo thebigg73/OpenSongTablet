@@ -14,13 +14,11 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class HighlighterFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsHighlighterBinding myView;
-    private Preferences preferences;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -32,10 +30,7 @@ public class HighlighterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsHighlighterBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,getString(R.string.highlight));
-
-        // Set helpers
-        setupHelpers();
+        mainActivityInterface.updateToolbar(getString(R.string.highlight));
 
         // Set current values
         setupViews();
@@ -46,15 +41,11 @@ public class HighlighterFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void setupHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-    }
-
     private void setupViews() {
-        boolean drawingAutoDisplay = preferences.getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",true);
+        boolean drawingAutoDisplay = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",true);
         myView.autoShowHighlight.setChecked(drawingAutoDisplay);
         hideView(myView.highlighterTimeLayout,drawingAutoDisplay);
-        int timeToDisplayHighlighter = preferences.getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
+        int timeToDisplayHighlighter = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
         myView.timeToDisplayHighlighter.setProgress(timeToDisplayHighlighter);
         setTimeText(timeToDisplayHighlighter);
         hideView(myView.edit,mainActivityInterface.getMode().equals("Performance"));
@@ -80,12 +71,11 @@ public class HighlighterFragment extends Fragment {
     private void setListeners() {
         myView.autoShowHighlight.setOnCheckedChangeListener((buttonView, isChecked) -> {
             hideView(myView.highlighterTimeLayout,isChecked);
-            preferences.setMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",isChecked);
         });
         myView.timeToDisplayHighlighter.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                preferences.setMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",progress);
                 setTimeText(progress);
             }
 
@@ -93,8 +83,16 @@ public class HighlighterFragment extends Fragment {
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",seekBar.getProgress());
+            }
         });
         myView.edit.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.highlighterEditFragment));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

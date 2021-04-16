@@ -50,18 +50,6 @@ public class ColorChooserView extends View {
                 canvas.drawRect(0.f, 0.f, this.getMeasuredWidth(), this.getMeasuredHeight(), paint);
         }
 
-       /* @Override
-        public boolean onTouchEvent(MotionEvent event) {
-                super.onTouchEvent(event);
-                if (event.getAction()==MotionEvent.ACTION_UP) {
-                        performClick();
-                        return false;
-                }
-                return false;
-        }
-
-
-        */
         @Override
         public boolean performClick() {
                 super.performClick();
