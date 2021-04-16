@@ -3,10 +3,8 @@ package com.garethevans.church.opensongtablet.chords;
 import android.content.Context;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 
@@ -91,22 +89,22 @@ public class Transpose {
 
 
     // The song is sent in and the song is sent back after processing (key and lyrics get changed)
-    Song doTranspose(Context c, Song song, Preferences preferences, String transposeDirection,
+    void doTranspose(Context c, MainActivityInterface mainActivityInterface, String transposeDirection,
                      int transposeTimes, boolean forcesharps, boolean forceflats) {
 
         try {
             // Go through each line and change each chord to $..$
             // This marks the bit to be changed
-            String[] splitLyrics = song.getLyrics().split("\n");
+            String[] splitLyrics = mainActivityInterface.getSong().getLyrics().split("\n");
             
-            if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
-                oldchordformat = preferences.getMyPreferenceInt(c,"chordFormat",1);
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
+                oldchordformat = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"chordFormat",1);
             } else {
-                oldchordformat = song.getDetectedChordFormat();
+                oldchordformat = mainActivityInterface.getSong().getDetectedChordFormat();
             }
             
             // Transpose the key
-            song.setKey(sortTheTransposedKey(c,song.getKey(),preferences,transposeDirection,transposeTimes));
+            sortTheTransposedKey(c,mainActivityInterface,transposeDirection,transposeTimes);
 
             // Now we change the chords into numbers
             for (int x = 0; x < splitLyrics.length; x++) {
@@ -166,33 +164,31 @@ public class Transpose {
                 sb.append(splitLyrics[x]).append("\n");
             }
 
-            song.setLyrics(sb.toString());
+            mainActivityInterface.getSong().setLyrics(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return song;
     }
 
-    private String sortTheTransposedKey(Context c, String key, Preferences preferences,
+    private void sortTheTransposedKey(Context c, MainActivityInterface mainActivityInterface,
                                         String transposeDirection, int transposeTimes) {
-        if (key != null && !key.isEmpty()) {
-            String newkey = keyToNumber(key);
+        if (mainActivityInterface.getSong().getKey() != null && !mainActivityInterface.getSong().getKey().isEmpty()) {
+            String newkey = keyToNumber(mainActivityInterface.getSong().getKey());
 
             // Transpose the key
             newkey = transposeKey(newkey, transposeDirection, transposeTimes);
 
             // Convert the keynumber to a key
-            newkey = numberToKey(c, preferences, newkey);
+            newkey = numberToKey(c, mainActivityInterface, newkey);
 
             // Decide if flats should be used
-            usesflats = keyUsesFlats(c, preferences, newkey);
+            usesflats = keyUsesFlats(c, mainActivityInterface, newkey);
 
-            key = newkey;
+            mainActivityInterface.getSong().setKey(newkey);
         }
-        return key;
     }
     
-    String transposeThisString(Context c, Preferences preferences, Song song, String transposeDirection, String texttotranspose) {
+    String transposeThisString(Context c, MainActivityInterface mainActivityInterface, String transposeDirection, String texttotranspose) {
         try {
             // Go through each line and change each chord to $..$
             // This marks the bit to be changed
@@ -201,7 +197,7 @@ public class Transpose {
 
             int transposeTimes = 1;
 
-            oldchordformat = song.getDetectedChordFormat();
+            oldchordformat = mainActivityInterface.getSong().getDetectedChordFormat();
 
             // Now we change the chords into numbers
             for (int x = 0; x < splitLyrics.length; x++) {
@@ -244,9 +240,9 @@ public class Transpose {
                 if (splitLyrics[x].indexOf(".") == 0) {
                     // Since this line has chords, do the changing!
                     // Decide on the chord format to use
-                    if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",false)) {
+                    if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"chordFormatUsePreferred",false)) {
                         // User has specified using their preferred chord format every time
-                        oldchordformat = preferences.getMyPreferenceInt(c,"chordFormat",1);
+                        oldchordformat = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"chordFormat",1);
                         // This is only true when the user clicks the option in the menu, so reset
                     }
 
@@ -419,36 +415,35 @@ public class Transpose {
         return line;
     }
 
-    Song convertChords(Context c, Song song, StorageAccess storageAccess, Preferences preferences, String transposeDirection, int transposeTimes) {
-        int convertTo = preferences.getMyPreferenceInt(c,"chordFormat",1);
-        checkChordFormat(c,song,preferences);
+    void convertChords(Context c, MainActivityInterface mainActivityInterface, String transposeDirection, int transposeTimes) {
+        int convertTo = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"chordFormat",1);
+        checkChordFormat(c,mainActivityInterface);
 
-        Log.d("Transpose","convertTo="+convertTo+"\ndetetctedChordFormat="+song.getDetectedChordFormat());
-        if (song.getDetectedChordFormat() >= 5) {
-            song.setLyrics(convertFromNumerals(c, song, storageAccess, preferences));
+        Log.d("Transpose","convertTo="+convertTo+"\ndetetctedChordFormat="+mainActivityInterface.getSong().getDetectedChordFormat());
+        if (mainActivityInterface.getSong().getDetectedChordFormat() >= 5) {
+            mainActivityInterface.getSong().setLyrics(convertFromNumerals(c, mainActivityInterface));
         }// Convert to a normal format to start with
         if (convertTo>=5) {
             // We want to convert to a numeral.  If it is normal format, just do it, otherwise, convert to a normal format
             // Now convert to the correct value
-            song.setLyrics(convertToNumerals(c, song.getLyrics(), preferences));
+            mainActivityInterface.getSong().setLyrics(convertToNumerals(c, mainActivityInterface));
         } else {
             transposeDirection = "0";
-            checkChordFormat(c, song, preferences);
+            checkChordFormat(c, mainActivityInterface);
             try {
-                song = doTranspose(c, song, preferences, transposeDirection, transposeTimes,false, false);
+                doTranspose(c, mainActivityInterface, transposeDirection, transposeTimes,false, false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return song;
     }
 
-    private String convertToNumerals(Context c, String lyrics, Preferences preferences) {
+    private String convertToNumerals(Context c, MainActivityInterface mainActivityInterface) {
         boolean numeral = false;
-        if (preferences.getMyPreferenceInt(c,"chordFormat",1)==6) {
+        if (mainActivityInterface.getPreferences().getMyPreferenceInt(c,"chordFormat",1)==6) {
             numeral = true;
         }
-        String[] splitLyrics = lyrics.split("\n");
+        String[] splitLyrics = mainActivityInterface.getSong().getLyrics().split("\n");
 
         StringBuilder sb = new StringBuilder();
         // Convert these into standard chord format to start with
@@ -467,14 +462,14 @@ public class Transpose {
 
     }
 
-    private String convertFromNumerals(Context c, Song song, StorageAccess storageAccess, Preferences preferences) {
+    private String convertFromNumerals(Context c, MainActivityInterface mainActivityInterface) {
         // This goes through the song and converts from Nashville numbering or numerals to standard chord format first
-        String lyrics = song.getLyrics();
-        if (song.getDetectedChordFormat()==5 || song.getDetectedChordFormat()==6) {
+        String lyrics = mainActivityInterface.getSong().getLyrics();
+        if (mainActivityInterface.getSong().getDetectedChordFormat()==5 || mainActivityInterface.getSong().getDetectedChordFormat()==6) {
             // We currently have either a nashville system (numbers or numerals)
-            String[] splitLyrics = song.getLyrics().split("\n");
+            String[] splitLyrics = mainActivityInterface.getSong().getLyrics().split("\n");
 
-            boolean numeral = song.getDetectedChordFormat()==6;
+            boolean numeral = mainActivityInterface.getSong().getDetectedChordFormat()==6;
             StringBuilder sb = new StringBuilder();
             Log.d("Transpose","Converting from numerals first");
             // Convert these into standard chord format to start with
@@ -492,9 +487,9 @@ public class Transpose {
 
             lyrics = sb.toString();
             // If the new chordformat desired is also a numeral or number system, convert it to that
-            if (preferences.getMyPreferenceInt(c,"chordFormat",1)==5 ||
-                    preferences.getMyPreferenceInt(c, "chordFormat",1)==6) {
-                song.setLyrics(convertToNumerals(c, song.getLyrics(), preferences));
+            if (mainActivityInterface.getPreferences().getMyPreferenceInt(c,"chordFormat",1)==5 ||
+                    mainActivityInterface.getPreferences().getMyPreferenceInt(c, "chordFormat",1)==6) {
+                mainActivityInterface.getSong().setLyrics(convertToNumerals(c, mainActivityInterface));
             }
         } else {
             ShowToast.showToast(c,"No Nashville/Numeral chord format detected.");
@@ -1078,7 +1073,7 @@ public class Transpose {
         return splitLyrics;
     }
 
-    String numberToKey(Context c, Preferences preferences, String key) {
+    String numberToKey(Context c, MainActivityInterface mainActivityInterface, String key) {
         // We need to decide which key the user likes the best for each one
         // Convert the key number into either a sharp or natural first
         // Then we swap sharps to flats if the user prefers these
@@ -1096,25 +1091,25 @@ public class Transpose {
             key = key.replace(chordnaturalnumsb[z],naturalchords1b[z]);
         }
 
-        if (key.equals("G#") && preferences.getMyPreferenceBoolean(c,"prefKeyAb",true)) {
+        if (key.equals("G#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAb",true)) {
             key = "Ab";
-        } else if (key.equals("G#m") && preferences.getMyPreferenceBoolean(c,"prefKeyAbm",false)) {
+        } else if (key.equals("G#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAbm",false)) {
             key = "Abm";
-        } else if (key.equals("A#") && preferences.getMyPreferenceBoolean(c,"prefKeyBb",true)) {
+        } else if (key.equals("A#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBb",true)) {
             key = "Bb";
-        } else if (key.equals("A#m") && preferences.getMyPreferenceBoolean(c,"prefKeyBbm",true)) {
+        } else if (key.equals("A#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBbm",true)) {
             key = "Bbm";
-        } else if (key.equals("C#") && preferences.getMyPreferenceBoolean(c,"prefKeyDb",false)) {
+        } else if (key.equals("C#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDb",false)) {
             key = "Db";
-        } else if (key.equals("C#m") && preferences.getMyPreferenceBoolean(c,"prefKeyDbm",true)) {
+        } else if (key.equals("C#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDbm",true)) {
             key = "Dbm";
-        } else if (key.equals("D#") && preferences.getMyPreferenceBoolean(c,"prefKeyEb",true)) {
+        } else if (key.equals("D#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEb",true)) {
             key = "Eb";
-        } else if (key.equals("D#m") && preferences.getMyPreferenceBoolean(c,"prefKeyEbm",true)) {
+        } else if (key.equals("D#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEbm",true)) {
             key = "Ebm";
-        } else if (key.equals("F#") && preferences.getMyPreferenceBoolean(c,"prefKeyGb",false)) {
+        } else if (key.equals("F#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGb",false)) {
             key = "Gb";
-        } else if (key.equals("F#m") && preferences.getMyPreferenceBoolean(c,"prefKeyGbm",false)) {
+        } else if (key.equals("F#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGbm",false)) {
             key = "Gbm";
         }
 
@@ -1169,18 +1164,18 @@ public class Transpose {
         return line;
     }
 
-    private boolean keyUsesFlats(Context c, Preferences preferences, String testkey) {
+    private boolean keyUsesFlats(Context c, MainActivityInterface mainActivityInterface, String testkey) {
 
         boolean result;
-        result = (testkey.equals("Ab") && preferences.getMyPreferenceBoolean(c,"prefKeyAb",true)) ||
-                (testkey.equals("Bb") && preferences.getMyPreferenceBoolean(c,"prefKeyBb",true)) ||
-                (testkey.equals("Db") && preferences.getMyPreferenceBoolean(c,"prefKeyDb",false)) ||
-                (testkey.equals("Eb") && preferences.getMyPreferenceBoolean(c,"prefKeyEb",true)) ||
-                (testkey.equals("Gb") && preferences.getMyPreferenceBoolean(c,"prefKeyGb",false)) ||
-                (testkey.equals("Bbm") && preferences.getMyPreferenceBoolean(c,"prefKeyBbm",true)) ||
-                (testkey.equals("Dbm") && preferences.getMyPreferenceBoolean(c,"prefKeyDbm",false)) ||
-                (testkey.equals("Ebm") && preferences.getMyPreferenceBoolean(c,"prefKeyEbm",true)) ||
-                (testkey.equals("Gbm") && preferences.getMyPreferenceBoolean(c,"prefKeyGbm",false)) ||
+        result = (testkey.equals("Ab") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAb",true)) ||
+                (testkey.equals("Bb") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBb",true)) ||
+                (testkey.equals("Db") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDb",false)) ||
+                (testkey.equals("Eb") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEb",true)) ||
+                (testkey.equals("Gb") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGb",false)) ||
+                (testkey.equals("Bbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBbm",true)) ||
+                (testkey.equals("Dbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDbm",false)) ||
+                (testkey.equals("Ebm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEbm",true)) ||
+                (testkey.equals("Gbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGbm",false)) ||
                 testkey.equals("C") ||
                 testkey.equals("F") ||
                 testkey.equals("Dm") ||
@@ -1359,22 +1354,22 @@ public class Transpose {
         return string;
     }
 
-    Song capoTranspose(Context c, Preferences preferences, Song song) {
+    void capoTranspose(Context c, MainActivityInterface mainActivityInterface) {
 
-        int numtimes = Integer.parseInt(song.getCapo());
+        int numtimes = Integer.parseInt(mainActivityInterface.getSong().getCapo());
         String capokey;
 
         // Get the capokey if it hasn't been set
-        if (song.getKey()!=null) {
-            capokey = keyToNumber(song.getKey());
+        if (mainActivityInterface.getSong().getKey()!=null) {
+            capokey = keyToNumber(mainActivityInterface.getSong().getKey());
             capokey = transposeKey(capokey,"-1",numtimes);
-            capokey = numberToKey(c, preferences, capokey);
+            capokey = numberToKey(c, mainActivityInterface, capokey);
             // Decide if flats should be used
-            capousesflats = keyUsesFlats(c, preferences, capokey);
+            capousesflats = keyUsesFlats(c, mainActivityInterface, capokey);
         }
 
         // Now we change the chords into numbers
-        switch (song.getDetectedChordFormat()) {
+        switch (mainActivityInterface.getSong().getDetectedChordFormat()) {
             default:
                 transposedChords = chordToNumber1(transposedChords);
                 break;
@@ -1399,7 +1394,7 @@ public class Transpose {
         }
 
         // Now convert the numbers back to the appropriate chords
-        switch (song.getDetectedChordFormat()) {
+        switch (mainActivityInterface.getSong().getDetectedChordFormat()) {
             default:
                 transposedChords = numberToChord1(transposedChords,false,false,capousesflats);
                 break;
@@ -1416,11 +1411,9 @@ public class Transpose {
                 transposedChords = numberToChord4(transposedChords,false,false,capousesflats);
                 break;
         }
-
-        return song;
     }
 
-    ArrayList<String> quickCapoKey(Context c, Preferences preferences, String key) {
+    ArrayList<String> quickCapoKey(Context c, MainActivityInterface mainActivityInterface, String key) {
         // This is used to give the user a list of either simple fret number or fret number with new capo key
         ArrayList<String> al = new ArrayList<>();
         // Add a blank entry
@@ -1440,7 +1433,7 @@ public class Transpose {
         for (int i=1; i<=11; i++) {
             if (keyisset) {
                 keynum = transposeKey(keynum, "-1", 1);
-                key = numberToKey(c, preferences, keynum);
+                key = numberToKey(c, mainActivityInterface, keynum);
                 whattoadd = i + " (" + key + ")";
             } else {
                 whattoadd = i + "";
@@ -1450,9 +1443,9 @@ public class Transpose {
         return al;
     }
 
-    void checkChordFormat(Context c, Song song, Preferences preferences) {
-        String[] splitLyrics = song.getLyrics().split("\n");
-        song.setDetectedChordFormat(preferences.getMyPreferenceInt(c, "chordFormat", 1));
+    void checkChordFormat(Context c, MainActivityInterface mainActivityInterface) {
+        String[] splitLyrics = mainActivityInterface.getSong().getLyrics().split("\n");
+        mainActivityInterface.getSong().setDetectedChordFormat(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "chordFormat", 1));
 
         // The user wants the app to guess the chord formatting, so we will detect formatting
         boolean contains_es_is = false;
@@ -1500,18 +1493,18 @@ public class Transpose {
 
         //int detected = 0;
         // Set the chord style detected
-        if (contains_do && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            song.setDetectedChordFormat(4);
-        } else if (contains_H && !contains_es_is && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            song.setDetectedChordFormat(2);
-        } else if ((contains_H || contains_es_is) && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            song.setDetectedChordFormat(3);
-        } else if (contains_nash && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            song.setDetectedChordFormat(5);
-        } else if (contains_nashnumeral && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            song.setDetectedChordFormat(6);
+        if (contains_do && !mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            mainActivityInterface.getSong().setDetectedChordFormat(4);
+        } else if (contains_H && !contains_es_is && !mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            mainActivityInterface.getSong().setDetectedChordFormat(2);
+        } else if ((contains_H || contains_es_is) && !mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            mainActivityInterface.getSong().setDetectedChordFormat(3);
+        } else if (contains_nash && !mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            mainActivityInterface.getSong().setDetectedChordFormat(5);
+        } else if (contains_nashnumeral && !mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            mainActivityInterface.getSong().setDetectedChordFormat(6);
         } else {
-            song.setDetectedChordFormat(1);
+            mainActivityInterface.getSong().setDetectedChordFormat(1);
         }
 
         // Ok so the user chord format may not quite match the song - it might though!

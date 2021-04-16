@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ConvertTextSong convertTextSong;
     private ProcessSong processSong;
     private LoadSong loadSong;
-    private Song song;
+    private Song song, indexingSong, tempSong;
     private CurrentSet currentSet;
     private SetActions setActions;
     private SongListBuildIndex songListBuildIndex;
@@ -216,6 +216,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ArrayList<Boolean> rects;
 
     public MediaPlayer mediaPlayer1, mediaPlayer2;
+
+    private MainActivityInterface mainActivityInterface;
 
     // Important fragments we get references to (for calling methods)
     PerformanceFragment performanceFragment;
@@ -291,6 +293,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         drawerLayout = activityMainBinding.drawerLayout;
 
+        // Get a reference for the mainActivityInterface.
+        // This is used extensively by all fragments to return actions to the MainActivity
+        // All fragments create their own reference to it in onAttach,
+        // However some helper classes that don't extend activity/fragment need a references
+        // This is the one we pass in to those classes
+        mainActivityInterface = (MainActivityInterface) this;
+
         View view = activityMainBinding.getRoot();
         /*view.setOnSystemUiVisibilityChangeListener(
                 visibility -> {
@@ -330,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         this.registerReceiver(batteryStatus, filter);
 
         // Set up the Nearby connection service
-        nearbyConnections.getUserNickname();
+        nearbyConnections.getUserNickname(this,mainActivityInterface);
 
         // Initialise the CastContext
         setUpCast();
@@ -371,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 activityMainBinding.pageButtonsRight.custom6Button,activityMainBinding.pageButtonsRight.pageButtonsLayout,
                 themeColors.getPageButtonsColor());
         pageButtons.animatePageButton(this,false);
-        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL);
+        nearbyConnections = new NearbyConnections(this,mainActivityInterface);
         midi = new Midi(this);
         pedalActions = new PedalActions();
         exportActions = new ExportActions();
@@ -500,7 +509,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         currentSet.setCurrentSetString(preferences.getMyPreferenceString(this,"setCurrent",""));
         // TODO
         currentSet.setCurrentSetString("$**_Abba Father_**$$**_Above all_**$");
-        setActions.setStringToSet(this,currentSet);
+
+        setActions.setStringToSet(this,mainActivityInterface);
 
         // Set the locale
         fixLocale.setLocale(this,preferences);
@@ -511,7 +521,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         mediaPlayer2 = new MediaPlayer();
 
         // ThemeColors
-        themeColors.getDefaultColors(this,preferences);
+        themeColors.getDefaultColors(this,mainActivityInterface);
         pageButtons.setPageButtonAlpha(preferences.getMyPreferenceFloat(this,"pageButtonAlpha",0.6f));
 
         // Typefaces
@@ -595,7 +605,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     // Deal with the song menu
     @Override
     public void quickSongMenuBuild() {
-        Log.d(TAG,"quickSongMenuBuild()");
         fullIndexRequired = true;
         ArrayList<String> songIds = new ArrayList<>();
         try {
@@ -612,30 +621,26 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
         // Updated each time a file is created, deleted, moved.
         // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
-        nonOpenSongSQLiteHelper.initialise(this, commonSQL, storageAccess, preferences);
+        nonOpenSongSQLiteHelper.initialise(this, mainActivityInterface);
 
         // Add entries to the database that have songid, folder and filename fields
         // This is the minimum that we need for the song menu.
         // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
         // Also will later include all the stuff for the search index as well
-        sqLiteHelper.insertFast(this, commonSQL, storageAccess);
+        sqLiteHelper.insertFast(this, mainActivityInterface);
     }
 
     @Override
     public void fullIndex() {
         if (fullIndexRequired) {
-            Log.d(TAG,"About to run a full index");
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    songListBuildIndex.fullIndex(getActivity(),preferences,storageAccess,sqLiteHelper,
-                            nonOpenSongSQLiteHelper,commonSQL,processSong,convertChoPro,convertOnSong,
-                            convertTextSong,showToast,loadSong);
+                    songListBuildIndex.fullIndex(MainActivity.this,mainActivityInterface);
                     Log.d(TAG,"index done");
                     songMenuFragment.updateSongMenu(song);
                 }
             }).start();
-
         }
     }
     @Override
@@ -765,7 +770,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        nearbyConnections.turnOffNearby();
+        nearbyConnections.turnOffNearby(this);
     }
 
     // The toolbar/menu items
@@ -792,9 +797,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         MenuItem alertButton = menu.findItem(R.id.alert_info_item);
 
         // Decide if an alert should be shown
-        if (alertChecks.showBackup(this,preferences) ||
+        if (alertChecks.showBackup(this,
+                preferences.getMyPreferenceInt(this,"runssincebackup",0)) ||
                 alertChecks.showPlayServicesAlert(this) ||
-                alertChecks.showUpdateInfo(this,preferences,versionNumber.getVersionCode())) {
+                alertChecks.showUpdateInfo(this,versionNumber.getVersionCode(),
+                        preferences.getMyPreferenceInt(this,"lastUsedVersion",0))) {
             alertButton.setVisible(true);
         } else if (alertButton!=null){
             alertButton.setVisible(false);
@@ -813,7 +820,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 break;
 
             case "Alerts":
-                DialogFragment df = new AlertInfoDialogFragment(preferences,alertChecks,versionNumber);
+                DialogFragment df = new AlertInfoDialogFragment();
                 openDialog(df,"Alerts");
                 break;
         }
@@ -908,6 +915,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void moveToSongInSongMenu() {
         if (setSongMenuFragment()) {
+            // TODO mainActivityFragment is null
             songMenuFragment.moveToSongInMenu(song);
         } else {
             Log.d(TAG, "songMenuFragment not available");
@@ -918,8 +926,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         new Thread(() -> {
             runOnUiThread(() -> showToast.doIt(this,getString(R.string.search_index_start)));
             songListBuildIndex.setIndexComplete(false);
-            songListBuildIndex.fullIndex(MainActivity.this,preferences,storageAccess,sqLiteHelper,
-                    nonOpenSongSQLiteHelper,commonSQL,processSong,convertChoPro,convertOnSong,convertTextSong,showToast,loadSong);
+            songListBuildIndex.fullIndex(MainActivity.this,mainActivityInterface);
             runOnUiThread(() -> {
                 songListBuildIndex.setIndexRequired(false);
                 songListBuildIndex.setIndexComplete(true);
@@ -1087,8 +1094,24 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return song;
     }
     @Override
+    public Song getIndexingSong() {
+        return indexingSong;
+    }
+    @Override
+    public Song getTempSong() {
+        return tempSong;
+    }
+    @Override
     public void setSong(Song song) {
         this.song = song;
+    }
+    @Override
+    public void setIndexingSong(Song indexingSong) {
+        this.indexingSong = indexingSong;
+    }
+    @Override
+    public void setTempSong(Song tempSong) {
+        this.tempSong = tempSong;
     }
     @Override
     public void setOriginalSong(Song originalSong) {
@@ -1189,8 +1212,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     if (arguments!=null && arguments.size()>0 && arguments.get(0).equals("success")) {
                         // Write a blank xml file with the song name in it
                         // TODO
-                        song = processSong.initialiseSong(commonSQL,song.getFolder(),"NEWSONGFILENAME");
-                        String newSongText = processSong.getXML(song);
+                        song = processSong.initialiseSong(mainActivityInterface,song.getFolder(),"NEWSONGFILENAME");
+                        String newSongText = processSong.getXML(this,mainActivityInterface,song);
                         if (storageAccess.doStringWriteToFile(this,preferences,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
                         } else {
@@ -1249,9 +1272,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                             song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
                     if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
-                        nonOpenSongSQLiteHelper.deleteSong(this,commonSQL,storageAccess,preferences,song.getFolder(),song.getFilename());
+                        nonOpenSongSQLiteHelper.deleteSong(this,mainActivityInterface,song.getFolder(),song.getFilename());
                     } else {
-                        sqLiteHelper.deleteSong(this, commonSQL, song.getFolder(),song.getFilename());
+                        sqLiteHelper.deleteSong(this, mainActivityInterface, song.getFolder(),song.getFilename());
                     }
                     // TODO
                     // Send a call to reindex?
@@ -1259,7 +1282,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
                 case "ccliDelete":
                     Uri uri = storageAccess.getUriForItem(this,preferences,"Settings","","ActivityLog.xml");
-                    result = ccliLog.createBlankXML(this,preferences,storageAccess,uri);
+                    result = ccliLog.createBlankXML(this,mainActivityInterface,uri);
                     break;
 
                 case "deleteItem":
@@ -1302,6 +1325,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
         }
     }
+
     @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
         // If sent called from another fragment the fragName and callingFragment are used to run an update listener
@@ -1312,12 +1336,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         storageAccess.writeSongIDFile(this, preferences, songIds);
         // Try to create the basic databases
         sqLiteHelper.resetDatabase(this);
-        nonOpenSongSQLiteHelper.initialise(this, commonSQL, storageAccess, preferences);
+        nonOpenSongSQLiteHelper.initialise(this, mainActivityInterface);
         // Add entries to the database that have songid, folder and filename fields
         // This is the minimum that we need for the song menu.
         // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
         // Also will later include all the stuff for the search index as well
-        sqLiteHelper.insertFast(this, commonSQL, storageAccess);
+        sqLiteHelper.insertFast(this, mainActivityInterface);
         if (fragName!=null) {
             //Update the fragment
             updateFragment(fragName,callingFragment,arguments);
@@ -1330,7 +1354,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         Intent intent;
         switch (what) {
             case "ccliLog":
-                intent = exportFiles.exportActivityLog(this, preferences, storageAccess, ccliLog);
+                intent = exportFiles.exportActivityLog(this, mainActivityInterface);
                 startActivityForResult(Intent.createChooser(intent, "ActivityLog.xml"), 2222);
         }
     }
@@ -1362,7 +1386,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode==12345) {
-            // We initiated an OpenSongApp backupt
+            // We initiated an OpenSongApp backup
             preferences.setMyPreferenceInt(this,"runssincebackup",0);
 
         } else if (intent!=null) {
@@ -1393,6 +1417,16 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
 
     // Get references to the objects set in MainActivity
+    @Override
+    public void setMainActivityInterface(MainActivityInterface mainActivityInterface) {
+        if (mainActivityInterface!=null) {
+            this.mainActivityInterface = mainActivityInterface;
+        }
+    }
+    @Override
+    public MainActivityInterface getMainActivityInterface() {
+        return mainActivityInterface;
+    }
     @Override
     public Activity getActivity() {
         return this;
@@ -1426,8 +1460,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public ExportActions getExportActions() {
         return exportActions;
     }
+    @Override
     public ConvertChoPro getConvertChoPro() {
         return convertChoPro;
+    }
+    @Override
+    public ConvertTextSong getConvertTextSong() {
+        return convertTextSong;
     }
     @Override
     public ProcessSong getProcessSong() {
@@ -1622,31 +1661,35 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public ABCNotation getAbcNotation() {
         return abcNotation;
     }
+    @Override
+    public AlertChecks getAlertChecks() {
+        return alertChecks;
+    }
 
     // Nearby
     @Override
-    public void startDiscovery(AutoscrollActions autoscrollActions) {
-        nearbyConnections.startDiscovery(autoscrollActions);
+    public void startDiscovery(Context c, MainActivityInterface mainActivityInterface) {
+        nearbyConnections.startDiscovery(c,mainActivityInterface);
     }
     @Override
-    public void startAdvertising(AutoscrollActions autoscrollActions) {
-        nearbyConnections.startAdvertising(autoscrollActions);
+    public void startAdvertising(Context c, MainActivityInterface mainActivityInterface) {
+        nearbyConnections.startAdvertising(c,mainActivityInterface);
     }
     @Override
-    public void stopDiscovery() {
-        nearbyConnections.stopDiscovery();
+    public void stopDiscovery(Context c) {
+        nearbyConnections.stopDiscovery(c);
     }
     @Override
-    public void stopAdvertising() {
-        nearbyConnections.stopAdvertising();
+    public void stopAdvertising(Context c) {
+        nearbyConnections.stopAdvertising(c);
     }
     @Override
-    public void turnOffNearby() {
-        nearbyConnections.turnOffNearby();
+    public void turnOffNearby(Context c) {
+        nearbyConnections.turnOffNearby(c);
     }
     @Override
-    public void doSendPayloadBytes(String infoPayload) {
-        nearbyConnections.doSendPayloadBytes(infoPayload);
+    public void doSendPayloadBytes(Context c,String infoPayload) {
+        nearbyConnections.doSendPayloadBytes(c,infoPayload);
     }
     @Override
     public boolean requestNearbyPermissions() {
@@ -1726,6 +1769,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // First update the mainActivityInterface used in nearby connections
         nearbyConnections.setMainActivityInterface(mainActivityInterface);
         // Return a reference to nearbyConnections
+        return nearbyConnections;
+    }
+    @Override
+    public NearbyConnections getNearbyConnections() {
         return nearbyConnections;
     }
     

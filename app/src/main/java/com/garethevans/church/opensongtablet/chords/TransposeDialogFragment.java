@@ -20,14 +20,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.TransposeDialogBinding;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.OutputStream;
@@ -35,7 +28,6 @@ import java.io.OutputStream;
 public class TransposeDialogFragment extends DialogFragment {
 
     private boolean editSong = false;  // This is set to true when coming here from EditSongFragment
-    private Song song;
 
     private TransposeDialogBinding myView;
     private SeekBar transposeSeekBar;
@@ -45,23 +37,14 @@ public class TransposeDialogFragment extends DialogFragment {
     private SwitchCompat assumePreferred_SwitchCompat;
     private LinearLayout chooseFormat_LinearLayout;
     private MaterialButton doTransposeButton;
-    private Preferences preferences;
-    private StorageAccess storageAccess;
-    private Transpose transpose;
-    private ProcessSong processSong;
-    private SQLiteHelper sqLiteHelper;
-    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
-    private CommonSQL commonSQL;
-
     private MainActivityInterface mainActivityInterface;
 
     private String transposeDirection;
     private int transposeTimes;
 
-    public TransposeDialogFragment(boolean editSong, Song song) {
+    public TransposeDialogFragment(boolean editSong) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
         this.editSong = editSong;
-        this.song = song;
     }
 
     public TransposeDialogFragment() {
@@ -82,9 +65,6 @@ public class TransposeDialogFragment extends DialogFragment {
             w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        // Initialise helpers
-        initialiseHelpers();
-
         // Initialise views
         initialiseViews();
 
@@ -99,20 +79,9 @@ public class TransposeDialogFragment extends DialogFragment {
         transposeTimes = Math.abs(0);
 
         // Decide if we are using preferred chord format
-        usePreferredChordFormat(preferences.getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",false));
+        usePreferredChordFormat(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",false));
 
         return myView.getRoot();
-    }
-
-    // Initialise the helpers
-    private void initialiseHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        storageAccess = mainActivityInterface.getStorageAccess();
-        transpose = mainActivityInterface.getTranspose();
-        processSong = mainActivityInterface.getProcessSong();
-        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
-        nonOpenSongSQLiteHelper = mainActivityInterface.getNonOpenSongSQLiteHelper();
-        commonSQL = mainActivityInterface.getCommonSQL();
     }
 
     // Initialise the views
@@ -137,9 +106,9 @@ public class TransposeDialogFragment extends DialogFragment {
         transposeValTextView.setText("0");
 
         // If the song has a key specified, we will add in the text for current and new key
-        if (song.getKey()!=null && !song.getKey().equals("")) {
-            String keychange = getString(R.string.key) + ": " + song.getKey() + "\n" +
-                    getString(R.string.transpose) + ": " + song.getKey();
+        if (mainActivityInterface.getSong().getKey()!=null && !mainActivityInterface.getSong().getKey().equals("")) {
+            String keychange = getString(R.string.key) + ": " + mainActivityInterface.getSong().getKey() + "\n" +
+                    getString(R.string.transpose) + ": " + mainActivityInterface.getSong().getKey();
             keyChange_TextView.setText(keychange);
         } else {
             keyChange_TextView.setText("");
@@ -147,7 +116,7 @@ public class TransposeDialogFragment extends DialogFragment {
         }
 
         // Set the detected chordformat
-        switch (song.getDetectedChordFormat()) {
+        switch (mainActivityInterface.getSong().getDetectedChordFormat()) {
             case 1:
                 chordFormat1Radio.setChecked(true);
                 break;
@@ -193,13 +162,13 @@ public class TransposeDialogFragment extends DialogFragment {
                 }
 
                 // If the song has a key specified, we will add in the text for current and new key
-                if (song.getKey()!=null && !song.getKey().equals("")) {
+                if (mainActivityInterface.getSong().getKey()!=null && !mainActivityInterface.getSong().getKey().equals("")) {
                     // Get the new key value
-                    String keynum = transpose.keyToNumber(song.getKey());
-                    String transpkeynum = transpose.transposeKey(keynum, transposeDirection, transposeTimes);
-                    String newkey = transpose.numberToKey(getActivity(), preferences, transpkeynum);
+                    String keynum = mainActivityInterface.getTranspose().keyToNumber(mainActivityInterface.getSong().getKey());
+                    String transpkeynum = mainActivityInterface.getTranspose().transposeKey(keynum, transposeDirection, transposeTimes);
+                    String newkey = mainActivityInterface.getTranspose().numberToKey(getActivity(), mainActivityInterface, transpkeynum);
 
-                    String keychange = getString(R.string.key) + ": " + song.getKey() + "\n" +
+                    String keychange = getString(R.string.key) + ": " + mainActivityInterface.getSong().getKey() + "\n" +
                             getString(R.string.transpose) + ": " + newkey;
                     keyChange_TextView.setText(keychange);
                 } else {
@@ -216,7 +185,7 @@ public class TransposeDialogFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
             usePreferredChordFormat(isChecked);
         });
     }
@@ -226,9 +195,9 @@ public class TransposeDialogFragment extends DialogFragment {
         int formattouse;
 
         if (trueorfalse) {
-            formattouse = preferences.getMyPreferenceInt(getActivity(),"chordFormat",1);
+            formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
         } else {
-            formattouse = song.getDetectedChordFormat();
+            formattouse = mainActivityInterface.getSong().getDetectedChordFormat();
         }
 
         switch (formattouse) {
@@ -249,7 +218,7 @@ public class TransposeDialogFragment extends DialogFragment {
                 break;
         }
 
-        boolean usePreferred = preferences.getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",true);
+        boolean usePreferred = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",true);
         assumePreferred_SwitchCompat.setChecked(usePreferred);
 
         if (usePreferred) {
@@ -262,22 +231,22 @@ public class TransposeDialogFragment extends DialogFragment {
     private void getValues() {
         // Extract the transpose value and the chord format
         if (chordFormat1Radio.isChecked()) {
-            song.setDetectedChordFormat(1);
+            mainActivityInterface.getSong().setDetectedChordFormat(1);
         }
         if (chordFormat2Radio.isChecked()) {
-            song.setDetectedChordFormat(2);
+            mainActivityInterface.getSong().setDetectedChordFormat(2);
         }
         if (chordFormat3Radio.isChecked()) {
-            song.setDetectedChordFormat(3);
+            mainActivityInterface.getSong().setDetectedChordFormat(3);
         }
         if (chordFormat4Radio.isChecked()) {
-            song.setDetectedChordFormat(4);
+            mainActivityInterface.getSong().setDetectedChordFormat(4);
         }
         if (chordFormat5Radio.isChecked()) {
-            song.setDetectedChordFormat(5);
+            mainActivityInterface.getSong().setDetectedChordFormat(5);
         }
         if (chordFormat6Radio.isChecked()) {
-            song.setDetectedChordFormat(6);
+            mainActivityInterface.getSong().setDetectedChordFormat(6);
         }
     }
 
@@ -288,34 +257,35 @@ public class TransposeDialogFragment extends DialogFragment {
             // Do the transpose
             // If we are editing the song, don't write this, just get the returned values as an array
             try {
-                song = transpose.doTranspose(getActivity(), song, preferences,transposeDirection,
+                //TODO
+               /* song = mainActivityInterface.getTranspose().doTranspose(getActivity(), mainActivityInterface, transposeDirection,
                         transposeTimes,false, false);
-
+*/
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             // If we are just editing, update the edit fragment and dismiss, otherwise save the new values
             if (editSong) {
-                requireActivity().runOnUiThread(() -> mainActivityInterface.updateKeyAndLyrics(song));
+                requireActivity().runOnUiThread(() -> mainActivityInterface.updateKeyAndLyrics(mainActivityInterface.getSong()));
 
             } else {
                 // Write the new improved XML file
-                String newXML = processSong.getXML(song);
+                String newXML = mainActivityInterface.getProcessSong().getXML(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
 
-                if (song.getFiletype().equals("PDF")||song.getFiletype().equals("XML")) {
-                    nonOpenSongSQLiteHelper.updateSong(requireContext(),commonSQL,storageAccess,preferences,song);
-                    sqLiteHelper.updateSong(requireContext(),commonSQL,song);
+                if (mainActivityInterface.getSong().getFiletype().equals("PDF")||mainActivityInterface.getSong().getFiletype().equals("XML")) {
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),mainActivityInterface, mainActivityInterface.getSong());
+                    mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
 
                 } else {
-                    sqLiteHelper.updateSong(requireContext(),commonSQL,song);
+                    mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
                     // Now write the file
-                    Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Songs",
-                            song.getFolder(), song.getFilename());
-                    OutputStream outputStream = storageAccess.getOutputStream(requireContext(),uri);
-                    storageAccess.writeFileFromString(newXML,outputStream);
+                    Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface.getPreferences(),"Songs",
+                            mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
+                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),uri);
+                    mainActivityInterface.getStorageAccess().writeFileFromString(newXML,outputStream);
                 }
-                requireActivity().runOnUiThread(() -> mainActivityInterface.doSongLoad(song.getFolder(),song.getFilename()));
+                requireActivity().runOnUiThread(() -> mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename()));
             }
             dismiss();
         }).start();

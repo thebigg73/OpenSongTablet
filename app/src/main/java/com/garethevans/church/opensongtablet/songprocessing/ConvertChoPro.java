@@ -5,10 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -29,16 +26,14 @@ public class ConvertChoPro {
     private String[] lines;
     private StringBuilder parsedLines;
 
-    public Song convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
-                                               ProcessSong processSong, SQLiteHelper sqLiteHelper,
-                                               CommonSQL commonSQL, Uri uri, Song song) {
+    public Song convertTextToTags(Context c, MainActivityInterface mainActivityInterface, Uri uri, Song thisSong) {
 
         initialiseTheVariables();
 
-        lyrics = song.getLyrics();
+        lyrics = thisSong.getLyrics();
 
         // Fix line breaks and slashes
-        lyrics = processSong.fixLineBreaksAndSlashes(lyrics);
+        lyrics = mainActivityInterface.getProcessSong().fixLineBreaksAndSlashes(lyrics);
 
         // Make tag lines common
         lyrics = makeTagsCommon(lyrics);
@@ -59,34 +54,34 @@ public class ConvertChoPro {
 
         // Get the filename and subfolder (if any) that the original song was in by parsing the uri
         oldSongFileName = getOldSongFileName(uri);
-        songSubFolder = getSongFolderLocation(storageAccess, uri, oldSongFileName);
+        songSubFolder = getSongFolderLocation(mainActivityInterface, uri, oldSongFileName);
 
         // Prepare the new song filename
-        newSongFileName = getNewSongFileName(storageAccess, uri, title, processSong);
+        newSongFileName = getNewSongFileName(mainActivityInterface, uri, title);
 
         // Set the correct values
-        setCorrectXMLValues(song);
+        thisSong = setCorrectXMLValues(thisSong);
 
         // Now prepare the new songXML file
-        String newXML = processSong.getXML(song);
+        String newXML = mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface,thisSong);
 
         // Get a unique uri for the new song
-        Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
+        Uri newUri = getNewSongUri(c, mainActivityInterface, songSubFolder, newSongFileName);
 
         // Now write the modified song
-        writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, commonSQL, song, oldSongFileName, newSongFileName,
+        writeTheImprovedSong(c, mainActivityInterface, thisSong, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri, newXML);
 
-        song.setFilename(newSongFileName);
-        song.setTitle(title);
-        song.setAuthor(author);
-        song.setCopyright(copyright);
-        song.setKey(key);
-        song.setTimesig(time_sig);
-        song.setCcli(ccli);
-        song.setLyrics(lyrics);
+        thisSong.setFilename(newSongFileName);
+        thisSong.setTitle(title);
+        thisSong.setAuthor(author);
+        thisSong.setCopyright(copyright);
+        thisSong.setKey(key);
+        thisSong.setTimesig(time_sig);
+        thisSong.setCcli(ccli);
+        thisSong.setLyrics(lyrics);
 
-        return song;
+        return thisSong;
     }
 
     private void initialiseTheVariables() {
@@ -431,15 +426,15 @@ public class ConvertChoPro {
         return parsedLines.toString();
     }
 
-    Uri getNewSongUri(Context c, StorageAccess storageAccess, Preferences preferences, String songSubFolder, String nsf) {
+    Uri getNewSongUri(Context c, MainActivityInterface mainActivityInterface, String songSubFolder, String nsf) {
         // Prepare a new uri based on the best filename, but make it unique so as not to overwrite existing files
         newSongFileName = nsf;
-        Uri n = storageAccess.getUriForItem(c, preferences, "Songs", songSubFolder, newSongFileName);
+        Uri n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs", songSubFolder, newSongFileName);
         int attempts = 0;
-        while (storageAccess.uriExists(c, n) && attempts < 4) {
+        while (mainActivityInterface.getStorageAccess().uriExists(c, n) && attempts < 4) {
             // Append _ to the end of the name until the filename is unique, or give up after 5 attempts
             newSongFileName = newSongFileName + "_";
-            n = storageAccess.getUriForItem(c, preferences, "Songs", songSubFolder, newSongFileName);
+            n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs", songSubFolder, newSongFileName);
             attempts = attempts + 1;
             Log.d("d", "attempt:" + attempts + " newSongFileName=" + newSongFileName);
         }
@@ -459,7 +454,7 @@ public class ConvertChoPro {
         return fn;
     }
 
-    String getNewSongFileName(StorageAccess storageAccess, Uri uri, String title, ProcessSong processSong) {
+    String getNewSongFileName(MainActivityInterface mainActivityInterface, Uri uri, String title) {
         String fn = uri.getLastPathSegment();
         if (fn == null) {
             fn = "";
@@ -489,13 +484,13 @@ public class ConvertChoPro {
             fn = fn.replace(".usr", "");
             fn = fn.replace(".US", "");
         }
-        fn = processSong.fixLineBreaksAndSlashes(fn);
-        fn = storageAccess.safeFilename(fn);
+        fn = mainActivityInterface.getProcessSong().fixLineBreaksAndSlashes(fn);
+        fn = mainActivityInterface.getStorageAccess().safeFilename(fn);
         return fn;
     }
 
-    String getSongFolderLocation(StorageAccess storageAccess, Uri uri, String oldSongFileName) {
-        String sf = storageAccess.getPartOfUri(uri);
+    String getSongFolderLocation(MainActivityInterface mainActivityInterface, Uri uri, String oldSongFileName) {
+        String sf = mainActivityInterface.getStorageAccess().getPartOfUri(uri);
         sf = sf.replace("OpenSong/Songs/", "");
         sf = sf.replace(oldSongFileName, "");
         sf = sf.replace("//", "/");
@@ -508,8 +503,7 @@ public class ConvertChoPro {
         return sf;
     }
 
-    void writeTheImprovedSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                              SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song, String oldSongFileName, String nsf,
+    void writeTheImprovedSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong, String oldSongFileName, String nsf,
                               String songSubFolder, Uri newUri, Uri oldUri, String newXML) {
 
         newSongFileName = nsf;
@@ -518,55 +512,56 @@ public class ConvertChoPro {
         Log.d("ChordProConvert","newSongFileName="+newSongFileName);
         Log.d("ChordProConvert","oldUri="+oldUri);
         Log.d("ChordProConvert","newUri="+newUri);
-        Log.d("ChordProConvert","storageAccess.uriExists(c, oldUri)="+storageAccess.uriExists(c, oldUri));
+        Log.d("ChordProConvert","storageAccess.uriExists(c, oldUri)="+mainActivityInterface.getStorageAccess().uriExists(c, oldUri));
 
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
-                && oldUri != null && newUri != null && storageAccess.uriExists(c, oldUri)) {
-            storageAccess.lollipopCreateFileForOutputStream(c,preferences,newUri,null,"Songs",songSubFolder,newSongFileName);
-            OutputStream outputStream = storageAccess.getOutputStream(c, newUri);
+                && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(c, oldUri)) {
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface.getPreferences(),newUri,null,"Songs",songSubFolder,newSongFileName);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newUri);
 
             Log.d("ChordProConvert","outputStream="+outputStream);
 
             if (outputStream != null) {
                 // Change the songId (references to the uri)
                 // Now remove the old chordpro file
-                storageAccess.writeFileFromString(newXML, outputStream);
-                Log.d("ChordProConvert","attempt to deletefile="+storageAccess.deleteFile(c, oldUri));
+                mainActivityInterface.getStorageAccess().writeFileFromString(newXML, outputStream);
+                Log.d("ChordProConvert","attempt to deletefile="+mainActivityInterface.getStorageAccess().deleteFile(c, oldUri));
 
                 // Remove old song from database
-                sqLiteHelper.deleteSong(c,commonSQL,songSubFolder,oldSongFileName);
+                mainActivityInterface.getSQLiteHelper().deleteSong(c,mainActivityInterface,songSubFolder,oldSongFileName);
             }
 
             // Update the song filename
-            song.setFilename(newSongFileName);
-            preferences.setMyPreferenceString(c,"songfilename",newSongFileName);
+            thisSong.setFilename(newSongFileName);
 
             // Now change the database references
             if (songSubFolder==null || songSubFolder.isEmpty()) {
                 songSubFolder = c.getString(R.string.mainfoldername);
             }
 
-            if (!sqLiteHelper.songExists(c,commonSQL,songSubFolder,newSongFileName)) {
-                sqLiteHelper.createSong(c,storageAccess,commonSQL,songSubFolder,newSongFileName);
+            if (!mainActivityInterface.getSQLiteHelper().songExists(c,mainActivityInterface,songSubFolder,newSongFileName)) {
+                mainActivityInterface.getSQLiteHelper().createSong(c,mainActivityInterface,songSubFolder,newSongFileName);
             }
 
             // Write the song object (full details) back to the database;
-            sqLiteHelper.updateSong(c,commonSQL,song);
+            mainActivityInterface.getSQLiteHelper().updateSong(c,mainActivityInterface,thisSong);
         }
     }
 
-    private void setCorrectXMLValues(Song song) {
+    private Song setCorrectXMLValues(Song thisSong) {
         if (title==null || title.isEmpty()) {
             title = newSongFileName;
         }
-        song.setTitle(title.trim());
-        song.setAuthor(author.trim());
-        song.setCopyright(copyright.trim());
-        song.setMetronomebpm(tempo.trim());
-        song.setTimesig(time_sig.trim());
-        song.setCcli(ccli.trim());
-        song.setKey(key.trim());
-        song.setLyrics(lyrics.trim());
+        thisSong.setTitle(title.trim());
+        thisSong.setAuthor(author.trim());
+        thisSong.setCopyright(copyright.trim());
+        thisSong.setMetronomebpm(tempo.trim());
+        thisSong.setTimesig(time_sig.trim());
+        thisSong.setCcli(ccli.trim());
+        thisSong.setKey(key.trim());
+        thisSong.setLyrics(lyrics.trim());
+
+        return thisSong;
     }
 
     private String getRidOfGuitarTapp(String s) {
@@ -714,7 +709,7 @@ public class ConvertChoPro {
         return l;
     }
 
-    public String fromOpenSongToChordPro(Context c, ProcessSong processSong, String lyrics) {
+    public String fromOpenSongToChordPro(Context c, MainActivityInterface mainActivityInterface, String lyrics) {
         // This receives the text from the edit song lyrics editor and changes the format
         // Allows users to enter their song as chordpro/onsong format
         // The app will convert it into OpenSong before saving.
@@ -727,7 +722,7 @@ public class ConvertChoPro {
 
         // Determine the line types
         for (String l:lines) {
-            type.add(processSong.determineLineTypes(l,c));
+            type.add(mainActivityInterface.getProcessSong().determineLineTypes(l,c));
         }
 
         boolean dealingwithchorus = false;
@@ -750,19 +745,19 @@ public class ConvertChoPro {
             String[] chords_returned;
             String[] lyrics_returned;
 
-            switch (processSong.howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype)) {
+            switch (mainActivityInterface.getProcessSong().howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype)) {
                 // If this is a chord line followed by a lyric line.
                 case "chord_then_lyric":
                     if (lines[y].length() > lines[y+1].length()) {
-                        lines[y+1] = processSong.fixLineLength(lines[y+1], lines[y].length());
+                        lines[y+1] = mainActivityInterface.getProcessSong().fixLineLength(lines[y+1], lines[y].length());
                     }
-                    positions_returned = processSong.getChordPositions(lines[y]);
+                    positions_returned = mainActivityInterface.getProcessSong().getChordPositions(lines[y]);
                     // Remove the . at the start of the line
                     if (lines[y].startsWith(".")) {
                         lines[y] = lines[y].replaceFirst("."," ");
                     }
-                    chords_returned = processSong.getChordSections(lines[y], positions_returned);
-                    lyrics_returned = processSong.getLyricSections(lines[y + 1], positions_returned);
+                    chords_returned = mainActivityInterface.getProcessSong().getChordSections(lines[y], positions_returned);
+                    lyrics_returned = mainActivityInterface.getProcessSong().getLyricSections(lines[y + 1], positions_returned);
 
                     // Mark the beginning of the line
                     newlyrics.append("¬");
@@ -784,14 +779,14 @@ public class ConvertChoPro {
 
                 case "chord_only":
                     // Use same logic as chord_then_lyric to guarantee consistency
-                    String tempString = processSong.fixLineLength("", lines[y].length());
-                    positions_returned = processSong.getChordPositions(lines[y]);
+                    String tempString = mainActivityInterface.getProcessSong().fixLineLength("", lines[y].length());
+                    positions_returned = mainActivityInterface.getProcessSong().getChordPositions(lines[y]);
                     // Remove the . at the start of the line
                     if (lines[y].startsWith(".")) {
                         lines[y] = lines[y].replaceFirst("."," ");
                     }
-                    chords_returned = processSong.getChordSections(lines[y], positions_returned);
-                    lyrics_returned = processSong.getLyricSections(tempString, positions_returned);
+                    chords_returned = mainActivityInterface.getProcessSong().getChordSections(lines[y], positions_returned);
+                    lyrics_returned = mainActivityInterface.getProcessSong().getLyricSections(tempString, positions_returned);
 
                     // Mark the beginning of the line
                     newlyrics.append("¬");

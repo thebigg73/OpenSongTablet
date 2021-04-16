@@ -15,9 +15,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -366,9 +365,9 @@ public class DrawNotes extends View {
 
 
     // Existing highlighter notes to be loaded
-    public void loadExistingHighlighter(Context c, Preferences preferences, StorageAccess storageAccess,
-                                        ProcessSong processSong, Song song, int w, int h) {
-        existingHighlighterFile = processSong.getHighlighterFile(c,preferences,storageAccess,song,w,h);
+    public void loadExistingHighlighter(Context c, MainActivityInterface mainActivityInterface, int w, int h) {
+        existingHighlighterFile = mainActivityInterface.getProcessSong().
+                getHighlighterFile(c,mainActivityInterface,w,h);
 
         if (existingHighlighterFile!=null) {
             bitmapPaint = new Paint(Paint.DITHER_FLAG);

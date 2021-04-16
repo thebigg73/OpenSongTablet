@@ -1,30 +1,34 @@
 package com.garethevans.church.opensongtablet.appdata;
 
-import android.os.AsyncTask;
+import android.app.Activity;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class CheckInternet extends AsyncTask<Void,Void,Boolean> {
+public class CheckInternet {
 
-    private final Consumer mConsumer;
-    public interface Consumer { void accept(Boolean internet); }
-
-    public CheckInternet(Consumer consumer) { mConsumer = consumer; execute(); }
-
-    @Override protected Boolean doInBackground(Void... voids) {
-        try {
-            Socket sock = new Socket();
-            sock.connect(new InetSocketAddress("8.8.8.8", 53), 1500);  //Google
-            sock.close();
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+    boolean connected;
+    private ConnectedInterface connectedInterface;
+    public interface ConnectedInterface {
+        void isConnected(boolean connected);
     }
 
-    @Override protected void onPostExecute(Boolean internet) {
-        mConsumer.accept(internet);
+    public void checkConnection(Activity activity) {
+        connectedInterface = (ConnectedInterface) activity;
+        new Thread(() -> {
+            try {
+                Socket sock = new Socket();
+                sock.connect(new InetSocketAddress("8.8.8.8", 53), 1500);  //Google
+                sock.close();
+                connected = true;
+            } catch (IOException e) {
+                connected = false;
+            }
+
+            // Now return the value
+            connectedInterface.isConnected(connected);
+        }).start();
     }
+
 }

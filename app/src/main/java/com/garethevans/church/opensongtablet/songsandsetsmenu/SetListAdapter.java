@@ -103,11 +103,11 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             ShowToast showToast = mainActivityInterface.getShowToast();
             LoadSong loadSong = mainActivityInterface.getLoadSong();
             ProcessSong processSong = mainActivityInterface.getProcessSong();
-            setActions.setSongForSetWork(c,songfolder,songname);
-            setActions.indexSongInSet(currentSet,song);
+            setActions.setSongForSetWork(c,song);
+            setActions.indexSongInSet(mainActivityInterface);
 
             if (mainActivityInterface.getWhattodo().equals("setitemvariation")) {
-                setActions.makeVariation(c, storageAccess, preferences, currentSet, processSong, showToast, song, loadSong);
+                setActions.makeVariation(c, mainActivityInterface);
 
             } else {
                 // TODO

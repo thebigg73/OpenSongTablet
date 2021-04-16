@@ -5,27 +5,26 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.ccli.CCLILog;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 
 public class ExportFiles {
 
-    public Intent exportActivityLog(Context c, Preferences preferences, StorageAccess storageAccess, CCLILog ccliLog) {
+    public Intent exportActivityLog(Context c, MainActivityInterface mainActivityInterface) {
         String title = c.getString(R.string.app_name) + ": " + c.getString(R.string.ccli);
         String subject = title + " - " + c.getString(R.string.ccli_view);
         String text = c.getString(R.string.ccli_church) + ": " +
-                preferences.getMyPreferenceString(c,"ccliChurchName","") + "\n";
+                mainActivityInterface.getPreferences().getMyPreferenceString(c,"ccliChurchName","") + "\n";
         text += c.getString(R.string.ccli_licence) + ": " +
-                preferences.getMyPreferenceString(c,"ccliLicence","")+ "\n\n";
+                mainActivityInterface.getPreferences().getMyPreferenceString(c,"ccliLicence","")+ "\n\n";
         Intent emailIntent = setEmailIntent(subject,title,text);
 
         // Add the attachments
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Settings", "", "ActivityLog.xml");
         ArrayList<Uri> uris = new ArrayList<>();
-        if (!storageAccess.uriExists(c,uri)) {
-            ccliLog.createBlankXML(c, preferences, storageAccess, uri);
+        if (!mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
+            mainActivityInterface.getCCLILog().createBlankXML(c, mainActivityInterface, uri);
         }
         // Add the uri
         uris.add(uri);

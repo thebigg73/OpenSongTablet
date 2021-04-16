@@ -157,8 +157,7 @@ public class HighlighterEditFragment extends Fragment {
                 Log.d(TAG, "w=" + w + "  imgW="+imgW);
                 Log.d(TAG, "h=" + h + "  imgH="+imgH);
                 // Set the original highlighter file if it exists
-                drawNotes.loadExistingHighlighter(requireContext(), preferences, storageAccess,
-                        processSong, song, imgW, imgH);
+                drawNotes.loadExistingHighlighter(requireContext(), mainActivityInterface, imgW, imgH);
                 myView.glideImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });

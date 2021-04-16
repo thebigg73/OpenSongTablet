@@ -47,6 +47,7 @@ public class Song {
     private String linkaudio="";
     private String linkother="";
     private String presentationorder="";
+    private boolean hasExtraStuff;
     private String extraStuff1;
     private String extraStuff2;
     private String filetype="";
@@ -136,12 +137,6 @@ public class Song {
     public String getLinkaudio() {return linkaudio;}
     public String getLinkother() {return linkother;}
     public String getPresentationorder() {return presentationorder;}
-    public String getExtraStuff1() {
-        return extraStuff1;
-    }
-    public String getExtraStuff2() {
-        return extraStuff2;
-    }
     public String getFiletype() {return filetype;}
     public ArrayList<String> getSongSections() {
         if (songSections!=null) {
@@ -171,6 +166,9 @@ public class Song {
     }
     public String getSongXML() {
         return songXML;
+    }
+    public boolean getHasExtraStuff() {
+        return hasExtraStuff;
     }
     public String getHighlighterPortrait() {
         return highlighterPortrait;
@@ -249,11 +247,8 @@ public class Song {
     public void setLinkaudio(String linkaudio) {this.linkaudio = linkaudio;}
     public void setLinkother(String linkother) {this.linkother = linkother;}
     public void setPresentationorder(String presentationorder) {this.presentationorder = presentationorder;}
-    public void setExtraStuff1(String extraStuff1) {
-        this.extraStuff1 = extraStuff1;
-    }
-    public void setExtraStuff2(String extraStuff2) {
-        this.extraStuff2 = extraStuff2;
+    public void setHasExtraStuff(boolean hasExtraStuff) {
+        this.hasExtraStuff = hasExtraStuff;
     }
     public void setFiletype(String filetype) {this.filetype = filetype;}
     public void setSongSections(ArrayList<String> songSections) {
@@ -370,14 +365,15 @@ public class Song {
 
 
     // The welcome song if there is a problem
-    public void showWelcomeSong(Context c, Song song) {
-        song.setFilename("Welcome to OpenSongApp");
-        song.setTitle(c.getString(R.string.welcome));
-        song.setLyrics(c.getString(R.string.user_guide_lyrics));
-        song.setAuthor("Gareth Evans");
-        song.setKey("G");
-        song.setLinkweb("https://www.opensongapp.com");
-        song.setFiletype("XML");
+    public Song showWelcomeSong(Context c, Song thisSong) {
+        thisSong.setFilename("Welcome to OpenSongApp");
+        thisSong.setTitle(c.getString(R.string.welcome));
+        thisSong.setLyrics(c.getString(R.string.user_guide_lyrics));
+        thisSong.setAuthor("Gareth Evans");
+        thisSong.setKey("G");
+        thisSong.setLinkweb("https://www.opensongapp.com");
+        thisSong.setFiletype("XML");
+        return thisSong;
     }
 
     public String getFolderNamePair() {

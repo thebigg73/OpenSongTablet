@@ -3,9 +3,8 @@ package com.garethevans.church.opensongtablet.sqlite;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
@@ -56,22 +55,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
     public void resetDatabase(Context c) {
-        Log.d("SQLiteHelper","resetDatabase");
         try (SQLiteDatabase db = getDB(c)) {
             emptyTable(db);
-            Log.d("SQLiteHelper","emptyTable");
             onCreate(db);
-            Log.d("SQLiteHelper","onCreate");
         }
     }
 
 
 
     // Create, delete and update entries
-    public void insertFast(Context c, CommonSQL commonSQL, StorageAccess storageAccess) {
+    public void insertFast(Context c, MainActivityInterface mainActivityInterface) {
         SQLiteDatabase db = getDB(c);
         try {
-            commonSQL.insertFast(c,db,storageAccess);
+            mainActivityInterface.getCommonSQL().insertFast(c,mainActivityInterface,db);
             db.setTransactionSuccessful();
             db.endTransaction();
         } catch (OutOfMemoryError | Exception e) {
@@ -82,25 +78,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
-    public void createSong(Context c, StorageAccess storageAccess, CommonSQL commonSQL, String folder, String filename) {
+    public void createSong(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
         // Creates a basic song entry to the database (id, songid, folder, file)
         try (SQLiteDatabase db = getDB(c)) {
-            commonSQL.createSong(c, storageAccess, db, folder, filename);
+            mainActivityInterface.getCommonSQL().createSong(c, mainActivityInterface, db, folder, filename);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
             // Likely the song exists and we didn't check!
         }
     }
-    public void updateSong(Context c, CommonSQL commonSQL, Song song) {
+    public void updateSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         try (SQLiteDatabase db = getDB(c)) {
-            commonSQL.updateSong(db,song);
+            mainActivityInterface.getCommonSQL().updateSong(db,thisSong);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
         }
     }
-    public boolean deleteSong(Context c, CommonSQL commonSQL, String folder, String file) {
+    public boolean deleteSong(Context c, MainActivityInterface mainActivityInterface, String folder, String file) {
         try (SQLiteDatabase db = getDB(c)) {
-            return commonSQL.deleteSong(db, folder, file) > -1;
+            return mainActivityInterface.getCommonSQL().deleteSong(db, folder, file) > -1;
         } catch (OutOfMemoryError | Exception e) {
             return false;
         }
@@ -110,42 +106,43 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 
     // Search for entries in the database
-    public ArrayList<String> getFolders(Context c, CommonSQL commonSQL) {
+    public ArrayList<String> getFolders(Context c, MainActivityInterface mainActivityInterface) {
         // Get the database
         try (SQLiteDatabase db = getDB(c)) {
-            return commonSQL.getFolders(db);
+            return mainActivityInterface.getCommonSQL().getFolders(db);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
         }
     }
-    public boolean songExists(Context c, CommonSQL commonSQL, String folder, String filename) {
+    public boolean songExists(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
         try (SQLiteDatabase db = getDB(c)) {
-            return commonSQL.songExists(db, folder, filename);
+            return mainActivityInterface.getCommonSQL().songExists(db, folder, filename);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-    public Song getSpecificSong(Context c, CommonSQL commonSQL, String folder, String filename) {
+    public Song getSpecificSong(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
         try (SQLiteDatabase db = getDB(c)) {
-            return commonSQL.getSpecificSong(db,folder,filename);
+            return mainActivityInterface.getCommonSQL().getSpecificSong(db,folder,filename);
         } catch (OutOfMemoryError | Exception e) {
             Song thisSong = new Song();
             thisSong.setFolder(folder);
             thisSong.setFilename(filename);
-            String songId = commonSQL.getAnySongId(folder,filename);
+            String songId = mainActivityInterface.getCommonSQL().getAnySongId(folder,filename);
             thisSong.setSongid(songId);
             return thisSong;
         }
     }
-    public ArrayList<Song> getSongsByFilters(Context c, CommonSQL commonSQL, boolean searchByFolder, boolean searchByArtist,
-                                               boolean searchByKey, boolean searchByTag,
-                                               boolean searchByFilter, String folderVal, String artistVal,
-                                               String keyVal, String tagVal, String filterVal) {
+    public ArrayList<Song> getSongsByFilters(Context c, MainActivityInterface mainActivityInterface,
+                                             boolean searchByFolder, boolean searchByArtist,
+                                             boolean searchByKey, boolean searchByTag,
+                                             boolean searchByFilter, String folderVal, String artistVal,
+                                             String keyVal, String tagVal, String filterVal) {
 
         try (SQLiteDatabase db = getDB(c)) {
-           return commonSQL.getSongsByFilters(c, db, searchByFolder, searchByArtist, searchByKey, searchByTag, searchByFilter,
+           return mainActivityInterface.getCommonSQL().getSongsByFilters(c, db, searchByFolder, searchByArtist, searchByKey, searchByTag, searchByFilter,
                     folderVal, artistVal, keyVal, tagVal, filterVal);
         } catch (OutOfMemoryError | Exception e) {
             return new ArrayList<>();

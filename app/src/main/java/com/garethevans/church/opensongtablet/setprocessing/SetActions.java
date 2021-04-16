@@ -4,11 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.InputStream;
@@ -23,14 +19,14 @@ public class SetActions {
     private String songForSetWork;
 
     // The setters
-    public void setStringToSet(Context c, CurrentSet currentSet) {
+    public void setStringToSet(Context c, MainActivityInterface mainActivityInterface) {
         ArrayList<String> parsedSetArray = new ArrayList<>();
-        if (currentSet.getCurrentSetString()!=null) {
-            String currentSetString = currentSet.getCurrentSetString();
+        if (mainActivityInterface.getCurrentSet().getCurrentSetString()!=null) {
+            String currentSetString = mainActivityInterface.getCurrentSet().getCurrentSetString();
 
             // Remove blank entries
             currentSetString = removeBlankEntries(currentSetString);
-            currentSet.setCurrentSetString(currentSetString);
+            mainActivityInterface.getCurrentSet().setCurrentSetString(currentSetString);
 
             // Add a delimiter and split by it
             String delimiter = "%%%";
@@ -46,11 +42,11 @@ public class SetActions {
                 parsedSetArray.add(item);
             }
         }
-        currentSet.setCurrentSet(parsedSetArray);
+        mainActivityInterface.getCurrentSet().setCurrentSet(parsedSetArray);
     }
-    public void setToSetString(Context c, CurrentSet currentSet) {
+    public void setToSetString(Context c, MainActivityInterface mainActivityInterface) {
         StringBuilder stringBuilder = new StringBuilder();
-        ArrayList<String> arraySet = currentSet.getCurrentSet();
+        ArrayList<String> arraySet = mainActivityInterface.getCurrentSet().getCurrentSet();
         if (arraySet!=null) {
             for (String item:arraySet) {
                 // Add the start and end
@@ -59,15 +55,18 @@ public class SetActions {
         }
         String currentSetString = stringBuilder.toString();
         currentSetString = removeBlankEntries(currentSetString);
-        currentSet.setCurrentSetString(currentSetString);
+        mainActivityInterface.getCurrentSet().setCurrentSetString(currentSetString);
     }
-    public String setSongForSetWork(Context c, String songfolder, String songname) {
-        if (songfolder.equals(c.getString(R.string.mainfoldername)) || songfolder.equals("MAIN") || songfolder.equals("")) {
-            songForSetWork = start + songname + end;
+    public String setSongForSetWork(Context c, Song thisSong) {
+        if (thisSong.getFolder().equals(c.getString(R.string.mainfoldername)) ||
+                thisSong.getFolder().equals("MAIN") ||
+                thisSong.getFolder().equals("")) {
+            songForSetWork = start + thisSong.getFilename() + end;
         } else {
-            songForSetWork = start + songfolder + "/" + songname + end;
+            songForSetWork = start + thisSong.getFolder() +
+                    "/" + thisSong.getFilename() + end;
         }
-        songForSetWork = start + songname + end;
+        songForSetWork = start + thisSong.getFilename() + end;
         return songForSetWork;
     }
 
@@ -86,78 +85,74 @@ public class SetActions {
     }
 
     // Calculations
-    public void indexSongInSet(CurrentSet currentSet, Song song) {
+    public void indexSongInSet(MainActivityInterface mainActivityInterface) {
         // TODO decide if we should find the first or last entry
-        int current = currentSet.getCurrentSet().indexOf(song.getFolderNamePair());
+        int current = mainActivityInterface.getCurrentSet().getCurrentSet().indexOf(mainActivityInterface.getSong().getFolderNamePair());
         int prev = 0;
         int next = current;
         if (current>1) {
             prev = current-1;
         }
-        if (current<currentSet.getCurrentSet().size()-1) {
+        if (current<mainActivityInterface.getCurrentSet().getCurrentSet().size()-1) {
             next = current+1;
         }
-        currentSet.setIndexSongInSet(current);
-        currentSet.setPreviousSongInSet(currentSet.getCurrentSet().get(prev));
-        currentSet.setNextSongInSet(currentSet.getCurrentSet().get(next));
+        mainActivityInterface.getCurrentSet().setIndexSongInSet(current);
+        mainActivityInterface.getCurrentSet().setPreviousSongInSet(mainActivityInterface.getCurrentSet().getCurrentSet().get(prev));
+        mainActivityInterface.getCurrentSet().setNextSongInSet(mainActivityInterface.getCurrentSet().getCurrentSet().get(next));
     }
-    public void prepareSetList(Context c, StorageAccess storageAccess, Preferences preferences,
-                               ProcessSong processSong, LoadSong loadSong, CurrentSet currentSet, Song song) {
-        String tempSetString = preferences.getMyPreferenceString(c,"setCurrent","");
+    public void prepareSetList(Context c, MainActivityInterface mainActivityInterface) {
+        String tempSetString = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent","");
         tempSetString = removeBlankEntries(tempSetString);
-        currentSet.setCurrentSetString(tempSetString);
-        setStringToSet(c,currentSet);
-        updateSetItems(c,storageAccess,preferences,processSong,currentSet,loadSong);
-        indexSongInSet(currentSet,song);
+        mainActivityInterface.getCurrentSet().setCurrentSetString(tempSetString);
+        setStringToSet(c,mainActivityInterface);
+        updateSetItems(c,mainActivityInterface);
+        indexSongInSet(mainActivityInterface);
     }
-    public void shuffleSet(Context c, StorageAccess storageAccess, Preferences preferences,
-                           ProcessSong processSong, CurrentSet currentSet, LoadSong loadSong) {
-        Collections.shuffle(currentSet.getCurrentSet());
-        updateSetItems(c,storageAccess,preferences,processSong,currentSet,loadSong);
+    public void shuffleSet(Context c, MainActivityInterface mainActivityInterface) {
+        Collections.shuffle(mainActivityInterface.getCurrentSet().getCurrentSet());
+        updateSetItems(c,mainActivityInterface);
     }
-    public String getSetItem_Folder(Context c, StorageAccess storageAccess, Preferences preferences,
-                                    ProcessSong processSong, LoadSong loadSong,
-                                    CurrentSet currentSet, int setIndex) {
+    public String getSetItem_Folder(Context c, MainActivityInterface mainActivityInterface, int setIndex) {
         // Check the array is correct and not null
-        checkArraysMatch(c,storageAccess,preferences,processSong,loadSong,currentSet);
-        if (currentSet.getCurrentSet_Folder().size()>setIndex) {
-            return currentSet.getCurrentSet_Folder().get(setIndex);
+        checkArraysMatch(c,mainActivityInterface);
+        if (mainActivityInterface.getCurrentSet().getCurrentSet_Folder().size()>setIndex) {
+            return mainActivityInterface.getCurrentSet().getCurrentSet_Folder().get(setIndex);
         } else {
             return c.getString(R.string.mainfoldername);
         }
     }
-    public String getSetItem_Filename(Context c, StorageAccess storageAccess, Preferences preferences,
-                                      ProcessSong processSong, LoadSong loadSong,
-                                      CurrentSet currentSet, int setIndex) {
+    public String getSetItem_Filename(Context c, MainActivityInterface mainActivityInterface, int setIndex) {
         // Check the array is correct and not null
-        checkArraysMatch(c,storageAccess,preferences,processSong,loadSong,currentSet);
-        if (currentSet.getCurrentSet_Filename().size()>setIndex) {
-            return currentSet.getCurrentSet_Filename().get(setIndex);
+        checkArraysMatch(c,mainActivityInterface);
+        if ( mainActivityInterface.getCurrentSet().getCurrentSet_Filename().size()>setIndex) {
+            return  mainActivityInterface.getCurrentSet().getCurrentSet_Filename().get(setIndex);
         } else {
             return "Welcome to OpenSongApp";
         }
     }
-    public void checkArraysMatch(Context c, StorageAccess storageAccess, Preferences preferences,
-                                 ProcessSong processSong, LoadSong loadSong, CurrentSet currentSet) {
-        if (currentSet.getCurrentSet()!=null && currentSet.getCurrentSet_Folder()!=null &&
-                currentSet.getCurrentSet_Filename()!=null && currentSet.getCurrentSet_Key()!=null) {
-            if (currentSet.getCurrentSet().size() != currentSet.getCurrentSet_Folder().size() ||
-                    currentSet.getCurrentSet().size() != currentSet.getCurrentSet_Filename().size()) {
-                updateSetItems(c,storageAccess,preferences,processSong,currentSet,loadSong);
+    public void checkArraysMatch(Context c, MainActivityInterface mainActivityInterface) {
+        if ( mainActivityInterface.getCurrentSet().getCurrentSet()!=null &&
+                mainActivityInterface.getCurrentSet().getCurrentSet_Folder()!=null &&
+                mainActivityInterface.getCurrentSet().getCurrentSet_Filename()!=null &&
+                mainActivityInterface.getCurrentSet().getCurrentSet_Key()!=null) {
+            if ( mainActivityInterface.getCurrentSet().getCurrentSet().size() !=
+                    mainActivityInterface.getCurrentSet().getCurrentSet_Folder().size() ||
+                    mainActivityInterface.getCurrentSet().getCurrentSet().size() !=
+                            mainActivityInterface.getCurrentSet().getCurrentSet_Filename().size()) {
+                updateSetItems(c,mainActivityInterface);
             }
         } else {
-            resetCurrentSet(currentSet);
+            resetCurrentSet(mainActivityInterface);
         }
     }
-    public void updateSetItems(Context c, StorageAccess storageAccess, Preferences preferences,
-                               ProcessSong processSong, CurrentSet currentSet, LoadSong loadSong) {
+    public void updateSetItems(Context c, MainActivityInterface mainActivityInterface) {
         // Split the set into folder/songs
         ArrayList<String> currentSet_Folder = new ArrayList<>();
         ArrayList<String> currentSet_Filename = new ArrayList<>();
         ArrayList<String> currentSet_Key = new ArrayList<>();
 
-        if (currentSet.getCurrentSet()!=null && currentSet.getCurrentSet().size()>0) {
-            for (String item : currentSet.getCurrentSet()) {
+        if (mainActivityInterface.getCurrentSet().getCurrentSet()!=null && mainActivityInterface.getCurrentSet().getCurrentSet().size()>0) {
+            for (String item : mainActivityInterface.getCurrentSet().getCurrentSet()) {
                 if (!item.contains("/")) {
                     item = "/"+item;
                 }
@@ -178,62 +173,62 @@ public class SetActions {
 
                 currentSet_Folder.add(folder);
                 currentSet_Filename.add(filename);
-                currentSet_Key.add(loadSong.grabNextSongInSetKey(c,preferences,storageAccess,processSong,folder,filename));
+                currentSet_Key.add(mainActivityInterface.getLoadSong().grabNextSongInSetKey(c,mainActivityInterface,folder,filename));
             }
         }
-        currentSet.setCurrentSet_Folder(currentSet_Folder);
-        currentSet.setCurrentSet_Filename(currentSet_Filename);
-        currentSet.setCurrentSet_Key(currentSet_Key);
+        mainActivityInterface.getCurrentSet().setCurrentSet_Folder(currentSet_Folder);
+        mainActivityInterface.getCurrentSet().setCurrentSet_Filename(currentSet_Filename);
+        mainActivityInterface.getCurrentSet().setCurrentSet_Key(currentSet_Key);
     }
-    public void addToSet(Context c, Preferences preferences, CurrentSet currentSet, Song song) {
-        setSongForSetWork(c,song.getFolder(),song.getFilename());
-        currentSet.addToCurrentSetString(songForSetWork);
-        currentSet.addToCurrentSet(song.getSongid());
-        currentSet.addToCurrentSet_Folder(song.getFolder());
-        currentSet.addToCurrentSet_Filename(song.getFilename());
-        currentSet.addToCurrentSet_Key(song.getKey());
-        preferences.setMyPreferenceString(c,"setCurrent",currentSet.getCurrentSetString());
-    }
-
-    public void removeFromSet(Context c, Preferences preferences, CurrentSet currentSet, Song song, int mypos) {
-        setSongForSetWork(c,song.getFolder(),song.getFilename());
-        int pos = currentSet.removeFromCurrentSet(mypos, song.getSongid());
-        setToSetString(c,currentSet);
-        currentSet.removeFromCurrentSet_Folder(pos);
-        currentSet.removeFromCurrentSet_Filename(pos);
-        currentSet.removeFromCurrentSet_Key(pos);
-        preferences.setMyPreferenceString(c,"setCurrent",currentSet.getCurrentSetString());
+    public void addToSet(Context c, MainActivityInterface mainActivityInterface) {
+        setSongForSetWork(c,mainActivityInterface.getSong());
+        mainActivityInterface.getCurrentSet().addToCurrentSetString(songForSetWork);
+        mainActivityInterface.getCurrentSet().addToCurrentSet(mainActivityInterface.getSong().getSongid());
+        mainActivityInterface.getCurrentSet().addToCurrentSet_Folder(mainActivityInterface.getSong().getFolder());
+        mainActivityInterface.getCurrentSet().addToCurrentSet_Filename(mainActivityInterface.getSong().getFilename());
+        mainActivityInterface.getCurrentSet().addToCurrentSet_Key(mainActivityInterface.getSong().getKey());
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
     }
 
-    public String currentSetNameForMenu(Context c, Preferences preferences) {
+    public void removeFromSet(Context c, MainActivityInterface mainActivityInterface, int mypos) {
+        setSongForSetWork(c,mainActivityInterface.getSong());
+        int pos =  mainActivityInterface.getCurrentSet().removeFromCurrentSet(mypos, mainActivityInterface.getSong().getSongid());
+        setToSetString(c, mainActivityInterface);
+        mainActivityInterface.getCurrentSet().removeFromCurrentSet_Folder(pos);
+        mainActivityInterface.getCurrentSet().removeFromCurrentSet_Filename(pos);
+        mainActivityInterface.getCurrentSet().removeFromCurrentSet_Key(pos);
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+    }
+
+    public String currentSetNameForMenu(Context c, MainActivityInterface mainActivityInterface) {
         // This decides on the set name to display as a title
         // If it is a new set (unsaved), it will be called 'current (unsaved)'
         // If it is a non-modified loaded set, it will be called 'set name'
         // If it is a modified, unsaved, loaded set, it will be called 'set name (unsaved)'
 
         String title;
-        String lastSetName = preferences.getMyPreferenceString(c, "setCurrentLastName", "");
+        String lastSetName = mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentLastName", "");
         if (lastSetName == null || lastSetName.equals("")) {
             title = c.getString(R.string.set_current) +
                     " (" + c.getString(R.string.not_saved) + ")";
         } else {
             title = lastSetName.replace("__", "/");
-            if (!preferences.getMyPreferenceString(c, "setCurrent", "")
-                    .equals(preferences.getMyPreferenceString(c, "setCurrentBeforeEdits", ""))) {
+            if (!mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrent", "")
+                    .equals(mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentBeforeEdits", ""))) {
                 title += " (" + c.getString(R.string.not_saved) + ")";
             }
         }
         return title;
     }
 
-    public void resetCurrentSet(CurrentSet currentSet) {
-        currentSet.setCurrentSetString("");
-        currentSet.setCurrentSet(new ArrayList<>());
-        currentSet.setCurrentSet_Folder(new ArrayList<>());
-        currentSet.setCurrentSet_Filename(new ArrayList<>());
-        currentSet.setIndexSongInSet(-1);
-        currentSet.setNextSongInSet("");
-        currentSet.setPreviousSongInSet("");
+    public void resetCurrentSet(MainActivityInterface mainActivityInterface) {
+        mainActivityInterface.getCurrentSet().setCurrentSetString("");
+        mainActivityInterface.getCurrentSet().setCurrentSet(new ArrayList<>());
+        mainActivityInterface.getCurrentSet().setCurrentSet_Folder(new ArrayList<>());
+        mainActivityInterface.getCurrentSet().setCurrentSet_Filename(new ArrayList<>());
+        mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+        mainActivityInterface.getCurrentSet().setNextSongInSet("");
+        mainActivityInterface.getCurrentSet().setPreviousSongInSet("");
     }
 
     public String whatToLookFor(Context c, String folder, String filename) {
@@ -258,47 +253,50 @@ public class SetActions {
         return whattolookfor;
     }
 
-    public void makeVariation(Context c, StorageAccess storageAccess, Preferences preferences,
-                              CurrentSet currentSet, ProcessSong processSong, ShowToast showToast,
-                              Song song, LoadSong loadSong) {
+    public void makeVariation(Context c, MainActivityInterface mainActivityInterface) {
 
         // Original file
-        Uri uriOriginal = storageAccess.getUriForItem(c, preferences, "Songs", song.getFolder(),
-                song.getFilename());
+        Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem(c,
+                mainActivityInterface.getPreferences(), "Songs",
+                mainActivityInterface.getSong().getFolder(),
+                mainActivityInterface.getSong().getFilename());
 
         // Copy the file into the variations folder
-        InputStream inputStream = storageAccess.getInputStream(c, uriOriginal);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uriOriginal);
 
         // If the file already exists, add _ to the filename
-        StringBuilder newsongname = new StringBuilder(song.getFilename());
-        Uri uriVariation = storageAccess.getUriForItem(c, preferences, "Variations", "",
+        StringBuilder newsongname = new StringBuilder(mainActivityInterface.getSong().getFilename());
+        Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Variations", "",
                 newsongname.toString());
-        while (storageAccess.uriExists(c,uriVariation)) {
+        while (mainActivityInterface.getStorageAccess().uriExists(c,uriVariation)) {
             newsongname.append("_");
-            uriVariation = storageAccess.getUriForItem(c, preferences, "Variations", "",
+            uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Variations", "",
                     newsongname.toString());
         }
 
         // Check the uri exists for the outputstream to be valid
-        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uriVariation, null,
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), uriVariation, null,
                 "Variations", "", newsongname.toString());
 
-        OutputStream outputStream = storageAccess.getOutputStream(c, uriVariation);
-        storageAccess.copyFile(inputStream, outputStream);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uriVariation);
+        mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
 
         // Fix the song name and folder for loading
-        song.setFilename(newsongname.toString());
-        song.setFolder("../Variations");
-        songForSetWork = start + "**" + c.getString(R.string.variation) + "/" + song.getFilename() + end;
+        mainActivityInterface.getSong().setFilename(newsongname.toString());
+        mainActivityInterface.getSong().setFolder("../Variations");
+        songForSetWork = start + "**" + c.getString(R.string.variation) + "/" +
+                mainActivityInterface.getSong().getFilename() + end;
 
         // Replace the set item with the variation
-        currentSet.getCurrentSet().set(currentSet.getIndexSongInSet(),songForSetWork);
-        setToSetString(c, currentSet);
-        updateSetItems(c,storageAccess,preferences,processSong,currentSet,loadSong);
+        mainActivityInterface.getCurrentSet().getCurrentSet().
+                set(mainActivityInterface.getCurrentSet().getIndexSongInSet(),songForSetWork);
+        setToSetString(c, mainActivityInterface);
+        updateSetItems(c,mainActivityInterface);
 
-        preferences.setMyPreferenceString(c,"setCurrent",currentSet.getCurrentSetString());
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",
+                mainActivityInterface.getCurrentSet().getCurrentSetString());
 
-        showToast.doIt(c, c.getResources().getString(R.string.variation_edit));
+        mainActivityInterface.getShowToast().doIt(c, c.getResources().getString(R.string.variation_edit));
 
         // Now load the new variation item up
         // TODO calling activity should do this!

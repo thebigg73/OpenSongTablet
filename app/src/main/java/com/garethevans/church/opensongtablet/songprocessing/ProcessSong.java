@@ -29,12 +29,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -46,58 +42,57 @@ public class ProcessSong {
 
     private final String TAG = "ProcessSong";
 
-    public Song initialiseSong(CommonSQL commonSQL, String newFolder, String newFilename) {
+    public Song initialiseSong(MainActivityInterface mainActivityInterface, String newFolder, String newFilename) {
         Song song = new Song();
         song.setFilename(newFilename);
         song.setFolder(newFolder);
-        song.setSongid(commonSQL.getAnySongId(newFolder,newFilename));
+        song.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(newFolder,newFilename));
         return song;
     }
 
-    // This deals with the song XML file
-    public String getXML(Song song) {
-        if (song.getEncoding()==null || song.getEncoding().equals("")) {
-            song.setEncoding("UTF-8");
+    // This deals with creating the song XML file
+    public String getXML(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+        if (thisSong.getEncoding()==null || thisSong.getEncoding().equals("")) {
+            thisSong.setEncoding("UTF-8");
         }
-        String myNEWXML = "<?xml version=\"1.0\" encoding=\""+ song.getEncoding()+"\"?>\n";
+        String myNEWXML = "<?xml version=\"1.0\" encoding=\""+ thisSong.getEncoding()+"\"?>\n";
         myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + parseToHTMLEntities(song.getTitle()) + "</title>\n";
-        myNEWXML += "  <author>" + parseToHTMLEntities(song.getAuthor()) + "</author>\n";
-        myNEWXML += "  <copyright>" + parseToHTMLEntities(song.getCopyright()) + "</copyright>\n";
-        myNEWXML += "  <presentation>" + parseToHTMLEntities(song.getPresentationorder()) + "</presentation>\n";
-        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(song.getHymnnum()) + "</hymn_number>\n";
-        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(song.getCapoprint()) + "\">" +
-                parseToHTMLEntities(song.getCapo()) + "</capo>\n";
-        myNEWXML += "  <tempo>" + parseToHTMLEntities(song.getMetronomebpm()) + "</tempo>\n";
-        myNEWXML += "  <time_sig>" + parseToHTMLEntities(song.getTimesig()) + "</time_sig>\n";
-        myNEWXML += "  <duration>" + parseToHTMLEntities(song.getAutoscrolllength()) + "</duration>\n";
-        myNEWXML += "  <predelay>" + parseToHTMLEntities(song.getAutoscrolldelay()) + "</predelay>\n";
-        myNEWXML += "  <ccli>" + parseToHTMLEntities(song.getCcli()) + "</ccli>\n";
-        myNEWXML += "  <theme>" + parseToHTMLEntities(song.getTheme()) + "</theme>\n";
-        myNEWXML += "  <alttheme>" + parseToHTMLEntities(song.getAlttheme()) + "</alttheme>\n";
-        myNEWXML += "  <user1>" + parseToHTMLEntities(song.getUser1()) + "</user1>\n";
-        myNEWXML += "  <user2>" + parseToHTMLEntities(song.getUser2()) + "</user2>\n";
-        myNEWXML += "  <user3>" + parseToHTMLEntities(song.getUser3()) + "</user3>\n";
-        myNEWXML += "  <key>" + parseToHTMLEntities(song.getKey()) + "</key>\n";
-        myNEWXML += "  <aka>" + parseToHTMLEntities(song.getAka()) + "</aka>\n";
-        myNEWXML += "  <midi>" + parseToHTMLEntities(song.getMidi()) + "</midi>\n";
-        myNEWXML += "  <midi_index>" + parseToHTMLEntities(song.getMidiindex()) + "</midi_index>\n";
-        myNEWXML += "  <notes>" + parseToHTMLEntities(song.getNotes()) + "</notes>\n";
-        myNEWXML += "  <lyrics>" + parseToHTMLEntities(song.getLyrics()) + "</lyrics>\n";
-        myNEWXML += "  <pad_file>" + parseToHTMLEntities(song.getPadfile()) + "</pad_file>\n";
-        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(song.getCustomchords()) + "</custom_chords>\n";
-        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(song.getLinkyoutube()) + "</link_youtube>\n";
-        myNEWXML += "  <link_web>" + parseToHTMLEntities(song.getLinkweb()) + "</link_web>\n";
-        myNEWXML += "  <link_audio>" + parseToHTMLEntities(song.getLinkaudio()) + "</link_audio>\n";
-        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(song.getPadloop()) + "</loop_audio>\n";
-        myNEWXML += "  <link_other>" + parseToHTMLEntities(song.getLinkother()) + "</link_other>\n";
-        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(song.getAbc()) + "</abcnotation>\n";
+        myNEWXML += "  <title>" + parseToHTMLEntities(thisSong.getTitle()) + "</title>\n";
+        myNEWXML += "  <author>" + parseToHTMLEntities(thisSong.getAuthor()) + "</author>\n";
+        myNEWXML += "  <copyright>" + parseToHTMLEntities(thisSong.getCopyright()) + "</copyright>\n";
+        myNEWXML += "  <presentation>" + parseToHTMLEntities(thisSong.getPresentationorder()) + "</presentation>\n";
+        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(thisSong.getHymnnum()) + "</hymn_number>\n";
+        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(thisSong.getCapoprint()) + "\">" +
+                parseToHTMLEntities(thisSong.getCapo()) + "</capo>\n";
+        myNEWXML += "  <tempo>" + parseToHTMLEntities(thisSong.getMetronomebpm()) + "</tempo>\n";
+        myNEWXML += "  <time_sig>" + parseToHTMLEntities(thisSong.getTimesig()) + "</time_sig>\n";
+        myNEWXML += "  <duration>" + parseToHTMLEntities(thisSong.getAutoscrolllength()) + "</duration>\n";
+        myNEWXML += "  <predelay>" + parseToHTMLEntities(thisSong.getAutoscrolldelay()) + "</predelay>\n";
+        myNEWXML += "  <ccli>" + parseToHTMLEntities(thisSong.getCcli()) + "</ccli>\n";
+        myNEWXML += "  <theme>" + parseToHTMLEntities(thisSong.getTheme()) + "</theme>\n";
+        myNEWXML += "  <alttheme>" + parseToHTMLEntities(thisSong.getAlttheme()) + "</alttheme>\n";
+        myNEWXML += "  <user1>" + parseToHTMLEntities(thisSong.getUser1()) + "</user1>\n";
+        myNEWXML += "  <user2>" + parseToHTMLEntities(thisSong.getUser2()) + "</user2>\n";
+        myNEWXML += "  <user3>" + parseToHTMLEntities(thisSong.getUser3()) + "</user3>\n";
+        myNEWXML += "  <key>" + parseToHTMLEntities(thisSong.getKey()) + "</key>\n";
+        myNEWXML += "  <aka>" + parseToHTMLEntities(thisSong.getAka()) + "</aka>\n";
+        myNEWXML += "  <midi>" + parseToHTMLEntities(thisSong.getMidi()) + "</midi>\n";
+        myNEWXML += "  <midi_index>" + parseToHTMLEntities(thisSong.getMidiindex()) + "</midi_index>\n";
+        myNEWXML += "  <notes>" + parseToHTMLEntities(thisSong.getNotes()) + "</notes>\n";
+        myNEWXML += "  <lyrics>" + parseToHTMLEntities(thisSong.getLyrics()) + "</lyrics>\n";
+        myNEWXML += "  <pad_file>" + parseToHTMLEntities(thisSong.getPadfile()) + "</pad_file>\n";
+        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(thisSong.getCustomchords()) + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(thisSong.getLinkyoutube()) + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + parseToHTMLEntities(thisSong.getLinkweb()) + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + parseToHTMLEntities(thisSong.getLinkaudio()) + "</link_audio>\n";
+        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(thisSong.getPadloop()) + "</loop_audio>\n";
+        myNEWXML += "  <link_other>" + parseToHTMLEntities(thisSong.getLinkother()) + "</link_other>\n";
+        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(thisSong.getAbc()) + "</abcnotation>\n";
 
-        if (song!=null && song.getExtraStuff1()!=null && !song.getExtraStuff1().isEmpty()) {
-            myNEWXML += "  " + song.getExtraStuff1() + "\n";
-        }
-        if (song!=null && song.getExtraStuff2()!=null && !song.getExtraStuff2().isEmpty()) {
-            myNEWXML += "  " + song.getExtraStuff2() + "\n";
+        if (thisSong!=null && thisSong.getHasExtraStuff()) {
+            // TODO Load it in so we can add it back
+            String extraStuff = mainActivityInterface.getLoadSong().getExtraStuff(c,mainActivityInterface,thisSong);
+            myNEWXML += "  " + extraStuff + "\n";
         }
         myNEWXML += "</song>";
 
@@ -838,8 +833,9 @@ public class ProcessSong {
 
     }
 
-    private TableLayout groupTable(Context c, String string, float headingScale, float commentScale,
-                                   float chordScale, int lyricColor, int chordColor, SetTypeFace setTypeFace,
+    private TableLayout groupTable(Context c, MainActivityInterface mainActivityInterface,
+                                   String string, float headingScale, float commentScale,
+                                   float chordScale, int lyricColor, int chordColor,
                                    boolean trimLines, float lineSpacing, boolean boldChordHeading,
                                    int highlightChordColor) {
         TableLayout tableLayout = newTableLayout(c);
@@ -885,7 +881,7 @@ public class ProcessSong {
         for (int t = 0; t < lines.length; t++) {
             TableRow tableRow = newTableRow(c);
             String linetype = getLineType(lines[t]);
-            Typeface typeface = getTypeface(setTypeFace, linetype);
+            Typeface typeface = getTypeface(mainActivityInterface, linetype);
             float size = getFontSize(linetype, headingScale, commentScale, chordScale);
             int color = getFontColor(linetype, lyricColor, chordColor);
             int startpos = 0;
@@ -938,7 +934,7 @@ public class ProcessSong {
         span.setSpan(new BackgroundColorSpan(highlightChordColor), x, y, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return span;
     }
-    private boolean isMultiLineFormatSong(Locale locale, String string) {
+    private boolean isMultiLineFormatSong(MainActivityInterface mainActivityInterface, String string) {
         // Best way to determine if the song is in multiline format is
         // Look for [v] or [c] case insensitive
         // And it needs to be followed by a line starting with 1 and 2
@@ -950,15 +946,15 @@ public class ProcessSong {
             boolean has_multiline_2tag = false;
 
             for (String l : sl) {
-                if (l.toLowerCase(locale).startsWith("[v]")) {
+                if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[v]")) {
                     has_multiline_vtag = true;
-                } else if (l.toLowerCase(locale).startsWith("[c]")) {
+                } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[c]")) {
                     has_multiline_ctag = true;
-                } else if (l.toLowerCase(locale).startsWith("1") ||
-                        l.toLowerCase(locale).startsWith(" 1")) {
+                } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("1") ||
+                        l.toLowerCase(mainActivityInterface.getLocale()).startsWith(" 1")) {
                     has_multiline_1tag = true;
-                } else if (l.toLowerCase(locale).startsWith("2") ||
-                        l.toLowerCase(locale).startsWith(" 2")) {
+                } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("2") ||
+                        l.toLowerCase(mainActivityInterface.getLocale()).startsWith(" 2")) {
                     has_multiline_2tag = true;
                 }
             }
@@ -973,9 +969,10 @@ public class ProcessSong {
     private boolean lineIsChordForMultiline(String[] lines) {
         return (lines[0].length()>1 && lines.length>1 && lines[1].matches("^[0-9].*$"));
     }
-    String fixMultiLineFormat(Context c, Preferences preferences, Locale locale, String string) {
+    String fixMultiLineFormat(Context c, MainActivityInterface mainActivityInterface, String string) {
 
-        if (!preferences.getMyPreferenceBoolean(c,"multiLineVerseKeepCompact",false) && isMultiLineFormatSong(locale,string)) {
+        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"multiLineVerseKeepCompact",false) &&
+                isMultiLineFormatSong(mainActivityInterface,string)) {
             // Reset the available song sections
             // Ok the song is in the multiline format
             // [V]
@@ -1008,8 +1005,8 @@ public class ProcessSong {
                     l_2 = lines[z + 2];
                 }
 
-                boolean mlv = isMultiLine(locale,l, l_1, l_2, "v");
-                boolean mlc = isMultiLine(locale,l, l_1, l_2, "c");
+                boolean mlv = isMultiLine(mainActivityInterface,l, l_1, l_2, "v");
+                boolean mlc = isMultiLine(mainActivityInterface,l, l_1, l_2, "c");
 
                 if (mlv) {
                     lines[z] = "__VERSEMULTILINE__";
@@ -1074,9 +1071,9 @@ public class ProcessSong {
             return string;
         }
     }
-    private boolean isMultiLine(Locale locale, String l, String l_1, String l_2, String type) {
+    private boolean isMultiLine(MainActivityInterface mainActivityInterface, String l, String l_1, String l_2, String type) {
         boolean isit = false;
-        l = l.toLowerCase(locale);
+        l = l.toLowerCase(mainActivityInterface.getLocale());
 
         if (l.startsWith("["+type+"]") &&
                 (l_1.startsWith("1") || l_1.startsWith(" 1") || l_2.startsWith("1") || l_2.startsWith(" 1"))) {
@@ -1162,9 +1159,9 @@ public class ProcessSong {
             c3.setVisibility(View.GONE);
         }
     }
-    public ArrayList<View> setSongInLayout(Context c, Preferences preferences, Locale locale, boolean trimSections,
-                                           boolean addSectionSpace, boolean trimLines, float lineSpacing,
-                                           ThemeColors themeColors, SetTypeFace setTypeFace, float headingScale,
+    public ArrayList<View> setSongInLayout(Context c, MainActivityInterface mainActivityInterface,
+                                           boolean trimSections, boolean addSectionSpace,
+                                           boolean trimLines, float lineSpacing, float headingScale,
                                            float chordScale, float commentScale, String string,
                                            boolean boldChordHeading) {
         ArrayList<View> sectionViews = new ArrayList<>();
@@ -1172,7 +1169,7 @@ public class ProcessSong {
         // This goes through processing the song
 
         // First check for multiverse/multiline formatting
-        string = fixMultiLineFormat(c,preferences,locale,string);
+        string = fixMultiLineFormat(c,mainActivityInterface,string);
 
         // First up we go through the lyrics and group lines that should be in a table for alignment purposes
         string = makeGroups(string);
@@ -1191,27 +1188,30 @@ public class ProcessSong {
                 section = section + "\n ";
             }
             LinearLayout linearLayout = newLinearLayout(c); // transparent color
-            int backgroundColor = themeColors.getLyricsVerseColor();
+            int backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
             // Now split by line
             String[] lines = section.split("\n");
             for (String line:lines) {
                 // Get the text stylings
                 String linetype = getLineType(line);
                 if (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab")) {
-                    backgroundColor = getBGColor(c,themeColors,line);
+                    backgroundColor = getBGColor(c,mainActivityInterface,line);
                 }
-                Typeface typeface = getTypeface(setTypeFace,linetype);
+                Typeface typeface = getTypeface(mainActivityInterface,linetype);
                 float size = getFontSize(linetype,headingScale,commentScale,chordScale);
-                int color = getFontColor(linetype,themeColors.getLyricsTextColor(),themeColors.getLyricsChordsColor());
+                int color = getFontColor(linetype,mainActivityInterface.getMyThemeColors().
+                        getLyricsTextColor(),mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
                 if (line.contains("____groupline_____")) {
-                    linearLayout.addView(groupTable(c,line,headingScale,commentScale,chordScale,
-                            themeColors.getLyricsTextColor(),themeColors.getLyricsChordsColor(),
-                            setTypeFace,trimLines,lineSpacing,boldChordHeading,
-                            themeColors.getHighlightChordColor()));
+                    linearLayout.addView(groupTable(c,mainActivityInterface,line,headingScale,
+                            commentScale,chordScale,
+                            mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
+                            mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
+                            trimLines,lineSpacing,boldChordHeading,
+                            mainActivityInterface.getMyThemeColors().getHighlightChordColor()));
                 } else {
                     linearLayout.addView(lineText(c,linetype,line,typeface,size,color,
                             trimLines,lineSpacing,boldChordHeading,
-                            themeColors.getHighlightHeadingColor()));
+                            mainActivityInterface.getMyThemeColors().getHighlightHeadingColor()));
                 }
             }
             linearLayout.setBackgroundColor(backgroundColor);
@@ -1222,13 +1222,13 @@ public class ProcessSong {
 
 
     // Get properties for creating the views
-    private Typeface getTypeface(SetTypeFace setTypeFace, String string) {
+    private Typeface getTypeface(MainActivityInterface mainActivityInterface, String string) {
         if (string.equals("chord")) {
-            return setTypeFace.getChordFont();
+            return mainActivityInterface.getMyFonts().getChordFont();
         } else if (string.equals("tab")) {
-            return setTypeFace.getMonoFont();
+            return mainActivityInterface.getMyFonts().getMonoFont();
         } else {
-            return setTypeFace.getLyricFont();
+            return mainActivityInterface.getMyFonts().getLyricFont();
         }
     }
     private int getFontColor(String string, int lyricColor, int chordColor) {
@@ -1253,23 +1253,23 @@ public class ProcessSong {
         }
         return f;
     }
-    private int getBGColor(Context c, ThemeColors themeColors,String line) {
+    private int getBGColor(Context c, MainActivityInterface mainActivityInterface,String line) {
         if (line.startsWith(";")) {
-            return themeColors.getLyricsCommentColor();
+            return mainActivityInterface.getMyThemeColors().getLyricsCommentColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.verse))) {
-            return themeColors.getLyricsVerseColor();
+            return mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.prechorus))) {
-            return themeColors.getLyricsPreChorusColor();
+            return mainActivityInterface.getMyThemeColors().getLyricsPreChorusColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.chorus))) {
-            return themeColors.getLyricsChorusColor();
+            return mainActivityInterface.getMyThemeColors().getLyricsChorusColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.bridge))) {
-            return themeColors.getLyricsBridgeColor();
+            return mainActivityInterface.getMyThemeColors().getLyricsBridgeColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag))) {
-            return themeColors.getLyricsTagColor();
+            return mainActivityInterface.getMyThemeColors().getLyricsTagColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.custom))) {
-            return themeColors.getLyricsCustomColor();
+            return mainActivityInterface.getMyThemeColors().getLyricsCustomColor();
         } else {
-            return themeColors.getLyricsVerseColor();
+            return mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
         }
     }
 
@@ -1848,12 +1848,12 @@ public class ProcessSong {
     // Now the stuff to read in pdf files (converts the pages to an image for displaying)
     // This uses Android built in PdfRenderer, so will only work on Lollipop+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Bitmap getBitmapFromPDF(Context c, Preferences preferences, StorageAccess storageAccess,
-                                   PDFSong pdfSong, String folder, String filename, int page, int allowedWidth,
+    public Bitmap getBitmapFromPDF(Context c, MainActivityInterface mainActivityInterface,
+                                   String folder, String filename, int page, int allowedWidth,
                                    int allowedHeight, String scale) {
         Bitmap bmp = null;
 
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", folder, filename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs", folder, filename);
 
         // FileDescriptor for file, it allows you to close file when you are done with it
         ParcelFileDescriptor parcelFileDescriptor = getPDFParcelFileDescriptor(c,uri);
@@ -1862,12 +1862,12 @@ public class ProcessSong {
         PdfRenderer pdfRenderer = getPDFRenderer(parcelFileDescriptor);
 
         // Get the page count
-        pdfSong.setPdfPageCount(getPDFPageCount(pdfRenderer));
+        mainActivityInterface.getPDFSong().setPdfPageCount(getPDFPageCount(pdfRenderer));
 
         // Set the current page number
-        page = getCurrentPage(pdfSong,page);
+        page = getCurrentPage(mainActivityInterface,page);
 
-        if (parcelFileDescriptor!=null && pdfRenderer!=null && pdfSong.getPdfPageCount()>0) {
+        if (parcelFileDescriptor!=null && pdfRenderer!=null && mainActivityInterface.getPDFSong().getPdfPageCount()>0) {
             // Good to continue!
 
             // Get the currentPDF page
@@ -1918,17 +1918,17 @@ public class ProcessSong {
             return 0;
         }
     }
-    public int getCurrentPage(PDFSong pdfSong, int page) {
-        if (!pdfSong.getShowstartofpdf()) {
+    public int getCurrentPage(MainActivityInterface mainActivityInterface, int page) {
+        if (!mainActivityInterface.getPDFSong().getShowstartofpdf()) {
             // This is to deal with swiping backwards through songs, show the last page first!
-            page = pdfSong.getPdfPageCount() - 1;
-            pdfSong.setShowstartofpdf(true);
+            page = mainActivityInterface.getPDFSong().getPdfPageCount() - 1;
+            mainActivityInterface.getPDFSong().setShowstartofpdf(true);
         }
-        if (page >= pdfSong.getPdfPageCount()) {
-            pdfSong.setPdfPageCurrent(0);
+        if (page >= mainActivityInterface.getPDFSong().getPdfPageCount()) {
+            mainActivityInterface.getPDFSong().setPdfPageCurrent(0);
             page = 0;
         } else {
-            pdfSong.setPdfPageCurrent(page);
+            mainActivityInterface.getPDFSong().setPdfPageCurrent(page);
         }
         return page;
     }
@@ -2042,20 +2042,19 @@ public class ProcessSong {
         }
         return filename;
     }
-    public Bitmap getHighlighterFile(Context c, Preferences preferences, StorageAccess storageAccess,
-                                     Song song, int w, int h) {
+    public Bitmap getHighlighterFile(Context c, MainActivityInterface mainActivityInterface, int w, int h) {
         String filename;
         int orientation = c.getResources().getConfiguration().orientation;
         if (orientation== Configuration.ORIENTATION_PORTRAIT) {
-            filename = getHighlighterFilename(song,true);
+            filename = getHighlighterFilename(mainActivityInterface.getSong(),true);
         } else {
-            filename = getHighlighterFilename(song,false);
+            filename = getHighlighterFilename(mainActivityInterface.getSong(),false);
         }
-        Uri uri = storageAccess.getUriForItem(c,preferences,"Highlighter","",filename);
-        if (storageAccess.uriExists(c,uri)) {
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Highlighter","",filename);
+        if (mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
             // Load in the bitmap
             try {
-                InputStream inputStream = storageAccess.getInputStream(c, uri);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.outWidth = w;
                 options.outHeight = h;

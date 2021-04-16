@@ -1,12 +1,12 @@
 package com.garethevans.church.opensongtablet.interfaces;
 
-import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
+import android.content.Context;
 
 public interface NearbyInterface {
-    void startDiscovery(AutoscrollActions autoscrollActions);
-    void startAdvertising(AutoscrollActions autoscrollActions);
-    void stopDiscovery();
-    void stopAdvertising();
-    void turnOffNearby();
-    void doSendPayloadBytes(String infoPayload);
+    void startDiscovery(Context c, MainActivityInterface mainActivityInterface);
+    void startAdvertising(Context c, MainActivityInterface mainActivityInterface);
+    void stopDiscovery(Context c);
+    void stopAdvertising(Context c);
+    void turnOffNearby(Context c);
+    void doSendPayloadBytes(Context c,String infoPayload);
 }

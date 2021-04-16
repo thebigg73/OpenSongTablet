@@ -107,7 +107,7 @@ public class SetMenuFragment extends Fragment {
     }
 
     void setUpViews() {
-        String titletext = requireActivity().getResources().getString(R.string.set) + ": " + setActions.currentSetNameForMenu(getContext(),preferences);
+        String titletext = requireActivity().getResources().getString(R.string.set) + ": " + setActions.currentSetNameForMenu(getContext(),mainActivityInterface);
         myView.setTitle.setText(titletext);
         llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(RecyclerView.VERTICAL);
@@ -115,11 +115,11 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void shuffleSet() {
-        setActions.shuffleSet(getContext(),storageAccess,preferences,processSong,currentSet,loadSong);
+        setActions.shuffleSet(getContext(),mainActivityInterface);
     }
 
     private void prepareSetListViews() {
-        setActions.prepareSetList(getContext(),storageAccess,preferences,processSong, loadSong,currentSet,song);
+        setActions.prepareSetList(getContext(),mainActivityInterface);
         SetListAdapter ma = new SetListAdapter(mainActivityInterface,createList());
         myView.myRecyclerView.setAdapter(ma);
         ItemTouchHelper.Callback callback = new SetListItemTouchHelper(ma,mainActivityInterface);
@@ -132,7 +132,7 @@ public class SetMenuFragment extends Fragment {
     // Get the set list item objects for the recyclerview
     private List<SetItemInfo> createList() {
         List<SetItemInfo> result = new ArrayList<>();
-        setActions.checkArraysMatch(getContext(),storageAccess,preferences,processSong,loadSong,currentSet);
+        setActions.checkArraysMatch(getContext(),mainActivityInterface);
 
         for (int i=0; i<currentSet.getCurrentSet().size(); i++) {
             SetItemInfo si = new SetItemInfo();

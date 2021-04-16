@@ -5,20 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.io.InputStream;
 import java.util.Locale;
@@ -28,10 +17,8 @@ public class SongListBuildIndex {
     // This class is used to index all of the songs in the user's folder
     // It builds the search index and prepares the required stuff for the song menus (name, author, key)
     // It updates the entries in the user sqlite database
+    // It loads contents into a temp song on the mainactivity called indexingSong;
 
-
-    private Song song;
-    private InputStream inputStream;
     private boolean indexRequired;
     private boolean indexComplete;
 
@@ -48,18 +35,11 @@ public class SongListBuildIndex {
         return indexComplete;
     }
 
-    public void fullIndex(Context c,
-                          Preferences preferences, StorageAccess storageAccess,
-                          SQLiteHelper sqLiteHelper, NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper,
-                          CommonSQL commonSQL, ProcessSong processSong,
-                          ConvertChoPro convertChoPro, ConvertOnSong convertOnSong,
-                          ConvertTextSong textSongConvert, ShowToast showToast, LoadSong loadSong) {
-
-        MainActivityInterface mainActivityInterface = (MainActivityInterface) c;
+    public void fullIndex(Context c, MainActivityInterface mainActivityInterface) {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
 
-        try (SQLiteDatabase db = sqLiteHelper.getDB(c)) {
+        try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB(c)) {
             // Go through each entry in the database and get the folder and filename.
             // Then load the file and write the values into the sql table
             String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
@@ -70,59 +50,62 @@ public class SongListBuildIndex {
 
             // We now iterate through each song in turn!
             do {
-                Song song = new Song();
+                mainActivityInterface.setIndexingSong(new Song());
 
                 // Set the folder and filename from the database entry
                 if (cursor.getColumnIndex(SQLite.COLUMN_ID) > -1) {
-                    song.setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
-                    song.setFolder(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
-                    song.setFilename(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
+                    mainActivityInterface.getIndexingSong().setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
+                    mainActivityInterface.getIndexingSong().setFolder(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
+                    mainActivityInterface.getIndexingSong().setFilename(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
 
                     // Now we have the info to open the file and extract what we need
-                    if (!song.getFilename().isEmpty()) {
+                    if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {
                         // Get the uri, utf and inputStream for the file
-                        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs",
-                                commonSQL.unescapedSQL(song.getFolder()), commonSQL.unescapedSQL(song.getFilename()));
-                        String utf = storageAccess.getUTFEncoding(c, uri);
-                        inputStream = storageAccess.getInputStream(c, uri);
+                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs",
+                                mainActivityInterface.getIndexingSong().getFolder(),
+                                mainActivityInterface.getIndexingSong().getFilename());
+                        String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
 
                         // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
-                        if (filenameIsOk(song.getFilename())) {
+                        if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename())) {
                             try {
                                 // All going well all the other details for sqLite are now set!
-                                loadSong.readFileAsXML(c, mainActivityInterface,storageAccess,
-                                        preferences, processSong, song,showToast, "Songs",
-                                        uri, utf, true);
+                                mainActivityInterface.getLoadSong().readFileAsXML(c, mainActivityInterface,
+                                        mainActivityInterface.getIndexingSong(), "Songs",
+                                        uri, utf);
 
                             } catch (Exception e) {
                                 // OK, so this wasn't an XML file.  Try to extract as something else
-                                song = tryToFixSong(c, storageAccess, preferences, processSong,
-                                        sqLiteHelper, commonSQL,
-                                        convertChoPro, convertOnSong, textSongConvert, uri);
+                                mainActivityInterface.setIndexingSong(tryToFixSong(c, mainActivityInterface, mainActivityInterface.getIndexingSong(),uri));
                             }
                         }
 
                         // Update the database entry
-                        song.setSongid(commonSQL.getAnySongId(song.getFolder(), song.getFilename()));
-                        commonSQL.updateSong(db, song);
+                        mainActivityInterface.getIndexingSong().setSongid(mainActivityInterface.getCommonSQL().getAnySongId(
+                                mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
+                        mainActivityInterface.getCommonSQL().updateSong(db, mainActivityInterface.getIndexingSong());
 
                         // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
                         // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
-                        if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
-                            nonOpenSongSQLiteHelper.updateSong(c, commonSQL, storageAccess, preferences, song);
+                        if (mainActivityInterface.getIndexingSong().getFiletype().equals("PDF") ||
+                                mainActivityInterface.getIndexingSong().getFiletype().equals("IMG")) {
+                            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c, mainActivityInterface,
+                                    mainActivityInterface.getIndexingSong());
                         }
-                        inputStream.close();
+                        //inputStream.close();
                     }
                 }
             } while (cursor.moveToNext());
             cursor.close();
 
+            mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
         } catch (Exception e) {
             e.printStackTrace();
         } catch (OutOfMemoryError oom) {
-            showToast.doIt(c, "Out of memory: " + song.getFolder() + "/" + song.getFilename());
+            mainActivityInterface.getShowToast().doIt(c, "Out of memory: " +
+                    mainActivityInterface.getIndexingSong().getFolder() + "/" +
+                    mainActivityInterface.getIndexingSong().getFilename());
         }
-
     }
 
     private boolean filenameIsOk(String f) {
@@ -145,71 +128,74 @@ public class SongListBuildIndex {
         return false;
     }
 
-    private Song tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                              ProcessSong processSong, SQLiteHelper sqLiteHelper,
-                              CommonSQL commonSQL, ConvertChoPro convertChoPro,
-                              ConvertOnSong convertOnSong, ConvertTextSong textSongConvert, Uri uri) {
-
+    private Song tryToFixSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong, Uri uri) {
         if (uri != null) {
-            if (isChordPro(song.getFilename())) {
-                song.setFiletype("CHO");
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,uri);
+            if (isChordPro(thisSong.getFilename())) {
+                thisSong.setFiletype("CHO");
                 // This is a chordpro file
                 // Load the current text contents
                 try {
-                    String filecontents = storageAccess.readTextFileToString(inputStream);
-                    song.setLyrics(filecontents);
-                    song = convertChoPro.convertTextToTags(c, storageAccess, preferences,
-                            processSong, sqLiteHelper, commonSQL, uri, song);
+                    String filecontents = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+                    thisSong.setLyrics(filecontents);
+                    thisSong = mainActivityInterface.getConvertChoPro().convertTextToTags(c, mainActivityInterface, uri, thisSong);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-            } else if (song.getFilename().toLowerCase(Locale.ROOT).endsWith(".onsong")) {
+            } else if (thisSong.getFilename().toLowerCase(Locale.ROOT).endsWith(".onsong")) {
                 try {
-                    song.setFiletype("iOS");
-                    String filecontents = storageAccess.readTextFileToString(inputStream);
-                    song.setLyrics(filecontents);
-                    song = convertOnSong.convertTextToTags(c, storageAccess, preferences,
-                            processSong, convertChoPro, sqLiteHelper, commonSQL,
-                            uri, song);
+                    thisSong.setFiletype("iOS");
+                    String filecontents = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+                    thisSong.setLyrics(filecontents);
+                    thisSong = mainActivityInterface.getConvertOnSong().convertTextToTags(c, mainActivityInterface, uri, thisSong);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-            } else if (storageAccess.isTextFile(uri)) {
+            } else if (mainActivityInterface.getStorageAccess().isTextFile(uri)) {
                 try {
-                    song.setFiletype("TXT");
-                    String filecontents = storageAccess.readTextFileToString(inputStream);
-                    song.setTitle(song.getFilename());
-                    song.setAuthor("");
-                    song.setCopyright("");
-                    song.setKey("");
-                    song.setTimesig("");
-                    song.setCcli("");
-                    song.setLyrics(textSongConvert.convertText(c, filecontents));
+                    thisSong.setFiletype("TXT");
+                    String filecontents = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+                    thisSong.setTitle(thisSong.getFilename());
+                    thisSong.setAuthor("");
+                    thisSong.setCopyright("");
+                    thisSong.setKey("");
+                    thisSong.setTimesig("");
+                    thisSong.setCcli("");
+                    thisSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(c, filecontents));
 
 
                 } catch (Exception e) {
-                    song.setTitle(song.getFilename());
-                    song.setAuthor("");
-                    song.setCopyright("");
-                    song.setKey("");
-                    song.setTimesig("");
-                    song.setCcli("");
-                    song.setLyrics("");
+                    thisSong.setTitle(thisSong.getFilename());
+                    thisSong.setAuthor("");
+                    thisSong.setCopyright("");
+                    thisSong.setKey("");
+                    thisSong.setTimesig("");
+                    thisSong.setCcli("");
+                    thisSong.setLyrics("");
 
                 }
             } else {
-                song.setTitle(song.getFilename());
-                song.setAuthor("");
-                song.setCopyright("");
-                song.setKey("");
-                song.setTimesig("");
-                song.setCcli("");
-                song.setLyrics("");
+                thisSong.setTitle(thisSong.getFilename());
+                thisSong.setAuthor("");
+                thisSong.setCopyright("");
+                thisSong.setKey("");
+                thisSong.setTimesig("");
+                thisSong.setCcli("");
+                thisSong.setLyrics("");
+            }
+            // Just in case there was an error, clear the inputStream
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-        return song;
+
+        return thisSong;
     }
 }

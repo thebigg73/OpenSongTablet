@@ -56,7 +56,7 @@ public class MusicScoreFragment extends Fragment {
             if (!myJsString.equals(mainActivityInterface.getAbcNotation().getSongInfo(mainActivityInterface))) {
                 // Something has changed
                 mainActivityInterface.getSong().setAbc(myJsString);
-                String songXML = mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong());
+                String songXML = mainActivityInterface.getProcessSong().getXML(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
 
                 // Write the updated song file
                 mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(), mainActivityInterface.getPreferences(), "Songs",
@@ -64,11 +64,10 @@ public class MusicScoreFragment extends Fragment {
 
                 // Update the database
                 if (mainActivityInterface.getSong().getIsSong()) {
-                    mainActivityInterface.getSQLiteHelper().updateSong(requireContext(), mainActivityInterface.getCommonSQL(), mainActivityInterface.getSong());
+                    mainActivityInterface.getSQLiteHelper().updateSong(requireContext(), mainActivityInterface, mainActivityInterface.getSong());
                 } else {
                     mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),
-                            mainActivityInterface.getCommonSQL(), mainActivityInterface.getStorageAccess(),
-                            mainActivityInterface.getPreferences(), mainActivityInterface.getSong());
+                            mainActivityInterface, mainActivityInterface.getSong());
                 }
                 vieworedit(false);
             }

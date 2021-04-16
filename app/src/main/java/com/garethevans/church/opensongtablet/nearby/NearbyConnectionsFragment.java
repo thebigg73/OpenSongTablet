@@ -14,31 +14,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.databinding.SettingsNearbyconnectionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.TextInputDialogFragment;
 
 public class NearbyConnectionsFragment extends Fragment {
 
     private SettingsNearbyconnectionsBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private NearbyInterface nearbyInterface;
     private NearbyReturnActionsInterface nearbyReturnActionsInterface;
-    private NearbyConnections nearbyConnections;
-    private AutoscrollActions autoscrollActions;
-    private Preferences preferences;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        nearbyInterface = (NearbyInterface) context;
         nearbyReturnActionsInterface = (NearbyReturnActionsInterface) context;
-        nearbyConnections = mainActivityInterface.getNearbyConnections(mainActivityInterface);
     }
 
     @Nullable
@@ -61,22 +52,20 @@ public class NearbyConnectionsFragment extends Fragment {
     }
 
     private void setHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-        autoscrollActions = mainActivityInterface.getAutoscrollActions();
         mainActivityInterface.registerFragment(this,"NearbyConnectionsFragment");
         mainActivityInterface.setNearbyOpen(true);
-        nearbyConnections.setNearbyReturnActionsInterface(nearbyReturnActionsInterface);
+        mainActivityInterface.getNearbyConnections().setNearbyReturnActionsInterface(nearbyReturnActionsInterface);
     }
 
     public void updateViews() {
         // Set the device name
-        ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(nearbyConnections.getUserNickname());
+        ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(mainActivityInterface.getNearbyConnections().getUserNickname(requireContext(),mainActivityInterface));
 
         // Set the default values for off/host/client
-        if (nearbyConnections.isHost) {
+        if (mainActivityInterface.getNearbyConnections().isHost) {
             myView.connectionsHost.setChecked(true);
             offHostClient(true,false);
-        } else if (nearbyConnections.usingNearby) {
+        } else if (mainActivityInterface.getNearbyConnections().usingNearby) {
             myView.connectionsClient.setChecked(true);
             offHostClient(false,true);
         } else {
@@ -85,9 +74,9 @@ public class NearbyConnectionsFragment extends Fragment {
         }
 
         // Set the host switches
-        myView.nearbyHostMenuOnly.setChecked(nearbyConnections.nearbyHostMenuOnly);
-        myView.receiveHostFiles.setChecked(nearbyConnections.receiveHostFiles);
-        myView.keepHostFiles.setChecked(nearbyConnections.keepHostFiles);
+        myView.nearbyHostMenuOnly.setChecked(mainActivityInterface.getNearbyConnections().nearbyHostMenuOnly);
+        myView.receiveHostFiles.setChecked(mainActivityInterface.getNearbyConnections().receiveHostFiles);
+        myView.keepHostFiles.setChecked(mainActivityInterface.getNearbyConnections().keepHostFiles);
 
         // Show any connection log
         updateConnectionsLog();
@@ -113,10 +102,10 @@ public class NearbyConnectionsFragment extends Fragment {
     }
 
     public void updateConnectionsLog() {
-        if (nearbyConnections.connectionLog ==null) {
-            nearbyConnections.connectionLog = "";
+        if (mainActivityInterface.getNearbyConnections().connectionLog ==null) {
+            mainActivityInterface.getNearbyConnections().connectionLog = "";
         }
-        ((TextView)myView.connectionsLog.findViewById(R.id.subText)).setText(nearbyConnections.connectionLog);
+        ((TextView)myView.connectionsLog.findViewById(R.id.subText)).setText(mainActivityInterface.getNearbyConnections().connectionLog);
     }
 
     public void setListeners() {
@@ -124,36 +113,36 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.deviceButton.setOnClickListener(v -> textInputDialog());
 
         // The client/host options
-        myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.keepHostFiles = isChecked);
-        myView.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.receiveHostFiles = isChecked);
-        myView.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.setNearbyHostMenuOnly(isChecked));
+        myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().keepHostFiles = isChecked);
+        myView.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().receiveHostFiles = isChecked);
+        myView.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyHostMenuOnly(requireContext(),mainActivityInterface,isChecked));
 
         // Changing the nearby connection
         myView.connectionsOff.setOnCheckedChangeListener((radioButton, isChecked) -> {
             if (isChecked) {
-                nearbyConnections.isHost = false;
-                nearbyConnections.usingNearby = false;
+                mainActivityInterface.getNearbyConnections().isHost = false;
+                mainActivityInterface.getNearbyConnections().usingNearby = false;
                 offHostClient(false,false);
-                nearbyConnections.stopDiscovery();
-                nearbyConnections.stopAdvertising();
-                nearbyConnections.turnOffNearby();
+                mainActivityInterface.getNearbyConnections().stopDiscovery(requireContext());
+                mainActivityInterface.getNearbyConnections().stopAdvertising(requireContext());
+                mainActivityInterface.getNearbyConnections().turnOffNearby(requireContext());
             }
         });
         myView.connectionsHost.setOnCheckedChangeListener((radioButton, isChecked) -> {
             if (isChecked) {
-                nearbyConnections.isHost = true;
-                nearbyConnections.usingNearby = true;
+                mainActivityInterface.getNearbyConnections().isHost = true;
+                mainActivityInterface.getNearbyConnections().usingNearby = true;
                 offHostClient(true,false);
-                nearbyConnections.stopDiscovery();
-                nearbyConnections.startAdvertising(autoscrollActions);
+                mainActivityInterface.getNearbyConnections().stopDiscovery(requireContext());
+                mainActivityInterface.getNearbyConnections().startAdvertising(requireContext(),mainActivityInterface);
             }
         });
         myView.connectionsClient.setOnCheckedChangeListener((radioButton, isChecked) -> {
             if (isChecked) {
-                nearbyConnections.isHost = false;
-                nearbyConnections.usingNearby = true;
+                mainActivityInterface.getNearbyConnections().isHost = false;
+                mainActivityInterface.getNearbyConnections().usingNearby = true;
                 offHostClient(false,true);
-                nearbyConnections.stopAdvertising();
+                mainActivityInterface.getNearbyConnections().stopAdvertising(requireContext());
                 // IV - Short delay to help stability
                 Handler h = new Handler();
                 h.postDelayed(() -> myView.searchForHosts.performClick(),2000);
@@ -163,11 +152,11 @@ public class NearbyConnectionsFragment extends Fragment {
         // Discover hosts
         myView.searchForHosts.setOnClickListener(b -> {
             // IV - User can cause problems by clicking quickly between modes!  Make sure we are still in client mode.
-            if (!nearbyConnections.isHost) {
+            if (!mainActivityInterface.getNearbyConnections().isHost) {
                 // Start discovery and turn it off again after 10 seconds
                 myView.searchForHosts.setEnabled(false);
                 myView.searchForHosts.setText(getString(R.string.connections_searching));
-                nearbyConnections.startDiscovery(autoscrollActions);
+                mainActivityInterface.getNearbyConnections().startDiscovery(requireContext(),mainActivityInterface);
                 Handler h = new Handler();
                 h.postDelayed(() -> {
                     // Because there is a delay, check the fragment with the view is still available
@@ -185,15 +174,15 @@ public class NearbyConnectionsFragment extends Fragment {
 
         // Clear the log
         myView.connectionsLog.setOnClickListener(v -> {
-            nearbyConnections.connectionLog = "";
+            mainActivityInterface.getNearbyConnections().connectionLog = "";
             updateConnectionsLog();
         });
     }
 
     private void textInputDialog() {
-        TextInputDialogFragment dialogFragment = new TextInputDialogFragment(preferences, this,
+        TextInputDialogFragment dialogFragment = new TextInputDialogFragment(mainActivityInterface.getPreferences(), this,
                 "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),
-                "deviceId", nearbyConnections.deviceId,true);
+                "deviceId", mainActivityInterface.getNearbyConnections().deviceId,true);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");
     }
 
@@ -201,7 +190,7 @@ public class NearbyConnectionsFragment extends Fragment {
     public void updateValue(String which, String value) {
         if (which.equals("deviceName")) {
             ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(value);
-            nearbyConnections.deviceId = value;
+            mainActivityInterface.getNearbyConnections().deviceId = value;
         }
     }
 

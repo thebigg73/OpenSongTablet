@@ -122,7 +122,7 @@ public class ChooseColorFragment extends Fragment {
         themePrefix = preferences.getMyPreferenceString(getContext(), "appTheme", "dark");
 
         // Load the chosen colours up
-        themeColors.getDefaultColors(getContext(),preferences);
+        themeColors.getDefaultColors(getContext(),mainActivityInterface);
         int oldColorInt;
         try {
             oldColorInt = themeColors.getValue(which);

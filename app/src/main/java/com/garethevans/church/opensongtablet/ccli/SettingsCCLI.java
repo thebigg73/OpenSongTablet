@@ -14,14 +14,12 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsCcliBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.TextInputDialogFragment;
 
 public class SettingsCCLI extends Fragment {
 
     private SettingsCcliBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private Preferences preferences;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -38,9 +36,6 @@ public class SettingsCCLI extends Fragment {
 
         mainActivityInterface.updateToolbar(null,getString(R.string.ccli));
 
-        // Prepare helpers
-        prepareHelpers();
-
         // Set current Values
         setCurrentValues();
 
@@ -50,28 +45,25 @@ public class SettingsCCLI extends Fragment {
         return myView.getRoot();
     }
 
-    private void prepareHelpers() {
-        preferences = mainActivityInterface.getPreferences();
-    }
 
     private void setCurrentValues() {
-        myView.ccliAutomatic.setChecked(preferences.getMyPreferenceBoolean(requireContext(), "ccliAutomaticmaticLogging", false));
+        myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "ccliAutomaticmaticLogging", false));
         ((TextView)myView.ccliChurch.findViewById(R.id.subText))
-                .setText(preferences.getMyPreferenceString(requireContext(), "ccliChurchName", ""));
+                .setText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliChurchName", ""));
         ((TextView)myView.ccliLicence.findViewById(R.id.subText))
-                .setText(preferences.getMyPreferenceString(requireContext(), "ccliLicence", ""));
+                .setText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliLicence", ""));
     }
 
     private void setListeners() {
-        myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputDialogFragment(preferences, this,
+        myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputDialogFragment(mainActivityInterface.getPreferences(), this,
                 "SettingsCCLI", getString(R.string.ccli_church), getString(R.string.ccli_church),
-                "ccliChurchName", preferences.getMyPreferenceString(requireContext(),
+                "ccliChurchName", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliChurchName", ""),true)));
-        myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputDialogFragment(preferences, this,
+        myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputDialogFragment(mainActivityInterface.getPreferences(), this,
                 "SettingsCCLI", getString(R.string.ccli_licence), getString(R.string.ccli_licence),
-                "ccliLicence", preferences.getMyPreferenceString(requireContext(),
+                "ccliLicence", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliLicence", ""),true)));
-        myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(requireContext(),
+        myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
                 "ccliAutomaticmaticLogging", isChecked));
         myView.ccliView.setOnClickListener(v -> showDialog());
         myView.ccliExport.setOnClickListener(view -> mainActivityInterface.doExport("ccliLog"));
@@ -94,5 +86,11 @@ public class SettingsCCLI extends Fragment {
         } else if (which.equals("ccliLicence")){
             ((TextView)myView.ccliLicence.findViewById(R.id.subText)).setText(value);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

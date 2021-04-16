@@ -34,10 +34,10 @@ public class SaveSong {
         // This happens if the user has changed the filename or folder
         boolean removeOriginal = false;
         Uri oldUri = null;
-        String oldwhere = null, oldfolder = null, oldfilename = null;
+        String oldwhere, oldfolder, oldfilename;
         if (originalSong!=null) {
             oldwhere = mainActivityInterface.getStorageAccess().
-                    safeFilename(mainActivityInterface.getProcessSong().getLocation(song.getFolder()));
+                    safeFilename(mainActivityInterface.getProcessSong().getLocation(mainActivityInterface.getSong().getFolder()));
             oldfolder = mainActivityInterface.getStorageAccess().
                     safeFilename(originalSong.getFolder()).replace(".." + where + "/", "");
             oldfilename = mainActivityInterface.getStorageAccess().
@@ -75,7 +75,7 @@ public class SaveSong {
                 }
             } else {
                 // Prepare a new XML version of the song from the statics (OpenSong song only)
-                String newXML = mainActivityInterface.getProcessSong().getXML(newSong);
+                String newXML = mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface,newSong);
                 saveOK = mainActivityInterface.getStorageAccess().writeFileFromString(newXML, outputStream);
             }
             try {
@@ -91,14 +91,14 @@ public class SaveSong {
         if (!removeOriginal || !saveOK) {
             mainActivityInterface.setSong(newSong);
         }
-        mainActivityInterface.getSQLiteHelper().updateSong(c,mainActivityInterface.getCommonSQL(),song);
+        mainActivityInterface.getSQLiteHelper().updateSong(c,mainActivityInterface,mainActivityInterface.getSong());
 
         // If it was a PDF/IMG, update the persistent database as well
         // If save wasn't successful, we sorted the folder/filename/id already
         if (imgOrPDF) {
             // If update fails (due to no existing row, a new one is created)
-            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c,mainActivityInterface.getCommonSQL(),
-                    mainActivityInterface.getStorageAccess(),mainActivityInterface.getPreferences(),song);
+            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c,mainActivityInterface,
+                    mainActivityInterface.getSong());
         }
 
         // If we need to remove the original for non-pdfand the new file was successfully created, make the change
@@ -108,11 +108,9 @@ public class SaveSong {
 
         // If we are autologging CCLI information
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
-            mainActivityInterface.getCCLILog().addEntry(c,mainActivityInterface.getPreferences(),
-                    mainActivityInterface.getStorageAccess(),song,"3"); // 3=edited
+            mainActivityInterface.getCCLILog().addEntry(c,mainActivityInterface,"3"); // 3=edited
         }
         return saveOK;
     }
 
-    private boolean
 }

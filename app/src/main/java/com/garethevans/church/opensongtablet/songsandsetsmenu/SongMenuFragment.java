@@ -112,8 +112,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songListRecyclerView.setHasFixedSize(true);
         myView.songListRecyclerView.setOnClickListener(null);
         List<Song> blank = new ArrayList<>();
-        songListAdapter = new SongListAdapter(requireActivity(), blank, preferences, 
-                mainActivityInterface,currentSet,setActions, SongMenuFragment.this);
+        songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface, blank,
+                 SongMenuFragment.this);
         myView.songListRecyclerView.setAdapter(songListAdapter);
     }
 
@@ -141,7 +141,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void setUpExposedDropDowns(Song song) {
         new Thread(() -> {
             try {
-                foundFolders = sqLiteHelper.getFolders(getContext(), commonSQL);
+                foundFolders = sqLiteHelper.getFolders(getContext(), mainActivityInterface);
                 folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
                 keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
                 requireActivity().runOnUiThread(() -> {
@@ -306,7 +306,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> buttonsEnabled(false));
             try {
-                 songsFound = sqLiteHelper.getSongsByFilters(getActivity(), commonSQL,
+                 songsFound = sqLiteHelper.getSongsByFilters(getActivity(), mainActivityInterface,
                         songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
                         songListSearchByTag, songListSearchByFilter, folderSearchVal,
                        artistSearchVal, keySearchVal, tagSearchVal, filterSearchVal);
@@ -325,7 +325,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         storageAccess.listSongs(getContext(),preferences,locale);
 
         // Build the basic menu
-        sqLiteHelper.insertFast(getContext(),commonSQL,storageAccess);
+        sqLiteHelper.insertFast(getContext(),mainActivityInterface);
 
         // Update the view
         prepareSearch();
@@ -337,8 +337,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
         myView.songListRecyclerView.setOnClickListener(null);
-        songListAdapter = new SongListAdapter(requireActivity(), songsFound, preferences, 
-                mainActivityInterface, currentSet, setActions,SongMenuFragment.this);
+        songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface,
+                songsFound,SongMenuFragment.this);
         songListAdapter.notifyDataSetChanged();
         myView.songListRecyclerView.setAdapter(songListAdapter);
         myView.songListRecyclerView.setFastScrollEnabled(true);
@@ -439,7 +439,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private int indexOfSongInMenu(Song song) {
         if (setActions!=null && currentSet!=null && song!=null) {
-            setActions.indexSongInSet(currentSet, song);
+            setActions.indexSongInSet(mainActivityInterface);
             return currentSet.getIndexSongInSet();
         } else {
             return -1;

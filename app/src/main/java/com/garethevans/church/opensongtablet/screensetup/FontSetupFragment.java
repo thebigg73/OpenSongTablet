@@ -25,7 +25,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
 
-public class FontSetupFragment extends Fragment {
+public class FontSetupFragment extends Fragment implements CheckInternet.ConnectedInterface{
 
     private SettingsFontsBinding myView;
     private Preferences preferences;
@@ -33,7 +33,7 @@ public class FontSetupFragment extends Fragment {
     private ThemeColors themeColors;
 
     private ArrayList<String> fontNames;
-    private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky;
+    private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, which;
 
     private MainActivityInterface mainActivityInterface;
 
@@ -88,7 +88,7 @@ public class FontSetupFragment extends Fragment {
         fontPreso = preferences.getMyPreferenceString(getContext(),"fontPreso","Lato");
         fontPresoInfo = preferences.getMyPreferenceString(getContext(),"fontPresoInfo","Lato");
         fontSticky = preferences.getMyPreferenceString(getContext(),"fontSticky","Lato");
-        themeColors.getDefaultColors(getContext(),preferences);
+        themeColors.getDefaultColors(getContext(),mainActivityInterface);
     }
 
     private void setupDropDowns() {
@@ -158,11 +158,19 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void openWebPreview(String which) {
+        this.which = which;
         // Only allow if an internet connection is detected
-        new CheckInternet(internet -> {
+        // This then sends the result to isConnected
+        CheckInternet checkInternet = new CheckInternet();
+        checkInternet.checkConnection(requireActivity());
+    }
+
+    @Override
+    public void isConnected(boolean connected) {
+        if (connected) {
             mainActivityInterface.setWhattodo(which);
-            mainActivityInterface.navigateToFragment(null,R.id.fontSetupPreviewFragment);
-        });
+            mainActivityInterface.navigateToFragment(null, R.id.fontSetupPreviewFragment);
+        }
     }
 
     private class MyTextWatcher implements TextWatcher {

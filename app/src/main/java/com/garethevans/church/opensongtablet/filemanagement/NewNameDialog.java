@@ -79,7 +79,7 @@ public class NewNameDialog extends DialogFragment {
 
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
         if (song!=null) {
-            songContent = processSong.getXML(song);
+            songContent = processSong.getXML(requireContext(),mainActivityInterface,song);
         }
 
         // Set listeners

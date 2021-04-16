@@ -11,14 +11,11 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.FragmentOsbbackupBinding;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -36,8 +33,6 @@ public class ImportOSBFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private FragmentOsbbackupBinding myView;
-    private StorageAccess storageAccess;
-    private Preferences preferences;
 
     private String importFilename;
     private Uri importUri;
@@ -59,7 +54,6 @@ public class ImportOSBFragment extends Fragment {
     private int item;
     private String message;
     private boolean canoverwrite;
-    private ActionBar actionBar;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -88,11 +82,8 @@ public class ImportOSBFragment extends Fragment {
     }
 
     private void setupHelpers() {
-        storageAccess = mainActivityInterface.getStorageAccess();
-        preferences = mainActivityInterface.getPreferences();
         importFilename = mainActivityInterface.getImportFilename();
         importUri = mainActivityInterface.getImportUri();
-        actionBar = mainActivityInterface.getAb();
     }
 
     private void setupValues() {
@@ -120,7 +111,7 @@ public class ImportOSBFragment extends Fragment {
 
             try {
                 zipContents = 0;
-                inputStream = storageAccess.getInputStream(getActivity(),importUri);
+                inputStream = mainActivityInterface.getStorageAccess().getInputStream(getActivity(),importUri);
                 zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
                 ZipEntry ze;
 
@@ -245,7 +236,7 @@ public class ImportOSBFragment extends Fragment {
         // The actual importing runs in a new thread
         runnable = () -> {
 
-            inputStream = storageAccess.getInputStream(getActivity(), importUri);
+            inputStream = mainActivityInterface.getStorageAccess().getInputStream(getActivity(), importUri);
             zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
 
             requireActivity().runOnUiThread(() -> {
@@ -253,7 +244,7 @@ public class ImportOSBFragment extends Fragment {
                     myView.progressBar.setVisibility(View.VISIBLE);
                     canoverwrite = myView.overWrite.isChecked();
                     myView.createBackupFAB.setEnabled(false);
-                    actionBar.setHomeButtonEnabled(false);
+                    mainActivityInterface.getAb().setHomeButtonEnabled(false);
                 }
             });
             
@@ -267,7 +258,7 @@ public class ImportOSBFragment extends Fragment {
                     }
                 });
                 if (alive) {
-                    storageAccess.createFile(getActivity(), preferences, DocumentsContract.Document.MIME_TYPE_DIR,
+                    mainActivityInterface.getStorageAccess().createFile(getActivity(), mainActivityInterface.getPreferences(), DocumentsContract.Document.MIME_TYPE_DIR,
                             "Songs", folder, "");
                 }
             }
@@ -285,9 +276,9 @@ public class ImportOSBFragment extends Fragment {
                         String filename;
                         String filefolder = "";
                         if (alive) {
-                            file_uri = storageAccess.getUriForItem(getContext(), preferences, "Songs", "", ze.getName());
+                            file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface.getPreferences(), "Songs", "", ze.getName());
                             // If the file exists and we have allowed overwriting, or it doesn't exist and it is in the checked folders, write it
-                            exists = storageAccess.uriExists(getContext(), file_uri);
+                            exists = mainActivityInterface.getStorageAccess().uriExists(getContext(), file_uri);
                             if (alive) {
                                 filefolder = getString(R.string.mainfoldername);
                             }
@@ -317,11 +308,11 @@ public class ImportOSBFragment extends Fragment {
                             // Make sure the file exists (might be non-existent)
                             if (!exists && alive) {
                                 filename = ze.getName().replace(filefolder,"").replace("/","");
-                                storageAccess.lollipopCreateFileForOutputStream(getContext(),preferences,
+                                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getContext(),mainActivityInterface.getPreferences(),
                                         file_uri,null,"Songs",filefolder,filename);
                             }
                             if (alive) {
-                                outputStream = storageAccess.getOutputStream(getContext(), file_uri);
+                                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(getContext(), file_uri);
                             }
 
                             // Write the file
@@ -366,7 +357,7 @@ public class ImportOSBFragment extends Fragment {
 
                 if (alive) {
                     requireActivity().runOnUiThread(() -> {
-                        actionBar.setHomeButtonEnabled(true);
+                        mainActivityInterface.getAb().setHomeButtonEnabled(true);
                         myView.progressBar.setVisibility(View.GONE);
                         myView.progressText.setText("");
                         myView.progressText.setVisibility(View.GONE);
@@ -384,7 +375,7 @@ public class ImportOSBFragment extends Fragment {
             } catch (Exception e) {
                 // Likely the user navigated away before the process completed
                 e.printStackTrace();
-                actionBar.setHomeButtonEnabled(true);
+                mainActivityInterface.getAb().setHomeButtonEnabled(true);
                 if (getContext()!=null && alive) {
                     requireActivity().runOnUiThread(() -> myView.progressText.setText(getString(R.string.error)));
                     myView.progressBar.setVisibility(View.GONE);
@@ -406,6 +397,7 @@ public class ImportOSBFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         killThread();
+        myView = null;
     }
 
     private void killThread() {

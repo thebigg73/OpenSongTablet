@@ -19,10 +19,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 //import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
@@ -45,9 +42,6 @@ the Performance/Presentation fragment.
 
 public class BootUpFragment extends Fragment {
 
-    private Preferences preferences;
-    private StorageAccess storageAccess;
-    private Song song;
     private String message;
     private String uriTreeString;
     private Uri uriTree;
@@ -72,12 +66,14 @@ public class BootUpFragment extends Fragment {
 
         myView = BootupLogoBinding.inflate(inflater, container, false);
 
+        // Send a reference to the MainActivityInterface back to the MainActivity
+        // The MainActivity doesn't use it, but it implements it.
+        // We need a reference though to send to other non Context/Fragment classes
+        mainActivityInterface.setMainActivityInterface(mainActivityInterface);
+
         // TODO
         // REMOVE BEFORE RELEASE!!!!!
         // MaterialShowcaseView.resetAll(requireActivity());
-
-        // Initialise the helper classes
-        initialiseHelpers();
 
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();
@@ -88,12 +84,6 @@ public class BootUpFragment extends Fragment {
         return myView.getRoot();
     }
 
-    private void initialiseHelpers() {
-        // Load the helper classes (preferences)
-        preferences = mainActivityInterface.getPreferences();
-        storageAccess = mainActivityInterface.getStorageAccess();
-        song = mainActivityInterface.getSong();
-    }
 
     private void hideMenus() {
         mainActivityInterface.hideActionBar(true);
@@ -122,12 +112,13 @@ public class BootUpFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED);
     }
     private boolean storageLocationSet() {
-        uriTreeString = preferences.getMyPreferenceString(getContext(),"uriTree","");
+        uriTreeString = mainActivityInterface.getPreferences().
+                getMyPreferenceString(getContext(),"uriTree","");
         return !uriTreeString.isEmpty();
     }
     private boolean storageLocationValid() {
         uriTree = Uri.parse(uriTreeString);
-        return storageAccess.uriTreeValid(requireActivity(),uriTree);
+        return mainActivityInterface.getStorageAccess().uriTreeValid(requireActivity(),uriTree);
     }
     private boolean storageIsCorrectlySet() {
         // Check that storage permission is granted and that it has been set and that it exists
@@ -151,7 +142,8 @@ public class BootUpFragment extends Fragment {
                 setFolderAndSong();
 
                 // Check for saved storage locations
-                final String progress = storageAccess.createOrCheckRootFolders(getContext(), uriTree, preferences);
+                final String progress = mainActivityInterface.getStorageAccess().
+                        createOrCheckRootFolders(getContext(), uriTree, mainActivityInterface.getPreferences());
                 boolean foldersok = !progress.contains("Error");
 
                 if (foldersok) {
@@ -165,11 +157,11 @@ public class BootUpFragment extends Fragment {
                     message = getString(R.string.success);
                     updateMessage();
 
-                    mainActivityInterface.setMode(preferences.getMyPreferenceString(getContext(), "whichMode", "Performance"));
+                    mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "whichMode", "Performance"));
 
                     // Increase the boot times for prompting a user to backup their songs
-                    int runssincebackup = preferences.getMyPreferenceInt(requireContext(),"runssincebackup",0);
-                    preferences.setMyPreferenceInt(requireContext(), "runssincebackup", runssincebackup+1);
+                    int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"runssincebackup",0);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), "runssincebackup", runssincebackup+1);
 
                     // Set up the rest of the main activity
                     requireActivity().runOnUiThread(() -> {
@@ -211,17 +203,23 @@ public class BootUpFragment extends Fragment {
 
     // Get the last used folder/filename or reset if it didn't load
     private void setFolderAndSong() {
-        song.setFolder(preferences.getMyPreferenceString(getContext(), "whichSongFolder",
+        mainActivityInterface.getSong().setFolder(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "whichSongFolder",
                 getString(R.string.mainfoldername)));
 
-        song.setFilename(preferences.getMyPreferenceString(getContext(), "songfilename",
+        mainActivityInterface.getSong().setFilename(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "songfilename",
                 getString(R.string.welcome)));
 
-        if (!preferences.getMyPreferenceBoolean(getContext(),"songLoadSuccess",false)) {
-            song.setFolder(getString(R.string.mainfoldername));
-            preferences.setMyPreferenceString(getContext(),"whichSongFolder",song.getFolder());
-            song.setFilename("Welcome to OpenSongApp");
-            preferences.setMyPreferenceString(getContext(),"songfilename","Welcome to OpenSongApp");
+        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"songLoadSuccess",false)) {
+            mainActivityInterface.getSong().setFolder(getString(R.string.mainfoldername));
+            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"whichSongFolder",mainActivityInterface.getSong().getFolder());
+            mainActivityInterface.getSong().setFilename("Welcome to OpenSongApp");
+            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"songfilename","Welcome to OpenSongApp");
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        myView = null;
     }
 }

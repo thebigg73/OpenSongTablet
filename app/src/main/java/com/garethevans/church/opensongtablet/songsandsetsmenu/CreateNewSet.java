@@ -36,7 +36,7 @@ public class CreateNewSet {
         // Only do this if the current set isn't empty
         if (currentSet.getCurrentSet() != null && currentSet.getCurrentSet().size() > 0) {
             // Check all arrays are the same size!!
-            setActions.checkArraysMatch(c, storageAccess, preferences, processSong, loadSong, currentSet);
+            setActions.checkArraysMatch(c, mainActivityInterface);
             sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n").
                     append("<set name=\"").
                     append(processSong.parseToHTMLEntities(currentSet.getSetName())).
@@ -57,38 +57,28 @@ public class CreateNewSet {
 
                 if (isImage) {
                     // Adding an image
-                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
-                            commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
-                            loadSong, showToast, songListBuildIndex, "../Images/_cache", name);
-                    sb.append(buildImage(c,storageAccess,tempSong,processSong));
+                    Song tempSong = getTempSong(c,mainActivityInterface,song,"../Images/_cache", name);
+                    sb.append(buildImage(c,mainActivityInterface,tempSong));
 
                 } else if (isScripture) {
                     // Adding a scripture
-                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
-                            commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
-                            loadSong, showToast, songListBuildIndex, "../Scripture/_cache", name);
+                    Song tempSong = getTempSong(c,mainActivityInterface,song, "../Scripture/_cache", name);
                     sb.append(buildScripture(tempSong,processSong));
 
                 } else if (isVariation) {
                     // Adding a variation
-                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
-                            commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
-                            loadSong, showToast, songListBuildIndex, "../Variations", name);
-                    sb.append(buildVariation(c,tempSong,processSong));
+                    Song tempSong = getTempSong(c,mainActivityInterface,song, "../Variations", name);
+                    sb.append(buildVariation(c,mainActivityInterface,tempSong));
 
                 } else if (isSlide) {
                     // Adding a slide
-                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
-                            commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
-                            loadSong, showToast, songListBuildIndex, "../Slides/_cache", name);
-                    sb.append(buildSlide(tempSong,processSong));
+                    Song tempSong = getTempSong(c,mainActivityInterface,song, "../Slides/_cache", name);
+                    sb.append(buildSlide(mainActivityInterface,tempSong));
 
                 } else if (isNote) {
                     // Adding a note
-                    Song tempSong = getTempSong(c,mainActivityInterface,storageAccess,preferences,locale,
-                            commonSQL, sqLiteHelper, song, processSong, convertChoPro, convertOnSong,
-                            loadSong, showToast, songListBuildIndex, "../Notes/_cache", name);
-                    sb.append(buildNote(c,tempSong,processSong));
+                    Song tempSong = getTempSong(c,mainActivityInterface,song, "../Notes/_cache", name);
+                    sb.append(buildNote(c,mainActivityInterface,tempSong));
                 } else {
                     // Adding a song
                     sb.append(buildSong(processSong,path,name));
@@ -168,7 +158,8 @@ public class CreateNewSet {
 
         return sb;
     }
-    private StringBuilder buildVariation(Context c, Song tempSong, ProcessSong processSong) {
+    private StringBuilder buildVariation(Context c, MainActivityInterface mainActivityInterface,
+                                         Song tempSong) {
         StringBuilder sb = new StringBuilder();
 
         // The variation is loaded to a new, temp song object
@@ -176,7 +167,7 @@ public class CreateNewSet {
 
         String slide_lyrics = tempSong.getLyrics();
         try {
-            byte[] data = processSong.getXML(tempSong).getBytes(tempSong.getEncoding());
+            byte[] data = mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface,tempSong).getBytes(tempSong.getEncoding());
             slide_lyrics = Base64.encodeToString(data, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
@@ -210,7 +201,7 @@ public class CreateNewSet {
             if (!newslides.get(z).equals("")) {
                 slidetexttowrite.append("      <slide>\n")
                         .append("        <body>")
-                        .append(processSong.parseToHTMLEntities(newslides.get(z).trim()))
+                        .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(newslides.get(z).trim()))
                         .append("\n")
                         .append("        </body>\n")
                         .append("      </slide>\n");
@@ -218,19 +209,19 @@ public class CreateNewSet {
         }
 
         sb.append("  <slide_group name=\"# ")
-                .append(processSong.parseToHTMLEntities(c.getString(R.string.variation)))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(c.getString(R.string.variation)))
                 .append(" # - ")
                 .append(tempSong.getFilename())
                 .append("\"")
                 .append(" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
                 .append("    <title>")
-                .append(processSong.parseToHTMLEntities(tempSong.getTitle()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getTitle()))
                 .append("</title>\n")
                 .append("    <subtitle>")
-                .append(processSong.parseToHTMLEntities(tempSong.getAuthor()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getAuthor()))
                 .append("</subtitle>\n")
                 .append("    <notes>")
-                .append(processSong.parseToHTMLEntities(slide_lyrics))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(slide_lyrics))
                 .append("</notes>\n")
                 .append("    <slides>\n")
                 .append(slidetexttowrite)
@@ -239,7 +230,7 @@ public class CreateNewSet {
 
         return sb;
     }
-    private StringBuilder buildSlide(Song tempSong, ProcessSong processSong) {
+    private StringBuilder buildSlide(MainActivityInterface mainActivityInterface, Song tempSong) {
         StringBuilder sb = new StringBuilder();
         // Adding a custom slide
         String slide_lyrics = tempSong.getLyrics();
@@ -253,17 +244,17 @@ public class CreateNewSet {
         String[] mySlides = slide_lyrics.split("_SPLITHERE_");
 
         sb.append("  <slide_group name=\"")
-                .append(processSong.parseToHTMLEntities(tempSong.getFilename()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getFilename()))
                 .append("\" type=\"custom\" print=\"true\" seconds=\"")
-                .append(processSong.parseToHTMLEntities(tempSong.getUser1()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser1()))
                 .append("\" loop=\"")
-                .append(processSong.parseToHTMLEntities(tempSong.getUser2()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser2()))
                 .append("\" transition=\"")
-                .append(processSong.parseToHTMLEntities(tempSong.getUser3()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser3()))
                 .append("\">\n    <title>")
-                .append(processSong.parseToHTMLEntities(tempSong.getTitle()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getTitle()))
                 .append("</title>\n    <subtitle>")
-                .append(processSong.parseToHTMLEntities(tempSong.getCopyright()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getCopyright()))
                 .append("</subtitle>\n    <notes>")
                 .append("")
                 .append("</notes>\n    <slides>\n");
@@ -271,7 +262,7 @@ public class CreateNewSet {
         for (String mySlide : mySlides) {
             if (mySlide != null && mySlide.length() > 0) {
                 sb.append("      <slide>\n        <body>")
-                        .append(processSong.parseToHTMLEntities(mySlide.trim()))
+                        .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(mySlide.trim()))
                         .append("</body>\n      </slide>\n");
             }
         }
@@ -280,28 +271,28 @@ public class CreateNewSet {
 
         return sb;
     }
-    private StringBuilder buildNote(Context c, Song tempSong, ProcessSong processSong) {
+    private StringBuilder buildNote(Context c, MainActivityInterface mainActivityInterface, Song tempSong) {
         StringBuilder sb = new StringBuilder();
         // Adding a note
 
         String slide_lyrics = tempSong.getLyrics();
 
         sb.append("  <slide_group name=\"# ")
-                .append(processSong.parseToHTMLEntities(c.getResources().getString(R.string.note)))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(c.getResources().getString(R.string.note)))
                 .append(" # - ")
                 .append(tempSong.getFilename())
                 .append("\" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
                 .append("    <title></title>\n")
                 .append("    <subtitle></subtitle>\n")
                 .append("    <notes>")
-                .append(processSong.parseToHTMLEntities(slide_lyrics))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(slide_lyrics))
                 .append("</notes>\n")
                 .append("    <slides></slides>\n")
                 .append("  </slide_group>\n");
 
         return sb;
     }
-    private StringBuilder buildImage(Context c, StorageAccess storageAccess, Song tempSong, ProcessSong processSong) {
+    private StringBuilder buildImage(Context c, MainActivityInterface mainActivityInterface, Song tempSong) {
         // Adding a custom image slide
         StringBuilder sb = new StringBuilder();
 
@@ -313,7 +304,7 @@ public class CreateNewSet {
         for (String aSeparate_slide : separate_slide) {
             String imglinetext;
             // Try to get the image into bytes
-            String imgcode = storageAccess.getImageSlide(c, aSeparate_slide);
+            String imgcode = mainActivityInterface.getStorageAccess().getImageSlide(c, aSeparate_slide);
             if (!imgcode.isEmpty()) {
                 imglinetext = "        <image>" + imgcode.trim() + "</image>\n";
             } else {
@@ -328,17 +319,17 @@ public class CreateNewSet {
         }
 
         sb.append("  <slide_group name=\"")
-                .append(processSong.parseToHTMLEntities(tempSong.getAka()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getAka()))
                 .append("\" type=\"image\" print=\"true\" seconds=\"")
-                .append(processSong.parseToHTMLEntities(tempSong.getUser1()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser1()))
                 .append("\" loop=\"")
-                .append(processSong.parseToHTMLEntities(tempSong.getUser2()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser2()))
                 .append("\" transition=\"0\" resize=\"screen\" keep_aspect=\"false\" link=\"false\">\n")
                 .append("    <title>")
-                .append(processSong.parseToHTMLEntities(tempSong.getTitle()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getTitle()))
                 .append("</title>\n")
                 .append("    <subtitle>")
-                .append(processSong.parseToHTMLEntities(tempSong.getAuthor()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getAuthor()))
                 .append("</subtitle>\n")
                 .append("    <notes>")
                 .append("")
@@ -354,15 +345,10 @@ public class CreateNewSet {
 
 
     private Song getTempSong(Context c, MainActivityInterface mainActivityInterface,
-                             StorageAccess storageAccess, Preferences preferences,
-                             Locale locale, CommonSQL commonSQL, SQLiteHelper sqLiteHelper, Song song,
-                             ProcessSong processSong, ConvertChoPro convertChoPro,
-                             ConvertOnSong convertOnSong, LoadSong loadSong, ShowToast showToast,
-                             SongListBuildIndex songListBuildIndex, String folder, String name) {
-        Song tempSong = processSong.initialiseSong(commonSQL,folder, name);
+                             Song song, String folder, String name) {
+        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,folder,name);
         try {
-            tempSong = loadSong.doLoadSong(c, mainActivityInterface, storageAccess, preferences, processSong, showToast, locale,
-                    songListBuildIndex, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
+            tempSong = mainActivityInterface.getLoadSong().doLoadSong(c, mainActivityInterface, song,false);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -11,9 +11,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -70,12 +68,12 @@ public class CCLILog {
 
     private ArrayList<String> songfile, title, author, copyright, ccli, date, time, action;
 
-    public void addEntry(Context c, Preferences preferences, StorageAccess storageAccess, Song song, String usageType) {
+    public void addEntry(Context c, MainActivityInterface mainActivityInterface, String usageType) {
 
         // Check if the log exists or if we need to create it
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
-        if (!storageAccess.uriExists(c, uri)) {
-            Log.d("d", "Creating blankXML=" + createBlankXML(c, preferences, storageAccess, uri));
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Settings", "", "ActivityLog.xml");
+        if (!mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
+            Log.d("d", "Creating blankXML=" + createBlankXML(c, mainActivityInterface, uri));
         } else {
             Log.d("d", uri + " exists");
         }
@@ -83,22 +81,22 @@ public class CCLILog {
         // Set the date and time
         setTheDateAndTime();
 
-        doTheSaving(c, storageAccess, song, uri, usageType);
+        doTheSaving(c, mainActivityInterface, uri, usageType);
     }
 
-    public boolean createBlankXML(Context c, Preferences preferences, StorageAccess storageAccess, Uri uri) {
+    public boolean createBlankXML(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<log>\n</log>\n";
 
         // Delete the old file
-        storageAccess.deleteFile(c,uri);
+        mainActivityInterface.getStorageAccess().deleteFile(c,uri);
 
         // Get the new file ready
-        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Settings", "", "ActivityLog.xml");
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), uri, null, "Settings", "", "ActivityLog.xml");
 
         // Write the new file
-        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
-        return storageAccess.writeFileFromString(blankXML, outputStream);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
+        return mainActivityInterface.getStorageAccess().writeFileFromString(blankXML, outputStream);
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -111,12 +109,12 @@ public class CCLILog {
         thisdate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
-    private void doTheSaving(Context c, StorageAccess storageAccess, Song song, Uri uri, String usageType) {
+    private void doTheSaving(Context c, MainActivityInterface mainActivityInterface, Uri uri, String usageType) {
         try {
-            InputStream inputStream = storageAccess.getInputStream(c, uri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            String myString = storageAccess.readTextFileToString(inputStream);
+            String myString = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
 
             Document document = null;
             Element root = null;
@@ -178,23 +176,23 @@ public class CCLILog {
                 newItem.appendChild(a_usage);
 
                 Element a_fname = document.createElement("FileName");
-                a_fname.appendChild(document.createTextNode(song.getFilename()));
+                a_fname.appendChild(document.createTextNode(mainActivityInterface.getSong().getFilename()));
                 newItem.appendChild(a_fname);
 
                 Element a_title = document.createElement("title");
-                a_title.appendChild(document.createTextNode(song.getTitle()));
+                a_title.appendChild(document.createTextNode(mainActivityInterface.getSong().getTitle()));
                 newItem.appendChild(a_title);
 
                 Element a_author = document.createElement("author");
-                a_author.appendChild(document.createTextNode(song.getAuthor()));
+                a_author.appendChild(document.createTextNode(mainActivityInterface.getSong().getAuthor()));
                 newItem.appendChild(a_author);
 
                 Element a_copyright = document.createElement("copyright");
-                a_copyright.appendChild(document.createTextNode(song.getCopyright()));
+                a_copyright.appendChild(document.createTextNode(mainActivityInterface.getSong().getCopyright()));
                 newItem.appendChild(a_copyright);
 
                 Element a_ccli = document.createElement("ccli");
-                a_ccli.appendChild(document.createTextNode(song.getCcli()));
+                a_ccli.appendChild(document.createTextNode(mainActivityInterface.getSong().getCcli()));
                 newItem.appendChild(a_ccli);
 
                 if (root != null) {
@@ -207,7 +205,7 @@ public class CCLILog {
                 Transformer transformer = transformerFactory.newTransformer();
                 transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
                 StreamResult result = new StreamResult(outputStream);
                 transformer.transform(source, result);
             } else {
@@ -219,9 +217,9 @@ public class CCLILog {
         }
     }
 
-    public void getLogFileSize(Context c, StorageAccess storageAccess, Uri uri, TextView logFileSize) {
+    public void getLogFileSize(Context c, MainActivityInterface mainActivityInterface, Uri uri, TextView logFileSize) {
         // Set the uri if it isn't already done
-        float file_size_kb = storageAccess.getFileSizeFromUri(c, uri);
+        float file_size_kb = mainActivityInterface.getStorageAccess().getFileSizeFromUri(c, uri);
         file_size_kb = Math.round(file_size_kb * 100);
         file_size_kb = file_size_kb / 100.0f;
         String returntext = "ActivityLog.xml ("+ file_size_kb + "kb)";
@@ -242,7 +240,7 @@ public class CCLILog {
         action = new ArrayList<>();
     }
 
-    public void getCurrentEntries(Context c, StorageAccess storageAccess, Uri uri) {
+    public void getCurrentEntries(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
 
         try {
             XmlPullParserFactory factory;
@@ -253,7 +251,7 @@ public class CCLILog {
             xpp = factory.newPullParser();
 
             initialiseTables();
-            InputStream inputStream = storageAccess.getInputStream(c, uri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
 
             xpp.setInput(inputStream, "UTF-8");
 

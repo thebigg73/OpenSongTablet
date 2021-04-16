@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
+import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
@@ -43,6 +44,7 @@ import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
 import com.garethevans.church.opensongtablet.songprocessing.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -106,6 +108,7 @@ public interface MainActivityInterface {
 
     // Get the helpers initialised in the main activity
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
+    NearbyConnections getNearbyConnections();
     Midi getMidi(MainActivityInterface mainActivityInterface);
     DrawerLayout getDrawer();
     ActionBar getAb();
@@ -117,9 +120,14 @@ public interface MainActivityInterface {
     ExportActions getExportActions();
     ConvertChoPro getConvertChoPro();
     ConvertOnSong getConvertOnSong();
+    ConvertTextSong getConvertTextSong();
     ProcessSong getProcessSong();
     Song getSong();
+    Song getIndexingSong();
+    Song getTempSong();
     void setSong(Song song);
+    void setIndexingSong(Song indexingSong);
+    void setTempSong(Song tempSong);
     SQLiteHelper getSQLiteHelper();
     NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper();
     CommonSQL getCommonSQL();
@@ -164,4 +172,7 @@ public interface MainActivityInterface {
     void setScreenshot(Bitmap bitmap);
     Bitmap getScreenshot();
     ABCNotation getAbcNotation();
+    AlertChecks getAlertChecks();
+    void setMainActivityInterface(MainActivityInterface mainActivityInterface);
+    MainActivityInterface getMainActivityInterface();
 }

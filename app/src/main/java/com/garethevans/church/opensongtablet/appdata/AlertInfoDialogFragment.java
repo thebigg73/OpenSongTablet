@@ -19,7 +19,6 @@ import androidx.fragment.app.DialogFragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.AlertinfoDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 /*
 This file shows the user any appropriate warnings.  These can be
@@ -30,20 +29,8 @@ This file shows the user any appropriate warnings.  These can be
 
 public class AlertInfoDialogFragment extends DialogFragment {
 
-    MainActivityInterface mainActivityInterface;
-    AlertinfoDialogBinding myView;
-    Preferences preferences;
-    boolean updateInfo;
-    AlertChecks alertChecks;
-    VersionNumber versionNumber;
-    int currentVersion;
-
-    public AlertInfoDialogFragment(Preferences preferences, AlertChecks alertChecks, VersionNumber versionNumber) {
-        this.alertChecks = alertChecks;
-        this.preferences = preferences;
-        this.versionNumber = versionNumber;
-        currentVersion = versionNumber.getVersionCode();
-    }
+    private MainActivityInterface mainActivityInterface;
+    private AlertinfoDialogBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -70,24 +57,28 @@ public class AlertInfoDialogFragment extends DialogFragment {
     private void whatAlerts() {
         // This decides which alerts are appropriate
         // Check for app updates
-        updateInfo = alertChecks.showUpdateInfo(requireContext(),preferences,versionNumber.getVersionCode());
+        boolean updateInfo = mainActivityInterface.getAlertChecks().showUpdateInfo(requireContext(),
+                mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "lastUsedVersion", 0),
+                mainActivityInterface.getVersionNumber().getVersionCode());
         if (!updateInfo) {
             myView.appUpdated.setVisibility(View.GONE);
         } else {
             myView.appUpdated.setVisibility(View.VISIBLE);
-            myView.showUpdates.setText(versionNumber.getFullVersionInfo());
+            myView.showUpdates.setText(mainActivityInterface.getVersionNumber().getFullVersionInfo());
             myView.showUpdates.setOnClickListener(b -> webLink("http://www.opensongapp.com/latest-updates"));
 
             // We've seen the warning, so update the preference
-            preferences.setMyPreferenceInt(requireContext(), "lastUsedVersion", currentVersion);
+            mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), "lastUsedVersion",
+                    mainActivityInterface.getVersionNumber().getVersionCode());
         }
 
         // Check for backup status
-        if (alertChecks.showBackup(requireContext(),preferences)) {
+        if (mainActivityInterface.getAlertChecks().showBackup(requireContext(),
+                mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"runssincebackup",0))) {
             myView.timeToBackup.setVisibility(View.VISIBLE);
             String s = requireContext().getString(R.string.promptbackup).
                     replace("10","" +
-                            preferences.getMyPreferenceInt(requireContext(), "runssincebackup", 0));
+                            mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "runssincebackup", 0));
             myView.backupDescription.setText(s);
             myView.backupNowButton.setOnClickListener(v -> {
                 mainActivityInterface.navigateToFragment("opensongapp://settings/storage/backup",0);
@@ -98,7 +89,7 @@ public class AlertInfoDialogFragment extends DialogFragment {
         }
 
         // Check for Google Play Service error
-        if (alertChecks.showPlayServicesAlert(requireContext())) {
+        if (mainActivityInterface.getAlertChecks().showPlayServicesAlert(requireContext())) {
             Log.d("StageMode", "onresume()  Play store isn't installed");
             myView.playServices.setVisibility(View.VISIBLE);
             myView.playServicesInfo.setOnClickListener(b -> webLink(getString(R.string.play_services_help)));
@@ -121,5 +112,11 @@ public class AlertInfoDialogFragment extends DialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         mainActivityInterface.refreshMenuItems();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

@@ -101,12 +101,10 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.lockDrawer(true);
 
-        song = processSong.initialiseSong(commonSQL,song.getFolder(),song.getFilename());
+        song = processSong.initialiseSong(mainActivityInterface,song.getFolder(),song.getFilename());
 
         // The folder and filename were passed in the starting song object.  Now update with the file contents
-        song = loadSong.doLoadSong(getActivity(),mainActivityInterface,storageAccess,preferences,processSong, showToast,
-                mainActivityInterface.getLocale(),songListBuildIndex,sqLiteHelper,commonSQL,song,
-                convertOnSong,convertChoPro,false);
+        song = loadSong.doLoadSong(getActivity(),mainActivityInterface,song, false);
 
         // Can't just do song=originalSong as they become clones.  Changing one changes the other.
         originalSong = new Song(song);
@@ -176,9 +174,9 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     private void doSaveChanges() {
         // Send this off for processing in a new Thread
         new Thread(() -> {
-            saveOK = saveSong.doSave(requireContext(),mainActivityInterface,song,
+            /*saveOK = saveSong.doSave(requireContext(),mainActivityInterface,song,
                     editContent.getCurrentSong(), imgOrPDF);
-
+*/
             if (saveOK) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
                 requireActivity().runOnUiThread(() -> mainActivityInterface.returnToHome(fragment, savedInstanceState));

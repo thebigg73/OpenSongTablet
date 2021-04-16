@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,9 +16,7 @@ public class VersionNumber {
         setPackageInfo(c);
         setVersionName();
         setVersionCode();
-        Log.d("VersionNumber","versionName="+versionName);
-        Log.d("VersionNumber","versionCode="+versionCode);
-    }
+        }
     private void setPackageInfo(Context c) {
         try {
             if (packageInfo==null) {

@@ -17,12 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.FragmentOsbbackupBinding;
-import com.garethevans.church.opensongtablet.export.ExportActions;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +25,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -41,12 +35,6 @@ public class BackupOSBFragment extends Fragment {
 
     private FragmentOsbbackupBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private StorageAccess storageAccess;
-    private Preferences preferences;
-    private Locale locale;
-    private CommonSQL commonSQL;
-    private SQLiteHelper sqLiteHelper;
-    private ExportActions exportActions;
 
     private String backupFilename;
     private ArrayList<String> checkedFolders;
@@ -66,23 +54,11 @@ public class BackupOSBFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = FragmentOsbbackupBinding.inflate(inflater,container,false);
-
         mainActivityInterface.updateToolbar(null,getString(R.string.backup));
 
-        getHelpers();
-        
         setupViews();
         
         return myView.getRoot();
-    }
-
-    private void getHelpers() {
-        storageAccess = mainActivityInterface.getStorageAccess();
-        preferences = mainActivityInterface.getPreferences();
-        locale = mainActivityInterface.getLocale();
-        commonSQL = mainActivityInterface.getCommonSQL();
-        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
-        exportActions = mainActivityInterface.getExportActions();
     }
 
     private void setupViews() {
@@ -92,7 +68,7 @@ public class BackupOSBFragment extends Fragment {
             requireActivity().runOnUiThread(() -> myView.backupName.getEditText().setText(deffilename));
 
             // Get a list of available folders in the app
-            ArrayList<String> folders = commonSQL.getFolders(sqLiteHelper.getDB(getContext()));
+            ArrayList<String> folders = mainActivityInterface.getCommonSQL().getFolders(mainActivityInterface.getSQLiteHelper().getDB(getContext()));
 
             // Create a new checkbox entry (default to ticked) for each one
             requireActivity().runOnUiThread(() -> {
@@ -153,7 +129,8 @@ public class BackupOSBFragment extends Fragment {
             });
 
             // Check the file list is up to date
-            ArrayList<String> allFiles = storageAccess.listSongs(requireContext(),preferences,locale);
+            ArrayList<String> allFiles = mainActivityInterface.getStorageAccess().listSongs(requireContext(),
+                    mainActivityInterface.getPreferences(),mainActivityInterface.getLocale());
 
             // Prepare the uris, inputStreams and outputStreams
             Uri fileUriToCopy;
@@ -188,8 +165,9 @@ public class BackupOSBFragment extends Fragment {
                         for (String folder : checkedFolders) {
                             if (alive && folder.equals(thisFolder)) {
                                 // Get the uri for this item
-                                fileUriToCopy = storageAccess.getUriForItem(getContext(), preferences, "Songs", thisFolder, thisFile);
-                                inputStream = storageAccess.getInputStream(getContext(), fileUriToCopy);
+                                fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem(getContext(),
+                                        mainActivityInterface.getPreferences(), "Songs", thisFolder, thisFile);
+                                inputStream = mainActivityInterface.getStorageAccess().getInputStream(getContext(), fileUriToCopy);
                                 if (thisFolder.equals(getString(R.string.mainfoldername)) || thisFolder.equals("MAIN")) {
                                     ze = new ZipEntry(thisFile);
                                 } else {
@@ -260,7 +238,7 @@ public class BackupOSBFragment extends Fragment {
 
         Log.d("BackupOSBFrag","File="+backupFile);
         Uri uri = FileProvider.getUriForFile(requireContext(), "com.garethevans.church.opensongtablet.fileprovider",backupFile);
-        Intent intent = exportActions.exportBackup(requireContext(),uri,backupFilename);
+        Intent intent = mainActivityInterface.getExportActions().exportBackup(requireContext(),uri,backupFilename);
         requireActivity().startActivityForResult(Intent.createChooser(intent,getString(R.string.backup_info)), 12345);
     }
 
@@ -274,6 +252,7 @@ public class BackupOSBFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         killThread();
+        myView = null;
     }
 
     private void killThread() {

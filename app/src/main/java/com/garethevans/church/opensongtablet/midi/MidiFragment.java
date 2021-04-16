@@ -731,6 +731,6 @@ public class MidiFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // Save the song
-        saveSong.doSave(getContext(),mainActivityInterface,song,song,false);
+        saveSong.doSave(getContext(),mainActivityInterface,song,song,false,song.getIsPDF()||song.getIsImage());
     }
 }

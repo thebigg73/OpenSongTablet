@@ -141,7 +141,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
     // Set up the drop down lists
     private void setUpDropDowns() {
         new Thread(() -> {
-            foundFolders = sqLiteHelper.getFolders(getActivity(),commonSQL);
+            foundFolders = sqLiteHelper.getFolders(requireContext(),mainActivityInterface);
             folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
             keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
             getActivity().runOnUiThread(() -> {
@@ -196,7 +196,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
             setButtonOn(openSongFormat,false);
             // Only process if we are actually changing
             if (!editAsChoPro && text!=null && !text.isEmpty()) {
-                song.setLyrics(convertChoPro.fromOpenSongToChordPro(requireContext(), processSong, text));
+                song.setLyrics(convertChoPro.fromOpenSongToChordPro(requireContext(), mainActivityInterface, text));
                 lyrics.setText(song.getLyrics());
             }
             preferences.setMyPreferenceBoolean(requireContext(), "editAsChordPro", true);
@@ -247,7 +247,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
 
         transpose.setOnClickListener(v -> {
             Log.d("Editsong", "key="+key);
-            TransposeDialogFragment dialogFragment = new TransposeDialogFragment(true,song);
+            TransposeDialogFragment dialogFragment = new TransposeDialogFragment(true);
             dialogFragment.show(requireActivity().getSupportFragmentManager(), "transposeAction");
         });
         autoFix.setOnClickListener(v -> doAutoFix());

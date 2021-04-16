@@ -19,27 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.PerformanceBinding;
-import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.metronome.Metronome;
-import com.garethevans.church.opensongtablet.pads.PadFunctions;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
-import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
-import com.garethevans.church.opensongtablet.setprocessing.SetActions;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
-import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
-import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
 import java.util.ArrayList;
@@ -48,25 +30,25 @@ public class PerformanceFragment extends Fragment {
 
     private final String TAG = "PerformanceFragment";
     // Helper classes for the heavy lifting
-    private StorageAccess storageAccess;
-    private Preferences preferences;
-    private ProcessSong processSong;
-    private LoadSong loadSong;
-    private SQLiteHelper sqLiteHelper;
-    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
-    private CommonSQL commonSQL;
-    private ConvertChoPro convertChoPro;
-    private ConvertOnSong convertOnSong;
-    private ThemeColors themeColors;
-    private ShowToast showToast;
-    private PerformanceGestures performanceGestures;
-    private SetActions setActions;
-    private PadFunctions padFunctions;
-    private Metronome metronome;
-    private DoVibrate doVibrate;
-    private SetTypeFace setTypeFace;
-    private SongListBuildIndex songListBuildIndex;
-    private AppActionBar appActionBar;
+    //private StorageAccess storageAccess;
+    //private Preferences preferences;
+    //private ProcessSong processSong;
+    //private LoadSong loadSong;
+    //private SQLiteHelper sqLiteHelper;
+    //private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
+    //private CommonSQL commonSQL;
+    //private ConvertChoPro convertChoPro;
+    //private ConvertOnSong convertOnSong;
+    //private ThemeColors themeColors;
+    //private ShowToast showToast;
+    //private PerformanceGestures performanceGestures;
+    //private SetActions setActions;
+    //private PadFunctions padFunctions;
+    //private Metronome metronome;
+    //private DoVibrate doVibrate;
+    //private SetTypeFace setTypeFace;
+    //private SongListBuildIndex songListBuildIndex;
+    //private AppActionBar appActionBar;
     private StickyPopUp stickyPopUp;
 
     //private ShowCase showCase;
@@ -89,7 +71,7 @@ public class PerformanceFragment extends Fragment {
     private ArrayList<Integer> sectionWidths, sectionHeights;
     private String autoScale;
     private PerformanceBinding myView;
-
+    private Animation animSlideIn, animSlideOut;
     // Attaching and destroying
     @Override
     public void onAttach(@NonNull Context context) {
@@ -100,8 +82,8 @@ public class PerformanceFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if (appActionBar!=null) {
-            appActionBar.setPerformanceMode(false);
+        if (mainActivityInterface.getAppActionBar()!=null) {
+            mainActivityInterface.getAppActionBar().setPerformanceMode(false);
         }
         mainActivityInterface.registerFragment(null,"Performance");
     }
@@ -131,18 +113,18 @@ public class PerformanceFragment extends Fragment {
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         mainActivityInterface.fullIndex();
 
-        doSongLoad(preferences.getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
-                preferences.getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
+                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
         // Set listeners for the scroll/scale/gestures
         //setGestureListeners();
 
         // Show the actionBar and hide it after a time if that's the user's preference
-        preferences.setMyPreferenceBoolean(requireContext(),"hideActionBar",false);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"hideActionBar",false);
 
-        appActionBar.setHideActionBar(preferences.getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
-        appActionBar.setPerformanceMode(true);
-        appActionBar.showActionBar();
+        mainActivityInterface.getAppActionBar().setHideActionBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
+        mainActivityInterface.getAppActionBar().setPerformanceMode(true);
+        mainActivityInterface.getAppActionBar().showActionBar();
 
         // Set tutorials
         Handler h = new Handler();
@@ -154,24 +136,6 @@ public class PerformanceFragment extends Fragment {
 
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
-        storageAccess = mainActivityInterface.getStorageAccess();
-        preferences = mainActivityInterface.getPreferences();
-        loadSong = mainActivityInterface.getLoadSong();
-        processSong = mainActivityInterface.getProcessSong();
-        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
-        convertOnSong = mainActivityInterface.getConvertOnSong();
-        convertChoPro = mainActivityInterface.getConvertChoPro();
-        themeColors = mainActivityInterface.getMyThemeColors();
-        showToast = mainActivityInterface.getShowToast();
-        nonOpenSongSQLiteHelper = mainActivityInterface.getNonOpenSongSQLiteHelper();
-        commonSQL = mainActivityInterface.getCommonSQL();
-        setActions = mainActivityInterface.getSetActions();
-        doVibrate = mainActivityInterface.getDoVibrate();
-        padFunctions = mainActivityInterface.getPadFunctions();
-        metronome = mainActivityInterface.getMetronome();
-        setTypeFace = mainActivityInterface.getMyFonts();
-        songListBuildIndex = mainActivityInterface.getSongListBuildIndex();
-        appActionBar = mainActivityInterface.getAppActionBar();
         stickyPopUp = new StickyPopUp();
 
         //showCase = new ShowCase();
@@ -182,31 +146,31 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getMediaPlayer(2),mainActivityInterface.getAppActionBar(), 0xffff0000);*/
     }
     private void loadPreferences() {
-        themeColors.getDefaultColors(getContext(),preferences);
-        scaleHeadings = preferences.getMyPreferenceFloat(getActivity(),"scaleHeadings",0.6f);
-        scaleChords = preferences.getMyPreferenceFloat(getActivity(),"scaleChords",0.8f);
-        scaleComments = preferences.getMyPreferenceFloat(getActivity(),"scaleComments",0.8f);
-        trimLines = preferences.getMyPreferenceBoolean(getActivity(),"trimLines",true);
-        lineSpacing = preferences.getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f);
-        trimSections = preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true);
-        boldChordHeading = preferences.getMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", false);
-        addSectionSpace = preferences.getMyPreferenceBoolean(getActivity(), "addSectionSpace", true);
-        autoScale = preferences.getMyPreferenceString(getActivity(),"songAutoScale","W");
-        songAutoScaleColumnMaximise = preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true);
-        fontSize = preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f);
-        fontSizeMax = preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f);
-        fontSizeMin = preferences.getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f);
-        songAutoScaleOverrideFull = preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true);
-        songAutoScaleOverrideWidth = preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideWidth",false);
-        swipeMinimumDistance = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250);
-        swipeMaxDistanceYError = preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200);
-        swipeMinimumVelocity = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600);
-        highlightChords = preferences.getMyPreferenceBoolean(requireContext(),"highlightChords",false);
-        highlightHeadings = preferences.getMyPreferenceBoolean(requireContext(),"highlightHeadings",false);
+        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
+        scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"scaleHeadings",0.6f);
+        scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"scaleChords",0.8f);
+        scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"scaleComments",0.8f);
+        trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"trimLines",true);
+        lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f);
+        trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"trimSections",true);
+        boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", false);
+        addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "addSectionSpace", true);
+        autoScale = mainActivityInterface.getPreferences().getMyPreferenceString(getActivity(),"songAutoScale","W");
+        songAutoScaleColumnMaximise = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true);
+        fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"fontSize",42.0f);
+        fontSizeMax = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f);
+        fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f);
+        songAutoScaleOverrideFull = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true);
+        songAutoScaleOverrideWidth = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideWidth",false);
+        swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250);
+        swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200);
+        swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600);
+        highlightChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"highlightChords",false);
+        highlightHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"highlightHeadings",false);
         fontSizeMax = 90.0f;
         songAutoScaleOverrideWidth = false;
         songAutoScaleOverrideFull = false;
-        myView.mypage.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+        myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
     }
 
 
@@ -214,25 +178,30 @@ public class PerformanceFragment extends Fragment {
 
     private void resetTitleSizes() {
         mainActivityInterface.updateActionBarSettings("songTitleSize",-1,
-                preferences.getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f),true);
+                mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f),true);
         mainActivityInterface.updateActionBarSettings("songAuthorSize",-1,
-                preferences.getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f),true);
+                mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f),true);
     }
     // Displaying the song
     public void doSongLoad(String folder, String filename) {
         // Loading the song is dealt with in this fragment as specific actions are required
+
+        // During the load song call, the song is cleared
+        // However if first extracts the folder and filename we've just set
+        mainActivityInterface.getSong().setFolder(folder);
+        mainActivityInterface.getSong().setFilename((filename));
+
         new Thread(() -> {
             // Quick fade the current page
             requireActivity().runOnUiThread(() -> {
-                Animation animSlide;
                 if (R2L) {
-                    animSlide = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_left);
+                    animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_left);
                 } else {
-                    animSlide = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
+                    animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
                 }
-                myView.songView.startAnimation(animSlide);
-                myView.highlighterView.startAnimation(animSlide);
-                myView.imageView.startAnimation(animSlide);
+                myView.songView.startAnimation(animSlideOut);
+                myView.highlighterView.startAnimation(animSlideOut);
+                myView.imageView.startAnimation(animSlideOut);
                 myView.zoomLayout.moveTo(1,0,0,false);
             });
             // Load up the song
@@ -240,15 +209,8 @@ public class PerformanceFragment extends Fragment {
                 sectionViews.clear();
             }
             // Now reset the song
-            mainActivityInterface.setSong(processSong.initialiseSong(commonSQL,folder, filename));
-
-            Log.d(TAG, "mainActivityInterface.getSong().getFolder()="+mainActivityInterface.getSong().getFolder());
-            Log.d(TAG, "mainActivityInterface.getSong().getFilename()="+mainActivityInterface.getSong().getFilename());
-
-            mainActivityInterface.setSong(loadSong.doLoadSong(getContext(),mainActivityInterface,
-                    storageAccess,preferences,processSong, showToast, mainActivityInterface.getLocale(),
-                    songListBuildIndex, sqLiteHelper, commonSQL, mainActivityInterface.getSong(),
-                    convertOnSong, convertChoPro, false));
+            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
+                    mainActivityInterface.getSong(),false));
 
             requireActivity().runOnUiThread(this::prepareSongViews);
             mainActivityInterface.moveToSongInSongMenu();
@@ -256,51 +218,37 @@ public class PerformanceFragment extends Fragment {
     }
     private void prepareSongViews() {
         // This is called on UI thread above;
-        myView.pageHolder.setBackgroundColor(themeColors.getLyricsBackgroundColor());
+        myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
         // Get the song in the layout
-        sectionViews = processSong.setSongInLayout(getActivity(),preferences,
-                mainActivityInterface.getLocale(), trimSections, addSectionSpace, trimLines, lineSpacing,
-                themeColors, setTypeFace, scaleHeadings, scaleChords, scaleComments,
-                mainActivityInterface.getSong().getLyrics(), boldChordHeading);
+        sectionViews = mainActivityInterface.getProcessSong().
+                setSongInLayout(requireContext(),mainActivityInterface, trimSections, addSectionSpace,
+                        trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments,
+                        mainActivityInterface.getSong().getLyrics(),boldChordHeading);
 
         // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
-        setUpVTO();
+        setUpTestViewListener();
 
         // Update the toolbar
         mainActivityInterface.updateToolbar(mainActivityInterface.getSong(),null);
     }
-    private void setUpVTO() {
-        testPane = myView.testPane;
-        ViewTreeObserver vto = testPane.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+    private void setUpTestViewListener() {
+        ViewTreeObserver testObs = myView.testPane.getViewTreeObserver();
+        testObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // The views are ready so prepare to create the song page
                 songIsReadyToDisplay();
                 // We can now remove this listener
-                testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
         for (View view:sectionViews) {
-            testPane.addView(view);
+            myView.testPane.addView(view);
         }
-        screenGrab = myView.songView;
-        ViewTreeObserver screenShotObs = screenGrab.getViewTreeObserver();
-        screenShotObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (myView!=null && myView.songView!=null) {
-                    screenGrab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    // Now take a screenshot if we've passed the first layout pass
-                    screenGrab.postDelayed(() -> getActivity().runOnUiThread(() -> getScreenshot()), 2000);
-                    screenShotReady = true;
-                }
-            }
-        });
     }
     private void songIsReadyToDisplay(){
         // All views have now been drawn, so measure the arraylist views
-
         // First up, remove the listener
         sectionWidths = new ArrayList<>();
         sectionHeights = new ArrayList<>();
@@ -314,63 +262,70 @@ public class PerformanceFragment extends Fragment {
         screenWidth = myView.mypage.getMeasuredWidth();
         screenHeight = myView.mypage.getMeasuredHeight();
 
-        scaleFactor = processSong.addViewsToScreen(getActivity(), testPane, myView.pageHolder, myView.songView, screenWidth, screenHeight,
+        scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getActivity(), myView.testPane, myView.pageHolder, myView.songView, screenWidth, screenHeight,
                 myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
                 songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax,
                 sectionViews, sectionWidths, sectionHeights);
 
-        Animation animSlide;
+        // Set up the type of animate in
         if (R2L) {
-            animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+            animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
         } else {
-            animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+            animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
         }
-        myView.songView.startAnimation(animSlide);
 
-        // Load up the highlighter file if it exists and the user wants it
-        dealWithHighlighterFile(animSlide);
-
-        // Load up the sticky notes if the user wants them
-        dealWithStickyNotes(false);
-    }
-    private void dealWithHighlighterFile(Animation animSlide) {
-        // Get the dimensions of the songview once it has drawn
-        ViewTreeObserver viewTreeObserver = myView.songView.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        // Now that the view is being drawn, set a view tree observer to get the sizes once done
+        // Then we can switch on the highlighter, sticky notes, etc.
+        ViewTreeObserver songViewObs = myView.songView.getViewTreeObserver();
+        songViewObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                int w = myView.songView.getMeasuredWidth();
-                int h = myView.songView.getMeasuredHeight();
-                Log.d(TAG,"w="+w+"  h="+h);
+                if (myView!=null && myView.songView!=null) {
+                    // Get the width and height of the view
+                    int w = myView.songView.getMeasuredWidth();
+                    int h = myView.songView.getMeasuredHeight();
+                    Log.d(TAG,"w="+w+" h="+h);
 
-                // Set the highlighter image view to match
-                ViewGroup.LayoutParams layoutParams = myView.highlighterView.getLayoutParams();
-                layoutParams.width = w;
-                layoutParams.height = h;
-                myView.highlighterView.setLayoutParams(layoutParams);
-                // Load in the bitmap with these dimensions
-                Bitmap highlighterBitmap = processSong.getHighlighterFile(requireContext(),preferences,
-                        storageAccess,mainActivityInterface.getSong(),w,h);
-                Log.d(TAG,"Bitmap="+highlighterBitmap);
-                if (highlighterBitmap!=null &&
-                        preferences.getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay", true)) {
-                    myView.highlighterView.setVisibility(View.VISIBLE);
-                    GlideApp.with(requireContext()).load(highlighterBitmap).
-                            override(w,h).into(myView.highlighterView);
-                    myView.highlighterView.startAnimation(animSlide);
-                    // Hide after a certain length of time
-                    int timetohide = preferences.getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
-                    Log.d(TAG,"timetohide="+timetohide);
-                    if (timetohide !=0) {
-                        new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE),timetohide);
-                    }
-                } else {
-                    myView.highlighterView.setVisibility(View.GONE);
+                    // Now deal with the highlighter file
+                    dealWithHighlighterFile(w,h);
+
+                    // Load up the sticky notes if the user wants them
+                    dealWithStickyNotes(false);
+
+                    // Now take a screenshot (only runs is w!=0 and h!=0)
+                    myView.songView.postDelayed(() -> getActivity().runOnUiThread(() -> getScreenshot(w,h)), 2000);
+
+                    // Now remove this viewtree observer
+                    myView.songView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-                // Remove the listener now we're done with it
-                myView.songView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
+        myView.songView.startAnimation(animSlideIn);
+    }
+    private void dealWithHighlighterFile(int w, int h) {
+        // Set the highlighter image view to match
+        ViewGroup.LayoutParams layoutParams = myView.highlighterView.getLayoutParams();
+        layoutParams.width = w;
+        layoutParams.height = h;
+        myView.highlighterView.setLayoutParams(layoutParams);
+        // Load in the bitmap with these dimensions
+        Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
+                getHighlighterFile(requireContext(),mainActivityInterface,w,h);
+        if (highlighterBitmap!=null &&
+                mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay", true)) {
+            myView.highlighterView.setVisibility(View.VISIBLE);
+            GlideApp.with(requireContext()).load(highlighterBitmap).
+                    override(w,h).into(myView.highlighterView);
+            myView.highlighterView.startAnimation(animSlideIn);
+            // Hide after a certain length of time
+            int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
+            Log.d(TAG,"timetohide="+timetohide);
+            if (timetohide !=0) {
+                new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE),timetohide);
+            }
+        } else {
+            myView.highlighterView.setVisibility(View.GONE);
+        }
     }
     public void dealWithStickyNotes(boolean forceShow) {
         // This is called from the MainActivity when we clicked on the page button
@@ -435,20 +390,14 @@ public class PerformanceFragment extends Fragment {
         return true;
     }
 
-    boolean screenShotReady = false;
     View screenGrab;
-    private void getScreenshot() {
-        if (screenShotReady) {
-            screenGrab.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-            if (screenGrab.getMeasuredWidth()!=0 && screenGrab.getMeasuredHeight()!=0) {
-                Bitmap bitmap = Bitmap.createBitmap(screenGrab.getMeasuredWidth(), screenGrab.getMeasuredHeight(),
-                        Bitmap.Config.ARGB_8888);
-
-                Canvas canvas = new Canvas(bitmap);
-                screenGrab.layout(0, 0, screenGrab.getMeasuredWidth(), screenGrab.getMeasuredHeight());
-                screenGrab.draw(canvas);
-                mainActivityInterface.setScreenshot(bitmap);
-            }
+    private void getScreenshot(int w, int h) {
+        if (w!=0 && h!=0) {
+            Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            myView.songView.layout(0, 0, w, h);
+            myView.songView.draw(canvas);
+            mainActivityInterface.setScreenshot(bitmap);
         }
     }
 }

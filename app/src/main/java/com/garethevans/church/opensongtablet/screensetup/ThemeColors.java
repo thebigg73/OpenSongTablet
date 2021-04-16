@@ -3,7 +3,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ThemeColors {
 
@@ -183,125 +183,125 @@ public class ThemeColors {
         return highlightHeadingColor;
     }
 
-    public void getDefaultColors(Context c, Preferences preferences) {
-        String theme = preferences.getMyPreferenceString(c,"appTheme","dark");
+    public void getDefaultColors(Context c, MainActivityInterface mainActivityInterface) {
+        String theme = mainActivityInterface.getPreferences().getMyPreferenceString(c,"appTheme","dark");
         switch (theme) {
             case "dark":
             default:
-                setThemeDark(c, preferences);
+                setThemeDark(c, mainActivityInterface);
                 break;
             case "light":
-                setThemeLight(c, preferences);
+                setThemeLight(c, mainActivityInterface);
                 break;
             case "custom1":
-                setThemeCustom1(c, preferences);
+                setThemeCustom1(c, mainActivityInterface);
                 break;
             case "custom2":
-                setThemeCustom2(c, preferences);
+                setThemeCustom2(c, mainActivityInterface);
                 break;
         }
     }
 
-    private void setThemeDark(Context c, Preferences preferences) {
-        setMetronomeColor(preferences.getMyPreferenceInt(c, "dark_metronomeColor",          darkishred));
-        setPageButtonsColor(preferences.getMyPreferenceInt(c, "dark_pageButtonsColor",        secondary));
-        setStickyTextColor(preferences.getMyPreferenceInt(c, "dark_stickyTextColor",         black));
-        setStickyBackgroundColor(preferences.getMyPreferenceInt(c, "dark_stickyBackgroundColor",   lightyellow));
-        setExtraInfoBgColor(preferences.getMyPreferenceInt(c, "dark_extraInfoBgColor",        grey));
-        setExtraInfoTextColor(preferences.getMyPreferenceInt(c, "dark_extraInfoTextColor",      white));
-        setLyricsTextColor(preferences.getMyPreferenceInt(c, "dark_lyricsTextColor",         white));
-        setLyricsCapoColor(preferences.getMyPreferenceInt(c, "dark_lyricsCapoColor",         red));
-        setLyricsBackgroundColor(preferences.getMyPreferenceInt(c, "dark_lyricsBackgroundColor",   black));
-        setLyricsVerseColor(preferences.getMyPreferenceInt(c, "dark_lyricsVerseColor",        black));
-        setLyricsChorusColor(preferences.getMyPreferenceInt(c, "dark_lyricsChorusColor",       vdarkblue));
-        setLyricsBridgeColor(preferences.getMyPreferenceInt(c, "dark_lyricsBridgeColor",       vdarkred));
-        setLyricsCommentColor(preferences.getMyPreferenceInt(c, "dark_lyricsCommentColor",      vdarkgreen));
-        setLyricsPreChorusColor(preferences.getMyPreferenceInt(c, "dark_lyricsPreChorusColor",    darkishgreen));
-        setLyricsTagColor(preferences.getMyPreferenceInt(c, "dark_lyricsTagColor",          darkpurple));
-        setLyricsChordsColor(preferences.getMyPreferenceInt(c, "dark_lyricsChordsColor",       yellow));
-        setLyricsCustomColor(preferences.getMyPreferenceInt(c, "dark_lyricsCustomColor",       vdarkyellow));
-        setPresoFontColor(preferences.getMyPreferenceInt(c, "dark_presoFontColor",          white));
-        setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "dark_presoInfoFontColor", white));
-        setPresoAlertColor(preferences.getMyPreferenceInt(c, "dark_presoAlertColor", red));
-        setPresoShadowColor(preferences.getMyPreferenceInt(c, "dark_presoShadowColor", grey));
-        setHighlightChordColor(preferences.getMyPreferenceInt(c, "dark_highlightChordColor",transparent));
-        setHighlightHeadingColor(preferences.getMyPreferenceInt(c, "dark_highlightHeadingColor",transparent));
+    private void setThemeDark(Context c, MainActivityInterface mainActivityInterface) {
+        setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_metronomeColor",          darkishred));
+        setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_pageButtonsColor",        secondary));
+        setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_stickyTextColor",         black));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_stickyBackgroundColor",   lightyellow));
+        setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_extraInfoBgColor",        grey));
+        setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_extraInfoTextColor",      white));
+        setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsTextColor",         white));
+        setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsCapoColor",         red));
+        setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsBackgroundColor",   black));
+        setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsVerseColor",        black));
+        setLyricsChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsChorusColor",       vdarkblue));
+        setLyricsBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsBridgeColor",       vdarkred));
+        setLyricsCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsCommentColor",      vdarkgreen));
+        setLyricsPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsPreChorusColor",    darkishgreen));
+        setLyricsTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsTagColor",          darkpurple));
+        setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsChordsColor",       yellow));
+        setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsCustomColor",       vdarkyellow));
+        setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoFontColor",          white));
+        setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoInfoFontColor", white));
+        setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoAlertColor", red));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoShadowColor", grey));
+        setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_highlightChordColor",transparent));
+        setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_highlightHeadingColor",transparent));
     }
-    private void setThemeLight(Context c, Preferences preferences) {
-        setMetronomeColor(preferences.getMyPreferenceInt(c,"light_metronomeColor",         darkishred));
-        setPageButtonsColor(preferences.getMyPreferenceInt(c,"light_pageButtonsColor",       secondary));
-        setStickyTextColor(preferences.getMyPreferenceInt(c,"light_stickyTextColor",        black));
-        setStickyBackgroundColor(preferences.getMyPreferenceInt(c,"light_stickyBackgroundColor",  lightyellow));
-        setExtraInfoBgColor(preferences.getMyPreferenceInt(c,"light_extraInfoBgColor",       grey));
-        setExtraInfoTextColor(preferences.getMyPreferenceInt(c,"light_extraInfoTextColor",     white));
-        setLyricsTextColor(preferences.getMyPreferenceInt(c,"light_lyricsTextColor",        black));
-        setLyricsCapoColor(preferences.getMyPreferenceInt(c,"light_lyricsCapoColor",        red));
-        setLyricsBackgroundColor(preferences.getMyPreferenceInt(c,"light_lyricsBackgroundColor",  white));
-        setLyricsVerseColor(preferences.getMyPreferenceInt(c,"light_lyricsVerseColor",       white));
-        setLyricsChorusColor(preferences.getMyPreferenceInt(c,"light_lyricsChorusColor",      vlightpurple));
-        setLyricsBridgeColor(preferences.getMyPreferenceInt(c,"light_lyricsBridgeColor",      vlightcyan));
-        setLyricsCommentColor(preferences.getMyPreferenceInt(c,"light_lyricsCommentColor",     vlightblue));
-        setLyricsPreChorusColor(preferences.getMyPreferenceInt(c,"light_lyricsPreChorusColor",   lightgreen));
-        setLyricsTagColor(preferences.getMyPreferenceInt(c,"light_lyricsTagColor",         vlightgreen));
-        setLyricsChordsColor(preferences.getMyPreferenceInt(c,"light_lyricsChordsColor",      darkblue));
-        setLyricsCustomColor(preferences.getMyPreferenceInt(c,"light_lyricsCustomColor",      lightishcyan));
-        setPresoFontColor(preferences.getMyPreferenceInt(c,"light_presoFontColor",         white));
-        setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "light_presoInfoFontColor", white));
-        setPresoAlertColor(preferences.getMyPreferenceInt(c, "light_presoAlertColor", red));
-        setPresoShadowColor(preferences.getMyPreferenceInt(c, "light_presoShadowColor", grey));
-        setHighlightChordColor(preferences.getMyPreferenceInt(c, "light_highlightChordColor",transparent));
-        setHighlightHeadingColor(preferences.getMyPreferenceInt(c, "light_highlightHeadingColor",transparent));
+    private void setThemeLight(Context c, MainActivityInterface mainActivityInterface) {
+        setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_metronomeColor",         darkishred));
+        setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_pageButtonsColor",       secondary));
+        setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_stickyTextColor",        black));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_stickyBackgroundColor",  lightyellow));
+        setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_extraInfoBgColor",       grey));
+        setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_extraInfoTextColor",     white));
+        setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsTextColor",        black));
+        setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsCapoColor",        red));
+        setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsBackgroundColor",  white));
+        setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsVerseColor",       white));
+        setLyricsChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsChorusColor",      vlightpurple));
+        setLyricsBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsBridgeColor",      vlightcyan));
+        setLyricsCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsCommentColor",     vlightblue));
+        setLyricsPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsPreChorusColor",   lightgreen));
+        setLyricsTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsTagColor",         vlightgreen));
+        setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsChordsColor",      darkblue));
+        setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsCustomColor",      lightishcyan));
+        setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_presoFontColor",         white));
+        setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_presoInfoFontColor", white));
+        setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_presoAlertColor", red));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_presoShadowColor", grey));
+        setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_highlightChordColor",transparent));
+        setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_highlightHeadingColor",transparent));
     }
-    private void setThemeCustom1(Context c, Preferences preferences) {
-        setMetronomeColor(preferences.getMyPreferenceInt(c,"custom1_metronomeColor",       darkishred));
-        setPageButtonsColor(preferences.getMyPreferenceInt(c,"custom1_pageButtonsColor",     secondary));
-        setStickyTextColor(preferences.getMyPreferenceInt(c,"custom1_stickyTextColor",      black));
-        setStickyBackgroundColor(preferences.getMyPreferenceInt(c,"custom1_stickyBackgroundColor",lightyellow));
-        setExtraInfoBgColor(preferences.getMyPreferenceInt(c,"custom1_extraInfoBgColor",     grey));
-        setExtraInfoTextColor(preferences.getMyPreferenceInt(c,"custom1_extraInfoTextColor",   white));
-        setLyricsTextColor(preferences.getMyPreferenceInt(c,"custom1_lyricsTextColor",      white));
-        setLyricsCapoColor(preferences.getMyPreferenceInt(c,"custom1_lyricsCapoColor",      red));
-        setLyricsBackgroundColor(preferences.getMyPreferenceInt(c,"custom1_lyricsBackgroundColor",black));
-        setLyricsVerseColor(preferences.getMyPreferenceInt(c,"custom1_lyricsVerseColor",     black));
-        setLyricsChorusColor(preferences.getMyPreferenceInt(c,"custom1_lyricsChorusColor",    black));
-        setLyricsBridgeColor(preferences.getMyPreferenceInt(c,"custom1_lyricsBridgeColor",    black));
-        setLyricsCommentColor(preferences.getMyPreferenceInt(c,"custom1_lyricsCommentColor",   black));
-        setLyricsPreChorusColor(preferences.getMyPreferenceInt(c,"custom1_lyricsPreChorusColor", black));
-        setLyricsTagColor(preferences.getMyPreferenceInt(c,"custom1_lyricsTagColor",       black));
-        setLyricsChordsColor(preferences.getMyPreferenceInt(c,"custom1_lyricsChordsColor",    yellow));
-        setLyricsCustomColor(preferences.getMyPreferenceInt(c,"custom1_lyricsCustomColor",    black));
-        setPresoFontColor(preferences.getMyPreferenceInt(c,"custom1_presoFontColor",       white));
-        setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "custom1_presoInfoFontColor", white));
-        setPresoAlertColor(preferences.getMyPreferenceInt(c, "custom1_presoAlertColor", red));
-        setPresoShadowColor(preferences.getMyPreferenceInt(c, "custom1_presoShadowColor", grey));
-        setHighlightChordColor(preferences.getMyPreferenceInt(c, "custom1_highlightChordColor",transparent));
-        setHighlightHeadingColor(preferences.getMyPreferenceInt(c, "custom1_highlightHeadingColor",transparent));
+    private void setThemeCustom1(Context c, MainActivityInterface mainActivityInterface) {
+        setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_metronomeColor",       darkishred));
+        setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_pageButtonsColor",     secondary));
+        setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_stickyTextColor",      black));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_stickyBackgroundColor",lightyellow));
+        setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_extraInfoBgColor",     grey));
+        setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_extraInfoTextColor",   white));
+        setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsTextColor",      white));
+        setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsCapoColor",      red));
+        setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsBackgroundColor",black));
+        setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsVerseColor",     black));
+        setLyricsChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsChorusColor",    black));
+        setLyricsBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsBridgeColor",    black));
+        setLyricsCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsCommentColor",   black));
+        setLyricsPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsPreChorusColor", black));
+        setLyricsTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsTagColor",       black));
+        setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsChordsColor",    yellow));
+        setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsCustomColor",    black));
+        setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_presoFontColor",       white));
+        setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_presoInfoFontColor", white));
+        setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_presoAlertColor", red));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_presoShadowColor", grey));
+        setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_highlightChordColor",transparent));
+        setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_highlightHeadingColor",transparent));
 
     }
-    private void setThemeCustom2(Context c, Preferences preferences) {
-        setMetronomeColor(preferences.getMyPreferenceInt(c,"custom2_metronomeColor",       darkishred));
-        setPageButtonsColor(preferences.getMyPreferenceInt(c,"custom2_pageButtonsColor",     secondary));
-        setStickyTextColor(preferences.getMyPreferenceInt(c,"custom2_stickyTextColor",      black));
-        setStickyBackgroundColor(preferences.getMyPreferenceInt(c,"custom2_stickyBackgroundColor",lightyellow));
-        setExtraInfoBgColor(preferences.getMyPreferenceInt(c,"custom2_extraInfoBgColor",     grey));
-        setExtraInfoTextColor(preferences.getMyPreferenceInt(c,"custom2_extraInfoTextColor",   white));
-        setLyricsTextColor(preferences.getMyPreferenceInt(c,"custom2_lyricsTextColor",      black));
-        setLyricsCapoColor(preferences.getMyPreferenceInt(c,"custom2_lyricsCapoColor",      red));
-        setLyricsBackgroundColor(preferences.getMyPreferenceInt(c,"custom2_lyricsBackgroundColor",white));
-        setLyricsVerseColor(preferences.getMyPreferenceInt(c,"custom2_lyricsVerseColor",     white));
-        setLyricsChorusColor(preferences.getMyPreferenceInt(c,"custom2_lyricsChorusColor",    white));
-        setLyricsBridgeColor(preferences.getMyPreferenceInt(c,"custom2_lyricsBridgeColor",    white));
-        setLyricsCommentColor(preferences.getMyPreferenceInt(c,"custom2_lyricsCommentColor",   white));
-        setLyricsPreChorusColor(preferences.getMyPreferenceInt(c,"custom2_lyricsPreChorusColor", white));
-        setLyricsTagColor(preferences.getMyPreferenceInt(c,"custom2_lyricsTagColor",       white));
-        setLyricsChordsColor(preferences.getMyPreferenceInt(c,"custom2_lyricsChordsColor",    darkblue));
-        setLyricsCustomColor(preferences.getMyPreferenceInt(c,"custom2_lyricsCustomColor",    white));
-        setPresoFontColor(preferences.getMyPreferenceInt(c,"custom2_presoFontColor",       white));
-        setPresoInfoFontColor(preferences.getMyPreferenceInt(c, "custom2_presoInfoFontColor", white));
-        setPresoAlertColor(preferences.getMyPreferenceInt(c, "custom2_presoAlertColor", red));
-        setPresoShadowColor(preferences.getMyPreferenceInt(c, "custom2_presoShadowColor", grey));
-        setHighlightChordColor(preferences.getMyPreferenceInt(c, "custom2_highlightChordColor",transparent));
-        setHighlightHeadingColor(preferences.getMyPreferenceInt(c, "custom2_highlightHeadingColor",transparent));
+    private void setThemeCustom2(Context c, MainActivityInterface mainActivityInterface) {
+        setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_metronomeColor",       darkishred));
+        setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_pageButtonsColor",     secondary));
+        setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_stickyTextColor",      black));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_stickyBackgroundColor",lightyellow));
+        setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_extraInfoBgColor",     grey));
+        setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_extraInfoTextColor",   white));
+        setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsTextColor",      black));
+        setLyricsCapoColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsCapoColor",      red));
+        setLyricsBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsBackgroundColor",white));
+        setLyricsVerseColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsVerseColor",     white));
+        setLyricsChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsChorusColor",    white));
+        setLyricsBridgeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsBridgeColor",    white));
+        setLyricsCommentColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsCommentColor",   white));
+        setLyricsPreChorusColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsPreChorusColor", white));
+        setLyricsTagColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsTagColor",       white));
+        setLyricsChordsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsChordsColor",    darkblue));
+        setLyricsCustomColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsCustomColor",    white));
+        setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_presoFontColor",       white));
+        setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_presoInfoFontColor", white));
+        setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_presoAlertColor", red));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_presoShadowColor", grey));
+        setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_highlightChordColor",transparent));
+        setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_highlightHeadingColor",transparent));
     }
 
     public int getValue(String what) {

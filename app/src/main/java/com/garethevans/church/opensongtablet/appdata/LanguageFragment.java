@@ -22,8 +22,7 @@ public class LanguageFragment extends Fragment {
     private SettingsLanguageBinding myView;
     private Preferences preferences;
     private MainActivityInterface mainActivityInterface;
-    private String languageCode;
-    private String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
+    private final String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -53,7 +52,7 @@ public class LanguageFragment extends Fragment {
     }
 
     private void buildRadioGroup() {
-        languageCode = preferences.getMyPreferenceString(getContext(),"language","en");
+        String languageCode = preferences.getMyPreferenceString(getContext(), "language", "en");
         String[] languages = requireContext().getResources().getStringArray(R.array.languagelist);
         int id = -1;
         for (int x=0; x<languages.length; x++) {
@@ -79,5 +78,11 @@ public class LanguageFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        myView = null;
     }
 }

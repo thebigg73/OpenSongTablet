@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 
@@ -43,10 +42,6 @@ public class Swipes {
         swipeWidth = preferences.getMyPreferenceFloat(c,"swipeWidth",0.4f);
         swipeHeight = preferences.getMyPreferenceFloat(c,"swipeHeight",0.2f);
         swipeTime = preferences.getMyPreferenceFloat(c,"swipeTime",0.6f);
-
-        Log.d("Swipes","Load pref swipeWidth="+swipeWidth);
-        Log.d("Swipes","Load pref swipeHeight="+swipeHeight);
-        Log.d("Swipes","Load pref swipeTime="+swipeTime);
     }
     public void fixWidth(Context c, Preferences preferences, int width) {
         widthPx = width;
@@ -92,6 +87,5 @@ public class Swipes {
     public int getMaxTime() {
         return maxTime;
     }
-
 
 }
