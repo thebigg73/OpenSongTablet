@@ -445,6 +445,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         // Fix the page flags
         windowFlags();
+        updateDisplays();
     }
     @Override
     protected void onStop() {
@@ -3595,6 +3596,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
+        StaticVariables.panicRequired = false;
         StaticVariables.infoBarChangeRequired = true;
         StaticVariables.forcecastupdate = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
