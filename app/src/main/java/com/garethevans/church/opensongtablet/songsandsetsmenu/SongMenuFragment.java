@@ -287,21 +287,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }).start();
     }
 
-    public void setBasicSongMenu() {
-        // This quickly scans the song folder and gets a list of songIds (folder+filname)
-        // Build a basic, but quick song menu!
-
-        // Update the file
-        mainActivityInterface.getStorageAccess().listSongs(getContext(),mainActivityInterface.getPreferences(),mainActivityInterface.getLocale());
-
-        // Build the basic menu
-        mainActivityInterface.getSQLiteHelper().insertFast(getContext(),mainActivityInterface);
-
-        // Update the view
-        prepareSearch();
-    }
-
-
 
     private void updateSongList() {
         myView.songListRecyclerView.removeAllViews();

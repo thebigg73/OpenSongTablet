@@ -136,6 +136,7 @@ public class BootUpFragment extends Fragment {
             new Thread(() -> {
                 // Tell the user we're initialising the storage
                 message = getString(R.string.processing) + ": " + getString(R.string.storage);
+                mainActivityInterface.getSongListBuildIndex().setIndexRequired(true);
                 updateMessage();
 
                 // Get the last used song and folder.  If the song failed to load, reset to default

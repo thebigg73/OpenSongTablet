@@ -87,6 +87,7 @@ public interface MainActivityInterface {
     void openDialog(DialogFragment frag, String tag);
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments);
+    void updateSongMenu(Song song);
     void updateSong(Song song);
     void setOriginalSong(Song originalSong);
     Song getOriginalSong();

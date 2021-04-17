@@ -78,6 +78,15 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean renameSong(Context c, MainActivityInterface mainActivityInterface,
+                              String oldFolder, String newFolder, String oldName, String newName) {
+        try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
+            return mainActivityInterface.getCommonSQL().renameSong(db2,oldFolder,newFolder,oldName,newName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     // TODO MIGHT REMOVE AS THE CONTENTS OF THIS DATABASE ARE PULLED INTO THE MAIN ONE AT RUNTIME

@@ -637,13 +637,22 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void fullIndex() {
         if (fullIndexRequired) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    songListBuildIndex.fullIndex(MainActivity.this,mainActivityInterface);
-                    Log.d(TAG,"index done");
-                    songMenuFragment.updateSongMenu(song);
+            showToast.doIt(this,getString(R.string.search_index_start));
+            new Thread(() -> {
+                String outcome = songListBuildIndex.fullIndex(MainActivity.this,mainActivityInterface);
+                Log.d(TAG,"index done");
+                if (songMenuFragment!=null) {
+                    try {
+                        songMenuFragment.updateSongMenu(song);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                runOnUiThread(() -> {
+                    if (!outcome.isEmpty()) {
+                        showToast.doIt(this,outcome.trim());
+                    }
+                });
             }).start();
         }
     }
@@ -924,8 +933,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void moveToSongInSongMenu() {
         if (setSongMenuFragment()) {
-            // TODO mainActivityFragment is null
-            songMenuFragment.moveToSongInMenu(song);
+            if (songMenuFragment!=null) {
+                try {
+                    songMenuFragment.moveToSongInMenu(song);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
             Log.d(TAG, "songMenuFragment not available");
         }
@@ -940,13 +954,20 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 songListBuildIndex.setIndexRequired(false);
                 songListBuildIndex.setIndexComplete(true);
                 showToast.doIt(this,getString(R.string.search_index_end));
-                if (setSongMenuFragment()) {
-                    songMenuFragment.updateSongMenu(song);
-                } else {
-                    Log.d(TAG, "songMenuFragment not available");
-                }
+                updateSongMenu(song);
             });
         }).start();
+    }
+    @Override
+    public void updateSongMenu(Song song) {
+        // This only asks for an update from the database
+        songListBuildIndex.setIndexComplete(true);
+        songListBuildIndex.setIndexRequired(false);
+        if (setSongMenuFragment() && songMenuFragment!=null) {
+            songMenuFragment.updateSongMenu(song);
+        } else {
+            Log.d(TAG, "songMenuFragment not available");
+        }
     }
     private void setUpSongMenuTabs() {
         adapter = new ViewPagerAdapter(getSupportFragmentManager(),MainActivity.this.getLifecycle());
@@ -1337,6 +1358,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
+        // This is a full rebuild
         // If sent called from another fragment the fragName and callingFragment are used to run an update listener
         songListBuildIndex.setIndexComplete(false);
         // Get all of the files as an array list

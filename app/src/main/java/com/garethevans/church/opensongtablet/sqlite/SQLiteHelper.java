@@ -100,7 +100,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-
+    public boolean renameSong(Context c, MainActivityInterface mainActivityInterface,
+                              String oldFolder, String newFolder, String oldName, String newName) {
+        try (SQLiteDatabase db = getDB(c)) {
+            return mainActivityInterface.getCommonSQL().renameSong(db,oldFolder,newFolder,oldName,newName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 

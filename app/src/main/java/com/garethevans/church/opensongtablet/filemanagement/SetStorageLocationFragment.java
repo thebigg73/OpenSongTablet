@@ -13,6 +13,7 @@ import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -109,8 +110,10 @@ public class SetStorageLocationFragment extends Fragment {
         myView.infoButton.setOnClickListener(v -> {
             if (myView.extraInfoSection.getVisibility()==View.VISIBLE) {
                 myView.extraInfoSection.setVisibility(View.GONE);
+                myView.scrollView.post(() -> myView.scrollView.fullScroll(ScrollView.FOCUS_UP));
             } else {
                 myView.extraInfoSection.setVisibility(View.VISIBLE);
+                myView.scrollView.post(() -> myView.scrollView.fullScroll(ScrollView.FOCUS_DOWN));
             }
         });
         myView.setStorage.setOnClickListener(v -> {

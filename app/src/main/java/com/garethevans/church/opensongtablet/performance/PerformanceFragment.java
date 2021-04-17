@@ -89,7 +89,9 @@ public class PerformanceFragment extends Fragment {
         loadPreferences();
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
-        mainActivityInterface.fullIndex();
+        if (mainActivityInterface.getSongListBuildIndex().getIndexRequired()) {
+            mainActivityInterface.fullIndex();
+        }
 
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
@@ -307,7 +309,8 @@ public class PerformanceFragment extends Fragment {
     }
     public void dealWithStickyNotes(boolean forceShow) {
         // This is called from the MainActivity when we clicked on the page button
-        if ((!mainActivityInterface.getSong().getNotes().isEmpty() &&
+        if ((mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
+                !mainActivityInterface.getSong().getNotes().isEmpty() &&
         mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean(requireContext(),"stickyAuto",true)) || forceShow) {
             stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);

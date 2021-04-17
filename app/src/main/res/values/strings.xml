@@ -327,6 +327,7 @@
     <string name="search_index_end">All songs have been fully indexed</string>
     <string name="search_index_error">There was an error building your search database</string>
     <string name="search_index_start">Building your song database</string>
+    <string name="search_index_wait">Please wait until song indexing is completed</string>
     <string name="section_highlighting">Section highlighting</string>
     <string name="select_all">Select all</string>
     <string name="select_page">Select page</string>

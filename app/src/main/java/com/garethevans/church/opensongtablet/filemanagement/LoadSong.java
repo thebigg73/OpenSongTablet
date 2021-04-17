@@ -39,6 +39,7 @@ public class LoadSong {
         thisSong.setFolder(folder);
         thisSong.setFilename(filename);
 
+        Log.d(TAG,"folder="+folder+"  filename="+filename);
         // We will add to this song and then return it to the MainActivity object
         if (!mainActivityInterface.getSongListBuildIndex().getIndexComplete() ||
                 thisSong.getFolder().contains("../")) {
@@ -48,8 +49,12 @@ public class LoadSong {
             return doLoadSongFile(c, mainActivityInterface, thisSong, indexing);
         } else {
             Log.d("LoadSong", "Loading from the database");
-            return mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface, 
-                    thisSong.getFolder(), thisSong.getFilename());
+            if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
+                return mainActivityInterface.getSong().showWelcomeSong(c,thisSong);
+            } else {
+                return mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface,
+                        thisSong.getFolder(), thisSong.getFilename());
+            }
         }
     }
 
@@ -523,7 +528,6 @@ public class LoadSong {
 
         return tofix;
     }
-
 
     private String getSongAsText(Context c, MainActivityInterface  mainActivityInterface, String where, String folder, String filename) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),where, folder,filename);

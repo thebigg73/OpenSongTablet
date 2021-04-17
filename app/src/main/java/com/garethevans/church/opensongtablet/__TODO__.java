@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 public class __TODO__ {
 
-    //TODO
+    //TODO - still to complete
     /*
     The following menus still need completed
 
@@ -28,5 +28,13 @@ public class __TODO__ {
 
     storage - when moving or renaming files.  fix highlighter notes to match
     storage - when moving pdf/img files, update the persistent nonopensong database
+     */
+
+
+    // TODO - Stuff that isn't working in emulator, but need to check on actual device
+
+    /*
+    Manage storage page:  Yellow button to show previous locations reports 0 songs, but correct in
+    current location box
      */
 }

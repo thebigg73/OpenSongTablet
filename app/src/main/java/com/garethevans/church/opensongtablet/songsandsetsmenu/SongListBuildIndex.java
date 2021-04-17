@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
@@ -35,10 +36,10 @@ public class SongListBuildIndex {
         return indexComplete;
     }
 
-    public void fullIndex(Context c, MainActivityInterface mainActivityInterface) {
+    public String fullIndex(Context c, MainActivityInterface mainActivityInterface) {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
-
+        StringBuilder returnString = new StringBuilder();
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB(c)) {
             // Go through each entry in the database and get the folder and filename.
             // Then load the file and write the values into the sql table
@@ -97,15 +98,22 @@ public class SongListBuildIndex {
                 }
             } while (cursor.moveToNext());
             cursor.close();
-
+            mainActivityInterface.getSongListBuildIndex().setIndexRequired(false);
             mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
+            returnString.append(c.getString(R.string.search_index_end)).append("\n");
+
         } catch (Exception e) {
             e.printStackTrace();
+            returnString.append(c.getString(R.string.search_index_error)).append("\n");
         } catch (OutOfMemoryError oom) {
             mainActivityInterface.getShowToast().doIt(c, "Out of memory: " +
                     mainActivityInterface.getIndexingSong().getFolder() + "/" +
                     mainActivityInterface.getIndexingSong().getFilename());
+            returnString.append(c.getString(R.string.search_index_error)).append(": ").
+                    append(mainActivityInterface.getIndexingSong().getFolder()).append("/").
+                    append(mainActivityInterface.getIndexingSong().getFilename()).append("\n");
         }
+        return returnString.toString();
     }
 
     private boolean filenameIsOk(String f) {

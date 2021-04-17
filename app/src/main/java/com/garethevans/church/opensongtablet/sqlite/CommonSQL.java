@@ -401,6 +401,22 @@ public class CommonSQL {
         return folders;
     }
 
+    public boolean renameSong(SQLiteDatabase db, String oldFolder, String newFolder,
+                           String oldName, String newName) {
+        String oldId = getAnySongId(oldFolder,oldName);
+        String newId = getAnySongId(newFolder,newName);
+
+        // First change the folder/file againts the matching old songid
+        String[] selectionArgs = new String[]{newId, newFolder, newName,oldId};
+        String q = "UPDATE " + SQLite.TABLE_NAME + " SET " +
+                SQLite.COLUMN_SONGID + " = ? ," +
+                SQLite.COLUMN_FOLDER + " = ? ," +
+                SQLite.COLUMN_FILENAME + " = ? WHERE " + SQLite.COLUMN_SONGID + " = ? ";
+        Cursor cursor = db.rawQuery(q,selectionArgs);
+        boolean success = cursor.getCount() > 0;
+        cursor.close();
+        return success;
+    }
 
 
 

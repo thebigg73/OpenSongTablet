@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.StorageMoveBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,13 +30,11 @@ public class MoveContentFragment extends Fragment {
 
     //private final String fragName;
     //private final Fragment callingFragment;
-    MainActivityInterface mainActivityInterface;
-    StorageMoveBinding myView;
-    String subfolder;
-    String newFolder;
-    ArrayList<String> files;
-    ArrayList<Uri> uris;
-    ArrayList<String> filesChosen;
+    private MainActivityInterface mainActivityInterface;
+    private StorageMoveBinding myView;
+    private String subfolder, newFolder;
+    private ArrayList<String> files, filesChosen;
+    private ArrayList<Uri> uris;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -143,64 +142,89 @@ public class MoveContentFragment extends Fragment {
     }
 
     private void doMove() {
-        // Go through each file and copy them to the new location
-        // Then delete each original file if the copy was successful
-        myView.progressBar.setVisibility(View.VISIBLE);
-        myView.progressText.setVisibility(View.VISIBLE);
-        myView.doMove.setVisibility(View.GONE);
+        // Don't allow this until song indexing is complete as it can mess up the database!
+        // If we don't pass this test, we are shown a snackbar message
+        if (checkIndexingStatus()) {
+            // Go through each file and copy them to the new location
+            // Then delete each original file if the copy was successful
+            // Finally update the database
+            myView.progressBar.setVisibility(View.VISIBLE);
+            myView.progressText.setVisibility(View.VISIBLE);
+            myView.doMove.setVisibility(View.GONE);
 
-        filesChosen = new ArrayList<>();
-        for (int x = 0; x < files.size(); x++) {
-            if (((CheckBox) myView.folderContentsLayout.getChildAt(x)).isChecked()) {
-                filesChosen.add(files.get(x));
-                Log.d("MoveContents","Adding "+files.get(x));
-            }
-        }
-
-        // Where are we moving to?
-        newFolder = myView.folderChoice.getText().toString();
-
-        // Do this in a new thread
-        new Thread(() -> {
-            // Go through the checklists and add the checked ones
-            uris = new ArrayList<>();
-            for (String file : filesChosen) {
-                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface.getPreferences(), "Songs", subfolder, file));
-            }
-
-            InputStream inputStream;
-            Uri outputFile;
-            OutputStream outputStream;
-            Log.d("MoveContents","filesChosen.size()="+filesChosen.size());
-            try {
-                for (int x = 0; x < filesChosen.size(); x++) {
-                    outputFile = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface.getPreferences(), "Songs", newFolder, filesChosen.get(x));
-                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(), mainActivityInterface.getPreferences(), outputFile,
-                            null, "Songs", newFolder, filesChosen.get(x));
-                    inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), uris.get(x));
-                    outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), outputFile);
-                    // Update the progress
-                    String finalMessage = subfolder + "/" + filesChosen.get(x) + " > " + newFolder + "/" + filesChosen.get(x);
-                    getActivity().runOnUiThread(() -> myView.progressText.setText(finalMessage));
-                    if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
-                        mainActivityInterface.getStorageAccess().deleteFile(requireContext(), uris.get(x));
-                    } else {
-                        Log.d("d","error copying "+finalMessage);
-                    }
+            filesChosen = new ArrayList<>();
+            for (int x = 0; x < files.size(); x++) {
+                if (((CheckBox) myView.folderContentsLayout.getChildAt(x)).isChecked()) {
+                    filesChosen.add(files.get(x));
+                    Log.d("MoveContents", "Adding " + files.get(x));
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
-            getActivity().runOnUiThread(() -> {
-                myView.progressText.setVisibility(View.GONE);
-                myView.doMove.setVisibility(View.VISIBLE);
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
+            // Where are we moving to?
+            newFolder = myView.folderChoice.getText().toString();
 
-                // Now reload the folder contents
-                listFilesInFolder();
-            });
-        }).start();
+            // Do this in a new thread
+            new Thread(() -> {
+                // Go through the checklists and add the checked ones
+                uris = new ArrayList<>();
+                for (String file : filesChosen) {
+                    uris.add(mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface.getPreferences(), "Songs", subfolder, file));
+                }
+
+                InputStream inputStream;
+                Uri outputFile;
+                OutputStream outputStream;
+                Log.d("MoveContents", "filesChosen.size()=" + filesChosen.size());
+                try {
+                    for (int x = 0; x < filesChosen.size(); x++) {
+                        outputFile = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface.getPreferences(), "Songs", newFolder, filesChosen.get(x));
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(), mainActivityInterface.getPreferences(), outputFile,
+                                null, "Songs", newFolder, filesChosen.get(x));
+                        inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), uris.get(x));
+                        outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), outputFile);
+                        // Update the progress
+                        String finalMessage = subfolder + "/" + filesChosen.get(x) + " > " + newFolder + "/" + filesChosen.get(x);
+                        getActivity().runOnUiThread(() -> myView.progressText.setText(finalMessage));
+                        if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
+                            mainActivityInterface.getStorageAccess().deleteFile(requireContext(), uris.get(x));
+                        } else {
+                            Log.d("d", "error copying " + finalMessage);
+                        }
+
+                        // Sort the databases.
+                        mainActivityInterface.getSQLiteHelper().renameSong(requireContext(), mainActivityInterface, subfolder, newFolder, filesChosen.get(x), filesChosen.get(x));
+                        if (!mainActivityInterface.getStorageAccess().isTextFile(uris.get(x))) {
+                            // Likely to be in the persistent nonOpenSong database too
+                            mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(requireContext(), mainActivityInterface, subfolder, newFolder, filesChosen.get(x), filesChosen.get(x));
+                        }
+
+                        // Update everything needed for indexing and song menus
+                        try {
+                            ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale());
+                            // Write a crude text file (line separated) with the song Ids (folder/file)
+                            mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(), mainActivityInterface.getPreferences(), songIds);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        // Update the song menu using the database
+                        mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                getActivity().runOnUiThread(() -> {
+                    myView.progressText.setVisibility(View.GONE);
+                    myView.doMove.setVisibility(View.VISIBLE);
+                    mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.success));
+
+                    // Now reload the folder contents
+                    listFilesInFolder();
+                });
+            }).start();
+        }
     }
 
     private void checkAll(boolean isChecked) {
@@ -215,6 +239,14 @@ public class MoveContentFragment extends Fragment {
         return myView.folderContentsLayout.getChildCount();
     }
 
+    private boolean checkIndexingStatus() {
+        if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+            return true;
+        } else {
+            Snackbar.make(myView.getRoot(), R.string.search_index_wait, Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

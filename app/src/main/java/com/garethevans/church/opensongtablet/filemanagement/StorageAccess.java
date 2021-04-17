@@ -1772,12 +1772,14 @@ public class StorageAccess {
 
     int songCountAtLocation(File f) {
         // Prepare an arraylist for any song folders
+        Log.d("d","f="+f);
         ArrayList<File> foldersToIndex = new ArrayList<>();
         foldersToIndex.add(f);
         int count = 0;
         try {
-            for (int x = 0; x < foldersToIndex.size(); x++) {
-                File[] fs = foldersToIndex.get(x).listFiles();
+            for (File folderToIndex:foldersToIndex) {
+
+                File[] fs = folderToIndex.listFiles();
                 if (fs != null) {
                     for (File ff : fs) {
                         Log.d("d", "ff=" + ff);
