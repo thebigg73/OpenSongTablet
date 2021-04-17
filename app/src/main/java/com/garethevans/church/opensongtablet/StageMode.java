@@ -1234,7 +1234,6 @@ public class StageMode extends AppCompatActivity implements
                 StaticVariables.infoBarChangeRequired = true;
                 mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                         MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
-                updateDisplays();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -8220,7 +8219,6 @@ public class StageMode extends AppCompatActivity implements
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
-        StaticVariables.panicRequired = false;
         StaticVariables.infoBarChangeRequired = true;
         StaticVariables.forcecastupdate = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,

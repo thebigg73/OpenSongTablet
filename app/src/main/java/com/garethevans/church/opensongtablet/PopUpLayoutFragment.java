@@ -214,8 +214,9 @@ public class PopUpLayoutFragment extends DialogFragment {
         blockShadowAlphaText.setText(newtext);
         toggleChordsButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoShowChords",false));
         boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoLyricsBold",false));
+        toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoAutoScale",true));
+        // IV - Show relevant options for the mode
         if (StaticVariables.whichMode.equals("Presentation")) {
-            toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoAutoScale",true));
             // IV - Autocscale (no manual) when showing chords
             if (preferences.getMyPreferenceBoolean(getContext(), "presoShowChords", false)) {
                 toggleAutoScaleButton.setVisibility(View.GONE);
@@ -226,10 +227,15 @@ public class PopUpLayoutFragment extends DialogFragment {
                 showorhideView(group_manualfontsize, !toggleAutoScaleButton.isChecked());
             }
         } else {
-            // IV - Stage and Performance modes do not support manual font size or show alerts
-            toggleAutoScaleButton.setVisibility(View.GONE);
-            showorhideView(group_maxfontsize, true);
-            showorhideView(group_manualfontsize, false);
+            if (StaticVariables.whichMode.equals("Performance") || preferences.getMyPreferenceBoolean(getContext(), "presoShowChords", false)) {
+                toggleAutoScaleButton.setVisibility(View.GONE);
+                showorhideView(group_maxfontsize, true);
+                showorhideView(group_manualfontsize, false);
+            } else {
+                showorhideView(group_maxfontsize, toggleAutoScaleButton.isChecked());
+                showorhideView(group_manualfontsize, !toggleAutoScaleButton.isChecked());
+            }
+            // IV - Stage and Performance modes do not show alerts
             presoAlertText.setVisibility(View.GONE);
             presoAlertSizeSeekBar.setVisibility(View.GONE);
         }
@@ -357,7 +363,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         });
         toggleChordsButton.setOnCheckedChangeListener((compoundButton, b) -> {
             preferences.setMyPreferenceBoolean(getContext(),"presoShowChords",b);
-            if (StaticVariables.whichMode.equals("Presentation")) {
+            if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
                 // IV - Autocscale (no manual) when showing chords
                 if (b) {
                     toggleAutoScaleButton.setVisibility(View.GONE);
@@ -794,7 +800,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         public void onStopTrackingTouch(SeekBar seekBar) {
 
             preferences.setMyPreferenceFloat(getContext(),"presoInfoBarAlpha",((float)seekBar.getProgress() / 100f));
-            sendUpdateToScreen("backgrounds");
+            sendUpdateToScreen("info");
         }
     }
 

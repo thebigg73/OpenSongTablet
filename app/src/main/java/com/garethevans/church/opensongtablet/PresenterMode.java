@@ -445,7 +445,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         // Fix the page flags
         windowFlags();
-        updateDisplays();
     }
     @Override
     protected void onStop() {
@@ -3528,7 +3527,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Set the secondary alphabetical side bar
                     displayIndex(songmenulist, lva);
 
-                    // Flick the song drawer open on8ce it is ready
+                    // Flick the song drawer open once it is ready
                     findSongInFolders();
                     if (firstrun_song) {
                         openMyDrawers("song");
@@ -3596,7 +3595,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
-        StaticVariables.panicRequired = false;
         StaticVariables.infoBarChangeRequired = true;
         StaticVariables.forcecastupdate = true;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,

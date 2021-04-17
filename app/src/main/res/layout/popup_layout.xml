@@ -24,46 +24,247 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/modes_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:text="@string/performancemode" />
 
             <TextView
-                style="@style/MyHeadingText"
+                style="@style/MyWhiteHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/crossfade_time" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
 
-            <SeekBar
-                android:id="@+id/presoTransitionTimeSeekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:max="100"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"  />
+                    <SeekBar
+                        android:id="@+id/presoTransitionTimeSeekBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:max="100"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"  />
 
-            <TextView
-                android:id="@+id/presoTransitionTimeTextView"
-                style="@style/MyInfoText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/zerotime" />
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/presoTransitionTimeTextView"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@string/zerotime" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/group_alignment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/edit_song_lyrics" />
+
+                    <LinearLayout
+                        android:id="@+id/lyrics_title_align"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <HorizontalScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/lyrics_left_align"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="12dp"
+                                    android:contentDescription="Left"
+                                    android:src="@drawable/ic_format_align_left_white_36dp"
+                                    app:backgroundTint="#555555"
+                                    app:elevation="0dp"
+                                    app:fabSize="mini"
+                                    app:useCompatPadding="true"
+                                    tools:ignore="HardcodedText" />
+
+                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/lyrics_center_align"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:layout_marginEnd="12dp"
+                                    android:contentDescription="Center"
+                                    android:src="@drawable/ic_format_align_center_white_36dp"
+                                    app:backgroundTint="#555555"
+                                    app:elevation="0dp"
+                                    app:fabSize="mini"
+                                    app:useCompatPadding="true"
+                                    tools:ignore="HardcodedText" />
+
+                                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/lyrics_right_align"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:contentDescription="Right"
+                                    android:src="@drawable/ic_format_align_right_white_36dp"
+                                    app:backgroundTint="#555555"
+                                    app:elevation="0dp"
+                                    app:fabSize="mini"
+                                    app:useCompatPadding="true"
+                                    tools:ignore="HardcodedText" />
+
+                            </LinearLayout>
+
+                    </HorizontalScrollView>
+
+                    <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_top_valign"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="12dp"
+                                android:contentDescription="@string/top"
+                                android:src="@drawable/ic_format_vertical_align_top_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_center_valign"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:contentDescription="Middle"
+                                android:src="@drawable/ic_format_vertical_align_center_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true"
+                                tools:ignore="HardcodedText" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_bottom_valign"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:contentDescription="@string/bottom"
+                                android:src="@drawable/ic_format_vertical_align_bottom_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/boldTextButton"
+                    android:textColor="#ff0"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    style="@style/MyTextSwitch"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/bold_text" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/blockShadow"
+                    android:textColor="#ff0"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    style="@style/MyTextSwitch"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/block_text_shadow" />
+
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/block_shadow_opacity" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <SeekBar
+                        android:id="@+id/blockShadowAlpha"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:max="100"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"  />
+
+                    <TextView
+                        android:id="@+id/blockShadowAlphaText"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/toggleAutoScaleButton"
@@ -172,218 +373,21 @@
                 android:layout_margin="8dp"
                 android:text="@string/showchords" />
 
-            <LinearLayout
-                android:id="@+id/group_alignment"
+            <TextView
+                style="@style/MyWhiteHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/lyrics_title_align"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="@style/MyHeadingText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:text="@string/edit_song_lyrics" />
-
-                    <HorizontalScrollView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/lyrics_left_align"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="12dp"
-                                android:contentDescription="Left"
-                                android:src="@drawable/ic_format_align_left_white_36dp"
-                                app:backgroundTint="#555555"
-                                app:elevation="0dp"
-                                app:fabSize="mini"
-                                app:useCompatPadding="true"
-                                tools:ignore="HardcodedText" />
-
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/lyrics_center_align"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_marginEnd="12dp"
-                                android:contentDescription="Center"
-                                android:src="@drawable/ic_format_align_center_white_36dp"
-                                app:backgroundTint="#555555"
-                                app:elevation="0dp"
-                                app:fabSize="mini"
-                                app:useCompatPadding="true"
-                                tools:ignore="HardcodedText" />
-
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/lyrics_right_align"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:contentDescription="Right"
-                                android:src="@drawable/ic_format_align_right_white_36dp"
-                                app:backgroundTint="#555555"
-                                app:elevation="0dp"
-                                app:fabSize="mini"
-                                app:useCompatPadding="true"
-                                tools:ignore="HardcodedText" />
-
-                        </LinearLayout>
-
-                    </HorizontalScrollView>
-
-                    <HorizontalScrollView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="12dp"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/lyrics_top_valign"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                 android:layout_marginEnd="12dp"
-                                android:contentDescription="@string/top"
-                                android:src="@drawable/ic_format_vertical_align_top_white_36dp"
-                                app:backgroundTint="#555555"
-                                app:elevation="0dp"
-                                app:fabSize="mini"
-                                app:useCompatPadding="true" />
-
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/lyrics_center_valign"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:layout_marginEnd="12dp"
-                                android:contentDescription="Middle"
-                                android:src="@drawable/ic_format_vertical_align_center_white_36dp"
-                                app:backgroundTint="#555555"
-                                app:elevation="0dp"
-                                app:fabSize="mini"
-                                app:useCompatPadding="true"
-                                tools:ignore="HardcodedText" />
-
-                            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                                android:id="@+id/lyrics_bottom_valign"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:contentDescription="@string/bottom"
-                                android:src="@drawable/ic_format_vertical_align_bottom_white_36dp"
-                                app:backgroundTint="#555555"
-                                app:elevation="0dp"
-                                app:fabSize="mini"
-                                app:useCompatPadding="true" />
-
-                        </LinearLayout>
-
-                    </HorizontalScrollView>
-
-                </LinearLayout>
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/boldTextButton"
-                    android:textColor="#ff0"
-                    android:textOff="@string/off"
-                    android:textOn="@string/on"
-                    style="@style/MyTextSwitch"
-                    app:showText="true"
-                    app:switchTextAppearance="@style/MyInfoText"
-                    app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/bold_text" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/blockShadow"
-                    android:textColor="#ff0"
-                    android:textOff="@string/off"
-                    android:textOn="@string/on"
-                    style="@style/MyTextSwitch"
-                    app:showText="true"
-                    app:switchTextAppearance="@style/MyInfoText"
-                    app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/block_text_shadow" />
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/block_shadow_opacity" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/blockShadowAlpha"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:max="100"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"  />
-
-                <TextView
-                    android:id="@+id/blockShadowAlphaText"
-                    style="@style/MyInfoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:layout_marginTop="16dp"
+                android:text="@string/presoInfoFont" />
 
             <LinearLayout
                 android:id="@+id/group_songinfofontsizes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
                 android:orientation="vertical">
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/presoInfoFont" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
@@ -562,14 +566,13 @@
                 android:id="@+id/group_backgrounds"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="8dp"
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/MyHeadingText"
+                    style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
                     android:text="@string/preso_alpha" />
 
                 <LinearLayout
@@ -577,23 +580,23 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                <SeekBar
-                    android:id="@+id/presoAlphaProgressBar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:max="100"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"  />
+                    <SeekBar
+                        android:id="@+id/presoAlphaProgressBar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:max="100"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"  />
 
-                <TextView
-                    android:id="@+id/presoAlphaText"
-                    style="@style/MyInfoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
+                    <TextView
+                        android:id="@+id/presoAlphaText"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp" />
 
                 </LinearLayout>
 
@@ -623,6 +626,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_margin="12dp"
                         android:shadowColor="#FFFFFF" />
+
                 </LinearLayout>
 
                 <TextView
@@ -717,10 +721,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:text="@string/setxmargins" />
+
+                <SeekBar
+                    android:id="@+id/setXMarginProgressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/setymargins" />
+
+                <SeekBar
+                    android:id="@+id/setYMarginProgressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                <TextView
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="@string/logo" />
 
                 <LinearLayout
                     android:layout_width="200dp"
+                    android:layout_marginStart="8dp"
                     android:layout_height="wrap_content" >
 
                     <ImageView
@@ -737,44 +776,10 @@
             </LinearLayout>
 
             <TextView
-                style="@style/MyHeadingText"
+                style="@style/MyWhiteHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/setxmargins" />
-
-            <SeekBar
-                android:id="@+id/setXMarginProgressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/setymargins" />
-
-            <SeekBar
-                android:id="@+id/setYMarginProgressBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/rotate_display" />
 
             <LinearLayout

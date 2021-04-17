@@ -1184,6 +1184,7 @@ public class ProcessSong extends Activity {
             layoutParams.width = TableLayout.LayoutParams.WRAP_CONTENT;
             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             layoutParams.gravity = presoLyricsAlign;
+            chordrow.setLayoutParams(layoutParams);
         } else {
             chordrow.setLayoutParams(tablelayout_params());
         }
@@ -1208,23 +1209,19 @@ public class ProcessSong extends Activity {
             chordbit.setTextColor(lyricsChordsColor);
             chordbit.setTypeface(StaticVariables.typefaceChords);
 
+            if (preferences.getMyPreferenceBoolean(c, "displayBoldChordsHeadings", false)) {
+                chordbit.setPaintFlags(chordbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            }
+
             if (StaticVariables.whichMode.equals("Presentation")) {
+                chordbit.setSingleLine(true);
                 if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) &&
                         !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-                    chordbit.setSingleLine(true);
                     chordbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
-                } else if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) &&
-                        preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-                    chordbit.setSingleLine(true);
-                    chordbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
-                } else {
-                    chordbit.setSingleLine(true);
                 }
             }
 
-
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c, "trimLines", false)) {
-                //chordbit.setSingleLine();
                 chordbit.setIncludeFontPadding(false);
                 chordbit.setGravity(Gravity.CENTER_VERTICAL);
                 chordbit.setPadding(0, -trimval, 0, -trimval);
@@ -1239,27 +1236,20 @@ public class ProcessSong extends Activity {
                                          String[] lyrics, float fontsize,
                                          StorageAccess storageAccess, Preferences preferences, Boolean presentation) {
 
-        TableRow lyricrow = new TableRow(c);
         int presoLyricsAlign = preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER);
-        int presotextAlign = presotextAlignFromGravity(presoLyricsAlign);
-        if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout) {
-            TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams();
-            layoutParams.width = TableLayout.LayoutParams.MATCH_PARENT;
-            layoutParams.height = TableLayout.LayoutParams.WRAP_CONTENT;
-            layoutParams.gravity = presoLyricsAlign;
-            lyricrow.setLayoutParams(layoutParams);
-        } else {
-            lyricrow.setLayoutParams(tablelayout_params());
-        }
-
+        int presoTextAlign = presotextAlignFromGravity(presoLyricsAlign);
+        boolean showchordspreso = preferences.getMyPreferenceBoolean(c, "presoShowChords", false);
+        boolean stagelyricsonly = StaticVariables.whichMode.equals("Stage") && !showchordspreso && presentation;
         int trimval = (int) (fontsize * preferences.getMyPreferenceFloat(c, "lineSpacing", 0.1f));
-        lyricrow.setPadding(0, 0, 0, 0);
+
+        TableRow lyricrow = new TableRow(c);
+        lyricrow.setLayoutParams(tablelayout_params());
+
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c, "trimLines", false)) {
             lyricrow.setPadding(0, -trimval, 0, -trimval);
             lyricrow.setGravity(Gravity.CENTER_VERTICAL);
         }
 
-        // set different layoutparams and set gravity
         lyricrow.setClipChildren(false);
         lyricrow.setClipToPadding(false);
 
@@ -1304,8 +1294,11 @@ public class ProcessSong extends Activity {
                     if (StaticVariables.whichMode.equals("Performance")) {
                         bit = bit + "  ";
                     } else {
-                        // And before so that block text shadow has spaces on both sides
-                        bit = "  " + bit + "  ";
+                        // IV - Except when wrapping presentation lyrics (bit gets no padding)
+                        if (!presentation || preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) || preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
+                            // Before and after so that block text shadow has spaces on both sides
+                            bit = "  " + bit + "  ";
+                        }
                     }
                     // IV - flag used to break loop
                     lyricsOnly = true;
@@ -1316,61 +1309,45 @@ public class ProcessSong extends Activity {
 
             TextView lyricbit = new TextView(c);
 
-            if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
-                    !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-                lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-                lyricbit.setGravity(presoLyricsAlign);
-            } else {
-                lyricbit.setLayoutParams(tablerow_params());
-            }
-            // IV - Only use if the bit is not 'empty'.  This means the chord line spacing is used
-            if (!bit.replace(" ", "").isEmpty()) {
-                lyricbit.setText(bit);
-            }
-
+            // IV - Defaults
+            lyricbit.setLayoutParams(tablerow_params());
+            lyricbit.setSingleLine(false);
             lyricbit.setTextSize(fontsize);
-            if (StaticVariables.whichMode.equals("Presentation")) {
-                lyricbit.setTextColor(presoFontColor);
-                if (preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false) || fakeBold) {
-                    lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-                }
-                lyricbit.setTypeface(StaticVariables.typefacePreso);
 
-                int w = StaticVariables.cast_availableWidth_1col;
-                // If we have turned off autoscale and aren't showing the chords, allow wrapping
-                if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) &&
-                        !preferences.getMyPreferenceBoolean(c, "presoShowChords", false) && w > 0) {
+            // IV - Overrides for layoutparams, gravity and more - depending on mode
+            if (StaticVariables.whichMode.equals("Presentation") || stagelyricsonly) {
+                lyricbit.setTextColor(presoFontColor);
+                lyricbit.setTypeface(StaticVariables.typefacePreso);
+                lyricbit.setTextAlignment(presoTextAlign);
+                lyricbit.setGravity(presoLyricsAlign);
+                if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
+                    // IV - If we have turned off autoscale and aren't showing the chords, support wrapping
+                    // IV - The line is trimmed and displayed with wrapping full width
+                    // IV - Block text use will also (intentionally) disaply full width - this hides wrapped short lines being blocked to the size of largest line)
+                    lyricbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
+                    lyricbit.setText(bit.trim());
+                    int w = StaticVariables.cast_availableWidth_1col;
                     TableRow.LayoutParams tllp = new TableRow.LayoutParams(w, TableRow.LayoutParams.WRAP_CONTENT);
                     lyricbit.setLayoutParams(tllp);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         lyricbit.setBreakStrategy(LineBreaker.BREAK_STRATEGY_BALANCED);
                     }
-                    lyricbit.setSingleLine(false);
-                    lyricbit.setGravity(presoLyricsAlign);
-                    lyricbit.setTextAlignment(presotextAlign);
-                    lyricbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
-                } else if (!preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) &&
-                        preferences.getMyPreferenceBoolean(c, "presoShowChords", false)){
-                    TableRow.LayoutParams tllp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-                    lyricbit.setLayoutParams(tllp);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        lyricbit.setBreakStrategy(LineBreaker.BREAK_STRATEGY_BALANCED);
-                    }
-                    lyricbit.setSingleLine(true);
-                    lyricbit.setTextAlignment(presotextAlign);
-                    lyricbit.setTextSize(preferences.getMyPreferenceFloat(c, "fontSizePreso", 14.0f));
                 } else {
                     lyricbit.setSingleLine(true);
                 }
-
             } else {
                 lyricbit.setTextColor(lyricsTextColor);
-                // IV - Support bold lyrics when presentation
-                if ((presentation && preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false)) || fakeBold) {
-                    lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-                }
                 lyricbit.setTypeface(StaticVariables.typefaceLyrics);
+            }
+
+            // IV - Support bold lyrics when presentation
+            if ((presentation && preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false)) || fakeBold) {
+                lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            }
+
+            // IV - Only use if the bit is not 'empty'.  This results in the chord line spacing being used
+            if (!bit.replace(" ", "").isEmpty()) {
+                lyricbit.setText(bit);
             }
 
             if (FullscreenActivity.isImageSection) {
@@ -1435,7 +1412,10 @@ public class ProcessSong extends Activity {
                     lyricbit.setIncludeFontPadding(false);
                     lyricbit.setGravity(Gravity.CENTER_VERTICAL);
                     lyricbit.setPadding(0, -trimval, 0, -trimval);
-                    lyricbit.setLineSpacing(0f, 0f);
+                    // IV - Not when wrapping presentation lyrics (or wrapping breaks)
+                    if (!presentation || preferences.getMyPreferenceBoolean(c, "presoAutoScale", true) || preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
+                        lyricbit.setLineSpacing(0f, 0f);
+                    }
                 }
                 lyricrow.addView(lyricbit);
             }
