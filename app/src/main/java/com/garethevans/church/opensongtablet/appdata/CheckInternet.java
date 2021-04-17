@@ -1,6 +1,8 @@
 package com.garethevans.church.opensongtablet.appdata;
 
-import android.app.Activity;
+import androidx.fragment.app.Fragment;
+
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -8,15 +10,9 @@ import java.net.Socket;
 
 public class CheckInternet {
 
-    boolean connected;
-    private ConnectedInterface connectedInterface;
-    public interface ConnectedInterface {
-        void isConnected(boolean connected);
-    }
-
-    public void checkConnection(Activity activity) {
-        connectedInterface = (ConnectedInterface) activity;
+    public void checkConnection(Fragment fragment, int fragId, MainActivityInterface mainActivityInterface) {
         new Thread(() -> {
+            boolean connected;
             try {
                 Socket sock = new Socket();
                 sock.connect(new InetSocketAddress("8.8.8.8", 53), 1500);  //Google
@@ -25,9 +21,7 @@ public class CheckInternet {
             } catch (IOException e) {
                 connected = false;
             }
-
-            // Now return the value
-            connectedInterface.isConnected(connected);
+            mainActivityInterface.isWebConnected(fragment,fragId,connected);
         }).start();
     }
 

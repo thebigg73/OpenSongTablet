@@ -100,6 +100,7 @@ import com.garethevans.church.opensongtablet.screensetup.ActivityGestureDetector
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
+import com.garethevans.church.opensongtablet.screensetup.FontSetupFragment;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
@@ -148,11 +149,10 @@ better for memory, lifecycle and passing values between fragments (how the app n
 
 MainActivity is the main gatekeeper of class references and variables.
 All fragments get access to these using getters and setters via the MainActivityInterface
-
 This avoids loads of static variables
 
 Fragments sometimes send info back to the MainActivity and ask this activity to send the details back
-When this happens, the fragment has to be open!!
+When this happens, the fragment has to be open.  Main activity keeps references anc checks before doing!!
 */
 
 //TODO Fix unused and local
@@ -1973,6 +1973,20 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         if (swipeFragment!=null) {
             try {
                 ((SwipeFragment) swipeFragment).getSwipeValues(minDistance, minHeight, minTime);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void isWebConnected(Fragment fragment, int fragId, boolean connected) {
+        // This is the result of an internet connection check
+        if (fragment!=null) {
+            try {
+                if (fragId==R.id.fontSetupFragment) {
+                    ((FontSetupFragment) fragment).isConnected(connected);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

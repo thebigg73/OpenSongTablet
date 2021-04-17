@@ -182,4 +182,5 @@ public interface MainActivityInterface {
     DrawNotes getDrawNotes();
     void setDrawNotes(DrawNotes view);
     ProfileActions getProfileActions();
+    void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
 }

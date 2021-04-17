@@ -21,8 +21,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-//import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-
 /*
 This fragment is the first one that the main activity loads up.
 It checks that we are clear to proceed - we have the required storage permissions and that we

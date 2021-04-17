@@ -23,7 +23,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 
-public class FontSetupFragment extends Fragment implements CheckInternet.ConnectedInterface{
+public class FontSetupFragment extends Fragment {
 
     private SettingsFontsBinding myView;
     private ArrayList<String> fontNames;
@@ -148,14 +148,16 @@ public class FontSetupFragment extends Fragment implements CheckInternet.Connect
         // Only allow if an internet connection is detected
         // This then sends the result to isConnected
         CheckInternet checkInternet = new CheckInternet();
-        checkInternet.checkConnection(requireActivity());
+        checkInternet.checkConnection(this,R.id.fontSetupFragment,mainActivityInterface);
     }
 
-    @Override
     public void isConnected(boolean connected) {
         if (connected) {
-            mainActivityInterface.setWhattodo(which);
-            mainActivityInterface.navigateToFragment(null, R.id.fontSetupPreviewFragment);
+            // Because this is called from another thread, we need to post back via the UIThread
+            new Thread(() -> requireActivity().runOnUiThread(() -> {
+                mainActivityInterface.setWhattodo(which);
+                mainActivityInterface.navigateToFragment(null, R.id.fontSetupPreviewFragment);
+            })).start();
         }
     }
 
