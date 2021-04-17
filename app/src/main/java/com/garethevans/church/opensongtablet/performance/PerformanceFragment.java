@@ -283,25 +283,30 @@ public class PerformanceFragment extends Fragment {
         myView.songView.startAnimation(animSlideIn);
     }
     private void dealWithHighlighterFile(int w, int h) {
-        // Set the highlighter image view to match
-        ViewGroup.LayoutParams layoutParams = myView.highlighterView.getLayoutParams();
-        layoutParams.width = w;
-        layoutParams.height = h;
-        myView.highlighterView.setLayoutParams(layoutParams);
-        // Load in the bitmap with these dimensions
-        Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                getHighlighterFile(requireContext(),mainActivityInterface,w,h);
-        if (highlighterBitmap!=null &&
-                mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay", true)) {
-            myView.highlighterView.setVisibility(View.VISIBLE);
-            GlideApp.with(requireContext()).load(highlighterBitmap).
-                    override(w,h).into(myView.highlighterView);
-            myView.highlighterView.startAnimation(animSlideIn);
-            // Hide after a certain length of time
-            int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
-            Log.d(TAG,"timetohide="+timetohide);
-            if (timetohide !=0) {
-                new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE),timetohide);
+        if (!mainActivityInterface.getPreferences().
+                getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")) {
+            // Set the highlighter image view to match
+            ViewGroup.LayoutParams layoutParams = myView.highlighterView.getLayoutParams();
+            layoutParams.width = w;
+            layoutParams.height = h;
+            myView.highlighterView.setLayoutParams(layoutParams);
+            // Load in the bitmap with these dimensions
+            Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
+                    getHighlighterFile(requireContext(), mainActivityInterface, w, h);
+            if (highlighterBitmap != null &&
+                    mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "drawingAutoDisplay", true)) {
+                myView.highlighterView.setVisibility(View.VISIBLE);
+                GlideApp.with(requireContext()).load(highlighterBitmap).
+                        override(w, h).into(myView.highlighterView);
+                myView.highlighterView.startAnimation(animSlideIn);
+                // Hide after a certain length of time
+                int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
+                Log.d(TAG, "timetohide=" + timetohide);
+                if (timetohide != 0) {
+                    new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
+                }
+            } else {
+                myView.highlighterView.setVisibility(View.GONE);
             }
         } else {
             myView.highlighterView.setVisibility(View.GONE);
@@ -373,7 +378,9 @@ public class PerformanceFragment extends Fragment {
 
     View screenGrab;
     private void getScreenshot(int w, int h) {
-        if (w!=0 && h!=0) {
+        if (!mainActivityInterface.getPreferences().
+                getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")
+                && w!=0 && h!=0) {
             try {
                 Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
@@ -382,7 +389,7 @@ public class PerformanceFragment extends Fragment {
                     myView.songView.draw(canvas);
                     mainActivityInterface.setScreenshot(bitmap);
                 }
-            } catch (Exception e) {
+            } catch (Exception | OutOfMemoryError e) {
                 e.printStackTrace();
             }
         }

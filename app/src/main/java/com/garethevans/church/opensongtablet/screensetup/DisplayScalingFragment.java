@@ -67,11 +67,15 @@ public class DisplayScalingFragment extends Fragment {
                 modeSwitches(true,false);
                 visibilityByBoolean(myView.manualFontSizeLayout,false);
                 visibilityByBoolean(myView.autoFontSizeLayout,true);
+                visibilityByBoolean(myView.overrideFull,true);
+                visibilityByBoolean(myView.overrideWidthSwitch,true);
                 break;
             case "W":
                 modeSwitches(true,true);
                 visibilityByBoolean(myView.manualFontSizeLayout,false);
                 visibilityByBoolean(myView.autoFontSizeLayout,true);
+                visibilityByBoolean(myView.overrideFull,false);
+                visibilityByBoolean(myView.overrideWidthSwitch,true);
                 break;
             case "N":
                 modeSwitches(false,false);
@@ -116,10 +120,14 @@ public class DisplayScalingFragment extends Fragment {
             val = "W";
             visibilityByBoolean(myView.manualFontSizeLayout,false);
             visibilityByBoolean(myView.autoFontSizeLayout,true);
+            visibilityByBoolean(myView.overrideFull,false);
+            visibilityByBoolean(myView.overrideWidthSwitch,true);
         } else if (useAutoscale) {
             val = "Y";
             visibilityByBoolean(myView.manualFontSizeLayout,false);
             visibilityByBoolean(myView.autoFontSizeLayout,true);
+            visibilityByBoolean(myView.overrideFull,true);
+            visibilityByBoolean(myView.overrideWidthSwitch,true);
         } else {
             val = "N";
             visibilityByBoolean(myView.manualFontSizeLayout,true);

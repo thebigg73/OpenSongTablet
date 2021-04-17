@@ -51,17 +51,22 @@ public class FontSetupFragment extends Fragment {
             // Got the fonts from Google
             fontNames = mainActivityInterface.getMyFonts().getFontsFromGoogle();
 
-            requireActivity().runOnUiThread(() -> {
-                // Set up the previews
-                initialisePreviews();
-                updatePreviews();
+            try {
+                requireActivity().runOnUiThread(() -> {
+                    // Set up the previews
+                    initialisePreviews();
+                    updatePreviews();
 
-                // Set the drop down lists
-                setupDropDowns();
+                    // Set the drop down lists
+                    setupDropDowns();
 
-                // Set the buttons that open the web preview selector
-                setWebButtonListeners();
-            });
+                    // Set the buttons that open the web preview selector
+                    setWebButtonListeners();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                // The user likely left before this completed
+            }
         }).start();
 
 
