@@ -182,11 +182,6 @@ public class ProcessSong {
         s = s.replace("�??","'");
         s = s.replace("�?","'");
         s = s.replace("�","'");
-        /*// strips off all non-ASCII characters
-        s = s.replaceAll("[^\\x00-\\x7F]", "");*/
-
-        /*// removes non-printable characters from Unicode
-        s = s.replaceAll("\\p{C}", "");*/
         return s;
     }
     public String makeXMLSafeEncoding(String s) {
