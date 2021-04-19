@@ -3,9 +3,19 @@ package com.garethevans.church.opensongtablet;
 public class __TODO__ {
 
     //TODO - still to complete
+    // Anything still listed below needs work
+    // Anything missing has been tested as ok
+
     /*
+
+    Everywhere i use the autocomplete text view, I need to add a listener that moves to the selected position
+    exposedDropDownSelection = new ExposedDropDownSelection();
+    exposedDropDownSelection.keepSelectionPosition(TEXTINPUTLAYOUTPARENT,AUTOCOMPLETETEXTVIEW, ARRAYOFVALUES);
+
     The following menus still need completed
 
+    Song menu action button - show song actions
+    Song menu action button - find new songs
 
     Import songs - online
     Import songs - file
@@ -13,21 +23,30 @@ public class __TODO__ {
     Import songs - iOS
 
 
-    Display - performance mode
-    Display - stage mode
-    Display - secondary screen/connected display - might move this to performance/presentation/stage - it depends
-    Display - presentation mode
+    Display - song display / advanced - needs ProcessSong brought fully online
+    Display - connected display (HDMI/Chromecast output) - needs SecondScreen working
+    Display - Action bar - auto hide action bar not working yet
+    Display - Menu settings - doesn't do anything get
 
+    Song actions - Pad
+    Song actions - Autoscroll
+    Song actions - Metronome
+    Song actions - Sticky notes
+    Song actions - Highlighter
+    Song actions - Link
+    Song actions - Chords
+    Song actions - ABC notation
+    Song actions - MIDI
 
-    Song actions - all
+    Controls - page buttons: Add the features once they are all ready
+    Controls - pedals: Add the features once they are ready
+    Controls - custom gestures:  Add the features once they are ready
+
 
     popup scroll settings - speed/amount - add to pedals fragment?  Don't want up/down arrow anymore
 
-    Need to figure out where to add..
-    section filtering (currently in old extra information
 
-    storage - when moving or renaming files.  fix highlighter notes to match
-    storage - when moving pdf/img files, update the persistent nonopensong database
+    The 3 different modes
      */
 
 
