@@ -50,6 +50,7 @@ public class ImportOnlineFragment extends Fragment {
     private String webSearchFull, webAddressFinal, source, webString;
     private Song newSong;
     private UltimateGuitar ultimateGuitar;
+    private Chordie chordie;
     private ExposedDropDownSelection exposedDropDownSelection1,exposedDropDownSelection2;
 
     @Override
@@ -79,6 +80,7 @@ public class ImportOnlineFragment extends Fragment {
     private void setupHelpers() {
         newSong = new Song();
         ultimateGuitar = new UltimateGuitar();
+        chordie = new Chordie();
         exposedDropDownSelection1 = new ExposedDropDownSelection();
         exposedDropDownSelection2 = new ExposedDropDownSelection();
     }
@@ -144,11 +146,6 @@ public class ImportOnlineFragment extends Fragment {
                 extractContent();
             }
         });
-
-        //String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
-        //String newUA = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
-        //String oldUA = "Mozilla/5.0 (Linux; U; Android 4.0.4; en-gb; GT-I9300 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
-        //myView.webView.getSettings().setUserAgentString(newUA);
         myView.webView.getSettings().getJavaScriptEnabled();
         myView.webView.getSettings().setJavaScriptEnabled(true);
         myView.webView.getSettings().setDomStorageEnabled(true);
@@ -296,8 +293,7 @@ public class ImportOnlineFragment extends Fragment {
                             setSearchSite(myView.onlineSource.getText().toString());
                 source = myView.onlineSource.getText().toString();
                 if (source.equals("Chordie")) {
-                    String chordieExtra = "&np=0&ps=10&wf=2221&s=RPD&wf=2221&wm=wrd&type=&sp=1&sy=1&cat=&ul=&np=0";
-                    extra = chordieExtra;
+                    extra = "&np=0&ps=10&wf=2221&s=RPD&wf=2221&wm=wrd&type=&sp=1&sy=1&cat=&ul=&np=0";
                 }
                 for (int x = 0; x < sources.length; x++) {
                     if (sources[x].equals(source)) {
@@ -335,8 +331,9 @@ public class ImportOnlineFragment extends Fragment {
                 String s;
                 while ((s = buffer.readLine()) != null) {
                     sb.append("\n").append(s);
+                    Log.d("HTML",s);
                     if (s.contains("<div class=\"fb-meta\">") ||
-                            s.contains("<div class=\"plus-minus\">") ||
+                            //s.contains("<div class=\"plus-minus\">") ||
                             s.contains("<div class=\"ugm-rate--stars") ||
                             s.contains("<section class=\"ugm-ad ugm-ad__bottom\">")) {
                         // End the while loop early as we have what we need
@@ -370,6 +367,18 @@ public class ImportOnlineFragment extends Fragment {
                     show = true;
                 }
                 break;
+            case "Chordie":
+                //if (webString.contains("<pre id=\"placeholderChordpro\"")) {
+                if (webString.contains("<textarea id=\"chordproContent\"")) {
+                    // We have to invoke some javascript to get the content though!
+                    // webView.post(() -> myView.webView.evaluateJavascript("javascript:return document.getElementById('placeholderChordpro').innerHTML;", value -> {
+                        // value is the result returned by the Javascript as JSON - add to lyrics
+                        //newSong.setLyrics(value);
+                        // We'll use some of the html to get the title/author, etc
+                    //}));
+                    show = true;
+                    break;
+                }
         }
         if (show) {
             myView.saveButton.post(() -> myView.saveButton.show());
@@ -393,9 +402,15 @@ public class ImportOnlineFragment extends Fragment {
                 Log.d("ImportOnline","key="+newSong.getKey());
                 Log.d("ImportOnline","capo="+newSong.getCapo());
                 Log.d("ImportOnline","lyrics="+newSong.getLyrics());
-
                 break;
             case "Chordie":
+                Log.d("ImportOnline","getting here");
+                newSong = chordie.processContent(requireContext(),mainActivityInterface,newSong,webString);
+                Log.d("ImportOnline","title="+newSong.getTitle());
+                Log.d("ImportOnline","author="+newSong.getAuthor());
+                Log.d("ImportOnline","key="+newSong.getKey());
+                Log.d("ImportOnline","capo="+newSong.getCapo());
+                Log.d("ImportOnline","lyrics="+newSong.getLyrics());
                 break;
         }
 

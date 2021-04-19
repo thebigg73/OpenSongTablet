@@ -39,7 +39,7 @@ public class ConvertChoPro {
         lyrics = makeTagsCommon(lyrics);
 
         // Fix content we recognise
-        lyrics = fixRecognisedContent(lyrics);
+        lyrics = fixRecognisedContent(mainActivityInterface,lyrics);
 
         // Now that we have the basics in place, we will go back through the song and extract headings
         // We have to do this separately as [] were previously identifying chords, not tags.
@@ -52,25 +52,30 @@ public class ConvertChoPro {
         // Add spaces to beginnings of lines that aren't comments, chords or tags
         lyrics = addSpacesToLines(lyrics);
 
-        // Get the filename and subfolder (if any) that the original song was in by parsing the uri
-        oldSongFileName = getOldSongFileName(uri);
-        songSubFolder = getSongFolderLocation(mainActivityInterface, uri, oldSongFileName);
+        // If we received a null uri, we just want the content processed, so ignore some stuff
+        if (uri==null) {
+            newSongFileName = title;
+        } else {
+            // Get the filename and subfolder (if any) that the original song was in by parsing the uri
+            oldSongFileName = getOldSongFileName(uri);
+            songSubFolder = getSongFolderLocation(mainActivityInterface, uri, oldSongFileName);
 
-        // Prepare the new song filename
-        newSongFileName = getNewSongFileName(mainActivityInterface, uri, title);
+            // Prepare the new song filename
+            newSongFileName = getNewSongFileName(mainActivityInterface, uri, title);
 
-        // Set the correct values
-        thisSong = setCorrectXMLValues(thisSong);
+            // Set the correct values
+            setCorrectXMLValues(thisSong);
 
-        // Now prepare the new songXML file
-        String newXML = mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface,thisSong);
+            // Now prepare the new songXML file
+            String newXML = mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface, thisSong);
 
-        // Get a unique uri for the new song
-        Uri newUri = getNewSongUri(c, mainActivityInterface, songSubFolder, newSongFileName);
+            // Get a unique uri for the new song
+            Uri newUri = getNewSongUri(c, mainActivityInterface, songSubFolder, newSongFileName);
 
-        // Now write the modified song
-        writeTheImprovedSong(c, mainActivityInterface, thisSong, oldSongFileName, newSongFileName,
-                songSubFolder, newUri, uri, newXML);
+            // Now write the modified song
+            writeTheImprovedSong(c, mainActivityInterface, thisSong, oldSongFileName, newSongFileName,
+                    songSubFolder, newUri, uri, newXML);
+        }
 
         thisSong.setFilename(newSongFileName);
         thisSong.setTitle(title);
@@ -145,7 +150,7 @@ public class ConvertChoPro {
         return s;
     }
 
-    private String fixRecognisedContent(String l) {
+    private String fixRecognisedContent(MainActivityInterface mainActivityInterface, String l) {
         // Break the filecontents into lines
         lines = l.split("\n");
 
@@ -226,7 +231,7 @@ public class ConvertChoPro {
             }
 
             // Fix guitar tab so it fits OpenSongApp formatting ;e |
-            line = tryToFixTabLine(line);
+            line = tryToFixTabLine(mainActivityInterface, line);
 
             if (line.startsWith(";;")) {
                 line = line.replace(";;", ";");
@@ -280,19 +285,10 @@ public class ConvertChoPro {
         return s;
     }
 
-    String tryToFixTabLine(String l) {
-        if (l.startsWith("e|") && l.contains("--")) {
-            l = l.replace("e|", ";e |");
-        } else if (l.startsWith("B|") && l.contains("--")) {
-            l = l.replace("B|", ";B |");
-        } else if (l.startsWith("G|") && l.contains("--")) {
-            l = l.replace("G|", ";G |");
-        } else if (l.startsWith("D|") && l.contains("--")) {
-            l = l.replace("D|", ";D |");
-        } else if (l.startsWith("A|") && l.contains("--")) {
-            l = l.replace("A|", ";A |");
-        } else if (l.startsWith("E|") && l.contains("--")) {
-            l = l.replace("E|", ";E |");
+    String tryToFixTabLine(MainActivityInterface mainActivityInterface, String l) {
+        if (mainActivityInterface.getProcessSong().looksLikeGuitarTab(l)) {
+            // This is a tab
+            l = mainActivityInterface.getProcessSong().fixGuitarTabLine(l);
         }
         return l;
     }
@@ -548,7 +544,7 @@ public class ConvertChoPro {
         }
     }
 
-    private Song setCorrectXMLValues(Song thisSong) {
+    private void setCorrectXMLValues(Song thisSong) {
         if (title==null || title.isEmpty()) {
             title = newSongFileName;
         }
@@ -560,8 +556,6 @@ public class ConvertChoPro {
         thisSong.setCcli(ccli.trim());
         thisSong.setKey(key.trim());
         thisSong.setLyrics(lyrics.trim());
-
-        return thisSong;
     }
 
     private String getRidOfGuitarTapp(String s) {

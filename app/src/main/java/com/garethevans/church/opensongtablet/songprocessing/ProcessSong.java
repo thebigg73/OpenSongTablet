@@ -178,6 +178,15 @@ public class ProcessSong {
         s = s.replace("&Uuml;","Ü");
         s = s.replace("&uuml;","ü");
         s = s.replace("&#039;", "'");
+        s = s.replace("&#8217;","'");
+        s = s.replace("�??","'");
+        s = s.replace("�?","'");
+        s = s.replace("�","'");
+        /*// strips off all non-ASCII characters
+        s = s.replaceAll("[^\\x00-\\x7F]", "");*/
+
+        /*// removes non-printable characters from Unicode
+        s = s.replaceAll("\\p{C}", "");*/
         return s;
     }
     public String makeXMLSafeEncoding(String s) {
@@ -348,6 +357,9 @@ public class ProcessSong {
         if (line.indexOf("|")==2 && line.length()>3) {
             // We want this at position 3 (to allow for two character string tunings)
             line = line.substring(0,2) + " |" + line.substring(3);
+        } else if (line.indexOf("|")==1 && line.length()>2) {
+            // No string tuning has been specified
+            line = line.substring(0,1) + "   |" + line.substring(2);
         }
         return line;
     }
@@ -364,8 +376,6 @@ public class ProcessSong {
         }
         return line;
     }
-
-
 
     String[] getChordPositions(String string) {
         // Given a chord line, get the character positions that each chord starts at

@@ -337,21 +337,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     public void processHTML(String html) {
     }
 
-    @Override
-    public void onDismiss(@NonNull final DialogInterface dialog) {
-        if (mListener != null) {
-            mListener.pageButtonAlpha("");
-        }
-    }
 
-    @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
-        try {
-            this.dismiss();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
 

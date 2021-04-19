@@ -298,7 +298,7 @@ public class ConvertOnSong {
             }
 
             // Fix guitar tab so it fits OpenSongApp formatting ;e |
-            line = mainActivityInterface.getConvertChoPro().tryToFixTabLine(line);
+            line = mainActivityInterface.getConvertChoPro().tryToFixTabLine(mainActivityInterface,line);
 
             if (line.startsWith(";;")) {
                 line = line.replace(";;", ";");

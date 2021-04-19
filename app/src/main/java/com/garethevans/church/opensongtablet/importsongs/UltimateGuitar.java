@@ -11,7 +11,7 @@ public class UltimateGuitar {
     // Chord lines will have the chord identifier in them.  That can be removed
     // Text is htmlentitied - i.e. " is shown as &quot;, ' is shown as &#039;
 
-    private final String[] bitsToClear = new String[] {"</span>"};
+    private final String[] bitsToClear = new String[] {"</span>", "(Chords)"};
 
     // New lines are identified as new lines
 
@@ -182,6 +182,7 @@ public class UltimateGuitar {
         for (String bit:bitsToClear) {
             s = s.replace(bit,"");
         }
+        s = s.replaceAll("<(.*?)>", "");
         return s;
     }
 

@@ -118,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:editTextVal="@null"
-            app:hintTextVal="@string/search" />
+            app:hintTextVal="@string/filename" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/exposedFolderLayout"
