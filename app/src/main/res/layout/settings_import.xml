@@ -28,7 +28,7 @@
             android:id="@+id/importFile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="@string/import_file"
+            app:main="@string/file"
             app:sub="@string/import_other" />
         <TableRow style="@style/DividerLine" />
 

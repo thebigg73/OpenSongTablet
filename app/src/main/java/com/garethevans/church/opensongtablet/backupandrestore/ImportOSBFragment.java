@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.backupandrestore;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
@@ -14,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.FragmentOsbbackupBinding;
+import com.garethevans.church.opensongtablet.databinding.FragmentOsbDetailsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.BufferedInputStream;
@@ -32,7 +33,7 @@ public class ImportOSBFragment extends Fragment {
     // It uses the same layout as the export fragment, but changes the appopriate text
 
     private MainActivityInterface mainActivityInterface;
-    private FragmentOsbbackupBinding myView;
+    private FragmentOsbDetailsBinding myView;
 
     private String importFilename;
     private Uri importUri;
@@ -64,10 +65,8 @@ public class ImportOSBFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = FragmentOsbbackupBinding.inflate(inflater,container,false);
-
-        mainActivityInterface.updateToolbar(getString(R.string.settings) + " / " + getString(R.string.storage) +
-                " / " + getString(R.string.import_main));
+        myView = FragmentOsbDetailsBinding.inflate(inflater,container,false);
+        mainActivityInterface.updateToolbar(getString(R.string.import_basic));
 
         // Set up helpers
         setupHelpers();
@@ -89,7 +88,8 @@ public class ImportOSBFragment extends Fragment {
     private void setupValues() {
         myView.importTitle.setText(getString(R.string.import_osb));
         myView.backupName.getEditText().setText(importFilename);
-        myView.backupName.getEditText().setEnabled(false);
+        myView.backupName.getEditText().setEnabled(true);
+        myView.backupName.setFocusable(false);
         myView.overWrite.setVisibility(View.VISIBLE);
     }
 
@@ -186,6 +186,7 @@ public class ImportOSBFragment extends Fragment {
                     });
                 }
                 myView.createBackupFAB.setOnClickListener(v -> doImport());
+                myView.backupName.setOnClickListener(v -> changeBackupFile());
             }
             myView.progressBar.setVisibility(View.GONE);
         });
@@ -227,6 +228,11 @@ public class ImportOSBFragment extends Fragment {
         }
     }
 
+    private void changeBackupFile() {
+        Intent intent = mainActivityInterface.getStorageAccess().selectFileIntent(new String[] {"application/zip","application/octet-stream"});
+        requireActivity().startActivityForResult(intent,
+                mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"));
+    }
     private void doImport() {
         // Get the folders we've selected
         getCheckedFolders();
@@ -365,10 +371,10 @@ public class ImportOSBFragment extends Fragment {
                         mainActivityInterface.closeDrawer(true);
 
                         // Update the song index
-                        //mainActivityInterface.updateSongMenu(null,null,null);
+                        mainActivityInterface.fullIndex();
 
                         // Navigate back to the home
-                        mainActivityInterface.returnToHome(this,null);
+                        mainActivityInterface.navHome();
                     });
                 }
 

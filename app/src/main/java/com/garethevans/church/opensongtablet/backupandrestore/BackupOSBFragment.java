@@ -16,7 +16,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.FragmentOsbbackupBinding;
+import com.garethevans.church.opensongtablet.databinding.FragmentOsbDetailsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class BackupOSBFragment extends Fragment {
     // Show the user which folders are detected and can be backed up.
     // By default it will be all of them
 
-    private FragmentOsbbackupBinding myView;
+    private FragmentOsbDetailsBinding myView;
     private MainActivityInterface mainActivityInterface;
 
     private String backupFilename;
@@ -53,7 +53,7 @@ public class BackupOSBFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = FragmentOsbbackupBinding.inflate(inflater,container,false);
+        myView = FragmentOsbDetailsBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.backup));
 
         setupViews();

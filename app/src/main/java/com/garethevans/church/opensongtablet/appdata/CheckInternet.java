@@ -10,6 +10,9 @@ import java.net.Socket;
 
 public class CheckInternet {
 
+    private String searchPhrase;
+    private String searchSite = "UltimateGuitar";
+
     public void checkConnection(Fragment fragment, int fragId, MainActivityInterface mainActivityInterface) {
         new Thread(() -> {
             boolean connected;
@@ -25,4 +28,16 @@ public class CheckInternet {
         }).start();
     }
 
+    public void setSearchPhrase(String searchPhrase) {
+        this.searchPhrase = searchPhrase;
+    }
+    public String getSearchPhrase() {
+        return searchPhrase;
+    }
+    public void setSearchSite(String searchSite) {
+        this.searchSite = searchSite;
+    }
+    public String getSearchSite() {
+        return searchSite;
+    }
 }

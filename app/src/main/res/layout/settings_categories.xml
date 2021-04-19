@@ -12,10 +12,18 @@
         android:orientation="vertical">
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/storageButton"
+            android:id="@+id/modeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:main="@string/choose_app_mode"
+            app:sub="@string/performance_mode" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/storageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:main="@string/storage"
             app:sub="@string/storage_settings" />
         <TableRow style="@style/DividerLine" />
@@ -53,11 +61,11 @@
         <TableRow android:id="@+id/connectLine" style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/modeButton"
+            android:id="@+id/importButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="@string/choose_app_mode"
-            app:sub="@string/performance_mode" />
+            app:main="@string/add_songs"
+            app:sub="@string/import_main" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView

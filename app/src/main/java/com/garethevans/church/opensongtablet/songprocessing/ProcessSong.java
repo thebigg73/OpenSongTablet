@@ -108,6 +108,7 @@ public class ProcessSong {
         }
     }
 
+
     // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
     public String parseHTML(String s) {
         if (s == null) {
@@ -176,9 +177,16 @@ public class ProcessSong {
         s = s.replace("&ugrave;","ù");
         s = s.replace("&Uuml;","Ü");
         s = s.replace("&uuml;","ü");
+        s = s.replace("&#039;", "'");
         return s;
     }
-
+    public String makeXMLSafeEncoding(String s) {
+        // XML reserved characters are <, > and &
+        s = s.replace("<","&lt;");
+        s = s.replace(">","&gt;");
+        s = s.replace("&","&amp;");
+        return s;
+    }
     public String parseToHTMLEntities(String s) {
         if (s == null) {
             s = "";
@@ -214,7 +222,6 @@ public class ProcessSong {
 
         return s;
     }
-
     public String parseFromHTMLEntities(String val) {
         //Fix broken stuff
         if (val == null) {
@@ -231,9 +238,9 @@ public class ProcessSong {
         val = val.replace("&apos;", "'");
         val = val.replace("&quote;", "\"");
         val = val.replace("&quot;", "\"");
+        val = val.replace("&#039;", "'");
         return val;
     }
-
     public String fixStartOfLines(String lyrics) {
         StringBuilder fixedlyrics = new StringBuilder();
         String[] lines = lyrics.split("\n");
@@ -252,7 +259,6 @@ public class ProcessSong {
         }
         return fixedlyrics.toString();
     }
-
     String fixLineBreaksAndSlashes(String s) {
         s = s.replace("\r\n", "\n");
         s = s.replace("\r", "\n");
@@ -268,7 +274,6 @@ public class ProcessSong {
 
         return s;
     }
-
     String determineLineTypes(String string, Context c) {
         String type;
         if (string.indexOf(".") == 0) {
@@ -295,7 +300,6 @@ public class ProcessSong {
         }
         return type;
     }
-
     String howToProcessLines(int linenum, int totallines, String thislinetype, String nextlinetype, String previouslinetype) {
         String what;
         // If this is a chord line followed by a lyric line.
@@ -323,7 +327,6 @@ public class ProcessSong {
         }
         return what;
     }
-
     String fixLineLength(String string, int newlength) {
         int extraspacesrequired = newlength - string.length();
         StringBuilder stringBuilder = new StringBuilder(string);
@@ -333,6 +336,36 @@ public class ProcessSong {
         string = stringBuilder.toString();
         return string;
     }
+    public boolean looksLikeGuitarTab(String line) {
+        return line.contains("|") && line.contains("--");
+    }
+    public String fixGuitarTabLine(String line) {
+        // Guitar tab line should be like ;e |-1---3  etc.
+        if (!line.startsWith(";")) {
+            line = ";" + line;
+        }
+        // Look for position of first |
+        if (line.indexOf("|")==2 && line.length()>3) {
+            // We want this at position 3 (to allow for two character string tunings)
+            line = line.substring(0,2) + " |" + line.substring(3);
+        }
+        return line;
+    }
+    public boolean looksLikeHeadingLine(String line) {
+        return line.length()<15 && (line.contains("[") && line.contains("]")) ||
+                line.toLowerCase().contains("verse") || line.toLowerCase().contains("chorus");
+    }
+    public String fixHeadingLine(String line) {
+        if (!line.startsWith("[")) {
+            line = "[" + line;
+        }
+        if (!line.contains("]") && !line.endsWith("]")) {
+            line = line + "]";
+        }
+        return line;
+    }
+
+
 
     String[] getChordPositions(String string) {
         // Given a chord line, get the character positions that each chord starts at

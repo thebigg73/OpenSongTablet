@@ -50,8 +50,8 @@ public class ImportOptionsFragment extends Fragment {
     private void setListeners() {
         myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles));
         myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));
-        myView.importiOS.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));
-        myView.importOnline.setOnClickListener(v -> onlineSearch());
+        myView.importiOS.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE"),validBackups));
+        myView.importOnline.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.importOnlineFragment));
         myView.importBand.setOnClickListener(v -> importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA","Band.osb"));
         myView.importChurch.setOnClickListener(v -> importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM","Church.osb"));
     }
@@ -59,10 +59,6 @@ public class ImportOptionsFragment extends Fragment {
     private void selectFile(int id, String[] mimeTypes) {
         Intent intent = mainActivityInterface.getStorageAccess().selectFileIntent(mimeTypes);
         requireActivity().startActivityForResult(intent, id);
-    }
-
-    private void onlineSearch() {
-
     }
 
     private void importSample(String url, String filename) {
