@@ -786,11 +786,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // This stops us reporting projecting every section
                     newsongloaded = true;
 
-                    // Send Nearby payload
-                    if (StaticVariables.isHost && StaticVariables.isConnected) {
-                        nearbyConnections.sendSongPayload();
-                    }
-
                     doCancelAsyncTask(loadsong_async);
                     loadsong_async = new LoadSong();
                     try {
@@ -1790,8 +1785,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
 
     private void sendSongSectionToConnected() {
-        String infoPayload = "___section___" + StaticVariables.currentSection;
-        nearbyConnections.doSendPayloadBytes(infoPayload);
+        // IV - Do not send section 0 pay load when loading a song
+        if (!FullscreenActivity.alreadyloading) {
+            String infoPayload = "___section___" + StaticVariables.currentSection;
+            nearbyConnections.doSendPayloadBytes(infoPayload);
+        }
     }
 
     private void getBluetoothName() {
@@ -3386,7 +3384,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     showCorrectViews();
                     setupSongButtons();
                     findSongInFolders();
-
 
                     // Send WiFiP2P intent
                     if (StaticVariables.isHost && StaticVariables.isConnected && !orientationChanged) {

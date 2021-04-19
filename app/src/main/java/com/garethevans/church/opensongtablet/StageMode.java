@@ -1413,8 +1413,11 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void sendSongSectionToConnected() {
-        String infoPayload = "___section___"+StaticVariables.currentSection;
-        nearbyConnections.doSendPayloadBytes(infoPayload);
+        // IV - Do not send section 0 pay load when loading a song
+        if (!FullscreenActivity.alreadyloading) {
+            String infoPayload = "___section___" + StaticVariables.currentSection;
+            nearbyConnections.doSendPayloadBytes(infoPayload);
+        }
     }
 
     @Override

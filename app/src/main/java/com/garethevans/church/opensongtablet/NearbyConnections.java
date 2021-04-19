@@ -387,23 +387,16 @@ public class NearbyConnections implements NearbyInterface {
         return connectedEndPointsNames.contains(discoveredEndpointInfo.getEndpointName());
     }
     public void sendSongPayload() {
-        String infoPayload;
+        String infoPayload = null;
+        String infoFilePayload = null;
         Payload payloadFile = null;
-        String infoFilePayload = StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
-                "_xx____xx_" + FullscreenActivity.whichDirection;
+
         if (FullscreenActivity.isSong) {
             // By default, this should be smaller than 32kb, so probably going to send as bytes
-            // We'll measure the actual size later to check though
-            infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" +
-                    StaticVariables.songfilename + "_xx____xx_" +
-                    FullscreenActivity.whichDirection + "_xx____xx_" +
+            // We'll measure the actual size to check though
+            infoPayload =  StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
+                    "_xx____xx_" + FullscreenActivity.whichDirection + "_xx____xx_" +
                     FullscreenActivity.myXML;
-        } else {
-            // We will send as a file instead
-            infoPayload=null;
-        }
-
-        if (infoPayload!=null) {
             // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
             byte[] mybytes = infoPayload.getBytes();
             if (mybytes.length>30000) {
@@ -418,7 +411,9 @@ public class NearbyConnections implements NearbyInterface {
                 ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
                 if (parcelFileDescriptor!=null) {
                     payloadFile = Payload.fromFile(parcelFileDescriptor);
-                    infoFilePayload = "FILE:"+payloadFile.getId()+":"+infoFilePayload;
+                    infoFilePayload = "FILE:" + payloadFile.getId() + ":" +
+                            StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
+                            "_xx____xx_" + FullscreenActivity.whichDirection;
                 }
             } catch (Exception e) {
                 Log.d("NearbyConnections","Error trying to send file: "+e);
@@ -478,8 +473,6 @@ public class NearbyConnections implements NearbyInterface {
         if (incomingChange) {
             incomingPrevious = incoming;
             Log.d("NearbyConnections","payloadOpenSong");
-            Uri properUri = storageAccess.getUriForItem(context, preferences, "Songs", receivedBits.get(0), receivedBits.get(1));
-            Uri tempUri = storageAccess.getUriForItem(context, preferences, "Received", "", "ReceivedSong");
             OutputStream outputStream;
 
             // Only songs sent via bytes payload trigger this.
@@ -495,22 +488,25 @@ public class NearbyConnections implements NearbyInterface {
 
                 // If the user wants to keep the host file, we will save it to our storage.
                 // If we already have it, it will overwrite it, if not, we add it
+                Uri newLocation = null;
                 if (StaticVariables.keepHostFiles) {
                     // Prepare the output stream in the client Songs folder
                     // Check the folder exists, if not, create it
                     storageAccess.createFile(context, preferences, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
+                    newLocation = storageAccess.getUriForItem(context, preferences, "Songs", receivedBits.get(0), receivedBits.get(1));
                     // Create the file if it doesn't exist
-                    storageAccess.lollipopCreateFileForOutputStream(context, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
-                    outputStream = storageAccess.getOutputStream(context, properUri);
+                    storageAccess.lollipopCreateFileForOutputStream(context, preferences, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
+                    outputStream = storageAccess.getOutputStream(context, newLocation);
                     StaticVariables.whichSongFolder = receivedBits.get(0);
                     StaticVariables.songfilename = receivedBits.get(1);
                     // Add to the sqldatabase
                     sqLiteHelper.createSong(context, StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
                 } else {
+                    newLocation = storageAccess.getUriForItem(context, preferences, "Received", "", "ReceivedSong");
                     // Prepare the output stream in the Received folder - just keep a temporary version
-                    storageAccess.lollipopCreateFileForOutputStream(context, preferences, tempUri, null, "Received", "", "ReceivedSong");
-                    outputStream = storageAccess.getOutputStream(context, tempUri);
+                    storageAccess.lollipopCreateFileForOutputStream(context, preferences, newLocation, null, "Received", "", "ReceivedSong");
+                    outputStream = storageAccess.getOutputStream(context, newLocation);
                     StaticVariables.whichSongFolder = "../Received";
                     StaticVariables.songfilename = "ReceivedSong";
                 }
