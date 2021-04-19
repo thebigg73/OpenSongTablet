@@ -150,8 +150,9 @@
     <string name="host">Host</string>
     <string name="image">Image</string>
     <string name="image_slide">Image slideshow</string>
+    <string name="import_basic">Import</string>
     <string name="import_main">Import or create songs</string>
-    <string name="import_file">File</string>
+    <string name="file">File</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
@@ -266,6 +267,7 @@
     <string name="not_set">Not set</string>
     <string name="note">Note</string>
     <string name="nothighenoughapi">You need a newer version of Android for this!</string>
+    <string name="nothing_selected">Nothing selected</string>
     <string name="off">Off</string>
     <string name="ok">Ok</string>
     <string name="on">On</string>

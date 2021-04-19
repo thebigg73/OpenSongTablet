@@ -45,7 +45,7 @@ public class ModeFragment extends Fragment {
 
     private void updatePreference(String which) {
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"whichMode",which);
-        mainActivityInterface.returnToHome(this,null);
+        mainActivityInterface.navHome();
     }
 
     @Override

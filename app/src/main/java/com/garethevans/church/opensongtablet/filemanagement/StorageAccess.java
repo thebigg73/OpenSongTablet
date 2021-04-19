@@ -54,6 +54,7 @@ import java.util.zip.ZipInputStream;
 
 public class StorageAccess {
 
+    private final String TAG = "StorageAccess";
     public final String appFolder = "OpenSong";
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
     private final String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
@@ -165,7 +166,7 @@ public class StorageAccess {
             uriTree_String = uriTree_String.replace("//OpenSong/","/OpenSong/");
             f = new File(uriTree_String);
             if (f.mkdirs()) {
-                Log.d("StorageAccess","Created or identified OpenSong folder");
+                Log.d(TAG,"Created or identified OpenSong folder");
             }
         } else {
             f = new File(uriTree_String);
@@ -224,11 +225,11 @@ public class StorageAccess {
                 (!uriTree.getLastPathSegment().endsWith("OpenSong") || !uriTree.getLastPathSegment().endsWith("OpenSong/"))) {
             // We need to check the uri points to the OpenSong folder
             if (!uriExists(c,uriTreeHome)) {
-                Log.d("StorageAccess","Attempting to create OpenSong folder at "+uriTree);
+                Log.d(TAG,"Attempting to create OpenSong folder at "+uriTree);
                 try {
                     uriTreeHome = DocumentsContract.createDocument(c.getContentResolver(), uriTree, DocumentsContract.Document.MIME_TYPE_DIR, "OpenSong");
                 } catch (Exception e) {
-                    Log.d("StorageAccess", "Unable to create OpenSong folder at "+uriTree);
+                    Log.d(TAG, "Unable to create OpenSong folder at "+uriTree);
                 }
             }
         }
@@ -255,7 +256,7 @@ public class StorageAccess {
                     try {
                         DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
                     } catch (Exception e3) {
-                        Log.d("StorageAccess","Error creating folder at "+thisFolder);
+                        Log.d(TAG,"Error creating folder at "+thisFolder);
                     }
                 }
             } catch (Exception e2) {
@@ -579,7 +580,7 @@ public class StorageAccess {
         String path = "";
         if (uri!=null && uri.getPath()!=null) {
             path = uri.getPath();
-            Log.d("StorageAccess","path="+path);
+            Log.d(TAG,"path="+path);
             if (path.contains("OpenSong/Media/") || path.contains("OpenSong/Pads/") || path.contains("OpenSong/Backgrounds/")) {
                 path = path.substring(path.lastIndexOf("OpenSong/") + 9);
                 path = "../OpenSong/" + path;
@@ -944,7 +945,7 @@ public class StorageAccess {
             try {
                 return c.getContentResolver().openOutputStream(uri);
             } catch (Exception e) {
-                Log.d("StorageAccess", "error getting outputstream");
+                Log.d(TAG, "error getting outputstream");
                 e.printStackTrace();
                 return null;
             }
@@ -1021,7 +1022,7 @@ public class StorageAccess {
         try {
             return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
         } catch (Exception e) {
-            Log.d("StorageAccess", "Error creating " + name + " at " + uri);
+            Log.d(TAG, "Error creating " + name + " at " + uri);
             //e.printStackTrace();
             return false;
         }
@@ -1044,11 +1045,11 @@ public class StorageAccess {
                     if (!f.exists()) {
                         if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
                             if (!f.mkdirs()) {
-                                Log.d("StorageAccess", "Unable to create file " + f);
+                                Log.d(TAG, "Unable to create file " + f);
                             }
                         } else {
                             if (!f.createNewFile()) {
-                                Log.d("StorageAccess", "Unable to create file " + f);
+                                Log.d(TAG, "Unable to create file " + f);
                             }
                         }
                     }
@@ -1131,7 +1132,7 @@ public class StorageAccess {
                 outputStream.close();
                 in.close();
             } catch (Exception e) {
-                Log.d("StorageAccess", "Error reading text file");
+                Log.d(TAG, "Error reading text file");
                 e.printStackTrace();
                 return "";
             } catch (OutOfMemoryError e2) {
@@ -1306,11 +1307,11 @@ public class StorageAccess {
                 return df.delete();
 
             } else {
-                Log.d("StorageAccess","documentfile is null so can't delete");
+                Log.d(TAG,"documentfile is null so can't delete");
                 return false;
             }
         } catch (Exception e) {
-            Log.d("StorageAccess","Unable to delete "+uri);
+            Log.d(TAG,"Unable to delete "+uri);
             e.printStackTrace();
             return false;
         }
@@ -1382,7 +1383,7 @@ public class StorageAccess {
                 b = Base64.encodeToString(stream.toByteArray(), Base64.NO_WRAP);
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("StorageAccess", "error getting image bytes");
+                Log.d(TAG, "error getting image bytes");
             }
         }
         return b;
@@ -1472,7 +1473,6 @@ public class StorageAccess {
         if (newsubfolder.contains("/")) {
             newsubfolder = newsubfolder.substring(newsubfolder.lastIndexOf("/"));
             newsubfolder = newsubfolder.replace("/","");
-            Log.d("StorageAccess","newsubfolder="+newsubfolder);
         }
         try {
             DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
@@ -1490,7 +1490,7 @@ public class StorageAccess {
         File[] fs = f.listFiles();
         if (fs!=null) {
             for (File child : fs) {
-                Log.d("StorageAccess", "Deleting " + child + " = " + child.delete());
+                Log.d(TAG, "Deleting " + child + " = " + child.delete());
             }
         }
     }
@@ -1712,8 +1712,6 @@ public class StorageAccess {
 
         Uri locationtoindex = getUriForItem(c, preferences, folder, subfolder, "");
 
-        Log.d("StorageAccess","uri of folder: "+locationtoindex);
-
         // Now get a documents contract at this location
         String id = getDocumentsContractId(locationtoindex);
 
@@ -1739,7 +1737,6 @@ public class StorageAccess {
                         final String name = cursor.getString(1);
                         final String mime = cursor.getString(2);
                         if (!DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
-                            Log.d("StorageAccess","name="+name);
                             al.add(name);
                         }
                     }
@@ -1749,7 +1746,6 @@ public class StorageAccess {
                 e.printStackTrace();
             }
         }
-        Log.d("StorageAccess","Ended listing files in folder");
         return al;
     }
     private ArrayList<String> listFilesInFolder_File(Context c, Preferences preferences, String folder, String subfolder) {
@@ -1772,7 +1768,6 @@ public class StorageAccess {
 
     int songCountAtLocation(File f) {
         // Prepare an arraylist for any song folders
-        Log.d("d","f="+f);
         ArrayList<File> foldersToIndex = new ArrayList<>();
         foldersToIndex.add(f);
         int count = 0;
@@ -1782,7 +1777,6 @@ public class StorageAccess {
                 File[] fs = folderToIndex.listFiles();
                 if (fs != null) {
                     for (File ff : fs) {
-                        Log.d("d", "ff=" + ff);
                         if (ff.isDirectory()) {
                             foldersToIndex.add(ff);
                         } else {

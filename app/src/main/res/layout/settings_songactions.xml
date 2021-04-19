@@ -12,10 +12,26 @@
         android:orientation="vertical">
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/pad"
+            android:id="@+id/edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:main="@string/edit"
+            app:sub="@string/edit_song" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/delete"
+            app:sub="@string/delete" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/pad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:main="@string/pad"
             app:sub="@string/pad_info" />
         <TableRow style="@style/DividerLine" />

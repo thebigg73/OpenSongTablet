@@ -30,9 +30,17 @@ public class PresentationFragment extends Fragment {
 
         myView = PresentationBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
+        mainActivityInterface.updateToolbar(getString(R.string.presentation_mode));
 
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
-                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
+        // Initialise the settings
+        mainActivityInterface.lockDrawer(false);
+        //mainActivityInterface.hideActionBar(false);
+        mainActivityInterface.hideActionButton(true);
+
+        // Deal with the action bar
+        mainActivityInterface.getAppActionBar().setHideActionBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
+        mainActivityInterface.getAppActionBar().setPerformanceMode(false);
+        mainActivityInterface.getAppActionBar().showActionBar();
 
         return root;
     }

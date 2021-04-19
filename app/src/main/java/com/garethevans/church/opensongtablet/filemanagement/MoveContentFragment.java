@@ -19,6 +19,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.StorageMoveBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.InputStream;
@@ -144,7 +145,16 @@ public class MoveContentFragment extends Fragment {
     private void doMove() {
         // Don't allow this until song indexing is complete as it can mess up the database!
         // If we don't pass this test, we are shown a snackbar message
-        if (checkIndexingStatus()) {
+        filesChosen = new ArrayList<>();
+
+        for (int x = 0; x < files.size(); x++) {
+            if (((CheckBox) myView.folderContentsLayout.getChildAt(x)).isChecked()) {
+                filesChosen.add(files.get(x));
+                Log.d("MoveContents", "Adding " + files.get(x));
+            }
+        }
+
+        if (checkIndexingStatus() && safeMove(filesChosen)) {
             // Go through each file and copy them to the new location
             // Then delete each original file if the copy was successful
             // Finally update the database
@@ -152,13 +162,7 @@ public class MoveContentFragment extends Fragment {
             myView.progressText.setVisibility(View.VISIBLE);
             myView.doMove.setVisibility(View.GONE);
 
-            filesChosen = new ArrayList<>();
-            for (int x = 0; x < files.size(); x++) {
-                if (((CheckBox) myView.folderContentsLayout.getChildAt(x)).isChecked()) {
-                    filesChosen.add(files.get(x));
-                    Log.d("MoveContents", "Adding " + files.get(x));
-                }
-            }
+
 
             // Where are we moving to?
             newFolder = myView.folderChoice.getText().toString();
@@ -174,6 +178,8 @@ public class MoveContentFragment extends Fragment {
                 InputStream inputStream;
                 Uri outputFile;
                 OutputStream outputStream;
+                Song tempSong = new Song(); // Just for location to get highlighter name
+
                 Log.d("MoveContents", "filesChosen.size()=" + filesChosen.size());
                 try {
                     for (int x = 0; x < filesChosen.size(); x++) {
@@ -187,6 +193,13 @@ public class MoveContentFragment extends Fragment {
                         getActivity().runOnUiThread(() -> myView.progressText.setText(finalMessage));
                         if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
                             mainActivityInterface.getStorageAccess().deleteFile(requireContext(), uris.get(x));
+                            // Check we weren't viewing this file - if so, update our preference
+                            if (mainActivityInterface.getSong().getFilename().equals(filesChosen.get(x)) &&
+                            mainActivityInterface.getSong().getFolder().equals(subfolder)) {
+                                mainActivityInterface.getSong().setFolder(newFolder);
+                                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                                        "whichSongFolder",newFolder);
+                            }
                         } else {
                             Log.d("d", "error copying " + finalMessage);
                         }
@@ -198,19 +211,47 @@ public class MoveContentFragment extends Fragment {
                             mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(requireContext(), mainActivityInterface, subfolder, newFolder, filesChosen.get(x), filesChosen.get(x));
                         }
 
-                        // Update everything needed for indexing and song menus
-                        try {
-                            ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale());
-                            // Write a crude text file (line separated) with the song Ids (folder/file)
-                            mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(), mainActivityInterface.getPreferences(), songIds);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        // Try to rename highlighter files (it they exist)
+                        tempSong.setFilename(filesChosen.get(x));
+                        tempSong.setFolder(subfolder);
+                        String portraitOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true);
+                        String landscapeOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,false);
+                        Uri portraitOldUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                                mainActivityInterface.getPreferences(),"Highlighter","",portraitOld);
+                        Uri landscapeOldUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                                mainActivityInterface.getPreferences(),"Highlighter","",landscapeOld);
+                        if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),portraitOldUri) ||
+                        mainActivityInterface.getStorageAccess().uriExists(requireContext(),landscapeOldUri)) {
+                            // Update the new song details
+                            tempSong.setFiletype((filesChosen.get(x)));
+                            tempSong.setFolder(newFolder);
+                            String portraitNew = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true);
+                            String landscapeNew = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,false);
+
+                            // Deal with portrait
+                            if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),portraitOldUri)) {
+                                renameHighlighterFiles(portraitOldUri,portraitNew);
+                            }
+
+                            // Deal with landscape
+                            if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),landscapeOldUri)) {
+                                renameHighlighterFiles(landscapeOldUri,landscapeNew);
+                            }
                         }
-
-                        // Update the song menu using the database
-                        mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
-
                     }
+
+                    // Update everything needed for indexing and song menus
+                    try {
+                        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale());
+                        // Write a crude text file (line separated) with the song Ids (folder/file)
+                        mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(), mainActivityInterface.getPreferences(), songIds);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    // Update the song menu using the database
+                    mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -227,6 +268,25 @@ public class MoveContentFragment extends Fragment {
         }
     }
 
+    private void renameHighlighterFiles(Uri oldUri, String newFilename) {
+        Uri highlighterOutputUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                mainActivityInterface.getPreferences(),"Highlighter","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
+                mainActivityInterface.getPreferences(),highlighterOutputUri,null,"Highlighter",
+                "",newFilename);
+        InputStream highlighterInputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(),oldUri);
+        OutputStream highlighterOutputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),highlighterOutputUri);
+        boolean success = mainActivityInterface.getStorageAccess().copyFile(highlighterInputStream,highlighterOutputStream);
+        if (success) {
+            mainActivityInterface.getStorageAccess().deleteFile(requireContext(),oldUri);
+        }
+        try {
+            highlighterInputStream.close();
+            highlighterOutputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void checkAll(boolean isChecked) {
         new Thread(() -> getActivity().runOnUiThread(() -> {
             for (int x = 0; x < getNumCheckBoxes(); x++) {
@@ -244,6 +304,28 @@ public class MoveContentFragment extends Fragment {
             return true;
         } else {
             Snackbar.make(myView.getRoot(), R.string.search_index_wait, Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
+    private boolean safeMove(ArrayList<String> filesChosen) {
+        // Check we haven't got the same location and end destination folders and they aren't empty
+        String loc = "";
+        String dest = "";
+        if (myView.currentFolderChoice.getText()!=null) {
+            loc = myView.currentFolderChoice.getText().toString();
+        }
+        if (myView.folderChoice.getText()!=null) {
+            dest = myView.folderChoice.getText().toString();
+        }
+        if (loc!=null && dest!=null && !loc.equals(dest) && !dest.isEmpty() &&
+                filesChosen.size()>0) {
+            return true;
+        } else if (filesChosen.size()<=0) {
+            Snackbar.make(myView.getRoot(), R.string.nothing_selected, Snackbar.LENGTH_LONG).show();
+            return false;
+        } else {
+            Snackbar.make(myView.getRoot(), R.string.choosefolder, Snackbar.LENGTH_LONG).show();
             return false;
         }
     }

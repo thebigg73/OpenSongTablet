@@ -35,7 +35,7 @@ public class SettingsCategories extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        myView = SettingsCategoriesBinding.inflate(inflater,container,false);
+        myView = SettingsCategoriesBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.settings));
 
         // Hide the features not available to this device
@@ -71,14 +71,14 @@ public class SettingsCategories extends Fragment {
                 mode = getString(R.string.presentation_mode);
                 break;
         }
-        ((TextView)myView.modeButton.findViewById(R.id.subText)).setText(mode);
+        ((TextView) myView.modeButton.findViewById(R.id.subText)).setText(mode);
     }
 
     private void setPlayEnabled(boolean enabled) {
         myView.connectButton.setEnabled(enabled);
         myView.connectLine.setEnabled(enabled);
         if (!enabled) {
-            ((TextView)myView.connectButton.findViewById(R.id.subText)).setText(getString(R.string.play_services_error));
+            ((TextView) myView.connectButton.findViewById(R.id.subText)).setText(getString(R.string.play_services_error));
         }
     }
 
@@ -90,26 +90,27 @@ public class SettingsCategories extends Fragment {
             message = getString(R.string.not_available);
         }
         myView.midiButton.setEnabled(enabled);
-        ((TextView)myView.midiButton.findViewById(R.id.subText)).setText(message);
+        ((TextView) myView.midiButton.findViewById(R.id.subText)).setText(message);
     }
 
     private void setListeners() {
-        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.storage_graph));
-        myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.display_graph));
-        myView.actionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.actions_graph));
-        myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.control_graph));
+        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.storage_graph));
+        myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.display_graph));
+        myView.actionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.actions_graph));
+        myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {
             // Check we have the required permissions
             if (mainActivityInterface.requestNearbyPermissions()) {
-                mainActivityInterface.navigateToFragment(null,R.id.nearbyConnectionsFragment);
+                mainActivityInterface.navigateToFragment(null, R.id.nearbyConnectionsFragment);
             }
         });
-        myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.modeFragment));
-        myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.midiFragment));
-        myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.profileFragment));
-        myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.settingsCCLI));
-        myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.about_graph));
-        }
+        myView.importButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
+        myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
+        myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.midiFragment));
+        myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.profileFragment));
+        myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.settingsCCLI));
+        myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.about_graph));
+    }
 
     @Override
     public void onDestroyView() {

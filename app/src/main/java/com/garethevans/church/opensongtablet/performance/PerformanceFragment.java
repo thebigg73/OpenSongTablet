@@ -89,11 +89,12 @@ public class PerformanceFragment extends Fragment {
         loadPreferences();
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
-        if (mainActivityInterface.getSongListBuildIndex().getIndexRequired()) {
+        if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
+                !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
             mainActivityInterface.fullIndex();
         }
 
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichFolder",getString(R.string.mainfoldername)),
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
         // Set listeners for the scroll/scale/gestures
@@ -315,6 +316,7 @@ public class PerformanceFragment extends Fragment {
     public void dealWithStickyNotes(boolean forceShow) {
         // This is called from the MainActivity when we clicked on the page button
         if ((mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
+                mainActivityInterface.getSong().getNotes()!=null &&
                 !mainActivityInterface.getSong().getNotes().isEmpty() &&
         mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean(requireContext(),"stickyAuto",true)) || forceShow) {

@@ -110,6 +110,9 @@
             <action
                 android:id="@+id/action_preferencesFragment_to_modeFragment"
                 app:destination="@id/modeFragment" />
+            <action
+                android:id="@+id/action_import_graph"
+                app:destination="@id/import_graph" />
         </fragment>
 
         <!-- The storage graph -->
@@ -150,7 +153,7 @@
                 android:id="@+id/backupOSBFragment"
                 android:name="com.garethevans.church.opensongtablet.backupandrestore.BackupOSBFragment"
                 android:label="fragment_osbbackup"
-                tools:layout="@layout/fragment_osbbackup">
+                tools:layout="@layout/fragment_osb_details">
                 <deepLink
                     android:id="@+id/deepLink15"
                     app:uri="opensongapp://settings/storage/backup" />
@@ -408,6 +411,53 @@
             android:id="@+id/deepLink2"
             app:uri="opensongapp://preferences" />
 
+        <!-- Import options -->
+        <navigation
+            android:id="@+id/import_graph"
+            app:startDestination="@id/importOptionsFragment">
+
+            <!-- The import options fragment -->
+            <fragment
+                android:id="@+id/importOptionsFragment"
+                android:name="com.garethevans.church.opensongtablet.importsongs.ImportOptionsFragment"
+                android:label="settings_import"
+                tools:layout="@layout/settings_import">
+                <action
+                    android:id="@+id/action_importOptionsFragment_to_importOSBFragment"
+                    app:destination="@id/importOSBFragment" />
+                <action
+                    android:id="@+id/action_importOptionsFragment_to_importOnlineFragment"
+                    app:destination="@id/importOnlineFragment" />
+            </fragment>
+
+            <!-- OSB Import -->
+            <fragment
+                android:id="@+id/importOSBFragment"
+                android:name="com.garethevans.church.opensongtablet.backupandrestore.ImportOSBFragment"
+                android:label="fragment_osbbackup"
+                tools:layout="@layout/fragment_osb_details">
+
+            </fragment>
+            <deepLink
+                android:id="@+id/deepLink10"
+                app:uri="opensongapp://settings/import" />
+            <fragment
+                android:id="@+id/importOnlineFragment"
+                android:name="com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment"
+                android:label="ImportOnlineFragment"
+                tools:layout="@layout/settings_import_online"/>
+
+        </navigation>
+
+        <dialog
+            android:id="@+id/alertInfoDialogFragment"
+            android:name="com.garethevans.church.opensongtablet.appdata.AlertInfoDialogFragment"
+            android:label="@string/information">
+            <deepLink
+                android:id="@+id/deepLink6"
+                app:uri="opensongapp://information" />
+        </dialog>
+
         <!--Song actions graph -->
         <navigation android:id="@+id/actions_graph"
             app:startDestination="@id/songActionsMenuFragment">
@@ -425,6 +475,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_stickyNotesFragment"
                     app:destination="@id/stickyNotesFragment" />
+                <deepLink
+                    android:id="@+id/deepLink22"
+                    app:uri="opensongapp://settings/actions" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -516,42 +569,6 @@
 
     </navigation>
 
-    <!-- Import options -->
-    <navigation
-        android:id="@+id/import_graph"
-        app:startDestination="@id/importOptionsFragment">
 
-        <!-- The import options fragment -->
-        <fragment
-            android:id="@+id/importOptionsFragment"
-            android:name="com.garethevans.church.opensongtablet.importsongs.ImportOptionsFragment"
-            android:label="settings_import"
-            tools:layout="@layout/settings_import">
-            <action
-                android:id="@+id/action_importOptionsFragment_to_importOSBFragment"
-                app:destination="@id/importOSBFragment" />
-        </fragment>
-
-        <!-- OSB Import -->
-        <fragment
-            android:id="@+id/importOSBFragment"
-            android:name="com.garethevans.church.opensongtablet.backupandrestore.ImportOSBFragment"
-            android:label="fragment_osbbackup"
-            tools:layout="@layout/fragment_osbbackup">
-
-        </fragment>
-        <deepLink
-            android:id="@+id/deepLink10"
-            app:uri="opensongapp://songs/import" />
-
-    </navigation>
-    <dialog
-        android:id="@+id/alertInfoDialogFragment"
-        android:name="com.garethevans.church.opensongtablet.appdata.AlertInfoDialogFragment"
-        android:label="@string/information">
-        <deepLink
-            android:id="@+id/deepLink6"
-            app:uri="opensongapp://information" />
-    </dialog>
 
 </navigation>
