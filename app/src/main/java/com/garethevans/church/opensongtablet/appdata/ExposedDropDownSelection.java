@@ -7,6 +7,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ExposedDropDownSelection {
 
@@ -33,6 +34,19 @@ public class ExposedDropDownSelection {
         autoCompleteTextView.setOnClickListener(v -> textInputLayout.findViewById(R.id.text_input_end_icon).performClick());
     }
 
+    public void keepSelectionPosition(TextInputLayout textInputLayout, AutoCompleteTextView autoCompleteTextView, String[] stringArray) {
+        // Deal with the arrow
+        textInputLayout.setEndIconOnClickListener(new View.OnClickListener() {
+            boolean isShowing = false;
+
+            @Override
+            public void onClick(View v) {
+                isShowing = listenerAction(autoCompleteTextView, stringArray, isShowing);
+            }
+        });
+        // Deal with the rest of the dropdown clickable area by making it click the end icon
+        autoCompleteTextView.setOnClickListener(v -> textInputLayout.findViewById(R.id.text_input_end_icon).performClick());
+    }
 
     private boolean listenerAction(AutoCompleteTextView autoCompleteTextView, ArrayList<String> arrayList, boolean isShowing) {
         // isShowing seems to be the opposite for the dropdown arrow and the clickable area
@@ -45,6 +59,17 @@ public class ExposedDropDownSelection {
         }
         return !isShowing;
     }
+    private boolean listenerAction(AutoCompleteTextView autoCompleteTextView, String[] stringArray, boolean isShowing) {
+        // isShowing seems to be the opposite for the dropdown arrow and the clickable area
+        // This is due to what is focused I think
+        if (isShowing) {
+            autoCompleteTextView.dismissDropDown();
+        } else {
+            autoCompleteTextView.showDropDown();
+            autoCompleteTextView.setListSelection(getPositionInArray(getSelectedText(autoCompleteTextView), stringArray));
+        }
+        return !isShowing;
+    }
 
     private String getSelectedText(AutoCompleteTextView autoCompleteTextView) {
         if (autoCompleteTextView!=null && autoCompleteTextView.getText()!=null) {
@@ -54,6 +79,11 @@ public class ExposedDropDownSelection {
         }
     }
     private int getPositionInArray(String string, ArrayList<String> arrayList) {
+        return arrayList.indexOf(string);
+    }
+    private int getPositionInArray(String string, String[] stringArray) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        Collections.addAll(arrayList, stringArray);
         return arrayList.indexOf(string);
     }
 }
