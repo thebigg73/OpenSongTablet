@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,6 +14,7 @@ import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
+import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
@@ -70,7 +70,7 @@ public interface MainActivityInterface {
     void hideKeyboard();
     void navigateToFragment(String deepLink, int id);
     void popTheBackStack(int id, boolean inclusive);
-    void returnToHome(Fragment fragment, Bundle bundle);
+    void navHome();
     void songMenuActionButtonShow(boolean show);
     void lockDrawer(boolean lock);
     void closeDrawer(boolean close);
@@ -182,5 +182,6 @@ public interface MainActivityInterface {
     DrawNotes getDrawNotes();
     void setDrawNotes(DrawNotes view);
     ProfileActions getProfileActions();
+    CheckInternet getCheckInternet();
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
 }

@@ -39,24 +39,28 @@ public class LoadSong {
         thisSong.setFolder(folder);
         thisSong.setFilename(filename);
 
-        Log.d(TAG,"folder="+folder+"  filename="+filename);
+        Log.d(TAG, "folder=" + folder + "  filename=" + filename);
         // We will add to this song and then return it to the MainActivity object
         if (!mainActivityInterface.getSongListBuildIndex().getIndexComplete() ||
+                mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing() ||
                 thisSong.getFolder().contains("../")) {
             // This is set to true once the index is completed, so we either haven't finished indexing
             // or this is a custom slide/note as identified by the folder (which aren't indexed)
             Log.d(TAG, "Load from file");
             return doLoadSongFile(c, mainActivityInterface, thisSong, indexing);
         } else {
-            Log.d("LoadSong", "Loading from the database");
+            Log.d(TAG, "Loading from the database");
             if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
-                return mainActivityInterface.getSong().showWelcomeSong(c,thisSong);
+                return mainActivityInterface.getSong().showWelcomeSong(c, thisSong);
             } else {
-                return mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface,
+                thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface,
                         thisSong.getFolder(), thisSong.getFilename());
+                sortLoadingSuccessful(c,mainActivityInterface,thisSong);
+                return thisSong;
             }
         }
     }
+
 
     public Song doLoadSongFile(Context c, MainActivityInterface mainActivityInterface,
                                Song thisSong, boolean indexing) {
@@ -139,7 +143,7 @@ public class LoadSong {
                 try {
                     readFileAsXML(c, mainActivityInterface, thisSong, where, uri, "UTF-8");
                 } catch (Exception e) {
-                    Log.d("LoadXML", "Error performing grabOpenSongXML()");
+                    Log.d(TAG, "Error performing grabOpenSongXML()");
                 }
             } else if (thisSong.getFiletype().equals("CHO") || lyricsHaveChoProTags(thisSong.getLyrics())) {
                 // 4.  Run the ChordProConvert script (which converts then resaves)
@@ -149,7 +153,7 @@ public class LoadSong {
                 try {
                     readFileAsXML(c, mainActivityInterface, thisSong, where, uri, "UTF-8");
                 } catch (Exception e) {
-                    Log.d("LoadXML", "Error performing grabOpenSongXML()");
+                    Log.d(TAG, "Error performing grabOpenSongXML()");
                 }
             }
 
@@ -158,18 +162,28 @@ public class LoadSong {
 
             // Update the songLoadSuccess and references to the working file if it did work if we aren't indexing
             if (!indexing) {
-                // Check if the song has been loaded (will now have a lyrics value)
-                if (!thisSong.getFilename().equals("Welcome to OpenSongApp") &&
-                        thisSong.getLyrics() != null && !thisSong.getLyrics().isEmpty()) {
-                    // Song was loaded correctly and was xml format
-                    mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
-                }
-                mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", thisSong.getFilename());
-                mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", thisSong.getFolder());
+                sortLoadingSuccessful(c,mainActivityInterface,thisSong);
             }
         }
         // Send the song back with all of its children populated!
         return thisSong;
+    }
+
+    private void sortLoadingSuccessful(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+        // Check if the song has been loaded (will now have a lyrics value)
+        if (!thisSong.getFilename().equals("Welcome to OpenSongApp") &&
+                thisSong.getLyrics() != null && !thisSong.getLyrics().isEmpty()) {
+            // Song was loaded correctly and was xml format
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
+            mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", thisSong.getFilename());
+            mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", thisSong.getFolder());
+        } else {
+            // Something was wrong, so set the welcome song
+            thisSong.setFilename("Welcome to OpenSongApp");
+            thisSong.setFolder(c.getString(R.string.mainfoldername));
+            mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", "Welcome to OpenSongApp");
+            mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", c.getString(R.string.mainfoldername));
+        }
     }
 
     private boolean lyricsHaveChoProTags(String lyrics) {
@@ -379,7 +393,7 @@ public class LoadSong {
                         eventType = xpp.next();
                         thisSong.setFiletype("XML");
                     } catch (Exception e) {
-                        Log.d("LoadSong", uri + ":  Not xml so exiting");
+                        Log.d(TAG, uri + ":  Not xml so exiting");
                         eventType = XmlPullParser.END_DOCUMENT;
                         thisSong.setFiletype("?");
                     }
@@ -415,7 +429,7 @@ public class LoadSong {
                         full_text = "";
                     }
                 } catch (Exception e) {
-                    Log.d("LoadXML", "Error reading text file");
+                    Log.d(TAG, "Error reading text file");
                     full_text = "";
                 }
 
@@ -622,7 +636,7 @@ public class LoadSong {
 
             }
         } catch (Exception e) {
-            Log.d("LoadXML","Error trying to read XML from "+uri);
+            Log.d(TAG,"Error trying to read XML from "+uri);
             // Ooops
         }
 

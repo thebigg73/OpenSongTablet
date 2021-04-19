@@ -22,12 +22,19 @@ public class SongListBuildIndex {
 
     private boolean indexRequired;
     private boolean indexComplete;
+    private boolean currentlyIndexing = false;
 
     public void setIndexRequired(boolean indexRequired) {
         this.indexRequired = indexRequired;
     }
     public boolean getIndexRequired() {
         return indexRequired;
+    }
+    public void setCurrentlyIndexing(boolean currentlyIndexing) {
+        this.currentlyIndexing = currentlyIndexing;
+    }
+    public boolean getCurrentlyIndexing() {
+        return currentlyIndexing;
     }
     public void setIndexComplete(boolean indexComplete) {
         this.indexComplete = indexComplete;
@@ -39,6 +46,7 @@ public class SongListBuildIndex {
     public String fullIndex(Context c, MainActivityInterface mainActivityInterface) {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
+        currentlyIndexing = true;
         StringBuilder returnString = new StringBuilder();
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB(c)) {
             // Go through each entry in the database and get the folder and filename.
@@ -113,6 +121,7 @@ public class SongListBuildIndex {
                     append(mainActivityInterface.getIndexingSong().getFolder()).append("/").
                     append(mainActivityInterface.getIndexingSong().getFilename()).append("\n");
         }
+        currentlyIndexing = false;
         return returnString.toString();
     }
 

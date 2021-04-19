@@ -35,7 +35,6 @@ import androidx.fragment.app.Fragment;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -49,6 +48,7 @@ import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.AlertInfoDialogFragment;
+import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
@@ -73,6 +73,7 @@ import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment;
 import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
+import com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment;
 import com.garethevans.church.opensongtablet.importsongs.OCR;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ActivityGestureDetector activityGestureDetector;
     private ABCNotation abcNotation;
     private ProfileActions profileActions;
+    private CheckInternet checkInternet;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -411,6 +413,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         swipes = new Swipes(this,mainActivityInterface);
         abcNotation = new ABCNotation();
         profileActions = new ProfileActions();
+        checkInternet = new CheckInternet();
     }
 
     // The actionbar
@@ -848,8 +851,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void refreshMenuItems() {
         invalidateOptionsMenu();
     }
-    private void navHome() {
+    @Override
+    public void navHome() {
         lockDrawer(false);
+        whichMode = preferences.getMyPreferenceString(this,"whichMode","Performance");
         if (navController.getCurrentDestination()!=null) {
             navController.popBackStack(navController.getCurrentDestination().getId(), true);
         }
@@ -1264,26 +1269,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                         }
                     }
             }
-        }
-    }
-    @Override
-    public void returnToHome(Fragment fragment, Bundle bundle) {
-        NavOptions navOptions;
-        if (whichMode.equals("Presentation")) {
-            fragmentOpen = R.id.presentationFragment;
-        } else {
-            fragmentOpen = R.id.performanceFragment;
-        }
-        try {
-            if (fragment!=null) {
-                navOptions = new NavOptions.Builder()
-                        .setPopUpTo(fragmentOpen, true)
-                        .build();
-                NavHostFragment.findNavController(fragment)
-                        .navigate(R.id.performanceFragment, bundle, navOptions);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     @Override
@@ -1712,6 +1697,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public ProfileActions getProfileActions() {
         return profileActions;
     }
+    @Override
+    public CheckInternet getCheckInternet() {
+        return checkInternet;
+    }
 
     // Nearby
     @Override
@@ -1840,6 +1829,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 case 404:
                 case 403:
                     // Access fine location, so can open the menu at 'Connect devices'
+                    openNearbyFragment();
                     Log.d("d", "LOCATION granted!");
                     break;
             }
@@ -1918,6 +1908,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
 
     // The return actions from the NearbyReturnActionsInterface
+    private void openNearbyFragment() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            navigateToFragment("opensongapp://settings/nearby", 0);
+        }
+    }
     @Override
     public void gesture5() {
         // TODO
@@ -1986,6 +1982,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             try {
                 if (fragId==R.id.fontSetupFragment) {
                     ((FontSetupFragment) fragment).isConnected(connected);
+                } else if (fragId==R.id.importOnlineFragment) {
+                    ((ImportOnlineFragment) fragment).isConnected(connected);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

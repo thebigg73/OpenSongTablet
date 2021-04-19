@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,8 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.navigation.NavOptions;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsDialogBinding;
@@ -75,20 +72,13 @@ public class SongMenuDialog extends DialogFragment {
 
         // Listener for buttons
         myView.closeView.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        myView.songActions.setOnClickListener(v -> navigateTo("opensongapp://songs/actions"));
-        myView.newSongs.setOnClickListener(v -> navigateTo("opensongapp://songs/import"));
+        myView.songActions.setOnClickListener(v -> navigateTo("opensongapp://settings/actions"));
+        myView.newSongs.setOnClickListener(v -> navigateTo("opensongapp://settings/import"));
     }
 
     private void navigateTo(String deepLink) {
-        int popId;
-        if (mainActivityInterface.getMode().equals("Presentation")) {
-            popId = R.id.presentationFragment;
-        } else {
-            popId = R.id.performanceFragment;
-        }
         mainActivityInterface.closeDrawer(true);
-        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(popId, false).build();
-        NavHostFragment.findNavController(this).navigate(Uri.parse(deepLink),navOptions);
+        mainActivityInterface.navigateToFragment(deepLink,0);
         dismiss();
     }
 

@@ -135,7 +135,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 */
             if (saveOK) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
-                requireActivity().runOnUiThread(() -> mainActivityInterface.returnToHome(fragment, savedInstanceState));
+                requireActivity().runOnUiThread(() -> mainActivityInterface.navHome());
             } else {
                 mainActivityInterface.getShowToast().doIt(getActivity(),requireContext().getResources().getString(R.string.not_saved));
             }
