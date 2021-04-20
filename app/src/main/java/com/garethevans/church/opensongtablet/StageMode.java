@@ -407,8 +407,8 @@ public class StageMode extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Log.d("StageMode", "Welcome to Stage Mode");
+
         StaticVariables.activity = StageMode.this;
         FullscreenActivity.mContext = StageMode.this;
         FullscreenActivity.appRunning = true;
@@ -1234,7 +1234,6 @@ public class StageMode extends AppCompatActivity implements
                 StaticVariables.infoBarChangeRequired = true;
                 mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                         MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
-                updateDisplays();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1252,11 +1251,12 @@ public class StageMode extends AppCompatActivity implements
         } catch (Exception e) {
             Log.d("StageMode", "Problem removing mediaroutercallback");
         }
+
         if (br!=null) {
             try {
                 StageMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                Log.d("StageMode", "No need to close battery monitor");
+                Log.d("StageMode", "Battery receiver not registerd, so no need to unregister");
             }
         }
         tryCancelAsyncTasks();
@@ -1267,7 +1267,6 @@ public class StageMode extends AppCompatActivity implements
         super.onResume();
         StaticVariables.activity = StageMode.this;
         FullscreenActivity.appRunning = true;
-        // Make the drawers match half the width of the screen
         resizeDrawers();
         // Fix the page flags
         setWindowFlags();
@@ -1301,6 +1300,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
         tryCancelAsyncTasks();
+
         if (songscrollview !=null) {
             songscrollview.removeAllViews();
         }
@@ -3561,7 +3561,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("StageMode","Error sending activity result to fragment");
+                Log.d("StageMode", "Error sending activity result to fragment");
             }
 
         } else if (requestCode==StaticVariables.REQUEST_IMAGE_CODE) {
@@ -5481,7 +5481,7 @@ public class StageMode extends AppCompatActivity implements
 
                 case 404:
                     // Access fine location, so can open the menu at 'Connect devices'
-                    Log.d("d", "FINE LOCATION granted!");
+                    Log.d("StageMode", "FINE LOCATION granted!");
                     break;
             }
         }
@@ -7009,7 +7009,7 @@ public class StageMode extends AppCompatActivity implements
                             try {
                                 processSong.lookForSplitPoints();
                             } catch (Exception e) {
-                                Log.d("StageMode","Split point not worth it");
+                                Log.d("StageMode", "Split point not worth it");
                             }
                         } else {
                             FullscreenActivity.splitpoint = 0;
