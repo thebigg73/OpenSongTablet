@@ -1790,7 +1790,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
 
     private void sendSongSectionToConnected() {
-        // IV - Do not send section 0 pay load when loading a song
+        // IV - Do not send section 0 payload when loading a song
         if (!FullscreenActivity.alreadyloading) {
             String infoPayload = "___section___" + StaticVariables.currentSection;
             nearbyConnections.doSendPayloadBytes(infoPayload);
@@ -1948,7 +1948,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("PresenterMode","Error sending activity result to fragment");
+                Log.d("PresenterMode", "Error sending activity result to fragment");
             }
 
         } else if (requestCode==StaticVariables.REQUEST_IMAGE_CODE) {
@@ -2662,7 +2662,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     StaticVariables.mMidi = StaticVariables.mMidi.replace("\n\n", "\n");
                     String[] midilines = StaticVariables.mMidi.trim().split("\n");
                     for (String ml : midilines) {
-                        Log.d("PresenterMode","Sending "+ml);
+                        Log.d("PresenterMode", "Sending "+ml);
                         if (midi!=null) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 midi.sendMidi(midi.returnBytesFromHexText(ml));
@@ -3183,7 +3183,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // Google Nearby
     @Override
     public boolean requestNearbyPermissions() {
-        Log.d("PresenterMode","Requesting nearby permissions");
+        Log.d("PresenterMode", "Requesting nearby permissions");
         if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
             return true;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
@@ -3259,6 +3259,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     LoadXML.loadXML(PresenterMode.this, preferences, storageAccess, processSong);
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+
+                // Send Nearby song intent
+                if (StaticVariables.isHost && StaticVariables.isConnected && !FullscreenActivity.orientationchanged) {
+                    nearbyConnections.sendSongPayload();
                 }
 
                 // Clear the old headings (presention order looks for these)
@@ -3389,11 +3394,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     showCorrectViews();
                     setupSongButtons();
                     findSongInFolders();
-
-                    // Send WiFiP2P intent
-                    if (StaticVariables.isHost && StaticVariables.isConnected && !orientationChanged) {
-                        nearbyConnections.sendSongPayload();
-                    }
 
                     // Send the midi data if we can
                     if (!orientationChanged) {
@@ -3697,12 +3697,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                         @Override
                         public void onRemoteDisplaySessionError(Status status) {
-                            Log.d("PresenterMode","onRemoteDisplaySessionError status="+status);
+                            Log.d("PresenterMode", "onRemoteDisplaySessionError status="+status);
                         }
 
                         @Override
                         public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("PresenterMode","onRemoteDisplaySessionEnded");
+                            Log.d("PresenterMode", "onRemoteDisplaySessionEnded");
                         }
 
                     });
@@ -3723,7 +3723,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
-                    Log.d("PresenterMode","dm="+dm);
+                    Log.d("PresenterMode","dm=" + dm);
 
                     // If a Chromebook HDMI, need to do this
                     Display[] displays = dm.getDisplays();
@@ -3747,7 +3747,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("PresenterMode","Error"+e);
+                Log.d("PresenterMode","Error" + e);
             }
         }
     }
@@ -4018,7 +4018,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         Intent intent;
         // Start location
         Uri uri = storageAccess.getUriForItem(PresenterMode.this,preferences,"","","");
-        Log.d("PresenterMode","Start uri="+uri);
+        Log.d("PresenterMode","Start uri=" + uri);
         if (storageAccess.lollipopOrLater()) {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);

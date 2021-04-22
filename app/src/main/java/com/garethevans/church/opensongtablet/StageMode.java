@@ -1300,7 +1300,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
         tryCancelAsyncTasks();
-
         if (songscrollview !=null) {
             songscrollview.removeAllViews();
         }
@@ -1413,7 +1412,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void sendSongSectionToConnected() {
-        // IV - Do not send section 0 pay load when loading a song
+        // IV - Do not send section 0 payload when loading a song
         if (!FullscreenActivity.alreadyloading) {
             String infoPayload = "___section___" + StaticVariables.currentSection;
             nearbyConnections.doSendPayloadBytes(infoPayload);
@@ -6917,6 +6916,18 @@ public class StageMode extends AppCompatActivity implements
                     Log.d("StageMode", "Error loading song:" + StaticVariables.songfilename);
                 }
 
+                // Send Nearby song intent
+                if (StaticVariables.isConnected && StaticVariables.isHost && !FullscreenActivity.orientationchanged) {
+                    // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
+                    // sendSongDelay will be 0 for the first song
+                    // IV - Always empty then add to queue (known state)
+                    sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+                    sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
+                    // IV - Always empty then add to queue (known state)
+                    resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
+                    resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
+                }
+
                 // If we are in a set, try to get the appropriate indexes
 
                 setActions.getSongForSetWork(StageMode.this);
@@ -7143,17 +7154,6 @@ public class StageMode extends AppCompatActivity implements
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"midiSendAuto",false) &&
                             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         sendMidi();
-                    }
-                    // Send Nearby song intent
-                    if (StaticVariables.isConnected && StaticVariables.isHost && !orientationChanged) {
-                        // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
-                        // sendSongDelay will be 0 for the first song
-                        // IV - Always empty then add to queue (known state)
-                        sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
-                        sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
-                        // IV - Always empty then add to queue (known state)
-                        resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
-                        resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
                     }
 
                     // If we have created, or converted a song format (e.g from OnSong or ChordPro), rebuild the database
