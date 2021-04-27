@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     style="@style/MyInfoText"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:paddingTop="6dp"
     android:paddingBottom="6dp"
     android:textColor="#aaaaaa"
