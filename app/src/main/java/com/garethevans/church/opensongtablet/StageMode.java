@@ -205,8 +205,7 @@ public class StageMode extends AppCompatActivity implements
     private boolean sectionpresented = false;
 
     private int coltouse = 1;
-    private boolean longKeyPress = false;
-    private boolean shortKeyPress = false;
+    private boolean blockKeyAction;
     private boolean blockActionOnKeyUp;
     private boolean drawerOrFragmentActive = false;
 
@@ -245,8 +244,6 @@ public class StageMode extends AppCompatActivity implements
     private ScrollView extrabuttons2;
     private int keyRepeatCount = 0;
     private int sendSongDelay = 0;
-    Handler airTurn;
-    boolean airTurnCheckRunning;
 
     //private CoordinatorLayout coordinator_layout;
 
@@ -1256,7 +1253,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 StageMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                Log.d("StageMode", "Battery receiver not registerd, so no need to unregister");
+                Log.d("StageMode", "Battery receiver not registered, so no need to unregister");
             }
         }
         tryCancelAsyncTasks();
@@ -6714,36 +6711,41 @@ public class StageMode extends AppCompatActivity implements
         // Temporarily pause any running autoscroll
         pauseAutoscroll();
 
-        // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
-        // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
-
-        keyRepeatCount++;
-        if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false) && keyRepeatCount > preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount", 20)) {
-            keyRepeatCount = 0;
-            shortKeyPress = false;
-            longKeyPress = true;
-            doLongKeyPressAction(keyCode);
-            return true;
-        }
-
         if (keyCode == KeyEvent.KEYCODE_MENU && event.isLongPress()) {
             // Open up the song search intent instead of bringing up the keyboard
-            shortKeyPress = !longKeyPress;
             return true;
         }
 
+        // IV - Further process pedal keys only
         if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal1Code", 21) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal2Code", 22) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal3Code", 19) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal4Code", 20) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal5Code", 92) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal6Code", 93)) {
-            event.startTracking();
-            shortKeyPress = !longKeyPress;
-            return true;
+            keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal2Code", 22) ||
+            keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal3Code", 19) ||
+            keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal4Code", 20) ||
+            keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal5Code", 92) ||
+            keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal6Code", 93)) {
+
+            // IV - Used by all methods
+            keyRepeatCount++;
+
+            // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
+            // If the app detects more than a set number (reset when onKeyUp/onLongPress) it calls doLongKeyPressAction
+
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
+                if (keyRepeatCount > preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount", 20)) {
+                    doLongKeyPressAction(keyCode);
+                    return true;
+                }
+            } else {
+                //Log.d("StageMode", "OnKeyDown: Tracking");
+                event.startTracking();
+                // IV - Some devices don't do long press straight after fragment use! Provide a backstop doLongKeyPressAction
+                if (keyRepeatCount > 6) {
+                    doLongKeyPressAction(keyCode);
+                }
+                return true;
+            }
         }
         return super.onKeyDown(keyCode, event);
-        //return false;
     }
 
     private boolean justSong(Context c) {
@@ -7217,6 +7219,7 @@ public class StageMode extends AppCompatActivity implements
             // IV - If a short press event when long press is active (fragment use will do this) correct
             if (blockActionOnKeyUp) {
                 blockActionOnKeyUp = false;
+                blockKeyAction = false;
                 return false;
             } else {
                 doShortPressAction(keyCode, event);
@@ -7226,35 +7229,23 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void doAirTurnShortOrLongPressListen(final int keyCode, final KeyEvent event) {
-        airTurn = new Handler();
-        if (!airTurnCheckRunning) {
-            final int initialAirTurnCount = keyRepeatCount;
-            airTurnCheckRunning = true;
-            airTurn.postDelayed(() -> {
-                if (keyRepeatCount>=initialAirTurnCount+preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount",4)) {
-                    // Must be repeat press on AirTurn pedal
-                    keyRepeatCount = 0;
-                    // In the long press action, set the airTurnCheckRunning boolean to false
-                    stopAirTurnCheckRunning();
-                    doLongKeyPressAction(keyCode);
-                } else {
-                    // Check in another 200ms to see if the count has increased.  If it hasn't, short press action should be called.
-                    new Handler().postDelayed(() -> {
-                        if (initialAirTurnCount==keyRepeatCount) {
-                            doShortPressAction(keyCode, event);
-                        }
-                    },200);
-                }
-            }, 200);
+        final int initialAirTurnCount = keyRepeatCount;
+
+        if (keyRepeatCount>=initialAirTurnCount+preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount",4)) {
+            // Must be repeat press on AirTurn pedal
+            keyRepeatCount = 0;
+            doLongKeyPressAction(keyCode);
         }
+
+        new Handler().postDelayed(() -> {
+            // IV - Check in another 100ms to see if the count has increased.  If it hasn't, short press
+            // IV - If a long press has blocked actions, short press will (only) unblock
+            if (initialAirTurnCount==keyRepeatCount) {
+                    doShortPressAction(keyCode, event);
+                }
+        }, 100);
     }
 
-    private void stopAirTurnCheckRunning() {
-        new Handler().postDelayed(() -> {
-            keyRepeatCount = 0;
-            airTurnCheckRunning = false;
-        },500);
-    }
     private void doShortPressAction(int keyCode, KeyEvent event) {
         keyRepeatCount = 0;
         event.startTracking();
@@ -7263,7 +7254,8 @@ public class StageMode extends AppCompatActivity implements
             rf.clearFocus();
         }
 
-        if (shortKeyPress) {
+        if (!blockKeyAction) {
+            //Log.d("StageMode", "doShortPressAction: Actioned");
             // Reset immersive mode
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
                 restoreTranslucentBarsDelayed();
@@ -7305,9 +7297,12 @@ public class StageMode extends AppCompatActivity implements
             } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal6Code", 93)) {
                 doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal6ShortPressAction", "next"));
             }
+        } else {
+            //Log.d("StageMode", "doShortPressAction: Blocked");
+            blockKeyAction = false;
         }
-        shortKeyPress = true;
-        longKeyPress = false;
+        //Log.d("StageMode", "doShortPressAction: -> Unblocked");
+        //Log.d("StageMode", "doShortPressAction: ------------ END");
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -7650,43 +7645,55 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        //Log.d("StageMode", "onKeyLongPress:");
         boolean actionrecognised = doLongKeyPressAction(keyCode);
 
         if (actionrecognised) {
-            shortKeyPress = false;
-            longKeyPress = true;
+            //Log.d("StageMode", "onKeyLongPress: Action recognised");
             return true;
         }
+        //Log.d("StageMode", "onKeyLongPress: Action not recognised");
         return super.onKeyLongPress(keyCode, event);
     }
 
     private boolean doLongKeyPressAction(int keyCode) {
-        keyRepeatCount = 0;
         boolean actionrecognised = false;
-        if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal1Code",21)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal1LongPressAction","songmenu"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal2Code",22)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal2LongPressAction","editset"));
+        if (!blockKeyAction) {
+            if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal1Code", 21)) {
+                actionrecognised = true;
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal1LongPressAction", "songmenu"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal3Code",19)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal3LongPressAction","songmenu"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal2Code", 22)) {
+                actionrecognised = true;
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal2LongPressAction", "editset"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal4Code",20)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal4LongPressAction","editset"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal3Code", 19)) {
+                actionrecognised = true;
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal3LongPressAction", "songmenu"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal5Code",92)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal5LongPressAction","songmenu"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal4Code", 20)) {
+                actionrecognised = true;
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal4LongPressAction", "editset"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal6Code",93)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal6LongPressAction","editset"));
-        }
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal5Code", 92)) {
+                actionrecognised = true;
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal5LongPressAction", "songmenu"));
+
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal6Code", 93)) {
+                actionrecognised = true;
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal6LongPressAction", "editset"));
+            }
+        } //else {
+            //Log.d("StageMode", "doLongKeyPressAction: Blocked");
+        //}
+        //if (actionrecognised) {
+            //Log.d("StageMode", "doLongKeyPressAction: Actioned");
+        //}
+        //Log.d("StageMode", "doLongKeyPressAction: -> Block short and long key press");
+
+        // IV - After the first long press action block further action.  Sequences will now end with a blocked short press which only sets blockKeyPress false
+        blockKeyAction = true;
         return actionrecognised;
     }
 
