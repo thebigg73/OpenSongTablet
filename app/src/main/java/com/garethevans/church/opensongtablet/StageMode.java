@@ -242,6 +242,7 @@ public class StageMode extends AppCompatActivity implements
     private FloatingActionButton setForwardButton;
     private ScrollView extrabuttons;
     private ScrollView extrabuttons2;
+    private long onKeyActiveTime = 0;
     private int keyRepeatCount = 0;
     private int sendSongDelay = 0;
 
@@ -6711,6 +6712,10 @@ public class StageMode extends AppCompatActivity implements
         // Temporarily pause any running autoscroll
         pauseAutoscroll();
 
+        // IV - Used by all methods
+        keyRepeatCount++;
+        //Log.d("StageMode", "" + keyRepeatCount);
+
         if (keyCode == KeyEvent.KEYCODE_MENU && event.isLongPress()) {
             // Open up the song search intent instead of bringing up the keyboard
             return true;
@@ -6724,13 +6729,12 @@ public class StageMode extends AppCompatActivity implements
             keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal5Code", 92) ||
             keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal6Code", 93)) {
 
-            // IV - Used by all methods
-            keyRepeatCount++;
-
             // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
             // If the app detects more than a set number (reset when onKeyUp/onLongPress) it calls doLongKeyPressAction
 
             if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
+                onKeyActiveTime = System.currentTimeMillis();
+                //Log.d("StageMode", "Time set " + onKeyActiveTime);
                 if (keyRepeatCount > preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount", 20)) {
                     doLongKeyPressAction(keyCode);
                     return true;
@@ -7206,17 +7210,30 @@ public class StageMode extends AppCompatActivity implements
     // This bit listens for key presses (for page turn and scroll)
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        //Log.d("StageMode","onKeyUp");
         keyRepeatCount++;
+        //Log.d("StageMode", "" + keyRepeatCount);
         // If we are using an AirTurn pedal it will send repeated signals (onKeyDown then onKeyUp)
         // I'd like to listen for multiple signals and treat them as a longpress instead.
         // Each time on keyUp is detected, we add one to the counter.
         // Set a listener for 200ms.  If the counter has increased again (and AirTurn mode is on)
         // Set it to a longpress action instead.  If not, run the short press action
         if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
-            doAirTurnShortOrLongPressListen(keyCode, event);
+            onKeyActiveTime = System.currentTimeMillis();
+            //Log.d("StageMode", "Time set " + onKeyActiveTime);
+            // IV - Check in another 100ms, if we are 100ms after the last active time then short press
+            new Handler().postDelayed(() -> {
+                long nowTime = System.currentTimeMillis();
+                //Log.d("StageMode", "Time test " + (nowTime - onKeyActiveTime));
+                // IV - Test delay - 1 ms
+                if (nowTime > (onKeyActiveTime + 99)) {
+                    doShortPressAction(keyCode, event);
+                }
+            // IV - Test delay
+            }, 100);
             return false;
         } else {
-            // IV - If a short press event when long press is active (fragment use will do this) correct
+            // IV - If a false short press event when long press is active (fragment use will do this) correct
             if (blockActionOnKeyUp) {
                 blockActionOnKeyUp = false;
                 blockKeyAction = false;
@@ -7226,24 +7243,6 @@ public class StageMode extends AppCompatActivity implements
                 return true;
             }
         }
-    }
-
-    private void doAirTurnShortOrLongPressListen(final int keyCode, final KeyEvent event) {
-        final int initialAirTurnCount = keyRepeatCount;
-
-        if (keyRepeatCount>=initialAirTurnCount+preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount",4)) {
-            // Must be repeat press on AirTurn pedal
-            keyRepeatCount = 0;
-            doLongKeyPressAction(keyCode);
-        }
-
-        new Handler().postDelayed(() -> {
-            // IV - Check in another 100ms to see if the count has increased.  If it hasn't, short press
-            // IV - If a long press has blocked actions, short press will (only) unblock
-            if (initialAirTurnCount==keyRepeatCount) {
-                    doShortPressAction(keyCode, event);
-                }
-        }, 100);
     }
 
     private void doShortPressAction(int keyCode, KeyEvent event) {
