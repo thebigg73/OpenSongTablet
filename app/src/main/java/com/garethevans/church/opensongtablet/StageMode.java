@@ -6729,7 +6729,7 @@ public class StageMode extends AppCompatActivity implements
             keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal5Code", 92) ||
             keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal6Code", 93)) {
 
-            // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
+            // AirTurn pedals don't do long press, but instead send repeated signals (onKeyDown then onKeyUp).  To deal with, count onKeyDown
             // If the app detects more than a set number (reset when onKeyUp/onLongPress) it calls doLongKeyPressAction
 
             if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
@@ -7210,25 +7210,23 @@ public class StageMode extends AppCompatActivity implements
     // This bit listens for key presses (for page turn and scroll)
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        //Log.d("StageMode","onKeyUp");
         keyRepeatCount++;
-        //Log.d("StageMode", "" + keyRepeatCount);
-        // If we are using an AirTurn pedal it will send repeated signals (onKeyDown then onKeyUp)
-        // I'd like to listen for multiple signals and treat them as a longpress instead.
-        // Each time on keyUp is detected, we add one to the counter.
-        // Set a listener for 200ms.  If the counter has increased again (and AirTurn mode is on)
-        // Set it to a longpress action instead.  If not, run the short press action
+        //Log.d("StageMode", "onKeyUp" + keyRepeatCount);
+        // If we are using an AirTurn pedal it will send onKeyDown then onKeyUp and quickly repeat for long press
+        // Set a listener for 100ms to detect the last onKeyUp and do a short press
         if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
             onKeyActiveTime = System.currentTimeMillis();
             //Log.d("StageMode", "Time set " + onKeyActiveTime);
-            // IV - Check in another 100ms, if we are 100ms after the last active time then short press
             new Handler().postDelayed(() -> {
                 long nowTime = System.currentTimeMillis();
                 //Log.d("StageMode", "Time test " + (nowTime - onKeyActiveTime));
-                // IV - Test delay - 1 ms
-                if (nowTime > (onKeyActiveTime + 99)) {
+                // IV - Test delay - 5 ms (make sure!)
+                if (nowTime > (onKeyActiveTime + 95)) {
+                    //Log.d("StageMode","onKeyUp: short press triggered " + (nowTime - (onKeyActiveTime + 95)));
                     doShortPressAction(keyCode, event);
-                }
+                } //else {
+                    //Log.d("StageMode","onKeyUp: short press overridden " + (nowTime - (onKeyActiveTime + 95)));
+                //}
             // IV - Test delay
             }, 100);
             return false;
