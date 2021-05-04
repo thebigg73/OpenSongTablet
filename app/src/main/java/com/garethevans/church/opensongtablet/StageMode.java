@@ -242,7 +242,6 @@ public class StageMode extends AppCompatActivity implements
     private FloatingActionButton setForwardButton;
     private ScrollView extrabuttons;
     private ScrollView extrabuttons2;
-    private long onKeyActiveTime = 0;
     private int keyRepeatCount = 0;
     private int sendSongDelay = 0;
 
@@ -6714,7 +6713,7 @@ public class StageMode extends AppCompatActivity implements
 
         // IV - Used by all methods
         keyRepeatCount++;
-        //Log.d("StageMode", "" + keyRepeatCount);
+        //Log.d("StageMode", "onKeyDown: " + keyRepeatCount);
 
         if (keyCode == KeyEvent.KEYCODE_MENU && event.isLongPress()) {
             // Open up the song search intent instead of bringing up the keyboard
@@ -6733,19 +6732,19 @@ public class StageMode extends AppCompatActivity implements
             // If the app detects more than a set number (reset when onKeyUp/onLongPress) it calls doLongKeyPressAction
 
             if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
-                onKeyActiveTime = System.currentTimeMillis();
-                //Log.d("StageMode", "Time set " + onKeyActiveTime);
                 if (keyRepeatCount > preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount", 20)) {
-                    doLongKeyPressAction(keyCode);
+                    if (!blockKeyAction) {
+                        doLongKeyPressAction(keyCode);
+                    }
                     return true;
                 }
             } else {
-                //Log.d("StageMode", "OnKeyDown: Tracking");
-                event.startTracking();
                 // IV - Some devices don't do long press straight after fragment use! Provide a backstop doLongKeyPressAction
-                if (keyRepeatCount > 6) {
+                if (!blockKeyAction && (keyRepeatCount > 6)) {
                     doLongKeyPressAction(keyCode);
                 }
+                //Log.d("StageMode", "OnKeyDown: Tracking");
+                event.startTracking();
                 return true;
             }
         }
@@ -7211,23 +7210,19 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         keyRepeatCount++;
-        //Log.d("StageMode", "onKeyUp" + keyRepeatCount);
+        //Log.d("StageMode", "onKeyUp " + keyRepeatCount);
         // If we are using an AirTurn pedal it will send onKeyDown then onKeyUp and quickly repeat for long press
-        // Set a listener for 100ms to detect the last onKeyUp and do a short press
+        // Set a listener for 100ms to detect the last (no change in keyRepeatCount) onKeyUp and do a short press
         if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
-            onKeyActiveTime = System.currentTimeMillis();
-            //Log.d("StageMode", "Time set " + onKeyActiveTime);
+            final int initialAirTurnCount = keyRepeatCount;
+            // Check in another 200ms to see if the count has increased.  If it hasn't, short press action should be called.
             new Handler().postDelayed(() -> {
-                long nowTime = System.currentTimeMillis();
-                //Log.d("StageMode", "Time test " + (nowTime - onKeyActiveTime));
-                // IV - Test delay - 5 ms (make sure!)
-                if (nowTime > (onKeyActiveTime + 95)) {
-                    //Log.d("StageMode","onKeyUp: short press triggered " + (nowTime - (onKeyActiveTime + 95)));
+                if (initialAirTurnCount==keyRepeatCount) {
+                    //Log.d("StageMode","onKeyUp: short press triggered " + initialAirTurnCount + " : " + keyRepeatCount);
                     doShortPressAction(keyCode, event);
                 } //else {
-                    //Log.d("StageMode","onKeyUp: short press overridden " + (nowTime - (onKeyActiveTime + 95)));
+                    //Log.d("StageMode","onKeyUp: short press overridden " + initialAirTurnCount + " : " + keyRepeatCount);
                 //}
-            // IV - Test delay
             }, 100);
             return false;
         } else {
@@ -7244,6 +7239,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void doShortPressAction(int keyCode, KeyEvent event) {
+        //Log.d("StageMode", "doShortPressAction:");
         keyRepeatCount = 0;
         event.startTracking();
         View rf = getCurrentFocus();
@@ -7295,10 +7291,11 @@ public class StageMode extends AppCompatActivity implements
                 doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal6ShortPressAction", "next"));
             }
         } else {
-            //Log.d("StageMode", "doShortPressAction: Blocked");
+            //Log.d("StageMode", "doShortPressAction: Action blocked");
             blockKeyAction = false;
         }
-        //Log.d("StageMode", "doShortPressAction: -> Unblocked");
+
+        //Log.d("StageMode", "doShortPressAction: -> Unblocked key actions");
         //Log.d("StageMode", "doShortPressAction: ------------ END");
     }
 
@@ -7646,7 +7643,6 @@ public class StageMode extends AppCompatActivity implements
         boolean actionrecognised = doLongKeyPressAction(keyCode);
 
         if (actionrecognised) {
-            //Log.d("StageMode", "onKeyLongPress: Action recognised");
             return true;
         }
         //Log.d("StageMode", "onKeyLongPress: Action not recognised");
@@ -7654,6 +7650,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private boolean doLongKeyPressAction(int keyCode) {
+        //Log.d("StageMode", "doLongKeyPressAction:");
         boolean actionrecognised = false;
 
         if (!blockKeyAction) {
@@ -7687,10 +7684,11 @@ public class StageMode extends AppCompatActivity implements
         //if (actionrecognised) {
             //Log.d("StageMode", "doLongKeyPressAction: Actioned");
         //}
-        //Log.d("StageMode", "doLongKeyPressAction: -> Block short and long key press");
+        //Log.d("StageMode", "doLongKeyPressAction: -> Blocked key actions");
 
         // IV - After the first long press action block further action.  Sequences will now end with a blocked short press which only sets blockKeyPress false
         blockKeyAction = true;
+
         return actionrecognised;
     }
 
