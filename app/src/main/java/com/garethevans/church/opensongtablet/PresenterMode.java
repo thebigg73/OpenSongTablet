@@ -3705,6 +3705,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             Log.d("PresenterMode", "onRemoteDisplaySessionEnded");
                         }
 
+                        @Override
+                        public void zza() {
+                            Log.d("PresenterMode","zza() - required implementation, but no Google Docs!!");
+                        }
+
                     });
         } else {
             // Might be a hdmi connection

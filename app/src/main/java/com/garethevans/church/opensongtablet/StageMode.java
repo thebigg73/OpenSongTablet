@@ -4622,6 +4622,13 @@ public class StageMode extends AppCompatActivity implements
                         public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
                             Log.d("StageMode", "onRemoteDisplaySessionEnded");
                         }
+
+                        @Override
+                        public void zza() {
+                            Log.d("StageMode","zza() - required implementation, but no Google Docs!!");
+                        }
+
+
                     });
         } else {
             // Might be a hdmi connection
