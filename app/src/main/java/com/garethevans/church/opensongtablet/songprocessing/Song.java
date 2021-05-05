@@ -29,6 +29,7 @@ public class Song {
     private String user3="";
     private String key="";
     private String timesig="";
+    private String tempo="";
     private String aka="";
     private String autoscrolldelay="";
     private String autoscrolllength="";
@@ -112,6 +113,9 @@ public class Song {
         return key;
     }
     public String getTimesig() {return timesig;}
+    public String getTempo() {
+        return tempo;
+    }
     public String getAka() {
         return aka;
     }
@@ -216,6 +220,9 @@ public class Song {
         this.key = key;
     }
     public void setTimesig(String timesig) {this.timesig = timesig;}
+    public void setTempo(String tempo) {
+        this.tempo = tempo;
+    }
     public void setAka(String aka) {
         this.aka = aka;
     }
@@ -285,6 +292,7 @@ public class Song {
         this.user3 = toCopy.user3;
         this.key = toCopy.key;
         this.timesig = toCopy.timesig;
+        this.tempo = toCopy.tempo;
         this.aka = toCopy.aka;
         this.autoscrolldelay = toCopy.autoscrolldelay;
         this.autoscrolllength = toCopy.autoscrolllength;

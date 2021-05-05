@@ -1,20 +1,19 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
 import android.annotation.SuppressLint;
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.JsonReader;
+import android.util.JsonToken;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
-import android.webkit.URLUtil;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -31,11 +30,10 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.OutputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 public class ImportOnlineFragment extends Fragment {
@@ -51,7 +49,8 @@ public class ImportOnlineFragment extends Fragment {
     private Song newSong;
     private UltimateGuitar ultimateGuitar;
     private Chordie chordie;
-    private ExposedDropDownSelection exposedDropDownSelection1,exposedDropDownSelection2;
+    private SongSelect songSelect;
+    private ExposedDropDownSelection exposedDropDownSelection1, exposedDropDownSelection2;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -81,6 +80,7 @@ public class ImportOnlineFragment extends Fragment {
         newSong = new Song();
         ultimateGuitar = new UltimateGuitar();
         chordie = new Chordie();
+        songSelect = new SongSelect();
         exposedDropDownSelection1 = new ExposedDropDownSelection();
         exposedDropDownSelection2 = new ExposedDropDownSelection();
     }
@@ -89,13 +89,17 @@ public class ImportOnlineFragment extends Fragment {
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, sources);
         myView.onlineSource.setAdapter(exposedDropDownArrayAdapter);
         // Set the position in the list to the chosen value
-        exposedDropDownSelection1.keepSelectionPosition(myView.exposedSourceLayout,myView.onlineSource, sources);
+        exposedDropDownSelection1.keepSelectionPosition(myView.exposedSourceLayout, myView.onlineSource, sources);
         if (mainActivityInterface.getCheckInternet().getSearchPhrase() != null) {
             myView.searchPhrase.getEditText().setText(mainActivityInterface.getCheckInternet().getSearchPhrase());
         }
         if (mainActivityInterface.getCheckInternet().getSearchSite() != null) {
             myView.onlineSource.setText(mainActivityInterface.getCheckInternet().getSearchSite());
         }
+        //TODO - remove the next 2 lines
+        myView.searchPhrase.post(() -> myView.searchPhrase.getEditText().setText("I surrender all"));
+        myView.onlineSource.post(() -> myView.onlineSource.setText("SongSelect"));
+
         setupWebView();
     }
 
@@ -115,6 +119,7 @@ public class ImportOnlineFragment extends Fragment {
         } else {
             myView.saveLayout.post(() -> myView.saveLayout.setVisibility(View.GONE));
         }
+
     }
 
     private void setupListeners() {
@@ -156,42 +161,23 @@ public class ImportOnlineFragment extends Fragment {
         myView.webView.getSettings().setDisplayZoomControls(false);
         myView.webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         myView.webView.setScrollbarFadingEnabled(false);
-        myView.webView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
-        try {
+        myView.webView.addJavascriptInterface(new MyJSInterface(requireContext(),mainActivityInterface,this), "HTMLOUT");
+        /*try {
             requireContext().registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         } catch (Exception e) {
             Log.d("d", "Error registering download complete listener");
-        }
+        }*/
+
         myView.webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
-            final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
-            /*if (mainActivityInterface.getWh.whattodo.equals("songselect") && (filename.endsWith(".pdf")||filename.endsWith(".PDF"))) {
+            // Show the progressBar
+            myView.progressBar.post(() -> myView.progressBar.setVisibility(View.VISIBLE));
+            changeLayouts(false, false, false);
 
-                try {
-                    // Hide the WebView
-                    searchresults_RelativeLayout.setVisibility(View.GONE);
-                    StaticVariables.myToastMessage = "Downloading...";
-                    saveSong_Button.setEnabled(false);
-                    ShowToast.showToast(getActivity());
-
-                    String cookie = CookieManager.getInstance().getCookie(url);
-
-                    DownloadManager.Request request = new DownloadManager.Request(
-                            Uri.parse(url));
-
-                    request.allowScanningByMediaScanner();
-                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
-                    downloadedFile = Uri.fromFile(file);
-                    DownloadManager dm = (DownloadManager) requireActivity().getSystemService(DOWNLOAD_SERVICE);
-                    request.addRequestHeader("Cookie", cookie);
-                    if (dm != null) {
-                        dm.enqueue(request);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }*/
+            if (url.startsWith("blob")) {
+                myView.webView.loadUrl(MyJSInterface.getBase64StringFromBlobUrl(url));
+            } else {
+                myView.webView.loadUrl(MyJSInterface.doNormalDownLoad(url));
+            }
         });
     }
 
@@ -203,30 +189,19 @@ public class ImportOnlineFragment extends Fragment {
             e.printStackTrace();
         }
     }
-    private final BroadcastReceiver onComplete = new BroadcastReceiver() {
-        public void onReceive(Context ctxt, Intent intent) {
-            /*downloadcomplete = true;
-            saveSong_Button.setEnabled(true);
-            // If the song save section isn't visible, make it so
-            // This is because there was no chordpro, but pdf is here
-            if (newfileinfo_LinearLayout.getVisibility()!=View.VISIBLE) {
-                setFileNameAndFolder();
-            }
-            try {
-                requireActivity().unregisterReceiver(onComplete);
-            } catch (Exception e) {
-                Log.d("d","Error unregistering receiver");
-            }*/
-        }
-    };
 
-    private class MyJavaScriptInterface {
-        @JavascriptInterface
-        public void processHTML(final String html) {
-            GetSourceCode getsource = new GetSourceCode(html);
-            getsource.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+/*    private final BroadcastReceiver onComplete = new BroadcastReceiver() {
+        public void onReceive(Context ctxt, Intent intent) {
+            changeLayouts(false, false, true);
+            newSong.setTitle(downloadedFile.getLastPathSegment());
+            try {
+                requireContext().unregisterReceiver(onComplete);
+            } catch (Exception e) {
+                Log.d("d", "Error unregistering receiver");
+            }
         }
-    }
+    };*/
+
 
     @SuppressLint("StaticFieldLeak")
     private class GetSourceCode extends AsyncTask<Object, String, String> {
@@ -306,6 +281,8 @@ public class ImportOnlineFragment extends Fragment {
                     !webAddress.isEmpty()) {
                 changeLayouts(false, true, false);
                 webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
+                // TODO
+                //webSearchFull = "https://www.google.com/search?q=sample+pdf+download&rlz=1C5CHFA_enGB945GB945&oq=sample+pdf+download&aqs=chrome..69i57j0i20i263j0l8.5386j0j9&sourceid=chrome&ie=UTF-8";
                 myView.webView.post(() -> myView.webView.loadUrl(webSearchFull));
                 Log.d("d", webSearchFull);
             }
@@ -319,42 +296,32 @@ public class ImportOnlineFragment extends Fragment {
         // Run the rest in a new thread
         new Thread(() -> {
             webString = "";
-            StringBuilder sb = new StringBuilder();
-            URL url;
-            HttpURLConnection urlConnection = null;
-            try {
-                url = new URL(webAddressFinal);
-                urlConnection = (HttpURLConnection) url.openConnection();
-
-                InputStream inputStream = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(inputStream));
-                String s;
-                while ((s = buffer.readLine()) != null) {
-                    sb.append("\n").append(s);
-                    Log.d("HTML",s);
-                    if (s.contains("<div class=\"fb-meta\">") ||
-                            //s.contains("<div class=\"plus-minus\">") ||
-                            s.contains("<div class=\"ugm-rate--stars") ||
-                            s.contains("<section class=\"ugm-ad ugm-ad__bottom\">")) {
-                        // End the while loop early as we have what we need
-                        break;
-                    }
-                }
-                webString = sb.toString();
-                inputStream.close();
-                buffer.close();
-            } catch (Exception | OutOfMemoryError e) {
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-
-            // Now decide what we are going to process
-            showSaveButton();
+            myView.webView.post(() -> myView.webView.evaluateJavascript("javascript:document.getElementsByTagName('html')[0].innerHTML",webContent));
         }).start();
     }
+
+    private final ValueCallback<String> webContent = new ValueCallback<String>() {
+        @Override
+        public void onReceiveValue(String value) {
+            JsonReader reader = new JsonReader(new StringReader(value));
+            reader.setLenient(true);
+            try {
+                if (reader.peek() == JsonToken.STRING) {
+                    webString = reader.nextString();
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            webString = webString.replace("\r","\n");
+            String[] lines = webString.split("\n");
+            for (String line:lines) {
+                Log.d("d", "line:" + line);
+            }
+            showSaveButton();
+        }
+    };
+
 
     private void showSaveButton() {
         boolean show = false;
@@ -368,17 +335,15 @@ public class ImportOnlineFragment extends Fragment {
                 }
                 break;
             case "Chordie":
-                //if (webString.contains("<pre id=\"placeholderChordpro\"")) {
                 if (webString.contains("<textarea id=\"chordproContent\"")) {
-                    // We have to invoke some javascript to get the content though!
-                    // webView.post(() -> myView.webView.evaluateJavascript("javascript:return document.getElementById('placeholderChordpro').innerHTML;", value -> {
-                        // value is the result returned by the Javascript as JSON - add to lyrics
-                        //newSong.setLyrics(value);
-                        // We'll use some of the html to get the title/author, etc
-                    //}));
                     show = true;
-                    break;
                 }
+                break;
+            case "SongSelect":
+                if (webString.contains("<span class=\"cproTitleLine\">")) {
+                    show = true;
+                }
+                break;
         }
         if (show) {
             myView.saveButton.post(() -> myView.saveButton.show());
@@ -412,8 +377,41 @@ public class ImportOnlineFragment extends Fragment {
                 Log.d("ImportOnline","capo="+newSong.getCapo());
                 Log.d("ImportOnline","lyrics="+newSong.getLyrics());
                 break;
+            case "SongSelect":
+                Log.d("ImportOnline","getting here SongSelect");
+                newSong = songSelect.processContent(mainActivityInterface,newSong,webString);
+                Log.d("ImportOnline","title="+newSong.getTitle());
+                Log.d("ImportOnline","author="+newSong.getAuthor());
+                Log.d("ImportOnline","key="+newSong.getKey());
+                Log.d("ImportOnline","copyright="+newSong.getCopyright());
+                Log.d("ImportOnline","tempo="+newSong.getTempo());
+                Log.d("ImportOnline","timesig="+newSong.getTimesig());
+                Log.d("ImportOnline","ccli="+newSong.getCcli());
+                Log.d("ImportOnline","lyrics="+newSong.getLyrics());
+                break;
         }
 
+        // Set up the save layout
+        //setupSaveLayout();
+    }
+
+    public void finishedDownloadPDF(Uri uri) {
+        // This is sent from MainActivity after a pdf file was downloaded
+        // Fix the views
+        if (uri!=null) {
+            myView.progressBar.setVisibility(View.GONE);
+            changeLayouts(false, false, true);
+            String filename = myView.saveFilename.getEditText().getText().toString();
+            if (uri != null) {
+                filename = uri.getLastPathSegment();
+            }
+            setupSaveLayout();
+            myView.saveFilename.getEditText().setText(filename);
+            myView.saveSong.setOnClickListener(v -> copyPDF(uri));
+        }
+    }
+
+    private void setupSaveLayout() {
         // Set up the save layout
         myView.saveFilename.post(() -> myView.saveFilename.getEditText().setText(newSong.getTitle()));
         // Get the folders available
@@ -429,6 +427,57 @@ public class ImportOnlineFragment extends Fragment {
         changeLayouts(false,false,true);
         myView.saveSong.setOnClickListener(v -> saveTheSong());
         myView.progressBar.post(() -> myView.progressBar.setVisibility(View.GONE));
+    }
+
+    // This is the save function for downloaded PDF files
+    private void copyPDF(Uri inputUri) {
+        // Prepare the output file
+        String filename = "SongSelect.pdf";
+        String folder = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername));
+        if (myView.folderChoice.getText()!=null) {
+            folder = myView.folderChoice.getText().toString();
+        }
+        if (myView.saveFilename.getEditText()!=null && myView.saveFilename.getEditText().getText()!=null) {
+            filename = myView.saveFilename.getEditText().getText().toString();
+        }
+        if (!filename.toLowerCase().endsWith(".pdf")) {
+            filename = filename + ".pdf";
+        }
+
+        // Update the song pdf values
+        newSong.setTitle(filename);
+        newSong.setFilename(filename);
+        newSong.setFolder(folder);
+        newSong.setFiletype("PDF");
+
+        Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                mainActivityInterface.getPreferences(),"Songs",folder,filename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
+                mainActivityInterface.getPreferences(),outputUri,null,"Songs",folder,filename);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),outputUri);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(),inputUri);
+        try {
+            // Copy the file
+            mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
+
+            // Update the current song
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"whichSongFolder",folder);
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"songfilename",filename);
+
+            // Update the main and nonopensong databases
+            mainActivityInterface.getSQLiteHelper().createSong(requireContext(),mainActivityInterface,folder,filename);
+            mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),mainActivityInterface,newSong);
+            mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(requireContext(),mainActivityInterface,folder,filename);
+            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),mainActivityInterface,newSong);
+
+            // Let the user know and show the song
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
+            mainActivityInterface.navHome();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
+        }
     }
 
     private void saveTheSong() {
@@ -466,6 +515,8 @@ public class ImportOnlineFragment extends Fragment {
             // Send an instruction to update the song menu (no need for full reindex)
             mainActivityInterface.updateSongMenu(newSong);
             mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
+
+            mainActivityInterface.navHome();
         } else {
             mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
         }

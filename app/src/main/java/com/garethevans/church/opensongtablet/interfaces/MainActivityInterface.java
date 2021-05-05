@@ -184,4 +184,5 @@ public interface MainActivityInterface {
     ProfileActions getProfileActions();
     CheckInternet getCheckInternet();
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
+    void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri);
 }

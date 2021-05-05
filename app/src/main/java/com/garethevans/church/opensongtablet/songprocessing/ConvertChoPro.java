@@ -616,10 +616,12 @@ public class ConvertChoPro {
                 replace(wm + " 2:", "[¬ 2¹").
                 replace(wm + " 3:", "[¬ 3¹").
                 replace(wm + " 4:", "[¬ 4¹").
+                replace(wm + " 5:", "[¬ 5¹").
                 replace(wm + " 1", "[¬ 1¹").
                 replace(wm + " 2", "[¬ 2¹").
                 replace(wm + " 3", "[¬ 3¹").
                 replace(wm + " 4", "[¬ 4¹").
+                replace(wm + " 5", "[¬ 5¹").
                 replace(wm, "[¬¹");
         // IV - And when uppercase
         wm = wm.toUpperCase();
@@ -628,10 +630,12 @@ public class ConvertChoPro {
                 replace(wm + " 2:", "[¬ 2¹").
                 replace(wm + " 3:", "[¬ 3¹").
                 replace(wm + " 4:", "[¬ 4¹").
+                replace(wm + " 5:", "[¬ 5¹").
                 replace(wm + " 1", "[¬ 1¹").
                 replace(wm + " 2", "[¬ 2¹").
                 replace(wm + " 3", "[¬ 3¹").
                 replace(wm + " 4", "[¬ 4¹").
+                replace(wm + " 5", "[¬ 5¹").
                 replace(wm, "[¬¹");
 
         // IV - A complete replace has · at the end.

@@ -1396,6 +1396,16 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void fixOptionsMenu() {invalidateOptionsMenu();}
+    @Override
+    public void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri) {
+        if (fragment!=null && fragId==R.id.importOnlineFragment) {
+            try {
+                ((ImportOnlineFragment)fragment).finishedDownloadPDF(uri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent intent) {

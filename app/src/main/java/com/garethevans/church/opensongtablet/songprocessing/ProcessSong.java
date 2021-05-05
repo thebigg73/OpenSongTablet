@@ -182,6 +182,7 @@ public class ProcessSong {
         s = s.replace("�??","'");
         s = s.replace("�?","'");
         s = s.replace("�","'");
+        s = s.replace("&nbsp;"," ");
         return s;
     }
     public String makeXMLSafeEncoding(String s) {

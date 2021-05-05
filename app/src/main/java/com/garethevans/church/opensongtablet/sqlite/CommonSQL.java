@@ -159,7 +159,6 @@ public class CommonSQL {
 
         int row = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_SONGID + "=?",
                 new String[]{String.valueOf(thisSong.getSongid())});
-        Log.d("d","id="+thisSong.getId()+"  songId="+thisSong.getSongid()+"  row="+row);
         if (row == 0) {
             db.insert(SQLite.TABLE_NAME, null, values);
         }
