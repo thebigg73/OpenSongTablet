@@ -28,7 +28,7 @@
                 app:backgroundTint="@color/purple"
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_help_outline_white_36dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:contentDescription="@string/custom" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -41,7 +41,7 @@
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:contentDescription="@string/custom" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -54,7 +54,7 @@
                 app:backgroundTint="@color/purple"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:contentDescription="@string/custom" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:alpha="0.4"
                 android:src="@drawable/ic_help_outline_white_36dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:backgroundTint="@color/purple"
                 app:borderWidth="0dp"
                 app:fabSize="mini"
@@ -97,7 +97,7 @@
                 app:backgroundTint="@color/purple"
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_guitar_electric_white_36dp"
-                android:visibility="visible"  />
+                android:visibility="gone" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/linkButton"
@@ -110,7 +110,7 @@
                 app:backgroundTint="@color/purple"
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_link_white_36dp"
-                android:visibility="visible"  />
+                android:visibility="gone" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/stickyButton"
@@ -122,7 +122,7 @@
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_comment_text_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/stickynotes" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -135,7 +135,7 @@
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_clef_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/music_score" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -148,7 +148,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_highlighter_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/highlight" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -162,7 +162,7 @@
                 app:backgroundTint="@color/purple"
                 android:src="@drawable/ic_book_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/pdf_selectpage" />
 
         </LinearLayout>
@@ -196,7 +196,7 @@
                 android:tag="togglePlayPads"
                 android:src="@drawable/ic_format_list_numbers_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/padButton"
@@ -209,7 +209,7 @@
                 android:tag="togglePlayPads"
                 android:src="@drawable/ic_amplifier_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/autoscrollButton"
@@ -222,7 +222,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_rotate_right_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/autoscroll" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -236,7 +236,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_pulse_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/metronome" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -250,7 +250,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_guitar_electric_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/chords" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -264,7 +264,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_link_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/link" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -278,7 +278,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_comment_text_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/stickynotes" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -292,7 +292,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_clef_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/music_score" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -306,7 +306,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_highlighter_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/highlight" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -320,7 +320,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_book_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/pdf_selectpage" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -334,7 +334,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_information_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/extra" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -348,7 +348,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/custom" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -362,7 +362,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/custom" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -376,7 +376,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/custom" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -390,7 +390,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/custom" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -404,7 +404,7 @@
                 app:fabSize="mini"
                 android:src="@drawable/ic_bullseye_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"
+                android:visibility="gone" />
                 android:contentDescription="@string/custom" />
 
         </LinearLayout>

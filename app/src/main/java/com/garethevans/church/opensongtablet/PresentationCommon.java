@@ -94,7 +94,6 @@ class PresentationCommon {
     boolean matchPresentationToMode(LinearLayout presentermode_bottombit,
                                     SurfaceView projected_SurfaceView, ImageView projected_BackgroundImage,
                                     ImageView projected_ImageView) {
-        boolean runfixbackground = false;
         switch (StaticVariables.whichMode) {
             case "Stage":
             case "Performance":
@@ -108,11 +107,12 @@ class PresentationCommon {
 
             case "Presentation":
                 presentermode_bottombit.setVisibility(View.VISIBLE);
-                runfixbackground = true;
                 break;
         }
+        StaticVariables.infoBarChangeRequired = true;
         StaticVariables.forcecastupdate = false;
-        return runfixbackground;
+        // IV - Always runfixbackground
+        return true;
     }
     void changeMargins(Context c, Preferences preferences, RelativeLayout projectedPage_RelativeLayout, int presoInfoColor) {
         projectedPage_RelativeLayout.setPadding(preferences.getMyPreferenceInt(c,"presoXMargin",20)+StaticVariables.cast_padding,
@@ -297,10 +297,9 @@ class PresentationCommon {
         }
     }
     void updateAlpha(Context c, Preferences preferences, ImageView projected_BackgroundImage,
-                     SurfaceView projected_SurfaceView, LinearLayout projected_InfoBar) {
+                     SurfaceView projected_SurfaceView) {
         projected_BackgroundImage.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
         projected_SurfaceView.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
-        projected_InfoBar.setAlpha(preferences.getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f));
     }
     void normalStartUp(Context c, Preferences preferences, ImageView projected_Logo) {
         // Animate out the default logo
@@ -613,13 +612,22 @@ class PresentationCommon {
     private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
                                        TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert, LinearLayout bottom_infobar) {
         if (!(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF)) {
+
+            // IV - Overrides for when not hiding song info
+            if (!preferences.getMyPreferenceBoolean(c,"presoInfoBarHide",true) && PresenterMode.alert_on.equals("N")) {
+                // IV - If we are ending Alert display then force song info display else keep song info by extending the until time
+                if (infoBarAlertState.equals("Y")) {
+                    StaticVariables.infoBarChangeRequired = true;
+                } else {
+                    infoBarUntilTime = System.currentTimeMillis() + 10000;
+                }
+            }
+
             // IV - Exceutes for first section after a change is requested (for a fresh song info display)
             // IV - AND section changes AFTER the subsequent 'Until' period end (for alert display)
             // IV - NOT for section changes after the first that occur BEFORE the end of the Until period
-            // GE - Only hide if above the wait time and we have specified we want to auto hide
-            boolean hide = preferences.getMyPreferenceBoolean(c,"presoInfoBarHide",true);
 
-            if ((StaticVariables.infoBarChangeRequired) || (System.currentTimeMillis() > infoBarUntilTime && hide)) {
+            if ((StaticVariables.infoBarChangeRequired) || (System.currentTimeMillis() > infoBarUntilTime)) {
                 String new_author = "";
                 String new_title = "";
                 String new_copyright = "";
@@ -656,13 +664,8 @@ class PresentationCommon {
 
                 // IV - We will need to animate if we pass this test - no false positives
                 if (StaticVariables.infoBarChangeRequired || !infoBarAlertState.equals(PresenterMode.alert_on)) {
-                // if (StaticVariables.infoBarChangeRequired || !infoBarAlertState.equals(PresenterMode.alert_on)) {
-
-                        Log.d("d","Fading infobar");
                     // IV - Fade to 0.01f to keep on screen
-                    if (hide) {
-                        CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), 0.01f);
-                    }
+                    CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), 0.01f);
                     // IV - Delay lyrics to ensure new infobar is available for correct screen sizing - Set also to provide a good transition
                     infoBarChangeDelay = 200;
                     // IV - Rapid song changes can see multiple handlers running - ensure that none show an alert
@@ -680,9 +683,7 @@ class PresentationCommon {
                     String finalNew_ccli = new_ccli;
                     h.postDelayed(() -> {
                         // IV - Finish the fade
-                        if (hide) {
-                            bottom_infobar.setAlpha(0.0f);
-                        }
+                        bottom_infobar.setAlpha(0.0f);
                         adjustVisibility(presentermode_author, finalNew_author);
                         adjustVisibility(presentermode_copyright, finalNew_copyright);
                         adjustVisibility(presentermode_ccli, finalNew_ccli);

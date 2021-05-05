@@ -288,7 +288,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("d", "Welcome to Presentation Mode");
+        Log.d("PresenterMode", "Welcome to Presentation Mode");
 
         StaticVariables.activity = PresenterMode.this;
         FullscreenActivity.mContext = PresenterMode.this;
@@ -438,14 +438,19 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void onStart() {
         super.onStart();
-        FullscreenActivity.appRunning = true;
         StaticVariables.activity = PresenterMode.this;
-        StaticVariables.infoBarChangeRequired = true;
-        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
-                MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+        FullscreenActivity.appRunning = true;
+        if (mMediaRouter != null && mMediaRouteSelector != null) {
+            try {
+                StaticVariables.infoBarChangeRequired = true;
+                mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
+                        MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         // Fix the page flags
         windowFlags();
-        updateDisplays();
     }
     @Override
     protected void onStop() {
@@ -454,7 +459,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             FullscreenActivity.appRunning = false;
             mMediaRouter.removeCallback(mMediaRouterCallback);
         } catch (Exception e) {
-            Log.d("d", "Problem removing mediaroutercallback");
+            Log.d("PresenterMode", "Problem removing mediaroutercallback");
         }
 
         if (br!=null) {
@@ -469,8 +474,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     protected void onResume() {
         // Be sure to call the super class.
         super.onResume();
-        FullscreenActivity.appRunning = true;
         StaticVariables.activity = PresenterMode.this;
+        FullscreenActivity.appRunning = true;
         resizeDrawers();
         // Fix the page flags
         windowFlags();
@@ -489,7 +494,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 PresenterMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                Log.d("d","Error closing battery monitor");
+                Log.d("PresenterMode", "Battery monitor not registered anymore");
             }
         }
         tryCancelAsyncTasks();
@@ -785,11 +790,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Declare we have loaded a new song (for the ccli log).
                     // This stops us reporting projecting every section
                     newsongloaded = true;
-
-                    // Send Nearby payload
-                    if (StaticVariables.isHost && StaticVariables.isConnected) {
-                        nearbyConnections.sendSongPayload();
-                    }
 
                     doCancelAsyncTask(loadsong_async);
                     loadsong_async = new LoadSong();
@@ -1790,8 +1790,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
 
     private void sendSongSectionToConnected() {
-        String infoPayload = "___section___" + StaticVariables.currentSection;
-        nearbyConnections.doSendPayloadBytes(infoPayload);
+        // IV - Do not send section 0 payload when loading a song
+        if (!FullscreenActivity.alreadyloading) {
+            String infoPayload = "___section___" + StaticVariables.currentSection;
+            nearbyConnections.doSendPayloadBytes(infoPayload);
+        }
     }
 
     private void getBluetoothName() {
@@ -1945,7 +1948,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("StageMode","Error sending activity result to fragment");
+                Log.d("PresenterMode", "Error sending activity result to fragment");
             }
 
         } else if (requestCode==StaticVariables.REQUEST_IMAGE_CODE) {
@@ -1953,7 +1956,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("StageMode", "Error sending activity result to fragment");
+                Log.d("PresenterMode", "Error sending activity result to fragment");
             }
 
         } else if (requestCode==StaticVariables.REQUEST_BACKGROUND_IMAGE1 ||
@@ -1965,7 +1968,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("StageMode", "Error sending activity result to fragment");
+                Log.d("PresenterMode", "Error sending activity result to fragment");
             }
 
         } else if (requestCode == StaticVariables.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
@@ -2659,7 +2662,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     StaticVariables.mMidi = StaticVariables.mMidi.replace("\n\n", "\n");
                     String[] midilines = StaticVariables.mMidi.trim().split("\n");
                     for (String ml : midilines) {
-                        Log.d("d","Sending "+ml);
+                        Log.d("PresenterMode", "Sending "+ml);
                         if (midi!=null) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 midi.sendMidi(midi.returnBytesFromHexText(ml));
@@ -3180,7 +3183,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // Google Nearby
     @Override
     public boolean requestNearbyPermissions() {
-        Log.d("d","Requesting nearby permissions");
+        Log.d("PresenterMode", "Requesting nearby permissions");
         if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
             return true;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
@@ -3237,7 +3240,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 case 404:
                     // Access fine location, so can open the menu at 'Connect devices'
-                    Log.d("d", "FINE LOCATION granted!");
+                    Log.d("PresenterMode", "FINE LOCATION granted!");
                     break;
             }
         }
@@ -3256,6 +3259,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     LoadXML.loadXML(PresenterMode.this, preferences, storageAccess, processSong);
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+
+                // Send Nearby song intent
+                if (StaticVariables.isHost && StaticVariables.isConnected && !FullscreenActivity.orientationchanged) {
+                    nearbyConnections.sendSongPayload();
                 }
 
                 // Clear the old headings (presention order looks for these)
@@ -3386,12 +3394,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     showCorrectViews();
                     setupSongButtons();
                     findSongInFolders();
-
-
-                    // Send WiFiP2P intent
-                    if (StaticVariables.isHost && StaticVariables.isConnected && !orientationChanged) {
-                        nearbyConnections.sendSongPayload();
-                    }
 
                     // Send the midi data if we can
                     if (!orientationChanged) {
@@ -3528,7 +3530,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Set the secondary alphabetical side bar
                     displayIndex(songmenulist, lva);
 
-                    // Flick the song drawer open on8ce it is ready
+                    // Flick the song drawer open once it is ready
                     findSongInFolders();
                     if (firstrun_song) {
                         openMyDrawers("song");
@@ -3695,12 +3697,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                         @Override
                         public void onRemoteDisplaySessionError(Status status) {
-                            Log.d("d","onRemoteDisplaySessionError status="+status);
+                            Log.d("PresenterMode", "onRemoteDisplaySessionError status="+status);
                         }
 
                         @Override
                         public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("d","onRemoteDisplaySessionEnded");
+                            Log.d("PresenterMode", "onRemoteDisplaySessionEnded");
                         }
 
                     });
@@ -3721,7 +3723,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
-                    Log.d("StageMode","dm="+dm);
+                    Log.d("PresenterMode","dm=" + dm);
 
                     // If a Chromebook HDMI, need to do this
                     Display[] displays = dm.getDisplays();
@@ -3745,7 +3747,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("d","Error"+e);
+                Log.d("PresenterMode","Error" + e);
             }
         }
     }
@@ -4016,7 +4018,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         Intent intent;
         // Start location
         Uri uri = storageAccess.getUriForItem(PresenterMode.this,preferences,"","","");
-        Log.d("d","Start uri="+uri);
+        Log.d("PresenterMode","Start uri=" + uri);
         if (storageAccess.lollipopOrLater()) {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
