@@ -101,7 +101,7 @@ public class PedalActions {
         // If using AirTurnMode, grab this and start counting for long press mode
         if (airTurnMode && !airTurnPaused && keyRepeatCount<repeatsRecorded) {
             repeatsRecorded++;
-            if (repeatsRecorded==keyRepeatCount) {
+            if (repeatsRecorded > keyRepeatCount) {
                 // This should be set to a long press action
                 airTurnPaused = true;
                 new Timer().schedule(new TimerTask() {

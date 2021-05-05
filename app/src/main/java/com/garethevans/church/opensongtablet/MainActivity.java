@@ -745,7 +745,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             try {
                 this.unregisterReceiver(batteryStatus);
             } catch (Exception e) {
-                Log.d(TAG, "No need to close battery monitor");
+                Log.d(TAG, "Battery receiver not registered, so no need to unregister");
             }
         }
     }
@@ -1735,7 +1735,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void doSendPayloadBytes(Context c,String infoPayload) {
+        // TODO - IV addition to check if needed (obs no FullscreenActivity anymore!
+        // // IV - Do not send section 0 payload when loading a song
+        //        if (!FullscreenActivity.alreadyloading) {
         nearbyConnections.doSendPayloadBytes(c,infoPayload);
+        // }
     }
     @Override
     public boolean requestNearbyPermissions() {
