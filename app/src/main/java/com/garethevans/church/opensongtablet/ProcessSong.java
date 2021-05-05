@@ -41,6 +41,89 @@ public class ProcessSong extends Activity {
 
     private final String TAG = "ProcessSong";
 
+    static void processTimeSig() {
+        switch (StaticVariables.mTimeSig) {
+            case "2/2":
+                FullscreenActivity.beats = 2;
+                FullscreenActivity.noteValue = 2;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "2/4":
+                FullscreenActivity.beats = 2;
+                FullscreenActivity.noteValue = 4;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "3/2":
+                FullscreenActivity.beats = 3;
+                FullscreenActivity.noteValue = 2;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "3/4":
+                FullscreenActivity.beats = 3;
+                FullscreenActivity.noteValue = 4;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "3/8":
+                FullscreenActivity.beats = 3;
+                FullscreenActivity.noteValue = 8;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "4/4":
+                FullscreenActivity.beats = 4;
+                FullscreenActivity.noteValue = 4;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "5/4":
+                FullscreenActivity.beats = 5;
+                FullscreenActivity.noteValue = 4;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "5/8":
+                FullscreenActivity.beats = 5;
+                FullscreenActivity.noteValue = 8;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "6/4":
+                FullscreenActivity.beats = 6;
+                FullscreenActivity.noteValue = 4;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "6/8":
+                FullscreenActivity.beats = 6;
+                FullscreenActivity.noteValue = 8;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "7/4":
+                FullscreenActivity.beats = 7;
+                FullscreenActivity.noteValue = 4;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "7/8":
+                FullscreenActivity.beats = 7;
+                FullscreenActivity.noteValue = 8;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            case "1/4":
+                FullscreenActivity.beats = 1;
+                FullscreenActivity.noteValue = 4;
+                StaticVariables.mTimeSigValid = true;
+                break;
+            default:
+                FullscreenActivity.beats = 4;
+                FullscreenActivity.noteValue = 4;
+                StaticVariables.mTimeSigValid = false;
+                break;
+        }
+    }
+
+    public static int getColorWithAlpha(int color, float ratio) {
+        int alpha = Math.round(Color.alpha(color) * ratio);
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+        return Color.argb(alpha, r, g, b);
+    }
+
     String parseLyrics(String myLyrics, Context c) {
         myLyrics = myLyrics.replace("]\n\n", "]\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
@@ -252,9 +335,9 @@ public class ProcessSong extends Activity {
 
         // Fix for filtered section labels
         if (string.contains(":V") || string.contains(":C") ||
-        string.contains(":B") || string.contains(":T") ||
-        string.contains(":P")) {
-            string = string.substring(string.indexOf(":")+1);
+                string.contains(":B") || string.contains(":T") ||
+                string.contains(":P")) {
+            string = string.substring(string.indexOf(":") + 1);
         }
 
         if (!FullscreenActivity.foundSongSections_heading.contains(string)) {
@@ -639,6 +722,7 @@ public class ProcessSong extends Activity {
         FullscreenActivity.thirdsplit_section = thirdsplit_section;
         FullscreenActivity.twothirdsplit_section = twothirdsplit_section;
     }
+
     String fixLineLength(String string, int newlength) {
         int extraspacesrequired = newlength - string.length();
         StringBuilder stringBuilder = new StringBuilder(string);
@@ -838,81 +922,6 @@ public class ProcessSong extends Activity {
         }
     }
 
-    static void processTimeSig() {
-        switch (StaticVariables.mTimeSig) {
-            case "2/2":
-                FullscreenActivity.beats = 2;
-                FullscreenActivity.noteValue = 2;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "2/4":
-                FullscreenActivity.beats = 2;
-                FullscreenActivity.noteValue = 4;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "3/2":
-                FullscreenActivity.beats = 3;
-                FullscreenActivity.noteValue = 2;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "3/4":
-                FullscreenActivity.beats = 3;
-                FullscreenActivity.noteValue = 4;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "3/8":
-                FullscreenActivity.beats = 3;
-                FullscreenActivity.noteValue = 8;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "4/4":
-                FullscreenActivity.beats = 4;
-                FullscreenActivity.noteValue = 4;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "5/4":
-                FullscreenActivity.beats = 5;
-                FullscreenActivity.noteValue = 4;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "5/8":
-                FullscreenActivity.beats = 5;
-                FullscreenActivity.noteValue = 8;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "6/4":
-                FullscreenActivity.beats = 6;
-                FullscreenActivity.noteValue = 4;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "6/8":
-                FullscreenActivity.beats = 6;
-                FullscreenActivity.noteValue = 8;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "7/4":
-                FullscreenActivity.beats = 7;
-                FullscreenActivity.noteValue = 4;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "7/8":
-                FullscreenActivity.beats = 7;
-                FullscreenActivity.noteValue = 8;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            case "1/4":
-                FullscreenActivity.beats = 1;
-                FullscreenActivity.noteValue = 4;
-                StaticVariables.mTimeSigValid = true;
-                break;
-            default:
-                FullscreenActivity.beats = 4;
-                FullscreenActivity.noteValue = 4;
-                StaticVariables.mTimeSigValid = false;
-                break;
-        }
-    }
-
     boolean isAutoScrollValid(Context c, Preferences preferences) {
         // Get the autoScrollDuration;
         if (StaticVariables.mDuration.isEmpty() &&
@@ -984,19 +993,21 @@ public class ProcessSong extends Activity {
         boolean thischarempty;
         boolean prevcharempty;
 
-        if (inString.startsWith(".")) { inString = inString.replaceFirst("."," "); }
+        if (inString.startsWith(".")) {
+            inString = inString.replaceFirst(".", " ");
+        }
         // In order to identify chords at the end of the line
         // (My method needs a following space)
         // Add a space to the search string.
         inString = inString + " ";
 
         for (int x = 1; x < (inString.length()); x++) {
-            thischarempty =  inString.startsWith(" ", x);
-            prevcharempty =  inString.startsWith(" ", x - 1);
+            thischarempty = inString.startsWith(" ", x);
+            prevcharempty = inString.startsWith(" ", x - 1);
 
             // Add the start of chord and the end of a chord where it ends above a space in the lyric
             if ((!thischarempty && prevcharempty) || (thischarempty && !prevcharempty && lyric.startsWith(" ", x - 1))) {
-                    chordpositions.add(x + "");
+                chordpositions.add(x + "");
             }
 
         }
@@ -1355,7 +1366,7 @@ public class ProcessSong extends Activity {
                 ImageView img = new ImageView(c);
 
                 // By default, the image should be the not found one
-                Drawable drw = ResourcesCompat.getDrawable(c.getResources(),R.drawable.notfound,null);
+                Drawable drw = ResourcesCompat.getDrawable(c.getResources(), R.drawable.notfound, null);
 
                 int maxwidth = 320;
                 if (FullscreenActivity.myWidthAvail > 0) {
@@ -1509,7 +1520,6 @@ public class ProcessSong extends Activity {
         }
         return titleview;
     }
-
 
     int getSectionColors(String type, int lyricsVerseColor, int lyricsChorusColor, int lyricsPreChorusColor,
                          int lyricsBridgeColor, int lyricsTagColor, int lyricsCommentColor, int lyricsCustomColor) {
@@ -1765,11 +1775,11 @@ public class ProcessSong extends Activity {
         song = song.replace("-!!", "");
 
         // IV - Protect any chord repeat bar lines
-        song = song.replace("||:","··>").replace(":||","<··");
+        song = song.replace("||:", "··>").replace(":||", "<··");
 
         if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
             // IV - Song block dividers ||| are not processed as splits
-            song = song.replace("|||","|").replace("||", "%%LATERSPLITHERE%%");
+            song = song.replace("|||", "|").replace("||", "%%LATERSPLITHERE%%");
         } else {
             song = song.replace("||", "");
         }
@@ -1819,7 +1829,7 @@ public class ProcessSong extends Activity {
             temp = song.split("\n");
             StringBuilder songBuilder1 = new StringBuilder();
             for (String t : temp) {
-                if (t.startsWith(".") || t.startsWith(";"))  {
+                if (t.startsWith(".") || t.startsWith(";")) {
                     songBuilder1.append(t).append("\n");
                 } else {
                     songBuilder1.append(t.replace("|", " ")).append("\n");
@@ -1848,7 +1858,7 @@ public class ProcessSong extends Activity {
         }
 
         // IV - Reset any chord repeat bar lines. Split the lyrics
-        return newsong.toString().replace("··>","||:").replace("<··",":||").split("%%__SPLITHERE__%%");
+        return newsong.toString().replace("··>", "||:").replace("<··", ":||").split("%%__SPLITHERE__%%");
     }
 
     String[] splitLaterSplits(Context c, Preferences preferences, String[] currsections) {
@@ -1946,8 +1956,12 @@ public class ProcessSong extends Activity {
         String[] currentSectionLabels = new String[currentSections.length];
         for (int sl = 0; sl < currentSections.length; sl++) {
             currentSectionLabels[sl] = getSectionHeadings(currentSections[sl]);
-            if (currentSectionLabels[sl].equals("H__1")) { tempPresentationOrder.insert(0, "H__1 "); }
-            if (currentSectionLabels[sl].equals("F__1")) { tempPresentationOrder.append("F__1 "); }
+            if (currentSectionLabels[sl].equals("H__1")) {
+                tempPresentationOrder.insert(0, "H__1 ");
+            }
+            if (currentSectionLabels[sl].equals("F__1")) {
+                tempPresentationOrder.append("F__1 ");
+            }
 
         }
 
@@ -2276,7 +2290,7 @@ public class ProcessSong extends Activity {
             StaticVariables.songSectionsTypes[x] = returnvals[1];
         }
 
-        if (checkForFilter(c,preferences,ll,x)) {
+        if (checkForFilter(c, preferences, ll, x)) {
             // IV - If first title is empty then do not do add to view and mark section as comment.  This helps the song details block.
             if (x == 0 & returnvals[0].equals("")) {
                 returnvals[1] = "comment";
@@ -2456,17 +2470,17 @@ public class ProcessSong extends Activity {
         boolean show = true;
         if (StaticVariables.songSectionsLabels[x].startsWith("*") &&
                 StaticVariables.songSectionsLabels[x].contains(":") &&
-                preferences.getMyPreferenceBoolean(c,"commentFiltering",false)) {
+                preferences.getMyPreferenceBoolean(c, "commentFiltering", false)) {
             // Check if it should be filtered out
-            boolean showOnlyFilter = preferences.getMyPreferenceBoolean(c,"commentFilterOnlyShow",false);
-            String myFilter = preferences.getMyPreferenceString(c,"commentFilters","X__XX__X");
+            boolean showOnlyFilter = preferences.getMyPreferenceBoolean(c, "commentFilterOnlyShow", false);
+            String myFilter = preferences.getMyPreferenceString(c, "commentFilters", "X__XX__X");
             if (!myFilter.equals("X__XX__X")) {
-                String checkFilter = StaticVariables.songSectionsLabels[x].substring(1,StaticVariables.songSectionsLabels[x].indexOf(":"));
+                String checkFilter = StaticVariables.songSectionsLabels[x].substring(1, StaticVariables.songSectionsLabels[x].indexOf(":"));
                 // Sanity check
-                if (checkFilter!=null && !checkFilter.isEmpty()) {
+                if (checkFilter != null && !checkFilter.isEmpty()) {
                     // Only show if not in filter
-                    if ((showOnlyFilter && !myFilter.contains("X__X"+checkFilter+"X__X")) ||
-                            (!showOnlyFilter && myFilter.contains("X__X"+checkFilter+"X__X"))) {
+                    if ((showOnlyFilter && !myFilter.contains("X__X" + checkFilter + "X__X")) ||
+                            (!showOnlyFilter && myFilter.contains("X__X" + checkFilter + "X__X"))) {
                         // User either wants to show matching filters, so hide others or
                         // Hide matching filters, so hide this
                         ll.setVisibility(View.GONE);
@@ -2574,7 +2588,9 @@ public class ProcessSong extends Activity {
 
             // IV - 2 spaces added to reduce occurance of right edge overrun
             thisLine = whattoprocess[y].replaceAll("\\s+$", "") + "  ";
-            if (thisLine.startsWith(".")) { thisLine = thisLine.replaceFirst("."," "); }
+            if (thisLine.startsWith(".")) {
+                thisLine = thisLine.replaceFirst(".", " ");
+            }
 
             switch (what) {
                 // If this is a chord line followed by a lyric line.
@@ -2632,7 +2648,8 @@ public class ProcessSong extends Activity {
                 case "comment_no_chord":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = thisLine;
-                    if (!stagelyricsonly) tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false));
+                    if (!stagelyricsonly)
+                        tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false));
                     break;
 
                 case "extra_info":
@@ -2649,7 +2666,8 @@ public class ProcessSong extends Activity {
                 case "guitar_tab":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = thisLine;
-                    if (!stagelyricsonly) tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, true));
+                    if (!stagelyricsonly)
+                        tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, true));
                     break;
 
             }
@@ -2684,13 +2702,6 @@ public class ProcessSong extends Activity {
                 break;
         }
         return align;
-    }
-    public static int getColorWithAlpha(int color, float ratio) {
-        int alpha = Math.round(Color.alpha(color) * ratio);
-        int r = Color.red(color);
-        int g = Color.green(color);
-        int b = Color.blue(color);
-        return Color.argb(alpha, r, g, b);
     }
 
     LinearLayout createLinearLayout(Context c) {
@@ -3110,8 +3121,8 @@ public class ProcessSong extends Activity {
 
         // If we have song details and a top sticky note, combine and empty stckyNotes variable
         if (sad.equals("T") && (songInformation.length() > 0) && (stickyNotes.length() > 0)) {
-                songInformation.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";" + c.getString(R.string.note) + ": ").replaceAll(";__", ";"));
-                stickyNotes = new StringBuilder();
+            songInformation.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";" + c.getString(R.string.note) + ": ").replaceAll(";__", ";"));
+            stickyNotes = new StringBuilder();
         }
 
         // Build an [H__1] header section
@@ -3171,7 +3182,7 @@ public class ProcessSong extends Activity {
 
                 for (int i = 0; i < positions.length; i++) {
                     // Split if this word starts with '(' and there is a word before
-                    if ((longString.substring(Integer.parseInt(positions[i])).startsWith("(")) && (endpos > startpos) ) {
+                    if ((longString.substring(Integer.parseInt(positions[i])).startsWith("(")) && (endpos > startpos)) {
                         endpos = Integer.parseInt(positions[i]);
                         outLongString.append(longString.substring(startpos, endpos)).append("\n");
                         startpos = endpos;
@@ -3224,6 +3235,7 @@ public class ProcessSong extends Activity {
         newButton.setLayoutParams(params);
         return newButton;
     }
+
     void highlightPresenterSetButton(Button b) {
         b.setBackgroundResource(R.drawable.present_section_setbutton_active);
         b.setTextSize(10.0f);
@@ -3232,6 +3244,7 @@ public class ProcessSong extends Activity {
         b.setMinimumHeight(0);
         b.setMinHeight(0);
     }
+
     void unhighlightPresenterSetButton(Button b) {
         b.setBackgroundResource(R.drawable.present_section_setbutton);
         b.setTextSize(10.0f);
@@ -3240,6 +3253,7 @@ public class ProcessSong extends Activity {
         b.setMinimumHeight(0);
         b.setMinHeight(0);
     }
+
     LinearLayout makePresenterSongButtonLayout(Context c) {
         LinearLayout ll = new LinearLayout(c);
         ll.setOrientation(LinearLayout.HORIZONTAL);
@@ -3252,6 +3266,7 @@ public class ProcessSong extends Activity {
 
         return ll;
     }
+
     TextView makePresenterSongButtonSection(Context c, String s) {
         TextView tv = new TextView(c);
         tv.setText(s);
@@ -3260,6 +3275,7 @@ public class ProcessSong extends Activity {
         tv.setPadding(5, 5, 10, 5);
         return tv;
     }
+
     Button makePresenterSongButtonContent(Context c, String s) {
         Button b = new Button(c);
         b.setText(s.trim());
@@ -3272,6 +3288,7 @@ public class ProcessSong extends Activity {
         b.setMinHeight(0);
         return b;
     }
+
     void highlightPresenterSongButton(Button b) {
         b.setBackgroundResource(R.drawable.present_section_button_active);
         b.setTextSize(10.0f);
@@ -3280,6 +3297,7 @@ public class ProcessSong extends Activity {
         b.setMinimumHeight(0);
         b.setMinHeight(0);
     }
+
     void unhighlightPresenterSongButton(Button b) {
 
         b.setBackgroundResource(R.drawable.present_section_button);
@@ -3299,9 +3317,9 @@ public class ProcessSong extends Activity {
                 StaticVariables.whichSongFolder.equals("")) {
             highlighterfile = c.getString(R.string.mainfoldername) + "_" + StaticVariables.songfilename;
         } else if (StaticVariables.whichSongFolder.startsWith("../")) {
-            highlighterfile = StaticVariables.whichSongFolder.replace("../","").replace("/","_") + "_" + StaticVariables.songfilename;
+            highlighterfile = StaticVariables.whichSongFolder.replace("../", "").replace("/", "_") + "_" + StaticVariables.songfilename;
         } else {
-            highlighterfile = StaticVariables.whichSongFolder.replace("/","_") + "_" + StaticVariables.songfilename;
+            highlighterfile = StaticVariables.whichSongFolder.replace("/", "_") + "_" + StaticVariables.songfilename;
         }
 
         if (c.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -3326,22 +3344,23 @@ public class ProcessSong extends Activity {
         ArrayList<String> received = new ArrayList<>();
         Collections.addAll(received, bits);
         // Fix bits in the song xml
-        if (received.size()>=4) {
+        if (received.size() >= 4) {
             // 4th bit (index of 3 though!) is the xml
             String fixed = received.get(3);
             fixed = fixed.replace("\\n", "$$__$$");
             fixed = fixed.replace("\\", "");
             fixed = fixed.replace("$$__$$", "\n");
-            received.add(3,fixed);
+            received.add(3, fixed);
         }
         return received;
     }
+
     public int getNearbySection(String incoming) {
-        int i=-1;
-        if (incoming!=null && incoming.length()>0 && incoming.contains("___section___")) {
-            incoming = incoming.replace("{\"description\":\"","");
-            incoming = incoming.replace("\"}","");
-            incoming = incoming.replace("___section___","");
+        int i = -1;
+        if (incoming != null && incoming.length() > 0 && incoming.contains("___section___")) {
+            incoming = incoming.replace("{\"description\":\"", "");
+            incoming = incoming.replace("\"}", "");
+            incoming = incoming.replace("___section___", "");
             try {
                 i = Integer.parseInt(incoming);
             } catch (Exception e) {
@@ -3350,15 +3369,6 @@ public class ProcessSong extends Activity {
         }
         return i;
     }
-
-
-
-
-
-
-
-
-
 
 
     // Stuff I might eventually use...

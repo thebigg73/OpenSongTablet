@@ -28,14 +28,14 @@ class AutoScrollFunctions {
         }
         StaticVariables.usingdefaults = false;
         if (StaticVariables.mDuration.isEmpty() &&
-                preferences.getMyPreferenceBoolean(c,"autoscrollUseDefaultTime",false)) {
-            StaticVariables.autoScrollDuration = preferences.getMyPreferenceInt(c,"autoscrollDefaultSongLength",180);
+                preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
+            StaticVariables.autoScrollDuration = preferences.getMyPreferenceInt(c, "autoscrollDefaultSongLength", 180);
             StaticVariables.usingdefaults = true;
         }
 
         if (StaticVariables.mPreDelay.isEmpty() &&
-                preferences.getMyPreferenceBoolean(c,"autoscrollUseDefaultTime",false)) {
-            StaticVariables.autoScrollDelay = preferences.getMyPreferenceInt(c,"autoscrollDefaultSongPreDelay",10);
+                preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
+            StaticVariables.autoScrollDelay = preferences.getMyPreferenceInt(c, "autoscrollDefaultSongPreDelay", 10);
             StaticVariables.usingdefaults = true;
         }
     }
@@ -43,10 +43,10 @@ class AutoScrollFunctions {
     static void getAutoScrollValues(Context c, Preferences preferences, ScrollView scrollpage, View main_page, View toolbar) {
         // Get the autoScrollDuration;
         if (StaticVariables.mDuration.isEmpty() &&
-                preferences.getMyPreferenceBoolean(c,"autoscrollUseDefaultTime",false)) {
-            StaticVariables.autoScrollDuration = preferences.getMyPreferenceInt(c,"autoscrollDefaultSongLength",180);
+                preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
+            StaticVariables.autoScrollDuration = preferences.getMyPreferenceInt(c, "autoscrollDefaultSongLength", 180);
         } else if (StaticVariables.mDuration.isEmpty() &&
-                !preferences.getMyPreferenceBoolean(c,"autoscrollUseDefaultTime",false)) {
+                !preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
             StaticVariables.autoScrollDuration = -1;
         } else {
             try {
@@ -58,10 +58,10 @@ class AutoScrollFunctions {
 
         // Get the autoScrollDelay;
         if (StaticVariables.mPreDelay.isEmpty() &&
-                preferences.getMyPreferenceBoolean(c,"autoscrollUseDefaultTime",false)) {
-            StaticVariables.autoScrollDelay = preferences.getMyPreferenceInt(c,"autoscrollDefaultSongPreDelay",10);
+                preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
+            StaticVariables.autoScrollDelay = preferences.getMyPreferenceInt(c, "autoscrollDefaultSongPreDelay", 10);
         } else if (StaticVariables.mDuration.isEmpty() &&
-                !preferences.getMyPreferenceBoolean(c,"autoscrollUseDefaultTime",false)) {
+                !preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
             StaticVariables.autoScrollDelay = -1;
         } else {
             try {
@@ -102,14 +102,14 @@ class AutoScrollFunctions {
             FullscreenActivity.autoscroll_pixels = ((float) StaticVariables.total_pixels_to_scroll /
                     ((float) StaticVariables.autoScrollDuration * 1000 / (float) StaticVariables.autoscroll_pause_time));
 
-            FullscreenActivity.newPosFloat=0.0f;
+            FullscreenActivity.newPosFloat = 0.0f;
             StaticVariables.autoScrollDuration = StaticVariables.autoScrollDuration + StaticVariables.autoScrollDelay;
         }
     }
 
     static void getMultiPagePDFValues() {
         // If we have a multiple page pdf, then each page duration is a fraction of the total
-        if (FullscreenActivity.isPDF &&FullscreenActivity.pdfPageCount>0) {
+        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCount > 0) {
             try {
                 StaticVariables.autoScrollDuration = (int) ((float) Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", "")) / (float) FullscreenActivity.pdfPageCount);
             } catch (Exception e) {
@@ -118,6 +118,7 @@ class AutoScrollFunctions {
             }
         }
     }
+
     static void getAudioLength(Context c, Preferences preferences) {
         MediaPlayer mediafile = new MediaPlayer();
 
@@ -126,9 +127,9 @@ class AutoScrollFunctions {
         String audiofile = StaticVariables.mLinkAudio;
         Uri uri = storageAccess.fixLocalisedUri(c, preferences, audiofile);
 
-        if (uri!=null && storageAccess.uriExists(c,uri)) {
+        if (uri != null && storageAccess.uriExists(c, uri)) {
             try {
-                mediafile.setDataSource(c,uri);
+                mediafile.setDataSource(c, uri);
                 mediafile.prepare();
                 StaticVariables.audiolength = (int) (mediafile.getDuration() / 1000.0f);
                 mediafile.reset();
@@ -139,15 +140,17 @@ class AutoScrollFunctions {
                 mediafile.release();
             }
         } else {
-            StaticVariables.audiolength=-1;
+            StaticVariables.audiolength = -1;
             mediafile.reset();
             mediafile.release();
         }
     }
 
     static final Handler doautoScroll = new Handler();
+
     static class AutoScrollRunnable implements Runnable {
         final ScrollView sv;
+
         AutoScrollRunnable(ScrollView s) {
             sv = s;
         }
@@ -168,12 +171,14 @@ class AutoScrollFunctions {
     }
 
     static final Handler doProgressTime = new Handler();
+
     static class ProgressTimeRunnable implements Runnable {
         final TextView tv;
         final TextView tvt;
         final TextView tvs;
         final Context c;
         final Preferences preferences;
+
         ProgressTimeRunnable(Context ctx, Preferences pref, TextView t, TextView tt, TextView ts) {
             tv = t;
             tvt = tt;
@@ -188,7 +193,7 @@ class AutoScrollFunctions {
                 FullscreenActivity.time_passed = System.currentTimeMillis();
                 int currtimesecs = (int) ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000);
                 String text;
-                if (preferences.getMyPreferenceBoolean(c,"autoscrollLargeFontInfoBar",true)) {
+                if (preferences.getMyPreferenceBoolean(c, "autoscrollLargeFontInfoBar", true)) {
                     tv.setTextSize(StaticVariables.infoBarLargeTextSize);
                     tvt.setTextSize(StaticVariables.infoBarLargeTextSize);
                     tvs.setTextSize(StaticVariables.infoBarLargeTextSize);
@@ -204,7 +209,7 @@ class AutoScrollFunctions {
                     text = TimeTools.timeFormatFixer(currtimesecs);
                     tv.setTextColor(0xffff0000);
                 } else {
-                    if (currtimesecs>StaticVariables.autoScrollDuration) {
+                    if (currtimesecs > StaticVariables.autoScrollDuration) {
                         currtimesecs = StaticVariables.autoScrollDuration;
                     }
                     text = TimeTools.timeFormatFixer(currtimesecs);
@@ -214,9 +219,12 @@ class AutoScrollFunctions {
             }
         }
     }
+
     static final Handler doautoScrollLearn = new Handler();
+
     static class LearnTimeRunnable implements Runnable {
         final TextView tv;
+
         LearnTimeRunnable(TextView t) {
             tv = t;
         }

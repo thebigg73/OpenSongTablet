@@ -17,7 +17,7 @@ class AudioGenerator {
 	double[] getSineWave(int samples, int sampleRate, double frequencyOfTone) {
 		double[] sample = new double[samples];
 		for (int i = 0; i < samples; i++) {
-			sample[i] = Math.sin(2 * Math.PI * i / (sampleRate/frequencyOfTone));
+			sample[i] = Math.sin(2 * Math.PI * i / (sampleRate / frequencyOfTone));
 		}
 		return sample;
 	}
@@ -35,48 +35,48 @@ class AudioGenerator {
 		return generatedSound;
 	}
 
-	void createPlayer(String pan, float vol){
+	void createPlayer(String pan, float vol) {
 		try {
 
-            audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-                    sampleRate, AudioFormat.CHANNEL_OUT_STEREO,
-                    AudioFormat.ENCODING_PCM_16BIT, sampleRate,
-                    AudioTrack.MODE_STREAM);
+			audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+					sampleRate, AudioFormat.CHANNEL_OUT_STEREO,
+					AudioFormat.ENCODING_PCM_16BIT, sampleRate,
+					AudioTrack.MODE_STREAM);
 
-        } catch (Exception e) {
-            Log.d("audiotrack","Can't initialise");
-        }
+		} catch (Exception e) {
+			Log.d("audiotrack", "Can't initialise");
+		}
 
 		float leftVolume = vol;
 		float rightVolume = vol;
 
-        if (pan.equals("L")) {
+		if (pan.equals("L")) {
 			rightVolume = 0.0f;
-        } else if (pan.equals("R")) {
+		} else if (pan.equals("R")) {
 			leftVolume = 0.0f;
-        }
+		}
 
-        try {
-            audioTrack.setStereoVolume(leftVolume, rightVolume);
+		try {
+			audioTrack.setStereoVolume(leftVolume, rightVolume);
 			audioTrack.play();
 		} catch (Exception e) {
-            Log.d("audioTrack","Can't play it");
+			Log.d("audioTrack", "Can't play it");
 		}
 	}
 
 	void writeSound(String pan, float vol, double[] samples) {
 		byte[] generatedSnd = get16BitPcm(samples);
 		if (StaticVariables.metronomeonoff.equals("on") &&
-				audioTrack.getState()==AudioTrack.STATE_INITIALIZED &&
-                audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
+				audioTrack.getState() == AudioTrack.STATE_INITIALIZED &&
+				audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
 			try {
 				audioTrack.write(generatedSnd, 0, generatedSnd.length);
 			} catch (Exception e) {
-			     // This will catch any exception, because they are all descended from Exception
-				Log.d("whoops","error writing sound");
+				// This will catch any exception, because they are all descended from Exception
+				Log.d("whoops", "error writing sound");
 			}
 			switch (pan) {
-                case "L":
+				case "L":
 					try {
 						audioTrack.setStereoVolume(vol, 0.0f);
 					} catch (Exception e) {
@@ -84,7 +84,7 @@ class AudioGenerator {
 						Log.d("whoops", "error setting volume left");
 					}
 					break;
-                case "R":
+				case "R":
 					try {
 						audioTrack.setStereoVolume(0.0f, vol);
 					} catch (Exception e) {
@@ -106,10 +106,10 @@ class AudioGenerator {
 	}
 
 	void destroyAudioTrack() {
-        if (audioTrack!=null && audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
-            audioTrack.stop();
-            audioTrack.release();
-        }
+		if (audioTrack != null && audioTrack.getPlayState() == AudioTrack.PLAYSTATE_PLAYING) {
+			audioTrack.stop();
+			audioTrack.release();
+		}
 	}
 
 }
