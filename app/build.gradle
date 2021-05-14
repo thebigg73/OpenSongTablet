@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 android {
 
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion '29.0.3'
     buildTypes {
         release {
@@ -25,9 +25,7 @@ android {
         applicationId "com.garethevans.church.opensongtablet"
         //multiDexEnabled false
         minSdkVersion 19
-        // Happy to update most stuff, but not targetSdk as this might break storage
-        // Until I can test on physical device first, leave at 29
-        targetSdkVersion 29
+        targetSdkVersion 30
         multiDexEnabled true
     }
 

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 public class DrawNotes extends View {
 
+    //private boolean touchisup = false;
+    private final Preferences preferences;
     private Context c;
     private Path drawPath;
     private Paint drawPaint, canvasPaint;
@@ -38,11 +40,10 @@ public class DrawNotes extends View {
     private ArrayList<String> undonetoolList = new ArrayList<>();
     private float mX;
     private float mY;
-    //private boolean touchisup = false;
-    private final Preferences preferences;
+
     public DrawNotes(Context c, @Nullable AttributeSet attrs) {
         super(FullscreenActivity.mContext, attrs);
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         preferences = new Preferences();
@@ -53,10 +54,10 @@ public class DrawNotes extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        if (w==0) {
+        if (w == 0) {
             w = 1;
         }
-        if (h==0) {
+        if (h == 0) {
             h = 1;
         }
         /*if (FullscreenActivity.bmScreen!=null) {
@@ -77,7 +78,7 @@ public class DrawNotes extends View {
         invalidate();
     }
 
-    public void setErase(boolean isErase){
+    public void setErase(boolean isErase) {
         if (isErase) {
             drawPaint.setColor(Color.WHITE);
             drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -89,10 +90,10 @@ public class DrawNotes extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
-        if (canvasBitmap!=null) {
+        if (canvasBitmap != null) {
             canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         }
         for (int p = 0; p < paths.size(); p++) {
@@ -118,34 +119,34 @@ public class DrawNotes extends View {
     }
 
     public void undo() {
-        if (paths.size()>0) {
-            undonePaths.add(paths.remove(paths.size()-1));
+        if (paths.size() > 0) {
+            undonePaths.add(paths.remove(paths.size() - 1));
         }
-        if (colourList.size()>0) {
-            undonecolourList.add(colourList.remove(colourList.size()-1));
+        if (colourList.size() > 0) {
+            undonecolourList.add(colourList.remove(colourList.size() - 1));
         }
-        if (sizeList.size()>0) {
-            undonesizeList.add(sizeList.remove(sizeList.size()-1));
+        if (sizeList.size() > 0) {
+            undonesizeList.add(sizeList.remove(sizeList.size() - 1));
         }
-        if (toolList.size()>0) {
-            undonetoolList.add(toolList.remove(toolList.size()-1));
+        if (toolList.size() > 0) {
+            undonetoolList.add(toolList.remove(toolList.size() - 1));
         }
         //touchisup = true;
         invalidate();
     }
 
     public void redo() {
-        if (undonePaths.size()>0) {
-            paths.add(undonePaths.remove(undonePaths.size()-1));
+        if (undonePaths.size() > 0) {
+            paths.add(undonePaths.remove(undonePaths.size() - 1));
         }
-        if (undonecolourList.size()>0) {
-            colourList.add(undonecolourList.remove(undonecolourList.size()-1));
+        if (undonecolourList.size() > 0) {
+            colourList.add(undonecolourList.remove(undonecolourList.size() - 1));
         }
-        if (undonesizeList.size()>0) {
-            sizeList.add(undonesizeList.remove(undonesizeList.size()-1));
+        if (undonesizeList.size() > 0) {
+            sizeList.add(undonesizeList.remove(undonesizeList.size() - 1));
         }
-        if (undonetoolList.size()>0) {
-            toolList.add(undonetoolList.remove(undonetoolList.size()-1));
+        if (undonetoolList.size() > 0) {
+            toolList.add(undonetoolList.remove(undonetoolList.size() - 1));
         }
         //touchisup = true;
         invalidate();
@@ -154,25 +155,25 @@ public class DrawNotes extends View {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         float touchX = event.getX();
         float touchY = event.getY();
 
-        if (event.getToolType(0)==MotionEvent.TOOL_TYPE_ERASER) {
+        if (event.getToolType(0) == MotionEvent.TOOL_TYPE_ERASER) {
             setErase(true);
-        } else if (event.getToolType(0)==MotionEvent.TOOL_TYPE_STYLUS) {
+        } else if (event.getToolType(0) == MotionEvent.TOOL_TYPE_STYLUS) {
             setErase(false);
         }
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                touchStart(c,touchX, touchY);
+                touchStart(c, touchX, touchY);
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-                touchMove(c,touchX, touchY);
+                touchMove(c, touchX, touchY);
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
@@ -190,7 +191,7 @@ public class DrawNotes extends View {
     }
 
     private void touchStart(Context c, float x, float y) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         undonePaths.clear();
@@ -208,7 +209,7 @@ public class DrawNotes extends View {
     }
 
     private void touchMove(Context c, float x, float y) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         float dx = Math.abs(x - mX);
@@ -216,7 +217,7 @@ public class DrawNotes extends View {
         int TOUCH_TOLERANCE = 4;
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
             setCurrentPaint(c);
-            drawPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
+            drawPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
             //drawingapath = true;
             mX = x;
             mY = y;
@@ -229,14 +230,14 @@ public class DrawNotes extends View {
     }
 
     private void touchUp(Context c) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         //touchisup = true;
         drawPath.lineTo(mX, mY);
         paths.add(drawPath);
         sizeList.add(getSavedPaintSize(c));
-        toolList.add(preferences.getMyPreferenceString(c,"drawingTool","pen"));
+        toolList.add(preferences.getMyPreferenceString(c, "drawingTool", "pen"));
         colourList.add(getSavedPaintColor(c));
         drawPath = new Path();
         //drawingapath = false;
@@ -247,30 +248,30 @@ public class DrawNotes extends View {
     }
 
     private int getSavedPaintSize(Context c) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         int size = 20;
-        switch (preferences.getMyPreferenceString(c,"drawingTool","pen")) {
+        switch (preferences.getMyPreferenceString(c, "drawingTool", "pen")) {
             case "pen":
-                size = preferences.getMyPreferenceInt(c,"drawingPenSize",20);
+                size = preferences.getMyPreferenceInt(c, "drawingPenSize", 20);
                 break;
             case "highlighter":
-                size = preferences.getMyPreferenceInt(c,"drawingHighlighterSize",20);
+                size = preferences.getMyPreferenceInt(c, "drawingHighlighterSize", 20);
                 break;
             case "eraser":
-                size = preferences.getMyPreferenceInt(c,"drawingEraserSize",20);
+                size = preferences.getMyPreferenceInt(c, "drawingEraserSize", 20);
                 break;
         }
         return size;
     }
 
     private int getSavedPaintColor(Context c) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
-        if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("pen")) {
-            return preferences.getMyPreferenceInt(c,"drawingPenColor",StaticVariables.black);
+        if (preferences.getMyPreferenceString(c, "drawingTool", "pen").equals("pen")) {
+            return preferences.getMyPreferenceInt(c, "drawingPenColor", StaticVariables.black);
 
         } else {
             return preferences.getMyPreferenceInt(c, "drawingHighlighterColor", StaticVariables.highlighteryellow);
@@ -278,7 +279,7 @@ public class DrawNotes extends View {
     }
 
     private void setupDrawing(Context c) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         drawPath = new Path();
@@ -295,7 +296,7 @@ public class DrawNotes extends View {
     }
 
     public void loadImage(Context c, Uri uri) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         //touchisup = false;
@@ -304,7 +305,7 @@ public class DrawNotes extends View {
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             StorageAccess storageAccess = new StorageAccess();
             InputStream inputStream = storageAccess.getInputStream(c, uri);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream,null,options);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
             if (bitmap != null) {
                 canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
                 bitmap.recycle();
@@ -324,7 +325,7 @@ public class DrawNotes extends View {
     }
 
     public void startNew(Context c, Uri uri) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         StorageAccess storageAccess = new StorageAccess();
@@ -341,7 +342,7 @@ public class DrawNotes extends View {
         imageloaded = false;
         FullscreenActivity.saveHighlight = false;
         try {
-            if (uri==null || !storageAccess.deleteFile(c,uri)) {
+            if (uri == null || !storageAccess.deleteFile(c, uri)) {
                 Log.d("DrawNotes", "Unable to delete old highlighter note");
             }
         } catch (Exception e) {
@@ -352,7 +353,7 @@ public class DrawNotes extends View {
     }
 
     private void setCurrentPaint(Context c) {
-        if (c==null) {
+        if (c == null) {
             c = FullscreenActivity.mContext;
         }
         drawPaint.setColor(getSavedPaintColor(c));

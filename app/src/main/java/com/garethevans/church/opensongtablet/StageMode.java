@@ -4604,22 +4604,22 @@ public class StageMode extends AppCompatActivity implements
                     mSelectedDevice, settings,
                     new CastRemoteDisplayLocalService.Callbacks() {
                         @Override
-                        public void onServiceCreated(
+                        public void onServiceCreated(@NonNull
                                 CastRemoteDisplayLocalService service) {
                         }
 
                         @Override
                         public void onRemoteDisplaySessionStarted(
-                                CastRemoteDisplayLocalService service) {
+                                @NonNull CastRemoteDisplayLocalService service) {
                         }
 
                         @Override
-                        public void onRemoteDisplaySessionError(Status status) {
+                        public void onRemoteDisplaySessionError(@NonNull Status status) {
                             Log.d("StageMode", "onRemoteDisplaySessionError status=" + status);
                         }
 
                         @Override
-                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
                             Log.d("StageMode", "onRemoteDisplaySessionEnded");
                         }
 

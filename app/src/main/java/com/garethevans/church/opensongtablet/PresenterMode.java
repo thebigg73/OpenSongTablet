@@ -46,6 +46,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -2640,6 +2641,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void sendMidi() {
         if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
@@ -2653,9 +2655,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             mh.post(() -> {
                 try {
                     if (midi==null) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            midi = new Midi();
-                        }
+                        midi = new Midi();
                     }
                     // Split the midi messages by line, after changing , into new line
                     StaticVariables.mMidi = StaticVariables.mMidi.replace(",", "\n");
@@ -2664,9 +2664,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     for (String ml : midilines) {
                         Log.d("PresenterMode", "Sending "+ml);
                         if (midi!=null) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                midi.sendMidi(midi.returnBytesFromHexText(ml));
-                            }
+                            midi.sendMidi(midi.returnBytesFromHexText(ml));
                         }
                     }
                 } catch (Exception e) {
@@ -3397,7 +3395,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     // Send the midi data if we can
                     if (!orientationChanged) {
-                        sendMidi();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            sendMidi();
+                        }
                     }
 
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
@@ -3687,21 +3687,21 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     new CastRemoteDisplayLocalService.Callbacks() {
                         @Override
                         public void onServiceCreated(
-                                CastRemoteDisplayLocalService service) {
+                                @NonNull CastRemoteDisplayLocalService service) {
                         }
 
                         @Override
                         public void onRemoteDisplaySessionStarted(
-                                CastRemoteDisplayLocalService service) {
+                                @NonNull CastRemoteDisplayLocalService service) {
                         }
 
                         @Override
-                        public void onRemoteDisplaySessionError(Status status) {
+                        public void onRemoteDisplaySessionError(@NonNull Status status) {
                             Log.d("PresenterMode", "onRemoteDisplaySessionError status="+status);
                         }
 
                         @Override
-                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
                             Log.d("PresenterMode", "onRemoteDisplaySessionEnded");
                         }
 

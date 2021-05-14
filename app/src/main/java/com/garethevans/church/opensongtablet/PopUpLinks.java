@@ -33,19 +33,13 @@ public class PopUpLinks extends DialogFragment {
     private Preferences preferences;
 
     private Uri uri;
+    private MyInterface mListener;
 
     static PopUpLinks newInstance() {
         PopUpLinks frag;
         frag = new PopUpLinks();
         return frag;
     }
-
-    public interface MyInterface {
-        void refreshAll();
-        void pageButtonAlpha(String s);
-    }
-
-    private MyInterface mListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,7 +52,7 @@ public class PopUpLinks extends DialogFragment {
         if (savedInstanceState != null) {
             this.dismiss();
         }
-        if (getDialog()==null) {
+        if (getDialog() == null) {
             dismiss();
         }
 
@@ -67,7 +61,7 @@ public class PopUpLinks extends DialogFragment {
 
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (mListener!=null) {
+        if (mListener != null) {
             mListener.pageButtonAlpha("links");
         }
 
@@ -77,13 +71,13 @@ public class PopUpLinks extends DialogFragment {
         title.setText(getString(R.string.link));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getContext());
+            CustomAnimations.animateFAB(closeMe, getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getContext());
+            CustomAnimations.animateFAB(saveMe, getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -123,11 +117,11 @@ public class PopUpLinks extends DialogFragment {
 
         linkAudio_EditText.setOnClickListener(v -> {
             FullscreenActivity.whattodo = "filechooser";
-            openDocumentPicker("audio/*",StaticVariables.LINK_AUDIO);
+            openDocumentPicker("audio/*", StaticVariables.LINK_AUDIO);
         });
         linkOther_EditText.setOnClickListener(v -> {
             FullscreenActivity.whattodo = "filechooser";
-            openDocumentPicker("*/*",StaticVariables.LINK_OTHER);
+            openDocumentPicker("*/*", StaticVariables.LINK_OTHER);
         });
 
         // Set up button actions
@@ -145,7 +139,7 @@ public class PopUpLinks extends DialogFragment {
             try {
                 String weblink = linkWeb_EditText.getText().toString();
                 if (!weblink.trim().startsWith("http://") && !weblink.trim().startsWith("https://")) {
-                    weblink = "http://"+weblink.trim();
+                    weblink = "http://" + weblink.trim();
                     linkWeb_EditText.setText(weblink);
                 }
                 startActivity(new Intent(Intent.ACTION_VIEW,
@@ -159,7 +153,7 @@ public class PopUpLinks extends DialogFragment {
         linkAudio_ImageButton.setOnClickListener(v -> {
             String mytext = linkAudio_EditText.getText().toString();
             uri = storageAccess.fixLocalisedUri(getContext(), preferences, mytext);
-            Log.d("PopUpLinks","uri="+uri);
+            Log.d("PopUpLinks", "uri=" + uri);
             if (!mytext.equals("")) {
                 MimeTypeMap myMime = MimeTypeMap.getSingleton();
                 String mimeType = myMime.getMimeTypeFromExtension(mytext);
@@ -175,7 +169,7 @@ public class PopUpLinks extends DialogFragment {
                 newIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                 setAudioLength(uri);
-                Log.d("d","uri="+uri);
+                Log.d("d", "uri=" + uri);
                 try {
                     startActivity(newIntent);
                 } catch (Exception e) {
@@ -192,7 +186,7 @@ public class PopUpLinks extends DialogFragment {
                 MimeTypeMap myMime = MimeTypeMap.getSingleton();
                 Intent newIntent = new Intent(Intent.ACTION_VIEW);
                 uri = storageAccess.fixLocalisedUri(getContext(), preferences, mytext);
-                Log.d("PopUpLinks","uri="+uri);
+                Log.d("PopUpLinks", "uri=" + uri);
                 String mimeType = myMime.getMimeTypeFromExtension(mytext);
 
                 if (mimeType == null) {
@@ -214,7 +208,7 @@ public class PopUpLinks extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
     }
@@ -231,8 +225,8 @@ public class PopUpLinks extends DialogFragment {
         try {
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                 NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getContext());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getContext(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
-                nonOpenSongSQLiteHelper.updateSong(getContext(),storageAccess,preferences,nonOpenSongSQLite);
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getContext(), storageAccess, preferences, nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getContext(), storageAccess, preferences, nonOpenSongSQLite);
             } else {
                 PopUpEditSongFragment.justSaveSongXML(getContext(), preferences);
             }
@@ -247,7 +241,7 @@ public class PopUpLinks extends DialogFragment {
 
     @Override
     public void onDismiss(@NonNull final DialogInterface dialog) {
-        if (mListener!=null) {
+        if (mListener != null) {
             mListener.pageButtonAlpha("");
         }
     }
@@ -263,20 +257,20 @@ public class PopUpLinks extends DialogFragment {
         intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(mimeType);
-        Log.d("PopUpLinks","opening docment picker with requestCode="+requestCode);
+        Log.d("PopUpLinks", "opening docment picker with requestCode=" + requestCode);
         requireActivity().startActivityForResult(intent, requestCode);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        Log.d("PopUpLinks","requestCode="+requestCode);
-        Log.d("PopUpLinks","resultCode="+resultCode);
-        Log.d("PopUpLinks","resultDate="+resultData);
+        Log.d("PopUpLinks", "requestCode=" + requestCode);
+        Log.d("PopUpLinks", "resultCode=" + resultCode);
+        Log.d("PopUpLinks", "resultDate=" + resultData);
 
         if (resultCode == RESULT_OK) {
-            if (resultData!=null) {
+            if (resultData != null) {
                 uri = resultData.getData();
-                Log.d("PopUpLinks","uri="+uri);
+                Log.d("PopUpLinks", "uri=" + uri);
 
                 // Get persistent permissions
                 try {
@@ -289,7 +283,7 @@ public class PopUpLinks extends DialogFragment {
                     e.printStackTrace();
                 }
 
-                if (uri!=null) {
+                if (uri != null) {
                     String uriPath = uri.getPath();
                     if (uriPath != null && uriPath.contains("OpenSong/")) {
                         // This will be a localised file
@@ -316,7 +310,7 @@ public class PopUpLinks extends DialogFragment {
         // If this is a genuine audio file, give the user the option of setting the song duration to match this file
         MediaPlayer mediafile = new MediaPlayer();
         try {
-            mediafile.setDataSource(requireContext(),uri);
+            mediafile.setDataSource(requireContext(), uri);
             mediafile.prepareAsync();
             mediafile.setOnPreparedListener(mp -> {
                 StaticVariables.audiolength = (int) (mp.getDuration() / 1000.0f);
@@ -329,5 +323,11 @@ public class PopUpLinks extends DialogFragment {
             ShowToast.showToast(getContext());
             mediafile.release();
         }
+    }
+
+    public interface MyInterface {
+        void refreshAll();
+
+        void pageButtonAlpha(String s);
     }
 }

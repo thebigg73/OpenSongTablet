@@ -15,7 +15,7 @@ class DrawerTweaks {
     private static final Handler optionMenuFlickClosed = new Handler();
 
     static DrawerLayout.LayoutParams resizeMenu(View thismenu, int width) {
-        if (thismenu!=null) {
+        if (thismenu != null) {
             DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) thismenu.getLayoutParams();
             lp.width = width;
             return lp;
@@ -28,7 +28,7 @@ class DrawerTweaks {
                               LinearLayout song,
                               LinearLayout option,
                               String which) {
-        Log.d("DrawerTweaks","which="+which);
+        Log.d("DrawerTweaks", "which=" + which);
         switch (which) {
             case "both":
                 drawer.openDrawer(song);
@@ -44,8 +44,8 @@ class DrawerTweaks {
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 drawer.openDrawer(song);
                 drawer.openDrawer(option);
-                closeMyDrawers(drawer,song,option,"song_delayed");
-                closeMyDrawers(drawer,song,option,"option_delayed");
+                closeMyDrawers(drawer, song, option, "song_delayed");
+                closeMyDrawers(drawer, song, option, "option_delayed");
                 break;
             case "song_toggle":
                 if (drawer.isDrawerOpen(song)) {

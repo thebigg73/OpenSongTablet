@@ -13,10 +13,10 @@ class FixLocale {
         // Locale
         try {
             // Get the user's preference
-            String val = preferences.getMyPreferenceString(c,"language",null);
+            String val = preferences.getMyPreferenceString(c, "language", null);
 
             // If this is already set, that' what we will use
-            if (val!=null) {
+            if (val != null) {
                 StaticVariables.locale = new Locale(val);
 
             } else {
@@ -33,7 +33,7 @@ class FixLocale {
                 StaticVariables.locale = new Locale(deviceval);
 
                 // Save our preference
-                preferences.setMyPreferenceString(c,"language",deviceval);
+                preferences.setMyPreferenceString(c, "language", deviceval);
             }
 
             // Load the appropriate translations

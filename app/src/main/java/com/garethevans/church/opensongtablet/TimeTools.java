@@ -5,7 +5,7 @@ class TimeTools {
     static String timeFormatFixer(int secstime) {
         // IV - Fixed to prevent returning 0:0-1 for -1
         // IV - Using 20 mins as the limit (possibly the original intention)
-        if (secstime > 1200 || secstime<0) {
+        if (secstime > 1200 || secstime < 0) {
             return ("0:00");
         } else {
             double mins_float = (float) secstime / 60.0;
