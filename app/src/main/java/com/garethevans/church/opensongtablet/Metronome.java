@@ -94,30 +94,35 @@ class Metronome {
 		// IV - We have a short first beat to compensate for loop start delay
         long nexttime = System.currentTimeMillis() - 200;
 		do {
-		    // IV - Sound jitter means sound periods are not exact
-            // IV - An adjustment is made to align the next sound start with the beat
-            if ((nexttime - System.currentTimeMillis()) > 0) {
-                soundSilenceArray = new double[(int) ((nexttime - System.currentTimeMillis()) * 8)];
-                audioGenerator.writeSound(pan, vol, soundSilenceArray);
-            }
-			if(currentBeat == 1) {
-				audioGenerator.writeSound(pan,vol,soundTockArray);
-			} else {
-				audioGenerator.writeSound(pan,vol,soundTickArray);
-			}
+		    try {
+                // IV - Sound jitter means sound periods are not exact
+                // IV - An adjustment is made to align the next sound start with the beat
+                if ((nexttime - System.currentTimeMillis()) > 0) {
+                    soundSilenceArray = new double[(int) ((nexttime - System.currentTimeMillis()) * 8)];
+                    audioGenerator.writeSound(pan, vol, soundSilenceArray);
+                }
+                if (currentBeat == 1) {
+                    audioGenerator.writeSound(pan, vol, soundTockArray);
+                } else {
+                    audioGenerator.writeSound(pan, vol, soundTickArray);
+                }
 
-			currentBeat++;
-			runningBeatCount++;
-			if (maxBeatCount>0 && runningBeatCount>=maxBeatCount) { // This is if the user has specified max metronome time
-			    play=false;
-                StaticVariables.metronomeonoff = "off";
-                // IV - This variable is a state indicator set in this function only
-                StaticVariables.clickedOnMetronomeStart = false;
+                currentBeat++;
+                runningBeatCount++;
+                if (maxBeatCount > 0 && runningBeatCount >= maxBeatCount) { // This is if the user has specified max metronome time
+                    play = false;
+                    StaticVariables.metronomeonoff = "off";
+                    // IV - This variable is a state indicator set in this function only
+                    StaticVariables.clickedOnMetronomeStart = false;
+                }
+                if (currentBeat > beat) {
+                    currentBeat = 1;
+                }
+                nexttime = nexttime + time_in_millisecs;
+            } catch (Exception e) {
+		        e.printStackTrace();
+		        play = false;
             }
-			if(currentBeat > beat) {
-                currentBeat = 1;
-            }
-            nexttime = nexttime + time_in_millisecs;
 		} while(play);
 	}
 	
