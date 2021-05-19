@@ -595,9 +595,12 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             String newbit = sb.toString();
 
             // Find the start and end of the scripture bit
-            int startoffull = newbit.indexOf("<span class=\"passage-display-version\">");
-            startoffull = newbit.indexOf("</span>",startoffull);
-            int endoffull = newbit.indexOf("<div class=\"crossrefs hidden\">");
+            int startoffull = newbit.indexOf("<div class=\"passage-text\">");
+            int endoffull = newbit.indexOf("<div class=\"crossrefs hidden\">",startoffull);
+            int endoflink = newbit.indexOf("<a class=\"full-chap-link\"");
+            if (endoflink>startoffull && endoflink<endoffull) {
+                endoffull = endoflink;
+            }
 
             if (endoffull > startoffull && startoffull > 0) {
                 newbit = newbit.substring(startoffull, endoffull);
@@ -606,10 +609,13 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             }
 
             Log.d("CustomSlideFragment","newbit="+newbit);
-            newbit = Html.fromHtml(newbit).toString();
-            Log.d("CustomSlideFragment","newbit="+newbit);
             newbit = newbit.replace("<p>", "\n");
             newbit = newbit.replace("</p>", "");
+            newbit = newbit.replaceAll("\\<.*?>", "");
+            newbit = newbit.replaceAll("\\([A-Z]\\)","");
+            newbit = Html.fromHtml(newbit).toString();
+            Log.d("CustomSlideFragment","newbit="+newbit);
+
 
             // Split into lines and trim them
             StringBuilder nl = new StringBuilder();
