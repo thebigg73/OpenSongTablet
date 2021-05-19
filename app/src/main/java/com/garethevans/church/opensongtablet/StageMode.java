@@ -7305,6 +7305,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
         ArrayList<SQLite> songsInFolder;

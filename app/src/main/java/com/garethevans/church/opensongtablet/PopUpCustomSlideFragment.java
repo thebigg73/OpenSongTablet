@@ -552,6 +552,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class GrabBibleText extends AsyncTask<Object, Void, String> {
 
         final String weblink;
@@ -611,7 +612,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             Log.d("CustomSlideFragment","newbit="+newbit);
             newbit = newbit.replace("<p>", "\n");
             newbit = newbit.replace("</p>", "");
-            newbit = newbit.replaceAll("\\<.*?>", "");
+            newbit = newbit.replaceAll("<.*?>", "");
             newbit = newbit.replaceAll("\\([A-Z]\\)","");
             newbit = Html.fromHtml(newbit).toString();
             Log.d("CustomSlideFragment","newbit="+newbit);
@@ -671,6 +672,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class UpdateFields extends AsyncTask<Object, Void, String> {
 
         @Override
