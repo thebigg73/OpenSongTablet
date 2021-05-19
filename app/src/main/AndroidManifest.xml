@@ -41,6 +41,12 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.NFC" />
 
+    <queries>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+    </queries>
+
     <supports-screens android:anyDensity="true" />
 
     <application
