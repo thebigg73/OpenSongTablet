@@ -90,7 +90,6 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -1131,6 +1130,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class CheckStorage extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2770,6 +2770,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ResizeDrawers extends AsyncTask<Object, Void, String> {
         int width;
 
@@ -3513,6 +3514,7 @@ public class StageMode extends AppCompatActivity implements
         doRebuildSearchIndex.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class RebuildSearchIndex extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -3924,6 +3926,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class DualScreenWork extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -4033,6 +4036,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ResizeStageView extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -4115,6 +4119,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ResizePerformanceView extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -4407,6 +4412,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ShowSticky extends AsyncTask<Object, Void, String> {
 
         long stickycurrtime;
@@ -4598,38 +4604,13 @@ public class StageMode extends AppCompatActivity implements
                         .setNotificationPendingIntent(notificationPendingIntent).build();
 
         if (mSelectedDevice != null) {
-            CastRemoteDisplayLocalService.startService(
-                    getApplicationContext(),
-                    PresentationService.class, getString(R.string.app_id),
-                    mSelectedDevice, settings,
-                    new CastRemoteDisplayLocalService.Callbacks() {
-                        @Override
-                        public void onServiceCreated(@NonNull
-                                CastRemoteDisplayLocalService service) {
-                        }
+            CastRemoteDisplayLocalService.startService(getApplicationContext(),
+                    PresentationService.class,
+                    getString(R.string.app_id),
+                    mSelectedDevice,
+                    settings,
+                    null);
 
-                        @Override
-                        public void onRemoteDisplaySessionStarted(
-                                @NonNull CastRemoteDisplayLocalService service) {
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionError(@NonNull Status status) {
-                            Log.d("StageMode", "onRemoteDisplaySessionError status=" + status);
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("StageMode", "onRemoteDisplaySessionEnded");
-                        }
-
-                        @Override
-                        public void zza() {
-                            Log.d("StageMode","zza() - required implementation, but no Google Docs!!");
-                        }
-
-
-                    });
         } else {
             // Might be a hdmi connection
             try {
@@ -4842,6 +4823,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ShowHighlight extends AsyncTask<Object, Void, String> {
 
         long highlightcurrtime;
@@ -4949,6 +4931,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ShareSong extends AsyncTask<Object, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -5054,6 +5037,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ShareActivityLog extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -5240,6 +5224,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class CreatePerformanceView1Col extends AsyncTask<Object, Void, String> {
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
@@ -5415,6 +5400,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ShareSet extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -5533,6 +5519,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class CreatePerformanceView2Col extends AsyncTask<Object, Void, String> {
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
@@ -5633,6 +5620,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class CreatePerformanceView3Col extends AsyncTask<Object, Void, String> {
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
@@ -5761,6 +5749,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class LoadCustomReusable extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -5809,6 +5798,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class PrepareSongView extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -6001,6 +5991,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class CreateStageView1Col extends AsyncTask<Object, Void, String> {
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
@@ -6232,6 +6223,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class AddSlideToSet extends AsyncTask<Object, Void, String> {
         CustomSlide customSlide;
 
@@ -6277,6 +6269,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class LearnAutoScroll extends AsyncTask<String, Integer, String> {
 
         int time;
@@ -6374,6 +6367,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class GetScrollHeight extends AsyncTask<Object, Integer, String> {
         boolean viewdrawn = false;
         boolean ready = false;
@@ -6454,6 +6448,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class AutoScrollMusic extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -6671,6 +6666,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class DoMoveInSet extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -6912,6 +6908,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class LoadSongAsync extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
@@ -7219,10 +7216,11 @@ public class StageMode extends AppCompatActivity implements
         keyRepeatCount++;
         //Log.d("StageMode", "onKeyUp " + keyRepeatCount);
         // If we are using an AirTurn pedal it will send onKeyDown then onKeyUp and quickly repeat for long press
-        // Set a listener for 100ms to detect the last (no change in keyRepeatCount) onKeyUp and do a short press
+        // Set a listener for the keyRepeatTime + 100ms  to detect the last (no change in keyRepeatCount) onKeyUp and do a short press
         if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
+            int keyRepeatTime = preferences.getMyPreferenceInt(StageMode.this,"keyRepeatTime",400) + 100;
             final int initialAirTurnCount = keyRepeatCount;
-            // Check in another 200ms to see if the count has increased.  If it hasn't, short press action should be called.
+            // Check again after the keyRepeatTime + 100ms to see if the count has increased.  If it hasn't, short press action should be called.
             new Handler().postDelayed(() -> {
                 if (initialAirTurnCount==keyRepeatCount) {
                     //Log.d("StageMode","onKeyUp: short press triggered " + initialAirTurnCount + " : " + keyRepeatCount);
@@ -7230,7 +7228,7 @@ public class StageMode extends AppCompatActivity implements
                 } //else {
                     //Log.d("StageMode","onKeyUp: short press overridden " + initialAirTurnCount + " : " + keyRepeatCount);
                 //}
-            }, 100);
+            }, keyRepeatTime);
             return false;
         } else {
             // IV - If a false short press event when long press is active (fragment use will do this) correct
@@ -7658,6 +7656,7 @@ public class StageMode extends AppCompatActivity implements
 
     private boolean doLongKeyPressAction(int keyCode) {
         //Log.d("StageMode", "doLongKeyPressAction:");
+        keyRepeatCount = 0;
         boolean actionrecognised = false;
 
         if (!blockKeyAction) {
@@ -7856,6 +7855,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
 
         public void onPreExecute() {
@@ -8307,6 +8307,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class PlayPads extends AsyncTask<Void, Void, Integer> {
         int which;
         int path;
