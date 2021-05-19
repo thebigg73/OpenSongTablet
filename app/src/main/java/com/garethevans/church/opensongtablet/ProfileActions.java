@@ -1023,6 +1023,11 @@ class ProfileActions {
                             preferences.setMyPreferenceInt(c, "keyRepeatCount",getIntegerValue(xppValue,20));
                             break;
 
+                        case "keyRepeatTime":
+                            // keyRepeatTime                  int         The time between key repeat (ms) for AirTurn pedals (def:400)
+                            preferences.setMyPreferenceInt(c, "keyRepeatTime",getIntegerValue(xppValue,400));
+                            break;
+
                         case "language":        // New preference
                         case "locale":          // Old preference
                             //language                        String      The locale set in the menu

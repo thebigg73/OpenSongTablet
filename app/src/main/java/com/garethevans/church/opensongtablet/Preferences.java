@@ -248,6 +248,7 @@ public class Preferences extends Activity {
     hideActionBar                   boolean     Should the action bar auto hide (def:false)
     hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
     keyRepeatCount                  int         The number of key repeats to count as a long press for AirTurn pedals (def:20)
+    keyRepeatTime                   int         The time between key repeats (ms) for AirTurn pedals (def:400)
     language                        String      The locale set in the menu (def:en)
     lastUsedVersion                 int         The app version number the last time the app ran (def:0)
     light_lyricsBackgroundColor     int         The color for the lyrics background in the light theme
