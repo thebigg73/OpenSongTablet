@@ -740,4 +740,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="client">Client</string>
     <string name="connections_actasclient">Act as client</string>
     <string name="information_bar_opacity">Information bar opacity</string>
+    <string name="autorepeat_time">Autorepeat time (from pedal settings)</string>
 </resources>
