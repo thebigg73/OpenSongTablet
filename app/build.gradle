@@ -7,11 +7,11 @@ android {
     buildToolsVersion '29.0.3'
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         beta {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -71,8 +71,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-cast:19.0.0'                   // For casting obviously!
-    implementation 'com.google.android.gms:play-services-cast-framework:19.0.0'         // For casting obviously!
+    implementation 'com.google.android.gms:play-services-cast:20.0.0'                   // For casting obviously!
+    implementation 'com.google.android.gms:play-services-cast-framework:20.0.0'         // For casting obviously!
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'                 // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.3' // For OCR text recognition (PDF/Camera)
     implementation fileTree(include: ['*.jar'], dir: 'libs')                            // To allow local jar files in libs
@@ -84,7 +84,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'                   // Constraint layouts with FAB
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'                            // Older device support in views
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.mediarouter:mediarouter:1.2.2'
+    implementation 'androidx.mediarouter:mediarouter:1.2.3'
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.preference:preference:1.1.1'
