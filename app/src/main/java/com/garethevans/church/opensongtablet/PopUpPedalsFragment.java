@@ -10,6 +10,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,13 +32,15 @@ public class PopUpPedalsFragment extends DialogFragment {
     }
 
     private SwitchCompat pedalToggleScrollBeforeSwipeButton, autoRepeatLongPress_Switch, pedalToggleWarnBeforeSwipeButton;
-    private SeekBar autoRepeatCount_SeekBar;
+    private SeekBar autoRepeatCount_SeekBar, autoRepeatTime_SeekBar;
     private Button pedal1button, pedal2button, pedal3button, pedal4button, pedal5button, pedal6button;
-    private TextView pedal1text, pedal2text, pedal3text, pedal4text, pedal5text, pedal6text, autoRepeatCount_TextView;
+    private TextView pedal1text, pedal2text, pedal3text, pedal4text, pedal5text, pedal6text,
+            autoRepeatCount_TextView, autoRepeatTime_TextView;
     private Spinner pedal1choice, pedal2choice, pedal3choice, pedal4choice, pedal5choice, pedal6choice,
             pedallong1choice, pedallong2choice, pedallong3choice, pedallong4choice, pedallong5choice, pedallong6choice;
-    private int keyRepeatCount = 20;
-    private String keyRepeatCountText = "20";
+    private LinearLayout airTurnSettings;
+    private int keyRepeatCount = 20, keyRepeatTime = 400;
+    private String keyRepeatCountText = "20", keyRepeatTimeText = "400 ms";
     private ArrayList<String> availableactions;
     private Preferences preferences;
 
@@ -120,10 +123,20 @@ public class PopUpPedalsFragment extends DialogFragment {
         autoRepeatLongPress_Switch = V.findViewById(R.id.autoRepeatLongPress_Switch);
         autoRepeatCount_SeekBar = V.findViewById(R.id.autoRepeatCount_SeekBar);
         autoRepeatCount_TextView = V.findViewById(R.id.autoRepeatCount_TextView);
+        autoRepeatTime_SeekBar = V.findViewById(R.id.autoRepeatTime_SeekBar);
+        autoRepeatTime_TextView = V.findViewById(R.id.autoRepeatTime_TextView);
+        airTurnSettings = V.findViewById(R.id.airTurnSettings);
     }
 
     private void airTurnModeActions() {
-        autoRepeatLongPress_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"airTurnMode",isChecked));
+        autoRepeatLongPress_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            preferences.setMyPreferenceBoolean(getContext(),"airTurnMode",isChecked);
+            if (isChecked) {
+                airTurnSettings.setVisibility(View.VISIBLE);
+            } else {
+                airTurnSettings.setVisibility(View.GONE);
+            }
+        });
         autoRepeatCount_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -145,6 +158,23 @@ public class PopUpPedalsFragment extends DialogFragment {
                 } else if (!autoRepeatLongPress_Switch.isChecked()) {
                     autoRepeatLongPress_Switch.setChecked(true);
                 }
+            }
+        });
+        autoRepeatTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                keyRepeatTime = (10*progress) + 100;
+                keyRepeatTimeText = keyRepeatTime + " ms";
+                autoRepeatTime_TextView.setText(keyRepeatTimeText);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Save the value
+                preferences.setMyPreferenceInt(getContext(),"keyRepeatTime",keyRepeatTime);
             }
         });
     }
@@ -720,11 +750,21 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",isChecked));
         pedalToggleWarnBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",false));
         pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
-        autoRepeatLongPress_Switch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"airTurnMode",false));
+        boolean isAirTurn = preferences.getMyPreferenceBoolean(getContext(),"airTurnMode",false);
+        autoRepeatLongPress_Switch.setChecked(isAirTurn);
+        if (isAirTurn) {
+            airTurnSettings.setVisibility(View.VISIBLE);
+        } else {
+            airTurnSettings.setVisibility(View.GONE);
+        }
         keyRepeatCount = preferences.getMyPreferenceInt(getContext(),"keyRepeatCount",20);
         keyRepeatCountText = "" + keyRepeatCount;
         autoRepeatCount_TextView.setText(keyRepeatCountText);
         autoRepeatCount_SeekBar.setProgress(keyRepeatCount);
+        keyRepeatTime = preferences.getMyPreferenceInt(getContext(),"keyRepeatTime",400);
+        keyRepeatTimeText = keyRepeatTime + " ms";
+        autoRepeatTime_TextView.setText(keyRepeatTimeText);
+        autoRepeatTime_SeekBar.setProgress((keyRepeatTime-100)/10);  // Min time of 100 is progress of 0.  Seekbar goes up in 10s
 
         setGroupText(pedal1text, 1);
         setGroupText(pedal2text, 2);
