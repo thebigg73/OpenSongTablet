@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,8 +130,8 @@ public class PopUpEditStickyFragment extends DialogFragment {
         stickyNotesOpacity_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                i = (int)((i+2.0f)/10.0f);
-                String s =  (i*100) + "%";
+                i = (int)((i+2.0f)*10.0f);
+                String s =  i + "%";
                 stickyNotesOpacity_TextView.setText(s);
             }
 
@@ -141,8 +142,9 @@ public class PopUpEditStickyFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                float i = (int)((seekBar.getProgress()+2.0f)/10.0f);
-                preferences.setMyPreferenceFloat(getContext(),"stickyOpacity",i);
+                float f = (seekBar.getProgress()+2.0f)/10.0f;
+                Log.d("d","f="+f);
+                preferences.setMyPreferenceFloat(getContext(),"stickyOpacity",f);
             }
         });
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
