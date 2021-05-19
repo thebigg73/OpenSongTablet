@@ -73,7 +73,6 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -916,6 +915,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ResizeDrawers extends AsyncTask<Object, Void, String> {
         int width;
 
@@ -1060,6 +1060,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class CheckStorage extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -1915,6 +1916,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         doRebuildSearchIndex.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class RebuildSearchIndex extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2276,6 +2278,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
 
         public void onPreExecute() {
@@ -2400,6 +2403,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ShareSong extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -2428,6 +2432,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ShareActivityLog extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -2513,6 +2518,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class ShareSet extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -2541,6 +2547,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class LoadCustomReusable extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2848,6 +2855,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     }
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class AutoSlideShow extends AsyncTask<Object, Void, String> {
 
         boolean cancelled = false;
@@ -2907,6 +2915,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class AddSlideToSet extends AsyncTask<Object, Void, String> {
         CustomSlide customSlide;
 
@@ -3245,6 +3254,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class LoadSong extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -3448,6 +3458,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
         ArrayList<SQLite> songsInFolder;
@@ -3551,6 +3562,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
     private class DoMoveInSet extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -3684,33 +3696,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     getApplicationContext(),
                     PresentationService.class, getString(R.string.app_id),
                     mSelectedDevice, settings,
-                    new CastRemoteDisplayLocalService.Callbacks() {
-                        @Override
-                        public void onServiceCreated(
-                                @NonNull CastRemoteDisplayLocalService service) {
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionStarted(
-                                @NonNull CastRemoteDisplayLocalService service) {
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionError(@NonNull Status status) {
-                            Log.d("PresenterMode", "onRemoteDisplaySessionError status="+status);
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("PresenterMode", "onRemoteDisplaySessionEnded");
-                        }
-
-                        @Override
-                        public void zza() {
-                            Log.d("PresenterMode","zza() - required implementation, but no Google Docs!!");
-                        }
-
-                    });
+                    null);
         } else {
             // Might be a hdmi connection
             /*try {
