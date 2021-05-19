@@ -528,4 +528,6 @@
     <string name="host">Domaćin</string>
     <string name="client">Klijent</string>
     <string name="connections_actasclient">Понашајте се као клијент</string>
+    <string name="information_bar_opacity">Neprozirnost informativne trake</string>
+    <string name="autorepeat_time">Vreme automatskog ponavljanja (iz podešavanja pedale)</string>
 </resources>

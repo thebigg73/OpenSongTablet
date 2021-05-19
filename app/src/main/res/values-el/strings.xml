@@ -528,4 +528,6 @@
     <string name="client">Πελάτης</string>
     <string name="host">Πλήθος</string>
     <string name="connections_actasclient">Ενεργήστε ως πελάτης</string>
+    <string name="autorepeat_time">Χρόνος αυτόματης επανάληψης (από ρυθμίσεις πεντάλ)</string>
+    <string name="information_bar_opacity">Αδιαφάνεια στη γραμμή πληροφοριών</string>
 </resources>

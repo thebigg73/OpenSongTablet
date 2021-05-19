@@ -528,4 +528,6 @@
     <string name="host">主持人</string>
     <string name="client">客户</string>
     <string name="connections_actasclient">担任客户</string>
+    <string name="information_bar_opacity">信息栏的不透明度</string>
+    <string name="autorepeat_time">自动重复时间（根据踏板设置）</string>
 </resources>

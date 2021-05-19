@@ -528,4 +528,6 @@
     <string name="host">Hostitel</string>
     <string name="client">Klient</string>
     <string name="connections_actasclient">Působit jako klient</string>
+    <string name="information_bar_opacity">Neprůhlednost informační lišty</string>
+    <string name="autorepeat_time">Čas automatického opakování (z nastavení pedálu)</string>
 </resources>

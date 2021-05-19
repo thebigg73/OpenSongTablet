@@ -528,4 +528,6 @@
     <string name="client">Клиент</string>
     <string name="host">Хозяин</string>
     <string name="connections_actasclient">Действовать как клиент</string>
+    <string name="autorepeat_time">Время автоповтора (из настроек педали)</string>
+    <string name="information_bar_opacity">Непрозрачность информационной панели</string>
 </resources>

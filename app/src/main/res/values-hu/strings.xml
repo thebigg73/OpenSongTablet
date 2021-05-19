@@ -528,4 +528,6 @@
     <string name="host">Házigazda</string>
     <string name="client">Ügyfél</string>
     <string name="connections_actasclient">Ügyfélként jár el</string>
+    <string name="information_bar_opacity">Az információs sáv átlátszatlansága</string>
+    <string name="autorepeat_time">Automatikus ismétlési idő (a pedál beállításaiból)</string>
 </resources>

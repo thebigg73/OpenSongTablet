@@ -528,4 +528,6 @@
     <string name="client">Cliente</string>
     <string name="host">Hospedeiro</string>
     <string name="connections_actasclient">Atuar como cliente</string>
+    <string name="autorepeat_time">Tempo de repetição automática (a partir das configurações do pedal)</string>
+    <string name="information_bar_opacity">Opacidade da barra de informações</string>
 </resources>

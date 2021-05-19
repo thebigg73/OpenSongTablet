@@ -528,4 +528,6 @@
     <string name="host">Anfitrión</string>
     <string name="client">Cliente</string>
     <string name="connections_actasclient">Actuar como cliente</string>
+    <string name="information_bar_opacity">Opacidad de la barra de información</string>
+    <string name="autorepeat_time">Autorepeat time (desde los ajustes del pedal)</string>
 </resources>

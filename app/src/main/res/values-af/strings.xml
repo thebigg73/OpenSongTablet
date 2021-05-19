@@ -528,4 +528,6 @@
     <string name="host">Gasheer</string>
     <string name="client">Kliënt</string>
     <string name="connections_actasclient">Tree op as kliënt</string>
+    <string name="information_bar_opacity">Deursigtigheid van inligtingsbalk</string>
+    <string name="autorepeat_time">Outo-herhalingstyd (vanaf pedaalinstellings)</string>
 </resources>
