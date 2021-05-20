@@ -198,7 +198,6 @@ class StorageAccess {
                 (!uriTree.getLastPathSegment().endsWith("OpenSong") || !uriTree.getLastPathSegment().endsWith("OpenSong/"))) {
             // We need to check the uri points to the OpenSong folder
             if (!uriExists(c,uriTreeHome)) {
-                Log.d("StorageAccess","Attempting to create OpenSong folder at "+uriTree);
                 try {
                     uriTreeHome = DocumentsContract.createDocument(c.getContentResolver(), uriTree, DocumentsContract.Document.MIME_TYPE_DIR, "OpenSong");
                 } catch (Exception e) {
@@ -538,7 +537,6 @@ class StorageAccess {
                     while (cursor.moveToNext()) {
                         final String docId = cursor.getString(0);
                         final String mime = cursor.getString(2);
-                        Log.d("StorageAccess","docId="+docId);
                         if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime) && docId.contains("OpenSong")) {
                             final Uri newNode = getChildren(children, docId);
                             dirNodes.add(newNode);
@@ -596,7 +594,6 @@ class StorageAccess {
                 File[] fs = foldersToIndex.get(x).listFiles();
                 if (fs!=null) {
                     for (File ff : fs) {
-                        Log.d("d", "ff=" + ff);
                         if (ff.isDirectory()) {
                             foldersToIndex.add(ff);
                         } else {

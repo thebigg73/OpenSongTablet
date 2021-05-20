@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Presentation;
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,7 +43,7 @@ import android.widget.TextView;
         @SuppressLint("StaticFieldLeak")
         private static LinearLayout projected_LinearLayout, presentermode_bottombit;
         @SuppressLint("StaticFieldLeak")
-        private static ImageView projected_ImageView, projected_Logo, projected_BackgroundImage;
+        private static ImageView projected_ImageView, projected_Logo, projected_BackgroundImage, projected_SurfaceView_Alpha;
         @SuppressLint("StaticFieldLeak")
         private static TextView presentermode_title, presentermode_author,
                 presentermode_copyright, presentermode_ccli, presentermode_alert;
@@ -118,8 +119,11 @@ import android.widget.TextView;
             projected_ImageView = findViewById(R.id.projected_ImageView);
             projected_BackgroundImage = findViewById(R.id.projected_BackgroundImage);
             projected_SurfaceView = findViewById(R.id.projected_SurfaceView);
+            projected_SurfaceView.setZOrderMediaOverlay(true);
             projected_SurfaceHolder = projected_SurfaceView.getHolder();
+            projected_SurfaceHolder.setFormat(PixelFormat.TRANSPARENT);
             projected_SurfaceHolder.addCallback(this);
+            projected_SurfaceView_Alpha = findViewById(R.id.projected_SurfaceView_Alpha);
             projected_Logo = findViewById(R.id.projected_Logo);
             presentermode_bottombit = findViewById(R.id.presentermode_bottombit);
             presentermode_title = findViewById(R.id.presentermode_title);
@@ -175,7 +179,7 @@ import android.widget.TextView;
             presentationCommon.getDefaultColors(c,preferences);
         }
         private static void updateAlpha() {
-            presentationCommon.updateAlpha(c,preferences,projected_BackgroundImage,projected_SurfaceView);
+            presentationCommon.updateAlpha(c,preferences,projected_BackgroundImage, projected_SurfaceView_Alpha);
         }
         private void normalStartUp() {
             // Animate out the default logo

@@ -213,9 +213,6 @@ class PresentationCommon {
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
 
-                CustomAnimations.faderAnimationCustomAlpha(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
-                        projected_SurfaceView.getAlpha(),preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
-
                 break;
             default:
                 projected_BackgroundImage.setImageDrawable(null);
@@ -297,9 +294,16 @@ class PresentationCommon {
         }
     }
     void updateAlpha(Context c, Preferences preferences, ImageView projected_BackgroundImage,
-                     SurfaceView projected_SurfaceView) {
-        projected_BackgroundImage.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
-        projected_SurfaceView.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
+                     ImageView projected_SurfaceView_Alpha) {
+        float alpha = preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f);
+        if (preferences.getMyPreferenceString(c,"backgroundToUse","img1").contains("vid")) {
+            projected_SurfaceView_Alpha.setVisibility(View.VISIBLE);
+            projected_SurfaceView_Alpha.setAlpha(1.0f-alpha);
+            projected_SurfaceView_Alpha.setBackgroundColor(StaticVariables.cast_lyricsBackgroundColor);
+        } else {
+            projected_BackgroundImage.setAlpha(alpha);
+            projected_SurfaceView_Alpha.setVisibility(View.INVISIBLE);
+        }
     }
     void normalStartUp(Context c, Preferences preferences, ImageView projected_Logo) {
         // Animate out the default logo
