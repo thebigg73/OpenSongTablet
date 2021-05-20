@@ -90,6 +90,7 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -4609,7 +4610,36 @@ public class StageMode extends AppCompatActivity implements
                     getString(R.string.app_id),
                     mSelectedDevice,
                     settings,
-                    null);
+                    new CastRemoteDisplayLocalService.Callbacks() {
+                        @Override
+                        public void onServiceCreated(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("StageMode","onServiceCreated()");
+                            Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("StageMode","onRemoteDisplaySessionStarted()");
+                            Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionError(Status status) {
+                            Log.d("StageMode","onRemoteDisplaySessionError()");
+                            Log.d("StageMode","status="+status);
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("StageMode","onRemoteDisplaySessionEnded()");
+                            Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                        }
+
+                        @Override
+                        public void zza() {
+                            Log.d("StageMode","zza()");
+                        }
+                    });
 
         } else {
             // Might be a hdmi connection

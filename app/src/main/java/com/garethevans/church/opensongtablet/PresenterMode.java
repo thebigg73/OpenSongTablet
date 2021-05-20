@@ -73,6 +73,7 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -3696,7 +3697,36 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     getApplicationContext(),
                     PresentationService.class, getString(R.string.app_id),
                     mSelectedDevice, settings,
-                    null);
+                    new CastRemoteDisplayLocalService.Callbacks() {
+                        @Override
+                        public void onServiceCreated(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("PresenterMode", "onServiceCreated()");
+                            Log.d("PresenterMode", "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("PresenterMode", "onRemoteDisplaySessionStarted()");
+                            Log.d("PresenterMode", "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionError(Status status) {
+                            Log.d("PresenterMode", "onRemoteDisplaySessionError()");
+                            Log.d("PresenterMode", "status=" + status);
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("PresenterMode", "onRemoteDisplaySessionEnded()");
+                            Log.d("PresenterMode", "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
+                        }
+
+                        @Override
+                        public void zza() {
+                            Log.d("PresenterMode", "zza()");
+                        }
+                    });
         } else {
             // Might be a hdmi connection
             /*try {
