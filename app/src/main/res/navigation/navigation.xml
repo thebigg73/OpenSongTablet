@@ -144,7 +144,7 @@
                 android:label="fragment_setstoragelocation"
                 tools:layout="@layout/storage_setstoragelocation">
                 <deepLink
-                    android:id="@+id/deepLink"
+                    android:id="@+id/setStorageDeepLink"
                     app:uri="opensongapp://settings/storage/setstorage" />
             </fragment>
 

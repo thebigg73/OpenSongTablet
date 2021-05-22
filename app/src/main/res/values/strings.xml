@@ -888,4 +888,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="chromecast">Chromecast</string>
     <string name="warn_before_changing_song">Show a warning before moving on to the next song (useful to avoid accidental presses)</string>
     <string name="gesture3">Add song to set</string>
+    <string name="autorepeat_time">Auto repeat time (pedal setting)</string>
 </resources>

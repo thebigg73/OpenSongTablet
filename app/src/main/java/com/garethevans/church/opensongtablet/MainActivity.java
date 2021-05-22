@@ -246,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     // Actionbar
     ActionBar ab;
     AlertChecks alertChecks;
-    DrawerLayout drawerLayout;
 
     MenuItem settingsButton;
     private boolean settingsOpen;
@@ -295,16 +294,23 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialise the views for the activity
-        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        drawerLayout = activityMainBinding.drawerLayout;
-
         // Get a reference for the mainActivityInterface.
         // This is used extensively by all fragments to return actions to the MainActivity
         // All fragments create their own reference to it in onAttach,
         // However some helper classes that don't extend activity/fragment need a references
         // This is the one we pass in to those classes
-        mainActivityInterface = (MainActivityInterface) this;
+        mainActivityInterface = this;
+
+        // Initialise the essential helpers needed before doing anything else
+        initialiseHelpers1();
+
+        // Initialise the views for the activity
+        try {
+            activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         View view = activityMainBinding.getRoot();
         /*view.setOnSystemUiVisibilityChangeListener(
@@ -322,8 +328,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Prepare the actionbar
         setupActionbar();
 
-        // Initialise the helpers used for heavy lifting
-        initialiseHelpers();
+        // Now initialise the remaining helpers
+        initialiseHelpers2();
 
         // Set the fullscreen window flags
         setWindowFlags();
@@ -352,11 +358,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
 
     // Set up the helpers
-    private void initialiseHelpers() {
+    private void initialiseHelpers1() {
         // The first two are used in other helpers often, so they get done first!
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-
         setTypeFace = new SetTypeFace();
         themeColors = new ThemeColors();
         sqLiteHelper = new SQLiteHelper(this);
@@ -367,12 +372,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         convertTextSong = new ConvertTextSong();
         processSong = new ProcessSong();
         loadSong = new LoadSong();
-        windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(ab,batteryStatus,activityMainBinding.appBarMain.myToolBarNew.songtitleAb,
-                activityMainBinding.appBarMain.myToolBarNew.songauthorAb, activityMainBinding.appBarMain.myToolBarNew.songkeyAb,
-                activityMainBinding.appBarMain.myToolBarNew.songcapoAb,activityMainBinding.appBarMain.myToolBarNew.batteryimage,
-                activityMainBinding.appBarMain.myToolBarNew.batterycharge,activityMainBinding.appBarMain.myToolBarNew.digitalclock,
-                preferences.getMyPreferenceBoolean(this,"hideActionBar",false));
+        songListBuildIndex = new SongListBuildIndex();
         versionNumber = new VersionNumber();
         fixLocale = new FixLocale();
         ccliLog = new CCLILog();
@@ -380,22 +380,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         showCase = new ShowCase();
         showToast = new ShowToast();
         pageButtons = new PageButtons(this,preferences);
-        pageButtons.setMainFABS(activityMainBinding.pageButtonsRight.actionFAB, activityMainBinding.pageButtonsRight.custom1Button,
-                activityMainBinding.pageButtonsRight.custom2Button,activityMainBinding.pageButtonsRight.custom3Button,
-                activityMainBinding.pageButtonsRight.custom4Button,activityMainBinding.pageButtonsRight.custom5Button,
-                activityMainBinding.pageButtonsRight.custom6Button,activityMainBinding.pageButtonsRight.pageButtonsLayout,
-                themeColors.getPageButtonsColor());
-        pageButtons.animatePageButton(this,false);
+        song = new Song();
         nearbyConnections = new NearbyConnections(this,mainActivityInterface);
         midi = new Midi();
         pedalActions = new PedalActions();
         exportActions = new ExportActions();
-        song = new Song();
         mediaRouterCallback = new MediaRouterCallback();
         webDownload = new WebDownload();
         currentSet = new CurrentSet();
         setActions = new SetActions();
-        songListBuildIndex = new SongListBuildIndex();
         padFunctions = new PadFunctions();
         autoscrollActions = new AutoscrollActions();
         doVibrate = new DoVibrate();
@@ -415,10 +408,25 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         profileActions = new ProfileActions();
         checkInternet = new CheckInternet();
     }
+    private void initialiseHelpers2() {
+        windowFlags = new WindowFlags(this.getWindow());
+        appActionBar = new AppActionBar(ab,batteryStatus,activityMainBinding.appBar.myToolBarNew.songtitleAb,
+                activityMainBinding.appBar.myToolBarNew.songauthorAb, activityMainBinding.appBar.myToolBarNew.songkeyAb,
+                activityMainBinding.appBar.myToolBarNew.songcapoAb,activityMainBinding.appBar.myToolBarNew.batteryimage,
+                activityMainBinding.appBar.myToolBarNew.batterycharge,activityMainBinding.appBar.myToolBarNew.digitalclock,
+                preferences.getMyPreferenceBoolean(this,"hideActionBar",false));
+        pageButtons.setMainFABS(activityMainBinding.pageButtonsRight.actionFAB, activityMainBinding.pageButtonsRight.custom1Button,
+                activityMainBinding.pageButtonsRight.custom2Button,activityMainBinding.pageButtonsRight.custom3Button,
+                activityMainBinding.pageButtonsRight.custom4Button,activityMainBinding.pageButtonsRight.custom5Button,
+                activityMainBinding.pageButtonsRight.custom6Button,activityMainBinding.pageButtonsRight.pageButtonsLayout,
+                themeColors.getPageButtonsColor());
+        pageButtons.animatePageButton(this,false);
+
+    }
 
     // The actionbar
     private void setupActionbar() {
-        setSupportActionBar(activityMainBinding.appBarMain.myToolBarNew.myToolBarNew);
+        setSupportActionBar(activityMainBinding.appBar.myToolBarNew.myToolBarNew);
         ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
@@ -429,12 +437,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
         if (!whichMode.equals("Presentation") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
             // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
-            activityMainBinding.appBarMain.contentMain.getRoot().setTop(0);
+            activityMainBinding.appBar.contentMain.getRoot().setTop(0);
         } else {
             // Otherwise move the content below it
-            activityMainBinding.appBarMain.contentMain.getRoot().setTop(ab.getHeight());
+            activityMainBinding.appBar.contentMain.getRoot().setTop(ab.getHeight());
         }
-        appActionBar.toggleActionBar(wasScrolling,scrollButton,drawerLayout.isOpen());
+        appActionBar.toggleActionBar(wasScrolling,scrollButton,activityMainBinding.drawerLayout.isOpen());
     }
 
     @Override
@@ -552,7 +560,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
         });
 
-        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+        activityMainBinding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             float initialVal = -1.0f;
             boolean decided;
 
@@ -681,7 +689,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void chooseMenu(boolean showSetMenu) {
         this.showSetMenu = showSetMenu;
         setSongMenuFragment();
-        closeDrawer(drawerLayout.isOpen());
+        closeDrawer(activityMainBinding.drawerLayout.isOpen());
     }
 
     @Override
@@ -803,7 +811,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         if (title!=null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
             // Make sure the content shows below the action bar
-            activityMainBinding.appBarMain.contentMain.getRoot().setTop(ab.getHeight());
+            activityMainBinding.appBar.contentMain.getRoot().setTop(ab.getHeight());
         }
     }
     @Override
@@ -888,9 +896,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Set up battery monitor
         batteryStatus = new BatteryStatus();
-        batteryStatus.setUpBatteryMonitor(this,mainActivityInterface,activityMainBinding.appBarMain.myToolBarNew.digitalclock,
-                activityMainBinding.appBarMain.myToolBarNew.batterycharge,
-                activityMainBinding.appBarMain.myToolBarNew.batteryimage,ab);
+        batteryStatus.setUpBatteryMonitor(this,mainActivityInterface,activityMainBinding.appBar.myToolBarNew.digitalclock,
+                activityMainBinding.appBar.myToolBarNew.batterycharge,
+                activityMainBinding.appBar.myToolBarNew.batteryimage,ab);
 
         return true;
     }
@@ -1172,27 +1180,31 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void lockDrawer(boolean lock) {
         // This is done whenever we have a settings window open
-        if (lock) {
-            settingsOpen = true;
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        } else {
-            settingsOpen = false;
-            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        if (activityMainBinding!=null && activityMainBinding.drawerLayout!=null) {
+            if (lock) {
+                settingsOpen = true;
+                activityMainBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            } else {
+                settingsOpen = false;
+                activityMainBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
         }
     }
     @Override
     public void hideActionButton(boolean hide) {
-        if (hide) {
-            if (activityMainBinding.pageButtonsRight.actionFAB.getRotation()!=0) {
-                activityMainBinding.pageButtonsRight.actionFAB.performClick();
+        if (activityMainBinding!=null && activityMainBinding.pageButtonsRight!=null) {
+            if (hide) {
+                if (activityMainBinding.pageButtonsRight.actionFAB.getRotation() != 0) {
+                    activityMainBinding.pageButtonsRight.actionFAB.performClick();
+                }
+                activityMainBinding.pageButtonsRight.actionFAB.hide();
+                activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.GONE);
+            } else {
+                activityMainBinding.pageButtonsRight.actionFAB.show();
+                activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.VISIBLE);
+                // Do this with a delay
+                customAnimation.fadeActionButton(activityMainBinding.pageButtonsRight.actionFAB, pageButtons.getPageButtonAlpha());
             }
-            activityMainBinding.pageButtonsRight.actionFAB.hide();
-            activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.GONE);
-        } else {
-            activityMainBinding.pageButtonsRight.actionFAB.show();
-            activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.VISIBLE);
-            // Do this with a delay
-            customAnimation.fadeActionButton(activityMainBinding.pageButtonsRight.actionFAB, pageButtons.getPageButtonAlpha());
         }
     }
     @Override
@@ -1445,6 +1457,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     // Get references to the objects set in MainActivity
     @Override
     public void setMainActivityInterface(MainActivityInterface mainActivityInterface) {
+        Log.d(TAG,"setMainActivityInterface("+mainActivityInterface+")");
         if (mainActivityInterface!=null) {
             this.mainActivityInterface = mainActivityInterface;
         }
@@ -1832,6 +1845,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 

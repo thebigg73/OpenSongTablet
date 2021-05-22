@@ -27,6 +27,8 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"/>
 
+        <TableRow style="@style/DividerLine" />
+
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/pedalToggleScrollBeforeSwipeButton"
             style="@style/PrefSwitch"
@@ -40,6 +42,71 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pedal_avoid_repeat" />
+
+        <TableRow style="@style/DividerLine" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/airTurnMode"
+            style="@style/PrefSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/airTurnLongPress" />
+
+        <LinearLayout
+            android:id="@+id/airTurnOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/autoRepeatRationale" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/autoRepeatCount"/>
+
+            <SeekBar
+                android:id="@+id/autoRepeatCount_SeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:max="300" />
+
+            <TextView
+                android:id="@+id/autoRepeatCount_TextView"
+                style="@style/MyInfoText"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/autorepeat_time"/>
+
+            <SeekBar
+                android:id="@+id/autoRepeatTime_SeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:max="90" />
+
+            <TextView
+                android:id="@+id/autoRepeatTime_TextView"
+                style="@style/MyInfoText"
+                android:layout_gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
+
+        </LinearLayout>
+
+        <TableRow style="@style/DividerLine" />
 
         <!--BUTTON 1-->
         <RelativeLayout

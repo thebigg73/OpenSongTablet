@@ -110,11 +110,17 @@ public class BootUpFragment extends Fragment {
                 == PackageManager.PERMISSION_GRANTED);
     }
     private boolean storageLocationSet() {
-        uriTreeString = mainActivityInterface.getPreferences().
-                getMyPreferenceString(getContext(),"uriTree","");
-        return !uriTreeString.isEmpty();
+        if (mainActivityInterface!=null && mainActivityInterface.getPreferences()!=null) {
+            uriTreeString = mainActivityInterface.getPreferences().
+                    getMyPreferenceString(getContext(), "uriTree", "");
+            return !uriTreeString.isEmpty();
+        } else {
+            uriTreeString = "";
+            return false;
+        }
     }
     private boolean storageLocationValid() {
+        Log.d("BootUpFragment","uriTreeString()="+uriTreeString);
         uriTree = Uri.parse(uriTreeString);
         return mainActivityInterface.getStorageAccess().uriTreeValid(requireActivity(),uriTree);
     }

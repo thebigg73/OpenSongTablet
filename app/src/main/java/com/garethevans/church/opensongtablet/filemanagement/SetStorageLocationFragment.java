@@ -63,11 +63,7 @@ public class SetStorageLocationFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try {
-            mainActivityInterface = (MainActivityInterface) context;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
+        mainActivityInterface = (MainActivityInterface) context;
     }
     @Override
     public void onResume() {
@@ -137,8 +133,11 @@ public class SetStorageLocationFragment extends Fragment {
         Also it could be null!
         */
 
-        String uriTreeString = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "uriTree", "");
-        if (!uriTreeString.equals("")) {
+        String uriTreeString = null;
+        if (mainActivityInterface!=null && mainActivityInterface.getPreferences()!=null) {
+            uriTreeString = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "uriTree", "");
+        }
+        if (uriTreeString!=null && !uriTreeString.equals("")) {
             uriTree = Uri.parse(uriTreeString);
         } else {
             uriTree = null;
@@ -327,7 +326,7 @@ public class SetStorageLocationFragment extends Fragment {
                 ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             try {
-                make(getActivity().findViewById(R.id.drawer_layout), R.string.storage_rationale,
+                make(myView.getRoot(), R.string.storage_rationale,
                         LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
                     if (getActivity() != null) {
                         ActivityCompat.requestPermissions(getActivity(),
@@ -476,7 +475,11 @@ public class SetStorageLocationFragment extends Fragment {
 
     // Here we deal with displaying (and processing) the chosen storage location
     private void showStorageLocation() {
-        uriTreeHome = mainActivityInterface.getStorageAccess().fixBadStorage(uriTreeHome);
+        if (mainActivityInterface!=null && mainActivityInterface.getStorageAccess()!=null) {
+            uriTreeHome = mainActivityInterface.getStorageAccess().fixBadStorage(uriTreeHome);
+        } else {
+            uriTreeHome = null;
+        }
         if (uriTreeHome==null) {
             uriTree = null;
             saveUriLocation();

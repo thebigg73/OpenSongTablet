@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,8 +40,8 @@ public class PedalsFragment extends Fragment {
 
     private boolean longPressCapable = false;
     private long downTime, upTime;
-    private String currentMidiCode;
-    private int currentListening, currentPedalCode;
+    private String currentMidiCode, keyRepeatCountText, keyRepeatTimeText;
+    private int currentListening, currentPedalCode, keyRepeatCount, keyRepeatTime;
     private int[] defKeyCodes;
     private String[] defMidiCodes;
     private String[] shortActions;
@@ -93,6 +94,9 @@ public class PedalsFragment extends Fragment {
 
         // Set up the toggle switches
         setupSwitches();
+
+        // Set AirTurnMode actions
+        airTurnModeActions();
 
         return myView.getRoot();
     }
@@ -223,8 +227,73 @@ public class PedalsFragment extends Fragment {
     private void setupSwitches() {
         myView.pedalToggleScrollBeforeSwipeButton.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",true));
         myView.pedalToggleWarnBeforeSwipeButton.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",false));
-        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",isChecked));
-        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
+        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",isChecked));
+        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
+    }
+
+    private void airTurnModeActions() {
+        boolean airTurnMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"AirTurnMode",false);
+        myView.airTurnMode.setChecked(airTurnMode);
+        if (airTurnMode) {
+            myView.airTurnOptions.setVisibility(View.VISIBLE);
+        } else {
+            myView.airTurnOptions.setVisibility(View.GONE);
+        }
+        myView.airTurnMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"airTurnMode", isChecked);
+            if (isChecked) {
+                myView.airTurnOptions.setVisibility(View.VISIBLE);
+            } else {
+                myView.airTurnOptions.setVisibility(View.GONE);
+            }
+        });
+
+        keyRepeatCount = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"keyRepeatCount",20);
+        keyRepeatCountText = "" + keyRepeatCount;
+        myView.autoRepeatCountTextView.setText(keyRepeatCountText);
+        myView.autoRepeatCountSeekBar.setProgress(keyRepeatCount);
+        myView.autoRepeatCountSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                keyRepeatCount = progress;
+                keyRepeatCountText = "" + progress;
+                myView.autoRepeatCountTextView.setText(keyRepeatCountText);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Save the value
+                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"keyRepeatCount",keyRepeatCount);
+                // If 0 or 1, then no point, so switch off the AirTurn mode
+                if (keyRepeatCount<2) {
+                    myView.airTurnMode.setChecked(false);
+                }
+            }
+        });
+        keyRepeatTime = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"keyRepeatTime",400);
+        keyRepeatTimeText = keyRepeatTime + " ms";
+        myView.autoRepeatTimeTextView.setText(keyRepeatTimeText);
+        myView.autoRepeatTimeSeekBar.setProgress((keyRepeatTime-100)/10);  // Min time of 100 is progress of 0.  Seekbar goes up in 10s
+        myView.autoRepeatTimeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                keyRepeatTime = (10*progress) + 100;
+                keyRepeatTimeText = keyRepeatTime + " ms";
+                myView.autoRepeatTimeTextView.setText(keyRepeatTimeText);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Save the value
+                mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),"keyRepeatTime",keyRepeatTime);
+            }
+        });
     }
 
     // Key listeners called from MainActivity
@@ -276,7 +345,6 @@ public class PedalsFragment extends Fragment {
     public void commonEventLong() {
         longPressCapable = true;
     }
-
 
     public boolean isListening() {
         return currentListening>-1;

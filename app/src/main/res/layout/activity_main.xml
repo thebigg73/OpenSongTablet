@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<com.garethevans.church.opensongtablet.customviews.CoordLayout-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <RelativeLayout
     android:id="@+id/coordinator"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,7 +18,7 @@
         android:layout_height="match_parent">
 
         <include
-            android:id="@+id/app_bar_main"
+            android:id="@+id/app_bar"
             layout="@layout/app_bar_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -61,3 +63,4 @@
 
 </androidx.drawerlayout.widget.DrawerLayout>
 </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
