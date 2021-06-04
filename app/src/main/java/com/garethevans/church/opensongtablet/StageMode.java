@@ -240,6 +240,36 @@ public class StageMode extends AppCompatActivity implements
     private FloatingActionButton scrollUpButton;
     private FloatingActionButton setBackButton;
     private FloatingActionButton setForwardButton;
+    private RelativeLayout setButtonLayout;
+    private RelativeLayout padButtonLayout;
+    private RelativeLayout autoscrollButtonLayout;
+    private RelativeLayout metronomeButtonLayout;
+    private RelativeLayout extraButtonLayout;
+    private RelativeLayout chordButtonLayout;
+    private RelativeLayout stickyButtonLayout;
+    private RelativeLayout notationButtonLayout;
+    private RelativeLayout highlightButtonLayout;
+    private RelativeLayout pageselectButtonLayout;
+    private RelativeLayout linkButtonLayout;
+    private RelativeLayout chordButton_ungroupedLayout;
+    private RelativeLayout stickyButton_ungroupedLayout;
+    private RelativeLayout notationButton_ungroupedLayout;
+    private RelativeLayout highlightButton_ungroupedLayout;
+    private RelativeLayout pageselectButton_ungroupedLayout;
+    private RelativeLayout linkButton_ungroupedLayout;
+    private RelativeLayout customButtonLayout;
+    private RelativeLayout custom1ButtonLayout;
+    private RelativeLayout custom2ButtonLayout;
+    private RelativeLayout custom3ButtonLayout;
+    private RelativeLayout custom4ButtonLayout;
+    private RelativeLayout custom1Button_ungroupedLayout;
+    private RelativeLayout custom2Button_ungroupedLayout;
+    private RelativeLayout custom3Button_ungroupedLayout;
+    private RelativeLayout custom4Button_ungroupedLayout;
+    private RelativeLayout scrollDownButtonLayout;
+    private RelativeLayout scrollUpButtonLayout;
+    private RelativeLayout setBackButtonLayout;
+    private RelativeLayout setForwardButtonLayout;
     private ScrollView extrabuttons;
     private ScrollView extrabuttons2;
     private int keyRepeatCount = 0;
@@ -1750,6 +1780,36 @@ public class StageMode extends AppCompatActivity implements
             scrollUpButton = findViewById(R.id.scrollUpButton);
             setBackButton = findViewById(R.id.setBackButton);
             setForwardButton = findViewById(R.id.setForwardButton);
+            setButtonLayout = findViewById(R.id.setButtonLayout);
+            padButtonLayout = findViewById(R.id.padButtonLayout);
+            autoscrollButtonLayout = findViewById(R.id.autoscrollButtonLayout);
+            metronomeButtonLayout = findViewById(R.id.metronomeButtonLayout);
+            extraButtonLayout = findViewById(R.id.extraButtonLayout);
+            chordButtonLayout = findViewById(R.id.chordButtonLayout);
+            stickyButtonLayout = findViewById(R.id.stickyButtonLayout);
+            notationButtonLayout = findViewById(R.id.notationButtonLayout);
+            highlightButtonLayout = findViewById(R.id.highlightButtonLayout);
+            pageselectButtonLayout = findViewById(R.id.pageselectButtonLayout);
+            linkButtonLayout = findViewById(R.id.linkButtonLayout);
+            chordButton_ungroupedLayout = findViewById(R.id.chordButton_ungroupedLayout);
+            stickyButton_ungroupedLayout = findViewById(R.id.stickyButton_ungroupedLayout);
+            notationButton_ungroupedLayout = findViewById(R.id.notationButton_ungroupedLayout);
+            highlightButton_ungroupedLayout = findViewById(R.id.highlightButton_ungroupedLayout);
+            pageselectButton_ungroupedLayout = findViewById(R.id.pageselectButton_ungroupedLayout);
+            linkButton_ungroupedLayout = findViewById(R.id.linkButton_ungroupedLayout);
+            customButtonLayout = findViewById(R.id.customButtonLayout);
+            custom1ButtonLayout = findViewById(R.id.custom1ButtonLayout);
+            custom2ButtonLayout = findViewById(R.id.custom2ButtonLayout);
+            custom3ButtonLayout = findViewById(R.id.custom3ButtonLayout);
+            custom4ButtonLayout = findViewById(R.id.custom4ButtonLayout);
+            custom1Button_ungroupedLayout = findViewById(R.id.custom1Button_ungroupedLayout);
+            custom2Button_ungroupedLayout = findViewById(R.id.custom2Button_ungroupedLayout);
+            custom3Button_ungroupedLayout = findViewById(R.id.custom3Button_ungroupedLayout);
+            custom4Button_ungroupedLayout = findViewById(R.id.custom4Button_ungroupedLayout);
+            scrollDownButtonLayout = findViewById(R.id.scrollDownButtonLayout);
+            scrollUpButtonLayout = findViewById(R.id.scrollUpButtonLayout);
+            setBackButtonLayout = findViewById(R.id.setBackButtonLayout);
+            setForwardButtonLayout = findViewById(R.id.setForwardButtonLayout);
             setupPageButtonsColors();
             setupQuickLaunchButtons();
         });
@@ -1762,21 +1822,25 @@ public class StageMode extends AppCompatActivity implements
 
         // IV - No animations for grouped buttons as the collapse of the group will 'animate' the click
         // Set the listeners
+        setButtonLayout.setOnClickListener(view -> setButton.performClick());
         setButton.setOnClickListener(view -> {
             CustomAnimations.animateFAB(setButton,StageMode.this);
             FullscreenActivity.whattodo = "editset";
             openFragment();
         });
+        setButtonLayout.setOnLongClickListener(view -> setButton.performLongClick());
         setButton.setOnLongClickListener(view -> {
             FullscreenActivity.whattodo = "setitemvariation";
             openFragment();
             return true;
         });
+        padButtonLayout.setOnClickListener(view -> padButton.performClick());
         padButton.setOnClickListener(view -> {
             CustomAnimations.animateFAB(padButton,StageMode.this);
             FullscreenActivity.whattodo = "page_pad";
             openFragment();
         });
+        padButtonLayout.setOnLongClickListener(view -> padButton.performLongClick());
         padButton.setOnLongClickListener(view -> {
             CustomAnimations.animateFABLong(padButton,StageMode.this);
             // IV - Indicate a fade with just the pad icon to give immediate feedback
@@ -1788,31 +1852,37 @@ public class StageMode extends AppCompatActivity implements
             gesture6();
             return true;
         });
+        autoscrollButtonLayout.setOnClickListener(view -> autoscrollButton.performClick());
         autoscrollButton.setOnClickListener(view -> {
             CustomAnimations.animateFAB(autoscrollButton,StageMode.this);
             FullscreenActivity.whattodo = "page_autoscroll";
             openFragment();
         });
+        autoscrollButtonLayout.setOnLongClickListener(view -> autoscrollButton.performLongClick());
         autoscrollButton.setOnLongClickListener(view -> {
             CustomAnimations.animateFABLong(autoscrollButton,StageMode.this);
             gesture5();
             return true;
         });
+        metronomeButtonLayout.setOnClickListener(view -> metronomeButton.performClick());
         metronomeButton.setOnClickListener(view -> {
             CustomAnimations.animateFAB(metronomeButton,StageMode.this);
             FullscreenActivity.whattodo = "page_metronome";
             openFragment();
         });
+        metronomeButtonLayout.setOnLongClickListener(view -> metronomeButton.performLongClick());
         metronomeButton.setOnLongClickListener(view -> {
             CustomAnimations.animateFABLong(metronomeButton,StageMode.this);
             gesture7();
             return true;
         });
+        highlightButtonLayout.setOnClickListener(view -> highlightButton.performClick());
         highlightButton.setOnClickListener(view -> {
             FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
             FullscreenActivity.whattodo = "page_highlight";
             displayHighlight(false);
         });
+        highlightButtonLayout.setOnLongClickListener(view -> highlightButton.performLongClick());
         highlightButton.setOnLongClickListener(view -> {
             // Vibrate to let the user know something happened
             DoVibrate.vibrate(StageMode.this, 50);
@@ -1825,12 +1895,14 @@ public class StageMode extends AppCompatActivity implements
             }
             return true;
         });
+        highlightButton_ungroupedLayout.setOnClickListener(view -> highlightButton_ungrouped.performClick());
         highlightButton_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(highlightButton_ungrouped,StageMode.this);
             FullscreenActivity.whattodo = "page_highlight";
             FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
             displayHighlight(false);
         });
+        highlightButton_ungroupedLayout.setOnLongClickListener(view -> highlightButton_ungrouped.performLongClick());
         highlightButton_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFABLong(highlightButton_ungrouped,StageMode.this);
             // Vibrate to let the user know something happened
@@ -1844,6 +1916,7 @@ public class StageMode extends AppCompatActivity implements
             }
             return true;
         });
+        extraButtonLayout.setOnClickListener(view -> extraButton.performClick());
         extraButton.setOnClickListener(view -> {
             CustomAnimations.animateFAB(extraButton,StageMode.this);
             if (extrabuttons!=null && extrabuttons.getVisibility() == View.GONE) {
@@ -1853,6 +1926,7 @@ public class StageMode extends AppCompatActivity implements
             }
         });
         // Button groups - extra group long click action to switch to all group mode (collapse of the buttons displayed)
+        extraButtonLayout.setOnLongClickListener(view -> extraButton.performLongClick());
         extraButton.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(extraButton,StageMode.this);
             preferences.setMyPreferenceBoolean(StageMode.this, "pageButtonGroupMain", !(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonGroupMain", false)));
@@ -1863,44 +1937,53 @@ public class StageMode extends AppCompatActivity implements
             onScrollAction();
             return true;
         });
+        chordButtonLayout.setOnClickListener(view -> chordButton.performClick());
         chordButton.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "page_chords";
             openFragment();
         });
+        chordButton_ungroupedLayout.setOnClickListener(view -> chordButton_ungrouped.performClick());
         chordButton_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(chordButton_ungrouped,StageMode.this);
             FullscreenActivity.whattodo = "page_chords";
             openFragment();
         });
+        linkButtonLayout.setOnClickListener(view -> linkButton.performClick());
         linkButton.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "page_links";
             openFragment();
         });
+        linkButton_ungroupedLayout.setOnClickListener(view -> linkButton_ungrouped.performClick());
         linkButton_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(linkButton_ungrouped,StageMode.this);
             FullscreenActivity.whattodo = "page_links";
             openFragment();
         });
+        stickyButtonLayout.setOnClickListener(view -> stickyButton.performClick());
         stickyButton.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "page_sticky";
             displaySticky();
         });
+        stickyButtonLayout.setOnLongClickListener(view -> stickyButton.performLongClick());
         stickyButton.setOnLongClickListener(view -> {
             FullscreenActivity.whattodo = "page_sticky";
             openFragment();
             return true;
         });
+        stickyButton_ungroupedLayout.setOnClickListener(view -> stickyButton_ungrouped.performClick());
         stickyButton_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(stickyButton_ungrouped,StageMode.this);
             FullscreenActivity.whattodo = "page_sticky";
             displaySticky();
         });
+        stickyButton_ungroupedLayout.setOnLongClickListener(view -> stickyButton_ungrouped.performLongClick());
         stickyButton_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(stickyButton,StageMode.this);
             FullscreenActivity.whattodo = "page_sticky";
             openFragment();
             return true;
         });
+        notationButtonLayout.setOnClickListener(view -> notationButton.performClick());
         notationButton.setOnClickListener(view -> {
             if (StaticVariables.mNotation.equals("")) {
                 FullscreenActivity.whattodo = "abcnotation_edit";
@@ -1909,11 +1992,13 @@ public class StageMode extends AppCompatActivity implements
             }
             openFragment();
         });
+        notationButtonLayout.setOnLongClickListener(view -> notationButton.performLongClick());
         notationButton.setOnLongClickListener(view -> {
             FullscreenActivity.whattodo = "abcnotation_edit";
             openFragment();
             return true;
         });
+        notationButton_ungroupedLayout.setOnClickListener(view -> notationButton_ungrouped.performClick());
         notationButton_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(notationButton_ungrouped,StageMode.this);
             if (StaticVariables.mNotation.equals("")) {
@@ -1923,12 +2008,14 @@ public class StageMode extends AppCompatActivity implements
             }
             openFragment();
         });
+        notationButton_ungroupedLayout.setOnLongClickListener(view -> notationButton_ungrouped.performLongClick());
         notationButton_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(notationButton_ungrouped,StageMode.this);
             FullscreenActivity.whattodo = "abcnotation_edit";
             openFragment();
             return true;
         });
+        pageselectButtonLayout.setOnClickListener(view -> pageselectButton.performClick());
         pageselectButton.setOnClickListener(view -> {
             if (FullscreenActivity.isPDF) {
                 FullscreenActivity.whattodo = "page_pageselect";
@@ -1938,6 +2025,7 @@ public class StageMode extends AppCompatActivity implements
                 ShowToast.showToast(StageMode.this);
             }
         });
+        pageselectButton_ungroupedLayout.setOnClickListener(view -> pageselectButton_ungrouped.performClick());
         pageselectButton_ungrouped.setOnClickListener(view -> {
             if (FullscreenActivity.isPDF) {
                 FullscreenActivity.whattodo = "page_pageselect";
@@ -1947,6 +2035,7 @@ public class StageMode extends AppCompatActivity implements
                 ShowToast.showToast(StageMode.this);
             }
         });
+        customButtonLayout.setOnClickListener(view -> customButton.performClick());
         if (preferences.getMyPreferenceBoolean(StageMode.this,"pageButtonGroupMain",false)) {
             customButton.setOnClickListener(view -> {
                 CustomAnimations.animateFAB(customButton,StageMode.this);
@@ -1964,6 +2053,7 @@ public class StageMode extends AppCompatActivity implements
             });
         }
         // Button groups - custom Long press toggles all group mode - allows expansion and collapse of buttons display
+        customButtonLayout.setOnLongClickListener(view -> customButton.performLongClick());
         customButton.setOnLongClickListener(view -> {
             // This provides the ability to expand and collapse the number of buttons displayed.
             // If extra or custom groupings are 'hidden' by an all grouping support long press to switch into and out of all grouping
@@ -1981,14 +2071,17 @@ public class StageMode extends AppCompatActivity implements
             }
             return true;
         });
+        scrollUpButtonLayout.setOnClickListener(view -> scrollUpButton.performClick());
         scrollUpButton.setOnClickListener(view -> {
             CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
             doScrollUp();
         });
+        scrollDownButtonLayout.setOnClickListener(view -> scrollDownButton.performClick());
         scrollDownButton.setOnClickListener(view -> {
             CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
             doScrollDown();
         });
+        setForwardButtonLayout.setOnClickListener(view -> setForwardButton.performClick());
         setForwardButton.setOnClickListener(view -> {
             // Animate but not if called by R2L swipe (so set like scroll buttons do not animate on swipe)
             if (!(StaticVariables.setMoveDirection.equals("swipe"))) {
@@ -1998,6 +2091,7 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.whichDirection = "R2L";
             goToNextItem();
         });
+        setBackButtonLayout.setOnClickListener(view -> setBackButton.performClick());
         setBackButton.setOnClickListener(view -> {
             // Animate but not if called by  a L2R swipe (so set like scroll buttons do not animate on swipe)
             if (!(StaticVariables.setMoveDirection.equals("swipe"))) {
@@ -2452,59 +2546,75 @@ public class StageMode extends AppCompatActivity implements
         custom2Button_ungrouped.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this, b2ac));
         custom3Button_ungrouped.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this, b3ac));
         custom4Button_ungrouped.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this, b4ac));
+        custom1ButtonLayout.setOnClickListener(view -> custom1Button.performClick());
         custom1Button.setOnClickListener(view -> customButtonAction(b1ac));
+        custom2ButtonLayout.setOnClickListener(view -> custom2Button.performClick());
         custom2Button.setOnClickListener(view -> customButtonAction(b2ac));
+        custom3ButtonLayout.setOnClickListener(view -> custom1Button.performClick());
         custom3Button.setOnClickListener(view -> customButtonAction(b3ac));
+        custom4ButtonLayout.setOnClickListener(view -> custom1Button.performClick());
         custom4Button.setOnClickListener(view -> customButtonAction(b4ac));
+        custom1Button_ungroupedLayout.setOnClickListener(view -> custom1Button_ungrouped.performClick());
         custom1Button_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(custom1Button_ungrouped,StageMode.this);
             customButtonAction(b1ac);
         });
+        custom2Button_ungroupedLayout.setOnClickListener(view -> custom2Button_ungrouped.performClick());
         custom2Button_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(custom2Button_ungrouped,StageMode.this);
             customButtonAction(b2ac);
         });
+        custom3Button_ungroupedLayout.setOnClickListener(view -> custom3Button_ungrouped.performClick());
         custom3Button_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(custom3Button_ungrouped,StageMode.this);
             customButtonAction(b3ac);
         });
+        custom4Button_ungroupedLayout.setOnClickListener(view -> custom4Button_ungrouped.performClick());
         custom4Button_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(custom4Button_ungrouped,StageMode.this);
             customButtonAction(b4ac);
         });
 
         // Support for custom button LongClick actions
+        custom1ButtonLayout.setOnClickListener(view -> custom1Button.performClick());
         custom1Button.setOnLongClickListener(view -> {
             customButtonLongPressAction(b1ac);
             return true;
         });
+        custom2Button.setOnClickListener(view -> custom2Button.performClick());
         custom2Button.setOnLongClickListener(view -> {
             customButtonLongPressAction(b2ac);
             return true;
         });
+        custom3ButtonLayout.setOnClickListener(view -> custom3Button.performClick());
         custom3Button.setOnLongClickListener(view -> {
             customButtonLongPressAction(b3ac);
             return true;
         });
+        custom4ButtonLayout.setOnClickListener(view -> custom4Button.performClick());
         custom4Button.setOnLongClickListener(view -> {
             customButtonLongPressAction(b4ac);
             return true;
         });
+        custom1Button_ungroupedLayout.setOnClickListener(view -> custom1Button_ungrouped.performClick());
         custom1Button_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(custom1Button_ungrouped, StageMode.this);
             customButtonLongPressAction(b1ac);
             return true;
         });
+        custom2Button_ungroupedLayout.setOnClickListener(view -> custom2Button_ungrouped.performClick());
         custom2Button_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(custom2Button_ungrouped, StageMode.this);
             customButtonLongPressAction(b2ac);
             return true;
         });
+        custom3Button_ungroupedLayout.setOnClickListener(view -> custom3Button_ungrouped.performClick());
         custom3Button_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(custom3Button_ungrouped, StageMode.this);
             customButtonLongPressAction(b3ac);
             return true;
         });
+        custom4Button_ungroupedLayout.setOnClickListener(view -> custom4Button_ungrouped.performClick());
         custom4Button_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(custom4Button_ungrouped, StageMode.this);
             customButtonLongPressAction(b4ac);
