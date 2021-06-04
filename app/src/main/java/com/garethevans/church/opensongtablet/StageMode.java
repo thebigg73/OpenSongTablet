@@ -2550,9 +2550,9 @@ public class StageMode extends AppCompatActivity implements
         custom1Button.setOnClickListener(view -> customButtonAction(b1ac));
         custom2ButtonLayout.setOnClickListener(view -> custom2Button.performClick());
         custom2Button.setOnClickListener(view -> customButtonAction(b2ac));
-        custom3ButtonLayout.setOnClickListener(view -> custom1Button.performClick());
+        custom3ButtonLayout.setOnClickListener(view -> custom3Button.performClick());
         custom3Button.setOnClickListener(view -> customButtonAction(b3ac));
-        custom4ButtonLayout.setOnClickListener(view -> custom1Button.performClick());
+        custom4ButtonLayout.setOnClickListener(view -> custom4Button.performClick());
         custom4Button.setOnClickListener(view -> customButtonAction(b4ac));
         custom1Button_ungroupedLayout.setOnClickListener(view -> custom1Button_ungrouped.performClick());
         custom1Button_ungrouped.setOnClickListener(view -> {
@@ -2576,45 +2576,45 @@ public class StageMode extends AppCompatActivity implements
         });
 
         // Support for custom button LongClick actions
-        custom1ButtonLayout.setOnClickListener(view -> custom1Button.performClick());
+        custom1ButtonLayout.setOnLongClickListener(view -> custom1Button.performLongClick());
         custom1Button.setOnLongClickListener(view -> {
             customButtonLongPressAction(b1ac);
             return true;
         });
-        custom2Button.setOnClickListener(view -> custom2Button.performClick());
+        custom2ButtonLayout.setOnLongClickListener(view -> custom2Button.performLongClick());
         custom2Button.setOnLongClickListener(view -> {
             customButtonLongPressAction(b2ac);
             return true;
         });
-        custom3ButtonLayout.setOnClickListener(view -> custom3Button.performClick());
+        custom3ButtonLayout.setOnLongClickListener(view -> custom3Button.performLongClick());
         custom3Button.setOnLongClickListener(view -> {
             customButtonLongPressAction(b3ac);
             return true;
         });
-        custom4ButtonLayout.setOnClickListener(view -> custom4Button.performClick());
+        custom4ButtonLayout.setOnLongClickListener(view -> custom4Button.performLongClick());
         custom4Button.setOnLongClickListener(view -> {
             customButtonLongPressAction(b4ac);
             return true;
         });
-        custom1Button_ungroupedLayout.setOnClickListener(view -> custom1Button_ungrouped.performClick());
+        custom1Button_ungroupedLayout.setOnLongClickListener(view -> custom1Button_ungrouped.performLongClick());
         custom1Button_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(custom1Button_ungrouped, StageMode.this);
             customButtonLongPressAction(b1ac);
             return true;
         });
-        custom2Button_ungroupedLayout.setOnClickListener(view -> custom2Button_ungrouped.performClick());
+        custom2Button_ungroupedLayout.setOnLongClickListener(view -> custom2Button_ungrouped.performLongClick());
         custom2Button_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(custom2Button_ungrouped, StageMode.this);
             customButtonLongPressAction(b2ac);
             return true;
         });
-        custom3Button_ungroupedLayout.setOnClickListener(view -> custom3Button_ungrouped.performClick());
+        custom3Button_ungroupedLayout.setOnLongClickListener(view -> custom3Button_ungrouped.performLongClick());
         custom3Button_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(custom3Button_ungrouped, StageMode.this);
             customButtonLongPressAction(b3ac);
             return true;
         });
-        custom4Button_ungroupedLayout.setOnClickListener(view -> custom4Button_ungrouped.performClick());
+        custom4Button_ungroupedLayout.setOnLongClickListener(view -> custom4Button_ungrouped.performLongClick());
         custom4Button_ungrouped.setOnLongClickListener(view -> {
             CustomAnimations.animateFAB(custom4Button_ungrouped, StageMode.this);
             customButtonLongPressAction(b4ac);
