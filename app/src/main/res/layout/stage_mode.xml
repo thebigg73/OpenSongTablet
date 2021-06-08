@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:clipChildren="false"
-                    android:clipToPadding="false"/>
+                    android:clipToPadding="false" />
 
             </HorizontalScrollView>
 
@@ -162,64 +162,83 @@
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/capoInfo"/>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/scrollUpButton"
+            <RelativeLayout
+                android:id="@+id/scrollUpButtonLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mytoolbar"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="30dp"
-                android:alpha="0.4"
-                android:src="@drawable/ic_arrow_up_white_36dp"
-                android:visibility="gone"
-                app:backgroundTint="@color/purple"
-                app:fabSize="mini"
-                android:contentDescription="@string/pageturn_up" />
+                android:padding="-30dp"
+                android:orientation="vertical">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/scrollDownButton"
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/scrollUpButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:contentDescription="@string/pageturn_up"
+                    android:src="@drawable/ic_arrow_up_white_36dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/scrollDownButtonLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="30dp"
-                android:alpha="0.4"
-                android:src="@drawable/ic_arrow_down_white_36dp"
-                android:visibility="gone"
-                app:backgroundTint="@color/purple"
-                app:fabSize="mini"
-                android:contentDescription="@string/pageturn_down" />
+                android:padding="-30dp"
+                android:orientation="vertical">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/setBackButton"
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/scrollDownButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:src="@drawable/ic_arrow_down_white_36dp"
+                    android:contentDescription="@string/pageturn_down" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setBackButtonLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginStart="30dp"
-                android:layout_marginBottom="30dp"
-                android:alpha="0.4"
-                android:src="@drawable/ic_arrow_left_white_36dp"
-                android:visibility="invisible"
-                app:backgroundTint="@color/purple"
-                app:fabSize="mini"
-                android:contentDescription="@string/pageturn_previous" />
+                android:padding="-30dp"
+                android:orientation="vertical">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/setForwardButton"
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/setBackButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:src="@drawable/ic_arrow_left_white_36dp"
+                     android:contentDescription="@string/pageturn_previous" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setForwardButtonLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="30dp"
-                android:alpha="0.4"
-                android:src="@drawable/ic_arrow_right_white_36dp"
-                android:visibility="invisible"
-                app:backgroundTint="@color/purple"
-                app:fabSize="mini"
-                tools:ignore="RelativeOverlap"
-                android:contentDescription="@string/pageturn_next" />
+                android:layout_alignParentBottom="true"
+                android:padding="-30dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/setForwardButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="30dp"
+                    android:contentDescription="@string/pageturn_next"
+                    android:cropToPadding="false"
+                    android:src="@drawable/ic_arrow_right_white_36dp"
+                    tools:ignore="RelativeOverlap" />
+
+            </RelativeLayout>
 
             <include
                 android:id="@+id/pagebuttons"

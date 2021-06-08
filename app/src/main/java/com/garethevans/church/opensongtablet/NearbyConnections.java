@@ -349,9 +349,9 @@ public class NearbyConnections implements NearbyInterface {
                                             StaticVariables.isConnected = true;
                                             updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
                                             // IV - Already connected so replay last incoming song
-                                            if (incomingPrevious != null) {
+                                            if (incomingPrevious != "") {
                                                 String incoming = incomingPrevious;
-                                                incomingPrevious = null;
+                                                incomingPrevious = "";
                                                 payloadOpenSong(incoming);
                                             }
                                             // We can stop discovery now
