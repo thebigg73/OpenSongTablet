@@ -622,7 +622,7 @@ public class LoadSong {
                     while (eventType != XmlPullParser.END_DOCUMENT) {
                         if (eventType == XmlPullParser.START_TAG) {
                             if (xpp.getName().equals("key")) {
-                                nextkey = mainActivityInterface.getProcessSong().parseFromHTMLEntities(xpp.nextText());
+                                nextkey = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
                             }
                         }
                         try {

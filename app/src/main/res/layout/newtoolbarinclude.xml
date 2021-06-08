@@ -31,7 +31,6 @@
                 android:ellipsize="end"
                 android:textColor="#fff"
                 style="@style/MySongTitleText"
-                tools:ignore="SmallSp"
                 android:layout_alignParentStart="true" />
 
             <TextView
@@ -42,7 +41,6 @@
                 android:ellipsize="end"
                 android:textColor="#fff"
                 style="@style/MySongTitleText"
-                tools:ignore="SmallSp"
                 android:layout_toEndOf="@+id/songtitle_ab" />
 
             <TextView
@@ -53,7 +51,6 @@
                 android:ellipsize="end"
                 android:textColor="#fff"
                 style="@style/MySongTitleText"
-                tools:ignore="SmallSp"
                 android:layout_toEndOf="@+id/songkey_ab" />
 
             <TextView
@@ -65,7 +62,6 @@
                 android:ellipsize="end"
                 android:textColor="#fff"
                 style="@style/MySongAuthorText"
-                tools:ignore="SmallSp"
                 android:layout_alignParentStart="true" />
 
         </RelativeLayout>

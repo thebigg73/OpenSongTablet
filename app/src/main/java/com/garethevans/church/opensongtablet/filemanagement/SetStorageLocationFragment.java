@@ -33,7 +33,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.io.File;
 import java.util.ArrayList;
 
-import lib.folderpicker.FolderPicker;
+//import lib.folderpicker.FolderPicker;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
@@ -391,13 +391,13 @@ public class SetStorageLocationFragment extends Fragment {
                 }
                 startActivityForResult(intent, 42);
             } else {
-                intent = new Intent(requireActivity(), FolderPicker.class);
+                /*intent = new Intent(requireActivity(), FolderPicker.class);
                 intent.putExtra("title", getString(R.string.storage_change));
                 intent.putExtra("pickFiles", false);
                 if (uriTree != null) {
                     intent.putExtra("location", uriTree.getPath());
                 }
-                startActivityForResult(intent, 7789);
+                startActivityForResult(intent, 7789);*/
             }
         } else {
             requestStoragePermission();

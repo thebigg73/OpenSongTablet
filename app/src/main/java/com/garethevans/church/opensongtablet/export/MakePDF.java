@@ -208,7 +208,7 @@ public class MakePDF {
                 paint.setTextSize(scaledPaintSize);
                 paint.setUnderlineText(true);
                 paint.setColor(lyricColor);
-                line = mainActivityInterface.getProcessSong().fixHeading(c,line);
+                line = mainActivityInterface.getProcessSong().beautifyHeading(c,mainActivityInterface,line);
 
             } else if (line.startsWith(";")) {
                 // Comment or tab line

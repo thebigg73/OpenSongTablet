@@ -6,13 +6,15 @@ import android.view.MotionEvent;
 import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 
-import com.otaliastudios.zoom.ZoomLayout;
+import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
+
+//import com.otaliastudios.zoom.ZoomLayout;
 
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     private ScrollView songScrollView;
     private HorizontalScrollView horizontalScrollView;
-    private final ZoomLayout zoomLayout;
+    private final MyZoomLayout zoomLayout;
     private final int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
     private final boolean oktoregistergesture;
     private final PerformanceGestures performanceGestures;
@@ -32,7 +34,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         this.performanceGestures = performanceGestures;
     }*/
 
-    GestureListener(ZoomLayout zoomLayout, int swipeMinimumDistance, int swipeMaxDistanceYError, int swipeMinimumVelocity,
+    GestureListener(MyZoomLayout zoomLayout, int swipeMinimumDistance, int swipeMaxDistanceYError, int swipeMinimumVelocity,
                     boolean oktoregistergesture, int doubleTapAction, PerformanceGestures performanceGestures) {
         this.zoomLayout = zoomLayout;
         this.swipeMinimumDistance = swipeMinimumDistance;

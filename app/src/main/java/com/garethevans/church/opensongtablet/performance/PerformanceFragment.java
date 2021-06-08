@@ -183,7 +183,7 @@ public class PerformanceFragment extends Fragment {
                 myView.songView.startAnimation(animSlideOut);
                 myView.highlighterView.startAnimation(animSlideOut);
                 myView.imageView.startAnimation(animSlideOut);
-                myView.zoomLayout.moveTo(1,0,0,false);
+                //myView.zoomLayout.moveTo(1,0,0,false);
             });
             // Load up the song
             if (sectionViews!=null) {

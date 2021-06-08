@@ -332,7 +332,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:elevation" tools:targetApi="lollipop">16dp</item>
         <item name="android:layout_margin">6dp</item>
-        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="backgroundTint">@color/colorAltPrimary</item>
         <item name="android:background">@drawable/count_icon</item>
 
     </style>

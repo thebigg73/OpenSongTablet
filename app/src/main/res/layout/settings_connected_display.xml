@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/PrefScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/backgroundOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TableRow style="@style/DividerLine" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_background" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/image1"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="0.5"
+                        android:padding="12dp"
+                        android:background="@color/colorSecondary"
+                        android:src="@drawable/ic_image_white_36dp"
+                        android:contentDescription="@string/choose_image2"/>
+
+                    <ImageView
+                        android:id="@+id/image2"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="0.5"
+                        android:padding="12dp"
+                        android:background="@color/colorPrimary"
+                        android:src="@drawable/ic_image_white_36dp"
+                        android:contentDescription="@string/choose_image2"/>
+                </TableRow>
+
+                <TableRow android:paddingBottom="24dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="@string/choose_image1" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="@string/choose_image2" />
+                </TableRow>
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/video1"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="0.5"
+                        android:padding="12dp"
+                        android:background="@color/colorPrimary"
+                        android:src="@drawable/ic_image_white_36dp"
+                        android:contentDescription="@string/choose_video1"/>
+
+                    <ImageView
+                        android:id="@+id/video2"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_weight="0.5"
+                        android:padding="12dp"
+                        android:background="@color/colorPrimary"
+                        android:src="@drawable/ic_image_white_36dp"
+                        android:contentDescription="@string/choose_video1" />
+                </TableRow>
+
+                <TableRow android:paddingBottom="24dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="@string/choose_video1" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="@string/choose_video2" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

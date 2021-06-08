@@ -1,34 +1,71 @@
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    style="@style/PrefScrollView">
+    style="@style/PrefScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
         <TextView
             android:id="@+id/infoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="@string/storage_graph_overview_info"/>
+            android:text="@string/storage_graph_overview_info" />
 
-    <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
-        android:id="@+id/zoomLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:maxZoom="5.5"
-        android:scrollbars="vertical|horizontal"
-        app:hasClickableChildren="true">
-
-        <de.blox.graphview.GraphView
-            android:id="@+id/graph"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:lineColor="@color/colorSecondary"
-            app:lineThickness="2dp"
+        <TextView
+            android:id="@+id/rootFolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@color/lightred"
             android:padding="12dp"
-            app:useMaxSize="true" />
+            android:text="@string/app_name"/>
 
-    </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/scroll_down"
+            android:src="@drawable/ic_arrow_down_white_36dp" />
+
+        <TextView
+            android:id="@+id/mainFolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:background="@color/lightgreen"
+            android:padding="12dp"
+            android:text="@string/mainfoldername"/>
+
+        <ImageView
+            android:id="@+id/subFolderArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/scroll_down"
+            android:src="@drawable/ic_arrow_down_white_36dp"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/folderList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"/>
+
+                </LinearLayout>
+        </ScrollView>
+
 
 </LinearLayout>

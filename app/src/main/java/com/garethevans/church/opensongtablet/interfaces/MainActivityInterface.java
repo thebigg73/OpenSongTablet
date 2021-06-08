@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.view.Display;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -42,6 +43,8 @@ import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
+import com.garethevans.church.opensongtablet.secondarydisplay.ExternalDisplay;
+import com.garethevans.church.opensongtablet.secondarydisplay.PresentationCommon;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
@@ -185,4 +188,8 @@ public interface MainActivityInterface {
     CheckInternet getCheckInternet();
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
     void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri);
+    void setDisplay(Display display);
+    Display getDisplay();
+    ExternalDisplay getExternalDisplay();
+    PresentationCommon getPresentationCommon();
 }

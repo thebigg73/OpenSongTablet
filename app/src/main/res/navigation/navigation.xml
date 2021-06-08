@@ -223,6 +223,9 @@
                 <action
                     android:id="@+id/action_displayMenuFragment_to_displayScalingFragment"
                     app:destination="@id/displayScalingFragment" />
+                <action
+                    android:id="@+id/action_displayMenuFragment_to_connectedDisplayFragment"
+                    app:destination="@id/connectedDisplayFragment" />
             </fragment>
 
             <!-- Theme fragment -->
@@ -290,6 +293,13 @@
                     android:id="@+id/deepLink19"
                     app:uri="opensongapp://settings/display/scaling" />
             </fragment>
+
+            <!-- Connected display -->
+            <fragment
+                android:id="@+id/connectedDisplayFragment"
+                android:name="com.garethevans.church.opensongtablet.screensetup.ConnectedDisplayFragment"
+                android:label="settings_connected_display"
+                tools:layout="@layout/settings_connected_display" />
 
         </navigation>
 

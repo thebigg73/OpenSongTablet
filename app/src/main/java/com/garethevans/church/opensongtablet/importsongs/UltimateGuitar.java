@@ -22,9 +22,9 @@ public class UltimateGuitar {
 
         // Get the title and author from this
         newSong.setFiletype("XML");
-        newSong.setTitle(getTitle(mainActivityInterface,headerTitle));
+        newSong.setTitle(getTitle(c,mainActivityInterface,headerTitle));
         newSong.setFilename(newSong.getTitle());
-        newSong.setAuthor(getAuthor(mainActivityInterface,headerTitle));
+        newSong.setAuthor(getAuthor(c,mainActivityInterface,headerTitle));
 
         // Get the key which might be in a div
         newSong.setKey(getKey(s));
@@ -75,7 +75,7 @@ public class UltimateGuitar {
                 line = " " + line;
             }
             line = stripOutTags(line);
-            line = fixHTMLStuff(mainActivityInterface,line);
+            line = fixHTMLStuff(c,mainActivityInterface,line);
             lyrics.append(line).append("\n");
         }
         newSong.setLyrics(lyrics.toString());
@@ -97,7 +97,7 @@ public class UltimateGuitar {
             return "";
         }
     }
-    private String getTitle(MainActivityInterface mainActivityInterface, String s) {
+    private String getTitle(Context c, MainActivityInterface mainActivityInterface, String s) {
         // Likely to be sent something like <title>{TitleInCaps} CHORDS by {Author} @ Ultimate-Guitar.Com</title>
         // Give options in decreasing order of goodness
         int end = s.indexOf("CHORDS");
@@ -115,10 +115,10 @@ public class UltimateGuitar {
             s = s.substring(0,1).toUpperCase(mainActivityInterface.getLocale()) + s.substring(1);
         }
         s = s.trim();
-        s = fixHTMLStuff(mainActivityInterface,s);
+        s = fixHTMLStuff(c,mainActivityInterface,s);
         return s;
     }
-    private String getAuthor(MainActivityInterface mainActivityInterface, String s) {
+    private String getAuthor(Context c, MainActivityInterface mainActivityInterface, String s) {
         // Likely to be sent something like <title>{TitleInCaps} CHORDS by {Author} @ Ultimate-Guitar.Com</title>
         // Give options in decreasing order of goodness
         int end = s.indexOf("by ");
@@ -128,7 +128,7 @@ public class UltimateGuitar {
             s = "";
         }
         s = s.trim();
-        s = fixHTMLStuff(mainActivityInterface,s);
+        s = fixHTMLStuff(c,mainActivityInterface,s);
         return s;
     }
     private String getKey(String s) {
@@ -201,11 +201,11 @@ public class UltimateGuitar {
             return "";
         }
     }
-    private String fixHTMLStuff(MainActivityInterface mainActivityInterface, String s) {
+    private String fixHTMLStuff(Context c, MainActivityInterface mainActivityInterface, String s) {
         // Fix html entities to more user friendly
         s = mainActivityInterface.getProcessSong().parseHTML(s);
         // Make it xml friendly though (no <,> or &)
-        s = mainActivityInterface.getProcessSong().makeXMLSafeEncoding(s);
+        s = mainActivityInterface.getProcessSong().parseToHTMLEntities(s);
         return s;
     }
 

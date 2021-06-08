@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -105,8 +106,10 @@ import com.garethevans.church.opensongtablet.screensetup.FontSetupFragment;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
+import com.garethevans.church.opensongtablet.secondarydisplay.ExternalDisplay;
 import com.garethevans.church.opensongtablet.secondarydisplay.MediaRouterCallback;
 import com.garethevans.church.opensongtablet.secondarydisplay.MySessionManagerListener;
+import com.garethevans.church.opensongtablet.secondarydisplay.PresentationCommon;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
@@ -258,13 +261,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private CastContext castContext;
     private MySessionManagerListener sessionManagerListener;
     private CastSession castSession;
-    private MenuItem mediaRouteMenuItem;
     private CastStateListener castStateListener;
     private MediaRouter mediaRouter;
     private MediaRouteSelector mediaRouteSelector;
     private MediaRouterCallback mediaRouterCallback;
     private CastDevice castDevice;
     private SessionManager sessionManager;
+    private Display display;
+    private ExternalDisplay externalDisplay;
+    private PresentationCommon presentationCommon;
     //private PresentationServiceHDMI hdmi;
 
     ViewPagerAdapter adapter;
@@ -281,14 +286,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // Pads
 
-    // Debug fully
-    /*public MainActivity() {
-        if(BuildConfig.DEBUG) {
-            StrictMode.enableDefaults();
-            StrictMode.allowThreadDiskReads();
-            StrictMode.allowThreadDiskWrites();
-        }
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -407,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         abcNotation = new ABCNotation();
         profileActions = new ProfileActions();
         checkInternet = new CheckInternet();
+        presentationCommon = new PresentationCommon();
     }
     private void initialiseHelpers2() {
         windowFlags = new WindowFlags(this.getWindow());
@@ -505,6 +503,22 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             Log.d(TAG,"No Google Services");
         }
     }
+
+    @Override
+    public void setDisplay(Display display) {
+        this.display = display;
+    }
+    @Override
+    public Display getDisplay() {
+        return display;
+    }
+    @Override
+    public ExternalDisplay getExternalDisplay() {
+        if (externalDisplay!=null && display!=null) {
+            externalDisplay = new ExternalDisplay(this,display);
+        }
+        return externalDisplay;
+    }
     private void recoverCastState() {
         castSession = sessionManager.getCurrentCastSession();
         sessionManager.addSessionManagerListener(new MySessionManagerListener(this));
@@ -512,6 +526,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private void endCastState() {
         sessionManager.removeSessionManagerListener(sessionManagerListener);
         castSession = null;
+    }
+    @Override
+    public PresentationCommon getPresentationCommon() {
+        return presentationCommon;
     }
     private void initialiseStartVariables() {
         themeColors.setThemeName(preferences.getMyPreferenceString(this, "appTheme", "dark"));
@@ -886,7 +904,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Setup the menu item for connecting to cast devices
 
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
-            mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+            MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
         } else {
             Log.d(TAG, "Google Play Services Not Available");
             // TODO

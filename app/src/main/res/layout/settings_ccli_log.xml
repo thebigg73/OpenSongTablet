@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="@string/filename" />
 
-    <com.otaliastudios.zoom.ZoomLayout
+    <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
         android:id="@+id/zoomLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"

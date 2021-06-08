@@ -40,6 +40,7 @@
     <string name="button">Button</string>
     <string name="camera">Camera</string>
     <string name="camera_info">Take a photograph of a songsheet</string>
+    <string name="cancel">Cancel</string>
     <string name="capo_chords">Capo chords</string>
     <string name="capo_fret">Capo fret</string>
     <string name="ccli">CCLI</string>
@@ -331,6 +332,7 @@
     <string name="search_index_start">Building your song database</string>
     <string name="search_index_wait">Please wait until song indexing is completed</string>
     <string name="section_highlighting">Section highlighting</string>
+    <string name="select">Select</string>
     <string name="select_all">Select all</string>
     <string name="select_page">Select page</string>
     <string name="set">Set</string>
@@ -889,4 +891,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="warn_before_changing_song">Show a warning before moving on to the next song (useful to avoid accidental presses)</string>
     <string name="gesture3">Add song to set</string>
     <string name="autorepeat_time">Auto repeat time (pedal setting)</string>
+    <string name="choose_background">Click on a background to use it. Long press / right click to change it.</string>
 </resources>

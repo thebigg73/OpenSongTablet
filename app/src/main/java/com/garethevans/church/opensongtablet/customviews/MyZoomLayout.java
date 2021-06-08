@@ -4,22 +4,20 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.otaliastudios.zoom.ZoomLayout;
+import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+public class MyZoomLayout extends NestedScrollView {
 
-public class MyZoomLayout extends ZoomLayout {
-
-    public MyZoomLayout(@NotNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MyZoomLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public MyZoomLayout(@NotNull Context context, @Nullable AttributeSet attrs) {
+    public MyZoomLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MyZoomLayout(@NotNull Context context) {
+    public MyZoomLayout(Context context) {
         super(context);
     }
 

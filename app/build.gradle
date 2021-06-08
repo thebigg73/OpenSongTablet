@@ -4,7 +4,7 @@ apply plugin: "androidx.navigation.safeargs"
 android {
 
     compileSdkVersion 30
-    buildToolsVersion '29.0.3'
+    buildToolsVersion '30.0.3'
     buildTypes {
         release {
             minifyEnabled true
@@ -40,10 +40,9 @@ android {
         repositories {
             google()
             mavenCentral()
-            jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:4.1.3'
+            classpath 'com.android.tools.build:gradle:4.2.1'
             classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5"
         }
     }
@@ -52,7 +51,6 @@ android {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-        jcenter()
     }
 
     buildFeatures {
@@ -74,10 +72,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-cast:20.0.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:20.0.0'         // For casting obviously!
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'                 // For Google Nearby Connect devices
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.3' // For OCR text recognition (PDF/Camera)
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.2.0' // For OCR text recognition (PDF/Camera)
     implementation fileTree(include: ['*.jar'], dir: 'libs')                            // To allow local jar files in libs
     implementation 'androidx.annotation:annotation:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'// Allows annotations
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'             // Allows annotations
     annotationProcessor 'androidx.annotation:annotation:1.2.0'                          // Allows annotations
     implementation 'androidx.appcompat:appcompat:1.3.0'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
@@ -88,7 +86,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.preference:preference:1.1.1'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'com.google.android.material:material:1.3.0'
@@ -96,11 +94,10 @@ dependencies {
     implementation 'org.apache.commons:commons-compress:1.20'                           // For creating and editing compressed files (osb, backup)
     implementation 'com.github.bumptech.glide:glide:4.12.0'                             // For better setting of images
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'                     // For better setting of images
-    implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
+    //implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
     //implementation 'com.annimon:stream:1.2.1'                           // Not sure if I need this anymore
-    implementation 'lib.kashif:folderpicker:2.4'                        // Not sure if I need this anymore
+    //implementation 'lib.kashif:folderpicker:2.4'                        // Not sure if I need this anymore
     implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'   // Used for song and set menu
     implementation 'com.github.deano2390:MaterialShowcaseView:1.3.4'    // To highlight new features in the app
-    implementation 'de.blox:graphview:0.7.0'                            // For file structure graph
-    implementation 'com.otaliastudios:zoomlayout:1.8.0'                 // For file structure graph
+    //implementation 'com.otaliastudios:zoomlayout:1.8.0'                 // For file structure graph
 }

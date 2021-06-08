@@ -109,6 +109,13 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal|top" />
 
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/choose_fontsize" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -116,13 +123,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/choose_fontsize" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

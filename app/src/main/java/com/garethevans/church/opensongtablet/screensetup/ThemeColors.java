@@ -392,5 +392,61 @@ public class ThemeColors {
     private final int vlightpurple = 0xffffeeff;
     private final int lightishcyan = 0xffddeeff;
 
-
+    public int getColorInt(String which) {
+        int color = white;
+        switch (which) {
+            case "black":
+                color = black;
+                break;
+            case "darkishgreen":
+                color = darkishgreen;
+                break;
+            case "darkpurple":
+                color = darkpurple;
+                break;
+            case "lightgreen":
+                color = lightgreen;
+                break;
+            case "lightishcyan":
+                color = lightishcyan;
+                break;
+            case "red":
+                color = red;
+                break;
+            case "vdarkblue":
+                color = vdarkblue;
+                break;
+            case "vdarkgreen":
+                color = vdarkgreen;
+                break;
+            case "vdarkred":
+                color = vdarkred;
+                break;
+            case "vdarkyellow":
+                color = vdarkyellow;
+                break;
+            case "vlightblue":
+                color = vlightblue;
+                break;
+            case "vlightcyan":
+                color = vlightcyan;
+                break;
+            case "vlightgreen":
+                color = vlightgreen;
+                break;
+            case "vlightpurple":
+                color = vlightpurple;
+                break;
+            case "white":
+                color = white;
+                break;
+            case "yellow":
+                color = yellow;
+                break;
+            case "transparent":
+                color = transparent;
+                break;
+        }
+        return color;
+    }
 }

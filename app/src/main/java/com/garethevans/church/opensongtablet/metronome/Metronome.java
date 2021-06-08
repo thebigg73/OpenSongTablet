@@ -18,7 +18,7 @@ public class Metronome {
     private String whichbeat;
     int minBpm = 40, maxBpm = 199;
 
-    private boolean metronomeOn, clickedOnMetronomeStart;
+    private boolean metronomeOn, clickedOnMetronomeStart, timeSigValid;
     
     private double beatSound, sound;
     private boolean play = true;
@@ -179,6 +179,81 @@ public class Metronome {
         }
 
         return bpm;
+    }
+    public void processTimeSig(Song song) {
+        switch (song.getTimesig()) {
+            case "2/2":
+                beats = 2;
+                noteValue = 2;
+                timeSigValid = true;
+                break;
+            case "2/4":
+                beats = 2;
+                noteValue = 4;
+                timeSigValid = true;
+                break;
+            case "3/2":
+                beats = 3;
+                noteValue = 2;
+                timeSigValid = true;
+                break;
+            case "3/4":
+                beats = 3;
+                noteValue = 4;
+                timeSigValid = true;
+                break;
+            case "3/8":
+                beats = 3;
+                noteValue = 8;
+                timeSigValid = true;
+                break;
+            case "4/4":
+                beats = 4;
+                noteValue = 4;
+                timeSigValid = true;
+                break;
+            case "5/4":
+                beats = 5;
+                noteValue = 4;
+                timeSigValid = true;
+                break;
+            case "5/8":
+                beats = 5;
+                noteValue = 8;
+                timeSigValid = true;
+                break;
+            case "6/4":
+                beats = 6;
+                noteValue = 4;
+                timeSigValid = true;
+                break;
+            case "6/8":
+                beats = 6;
+                noteValue = 8;
+                timeSigValid = true;
+                break;
+            case "7/4":
+                beats = 7;
+                noteValue = 4;
+                timeSigValid = true;
+                break;
+            case "7/8":
+                beats = 7;
+                noteValue = 8;
+                timeSigValid = true;
+                break;
+            case "1/4":
+                beats = 1;
+                noteValue = 4;
+                timeSigValid = true;
+                break;
+            default:
+                beats = 4;
+                noteValue = 4;
+                timeSigValid = false;
+                break;
+        }
+
     }
 
     private int getNoteValue() {

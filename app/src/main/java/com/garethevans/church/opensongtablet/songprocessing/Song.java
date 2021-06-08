@@ -53,15 +53,20 @@ public class Song {
     private int detectedChordFormat=1;
     private String encoding="UTF-8";
     private ArrayList<String> songSections;
+    private ArrayList<String> songSectionHeadings;
     private ArrayList<String> songSectionTypes;
     private int currentSection;
     private boolean isSong;
     private boolean isPDF;
     private boolean isImage;
+    private boolean isImageSlide;
     private String nextDirection = "R2L";
     private int pdfPageCurrent;
     private String songXML;
-
+    private int halfSplit;
+    private int thirdSplit;
+    private int twoThirdSplit;
+    private boolean scalingFiguredOut = false;
 
     // The getters
     public int getId() {
@@ -151,9 +156,17 @@ public class Song {
             return new ArrayList<>();
         }
     }
+    public ArrayList<String> getSongSectionHeadings() {
+        if (songSectionHeadings!=null) {
+            return songSectionHeadings;
+        } else {
+            return new ArrayList<>();
+        }
+    }
     public boolean getIsSong() {return isSong;}
     public boolean getIsPDF() {return isPDF;}
     public boolean getIsImage() {return isImage;}
+    public boolean getIsImageSlide() {return isImageSlide;}
     public String getNextDirection() {return nextDirection;}
     public int getPdfPageCurrent() {return pdfPageCurrent;}
     public int getCurrentSection() {return currentSection;}
@@ -168,6 +181,18 @@ public class Song {
     }
     public boolean getHasExtraStuff() {
         return hasExtraStuff;
+    }
+    public int getHalfSplit() {
+        return halfSplit;
+    }
+    public int getThirdSplit() {
+        return thirdSplit;
+    }
+    public int getTwoThirdSplit() {
+        return twoThirdSplit;
+    }
+    public boolean getScalingFiguredOut() {
+        return scalingFiguredOut;
     }
 
     // The setters
@@ -253,9 +278,13 @@ public class Song {
     public void setSongSectionTypes(ArrayList<String> songSectionTypes) {
         this.songSectionTypes = songSectionTypes;
     }
+    public void setSongSectionHeadings(ArrayList<String> songSectionHeadings) {
+        this.songSectionHeadings = songSectionHeadings;
+    }
     public void setIsSong(boolean isSong) {this.isSong = isSong;}
     public void setIsPDF(boolean isPDF) {this.isPDF = isPDF;}
     public void setIsImage(boolean isImage) {this.isSong = isImage;}
+    public void setIsImageSlide(boolean isImageSlide) {this.isImageSlide = isImageSlide;}
     public void setNextDirection(String nextDirection) {this.nextDirection = nextDirection;}
     public void setPdfPageCurrent(int pdfPageCurrent) {this.pdfPageCurrent = pdfPageCurrent;}
     public void setCurrentSection(int currentSection) {this.currentSection = currentSection;}
@@ -267,6 +296,18 @@ public class Song {
     }
     public void setSongXML(String songXML) {
         this.songXML = songXML;
+    }
+    public void setHalfSplit(int halfSplit) {
+        this.halfSplit = halfSplit;
+    }
+    public void setThirdSplit(int thirdSplit) {
+        this.thirdSplit = thirdSplit;
+    }
+    public void setTwoThirdSplit(int twoThirdSplit) {
+        this.twoThirdSplit = twoThirdSplit;
+    }
+    public void setScalingFiguredOut(boolean scalingFiguredOut) {
+        this.scalingFiguredOut = scalingFiguredOut;
     }
 
 
@@ -315,6 +356,7 @@ public class Song {
         this.isSong = toCopy.isSong;
         this.isPDF = toCopy.isPDF;
         this.isImage = toCopy.isImage;
+        this.isImageSlide = toCopy.isImageSlide;
         this.pdfPageCurrent = toCopy.pdfPageCurrent;
         this.nextDirection = toCopy.nextDirection;
         this.songSections = toCopy.songSections;
