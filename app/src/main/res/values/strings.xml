@@ -335,6 +335,7 @@
         <item>(ru) Русский</item>
         <item>(sr) Srpski</item>
         <item>(sv) Sweeds</item>
+        <item>(uk) український</item>
         <item>(zh) 中文</item>
     </array>
     <string name="lastsong">Displaying last item</string>

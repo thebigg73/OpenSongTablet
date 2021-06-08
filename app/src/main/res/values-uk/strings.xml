@@ -74,14 +74,14 @@
     <string name="choosefolder">Виберіть папку для збереження файлу в</string>
     <string name="choosefolders">Вибір папок</string>
     <string name="chooselyricfont">Виберіть шрифт слів пісні</string>
-    <string name="choosesongname">Виберіть ім'я для цієї пісні</string>
+    <string name="choosesongname">Виберіть ім\'я для цієї пісні</string>
     <string name="chord_color">Акорди</string>
     <string name="chord_convert">Перетворення акордів в потрібний формат</string>
     <string name="chordformat_default">Завжди змінювати в потрібний формат</string>
     <string name="chordiesearch">Онлайн пошук в www.chordie.com</string>
     <string name="chordline_scale">Розмір акордів</string>
     <string name="chordpro_false">Пісня ChordPro не знайдено!</string>
-    <string name="chordproprogress">Мета даних пісні ChordPro на сторінці ...</string>
+    <string name="chordproprogress">Мета даних пісні ChordPro на сторінці …</string>
     <string name="chords">Акорди</string>
     <string name="chords_flat">Використання b акордів</string>
     <string name="chords_sharp">Використання # акордів</string>
@@ -100,7 +100,7 @@
     <string name="connections_host">Знайдений хост:</string>
     <string name="connections_log">Журнал комунікації (натисніть, щоб очистити). Якщо виникли проблеми, скиньте настройки Wi-Fi і запустіть програму.</string>
     <string name="connections_receive_host">Приймати пісні від хостів</string>
-    <string name="connections_searching">Пошук...</string>
+    <string name="connections_searching">Пошук…</string>
     <string name="connections_service_start">Запустити службу</string>
     <string name="connections_service_stop">Зупинити службу</string>
     <string name="connections_success">Успішно підключено</string>
@@ -146,9 +146,9 @@
     <string name="edit">Змінити</string>
     <string name="edit_default_delaymax">Максимальна затримка (в секундах)</string>
     <string name="edit_save">Зберегти зміни</string>
-    <string name="edit_song_aka">Також відомий, як</ string>
+    <string name="edit_song_aka">Також відомий, як</string>
     <string name="edit_song_author">Автор</string>
-    <string name="edit_song_availabletags">[V1] = куплет 1, [C] = Приспів, [С1] = Приспів 1, [P] = Предпріпев, [T] = Тег, [B] = брідж, [...( все, що ви хочете)...] = призначені для користувача теги. \п рядки тексту починаються з пробілу, рядки акордів - з точки, рядки коментарів - з коми. </ string>
+    <string name="edit_song_availabletags">[V1] = куплет 1, [C] = Приспів, [С1] = Приспів 1, [P] = Предпріпев, [T] = Тег, [B] = брідж, […( все, що ви хочете)…] = призначені для користувача теги. \п рядки тексту починаються з пробілу, рядки акордів - з точки, рядки коментарів - з коми. </string>
     <string name="edit_song_books">Книги пісня належить</string>
     <string name="edit_song_capo">Каподастр</string>
     <string name="edit_song_capo_print">Роздрукувати акорди з Каподастр</string>
@@ -193,7 +193,7 @@
     <string name="extracting">екстрагування</string>
     <string name="extradisplay">Зовнішній дисплей виявлений. Пісні будуть відображатися на ньому.</string>
     <string name="file_chooser">Вибір файл</string>
-    <string name="file_exists">Файл з таким ім'ям існує. Будь ласка виберіть інше ім'я</string>
+    <string name="file_exists">Файл з таким ім\'ям існує. Будь ласка виберіть інше ім\'я</string>
     <string name="file_type">Тип файлу</string>
     <string name="file_type_unknown">невідомо</string>
     <string name="findnewsongs">Пошук нових пісень</string>
@@ -240,7 +240,7 @@
     <string name="linespacing">Обрізати міжрядковий інтервал</string>
     <string name="link">Посилання</string>
     <string name="link_audio">Посилання на звуковий файл</string>
-    <string name="link_choose">Виберіть файл, щоб зв'язати з піснею</string>
+    <string name="link_choose">Виберіть файл, щоб зв\'язати з піснею</string>
     <string name="link_file">Посилання на інший файл</string>
     <string name="link_web">Інтернет посилання</string>
     <string name="link_youtube">YouTube посилання</string>
@@ -294,7 +294,7 @@
     <string name="new_category">Нова категорія</string>
     <string name="new_something">Нова</string>
     <string name="newfolder">Нова папка</string>
-    <string name="newfoldername">Введіть ім'я нової папки</string>
+    <string name="newfoldername">Введіть ім\'я нової папки</string>
     <string name="next">Наступна</string>
     <string name="no">Ні</string>
     <string name="nodisplays">Зовнішні дисплеї не виявлені. Будь ласка, підключіть до зовнішнього дисплею через вихід HDMI або бездротового Miracast.</string>
@@ -327,11 +327,11 @@
     <string name="pagebutton_group">Групувати кнопки всіх сторінок</string>
     <string name="pagebutton_visibility">Показати / приховати кнопки сторінок</string>
     <string name="pagebuttons">кнопки сторінок</string>
-    <string name="pageturn_down">Призначте кнопку" Прокрутка вниз </ string>
-    <string name="pageturn_instructions">Ця сторінка дозволяє призначити кнопки додаткового пристрою (такі як педальний перемикач Bluetooth) для управління переміщенням по списку або прокрутки вгору і вниз на сторінці пісні. \ П \ nВи повинні переконатися, що пристрій вже підключено до вашого Android планшету і включено. \ п \ nНажміте на зелену або синю кнопку нижче, а потім натисніть кнопку управління на ножному перемикач, і т.д. </ string>
+    <string name="pageturn_down">Призначте кнопку" Прокрутка вниз </string>
+    <string name="pageturn_instructions">Ця сторінка дозволяє призначити кнопки додаткового пристрою (такі як педальний перемикач Bluetooth) для управління переміщенням по списку або прокрутки вгору і вниз на сторінці пісні. \ П \ nВи повинні переконатися, що пристрій вже підключено до вашого Android планшету і включено. \ п \ nНажміте на зелену або синю кнопку нижче, а потім натисніть кнопку управління на ножному перемикач, і т.д. </string>
     <string name="pageturn_next">Призначте кнопку« Далі »</string>
     <string name="pageturn_previous">Призначте кнопку« Назад »</string>
-    <string name="pageturn_up">Призначте кнопку" Прокрутка вгору </ string>
+    <string name="pageturn_up">Призначте кнопку" Прокрутка вгору </string>
     <string name="pageturn_waiting">Очікуємо натискання ....</string>
     <string name="pan">Панорама</string>
     <string name="pdf_functionnotavailable">Немає прав для PDF</string>
@@ -357,7 +357,7 @@
     <string name="processing">Файли обробляються</string>
     <string name="profile">Профіль</string>
     <string name="profile_description">Профілі використовуються для зберігання медійних переваг.</string>
-    <string name="promptbackup">Ви не робили резервну копію своєї бібліотеки пісень за останні 10 раз, коли використовували цей додаток. Це настійно рекомендується, оскільки ви можете відновити свої пісні, якщо щось піде не так. В ідеалі ви повинні зберігати копію файлу резервної <копальні></копальні>і в хмарі (наприклад, на Google Диску) або відправити її собі по електронній пошті. </ string>
+    <string name="promptbackup">Ви не робили резервну копію своєї бібліотеки пісень за останні 10 раз, коли використовували цей додаток. Це настійно рекомендується, оскільки ви можете відновити свої пісні, якщо щось піде не так. В ідеалі ви повинні зберігати копію файлу резервної і в хмарі (наприклад, на Google Диску) або відправити її собі по електронній пошті. </string>
     <string name="quicklaunch_button1">Кнопка 1</string>
     <string name="quicklaunch_button2">Кнопка 2</string>
     <string name="quicklaunch_button3">Кнопка 3</string>
@@ -412,12 +412,12 @@
     <string name="slide_add_page">Вставте нову сторінку слайд користувача</string>
     <string name="song">Пісня</string>
     <string name="song_functionnotavailable">Ця функція недоступна</string>
-    <string name="song_new_name">Введіть нове ім'я файлу для цієї пісні (то, як вона з'явиться у вашому меню пісень)</string>
+    <string name="song_new_name">Введіть нове ім\'я файлу для цієї пісні (то, як вона з\'явиться у вашому меню пісень)</string>
     <string name="song_sections">Частини пісні</string>
     <string name="song_swipe_toggle">Вкл./Викл. Перегортання для зміни пісень</string>
     <string name="songdoesntexist">Пісні немає на пристрої. Ви видалили її?</string>
     <string name="songfolder">Виберіть папку для зберігання пісень</string>
-    <string name="songnamealreadytaken">На жаль, це назва пісні/ім'я файлу вже використовується (рекомендується додати номер версії).</string>
+    <string name="songnamealreadytaken">На жаль, це назва пісні/ім\'я файлу вже використовується (рекомендується додати номер версії).</string>
     <string name="songsheet">Songsheet</string>
     <string name="songsinfolder">Папка з піснями</string>
     <string name="speed">швидкість</string>
@@ -484,7 +484,7 @@
     <string name="volume">Гучність</string>
     <string name="volval">Поточне значення гучності</string>
     <string name="wait">Зачекайте ....</string>
-    <string name="warning">Ця опція повинна використовуватися тільки в режимі презентації. Пам'ятайте, що ця функція використовує багато пам'яті і може призвести до збою. Вас попередили!</string>
+    <string name="warning">Ця опція повинна використовуватися тільки в режимі презентації. Пам\'ятайте, що ця функція використовує багато пам\'яті і може призвести до збою. Вас попередили!</string>
     <string name="websearch">Шукати в інтернет поточну пісню</string>
     <string name="width">Ширина</string>
     <string name="youtube">Шукати пісню на YouTube</string>
@@ -499,11 +499,11 @@
     <string name="autoRepeatCount">Кількість повторень клавіш, необхідних для емуляції тривалого натискання</string>
     <string name="autoRepeatRationale">Деякі педалі (наприклад, AirTurn) посилають сигнали клавіш автоповтора, що зупиняє роботу тривалих натискань. Якщо ви використовуєте одну з цих педалей, включіть режим тривалого натискання AirTurn і відрегулюйте повзунок відповідно до кількості повторюваних сигналів, необхідних для імітації тривалого натиснутоі я. Більшість клавіатур мають затримку 500 мс і частоту повторення близько 25 мс. Це означає, що натискання клавіші протягом 1 секунди запише 20 натискань клавіш. Педалі AirTurn дозволяють регулювати частоту повторення і час затримки за допомогою програми-компаньйона. Більш високі числа для лічильника повторень клавіш означають, що педаль утримується довше, щоб реєструватися як тривале натискання.</string>
     <string name="rotate_display">Повернути дисплей</string>
-    <string name="accept_connection">З'єднати з</string>
+    <string name="accept_connection">З\'єднати з</string>
     <string name="accept_code">Підтвердіть збіг коду на обох пристроях:</string>
     <string name="warn_before_changing_song">Показувати попередження перед переходом до наступної пісні (корисно, щоб уникнути випадкових натискань)</string>
     <string name="bold_chords_headings">Акорди та заголовки відображаються жирним шрифтом</string>
-    <string name="connections_enable">Увімкнути прилеглі з'єднання</string>
+    <string name="connections_enable">Увімкнути прилеглі з\'єднання</string>
     <string name="connections_actashost">Виступати в якості сервера</string>
     <string name="connections_keephostsongs">Зберігати пісні сервера</string>
     <string name="location_rationale">Ця функція потрібна для пошуку інших мережевих пристроїв</string>
@@ -521,8 +521,8 @@
     <string name="hide">Сховати</string>
     <string name="filter_structure">[* filter: V] = відфільтрований розділ віршів</string>
     <string name="nofound">Попередньою папки, не знайдено. Використовуйте червону кнопку, щоб вибрати місце.</string>
-    <string name="storage_quicktip">При виборі місця: \n Перечісліть сховище за допомогою меню (вам може знадобитися змінити налаштування, щоб відобразити всі сховища). \n ВИБЕРІТЕ ТІЛЬКИ ВНУТРІШНЮ АБО SD-КАРТУ. \n Рекомендуется карту пам'яті. Це може бути зазначено як сховище пристрою або з ім'ям вашого пристрою. \n На Android 10+ не слід вибирати папку «Завантаження» або «Кореневу папку». У разі сумнівів виберіть папку «Документи».</string>
-    <string name="storage_help">Будь ласка, виберіть місце для вашої папки OpenSong. Це місце зберігання файлів OpenSong за замовчуванням. Ви можете змінити це в будь-який час в меню «Параметри». Рекомендується карту пам'яті. \n\n Для поновлення або переустановлення: \n Ви можете використовувати жовту кнопку нижче, щоб знайти будь-яку попередню папку OpenSong.</string>
+    <string name="storage_quicktip">При виборі місця: \nПеречісліть сховище за допомогою меню (вам може знадобитися змінити налаштування, щоб відобразити всі сховища).\nВИБЕРІТЕ ТІЛЬКИ ВНУТРІШНЮ АБО SD-КАРТУ.\nРекомендуется карту пам\'яті. Це може бути зазначено як сховище пристрою або з ім\'ям вашого пристрою.\nНа Android 10+ не слід вибирати папку «Завантаження» або «Кореневу папку». У разі сумнівів виберіть папку «Документи».</string>
+    <string name="storage_help">Будь ласка, виберіть місце для вашої папки OpenSong. Це місце зберігання файлів OpenSong за замовчуванням. Ви можете змінити це в будь-який час в меню «Параметри». Рекомендується карту пам\'яті. \n\n Для поновлення або переустановлення: \n Ви можете використовувати жовту кнопку нижче, щоб знайти будь-яку попередню папку OpenSong.</string>
     <string name="information">Інформація</string>
     <string name="nearby_host_menu_only">Слухайте тільки нових клієнтів, коли ця сторінка видно</string>
     <string name="client">Клієнт</string>
