@@ -27,6 +27,10 @@ import java.util.ArrayList;
 
 public class ExportFragment extends Fragment {
 
+    // TODO The app isn't setting isSong/isPDF/isImage
+    // This means the correct export methods don't quite work
+    // Currently everything is in the 'else' statements
+
     private SettingsExportBinding myView;
     private MainActivityInterface mainActivityInterface;
     private ArrayList<Uri> uris;
