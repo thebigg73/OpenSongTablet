@@ -41,6 +41,7 @@
     <string name="camera">Camera</string>
     <string name="camera_info">Take a photograph of a songsheet</string>
     <string name="cancel">Cancel</string>
+    <string name="capo">Capo</string>
     <string name="capo_chords">Capo chords</string>
     <string name="capo_fret">Capo fret</string>
     <string name="ccli">CCLI</string>
@@ -114,6 +115,7 @@
     <string name="exit">Exit</string>
     <string name="exit_confirm">Are you sure you want to exit the program?</string>
     <string name="export">Export</string>
+    <string name="export_current_song">Share the current song</string>
     <string name="extra">Extra information</string>
     <string name="extra_settings">Advanced settings</string>
     <string name="file_exists">File already exists.  Please rename it.</string>
@@ -283,6 +285,7 @@
     <string name="pause">Pause</string>
     <string name="paypal" translatable="false">PayPal</string>
     <string name="paypal_description">Send me a donation if you find the app useful</string>
+    <string name="pdf" translatable="false">PDF</string>
     <string name="pedal">Pedal</string>
     <string name="pedal_avoid_repeat">Show a warning before moving to the next song (useful to avoid accidental presses)</string>
     <string name="pedal_controls">Set up foot pedal buttons and actions</string>
@@ -382,6 +385,7 @@
     <string name="swipe_info">Adjust gestures to move between songs</string>
     <string name="tag">Tag</string>
     <string name="tap">Short press/tap</string>
+    <string name="tempo">Tempo</string>
     <string name="text">Text</string>
     <string name="theme">Theme</string>
     <string name="theme_choose">Switch theme</string>
@@ -391,6 +395,7 @@
     <string name="theme_light">Light theme</string>
     <string name="time">Time</string>
     <string name="time_format">24hr</string>
+    <string name="time_signature">Time signature</string>
     <string-array name="time_signatures" translatable="false">
         <item />
         <item>2/2</item>
@@ -653,8 +658,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="midi_message_receive">MIDI message to activate song</string>
     <string name="edit_song_pitch">Pitch pipe notes for song</string>
     <string name="edit_song_restrictions">Restrictions</string>
-    <string name="edit_song_tempo">Tempo</string>
-    <string name="edit_song_timesig">Time signature</string>
     <string name="edit_song_user1">User 1</string>
     <string name="edit_song_user2">User 2</string>
     <string name="edit_song_user3">User 3</string>
@@ -668,7 +671,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="export_png">Screenshot image (.png)</string>
     <string name="export_set">OpenSongApp set (.osts)</string>
     <string name="export_text">Text (.txt)</string>
-    <string name="exportcurrentsong">Share the current song</string>
     <string name="exportsavedset">Share the saved set</string>
     <string name="exportsongdirectory">Export list of songs</string>
     <string name="extract">Extract text</string>

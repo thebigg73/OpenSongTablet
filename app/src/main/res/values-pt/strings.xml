@@ -164,9 +164,9 @@
     <string name="edit_song_pitch">"Notas diapasão para música"</string>
     <string name="presentation_order">"Ordem de apresentação"</string>
     <string name="edit_song_restrictions">"Restrições"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="tempo">"Tempo"</string>
     <string name="theme">"Fundos de ecrã"</string>
-    <string name="edit_song_timesig">"Fórmula de compasso"</string>
+    <string name="time_signature">"Fórmula de compasso"</string>
     <string name="song_title">"Título da música"</string>
     <string name="edit_song_user1">"Usuário 1"</string>
     <string name="edit_song_user2">"Usuário 2"</string>
@@ -185,7 +185,7 @@
     <string name="export_png">"Imagem de captura de tela (.png)"</string>
     <string name="export_set">"Conjunto OpenSongApp (.osts)"</string>
     <string name="export_text">"Texto (.txt)"</string>
-    <string name="exportcurrentsong">"Partilhe a música atual"</string>
+    <string name="export_current_song">"Partilhe a música atual"</string>
     <string name="exportsavedset">"Compartilhe o jogo salvo"</string>
     <string name="exportsongdirectory">"Exportar lista de músicas"</string>
     <string name="extra">"Informação extra"</string>

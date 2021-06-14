@@ -164,9 +164,9 @@
     <string name="edit_song_pitch">"曲のピッチパイプノート"</string>
     <string name="presentation_order">"提示順序"</string>
     <string name="edit_song_restrictions">"制限"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="tempo">"Tempo"</string>
     <string name="theme">"テーマ"</string>
-    <string name="edit_song_timesig">"拍子記号"</string>
+    <string name="time_signature">"拍子記号"</string>
     <string name="song_title">"曲のタイトル"</string>
     <string name="edit_song_user1">"ユーザー1"</string>
     <string name="edit_song_user2">"ユーザー2"</string>
@@ -185,7 +185,7 @@
     <string name="export_png">"スクリーンショットイメージ（.png）"</string>
     <string name="export_set">"OpenSongAppセット（.osts）"</string>
     <string name="export_text">"テキスト（.txt）"</string>
-    <string name="exportcurrentsong">"現在の曲を共有する"</string>
+    <string name="export_current_song">"現在の曲を共有する"</string>
     <string name="exportsavedset">"保存されたセットを共有"</string>
     <string name="exportsongdirectory">"曲のリストをエクスポートする"</string>
     <string name="extra">"追加情報"</string>

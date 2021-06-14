@@ -51,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="@string/edit_song_timesig" />
+                        android:text="@string/time_signature" />
 
                     <NumberPicker
                         android:id="@+id/timesig_numberPicker"
@@ -76,7 +76,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="@string/edit_song_tempo" />
+                        android:text="@string/tempo" />
 
 
                     <LinearLayout

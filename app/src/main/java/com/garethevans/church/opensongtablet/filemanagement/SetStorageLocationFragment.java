@@ -1,5 +1,8 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -34,9 +37,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 //import lib.folderpicker.FolderPicker;
-
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
 
 /*
 This fragment is used to set the storage location for the app.  It deals with the permissions for
@@ -93,13 +93,12 @@ public class SetStorageLocationFragment extends Fragment {
         // Lock the menu and hide the actionbar and action button
         mainActivityInterface.lockDrawer(true);
         mainActivityInterface.hideActionButton(true);
-        mainActivityInterface.hideActionButton(true);
 
         // Set up the storage location currently set in an edit box that acts like a button only
-        ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setFocusable(false);
-        ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setClickable(true);
+        myView.progressText.findViewById(R.id.editText).setFocusable(false);
+        myView.progressText.findViewById(R.id.editText).setClickable(true);
         ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setMaxLines(4);
-        ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).
+        myView.progressText.findViewById(R.id.editText).
                 setOnClickListener(t -> myView.setStorage.performClick());
 
         // Set the listeners for the buttons

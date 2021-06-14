@@ -488,6 +488,9 @@
                 <deepLink
                     android:id="@+id/deepLink22"
                     app:uri="opensongapp://settings/actions" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_exportFragment"
+                    app:destination="@id/exportFragment" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -524,6 +527,15 @@
                 <deepLink
                     android:id="@+id/deepLink21"
                     app:uri="opensongapp://settings/actions/stickynotes" />
+            </fragment>
+            <fragment
+                android:id="@+id/exportFragment"
+                android:name="com.garethevans.church.opensongtablet.export.ExportFragment"
+                android:label="ExportFragment"
+                tools:layout="@layout/settings_export">
+                <deepLink
+                    android:id="@+id/deepLink"
+                    app:uri="opensongapp://settings/actions/export" />
             </fragment>
         </navigation>
         <fragment

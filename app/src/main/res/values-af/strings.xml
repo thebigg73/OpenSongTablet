@@ -163,9 +163,9 @@
     <string name="edit_song_pitch">"Pitch pyp notas vir lied"</string>
     <string name="presentation_order">"Aanbieding orde"</string>
     <string name="edit_song_restrictions">"Beperkings"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="tempo">"Tempo"</string>
     <string name="theme">"Tema"</string>
-    <string name="edit_song_timesig">"Tydmaatteken"</string>
+    <string name="time_signature">"Tydmaatteken"</string>
     <string name="song_title">"Song title"</string>
     <string name="edit_song_user1">"Gebruikers 1"</string>
     <string name="edit_song_user2">"Gebruiker 2"</string>
@@ -184,7 +184,7 @@
     <string name="export_png">"Screenshot image (. Png)"</string>
     <string name="export_set">"OpenSongApp stel (.osts)"</string>
     <string name="export_text">"Teks (.txt)"</string>
-    <string name="exportcurrentsong">"Deel die huidige liedjie"</string>
+    <string name="export_current_song">"Deel die huidige liedjie"</string>
     <string name="exportsavedset">"Deel die gered stel"</string>
     <string name="exportsongdirectory">"Voer lys van liedjies uit"</string>
     <string name="extra">"Ekstra inligting"</string>

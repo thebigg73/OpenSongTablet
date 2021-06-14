@@ -62,7 +62,7 @@ public class SongListBuildIndex {
                 mainActivityInterface.setIndexingSong(new Song());
 
                 // Set the folder and filename from the database entry
-                if (cursor.getColumnIndex(SQLite.COLUMN_ID) > -1) {
+                if (cursor.getColumnIndex(SQLite.COLUMN_ID) > -1 && cursor.getCount()>0 && cursor.getColumnCount()>0) {
                     mainActivityInterface.getIndexingSong().setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
                     mainActivityInterface.getIndexingSong().setFolder(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
                     mainActivityInterface.getIndexingSong().setFilename(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));

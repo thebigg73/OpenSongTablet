@@ -1265,7 +1265,7 @@ public class ProcessSong {
                                            boolean trimSections, boolean addSectionSpace,
                                            boolean trimLines, float lineSpacing, float headingScale,
                                            float chordScale, float commentScale, String string,
-                                           boolean boldChordHeading) {
+                                           boolean boldChordHeading, boolean asPDF) {
         ArrayList<View> sectionViews = new ArrayList<>();
 
         // This goes through processing the song
@@ -1290,30 +1290,56 @@ public class ProcessSong {
                 section = section + "\n ";
             }
             LinearLayout linearLayout = newLinearLayout(c); // transparent color
-            int backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
-            // Now split by line
+            int backgroundColor;
+            if (asPDF) {
+                backgroundColor = Color.WHITE;
+            } else {
+                backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
+            }
+             // Now split by line
             String[] lines = section.split("\n");
             for (String line : lines) {
                 // Get the text stylings
                 String linetype = getLineType(line);
                 if (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab")) {
-                    backgroundColor = getBGColor(c, mainActivityInterface, line);
+                    if (asPDF) {
+                        backgroundColor = Color.WHITE;
+                    } else {
+                        backgroundColor = getBGColor(c, mainActivityInterface, line);
+                    }
                 }
                 Typeface typeface = getTypeface(mainActivityInterface, linetype);
                 float size = getFontSize(linetype, headingScale, commentScale, chordScale);
-                int color = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
-                        getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
-                if (line.contains("____groupline_____")) {
-                    linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
-                            commentScale, chordScale,
-                            mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
-                            mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
-                            trimLines, lineSpacing, boldChordHeading,
-                            mainActivityInterface.getMyThemeColors().getHighlightChordColor()));
+                int color;
+                if (asPDF) {
+                    color = Color.BLACK;
                 } else {
-                    linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
-                            size, color, trimLines, lineSpacing, boldChordHeading,
-                            mainActivityInterface.getMyThemeColors().getHighlightHeadingColor()));
+                    color = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
+                            getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
+                }
+                if (line.contains("____groupline_____")) {
+                    if (asPDF) {
+                        linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
+                                commentScale, chordScale, Color.BLACK, Color.BLACK,
+                                trimLines, lineSpacing, true, Color.TRANSPARENT));
+                    } else {
+                        linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
+                                commentScale, chordScale,
+                                mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
+                                mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
+                                trimLines, lineSpacing, boldChordHeading,
+                                mainActivityInterface.getMyThemeColors().getHighlightChordColor()));
+                    }
+                } else {
+                    if (asPDF) {
+                        linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
+                                size, color, trimLines, lineSpacing, true, Color.TRANSPARENT));
+
+                    } else {
+                        linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
+                                size, color, trimLines, lineSpacing, boldChordHeading,
+                                mainActivityInterface.getMyThemeColors().getHighlightHeadingColor()));
+                    }
                 }
             }
             linearLayout.setBackgroundColor(backgroundColor);
@@ -1461,7 +1487,7 @@ public class ProcessSong {
     private final float defFontSize = 8.0f;
     private String thisAutoScale;
 
-    private int getMaxValue(ArrayList<Integer> values, int start, int end) {
+    public int getMaxValue(ArrayList<Integer> values, int start, int end) {
         int maxValue = 0;
         if (start > values.size()) {
             start = values.size();
@@ -1475,7 +1501,7 @@ public class ProcessSong {
         return maxValue;
     }
 
-    private int getTotal(ArrayList<Integer> values, int start, int end) {
+    public int getTotal(ArrayList<Integer> values, int start, int end) {
         int total = 0;
         if (start > values.size()) {
             start = values.size();
@@ -1498,9 +1524,9 @@ public class ProcessSong {
         linearLayout.setPadding(0, 0, 0, 0);
     }
 
-    private int dp2px(Context c) {
+    private int dp2px(Context c, int size) {
         float scale = c.getResources().getDisplayMetrics().density;
-        return (int) (8 * scale);
+        return (int) (size * scale);
     }
 
     private void setScaledView(LinearLayout innerColumn, float scaleSize, float maxFontSize) {
@@ -1570,21 +1596,23 @@ public class ProcessSong {
 
 
     // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
-    public float addViewsToScreen(Context c, RelativeLayout testPane, RelativeLayout pageHolder, LinearLayout songView,
+    public float addViewsToScreen(Context c, MainActivityInterface mainActivityInterface,
+                                  RelativeLayout testPane, RelativeLayout pageHolder,
+                                  LinearLayout songView, LinearLayout songSheetView,
                                   int screenWidth, int screenHeight, LinearLayout column1,
                                   LinearLayout column2, LinearLayout column3, String autoScale,
                                   boolean songAutoScaleOverrideFull, boolean songAutoScaleOverrideWidth,
                                   boolean songAutoScaleColumnMaximise, float fontSize,
-                                  float fontSizeMin, float fontSizeMax, ArrayList<View> sectionViews,
-                                  ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights) {
+                                  float fontSizeMin, float fontSizeMax) {
         // Now we have all the sizes in, determines the best was to show the song
         // This will be single, two or three columns.  The best one will be the one
         // which gives the best scale size
 
-        // Clear and reset the views
+        // Clear and reset the view's scaling
         clearAndResetRelativeLayout(testPane, true);
         clearAndResetRelativeLayout(pageHolder, false);
         clearAndResetLinearLayout(songView, false);
+        clearAndResetLinearLayout(songSheetView,false);
         pageHolder.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.WRAP_CONTENT, ScrollView.LayoutParams.WRAP_CONTENT));
         songView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         clearAndResetLinearLayout(column1, true);
@@ -1592,10 +1620,19 @@ public class ProcessSong {
         clearAndResetLinearLayout(column3, true);
 
         // Set the padding and boxpadding from dp to px
-        padding = dp2px(c);
+        padding = dp2px(c,8);
 
-        int currentWidth = getMaxValue(sectionWidths, 0, sectionWidths.size());
-        int currentHeight = getTotal(sectionHeights, 0, sectionHeights.size());
+        int currentWidth = getMaxValue(mainActivityInterface.getSectionWidths(), 0, mainActivityInterface.getSectionWidths().size());
+        int currentHeight = getTotal(mainActivityInterface.getSectionHeights(), 0, mainActivityInterface.getSectionHeights().size());
+
+        // Include the songSheetView if it isn't empty
+        int ymove = 0;
+        if (songSheetView.getChildCount()>0) {
+            currentHeight = currentHeight + songSheetView.getMeasuredHeight();
+            ymove = songSheetView.getMeasuredHeight();
+        } else {
+            column1.setTop(0);
+        }
 
         thisAutoScale = autoScale;
 
@@ -1604,8 +1641,8 @@ public class ProcessSong {
         float[] scaleSize_3cols = new float[4];
         if (autoScale.equals("Y")) {
             // Figure out two and three columns.  Only do this if we need to to save processing time.
-            scaleSize_2cols = col2Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, sectionWidths, sectionHeights);
-            scaleSize_3cols = col3Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, sectionWidths, sectionHeights);
+            scaleSize_2cols = col2Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
+            scaleSize_3cols = col3Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
         }
 
         float scaleSize_1col = col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
@@ -1629,17 +1666,22 @@ public class ProcessSong {
                 if (autoScale.equals("N") || thisAutoScale.equals("N")) {
                     scaleSize_1col = fontSize / defFontSize;
                 }
-                setOneColumn(c, sectionViews, column1, column2, column3, currentWidth, currentHeight, scaleSize_1col, fontSizeMax);
+                setOneColumn(c, mainActivityInterface.getSectionViews(), column1, column2, column3, currentWidth, currentHeight, scaleSize_1col, fontSizeMax);
                 break;
 
             case 2:
-                setTwoColumns(c, sectionViews, column1, column2, column3, sectionHeights, scaleSize_2cols, fontSizeMax, (int) ((float) screenWidth / 2.0f - padding));
+                setTwoColumns(c, mainActivityInterface.getSectionViews(), column1, column2, column3, mainActivityInterface.getSectionHeights(), scaleSize_2cols, fontSizeMax, (int) ((float) screenWidth / 2.0f - padding));
                 break;
 
             case 3:
-                setThreeColumns(c, sectionViews, column1, column2, column3, sectionWidths, sectionWidths, scaleSize_3cols, fontSizeMax);
+                setThreeColumns(c, mainActivityInterface.getSectionViews(), column1, column2, column3, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(), scaleSize_3cols, fontSizeMax);
                 break;
         }
+        setScaledView(songSheetView, scaleSize_1col, fontSizeMax);
+
+        // If we need to move column1 down due to potential songSheet, do it
+        column1.setY(scaleSize_1col*ymove);
+
         return scaleSize_1col;
     }
 
@@ -2205,5 +2247,11 @@ public class ProcessSong {
             return null;
         }
     }
+
+
+    // This bit deals with the song headings used for PDF prints and song sheet view
+
+
+
 
 }

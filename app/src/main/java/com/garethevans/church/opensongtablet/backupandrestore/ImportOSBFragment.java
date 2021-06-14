@@ -306,7 +306,7 @@ public class ImportOSBFragment extends Fragment {
                                     name = ze.getName();
                                 }
                                 if (alive) {
-                                    message = getString(R.string.processing) + " (" + zipProgress + "/" + zipContents + "): " + name;
+                                    message = getString(R.string.processing) + " (" + zipProgress + "/" + zipContents + "):\n" + name;
                                     myView.progressText.setText(message);
                                 }
                             });

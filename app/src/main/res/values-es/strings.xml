@@ -164,9 +164,9 @@
     <string name="edit_song_pitch">"Notas diapasón de canción"</string>
     <string name="presentation_order">"Orden de presentación"</string>
     <string name="edit_song_restrictions">"Restricciones"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="tempo">"Tempo"</string>
     <string name="theme">"Tema"</string>
-    <string name="edit_song_timesig">"Compás"</string>
+    <string name="time_signature">"Compás"</string>
     <string name="song_title">"Título de la canción"</string>
     <string name="edit_song_user1">"Usuario 1"</string>
     <string name="edit_song_user2">"Usuario 2"</string>
@@ -185,7 +185,7 @@
     <string name="export_png">"Imagen de la captura de pantalla (.png)"</string>
     <string name="export_set">"Conjunto de OpenSongApp (.osts)"</string>
     <string name="export_text">"Texto (.txt)"</string>
-    <string name="exportcurrentsong">"Comparte la canción actual"</string>
+    <string name="export_current_song">"Comparte la canción actual"</string>
     <string name="exportsavedset">"Comparte el conjunto guardado"</string>
     <string name="exportsongdirectory">"Exportar lista de canciones"</string>
     <string name="extra">"Información extra"</string>

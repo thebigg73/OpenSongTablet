@@ -163,9 +163,9 @@
     <string name="edit_song_pitch">"律管笔记歌曲"</string>
     <string name="presentation_order">"为了演示"</string>
     <string name="edit_song_restrictions">"限制"</string>
-    <string name="edit_song_tempo">"拍子"</string>
+    <string name="tempo">"拍子"</string>
     <string name="theme">"背景主题"</string>
-    <string name="edit_song_timesig">"时间签名"</string>
+    <string name="time_signature">"时间签名"</string>
     <string name="song_title">"歌名"</string>
     <string name="edit_song_user1">"用户1"</string>
     <string name="edit_song_user2">"用户2"</string>
@@ -184,7 +184,7 @@
     <string name="export_png">"截图图片（.png）"</string>
     <string name="export_set">"OpenSongApp集（.osts）"</string>
     <string name="export_text">"文字（.txt）"</string>
-    <string name="exportcurrentsong">"分享当前歌曲"</string>
+    <string name="export_current_song">"分享当前歌曲"</string>
     <string name="exportsavedset">"分享保存的设置"</string>
     <string name="exportsongdirectory">"导出歌曲列表"</string>
     <string name="extra">"额外的信息"额外的信息"</string>

@@ -164,9 +164,9 @@
     <string name="edit_song_pitch">"Примечания труб шаг за песню"</string>
     <string name="presentation_order">"Порядок презентации"</string>
     <string name="edit_song_restrictions">"Ограничения"</string>
-    <string name="edit_song_tempo">"Темп"</string>
+    <string name="tempo">"Темп"</string>
     <string name="theme">"Тема"</string>
-    <string name="edit_song_timesig">"Размер"</string>
+    <string name="time_signature">"Размер"</string>
     <string name="song_title">"Название"</string>
     <string name="edit_song_user1">"Пользователь 1"</string>
     <string name="edit_song_user2">"Пользователь 2"</string>
@@ -185,7 +185,7 @@
     <string name="export_png">"Скриншот PNG (.png)"</string>
     <string name="export_set">"Список OpenSongApp (.osts)"</string>
     <string name="export_text">"Текстовый файл (.txt)"</string>
-    <string name="exportcurrentsong">"Поделится текущей песней"</string>
+    <string name="export_current_song">"Поделится текущей песней"</string>
     <string name="exportsavedset">"Отправить сохраненный список"</string>
     <string name="exportsongdirectory">"Экспортировать список песен"</string>
     <string name="extra">"Дополнительная информация"</string>

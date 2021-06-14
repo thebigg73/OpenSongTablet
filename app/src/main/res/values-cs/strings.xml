@@ -163,9 +163,9 @@
     <string name="edit_song_pitch">"Osová vzdálenost trubek poznámky k písni"</string>
     <string name="presentation_order">"Objednávka prezentace"</string>
     <string name="edit_song_restrictions">"Omezení"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="tempo">"Tempo"</string>
     <string name="theme">"Téma"</string>
-    <string name="edit_song_timesig">"Čas podpis"</string>
+    <string name="time_signature">"Čas podpis"</string>
     <string name="song_title">"Název skladby"</string>
     <string name="edit_song_user1">"Uživatel 1"</string>
     <string name="edit_song_user2">"Uživatel 2."</string>
@@ -184,7 +184,7 @@
     <string name="export_png">"Obrázek snímku (.png)"</string>
     <string name="export_set">"Sada OpenSongApp (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>
-    <string name="exportcurrentsong">"Podělte se o aktuální skladbu"</string>
+    <string name="export_current_song">"Podělte se o aktuální skladbu"</string>
     <string name="exportsavedset">"Sdílet uloženou sadu"</string>
     <string name="exportsongdirectory">"Exportovat seznam skladeb"</string>
     <string name="extra">"Informace navíc"</string>

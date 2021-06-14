@@ -1,8 +1,6 @@
 package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,25 +53,14 @@ public class AboutAppFragment extends Fragment {
     }
 
     private void setListeners() {
-        myView.visitWebsite.setOnClickListener(v -> webLink(website));
-        myView.latestVersion.setOnClickListener(v -> webLink(latest));
-        myView.manualButton.setOnClickListener(v -> webLink(userguide));
-        myView.forumButton.setOnClickListener(v -> webLink(groups));
-        myView.rateButton.setOnClickListener(v -> webLink(rate+requireActivity().getPackageName()));
-        myView.paypalButton.setOnClickListener(v -> webLink(paypal));
-        myView.gitbubButton.setOnClickListener(v -> webLink(github));
+        myView.visitWebsite.setOnClickListener(v -> mainActivityInterface.openWebPage(null,website));
+        myView.latestVersion.setOnClickListener(v -> mainActivityInterface.openWebPage(null,latest));
+        myView.manualButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,userguide));
+        myView.forumButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,groups));
+        myView.rateButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,rate+requireActivity().getPackageName()));
+        myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,paypal));
+        myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,github));
         myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.languageFragment));
-    }
-
-    private void webLink(String location) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(location));
-            startActivity(intent);
-        } catch (Exception e) {
-            // Probably no browser installed or no internet permission given.
-            e.printStackTrace();
-        }
     }
 
     @Override

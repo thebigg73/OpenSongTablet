@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mypage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +18,8 @@
             android:contentDescription="@string/app_name"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:src="@mipmap/ic_round_launcher" />
+            android:src="@mipmap/ic_round_launcher"
+            android:scaleType="centerInside"/>
 
         <!-- Where we draw the test sections to get sizes -->
         <RelativeLayout
@@ -63,10 +63,14 @@
                     android:clipToPadding="false" >
 
                     <!-- The song lyrics etc. go here -->
+
+
+
                     <LinearLayout
                         android:id="@+id/songView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@+id/songSheetTitle"
                         android:orientation="horizontal"
                         android:baselineAligned="true"
                         android:clipChildren="false"
@@ -78,8 +82,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:clipChildren="false"
-                            android:clipToPadding="false"
-                            android:background="#ff330000"/>
+                            android:clipToPadding="false"/>
 
                         <LinearLayout
                             android:id="@+id/col2"
@@ -87,8 +90,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:clipChildren="false"
-                            android:clipToPadding="false"
-                            android:background="#ff000033"/>
+                            android:clipToPadding="false"/>
 
                         <LinearLayout
                             android:id="@+id/col3"
@@ -96,10 +98,17 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:clipChildren="false"
-                            android:clipToPadding="false"
-                            android:background="#ff003300"/>
+                            android:clipToPadding="false"/>
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/songSheetTitle"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"/>
 
                     <!-- This is where images/pdfs go -->
                     <ImageView
@@ -107,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
+                        android:layout_below="@+id/songSheetTitle"
                         android:contentDescription="@string/image"
                         android:visibility="gone"
                         android:clipChildren="false"
@@ -118,12 +127,12 @@
                         android:id="@+id/highlighterView"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        android:layout_below="@+id/songSheetTitle"
                         android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:contentDescription="@string/image"
-                        android:visibility="visible"
                         android:clipChildren="false"
-                        android:clipToPadding="false" />
+                        android:clipToPadding="false"
+                        android:contentDescription="@string/image"
+                        android:visibility="visible" />
 
                 </RelativeLayout>
 

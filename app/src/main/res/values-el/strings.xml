@@ -164,9 +164,9 @@
     <string name="edit_song_pitch">"Pitch pipe notes for song"</string>
     <string name="presentation_order">"Σειρά παρουσίασης"</string>
     <string name="edit_song_restrictions">"Restrictions"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="tempo">"Tempo"</string>
     <string name="theme">"Theme"</string>
-    <string name="edit_song_timesig">"Time signature"</string>
+    <string name="time_signature">"Time signature"</string>
     <string name="song_title">"Song title"</string>
     <string name="edit_song_user1">"User 1"</string>
     <string name="edit_song_user2">"User 2"</string>
@@ -185,7 +185,7 @@
     <string name="export_png">"Εικόνα οθόνης (.png)"</string>
     <string name="export_set">"Σετ OpenSongApp (.osts)"</string>
     <string name="export_text">"Κείμενο (.txt)"</string>
-    <string name="exportcurrentsong">"Share the current song"</string>
+    <string name="export_current_song">"Share the current song"</string>
     <string name="exportsavedset">"Share the saved set"</string>
     <string name="exportsongdirectory">"Εξαγωγή λίστας τραγουδιών"</string>
     <string name="extra">"Extra Information"</string>

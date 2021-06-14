@@ -29,6 +29,14 @@
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/export"
+            app:sub="@string/export_current_song" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/pad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

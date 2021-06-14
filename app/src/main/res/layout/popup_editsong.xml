@@ -184,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_tempo" />
+                    android:text="@string/tempo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -220,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_timesig" />
+                    android:text="@string/time_signature" />
 
                 <Spinner
                     android:id="@+id/edit_song_timesig"

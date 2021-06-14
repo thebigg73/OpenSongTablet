@@ -195,7 +195,7 @@
     <string name="off">"ISKLJ"</string>
     <string name="fontsize">"Trebalo bi da isključite automatsko skaliranje pesama."</string>"
     <string name="pedal_scroll_before_move">"Uklj/Isklj skrolovanje pre sledeće/prethodne pesme"</string>
-    <string name="exportcurrentsong">"Podeliti trenutnu pesmu"</string>
+    <string name="export_current_song">"Podeliti trenutnu pesmu"</string>
     <string name="exportsavedset">"Podeliti snimljenu set listu"</string>
     <string name="import_song">"Učitati pesmu"</string>
     <string name="importnewset">"Učitati set listu"</string>
@@ -214,8 +214,8 @@
     <string name="edit_song_user2">"Korisnik 2"</string>
     <string name="edit_song_user3">"Korisnik 3"</string>
     <string name="theme">"Tema"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
-    <string name="edit_song_timesig">"Vremenska oznaka"</string>
+    <string name="tempo">"Tempo"</string>
+    <string name="time_signature">"Vremenska oznaka"</string>
     <string name="edit_song_hymn">"Broj himne"</string>
     <string name="edit_song_availabletags">"[V] = Strofa (Verse), [V1] = Strofa 1 (Verse 1), [C] = Refren (Chorus), [C1] za Refren 1 (Chorus 1), [P] = Predrefren, [T] = Oznaka (Tag), [B] = Most (Bridge), [&#8230;(šta god želite)&#8230;] = prilagođena oznaka.\n Linije teksta počinju sa razmakom, linije akroda sa tačkom, linije komentara sa zarezom."</string>
     <string name="edit_song_duration">"Dužina pesme (sec)"</string>

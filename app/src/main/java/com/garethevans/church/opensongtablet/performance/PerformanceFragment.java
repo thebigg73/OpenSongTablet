@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,8 +23,6 @@ import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.PerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
-
-import java.util.ArrayList;
 
 public class PerformanceFragment extends Fragment {
 
@@ -44,9 +42,6 @@ public class PerformanceFragment extends Fragment {
     static boolean wasScaling, R2L, loadNextSong, loadPrevSong;
     private static int screenHeight;
     public static int songViewWidth, songViewHeight, screenWidth;
-    private RelativeLayout testPane;
-    private ArrayList<View> sectionViews;
-    private ArrayList<Integer> sectionWidths, sectionHeights;
     private String autoScale;
     private PerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
@@ -118,8 +113,6 @@ public class PerformanceFragment extends Fragment {
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
         stickyPopUp = new StickyPopUp();
-
-        //showCase = new ShowCase();
 /*
         performanceGestures = new PerformanceGestures(getContext(),preferences,storageAccess,setActions,
                 padFunctions,metronome,this,mainActivityInterface,showToast,doVibrate,
@@ -180,15 +173,17 @@ public class PerformanceFragment extends Fragment {
                 } else {
                     animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
                 }
+                myView.songSheetTitle.startAnimation(animSlideOut);
                 myView.songView.startAnimation(animSlideOut);
                 myView.highlighterView.startAnimation(animSlideOut);
                 myView.imageView.startAnimation(animSlideOut);
-                //myView.zoomLayout.moveTo(1,0,0,false);
+                myView.zoomLayout.scrollTo(0,0);
             });
-            // Load up the song
-            if (sectionViews!=null) {
-                sectionViews.clear();
-            }
+
+            // Reset the views
+            mainActivityInterface.setSectionViews(null);
+            requireActivity().runOnUiThread(() -> mainActivityInterface.setSongSheetTitleLayout(null));
+
             // Now reset the song
             mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
                     mainActivityInterface.getSong(),false));
@@ -199,12 +194,27 @@ public class PerformanceFragment extends Fragment {
     }
     private void prepareSongViews() {
         // This is called on UI thread above;
+        // Set the default color
         myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
-        // Get the song in the layout
-        sectionViews = mainActivityInterface.getProcessSong().
+
+        // Remove old views
+        myView.songSheetTitle.removeAllViews();
+        if (mainActivityInterface.getSongSheetTitleLayout()!=null &&
+                mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
+            ((LinearLayout) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
+        }
+
+        // Get the song sheet headers
+        mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
+                mainActivityInterface,mainActivityInterface.getSong(),scaleComments,false));
+        Log.d(TAG,"songSheetTitleLayout="+mainActivityInterface.getSongSheetTitleLayout());
+        myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
+
+        // Now prepare the song sections views so we can measure them for scaling using a view tree observer
+        mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
                 setSongInLayout(requireContext(),mainActivityInterface, trimSections, addSectionSpace,
                         trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments,
-                        mainActivityInterface.getSong().getLyrics(),boldChordHeading);
+                        mainActivityInterface.getSong().getLyrics(),boldChordHeading,false));
 
         // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
         setUpTestViewListener();
@@ -224,29 +234,30 @@ public class PerformanceFragment extends Fragment {
                 myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-        for (View view:sectionViews) {
+        for (View view:mainActivityInterface.getSectionViews()) {
             myView.testPane.addView(view);
         }
     }
     private void songIsReadyToDisplay(){
         // All views have now been drawn, so measure the arraylist views
-        // First up, remove the listener
-        sectionWidths = new ArrayList<>();
-        sectionHeights = new ArrayList<>();
-        for (View v:sectionViews)  {
+
+        for (View v:mainActivityInterface.getSectionViews())  {
             int width = v.getMeasuredWidth();
             int height = v.getMeasuredHeight();
-            sectionWidths.add(width);
-            sectionHeights.add(height);
+            mainActivityInterface.addSectionSize(width,height);
         }
 
         screenWidth = myView.mypage.getMeasuredWidth();
         screenHeight = myView.mypage.getMeasuredHeight();
 
-        scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getActivity(), myView.testPane, myView.pageHolder, myView.songView, screenWidth, screenHeight,
+        scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getContext(),
+                mainActivityInterface,
+                myView.testPane, myView.pageHolder, myView.songView, myView.songSheetTitle,
+                screenWidth, screenHeight,
                 myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
-                songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax,
-                sectionViews, sectionWidths, sectionHeights);
+                songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax);
+
+        Log.d(TAG,"scaleFactor="+scaleFactor);
 
         // Set up the type of animate in
         if (R2L) {
@@ -261,7 +272,7 @@ public class PerformanceFragment extends Fragment {
         songViewObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (myView!=null && myView.songView!=null) {
+                if (myView != null) {
                     // Get the width and height of the view
                     int w = myView.songView.getMeasuredWidth();
                     int h = myView.songView.getMeasuredHeight();
@@ -274,7 +285,7 @@ public class PerformanceFragment extends Fragment {
                     dealWithStickyNotes(false);
 
                     // Now take a screenshot (only runs is w!=0 and h!=0)
-                    myView.songView.postDelayed(() -> getActivity().runOnUiThread(() -> getScreenshot(w,h)), 2000);
+                    myView.songView.postDelayed(() -> requireActivity().runOnUiThread(() -> getScreenshot(w,h)), 2000);
 
                     // Now remove this viewtree observer
                     myView.songView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -282,6 +293,8 @@ public class PerformanceFragment extends Fragment {
             }
         });
         myView.songView.startAnimation(animSlideIn);
+        Log.d(TAG,"count = "+myView.songSheetTitle.getChildCount());
+        myView.songSheetTitle.startAnimation(animSlideIn);
     }
     private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().

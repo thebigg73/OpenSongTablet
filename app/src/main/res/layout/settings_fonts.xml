@@ -24,6 +24,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/lyricFontLayout"
                     style="@style/exposedDropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/chordFontLayout"
                     style="@style/exposedDropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -121,6 +123,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/presoFontLayout"
                     style="@style/exposedDropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -155,6 +158,7 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/presoInfoFontLayout"
                     style="@style/exposedDropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -222,6 +226,7 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/stickyFontLayout"
                     style="@style/exposedDropDown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

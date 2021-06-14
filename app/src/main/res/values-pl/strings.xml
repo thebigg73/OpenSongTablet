@@ -164,9 +164,9 @@
     <string name="edit_song_pitch">"Pitch notatki rur do piosenki"</string>
     <string name="presentation_order">"Kolejność prezentacji"</string>
     <string name="edit_song_restrictions">"Ograniczenia"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="tempo">"Tempo"</string>
     <string name="theme">"Motyw"</string>
-    <string name="edit_song_timesig">"Metrum"</string>
+    <string name="time_signature">"Metrum"</string>
     <string name="song_title">"Tytuł piosenki"</string>
     <string name="edit_song_user1">"Użytkownik 1"</string>
     <string name="edit_song_user2">"Użytkownik 2"</string>
@@ -185,7 +185,7 @@
     <string name="export_png">"Obraz zrzutu (.png)"</string>
     <string name="export_set">"Pakiet OpenSongApp (.osts)"</string>
     <string name="export_text">"Tekst (.txt)"</string>
-    <string name="exportcurrentsong">"Poleć bieżący utwór"</string>
+    <string name="export_current_song">"Poleć bieżący utwór"</string>
     <string name="exportsavedset">"Poleć zapisany zestaw"</string>
     <string name="exportsongdirectory">"Eksportuj listę utworów"</string>
     <string name="extra">"Dodatkowe informacje"</string>

@@ -164,9 +164,9 @@
     <string name="edit_song_pitch">"Hangolósípon megjegyzések dalt"</string>
     <string name="presentation_order">"Bemutatása érdekében,"</string>
     <string name="edit_song_restrictions">"Korlátozások"</string>
-    <string name="edit_song_tempo">"Tempó"</string>
+    <string name="tempo">"Tempó"</string>
     <string name="theme">"Témák"</string>
-    <string name="edit_song_timesig">"Ütemjelzés"</string>
+    <string name="time_signature">"Ütemjelzés"</string>
     <string name="song_title">"Dal címe"</string>
     <string name="edit_song_user1">"Felhasználó 1"</string>
     <string name="edit_song_user2">"Felhasználó 2"</string>
@@ -185,7 +185,7 @@
     <string name="export_png">"Screenshot-kép (.png)"</string>
     <string name="export_set">"OpenSongApp szett (.osts)"</string>
     <string name="export_text">"Szöveg (.txt)"</string>
-    <string name="exportcurrentsong">"Ossza meg az aktuális zeneszám"</string>
+    <string name="export_current_song">"Ossza meg az aktuális zeneszám"</string>
     <string name="exportsavedset">"Ossza meg a mentett meg"</string>
     <string name="exportsongdirectory">"Export dalok listáját"</string>
     <string name="extra">"Extra információ"</string>

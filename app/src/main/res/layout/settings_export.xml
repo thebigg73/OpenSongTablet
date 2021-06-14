@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/hiddenHeader"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/hiddenSections"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
+
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/PrefScrollView">
+
+        <RadioGroup
+            android:id="@+id/exportFormat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/pdf">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/pdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/pdf"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/image"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/openSongApp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/export_ost"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/openSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/export_desktop"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/onSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/export_onsong"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/chordPro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/export_chordpro"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/export_text"
+                android:visibility="gone" />
+
+        </RadioGroup>
+
+
+</androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/shareButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:useCompatPadding="true"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_share_variant_white_36dp"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/export" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

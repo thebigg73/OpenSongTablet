@@ -70,20 +70,20 @@ public class PrepareFormats {
         }
     }
 
-    private String getSongAsText(Song thisSong) {
+    public String getSongAsText(Song thisSong) {
         StringBuilder s = new StringBuilder();
 
-        s.append(replaceNulls("",thisSong.getTitle(),"\n"));
-        s.append(replaceNulls("",thisSong.getAuthor(),"\n"));
-        s.append(replaceNulls("Key: ",thisSong.getKey(),"\n"));
-        s.append(replaceNulls("Tempo: ",thisSong.getMetronomebpm(),"\n"));
-        s.append(replaceNulls("Time signature: ",thisSong.getTimesig(),"\n"));
-        s.append(replaceNulls("Copyright: ",thisSong.getCopyright(),"\n"));
-        s.append(replaceNulls("CCLI: ",thisSong.getCcli(),"\n"));
+        s.append(replaceNulls("","\n",thisSong.getTitle()));
+        s.append(replaceNulls("","\n",thisSong.getAuthor()));
+        s.append(replaceNulls("Key: ","\n",thisSong.getKey()));
+        s.append(replaceNulls("Tempo: ","\n",thisSong.getMetronomebpm()));
+        s.append(replaceNulls("Time signature: ","\n",thisSong.getTimesig()));
+        s.append(replaceNulls("Copyright: ","\n",thisSong.getCopyright()));
+        s.append(replaceNulls("CCLI: ","\n",thisSong.getCcli()));
 
         s.append("\n\n");
 
-        s.append(replaceNulls("\n",thisSong.getLyrics(),""));
+        s.append(replaceNulls("\n","",thisSong.getLyrics()));
 
         String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");
@@ -93,20 +93,20 @@ public class PrepareFormats {
 
         return string;
     }
-    private String getSongAsChoPro(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    public String getSongAsChoPro(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // This converts an OpenSong file into a ChordPro file
         StringBuilder s = new StringBuilder("{new_song}\n");
-        s.append(replaceNulls("{title:",thisSong.getTitle(),"}\n"));
-        s.append(replaceNulls("{artist:",thisSong.getAuthor(),"}\n"));
-        s.append(replaceNulls("{key:",thisSong.getKey(),"}\n"));
-        s.append(replaceNulls("{tempo:",thisSong.getMetronomebpm(),"}\n"));
-        s.append(replaceNulls("{time:",thisSong.getTimesig(),"}\n"));
-        s.append(replaceNulls("{copyright:",thisSong.getCopyright(),"}\n"));
-        s.append(replaceNulls("{ccli:",thisSong.getCcli(),"}\n"));
+        s.append(replaceNulls("{title:","}\n",thisSong.getTitle()));
+        s.append(replaceNulls("{artist:","}\n",thisSong.getAuthor()));
+        s.append(replaceNulls("{key:","}\n",thisSong.getKey()));
+        s.append(replaceNulls("{tempo:","}\n",thisSong.getMetronomebpm()));
+        s.append(replaceNulls("{time:","}\n",thisSong.getTimesig()));
+        s.append(replaceNulls("{copyright:","}\n",thisSong.getCopyright()));
+        s.append(replaceNulls("{ccli:","}\n",thisSong.getCcli()));
 
         s.append("\n\n");
 
-        s.append(mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n",thisSong.getLyrics(),"")));
+        s.append(mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n","",thisSong.getLyrics())));
         
         String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");
@@ -116,20 +116,34 @@ public class PrepareFormats {
 
         return string;
     }
-    private String getSongAsOnSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+
+    public Uri getSongAsImage(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+        String newFilename = thisSong.getFolder().replace("/","_");
+        if (!newFilename.endsWith("_")) {
+            newFilename = newFilename + "_";
+        }
+        newFilename = newFilename + thisSong.getFilename() + ".png";
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Export","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface.getPreferences(),uri, "application/pdf","Export","",newFilename);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,uri);
+        mainActivityInterface.getStorageAccess().writeImage(outputStream,mainActivityInterface.getScreenshot());
+        return uri;
+    }
+
+    public String getSongAsOnSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // This converts an OpenSong file into a OnSong file
         StringBuilder s = new StringBuilder();
-        s.append(replaceNulls("",thisSong.getTitle(),"\n"));
-        s.append(replaceNulls("",thisSong.getAuthor(),"\n"));
-        s.append(replaceNulls("Key: ",thisSong.getKey(),"\n"));
-        s.append(replaceNulls("Tempo: ",thisSong.getMetronomebpm(),"\n"));
-        s.append(replaceNulls("Time signature: ",thisSong.getTimesig(),"\n"));
-        s.append(replaceNulls("Copyright: ",thisSong.getCopyright(),"\n"));
-        s.append(replaceNulls("CCLI: ",thisSong.getCcli(),"\n"));
+        s.append(replaceNulls("","\n",thisSong.getTitle()));
+        s.append(replaceNulls("","\n",thisSong.getAuthor()));
+        s.append(replaceNulls("Key: ","\n",thisSong.getKey()));
+        s.append(replaceNulls("Tempo: ","\n",thisSong.getMetronomebpm()));
+        s.append(replaceNulls("Time signature: ","\n",thisSong.getTimesig()));
+        s.append(replaceNulls("Copyright: ","\n",thisSong.getCopyright()));
+        s.append(replaceNulls("CCLI: ","\n",thisSong.getCcli()));
 
         s.append("\n\n");
 
-        s.append(mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n",thisSong.getLyrics(),"")));
+        s.append(mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n","",thisSong.getLyrics())));
 
         String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");

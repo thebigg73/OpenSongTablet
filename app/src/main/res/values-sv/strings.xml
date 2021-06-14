@@ -164,9 +164,9 @@
     <string name="edit_song_pitch">"Pitch pip notes för låt"</string>
     <string name="presentation_order">"Presentationsorder"</string>
     <string name="edit_song_restrictions">"begränsningar"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="tempo">"Tempo"</string>
     <string name="theme">"Tema"</string>
-    <string name="edit_song_timesig">"Tidssignatur"</string>
+    <string name="time_signature">"Tidssignatur"</string>
     <string name="song_title">"Sång titel"</string>
     <string name="edit_song_user1">"Användare 1"</string>
     <string name="edit_song_user2">"Användare 2"</string>
@@ -185,7 +185,7 @@
     <string name="export_png">"Skärmdump (.png)"</string>
     <string name="export_set">"OpenSongApp set (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>
-    <string name="exportcurrentsong">"Dela den aktuella låten"</string>
+    <string name="export_current_song">"Dela den aktuella låten"</string>
     <string name="exportsavedset">"Dela den sparade uppsättningen"</string>
     <string name="exportsongdirectory">"Exportera listan med låtar"</string>
     <string name="extra">"Extra information"</string>

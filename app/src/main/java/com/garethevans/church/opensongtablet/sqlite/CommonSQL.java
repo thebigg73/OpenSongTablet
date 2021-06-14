@@ -391,12 +391,14 @@ public class CommonSQL {
 
         Cursor cursor = db.rawQuery(q, null);
         cursor.moveToFirst();
-        do {
-            String s = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
-            if (s != null && !s.isEmpty()) {
-                folders.add(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
-            }
-        } while (cursor.moveToNext());
+        if (cursor.getColumnCount()>0) {
+            do {
+                String s = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
+                if (s != null && !s.isEmpty()) {
+                    folders.add(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
+                }
+            } while (cursor.moveToNext());
+        }
         cursor.close();
         return folders;
     }

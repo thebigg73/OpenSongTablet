@@ -1,5 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -67,6 +71,7 @@ import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
+import com.garethevans.church.opensongtablet.export.PrepareFormats;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
 import com.garethevans.church.opensongtablet.filemanagement.ExportFiles;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
@@ -120,6 +125,7 @@ import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentMain
 import com.garethevans.church.opensongtablet.songprocessing.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
 import com.garethevans.church.opensongtablet.songsandsetsmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.songsandsetsmenu.SongMenuFragment;
@@ -143,9 +149,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
-
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
 
 /*
 This file is the Activity - the hub of the app.  Since V6, there is only one activity, which is
@@ -211,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private Metronome metronome;
     private CustomAnimation customAnimation;
     private PDFSong pdfSong;
+    private PrepareFormats prepareFormats;
     private MakePDF makePDF;
     private OCR ocr;
     private Transpose transpose;
@@ -219,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ABCNotation abcNotation;
     private ProfileActions profileActions;
     private CheckInternet checkInternet;
+    private SongSheetHeaders songSheetHeaders;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -278,6 +283,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     Locale locale;
 
+    // The song views.
+    // Stored here so they can be accessed via the different modes and classes
+    private ArrayList<View> sectionViews;
+    private LinearLayout songSheetTitleLayout;
+    private ArrayList<Integer> sectionWidths, sectionHeights, songSheetTitleLayoutSize;
+
+
     // Importing/exporting
     private String importFilename;
     private Uri importUri;
@@ -308,6 +320,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             e.printStackTrace();
         }
 
+        // Hide the page button to begin with
+        activityMainBinding.pageButtonsRight.actionFAB.setVisibility(View.GONE);
 
         View view = activityMainBinding.getRoot();
         /*view.setOnSystemUiVisibilityChangeListener(
@@ -396,6 +410,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         pdfSong = new PDFSong();
         ocr = new OCR();
         makePDF = new MakePDF();
+        prepareFormats = new PrepareFormats();
         transpose = new Transpose();
         gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
         alertChecks = new AlertChecks();
@@ -405,6 +420,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         profileActions = new ProfileActions();
         checkInternet = new CheckInternet();
         presentationCommon = new PresentationCommon();
+        songSheetHeaders = new SongSheetHeaders();
     }
     private void initialiseHelpers2() {
         windowFlags = new WindowFlags(this.getWindow());
@@ -945,11 +961,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 if (activityMainBinding != null) {
                     targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(0)).view);
                     targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(1)).view);
+                    targets.add(Objects.requireNonNull(activityMainBinding.viewpager.findViewById(R.id.actionFAB)));
                 }
                 infos.add(getString(R.string.menu_song_info));
                 infos.add(getString(R.string.menu_set_info));
+                infos.add (getString(R.string.add_songs)+" / "+getString(R.string.song_actions));
                 dismisses.add(null);
                 dismisses.add(null);
+                dismisses.add(null);
+                rects.add(true);
                 rects.add(true);
                 rects.add(true);
                 showCase.sequenceShowCase(this,targets,dismisses,infos,rects,"songSetMenu");
@@ -1210,7 +1230,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void hideActionButton(boolean hide) {
-        if (activityMainBinding!=null && activityMainBinding.pageButtonsRight!=null) {
+        Log.d(TAG,"hideActionButton("+hide+")");
+        Log.d(TAG,"activityMainBinding="+activityMainBinding);
+        if (activityMainBinding != null) {
             if (hide) {
                 if (activityMainBinding.pageButtonsRight.actionFAB.getRotation() != 0) {
                     activityMainBinding.pageButtonsRight.actionFAB.performClick();
@@ -1698,6 +1720,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return makePDF;
     }
     @Override
+    public SongSheetHeaders getSongSheetHeaders() {
+        return songSheetHeaders;
+    }
+    @Override
+    public PrepareFormats getPrepareFormats() {
+        return prepareFormats;
+    }
+    @Override
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
@@ -1742,6 +1772,80 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public CheckInternet getCheckInternet() {
         return checkInternet;
     }
+
+
+    // The song views
+    @Override
+    public ArrayList<View> getSectionViews() {
+        return sectionViews;
+    }
+    @Override
+    public void setSectionViews(ArrayList<View> views) {
+        if (views==null) {
+            // Reset the views and their sizes
+            sectionViews = null;
+            sectionViews = new ArrayList<>();
+            sectionWidths = null;
+            sectionWidths = new ArrayList<>();
+            sectionHeights = null;
+            sectionHeights = new ArrayList<>();
+        } else {
+            sectionViews = views;
+        }
+    }
+    @Override
+    public ArrayList<Integer> getSectionWidths() {
+        return sectionWidths;
+    }
+    @Override
+    public ArrayList<Integer> getSectionHeights() {
+        return sectionHeights;
+    }
+    @Override
+    public void addSectionSize(int width, int height) {
+        if (sectionWidths==null) {
+            sectionWidths = new ArrayList<>();
+        }
+        if (sectionHeights==null) {
+            sectionHeights = new ArrayList<>();
+        }
+        sectionWidths.add(width);
+        sectionHeights.add(height);
+    }
+
+
+    // The song sheet title.  Can be displayed in Performance mode and PDF creation
+    @Override
+    public LinearLayout getSongSheetTitleLayout() {
+        if (songSheetTitleLayout==null) {
+            songSheetTitleLayout = new LinearLayout(this);
+        }
+        return songSheetTitleLayout;
+    }
+    @Override
+    public void setSongSheetTitleLayout(LinearLayout linearLayout) {
+        if (songSheetTitleLayout==null) {
+            songSheetTitleLayout = new LinearLayout(this);
+        }
+        if (linearLayout==null) {
+            // Remove the views
+            songSheetTitleLayout.removeAllViews();
+            songSheetTitleLayoutSize = new ArrayList<>();
+        } else {
+            songSheetTitleLayout.addView(linearLayout);
+        }
+    }
+    @Override
+    public ArrayList<Integer> getSongSheetTitleLayoutSize() {
+        return songSheetTitleLayoutSize;
+    }
+    @Override
+    public void setSongSheetTitleLayoutSize(ArrayList<Integer> sizes) {
+        songSheetTitleLayoutSize = sizes;
+    }
+
+
+
 
     // Nearby
     @Override
@@ -2034,6 +2138,29 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void openWebPage(String local, String location) {
+        // I could pass the address in as a location string,
+        // However, for the user-guide to avoid having to change loads of files
+        // I keep them listed here.
+        if (local!=null && !local.isEmpty()) {
+            switch (local) {
+                case "mode":
+                    location = "https://www.opensongapp.com/user-guide/the-app-modes";
+                    break;
+            }
+        }
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(location));
+            startActivity(intent);
+        } catch (Exception e) {
+            // Probably no browser installed or no internet permission given.
+            e.printStackTrace();
         }
     }
 }
