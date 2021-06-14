@@ -67,15 +67,15 @@ public class ExportFragment extends Fragment {
 
     private void showUsable() {
         // By default everything is hidden.  Only make the correct ones visible
-        if (mainActivityInterface.getSong().getIsPDF()) {
+        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
             myView.pdf.setVisibility(View.VISIBLE);
             myView.pdf.setChecked(true);
 
-        } else if (mainActivityInterface.getSong().getIsImage()) {
+        } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
             myView.image.setVisibility(View.VISIBLE);
             myView.image.setChecked(true);
 
-        } else {
+        } else if (mainActivityInterface.getSong().getFiletype().equals("XML")){
             // Must be a song!
             myView.pdf.setVisibility(View.VISIBLE);
             myView.openSong.setVisibility(View.VISIBLE);
@@ -100,7 +100,7 @@ public class ExportFragment extends Fragment {
 
         } else {
             if (myView.pdf.isChecked()) {
-                if (mainActivityInterface.getSong().getIsPDF()) {
+                if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
                     // We are just copying an existing PDF
                     initiateShare("application/pdf");
 
@@ -135,15 +135,14 @@ public class ExportFragment extends Fragment {
         Log.d(TAG,"Initiate share started");
         String exportFilename = "";
         String content = null;
-        Log.d(TAG,"isSong()="+mainActivityInterface.getSong().getIsSong());
 
-        if ((mainActivityInterface.getSong().getIsPDF() && type.equals("application/pdf") && myView.pdf.isChecked()) ||
-                (mainActivityInterface.getSong().getIsImage() && type.equals("image/*") && myView.image.isChecked())) {
+        if ((mainActivityInterface.getSong().getFiletype().equals("PDF") && type.equals("application/pdf") && myView.pdf.isChecked()) ||
+                (mainActivityInterface.getSong().getFiletype().equals("IMG") && type.equals("image/*") && myView.image.isChecked())) {
             // This is for PDF or image songs  Only allow export in the same format
             uri = getActualFile();
             exportFilename = mainActivityInterface.getSong().getFilename();
 
-        } else {
+        } else if (mainActivityInterface.getSong().getFiletype().equals("XML")){
             // These options are for OpenSong songs
             if (type.equals("application/pdf")) {
                 exportFilename = getExportFilename(".pdf");

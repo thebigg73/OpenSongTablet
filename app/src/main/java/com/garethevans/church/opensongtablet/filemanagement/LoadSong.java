@@ -392,6 +392,7 @@ public class LoadSong {
                     try {
                         eventType = xpp.next();
                         thisSong.setFiletype("XML");
+
                     } catch (Exception e) {
                         Log.d(TAG, uri + ":  Not xml so exiting");
                         eventType = XmlPullParser.END_DOCUMENT;

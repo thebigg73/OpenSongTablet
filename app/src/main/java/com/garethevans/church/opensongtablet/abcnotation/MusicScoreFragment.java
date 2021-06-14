@@ -63,7 +63,7 @@ public class MusicScoreFragment extends Fragment {
                         mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(), songXML);
 
                 // Update the database
-                if (mainActivityInterface.getSong().getIsSong()) {
+                if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
                     mainActivityInterface.getSQLiteHelper().updateSong(requireContext(), mainActivityInterface, mainActivityInterface.getSong());
                 } else {
                     mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),

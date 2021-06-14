@@ -397,7 +397,7 @@ public class NearbyConnections implements NearbyInterface {
         String infoFilePayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" + mainActivityInterface.getSong().getFilename() +
                 "_xx____xx_" + mainActivityInterface.getSong().getNextDirection();
 
-        if (mainActivityInterface.getSong().getIsSong()) {
+        if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // By default, this should be smaller than 32kb, so probably going to send as bytes
             // We'll measure the actual size later to check though
             infoPayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" +

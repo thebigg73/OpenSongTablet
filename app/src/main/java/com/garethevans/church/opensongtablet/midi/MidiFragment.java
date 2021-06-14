@@ -697,6 +697,6 @@ public class MidiFragment extends Fragment {
         // Save the song
         mainActivityInterface.getSaveSong().doSave(getContext(),mainActivityInterface,mainActivityInterface.getSong(),
                 mainActivityInterface.getSong(),false,
-                mainActivityInterface.getSong().getIsPDF()||mainActivityInterface.getSong().getIsImage());
+                mainActivityInterface.getSong().getFiletype().equals("PDF")||mainActivityInterface.getSong().getFiletype().equals("IMG"));
     }
 }

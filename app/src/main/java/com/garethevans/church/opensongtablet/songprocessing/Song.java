@@ -56,9 +56,6 @@ public class Song {
     private ArrayList<String> songSectionHeadings;
     private ArrayList<String> songSectionTypes;
     private int currentSection;
-    private boolean isSong;
-    private boolean isPDF;
-    private boolean isImage;
     private boolean isImageSlide;
     private String nextDirection = "R2L";
     private int pdfPageCurrent;
@@ -163,9 +160,6 @@ public class Song {
             return new ArrayList<>();
         }
     }
-    public boolean getIsSong() {return isSong;}
-    public boolean getIsPDF() {return isPDF;}
-    public boolean getIsImage() {return isImage;}
     public boolean getIsImageSlide() {return isImageSlide;}
     public String getNextDirection() {return nextDirection;}
     public int getPdfPageCurrent() {return pdfPageCurrent;}
@@ -281,9 +275,6 @@ public class Song {
     public void setSongSectionHeadings(ArrayList<String> songSectionHeadings) {
         this.songSectionHeadings = songSectionHeadings;
     }
-    public void setIsSong(boolean isSong) {this.isSong = isSong;}
-    public void setIsPDF(boolean isPDF) {this.isPDF = isPDF;}
-    public void setIsImage(boolean isImage) {this.isSong = isImage;}
     public void setIsImageSlide(boolean isImageSlide) {this.isImageSlide = isImageSlide;}
     public void setNextDirection(String nextDirection) {this.nextDirection = nextDirection;}
     public void setPdfPageCurrent(int pdfPageCurrent) {this.pdfPageCurrent = pdfPageCurrent;}
@@ -331,6 +322,8 @@ public class Song {
         this.user1 = toCopy.user1;
         this.user2 = toCopy.user2;
         this.user3 = toCopy.user3;
+
+
         this.key = toCopy.key;
         this.timesig = toCopy.timesig;
         this.tempo = toCopy.tempo;
@@ -352,21 +345,24 @@ public class Song {
         this.linkaudio = toCopy.linkaudio;
         this.linkother = toCopy.linkother;
         this.presentationorder = toCopy.presentationorder;
-        this.filetype = toCopy.filetype;
-        this.isSong = toCopy.isSong;
-        this.isPDF = toCopy.isPDF;
-        this.isImage = toCopy.isImage;
-        this.isImageSlide = toCopy.isImageSlide;
-        this.pdfPageCurrent = toCopy.pdfPageCurrent;
-        this.nextDirection = toCopy.nextDirection;
-        this.songSections = toCopy.songSections;
-        this.songSectionTypes = toCopy.songSectionTypes;
-        this.currentSection = toCopy.currentSection;
-        this.presentationorder = toCopy.presentationorder;
+
         this.hasExtraStuff = toCopy.hasExtraStuff;
+        this.filetype = toCopy.filetype;
         this.detectedChordFormat = toCopy.detectedChordFormat;
         this.encoding = toCopy.encoding;
+        this.songSections = toCopy.songSections;
+        this.songSectionHeadings = toCopy.songSectionHeadings;
+        this.songSectionTypes = toCopy.songSectionTypes;
+        this.currentSection = toCopy.currentSection;
+        this.isImageSlide = toCopy.isImageSlide;
+        this.nextDirection = toCopy.nextDirection;
+        this.pdfPageCurrent = toCopy.pdfPageCurrent;
+        this.presentationorder = toCopy.presentationorder;
         this.songXML = toCopy.songXML;
+        this.halfSplit = toCopy.halfSplit;
+        this.thirdSplit = toCopy.thirdSplit;
+        this.twoThirdSplit = toCopy.twoThirdSplit;
+        this.scalingFiguredOut = toCopy.scalingFiguredOut;
     }
 
     // This is used when comparing song objects for changes (when editing a song)
