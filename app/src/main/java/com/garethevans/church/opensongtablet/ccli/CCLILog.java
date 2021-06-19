@@ -71,7 +71,7 @@ public class CCLILog {
     public void addEntry(Context c, MainActivityInterface mainActivityInterface, String usageType) {
 
         // Check if the log exists or if we need to create it
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Settings", "", "ActivityLog.xml");
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Settings", "", "ActivityLog.xml");
         if (!mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
             Log.d("d", "Creating blankXML=" + createBlankXML(c, mainActivityInterface, uri));
         } else {
@@ -92,7 +92,7 @@ public class CCLILog {
         mainActivityInterface.getStorageAccess().deleteFile(c,uri);
 
         // Get the new file ready
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), uri, null, "Settings", "", "ActivityLog.xml");
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null, "Settings", "", "ActivityLog.xml");
 
         // Write the new file
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);

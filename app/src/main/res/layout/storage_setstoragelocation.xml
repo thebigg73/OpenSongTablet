@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
+<RelativeLayout
+    android:id="@+id/mainpage"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
@@ -141,14 +143,18 @@
         android:id="@+id/startApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp"
         android:padding="12dp"
         android:text="@string/start"
         android:textColor="#fff"
         android:textSize="24sp"
         app:backgroundTint="@color/green"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/>
+        android:visibility="gone"/>
 
 </RelativeLayout>

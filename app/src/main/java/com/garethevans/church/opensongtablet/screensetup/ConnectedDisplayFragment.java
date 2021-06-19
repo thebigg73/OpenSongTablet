@@ -148,12 +148,12 @@ public class ConnectedDisplayFragment extends Fragment {
     private Uri getUriForPref(String pref) {
         if (pref.equals("ost_bg.png")) {
             return mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                    mainActivityInterface.getPreferences(), "Backgrounds", "",
+                    mainActivityInterface, "Backgrounds", "",
                     pref);
         } else if (pref.startsWith("../")) {
             pref = pref.replace("../","");
             return mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                    mainActivityInterface.getPreferences(), "", "",
+                    mainActivityInterface, "", "",
                     pref);
         } else if (!pref.isEmpty()){
             return Uri.parse(pref);

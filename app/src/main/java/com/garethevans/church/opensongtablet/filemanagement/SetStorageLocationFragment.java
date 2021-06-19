@@ -19,8 +19,9 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
@@ -35,8 +36,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 import java.util.ArrayList;
-
-//import lib.folderpicker.FolderPicker;
+import java.util.Objects;
 
 /*
 This fragment is used to set the storage location for the app.  It deals with the permissions for
@@ -54,9 +54,11 @@ public class SetStorageLocationFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private Uri uriTree, uriTreeHome;
-
     private ArrayList<String> locations;
     private File folder;
+
+    ActivityResultLauncher<Intent> folderChooser;
+    ActivityResultLauncher<String> storagePermission;
 
     private StorageSetstoragelocationBinding myView;
 
@@ -79,12 +81,21 @@ public class SetStorageLocationFragment extends Fragment {
         // Set up the views
         initialiseViews();
 
+        // Set up intent listeners for permissions and folder choices
+        setUpIntentListeners();
+
         // Check preferences for storage (if they exist)
         getUriTreeFromPreferences();
 
+        // If we are sent here from the kitkat chooser, deal with that
+        kitKatDealWithUri();
+
+        // Show the current location
+        showStorageLocation();
+
         // Check we have the required storage permission
         // If we have it, this will update the text, if not it will ask for permission
-        checkStoragePermission();
+        checkStatus();
 
         return myView.getRoot();
     }
@@ -111,15 +122,38 @@ public class SetStorageLocationFragment extends Fragment {
                 myView.scrollView.post(() -> myView.scrollView.fullScroll(ScrollView.FOCUS_DOWN));
             }
         });
-        myView.setStorage.setOnClickListener(v -> {
-            if (isStorageGranted()) {
-                chooseStorageLocation();
-            } else {
-                requestStoragePermission();
-            }
-        });
+        myView.setStorage.setOnClickListener(v -> chooseStorageLocation());
         myView.findStorage.setOnClickListener(v -> startSearch());
         myView.startApp.setOnClickListener(v -> goToSongs());
+    }
+
+    private void setUpIntentListeners() {
+        folderChooser = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+
+                        // This is only called when using lollipop or later
+                        lollipopDealWithUri(result.getData());
+
+                        // Save the location uriTree and uriTreeHome
+                        saveUriLocation();
+
+                        // Update the storage text
+                        showStorageLocation();
+
+                        // See if we can show the start button yet
+                        checkStatus();
+                    }
+                });
+
+        storagePermission = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        // Permission is granted.
+                        checkStatus();
+                        showStorageLocation();
+                    }
+                });
     }
 
     // Deal with the storage location set/chosen
@@ -132,25 +166,28 @@ public class SetStorageLocationFragment extends Fragment {
         Also it could be null!
         */
 
-        String uriTreeString = null;
-        if (mainActivityInterface!=null && mainActivityInterface.getPreferences()!=null) {
-            uriTreeString = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "uriTree", "");
-        }
-        if (uriTreeString!=null && !uriTreeString.equals("")) {
-            uriTree = Uri.parse(uriTreeString);
+        String uriTree_String = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "uriTree", "");
+
+        if (uriTree_String!=null && !uriTree_String.equals("")) {
+            if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
+                uriTree = Uri.parse(uriTree_String);
+            } else {
+                uriTree = Uri.fromFile(new File(uriTree_String));
+            }
         } else {
             uriTree = null;
             uriTreeHome = null;
         }
         if (uriTree!=null && uriTreeHome==null) {
-            uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(),uriTree,mainActivityInterface.getPreferences());
+            uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(), uriTree, mainActivityInterface);
         }
     }
 
     private void warningCheck() {
         // If the user tries to set the app storage to OpenSong/Songs/ warn them!
-        if (((TextInputEditText)myView.progressText.findViewById(R.id.editText)) != null &&
-                ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).getText().toString().contains("OpenSong/Songs/")) {
+        if (myView.progressText.findViewById(R.id.editText) != null &&
+                ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).getText()!=null &&
+                Objects.requireNonNull(((TextInputEditText) myView.progressText.findViewById(R.id.editText)).getText()).toString().contains("OpenSong/Songs/")) {
             Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
                     LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
             });
@@ -163,11 +200,16 @@ public class SetStorageLocationFragment extends Fragment {
     private void saveUriLocation() {
         if (uriTree!=null) {
             // Save the preferences
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireActivity(), "uriTree", uriTree.toString());
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireActivity(), "uriTreeHome", uriTreeHome.toString());
+            // If we are using KitKat, we have to parse the storage
+            String uriTree_String = uriTree.toString();
+            String uriTreeHome_String = uriTreeHome.toString();
+            uriTree_String = uriTree_String.replace("file://","");
+            uriTreeHome_String = uriTreeHome_String.replace("file://","");
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "uriTree", uriTree_String);
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "uriTreeHome", uriTreeHome_String);
         } else {
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireActivity(), "uriTree", "");
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireActivity(), "uriTreeHome", "");
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "uriTree", "");
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "uriTreeHome", "");
         }
     }
 
@@ -277,10 +319,10 @@ public class SetStorageLocationFragment extends Fragment {
             myView.setStorage.clearAnimation();
         } else {
             myView.firstRun.setVisibility(View.VISIBLE);
+            myView.startApp.clearAnimation();
             myView.startApp.setVisibility(View.GONE);
             myView.setStorage.setVisibility(View.VISIBLE);
             pulseButton(myView.setStorage);
-            myView.startApp.clearAnimation();
         }
     }
     private void setEnabledOrDisabled(boolean what) {
@@ -308,41 +350,31 @@ public class SetStorageLocationFragment extends Fragment {
     // Below are some checks that will be called to see if we are good to go
     // Firstly check if we have granted the storage permission.  This is the first check
     private void checkStoragePermission() {
-        if (!isStorageGranted()) {
-            // Storage permission has not been granted.
-            requestStoragePermission();
-        } else {
-            // Set the storage location
+        if (isStorageGranted()) {
+            // Permission has been granted, so set the storage location
             showStorageLocation();
+
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            // Permission hasn't been allowed and we are due to explain why
+            showStorageRationale();
+            requestStorage();
+
+        } else {
+            // Storage permission has not been granted.  Launch the request to allow it
+            requestStorage();
         }
     }
     private boolean isStorageGranted() {
         return ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
-    private void requestStoragePermission() {
-        if (getActivity() != null &&
-                ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            try {
-                make(myView.getRoot(), R.string.storage_rationale,
-                        LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
-                    if (getActivity() != null) {
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                    }
-                }).show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (getActivity() != null) {
-            try {
-                // Storage permission has not been granted yet. Request it directly.
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    private void showStorageRationale() {
+        try {
+            Snackbar.make(myView.mainpage, R.string.storage_rationale,
+                    LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> storagePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -360,19 +392,10 @@ public class SetStorageLocationFragment extends Fragment {
         showStorageLocation();
     }
 
-    // Deal with the permission choice
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 101) {
-            checkStatus();
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-        // Set the storage location
-        showStorageLocation();
-    }
-
     // Now deal with getting a suitable storage location
+    private void requestStorage() {
+        storagePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
     private void chooseStorageLocation() {
         if (isStorageGranted()) {
             Intent intent;
@@ -383,74 +406,39 @@ public class SetStorageLocationFragment extends Fragment {
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 // IV - 'Commented in' this extra to try to always show internal and sd card storage
                 intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-                //intent.putExtra("android.content.extra.FANCY", true);
-                //intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriTree);
                 }
-                startActivityForResult(intent, 42);
+
+                folderChooser.launch(intent);
             } else {
-                /*intent = new Intent(requireActivity(), FolderPicker.class);
-                intent.putExtra("title", getString(R.string.storage_change));
-                intent.putExtra("pickFiles", false);
-                if (uriTree != null) {
-                    intent.putExtra("location", uriTree.getPath());
-                }
-                startActivityForResult(intent, 7789);*/
+                mainActivityInterface.navigateToFragment(null,R.id.kitKatFolderChoose);
+
             }
         } else {
-            requestStoragePermission();
+            checkStoragePermission();
         }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        super.onActivityResult(requestCode, resultCode, resultData);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 7789 && resultData != null && resultData.getExtras() != null) {
-                kitKatDealWithUri(resultData);
-            } else if (resultData != null) {
-                lollipopDealWithUri(resultData);
+    private void kitKatDealWithUri() {
+        if (mainActivityInterface.getWhattodo()!=null &&
+                mainActivityInterface.getWhattodo().startsWith("kitkat:")) {
+            String location = mainActivityInterface.getWhattodo().replace("kitkat:","");
+            if (!location.equals("null") && !location.isEmpty()) {
+                File kitkatlocation = new File(mainActivityInterface.getWhattodo().replace("kitkat:", ""));
+                mainActivityInterface.setWhattodo(null);
+                uriTree = Uri.fromFile(kitkatlocation);
+                uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireContext(), uriTree, mainActivityInterface);
+
+                // Save the location uriTree and uriTreeHome
+                saveUriLocation();
+                showStorageLocation();
+                checkStatus();
             }
-
-            // Save the location uriTree and uriTreeHome
-            saveUriLocation();
-            // Update the storage text
-            showStorageLocation();
-
-            // See if we can show the start button yet
-            checkStatus();
+            mainActivityInterface.setWhattodo(null);
         }
     }
-
-    private void kitKatDealWithUri(Intent resultData) {
-        String folderLocation;
-        if (resultData != null && resultData.getExtras() != null) {
-            // This is for Android KitKat - deprecated file method
-            folderLocation = resultData.getExtras().getString("data");
-        } else {
-            File f = requireActivity().getExternalFilesDir("OpenSong");
-            if (f != null) {
-                folderLocation = f.toString();
-            } else {
-                folderLocation = null;
-            }
-        }
-        if (folderLocation != null) {
-            uriTree = Uri.parse(folderLocation);
-            uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(), uriTree, mainActivityInterface.getPreferences());
-
-            // If we can write to this all is good, if not, tell the user (likely to be SD card)
-            if (!mainActivityInterface.getStorageAccess().canWrite(requireActivity(), uriTree)) {
-                notWriteable();
-            }
-        } else {
-            notWriteable();
-        }
-        if (uriTree != null) {
-            checkStatus();
-        }
-    }
-
     private void lollipopDealWithUri(Intent resultData) {
         // This is the newer version for Lollipop+ This is preferred!
         if (resultData != null) {
@@ -463,7 +451,7 @@ public class SetStorageLocationFragment extends Fragment {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
-        uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(), uriTree, mainActivityInterface.getPreferences());
+        uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(), uriTree, mainActivityInterface);
         if (uriTree == null || uriTreeHome == null) {
             notWriteable();
         }
@@ -474,23 +462,16 @@ public class SetStorageLocationFragment extends Fragment {
 
     // Here we deal with displaying (and processing) the chosen storage location
     private void showStorageLocation() {
-        if (mainActivityInterface!=null && mainActivityInterface.getStorageAccess()!=null) {
-            uriTreeHome = mainActivityInterface.getStorageAccess().fixBadStorage(uriTreeHome);
-        } else {
-            uriTreeHome = null;
-        }
+        uriTreeHome = mainActivityInterface.getStorageAccess().fixBadStorage(uriTreeHome);
         if (uriTreeHome==null) {
             uriTree = null;
             saveUriLocation();
-        }
-
-        if (uriTreeHome != null) {
-            String[] niceLocation = mainActivityInterface.getStorageAccess().niceUriTree(getContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale(), uriTreeHome);
+            ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText("");
+        } else {
+            String[] niceLocation = mainActivityInterface.getStorageAccess().niceUriTree(getContext(), mainActivityInterface, uriTreeHome);
             String outputText = niceLocation[1] + "\n" + niceLocation[0];
             ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText(outputText);
             warningCheck();
-        } else {
-            ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText("");
         }
         checkStatus();
     }

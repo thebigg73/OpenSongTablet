@@ -292,12 +292,12 @@ public class MakePDF {
         }
     }
     private Uri getPDFUri(Context c, MainActivityInterface mainActivityInterface, String exportFilename) {
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Export", "", exportFilename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Export", "", exportFilename);
         if (mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
             // Remove it as we want to create a new version!
             mainActivityInterface.getStorageAccess().deleteFile(c,uri);
         }
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), uri, null, "Export", "", exportFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null, "Export", "", exportFilename);
         return uri;
     }
 }

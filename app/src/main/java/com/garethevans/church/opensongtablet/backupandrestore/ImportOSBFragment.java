@@ -264,7 +264,7 @@ public class ImportOSBFragment extends Fragment {
                     }
                 });
                 if (alive) {
-                    mainActivityInterface.getStorageAccess().createFile(getActivity(), mainActivityInterface.getPreferences(), DocumentsContract.Document.MIME_TYPE_DIR,
+                    mainActivityInterface.getStorageAccess().createFile(getActivity(), mainActivityInterface, DocumentsContract.Document.MIME_TYPE_DIR,
                             "Songs", folder, "");
                 }
             }
@@ -282,7 +282,7 @@ public class ImportOSBFragment extends Fragment {
                         String filename;
                         String filefolder = "";
                         if (alive) {
-                            file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface.getPreferences(), "Songs", "", ze.getName());
+                            file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, "Songs", "", ze.getName());
                             // If the file exists and we have allowed overwriting, or it doesn't exist and it is in the checked folders, write it
                             exists = mainActivityInterface.getStorageAccess().uriExists(getContext(), file_uri);
                             if (alive) {
@@ -314,7 +314,7 @@ public class ImportOSBFragment extends Fragment {
                             // Make sure the file exists (might be non-existent)
                             if (!exists && alive) {
                                 filename = ze.getName().replace(filefolder,"").replace("/","");
-                                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getContext(),mainActivityInterface.getPreferences(),
+                                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getContext(),mainActivityInterface,
                                         file_uri,null,"Songs",filefolder,filename);
                             }
                             if (alive) {

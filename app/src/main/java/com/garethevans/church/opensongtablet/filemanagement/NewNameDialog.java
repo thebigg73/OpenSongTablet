@@ -126,21 +126,21 @@ public class NewNameDialog extends DialogFragment {
             newName = myView.title.getText().toString();
             newName = mainActivityInterface.getStorageAccess().safeFilename(newName);
             myView.title.setText(newName);
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface.getPreferences(), currentDir, currentSubDir, newName);
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, currentDir, currentSubDir, newName);
             exists = mainActivityInterface.getStorageAccess().uriExists(getContext(),uri);
             if (rename) {
                 if (!parentFolder.isEmpty()) {
                     newName = parentFolder + "/" + newName;
                 }
-                mainActivityInterface.getStorageAccess().renameFolder(requireContext(),mainActivityInterface.getPreferences(),mainActivityInterface.getShowToast(),song,currentSubDir,newName);
+                mainActivityInterface.getStorageAccess().renameFolder(requireContext(),mainActivityInterface,mainActivityInterface.getShowToast(),song,currentSubDir,newName);
                 message = success;
             } else {
                 if (isfile && !exists) {
-                    if (mainActivityInterface.getStorageAccess().createFile(getContext(), mainActivityInterface.getPreferences(), null, currentDir, currentSubDir, newName)) {
+                    if (mainActivityInterface.getStorageAccess().createFile(getContext(), mainActivityInterface, null, currentDir, currentSubDir, newName)) {
                         message = success;
                     }
                 } else if (!isfile && !exists) {
-                    if (mainActivityInterface.getStorageAccess().createFolder(getContext(), mainActivityInterface.getPreferences(), currentDir, currentSubDir, newName)) {
+                    if (mainActivityInterface.getStorageAccess().createFolder(getContext(), mainActivityInterface, currentDir, currentSubDir, newName)) {
                         message = success;
                     }
                 } else {

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.PresentationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -29,20 +28,19 @@ public class PresentationFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         myView = PresentationBinding.inflate(inflater, container, false);
-        View root = myView.getRoot();
-        mainActivityInterface.updateToolbar(getString(R.string.presentation_mode));
+        //mainActivityInterface.updateToolbar(getString(R.string.presentation_mode));
 
         // Initialise the settings
-        mainActivityInterface.lockDrawer(false);
+        //mainActivityInterface.lockDrawer(false);
         //mainActivityInterface.hideActionBar(false);
-        mainActivityInterface.hideActionButton(true);
+        //mainActivityInterface.hideActionButton(true);
 
         // Deal with the action bar
-        mainActivityInterface.getAppActionBar().setHideActionBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
-        mainActivityInterface.getAppActionBar().setPerformanceMode(false);
-        mainActivityInterface.getAppActionBar().showActionBar();
+        //mainActivityInterface.getAppActionBar().setHideActionBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
+        //mainActivityInterface.getAppActionBar().setPerformanceMode(false);
+        //mainActivityInterface.getAppActionBar().showActionBar();
 
-        return root;
+        return myView.getRoot();
     }
 
 

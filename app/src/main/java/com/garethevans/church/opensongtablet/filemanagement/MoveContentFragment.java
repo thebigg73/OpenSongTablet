@@ -74,7 +74,7 @@ public class MoveContentFragment extends Fragment {
         myView.selectAllCheckBox.setChecked(false);
         myView.folderContentsLayout.removeAllViews();
         new Thread(() -> {
-            files = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(), mainActivityInterface.getPreferences(), "Songs", subfolder);
+            files = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(), mainActivityInterface, "Songs", subfolder);
             if (files.size() != 0) {
                 Collections.sort(files);
                 getActivity().runOnUiThread(() -> {
@@ -97,7 +97,7 @@ public class MoveContentFragment extends Fragment {
         // Do this in another thread
         new Thread(() -> {
             ArrayList<String> availableFromFolders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),
-                    mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale()), true, null);
+                    mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface), true, null);
             getActivity().runOnUiThread(() -> {
                 if (availableFromFolders.size() != 0) {
                     ExposedDropDownArrayAdapter folderFromArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
@@ -129,7 +129,7 @@ public class MoveContentFragment extends Fragment {
         new Thread(() -> {
             // This lists the folders available (minus the current one)
             ArrayList<String> availableMoveFolders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),
-                    mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale()), true, subfolder);
+                    mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface), true, subfolder);
 
             getActivity().runOnUiThread(() -> {
                 if (availableMoveFolders.size() != 0) {
@@ -172,7 +172,7 @@ public class MoveContentFragment extends Fragment {
                 // Go through the checklists and add the checked ones
                 uris = new ArrayList<>();
                 for (String file : filesChosen) {
-                    uris.add(mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface.getPreferences(), "Songs", subfolder, file));
+                    uris.add(mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, "Songs", subfolder, file));
                 }
 
                 InputStream inputStream;
@@ -183,8 +183,8 @@ public class MoveContentFragment extends Fragment {
                 Log.d("MoveContents", "filesChosen.size()=" + filesChosen.size());
                 try {
                     for (int x = 0; x < filesChosen.size(); x++) {
-                        outputFile = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface.getPreferences(), "Songs", newFolder, filesChosen.get(x));
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(), mainActivityInterface.getPreferences(), outputFile,
+                        outputFile = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, "Songs", newFolder, filesChosen.get(x));
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(), mainActivityInterface, outputFile,
                                 null, "Songs", newFolder, filesChosen.get(x));
                         inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), uris.get(x));
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), outputFile);
@@ -217,9 +217,9 @@ public class MoveContentFragment extends Fragment {
                         String portraitOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,true);
                         String landscapeOld = mainActivityInterface.getProcessSong().getHighlighterFilename(tempSong,false);
                         Uri portraitOldUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                                mainActivityInterface.getPreferences(),"Highlighter","",portraitOld);
+                                mainActivityInterface,"Highlighter","",portraitOld);
                         Uri landscapeOldUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                                mainActivityInterface.getPreferences(),"Highlighter","",landscapeOld);
+                                mainActivityInterface,"Highlighter","",landscapeOld);
                         if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),portraitOldUri) ||
                         mainActivityInterface.getStorageAccess().uriExists(requireContext(),landscapeOldUri)) {
                             // Update the new song details
@@ -242,9 +242,9 @@ public class MoveContentFragment extends Fragment {
 
                     // Update everything needed for indexing and song menus
                     try {
-                        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale());
+                        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface);
                         // Write a crude text file (line separated) with the song Ids (folder/file)
-                        mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(), mainActivityInterface.getPreferences(), songIds);
+                        mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(), mainActivityInterface, songIds);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -270,9 +270,9 @@ public class MoveContentFragment extends Fragment {
 
     private void renameHighlighterFiles(Uri oldUri, String newFilename) {
         Uri highlighterOutputUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface.getPreferences(),"Highlighter","",newFilename);
+                mainActivityInterface,"Highlighter","",newFilename);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                mainActivityInterface.getPreferences(),highlighterOutputUri,null,"Highlighter",
+                mainActivityInterface,highlighterOutputUri,null,"Highlighter",
                 "",newFilename);
         InputStream highlighterInputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(),oldUri);
         OutputStream highlighterOutputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),highlighterOutputUri);

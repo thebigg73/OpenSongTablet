@@ -99,7 +99,7 @@ public class LoadSong {
         thisSong.setFiletype(getFileTypeByExtension(thisSong.getFilename()));
 
         // Get the uri for the song - we know it exists as we found it!
-        uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), 
+        uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
                 where, thisSong.getFolder(), thisSong.getFilename());
 
         // If this is an image or a PDF (or DOC), we don't load a song object from the file
@@ -238,7 +238,7 @@ public class LoadSong {
             folder = folder.replace("../", "");
         }
         uri = mainActivityInterface.getStorageAccess().getUriForItem(c, 
-                mainActivityInterface.getPreferences(), where, folder, filename);
+                mainActivityInterface, where, folder, filename);
         if (mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
             if (filetype.equals("XML") && !filename.equals("Welcome to OpenSongApp")) {
                 return mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
@@ -419,7 +419,7 @@ public class LoadSong {
         if (thisSong.getHasExtraStuff()) {
             // This method will be called in an new thread from the calling activity
             String filename = thisSong.getFilename();
-            Uri extraUri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),
+            Uri extraUri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
                     "Songs",thisSong.getFolder(),thisSong.getFilename());
             InputStream extraIinputStream = mainActivityInterface.getStorageAccess().getInputStream(c, extraUri);
                 String full_text;
@@ -545,7 +545,7 @@ public class LoadSong {
     }
 
     private String getSongAsText(Context c, MainActivityInterface  mainActivityInterface, String where, String folder, String filename) {
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),where, folder,filename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,where, folder,filename);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,uri);
         String s = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
         try {
@@ -601,7 +601,7 @@ public class LoadSong {
             if (folder.contains("**") || folder.contains("../")) {
                 subfolder = folder;
             }
-            uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs", subfolder, filename);
+            uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", subfolder, filename);
             nextutf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
         }
 

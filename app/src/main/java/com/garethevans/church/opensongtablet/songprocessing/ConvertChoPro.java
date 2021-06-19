@@ -425,12 +425,12 @@ public class ConvertChoPro {
     Uri getNewSongUri(Context c, MainActivityInterface mainActivityInterface, String songSubFolder, String nsf) {
         // Prepare a new uri based on the best filename, but make it unique so as not to overwrite existing files
         newSongFileName = nsf;
-        Uri n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs", songSubFolder, newSongFileName);
+        Uri n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", songSubFolder, newSongFileName);
         int attempts = 0;
         while (mainActivityInterface.getStorageAccess().uriExists(c, n) && attempts < 4) {
             // Append _ to the end of the name until the filename is unique, or give up after 5 attempts
             newSongFileName = newSongFileName + "_";
-            n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs", songSubFolder, newSongFileName);
+            n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", songSubFolder, newSongFileName);
             attempts = attempts + 1;
             Log.d("d", "attempt:" + attempts + " newSongFileName=" + newSongFileName);
         }
@@ -512,7 +512,7 @@ public class ConvertChoPro {
 
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(c, oldUri)) {
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface.getPreferences(),newUri,null,"Songs",songSubFolder,newSongFileName);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,newUri,null,"Songs",songSubFolder,newSongFileName);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newUri);
 
             Log.d("ChordProConvert","outputStream="+outputStream);

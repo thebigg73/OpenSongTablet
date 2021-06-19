@@ -257,7 +257,7 @@ public class SetActions {
 
         // Original file
         Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem(c,
-                mainActivityInterface.getPreferences(), "Songs",
+                mainActivityInterface, "Songs",
                 mainActivityInterface.getSong().getFolder(),
                 mainActivityInterface.getSong().getFilename());
 
@@ -266,16 +266,16 @@ public class SetActions {
 
         // If the file already exists, add _ to the filename
         StringBuilder newsongname = new StringBuilder(mainActivityInterface.getSong().getFilename());
-        Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Variations", "",
+        Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Variations", "",
                 newsongname.toString());
         while (mainActivityInterface.getStorageAccess().uriExists(c,uriVariation)) {
             newsongname.append("_");
-            uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Variations", "",
+            uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Variations", "",
                     newsongname.toString());
         }
 
         // Check the uri exists for the outputstream to be valid
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), uriVariation, null,
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, uriVariation, null,
                 "Variations", "", newsongname.toString());
 
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uriVariation);

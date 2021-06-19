@@ -72,7 +72,7 @@ public class PadFunctions {
                 mainActivityInterface.getSong().getPadfile().equals(c.getResources().getString(R.string.link_audio)) &&
                 mainActivityInterface.getSong().getLinkaudio()!=null &&
                 !mainActivityInterface.getSong().getLinkaudio().isEmpty()) {
-            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c, mainActivityInterface.getPreferences(), mainActivityInterface.getSong().getLinkaudio());
+            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c, mainActivityInterface, mainActivityInterface.getSong().getLinkaudio());
             return mainActivityInterface.getStorageAccess().uriExists(c,uri);
         } else {
             // Using auto

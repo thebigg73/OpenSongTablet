@@ -42,7 +42,7 @@ public class CCLILogFragment extends Fragment {
 
         // Set up the default values
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface.getPreferences(), "Settings", "", "ActivityLog.xml");
+                mainActivityInterface, "Settings", "", "ActivityLog.xml");
         mainActivityInterface.getCCLILog().getCurrentEntries(requireContext(), mainActivityInterface, uri);
         mainActivityInterface.getCCLILog().getLogFileSize(requireContext(),mainActivityInterface,uri, myView.logSize);
         String churchName = getString(R.string.ccli_church) + ": " +

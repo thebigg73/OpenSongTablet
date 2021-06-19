@@ -21,8 +21,8 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 2;  // THIS GETS
     private SQLiteDatabase getDB(Context c, MainActivityInterface mainActivityInterface) {
         // Make sure we have the persistent version ready
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Settings","", SQLite.NON_OS_DATABASE_NAME);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface.getPreferences(),uri,null,"Settings","", SQLite.NON_OS_DATABASE_NAME);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Settings","", SQLite.NON_OS_DATABASE_NAME);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,uri,null,"Settings","", SQLite.NON_OS_DATABASE_NAME);
         // The version we use has to be in local app storage unfortunately.  We can copy this though
         File f = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
         SQLiteDatabase db2 = SQLiteDatabase.openOrCreateDatabase(f,null);

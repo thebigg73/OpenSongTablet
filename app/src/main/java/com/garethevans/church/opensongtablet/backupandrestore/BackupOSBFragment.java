@@ -130,7 +130,7 @@ public class BackupOSBFragment extends Fragment {
 
             // Check the file list is up to date
             ArrayList<String> allFiles = mainActivityInterface.getStorageAccess().listSongs(requireContext(),
-                    mainActivityInterface.getPreferences(),mainActivityInterface.getLocale());
+                    mainActivityInterface);
 
             // Prepare the uris, inputStreams and outputStreams
             Uri fileUriToCopy;
@@ -166,7 +166,7 @@ public class BackupOSBFragment extends Fragment {
                             if (alive && folder.equals(thisFolder)) {
                                 // Get the uri for this item
                                 fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem(getContext(),
-                                        mainActivityInterface.getPreferences(), "Songs", thisFolder, thisFile);
+                                        mainActivityInterface, "Songs", thisFolder, thisFile);
                                 inputStream = mainActivityInterface.getStorageAccess().getInputStream(getContext(), fileUriToCopy);
                                 if (thisFolder.equals(getString(R.string.mainfoldername)) || thisFolder.equals("MAIN")) {
                                     ze = new ZipEntry(thisFile);

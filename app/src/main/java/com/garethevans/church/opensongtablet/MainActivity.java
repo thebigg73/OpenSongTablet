@@ -69,6 +69,11 @@ import com.garethevans.church.opensongtablet.controls.SwipeFragment;
 import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
+import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
+import com.garethevans.church.opensongtablet.databinding.ContentMainBinding;
+import com.garethevans.church.opensongtablet.databinding.FabsPerformanceBinding;
+import com.garethevans.church.opensongtablet.databinding.MenuTopBinding;
+import com.garethevans.church.opensongtablet.databinding.NewtoolbarincludeBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
@@ -171,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     private final String TAG = "MainActivity";
     private ActivityMainBinding activityMainBinding;
+    private FabsPerformanceBinding fabsPerformanceBinding;
+    private AppBarMainBinding appBarMainBinding;
+    private NewtoolbarincludeBinding newtoolbarincludeBinding;
+    private MenuTopBinding menuTopBinding;
+    private ContentMainBinding contentMainBinding;
 
     private AppBarConfiguration mAppBarConfiguration;
     private StorageAccess storageAccess;
@@ -303,28 +313,37 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get a reference for the mainActivityInterface.
-        // This is used extensively by all fragments to return actions to the MainActivity
-        // All fragments create their own reference to it in onAttach,
-        // However some helper classes that don't extend activity/fragment need a references
-        // This is the one we pass in to those classes
-        mainActivityInterface = this;
-
-        // Initialise the essential helpers needed before doing anything else
+        // Initialise the most important stuff
         initialiseHelpers1();
 
         // Initialise the views for the activity
-        try {
-            activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Hide the page button to begin with
-        activityMainBinding.pageButtonsRight.actionFAB.setVisibility(View.GONE);
+        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
         View view = activityMainBinding.getRoot();
-        /*view.setOnSystemUiVisibilityChangeListener(
+        setContentView(view);
+
+        // Initialise the essential helpers needed before doing anything else
+        initialiseHelpers2();
+
+        // Hide the page button to begin with
+        activityMainBinding.pageButtonRight.actionFAB.setVisibility(View.GONE);
+
+        // Prepare the actionbar
+        setupActionbar();
+
+        // Now initialise the remaining helpers
+        initialiseHelpers3();
+
+        // Set the fullscreen window flags
+        setWindowFlags();
+
+        // Fragment work
+        setupNav();
+
+        // Only do the following if we haven't got a saved state
+        if (savedInstanceState==null) {
+
+            /*view.setOnSystemUiVisibilityChangeListener(
                 visibility -> {
                     Log.d(TAG,"UiVisibility changed");
                     if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
@@ -333,23 +352,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     }
                 });*/
 
-        // get the gesture detector
-        setContentView(view);
 
-        // Prepare the actionbar
-        setupActionbar();
-
-        // Now initialise the remaining helpers
-        initialiseHelpers2();
-
-        // Set the fullscreen window flags
-        setWindowFlags();
-
-        // Fragment work
-        setupNav();
-
-        // Get the version
-        versionNumber = new VersionNumber();
+        }
 
         // Initialise the start variables we need
         initialiseStartVariables();
@@ -362,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         this.registerReceiver(batteryStatus, filter);
 
         // Set up the Nearby connection service
-        nearbyConnections.getUserNickname(this,mainActivityInterface);
+        nearbyConnections.getUserNickname(this, mainActivityInterface);
 
         // Initialise the CastContext
         setUpCast();
@@ -373,88 +377,107 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // The first two are used in other helpers often, so they get done first!
         storageAccess = new StorageAccess();
         preferences = new Preferences();
+
+        mainActivityInterface = this;
+    }
+    private void initialiseHelpers2() {
+
+        // The app setup
+        versionNumber = new VersionNumber();
+        fixLocale = new FixLocale();
+        checkInternet = new CheckInternet();
+        nearbyConnections = new NearbyConnections(this,mainActivityInterface);
+        mediaRouterCallback = new MediaRouterCallback();
+        doVibrate = new DoVibrate();
+        customAnimation = new CustomAnimation();
+        presentationCommon = new PresentationCommon();
+        webDownload = new WebDownload();
+        alertChecks = new AlertChecks();
+
+        // For user preferences
         setTypeFace = new SetTypeFace();
         themeColors = new ThemeColors();
+        profileActions = new ProfileActions();
+
+        // The databases
         sqLiteHelper = new SQLiteHelper(this);
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
         commonSQL = new CommonSQL();
+
+        // Converting song formats and processing song content
         convertChoPro = new ConvertChoPro();
         convertOnSong = new ConvertOnSong();
         convertTextSong = new ConvertTextSong();
         processSong = new ProcessSong();
-        loadSong = new LoadSong();
-        songListBuildIndex = new SongListBuildIndex();
-        versionNumber = new VersionNumber();
-        fixLocale = new FixLocale();
-        ccliLog = new CCLILog();
-        exportFiles = new ExportFiles();
-        showCase = new ShowCase();
-        showToast = new ShowToast();
-        pageButtons = new PageButtons(this,preferences);
+        prepareFormats = new PrepareFormats();
+        pdfSong = new PDFSong();
+        makePDF = new MakePDF();
+        songSheetHeaders = new SongSheetHeaders();
+        ocr = new OCR();
+        transpose = new Transpose();
+        abcNotation = new ABCNotation();
         song = new Song();
-        nearbyConnections = new NearbyConnections(this,mainActivityInterface);
-        midi = new Midi();
-        pedalActions = new PedalActions();
-        exportActions = new ExportActions();
-        mediaRouterCallback = new MediaRouterCallback();
-        webDownload = new WebDownload();
+
+        // Loading up songs and the indexing
+        loadSong = new LoadSong();
+        saveSong = new SaveSong();
+        songListBuildIndex = new SongListBuildIndex();
+
+        // Sets
         currentSet = new CurrentSet();
         setActions = new SetActions();
+
+        // Displaying info to the user
+        showCase = new ShowCase();
+        showToast = new ShowToast();
+
+        // Song actions/features
+        pageButtons = new PageButtons(this,preferences);
+        midi = new Midi();
+        pedalActions = new PedalActions();
         padFunctions = new PadFunctions();
         autoscrollActions = new AutoscrollActions();
-        doVibrate = new DoVibrate();
-        saveSong = new SaveSong();
-        padFunctions = new PadFunctions();
         metronome = new Metronome(this,ab);
-        customAnimation = new CustomAnimation();
-        pdfSong = new PDFSong();
-        ocr = new OCR();
-        makePDF = new MakePDF();
-        prepareFormats = new PrepareFormats();
-        transpose = new Transpose();
-        gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
-        alertChecks = new AlertChecks();
         gestures = new Gestures(this,mainActivityInterface);
+        gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
         swipes = new Swipes(this,mainActivityInterface);
-        abcNotation = new ABCNotation();
-        profileActions = new ProfileActions();
-        checkInternet = new CheckInternet();
-        presentationCommon = new PresentationCommon();
-        songSheetHeaders = new SongSheetHeaders();
+
+        // Other file actions
+        ccliLog = new CCLILog();
+        exportFiles = new ExportFiles();
+        exportActions = new ExportActions();
     }
-    private void initialiseHelpers2() {
+    private void initialiseHelpers3() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(ab,batteryStatus,activityMainBinding.appBar.myToolBarNew.songtitleAb,
-                activityMainBinding.appBar.myToolBarNew.songauthorAb, activityMainBinding.appBar.myToolBarNew.songkeyAb,
-                activityMainBinding.appBar.myToolBarNew.songcapoAb,activityMainBinding.appBar.myToolBarNew.batteryimage,
-                activityMainBinding.appBar.myToolBarNew.batterycharge,activityMainBinding.appBar.myToolBarNew.digitalclock,
+        appActionBar = new AppActionBar(ab,batteryStatus,activityMainBinding.songtitleAb,
+                activityMainBinding.songauthorAb, activityMainBinding.songkeyAb,
+                activityMainBinding.songcapoAb,activityMainBinding.batteryimage,
+                activityMainBinding.batterycharge,activityMainBinding.digitalclock,
                 preferences.getMyPreferenceBoolean(this,"hideActionBar",false));
-        pageButtons.setMainFABS(activityMainBinding.pageButtonsRight.actionFAB, activityMainBinding.pageButtonsRight.custom1Button,
-                activityMainBinding.pageButtonsRight.custom2Button,activityMainBinding.pageButtonsRight.custom3Button,
-                activityMainBinding.pageButtonsRight.custom4Button,activityMainBinding.pageButtonsRight.custom5Button,
-                activityMainBinding.pageButtonsRight.custom6Button,activityMainBinding.pageButtonsRight.pageButtonsLayout,
+        pageButtons.setMainFABS(activityMainBinding.pageButtonRight.actionFAB, activityMainBinding.pageButtonRight.custom1Button,
+                activityMainBinding.pageButtonRight.custom2Button,activityMainBinding.pageButtonRight.custom3Button,
+                activityMainBinding.pageButtonRight.custom4Button,activityMainBinding.pageButtonRight.custom5Button,
+                activityMainBinding.pageButtonRight.custom6Button,activityMainBinding.pageButtonRight.pageButtonsLayout,
                 themeColors.getPageButtonsColor());
         pageButtons.animatePageButton(this,false);
-
     }
 
     // The actionbar
     private void setupActionbar() {
-        setSupportActionBar(activityMainBinding.appBar.myToolBarNew.myToolBarNew);
+        setSupportActionBar(activityMainBinding.toolBar);
         ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
     }
-
     @Override
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
         if (!whichMode.equals("Presentation") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
             // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
-            activityMainBinding.appBar.contentMain.getRoot().setTop(0);
+            appBarMainBinding.getRoot().setTop(0);
         } else {
             // Otherwise move the content below it
-            activityMainBinding.appBar.contentMain.getRoot().setTop(ab.getHeight());
+            appBarMainBinding.getRoot().setTop(ab.getHeight());
         }
         appActionBar.toggleActionBar(wasScrolling,scrollButton,activityMainBinding.drawerLayout.isOpen());
     }
@@ -462,11 +485,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void updatePageButtonLayout() {
         // We have changed something about the page buttons (or initialising them
-        if (activityMainBinding.pageButtonsRight.actionFAB.getRotation()!=0) {
+        if (activityMainBinding.pageButtonRight.actionFAB.getRotation()!=0) {
             pageButtons.animatePageButton(this,false);
         }
-        activityMainBinding.pageButtonsRight.actionFAB.setBackgroundTintList(ColorStateList.valueOf(themeColors.getPageButtonsColor()));
-        activityMainBinding.pageButtonsRight.actionFAB.setAlpha(pageButtons.getPageButtonAlpha());
+        activityMainBinding.pageButtonRight.actionFAB.setBackgroundTintList(ColorStateList.valueOf(themeColors.getPageButtonsColor()));
+        activityMainBinding.pageButtonRight.actionFAB.setAlpha(pageButtons.getPageButtonAlpha());
         for (int x=0; x<6; x++) {
             pageButtons.setPageButton(this,pageButtons.getFAB(x), themeColors.getPageButtonsColor(), x, false);
         }
@@ -500,7 +523,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         setUpSongMenuTabs();
 
         // Set the version in the menu
-        versionNumber.updateMenuVersionNumber(this, activityMainBinding.menuTop.versionCode);
+        versionNumber.updateMenuVersionNumber(this, menuTopBinding.versionCode);
 
         // Set up page buttons
         setListeners();
@@ -585,7 +608,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
 
     private void setListeners() {
-        activityMainBinding.pageButtonsRight.actionFAB.setOnClickListener(v  -> {
+        activityMainBinding.pageButtonRight.actionFAB.setOnClickListener(v  -> {
             if (pageButtonActive) {
                 pageButtonActive = false;
                 Handler h = new Handler();
@@ -639,7 +662,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         });
     }
     private void animatePageButtons() {
-        float rotation = activityMainBinding.pageButtonsRight.actionFAB.getRotation();
+        float rotation = activityMainBinding.pageButtonRight.actionFAB.getRotation();
         pageButtons.animatePageButton(this,rotation == 0);
     }
 
@@ -657,12 +680,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         fullIndexRequired = true;
         ArrayList<String> songIds = new ArrayList<>();
         try {
-            songIds = storageAccess.listSongs(this, preferences, locale);
+            songIds = storageAccess.listSongs(this, mainActivityInterface);
         } catch (Exception e) {
             e.printStackTrace();
         }
         // Write a crude text file (line separated) with the song Ids (folder/file)
-        storageAccess.writeSongIDFile(this, preferences, songIds);
+        storageAccess.writeSongIDFile(this, mainActivityInterface, songIds);
 
         // Try to create the basic databases
         // Non persistent, created from storage at boot (to keep updated) used to references ALL files
@@ -796,6 +819,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        Log.d(TAG,"Configuration changed");
         // Get the language
         fixLocale.setLocale(this,mainActivityInterface);
 
@@ -813,16 +837,16 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     @Override
     protected void onPause() {
-        endCastState();
         super.onPause();
+        endCastState();
     }
     @Override
     protected void onResume() {
-        setUpCast();
+        super.onResume();
+        //setUpCast();
 
         // Fix the page flags
         setWindowFlags();
-        super.onResume();
     }
 
     @Override
@@ -845,7 +869,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         if (title!=null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
             // Make sure the content shows below the action bar
-            activityMainBinding.appBar.contentMain.getRoot().setTop(ab.getHeight());
+            contentMainBinding.getRoot().setTop(ab.getHeight());
         }
     }
     @Override
@@ -930,9 +954,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Set up battery monitor
         batteryStatus = new BatteryStatus();
-        batteryStatus.setUpBatteryMonitor(this,mainActivityInterface,activityMainBinding.appBar.myToolBarNew.digitalclock,
-                activityMainBinding.appBar.myToolBarNew.batterycharge,
-                activityMainBinding.appBar.myToolBarNew.batteryimage,ab);
+        batteryStatus.setUpBatteryMonitor(this,mainActivityInterface,activityMainBinding.digitalclock,
+                activityMainBinding.batterycharge,
+                activityMainBinding.batteryimage,ab);
 
         return true;
     }
@@ -952,15 +976,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         }
         switch (what) {
             case "performanceView":
-                showCase.singleShowCase(this,activityMainBinding.pageButtonsRight.actionFAB,
+                showCase.singleShowCase(this,activityMainBinding.pageButtonRight.actionFAB,
                         null,getString(R.string.action_button_info),false,"pageActionFAB");
                 break;
             case "songsetmenu":
                 // Initialise the arraylists
                 initialiseArrayLists();
                 if (activityMainBinding != null) {
-                    targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(0)).view);
-                    targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(1)).view);
+                    targets.add(Objects.requireNonNull(menuTopBinding.tabs.getTabAt(0)).view);
+                    targets.add(Objects.requireNonNull(menuTopBinding.tabs.getTabAt(1)).view);
                     targets.add(Objects.requireNonNull(activityMainBinding.viewpager.findViewById(R.id.actionFAB)));
                 }
                 infos.add(getString(R.string.menu_song_info));
@@ -1030,7 +1054,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         viewPager.setOffscreenPageLimit(1);
         // Disable the swiping gesture
         viewPager.setUserInputEnabled(false);
-        TabLayout tabLayout = activityMainBinding.menuTop.tabs;
+        TabLayout tabLayout = menuTopBinding.tabs;
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0:
@@ -1052,7 +1076,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 super.onPageSelected(position);
             }
         });
-        activityMainBinding.menuTop.versionCode.setOnClickListener(v -> closeDrawer(true));
+        menuTopBinding.versionCode.setOnClickListener(v -> closeDrawer(true));
     }
     @Override
     public void closeDrawer(boolean close) {
@@ -1132,7 +1156,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 getClassLoader(),
                 pref.getFragment());
         fragment.setArguments(args);
-        fragment.setTargetFragment(caller, 0);
+        //fragment.setTargetFragment(caller, 0);
         // Replace the existing Fragment with the new Fragment
         navigateToFragment(null,caller.getId());
         //navController.navigate(caller.getId());
@@ -1218,7 +1242,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void lockDrawer(boolean lock) {
         // This is done whenever we have a settings window open
-        if (activityMainBinding!=null && activityMainBinding.drawerLayout!=null) {
+        if (activityMainBinding != null) {
             if (lock) {
                 settingsOpen = true;
                 activityMainBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -1230,20 +1254,18 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void hideActionButton(boolean hide) {
-        Log.d(TAG,"hideActionButton("+hide+")");
-        Log.d(TAG,"activityMainBinding="+activityMainBinding);
         if (activityMainBinding != null) {
             if (hide) {
-                if (activityMainBinding.pageButtonsRight.actionFAB.getRotation() != 0) {
-                    activityMainBinding.pageButtonsRight.actionFAB.performClick();
+                if (activityMainBinding.pageButtonRight.actionFAB.getRotation() != 0) {
+                    activityMainBinding.pageButtonRight.actionFAB.performClick();
                 }
-                activityMainBinding.pageButtonsRight.actionFAB.hide();
-                activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.GONE);
+                activityMainBinding.pageButtonRight.actionFAB.hide();
+                activityMainBinding.pageButtonRight.bottomButtons.setVisibility(View.GONE);
             } else {
-                activityMainBinding.pageButtonsRight.actionFAB.show();
-                activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.VISIBLE);
+                activityMainBinding.pageButtonRight.actionFAB.show();
+                activityMainBinding.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
                 // Do this with a delay
-                customAnimation.fadeActionButton(activityMainBinding.pageButtonsRight.actionFAB, pageButtons.getPageButtonAlpha());
+                customAnimation.fadeActionButton(activityMainBinding.pageButtonRight.actionFAB, pageButtons.getPageButtonAlpha());
             }
         }
     }
@@ -1301,7 +1323,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                         // TODO
                         song = processSong.initialiseSong(mainActivityInterface,song.getFolder(),"NEWSONGFILENAME");
                         String newSongText = processSong.getXML(this,mainActivityInterface,song);
-                        if (storageAccess.doStringWriteToFile(this,preferences,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
+                        if (storageAccess.doStringWriteToFile(this,mainActivityInterface,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
@@ -1314,7 +1336,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     // Check this was successful (saved as arguments)
                     if (arguments!=null && arguments.size()>1 && arguments.get(0).equals("success")) {
                         // We now need to copy the original file.  It's contents are saved in arguments.get(1)
-                        if (storageAccess.doStringWriteToFile(this,preferences,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
+                        if (storageAccess.doStringWriteToFile(this,mainActivityInterface,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
                             doSongLoad(song.getFolder(),song.getFilename());
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
@@ -1335,7 +1357,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             boolean allowToast = true;
             switch(what) {
                 case "deleteSong":
-                    result = storageAccess.doDeleteFile(this,preferences,"Songs",
+                    result = storageAccess.doDeleteFile(this,mainActivityInterface,"Songs",
                             song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
                     if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
@@ -1348,16 +1370,16 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     break;
 
                 case "ccliDelete":
-                    Uri uri = storageAccess.getUriForItem(this,preferences,"Settings","","ActivityLog.xml");
+                    Uri uri = storageAccess.getUriForItem(this,mainActivityInterface,"Settings","","ActivityLog.xml");
                     result = ccliLog.createBlankXML(this,mainActivityInterface,uri);
                     break;
 
                 case "deleteItem":
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
-                    result = storageAccess.doDeleteFile(this,preferences,arguments.get(0),arguments.get(1),arguments.get(2));
+                    result = storageAccess.doDeleteFile(this,mainActivityInterface,arguments.get(0),arguments.get(1),arguments.get(2));
                     if (arguments.get(2).isEmpty() && arguments.get(0).equals("Songs") && (arguments.get(1).isEmpty()||arguments.get(1)==null)) {
                         // Emptying the entire songs foler, so need to recreate it on finish
-                        storageAccess.createFolder(this,preferences,"Songs","","");
+                        storageAccess.createFolder(this,mainActivityInterface,"Songs","","");
                     }
                     //Rebuild the song index
                     updateSongMenu(fragName, callingFragment, arguments); // Passing the fragment allows an update to be sent to the calling fragment
@@ -1399,9 +1421,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // If sent called from another fragment the fragName and callingFragment are used to run an update listener
         songListBuildIndex.setIndexComplete(false);
         // Get all of the files as an array list
-        ArrayList<String> songIds = storageAccess.listSongs(this, preferences, locale);
+        ArrayList<String> songIds = storageAccess.listSongs(this, mainActivityInterface);
         // Write this to text file
-        storageAccess.writeSongIDFile(this, preferences, songIds);
+        storageAccess.writeSongIDFile(this, mainActivityInterface, songIds);
         // Try to create the basic databases
         sqLiteHelper.resetDatabase(this);
         nonOpenSongSQLiteHelper.initialise(this, mainActivityInterface);
@@ -1985,6 +2007,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
         }
     }
+
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void sendMidiFromList(int item) {
@@ -2118,7 +2142,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void getSwipeValues(int minDistance, int minHeight, int minTime) {
         if (swipeFragment!=null) {
             try {
-                ((SwipeFragment) swipeFragment).getSwipeValues(minDistance, minHeight, minTime);
+                swipeFragment.getSwipeValues(minDistance, minHeight, minTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }

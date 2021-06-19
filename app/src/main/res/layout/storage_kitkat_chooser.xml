@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainpage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="0dp"
+        android:text="@string/storage_change"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:drawableStartCompat="@mipmap/ic_round_launcher" />
+
+    <TableRow style="@style/DividerLine"/>
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:drawablePadding="16dp"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        app:drawableStartCompat="@drawable/ic_arrow_up_white_36dp"
+        app:drawableTint="@color/black"
+        android:ellipsize="end"
+        android:singleLine="true"/>
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="fill_horizontal"
+        android:padding="12dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp"
+        android:padding="12dp"
+        android:text="@string/select"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:backgroundTint="@color/lightgrey" />
+
+</LinearLayout>

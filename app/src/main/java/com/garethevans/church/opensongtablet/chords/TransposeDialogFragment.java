@@ -280,7 +280,7 @@ public class TransposeDialogFragment extends DialogFragment {
                 } else {
                     mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
                     // Now write the file
-                    Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface.getPreferences(),"Songs",
+                    Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Songs",
                             mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),uri);
                     mainActivityInterface.getStorageAccess().writeFileFromString(newXML,outputStream);

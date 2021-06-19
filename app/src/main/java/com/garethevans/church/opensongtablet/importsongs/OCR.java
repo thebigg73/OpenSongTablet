@@ -33,7 +33,7 @@ public class OCR {
         pdfPages = new ArrayList<>();
 
         // Get the pdf uri
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Songs",folder,filename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Songs",folder,filename);
 
         // Get the parcel file descriptor
         ParcelFileDescriptor parcelFileDescriptor = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(c,uri);

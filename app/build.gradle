@@ -69,13 +69,16 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.activity:activity:1.2.3'                                   // Required for permission requests
+    implementation 'androidx.fragment:fragment:1.3.5'                                   // Required for permission requests
     implementation 'com.google.android.gms:play-services-cast:20.0.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:20.0.0'         // For casting obviously!
-    implementation 'com.google.android.gms:play-services-nearby:17.0.0'                 // For Google Nearby Connect devices
+    implementation 'com.google.android.gms:play-services-nearby:18.0.0'                 // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.2.0' // For OCR text recognition (PDF/Camera)
     implementation fileTree(include: ['*.jar'], dir: 'libs')                            // To allow local jar files in libs
     implementation 'androidx.annotation:annotation:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'             // Allows annotations
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
     annotationProcessor 'androidx.annotation:annotation:1.2.0'                          // Allows annotations
     implementation 'androidx.appcompat:appcompat:1.3.0'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
@@ -91,13 +94,16 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.3.0'
 
-    implementation 'org.apache.commons:commons-compress:1.20'                           // For creating and editing compressed files (osb, backup)
-    implementation 'com.github.bumptech.glide:glide:4.12.0'                             // For better setting of images
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'                     // For better setting of images
+    implementation 'org.apache.commons:commons-compress:1.20'           // For creating and editing compressed files (osb, backup)
+    implementation 'com.github.bumptech.glide:glide:4.12.0'             // For better setting of images
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'     // For better setting of images
+    implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'   // Used for song and set menu
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.3.4'    // To highlight new features in the app
+    implementation 'com.github.droidhubworld:AndroidFilePicker:1.0.0'   // For KitKat only to choose a folder
+
+    // TODO Check I can get rid of the following - I want to minimise external libraries
     //implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
     //implementation 'com.annimon:stream:1.2.1'                           // Not sure if I need this anymore
     //implementation 'lib.kashif:folderpicker:2.4'                        // Not sure if I need this anymore
-    implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'   // Used for song and set menu
-    implementation 'com.github.deano2390:MaterialShowcaseView:1.3.4'    // To highlight new features in the app
-    //implementation 'com.otaliastudios:zoomlayout:1.8.0'                 // For file structure graph
+    //implementation 'com.otaliastudios:zoomlayout:1.8.0'                 // For file structure graph - removing as only in jcenter()
 }

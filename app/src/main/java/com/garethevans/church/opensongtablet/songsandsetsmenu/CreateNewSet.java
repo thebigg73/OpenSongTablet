@@ -76,10 +76,10 @@ public class CreateNewSet {
             mainActivityInterface.getCurrentSet().setCurrentSetXML(sb.toString());
 
             // Write the string to the file
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Sets", "", mainActivityInterface.getCurrentSet().getSetFile());
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Sets", "", mainActivityInterface.getCurrentSet().getSetFile());
 
             // Check the uri exists for the outputstream to be valid
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), uri, null, "Sets", "", mainActivityInterface.getCurrentSet().getSetFile());
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null, "Sets", "", mainActivityInterface.getCurrentSet().getSetFile());
 
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,uri);
             if (mainActivityInterface.getStorageAccess().writeFileFromString(mainActivityInterface.getCurrentSet().getCurrentSetXML(),outputStream)) {

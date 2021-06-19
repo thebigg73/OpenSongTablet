@@ -59,7 +59,7 @@ public class MusicScoreFragment extends Fragment {
                 String songXML = mainActivityInterface.getProcessSong().getXML(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
 
                 // Write the updated song file
-                mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(), mainActivityInterface.getPreferences(), "Songs",
+                mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(), mainActivityInterface, "Songs",
                         mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename(), songXML);
 
                 // Update the database

@@ -62,12 +62,10 @@ public class BootUpFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        myView = BootupLogoBinding.inflate(inflater, container, false);
-
-        // Send a reference to the MainActivityInterface back to the MainActivity
-        // The MainActivity doesn't use it, but it implements it.
-        // We need a reference though to send to other non Context/Fragment classes
+        // Initialise the mainActivityInterface in the MainActivity!
         mainActivityInterface.setMainActivityInterface(mainActivityInterface);
+
+        myView = BootupLogoBinding.inflate(inflater, container, false);
 
         // TODO
         // REMOVE BEFORE RELEASE!!!!!
@@ -81,7 +79,6 @@ public class BootUpFragment extends Fragment {
 
         return myView.getRoot();
     }
-
 
     private void hideMenus() {
         mainActivityInterface.hideActionBar(true);
@@ -98,36 +95,29 @@ public class BootUpFragment extends Fragment {
     // Checks made before starting the app
     private void startOrSetUp() {
         if (storageIsCorrectlySet()) {
-            Log.d("BootUpFragment", "startBootProcess");
             startBootProcess();
         } else {
-            Log.d("BootUpFragment", "requireStorageCheck");
             requireStorageCheck();
         }
+    }
+    private boolean storageIsCorrectlySet() {
+        // Check that storage permission is granted and that it has been set and that it exists
+        return (storagePermissionGranted() && storageLocationSet() && storageLocationValid());
     }
     private boolean storagePermissionGranted() {
         return (getContext()!=null && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED);
     }
     private boolean storageLocationSet() {
-        if (mainActivityInterface!=null && mainActivityInterface.getPreferences()!=null) {
-            uriTreeString = mainActivityInterface.getPreferences().
+        uriTreeString = mainActivityInterface.getPreferences().
                     getMyPreferenceString(getContext(), "uriTree", "");
-            return !uriTreeString.isEmpty();
-        } else {
-            uriTreeString = "";
-            return false;
-        }
+        return !uriTreeString.isEmpty();
     }
     private boolean storageLocationValid() {
-        Log.d("BootUpFragment","uriTreeString()="+uriTreeString);
         uriTree = Uri.parse(uriTreeString);
-        return mainActivityInterface.getStorageAccess().uriTreeValid(requireActivity(),uriTree);
+        return mainActivityInterface.getStorageAccess().uriTreeValid(requireContext(),uriTree);
     }
-    private boolean storageIsCorrectlySet() {
-        // Check that storage permission is granted and that it has been set and that it exists
-        return (storagePermissionGranted() && storageLocationSet() && storageLocationValid());
-    }
+
     private void requireStorageCheck() {
         // Either permission hasn't been granted, or it isn't set properly
         // Switch to the set storage fragment
@@ -148,7 +138,7 @@ public class BootUpFragment extends Fragment {
 
                 // Check for saved storage locations
                 final String progress = mainActivityInterface.getStorageAccess().
-                        createOrCheckRootFolders(getContext(), uriTree, mainActivityInterface.getPreferences());
+                        createOrCheckRootFolders(getContext(), uriTree, mainActivityInterface);
                 boolean foldersok = !progress.contains("Error");
 
                 if (foldersok) {

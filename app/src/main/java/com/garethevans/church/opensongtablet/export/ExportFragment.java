@@ -202,7 +202,7 @@ public class ExportFragment extends Fragment {
 
     private Uri getActualFile() {
         return mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface.getPreferences(), "Songs",
+                mainActivityInterface, "Songs",
                 mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
     }
     private Uri copyOpenSongApp() {
@@ -219,7 +219,7 @@ public class ExportFragment extends Fragment {
     private Uri getExportUri(String extension) {
         String exportFilename = getExportFilename(extension);
         uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface.getPreferences(),"Export","",
+                mainActivityInterface,"Export","",
                 exportFilename);
 
         // If the output file exists, delete it first (so we sort of overwrite)
@@ -229,7 +229,7 @@ public class ExportFragment extends Fragment {
 
         // Now create a blank file ready to assign an outputStream
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                mainActivityInterface.getPreferences(),uri,null,"Export","",
+                mainActivityInterface,uri,null,"Export","",
                 exportFilename);
 
         return uri;

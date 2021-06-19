@@ -38,29 +38,29 @@ public class PrepareFormats {
         }
         if (txt && thisSongSQL!=null) {
             String text = getSongAsText(thisSongSQL);
-            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface.getPreferences(),"Export","",newFilename+".txt",text)) {
-                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Export","",newFilename+".txt"));
+            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".txt",text)) {
+                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".txt"));
             }
         }
         if (chopro && thisSongSQL!=null) {
             String text = getSongAsChoPro(c,mainActivityInterface,thisSongSQL);
-            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface.getPreferences(),"Export","",newFilename+".chopro",text)) {
-                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Export","",newFilename+".chopro"));
+            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".chopro",text)) {
+                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".chopro"));
             }
         }
         if (onsong && thisSongSQL!=null) {
             String text = getSongAsOnSong(c,mainActivityInterface,thisSongSQL);
-            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface.getPreferences(),"Export","",newFilename+".onsong",text)) {
-                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Export","",newFilename+".onsong"));
+            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".onsong",text)) {
+                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".onsong"));
             }
         }
 
         return uris;
     }
     private Uri doMakeCopy(Context c, MainActivityInterface mainActivityInterface, String currentFolder, String currentFilename, String newFilename) {
-        Uri targetFile = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Songs",currentFolder,currentFilename);
-        Uri destinationFile = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Export","",newFilename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface.getPreferences(),destinationFile,null,"Export","",newFilename);
+        Uri targetFile = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Songs",currentFolder,currentFilename);
+        Uri destinationFile = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,destinationFile,null,"Export","",newFilename);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,targetFile);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,destinationFile);
         if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
@@ -123,8 +123,8 @@ public class PrepareFormats {
             newFilename = newFilename + "_";
         }
         newFilename = newFilename + thisSong.getFilename() + ".png";
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface.getPreferences(),"Export","",newFilename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface.getPreferences(),uri, "application/pdf","Export","",newFilename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,uri, "application/pdf","Export","",newFilename);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,uri);
         mainActivityInterface.getStorageAccess().writeImage(outputStream,mainActivityInterface.getScreenshot());
         return uri;

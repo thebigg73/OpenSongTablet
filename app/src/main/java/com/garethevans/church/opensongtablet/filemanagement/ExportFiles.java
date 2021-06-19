@@ -21,7 +21,7 @@ public class ExportFiles {
         Intent emailIntent = setEmailIntent(subject,title,text);
 
         // Add the attachments
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Settings", "", "ActivityLog.xml");
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Settings", "", "ActivityLog.xml");
         ArrayList<Uri> uris = new ArrayList<>();
         if (!mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
             mainActivityInterface.getCCLILog().createBlankXML(c, mainActivityInterface, uri);

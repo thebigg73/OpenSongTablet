@@ -406,7 +406,7 @@ public class HighlighterEditFragment extends Fragment {
     public void doDelete(boolean confirmed) {
         if (confirmed) {
             // Set the original highlighter file if it exists
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface.getPreferences(),"Highlighter","",
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Highlighter","",
                     mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),requireContext().getResources().getConfiguration().orientation==Configuration.ORIENTATION_PORTRAIT));
             if (mainActivityInterface.getStorageAccess().deleteFile(requireContext(),uri)) {
                 mainActivityInterface.getDrawNotes().delete();
@@ -450,10 +450,10 @@ public class HighlighterEditFragment extends Fragment {
         int orientation = requireContext().getResources().getConfiguration().orientation;
         new Thread(() -> {
             String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),orientation== Configuration.ORIENTATION_PORTRAIT);
-            uri = mainActivityInterface.getStorageAccess().getUriForItem(getActivity(), mainActivityInterface.getPreferences(),
+            uri = mainActivityInterface.getStorageAccess().getUriForItem(getActivity(), mainActivityInterface,
                     "Highlighter", "", hname);
             // Check the uri exists for the outputstream to be valid
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getActivity(), mainActivityInterface.getPreferences(), uri, null,
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getActivity(), mainActivityInterface, uri, null,
                     "Highlighter", "", hname);
 
             requireActivity().runOnUiThread(() -> {

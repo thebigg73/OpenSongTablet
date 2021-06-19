@@ -2020,7 +2020,7 @@ public class ProcessSong {
                                    int allowedHeight, String scale) {
         Bitmap bmp = null;
 
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs", folder, filename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", folder, filename);
 
         // FileDescriptor for file, it allows you to close file when you are done with it
         ParcelFileDescriptor parcelFileDescriptor = getPDFParcelFileDescriptor(c, uri);
@@ -2228,7 +2228,7 @@ public class ProcessSong {
         } else {
             filename = getHighlighterFilename(mainActivityInterface.getSong(), false);
         }
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Highlighter", "", filename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", filename);
         if (mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
             // Load in the bitmap
             try {

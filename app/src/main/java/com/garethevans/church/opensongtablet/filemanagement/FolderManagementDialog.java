@@ -74,7 +74,7 @@ public class FolderManagementDialog extends DialogFragment {
         ((FloatingActionButton)myView.dialogHeading.findViewById(R.id.close)).setOnClickListener(b -> dismiss());
         if (root) {
             ((TextView)myView.dialogHeading.findViewById(R.id.title)).
-                    setText(storageAccess.niceUriTree(getContext(), preferences, locale, storageAccess.homeFolder(getContext(),null, preferences))[1]);
+                    setText(storageAccess.niceUriTree(getContext(), mainActivityInterface, storageAccess.homeFolder(getContext(),null, mainActivityInterface))[1]);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);

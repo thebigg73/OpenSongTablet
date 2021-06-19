@@ -50,19 +50,19 @@ public class SaveSong {
                         (!oldwhere.equals(where) || !oldfolder.equals(folder) || !oldfilename.equals(filename));
 
                 oldUri = mainActivityInterface.getStorageAccess().
-                        getUriForItem(c, mainActivityInterface.getPreferences(), oldwhere, oldfolder, oldfilename);
+                        getUriForItem(c, mainActivityInterface, oldwhere, oldfolder, oldfilename);
 
             }
             Uri newUri = mainActivityInterface.getStorageAccess().
-                    getUriForItem(c, mainActivityInterface.getPreferences(), where, folder, filename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(),
+                    getUriForItem(c, mainActivityInterface, where, folder, filename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface,
                     newUri, null, where, folder, filename);
 
             if (!imgOrPDF || (removeOriginal && oldUri != null)) {
                 // Updated the song name, folder or contents, so write to the new/original file as appropriate
                 // Check the uri exists for the outputstream to be valid
                 mainActivityInterface.getStorageAccess().
-                        lollipopCreateFileForOutputStream(c, mainActivityInterface.getPreferences(), newUri, null,
+                        lollipopCreateFileForOutputStream(c, mainActivityInterface, newUri, null,
                                 where, folder, filename);
 
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newUri);

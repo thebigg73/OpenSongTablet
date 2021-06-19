@@ -70,7 +70,7 @@ public class SongListBuildIndex {
                     // Now we have the info to open the file and extract what we need
                     if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {
                         // Get the uri, utf and inputStream for the file
-                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface.getPreferences(), "Songs",
+                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs",
                                 mainActivityInterface.getIndexingSong().getFolder(),
                                 mainActivityInterface.getIndexingSong().getFilename());
                         String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);

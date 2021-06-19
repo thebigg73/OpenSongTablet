@@ -416,7 +416,7 @@ public class ImportOnlineFragment extends Fragment {
         myView.saveFilename.post(() -> myView.saveFilename.getEditText().setText(newSong.getTitle()));
         // Get the folders available
         ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),
-                mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface.getPreferences(), mainActivityInterface.getLocale()), true, null);
+                mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface), true, null);
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
                 R.layout.exposed_dropdown,availableFolders);
         myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
@@ -451,9 +451,9 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setFiletype("PDF");
 
         Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface.getPreferences(),"Songs",folder,filename);
+                mainActivityInterface,"Songs",folder,filename);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                mainActivityInterface.getPreferences(),outputUri,null,"Songs",folder,filename);
+                mainActivityInterface,outputUri,null,"Songs",folder,filename);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),outputUri);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(),inputUri);
         try {
@@ -498,7 +498,7 @@ public class ImportOnlineFragment extends Fragment {
                 doSave(requireContext(),mainActivityInterface,newSong,newSong,false,false)) {
             // Update the songid file (used later)
             mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),
-                    mainActivityInterface.getPreferences(),
+                    mainActivityInterface,
                     mainActivityInterface.getStorageAccess().getSongIDsFromFile(requireContext()));
 
             // Add the song to the database

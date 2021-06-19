@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
         // Open the file picker and when the user has picked a file, on activity result will
         Intent loadIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         Uri uri = mainActivityInterface.getStorageAccess().
-                getUriForItem(requireContext(),mainActivityInterface.getPreferences(),"Profiles","",null);
+                getUriForItem(requireContext(),mainActivityInterface,"Profiles","",null);
         loadIntent.setDataAndType(uri,"application/xml");
         String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
         loadIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
@@ -72,7 +72,7 @@ public class ProfileFragment extends Fragment {
     private void saveProfile() {
         // Open the file picker and when the user has picked a file, on activity result will
         Intent saveIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface.getPreferences(),"Profiles","",null);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Profiles","",null);
         saveIntent.setDataAndType(uri,"application/xml");
         saveIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
         saveIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
