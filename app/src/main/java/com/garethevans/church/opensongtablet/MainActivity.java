@@ -69,11 +69,6 @@ import com.garethevans.church.opensongtablet.controls.SwipeFragment;
 import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
-import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
-import com.garethevans.church.opensongtablet.databinding.ContentMainBinding;
-import com.garethevans.church.opensongtablet.databinding.FabsPerformanceBinding;
-import com.garethevans.church.opensongtablet.databinding.MenuTopBinding;
-import com.garethevans.church.opensongtablet.databinding.NewtoolbarincludeBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
@@ -176,11 +171,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     private final String TAG = "MainActivity";
     private ActivityMainBinding activityMainBinding;
-    private FabsPerformanceBinding fabsPerformanceBinding;
-    private AppBarMainBinding appBarMainBinding;
-    private NewtoolbarincludeBinding newtoolbarincludeBinding;
-    private MenuTopBinding menuTopBinding;
-    private ContentMainBinding contentMainBinding;
 
     private AppBarConfiguration mAppBarConfiguration;
     private StorageAccess storageAccess;
@@ -313,19 +303,24 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(TAG,"storageAccess="+storageAccess);
+
         // Initialise the most important stuff
         initialiseHelpers1();
 
+        // Initialise the remaining helpers needed before doing anything else
+        initialiseHelpers2();
+
         // Initialise the views for the activity
-        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        if (activityMainBinding==null) {
+            activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        }
 
         View view = activityMainBinding.getRoot();
         setContentView(view);
 
-        // Initialise the essential helpers needed before doing anything else
-        initialiseHelpers2();
-
         // Hide the page button to begin with
+
         activityMainBinding.pageButtonRight.actionFAB.setVisibility(View.GONE);
 
         // Prepare the actionbar
@@ -379,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         preferences = new Preferences();
 
         mainActivityInterface = this;
+        songListBuildIndex = new SongListBuildIndex();
     }
     private void initialiseHelpers2() {
 
@@ -421,7 +417,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Loading up songs and the indexing
         loadSong = new LoadSong();
         saveSong = new SaveSong();
-        songListBuildIndex = new SongListBuildIndex();
 
         // Sets
         currentSet = new CurrentSet();
@@ -449,10 +444,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     private void initialiseHelpers3() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(ab,batteryStatus,activityMainBinding.songtitleAb,
-                activityMainBinding.songauthorAb, activityMainBinding.songkeyAb,
-                activityMainBinding.songcapoAb,activityMainBinding.batteryimage,
-                activityMainBinding.batterycharge,activityMainBinding.digitalclock,
+        appActionBar = new AppActionBar(ab,batteryStatus,activityMainBinding.toolBar.songtitleAb,
+                activityMainBinding.toolBar.songauthorAb, activityMainBinding.toolBar.songkeyAb,
+                activityMainBinding.toolBar.songcapoAb,activityMainBinding.toolBar.batteryimage,
+                activityMainBinding.toolBar.batterycharge,activityMainBinding.toolBar.digitalclock,
                 preferences.getMyPreferenceBoolean(this,"hideActionBar",false));
         pageButtons.setMainFABS(activityMainBinding.pageButtonRight.actionFAB, activityMainBinding.pageButtonRight.custom1Button,
                 activityMainBinding.pageButtonRight.custom2Button,activityMainBinding.pageButtonRight.custom3Button,
@@ -464,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // The actionbar
     private void setupActionbar() {
-        setSupportActionBar(activityMainBinding.toolBar);
+        setSupportActionBar(activityMainBinding.toolBar.getRoot());
         ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
@@ -474,10 +469,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
         if (!whichMode.equals("Presentation") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
             // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
-            appBarMainBinding.getRoot().setTop(0);
+            activityMainBinding.fragmentView.setTop(0);
         } else {
             // Otherwise move the content below it
-            appBarMainBinding.getRoot().setTop(ab.getHeight());
+            activityMainBinding.fragmentView.setTop(ab.getHeight());
         }
         appActionBar.toggleActionBar(wasScrolling,scrollButton,activityMainBinding.drawerLayout.isOpen());
     }
@@ -523,7 +518,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         setUpSongMenuTabs();
 
         // Set the version in the menu
-        versionNumber.updateMenuVersionNumber(this, menuTopBinding.versionCode);
+        versionNumber.updateMenuVersionNumber(this, activityMainBinding.menuTop.versionCode);
 
         // Set up page buttons
         setListeners();
@@ -869,7 +864,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         if (title!=null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
             // Make sure the content shows below the action bar
-            contentMainBinding.getRoot().setTop(ab.getHeight());
+            activityMainBinding.fragmentView.setTop(ab.getHeight());
         }
     }
     @Override
@@ -954,9 +949,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Set up battery monitor
         batteryStatus = new BatteryStatus();
-        batteryStatus.setUpBatteryMonitor(this,mainActivityInterface,activityMainBinding.digitalclock,
-                activityMainBinding.batterycharge,
-                activityMainBinding.batteryimage,ab);
+        batteryStatus.setUpBatteryMonitor(this,mainActivityInterface,activityMainBinding.toolBar.digitalclock,
+                activityMainBinding.toolBar.batterycharge,
+                activityMainBinding.toolBar.batteryimage,ab);
 
         return true;
     }
@@ -983,8 +978,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 // Initialise the arraylists
                 initialiseArrayLists();
                 if (activityMainBinding != null) {
-                    targets.add(Objects.requireNonNull(menuTopBinding.tabs.getTabAt(0)).view);
-                    targets.add(Objects.requireNonNull(menuTopBinding.tabs.getTabAt(1)).view);
+                    targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(0)).view);
+                    targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(1)).view);
                     targets.add(Objects.requireNonNull(activityMainBinding.viewpager.findViewById(R.id.actionFAB)));
                 }
                 infos.add(getString(R.string.menu_song_info));
@@ -1054,7 +1049,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         viewPager.setOffscreenPageLimit(1);
         // Disable the swiping gesture
         viewPager.setUserInputEnabled(false);
-        TabLayout tabLayout = menuTopBinding.tabs;
+        TabLayout tabLayout = activityMainBinding.menuTop.tabs;
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0:
@@ -1076,7 +1071,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 super.onPageSelected(position);
             }
         });
-        menuTopBinding.versionCode.setOnClickListener(v -> closeDrawer(true));
+        activityMainBinding.menuTop.versionCode.setOnClickListener(v -> closeDrawer(true));
     }
     @Override
     public void closeDrawer(boolean close) {
