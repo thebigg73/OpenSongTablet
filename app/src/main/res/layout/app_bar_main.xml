@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,13 +9,13 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.ActionBar">
 
-        <include android:id="@+id/myToolBarNew"
+        <include android:id="@+id/toolBar"
             layout="@layout/newtoolbarinclude"
             style="@style/AppTheme.ActionBar"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include android:id="@+id/content_main"
+    <include android:id="@+id/contentMain"
         layout="@layout/content_main"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

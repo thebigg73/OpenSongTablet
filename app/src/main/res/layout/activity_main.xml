@@ -1,66 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<RelativeLayout
-    android:id="@+id/coordinator"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinatorRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<androidx.drawerlayout.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <FrameLayout
+    <RelativeLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/app_bar"
-            layout="@layout/app_bar_main"
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <include android:id="@+id/page_buttons_right"
-            android:clipToPadding="true"
-            android:clipChildren="true"
-            layout="@layout/fabs_performance" />
-
-    </FrameLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navView"
-        android:background="@color/colorAltPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="bottom">
-
-        <include
-            android:id="@+id/menu_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            layout="@layout/menu_top"/>
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewpager"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent">
 
-        </LinearLayout>
-    </com.google.android.material.navigation.NavigationView>
+                <!--The actionbar, which includes a toolbar and the songview below -->
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <include
+                        android:id="@+id/toolBar"
+                        layout="@layout/view_toolbar" />
 
+                    <!--The main fragments get loaded up here-->
+                    <FrameLayout
+                        android:id="@+id/fragmentView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <androidx.fragment.app.FragmentContainerView
+                            android:id="@+id/nav_host_fragment"
+                            android:name="androidx.navigation.fragment.NavHostFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:defaultNavHost="true"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:navGraph="@navigation/navigation" />
 
+                        <!-- The page buttons -->
+                        <include
+                            android:id="@+id/pageButtonRight"
+                            layout="@layout/fabs_performance"
+                            android:clipChildren="true"
+                            android:clipToPadding="true" />
 
-</androidx.drawerlayout.widget.DrawerLayout>
-</RelativeLayout>
+                    </FrameLayout>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+            </FrameLayout>
+
+            <!--The left song and set menu-->
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@color/colorAltPrimary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/menu_top"
+                        layout="@layout/menu_top"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom" />
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewpager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+            </com.google.android.material.navigation.NavigationView>
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+    </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

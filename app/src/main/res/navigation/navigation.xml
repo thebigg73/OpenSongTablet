@@ -146,8 +146,20 @@
                 <deepLink
                     android:id="@+id/setStorageDeepLink"
                     app:uri="opensongapp://settings/storage/setstorage" />
+                <action
+                    android:id="@+id/action_setStorageLocationFragment_to_kitKatFolderChoose"
+                    app:destination="@id/kitKatFolderChoose" />
             </fragment>
 
+            <fragment
+                android:id="@+id/kitKatFolderChoose"
+                android:name="com.garethevans.church.opensongtablet.filemanagement.KitKatFolderChoose"
+                android:label="storage_kitkat_choose"
+                tools:layout="@layout/storage_kitkat_chooser">
+                <deepLink
+                    android:id="@+id/kitKatDeepLink"
+                    app:uri="opensongapp://settings/storage/kitkatchoose" />
+            </fragment>
             <!-- Choose the storage fragment -->
             <fragment
                 android:id="@+id/backupOSBFragment"
