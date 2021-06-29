@@ -56,7 +56,6 @@ public class CCLILogFragment extends Fragment {
 
         myView.zoomLayout.addView(tableLayout);
 
-
         return myView.getRoot();
     }
 

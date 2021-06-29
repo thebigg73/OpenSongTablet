@@ -2,11 +2,9 @@ package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,20 +12,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class SongMenuDialog extends DialogFragment {
+public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
     private MenuSongsDialogBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final FloatingActionButton fab;
 
-    SongMenuDialog(FloatingActionButton fab) {
+    SongMenuBottomSheet(FloatingActionButton fab) {
         this.fab = fab;
     }
 
@@ -48,8 +46,10 @@ public class SongMenuDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = MenuSongsDialogBinding.inflate(inflater,container,false);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getDialog().getWindow().setGravity(Gravity.BOTTOM|Gravity.END);
+        if (getDialog()!=null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         // Set up the views
         setListeners();

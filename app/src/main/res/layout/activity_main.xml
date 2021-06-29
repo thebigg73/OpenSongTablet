@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinatorRoot"
+
+
+<androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:id="@+id/coordinator"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.drawerlayout.widget.DrawerLayout
-            android:id="@+id/drawer_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -58,18 +50,14 @@
             </FrameLayout>
 
             <!--The left song and set menu-->
-            <com.google.android.material.navigation.NavigationView
-                android:id="@+id/navView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:background="@color/colorAltPrimary">
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:orientation="vertical"
+                    android:background="@color/colorAltPrimary">
 
                     <include
                         android:id="@+id/menu_top"
@@ -84,8 +72,5 @@
                         android:layout_height="match_parent" />
 
                 </LinearLayout>
-            </com.google.android.material.navigation.NavigationView>
 
         </androidx.drawerlayout.widget.DrawerLayout>
-    </RelativeLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>

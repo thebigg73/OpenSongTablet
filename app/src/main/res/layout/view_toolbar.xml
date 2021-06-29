@@ -23,6 +23,7 @@
 
             <LinearLayout
                 android:id="@+id/topRow"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -35,8 +36,8 @@
                     android:id="@+id/songtitle_ab"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_margin="0dp"
+                    android:layout_weight="1"
                     android:ellipsize="end"
                     android:textColor="#fff"
                     style="@style/MySongTitleText"
@@ -46,7 +47,6 @@
                     android:id="@+id/songkey_ab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="#fff"
                     style="@style/MySongTitleText" />
@@ -55,10 +55,14 @@
                     android:id="@+id/songcapo_ab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="#fff"
                     style="@style/MySongTitleText" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"/>
 
             </LinearLayout>
 

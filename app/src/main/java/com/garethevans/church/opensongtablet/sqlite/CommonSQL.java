@@ -391,7 +391,7 @@ public class CommonSQL {
 
         Cursor cursor = db.rawQuery(q, null);
         cursor.moveToFirst();
-        if (cursor.getColumnCount()>0) {
+        if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER)>0) {
             do {
                 String s = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
                 if (s != null && !s.isEmpty()) {

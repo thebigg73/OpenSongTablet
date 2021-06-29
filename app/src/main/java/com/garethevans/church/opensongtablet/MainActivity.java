@@ -52,7 +52,7 @@ import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
-import com.garethevans.church.opensongtablet.appdata.AlertInfoDialogFragment;
+import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
@@ -141,6 +141,7 @@ import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -302,8 +303,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d(TAG,"storageAccess="+storageAccess);
+        // Initialise the views for the activity
+        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = activityMainBinding.getRoot();
+        setContentView(view);
 
         // Initialise the most important stuff
         initialiseHelpers1();
@@ -311,16 +314,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Initialise the remaining helpers needed before doing anything else
         initialiseHelpers2();
 
-        // Initialise the views for the activity
-        if (activityMainBinding==null) {
-            activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        }
-
-        View view = activityMainBinding.getRoot();
-        setContentView(view);
-
         // Hide the page button to begin with
-
         activityMainBinding.pageButtonRight.actionFAB.setVisibility(View.GONE);
 
         // Prepare the actionbar
@@ -337,6 +331,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Only do the following if we haven't got a saved state
         if (savedInstanceState==null) {
+
+
 
             /*view.setOnSystemUiVisibilityChangeListener(
                 visibility -> {
@@ -507,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(activityMainBinding.navView, navController);
+        //NavigationUI.setupWithNavController(activityMainBinding.navView, navController);
     }
 
     // Initialise the MainActivity components
@@ -637,6 +633,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
                 hideActionButton(true);
+                setWindowFlags();
                 showTutorial("songsetmenu");
                 if (setSongMenuFragment()) {
                     showTutorial("songsetMenu");
@@ -892,6 +889,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.d(TAG,item.toString());
         switch (item.toString()) {
             case "Settings":
                 if (settingsOpen) {
@@ -901,8 +899,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 }
                 break;
 
-            case "Alerts":
-                DialogFragment df = new AlertInfoDialogFragment();
+            case "Information":
+                BottomSheetDialogFragment df = new AlertInfoBottomSheet();
                 openDialog(df,"Alerts");
                 break;
         }
@@ -1910,7 +1908,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             return true;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
             try {
-                make(findViewById(R.id.navView), R.string.location_rationale,
+                make(findViewById(R.id.fragmentView), R.string.location_rationale,
                         LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403)).show();
                 return false;
@@ -1929,7 +1927,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             return true;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             try {
-                make(findViewById(R.id.mypage), R.string.location_rationale,
+                make(findViewById(R.id.coordinator), R.string.location_rationale,
                         LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
                 return false;
@@ -1996,7 +1994,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 case 404:
                 case 403:
                     // Access fine location, so can open the menu at 'Connect devices'
-                    openNearbyFragment();
+                    if (whattodo.equals("nearby")) {
+                        openNearbyFragment();
+                    }
                     Log.d("d", "LOCATION granted!");
                     break;
             }

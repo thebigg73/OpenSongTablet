@@ -237,8 +237,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void showActionDialog() {
-        SongMenuDialog dialogFragment = new SongMenuDialog(myView.actionFAB);
-        dialogFragment.show(requireActivity().getSupportFragmentManager(), "songMenuActions");
+        //SongMenuDialog dialogFragment = new SongMenuDialog(myView.actionFAB);
+        //dialogFragment.show(requireActivity().getSupportFragmentManager(), "songMenuActions");
+        SongMenuBottomSheet songMenuBottomSheet = new SongMenuBottomSheet(myView.actionFAB);
+        songMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "songMenuActions");
     }
 
     private void showHideRows(TextInputLayout tr, boolean show) {

@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.preferences;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,19 +11,19 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.databinding.TextInputDialogBinding;
+import com.garethevans.church.opensongtablet.databinding.TextInputBottomsheetBinding;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
-public class TextInputDialogFragment extends DialogFragment {
+public class TextInputDialogFragment extends BottomSheetDialogFragment {
 
     private final Fragment fragment;
     private final String fragname;
@@ -35,7 +34,7 @@ public class TextInputDialogFragment extends DialogFragment {
     private ArrayList<String> prefChoices;
     private final boolean simpleEditText, singleLine;
 
-    private TextInputDialogBinding myView;
+    private TextInputBottomsheetBinding myView;
     private DialogReturnInterface dialogReturnInterface;
     private MainActivityInterface mainActivityInterface;
 
@@ -75,8 +74,11 @@ public class TextInputDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = TextInputDialogBinding.inflate(inflater,container,false);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myView = TextInputBottomsheetBinding.inflate(inflater,container,false);
+        if (getDialog()!=null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         // Set the views
         setViews();

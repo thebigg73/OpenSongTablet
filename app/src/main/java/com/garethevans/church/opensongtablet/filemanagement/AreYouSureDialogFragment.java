@@ -2,26 +2,25 @@ package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.AreyousureDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
-public class AreYouSureDialogFragment extends DialogFragment {
+public class AreYouSureDialogFragment extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
 
@@ -62,9 +61,9 @@ public class AreYouSureDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         AreyousureDialogBinding areYouSureBinding = AreyousureDialogBinding.inflate(inflater, container, false);
-        Window w = requireDialog().getWindow();
-        if (w!=null) {
-            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (getDialog()!=null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
+            getDialog().setCanceledOnTouchOutside(true);
         }
 
         areYouSureBinding.action.setText(action);

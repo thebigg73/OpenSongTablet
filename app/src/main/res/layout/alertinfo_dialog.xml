@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_dialog">
+    android:background="@color/colorAltPrimary"
+    app:elevation="4dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,76 +20,71 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/information" />
+            <TableRow style="@style/DividerLine" />
 
             <LinearLayout
                 android:id="@+id/appUpdated"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TableRow style="@style/DividerLine" />
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/latest_updates" />
+                    android:text="@string/latest_updates"
+                    android:padding="16dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/showUpdates"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/information" />
-
+                    android:text="@string/information"
+                    style="@style/TextBackgroundButton"/>
+                <TableRow style="@style/DividerLine" />
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/playServices"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TableRow style="@style/DividerLine" />
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:padding="16dp"
                     android:text="@string/play_services_error" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/playServicesInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/play_services_how" />
-
+                    android:text="@string/play_services_how"
+                    style="@style/TextBackgroundButton"/>
+                <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/timeToBackup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
+                android:orientation="vertical">
 
-                <TableRow style="@style/DividerLine" />
 
                 <TextView
                     android:id="@+id/backupDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
+                    android:padding="16dp"
                     android:text="@string/promptbackup" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/backupNow_Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/backup_now" />
-
+                    android:text="@string/backup_now"
+                    style="@style/TextBackgroundButton"/>
+                <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
         </LinearLayout>

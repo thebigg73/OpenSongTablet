@@ -18,6 +18,7 @@
 
     <!--Obviously named colours used as needed-->
     <color name="transparent">#00000000</color>
+    <color name="scrim">#CC000000</color>
     <color name="black">#000000</color>
     <color name="purple">#452277</color>
     <color name="blue">#0000aa</color>

@@ -57,7 +57,8 @@
         android:theme="@style/AppTheme"
         android:vmSafeMode="true"
         tools:ignore="UnusedAttribute"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"

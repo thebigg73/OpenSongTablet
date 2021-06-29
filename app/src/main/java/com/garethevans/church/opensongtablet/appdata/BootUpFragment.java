@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
@@ -53,18 +52,11 @@ public class BootUpFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mainActivityInterface.hideActionBar(true);
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         // Initialise the mainActivityInterface in the MainActivity!
         mainActivityInterface.setMainActivityInterface(mainActivityInterface);
-
         myView = BootupLogoBinding.inflate(inflater, container, false);
 
         // TODO

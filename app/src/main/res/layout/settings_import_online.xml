@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:isScrollContainer="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
             android:id="@+id/searchPhrase"
@@ -41,6 +42,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchButton"
+            style="@style/TextBackgroundButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -48,62 +50,75 @@
 
     </LinearLayout>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <FrameLayout
         android:id="@+id/webLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <FrameLayout
+                android:id="@+id/topButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/close"
+                    android:src="@drawable/ic_arrow_left_white_36dp"
+                    app:useCompatPadding="false" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/closeSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/close"
+                    android:src="@drawable/ic_close_white_36dp"
+                    app:useCompatPadding="false" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/save"
+                    android:src="@drawable/ic_download_white_36dp"
+                    android:visibility="gone"
+                    app:useCompatPadding="false" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/webViewHolder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <WebView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+            </FrameLayout>
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone" />
+        </LinearLayout>
 
-        </RelativeLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/backButton"
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|start"
-            android:layout_margin="8dp"
-            android:contentDescription="@string/close"
-            android:src="@drawable/ic_arrow_left_white_36dp"
-            app:useCompatPadding="true" />
+            android:layout_gravity="center"
+            android:visibility="visible" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/closeSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_margin="8dp"
-            android:contentDescription="@string/close"
-            android:src="@drawable/ic_close_white_36dp"
-            app:useCompatPadding="true" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="8dp"
-            android:contentDescription="@string/save"
-            android:src="@drawable/ic_download_white_36dp"
-            android:visibility="gone"
-            app:useCompatPadding="true" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/saveLayout"

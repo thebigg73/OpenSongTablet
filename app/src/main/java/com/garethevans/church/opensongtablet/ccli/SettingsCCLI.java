@@ -47,7 +47,7 @@ public class SettingsCCLI extends Fragment {
 
 
     private void setCurrentValues() {
-        myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "ccliAutomaticmaticLogging", false));
+        myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "ccliAutomaticLogging", false));
         ((TextView)myView.ccliChurch.findViewById(R.id.subText))
                 .setText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliChurchName", ""));
         ((TextView)myView.ccliLicence.findViewById(R.id.subText))
@@ -64,7 +64,7 @@ public class SettingsCCLI extends Fragment {
                 "ccliLicence", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliLicence", ""),true)));
         myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
-                "ccliAutomaticmaticLogging", isChecked));
+                "ccliAutomaticLogging", isChecked));
         myView.ccliView.setOnClickListener(v -> showDialog());
         myView.ccliExport.setOnClickListener(view -> mainActivityInterface.doExport("ccliLog"));
         myView.ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete",

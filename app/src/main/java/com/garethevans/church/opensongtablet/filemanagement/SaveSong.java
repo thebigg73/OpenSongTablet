@@ -111,7 +111,7 @@ public class SaveSong {
 
             // If we are autologging CCLI information
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "ccliAutomaticLogging", false)) {
-                mainActivityInterface.getCCLILog().addEntry(c, mainActivityInterface, "3"); // 3=edited
+                mainActivityInterface.getCCLILog().addEntry(c, mainActivityInterface, mainActivityInterface.getSong(), "3"); // 3=edited
             }
             return saveOK;
         } else {

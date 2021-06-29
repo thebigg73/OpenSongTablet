@@ -136,6 +136,11 @@ public class ExportFragment extends Fragment {
         String exportFilename = "";
         String content = null;
 
+        // Sharing a song should initiate the CCLI Log of printed (value 6)
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"ccliAutomaticLogging",false)) {
+            mainActivityInterface.getCCLILog().addEntry(requireContext(),mainActivityInterface,mainActivityInterface.getSong(),"6");
+        }
+
         if ((mainActivityInterface.getSong().getFiletype().equals("PDF") && type.equals("application/pdf") && myView.pdf.isChecked()) ||
                 (mainActivityInterface.getSong().getFiletype().equals("IMG") && type.equals("image/*") && myView.image.isChecked())) {
             // This is for PDF or image songs  Only allow export in the same format

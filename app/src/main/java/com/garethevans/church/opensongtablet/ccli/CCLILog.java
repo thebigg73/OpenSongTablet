@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,7 +69,7 @@ public class CCLILog {
 
     private ArrayList<String> songfile, title, author, copyright, ccli, date, time, action;
 
-    public void addEntry(Context c, MainActivityInterface mainActivityInterface, String usageType) {
+    public void addEntry(Context c, MainActivityInterface mainActivityInterface, Song thisSong, String usageType) {
 
         // Check if the log exists or if we need to create it
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Settings", "", "ActivityLog.xml");
@@ -81,7 +82,7 @@ public class CCLILog {
         // Set the date and time
         setTheDateAndTime();
 
-        doTheSaving(c, mainActivityInterface, uri, usageType);
+        doTheSaving(c, mainActivityInterface, thisSong, uri, usageType);
     }
 
     public boolean createBlankXML(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
@@ -109,7 +110,7 @@ public class CCLILog {
         thisdate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
-    private void doTheSaving(Context c, MainActivityInterface mainActivityInterface, Uri uri, String usageType) {
+    private void doTheSaving(Context c, MainActivityInterface mainActivityInterface, Song thisSong, Uri uri, String usageType) {
         try {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -176,23 +177,23 @@ public class CCLILog {
                 newItem.appendChild(a_usage);
 
                 Element a_fname = document.createElement("FileName");
-                a_fname.appendChild(document.createTextNode(mainActivityInterface.getSong().getFilename()));
+                a_fname.appendChild(document.createTextNode(thisSong.getFilename()));
                 newItem.appendChild(a_fname);
 
                 Element a_title = document.createElement("title");
-                a_title.appendChild(document.createTextNode(mainActivityInterface.getSong().getTitle()));
+                a_title.appendChild(document.createTextNode(thisSong.getTitle()));
                 newItem.appendChild(a_title);
 
                 Element a_author = document.createElement("author");
-                a_author.appendChild(document.createTextNode(mainActivityInterface.getSong().getAuthor()));
+                a_author.appendChild(document.createTextNode(thisSong.getAuthor()));
                 newItem.appendChild(a_author);
 
                 Element a_copyright = document.createElement("copyright");
-                a_copyright.appendChild(document.createTextNode(mainActivityInterface.getSong().getCopyright()));
+                a_copyright.appendChild(document.createTextNode(thisSong.getCopyright()));
                 newItem.appendChild(a_copyright);
 
                 Element a_ccli = document.createElement("ccli");
-                a_ccli.appendChild(document.createTextNode(mainActivityInterface.getSong().getCcli()));
+                a_ccli.appendChild(document.createTextNode(thisSong.getCcli()));
                 newItem.appendChild(a_ccli);
 
                 if (root != null) {
@@ -353,15 +354,24 @@ public class CCLILog {
                         ccli.get(x), date.get(x), time.get(x), getActionText(c, action.get(x))};
                 tableLayout.addView(getRow(c, rowVals, false));
             }
+        } else {
+            // Empty
+            tableLayout.addView(getRow(c,new String[]{c.getString(R.string.empty),"","","","","","",""},false));
         }
         return tableLayout;
     }
 
-
     public TableRow getRow(Context c, String[] vals, boolean isHeader) {
         TableRow tableRow = new TableRow(c);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        tableRow.setLayoutParams(layoutParams);
         for (String val : vals) {
             TextView textView = new TextView(c);
+            textView.setSingleLine(false);
+            TableRow.LayoutParams layoutParams2 = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,1.0f);
+            textView.setLayoutParams(layoutParams2);
             textView.setText(val);
             textView.setPadding(8,0,8,0);
             if (isHeader) {

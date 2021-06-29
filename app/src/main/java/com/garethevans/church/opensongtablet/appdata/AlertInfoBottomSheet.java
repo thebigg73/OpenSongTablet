@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.appdata;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,11 +13,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.AlertinfoDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /*
 This file shows the user any appropriate warnings.  These can be
@@ -27,7 +26,7 @@ This file shows the user any appropriate warnings.  These can be
 - A warning about not having Google Play Services installed
  */
 
-public class AlertInfoDialogFragment extends DialogFragment {
+public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
     private AlertinfoDialogBinding myView;
@@ -43,7 +42,8 @@ public class AlertInfoDialogFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = AlertinfoDialogBinding.inflate(inflater,container,false);
         if (getDialog()!=null) {
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
+            getDialog().setCanceledOnTouchOutside(true);
         }
 
         // Show/hide the appropriate alerts

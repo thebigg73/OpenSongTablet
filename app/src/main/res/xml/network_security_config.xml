@@ -13,5 +13,7 @@
         <domain includeSubdomains="true">twitter.com</domain>
         <domain includeSubdomains="true">paypal.com</domain>
         <domain includeSubdomains="true">google.com</domain>
+        <!-- Had to include ads from some of the chord websites-->
+        <domain includeSubdomains="true">amazon-adsystem.com</domain>
     </domain-config>
 </network-security-config>

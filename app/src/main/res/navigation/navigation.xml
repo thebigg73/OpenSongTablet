@@ -473,7 +473,7 @@
 
         <dialog
             android:id="@+id/alertInfoDialogFragment"
-            android:name="com.garethevans.church.opensongtablet.appdata.AlertInfoDialogFragment"
+            android:name="com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet"
             android:label="@string/information">
             <deepLink
                 android:id="@+id/deepLink6"
