@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView">
+    style="@style/PrefScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +15,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:sub="@string/theme_dark"
-            app:main="@string/theme_choose" />
+            app:main="@string/theme_choose"
+            app:sub="@string/theme_dark" />
+
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -25,6 +26,7 @@
             android:layout_height="wrap_content"
             app:main="@string/font_choose"
             app:sub="@string/font_choose_description" />
+
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -33,6 +35,7 @@
             android:layout_height="wrap_content"
             app:main="@string/scaling"
             app:sub="@string/scaling_info" />
+
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -41,6 +44,7 @@
             android:layout_height="wrap_content"
             app:main="@string/song_display"
             app:sub="@string/extra_settings" />
+
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -49,6 +53,7 @@
             android:layout_height="wrap_content"
             app:main="@string/connected_display"
             app:sub="@string/connected_display_description" />
+
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -57,6 +62,7 @@
             android:layout_height="wrap_content"
             app:main="@string/actionbar_display"
             app:sub="@string/actionbar_info" />
+
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -65,6 +71,7 @@
             android:layout_height="wrap_content"
             app:main="@string/menu_settings"
             app:sub="@string/menu_settings_description" />
+
         <TableRow style="@style/DividerLine" />
 
     </LinearLayout>

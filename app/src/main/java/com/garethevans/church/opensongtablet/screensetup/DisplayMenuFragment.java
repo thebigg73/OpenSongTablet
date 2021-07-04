@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -60,9 +59,7 @@ public class DisplayMenuFragment extends Fragment {
                 themeName = getString(R.string.theme_custom2);
                 break;
         }
-        LinearLayout ll = (LinearLayout) myView.themeButton.getChildAt(0);
-        TextView currTheme = (TextView) ll.getChildAt(1);
-        currTheme.setText(themeName);
+        ((TextView)myView.themeButton.findViewById(R.id.subText)).setText(themeName);
     }
 
     private void setListeners() {

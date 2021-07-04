@@ -44,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lyrics"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -53,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/chords"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -62,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/capo_chords"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -71,6 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/background"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -97,6 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/verse"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -106,6 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/chorus"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -115,6 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/prechorus"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -124,6 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/bridge"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -133,6 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tag"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -142,6 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/comment"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -151,6 +161,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/custom"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -160,6 +171,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -169,6 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/chords"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -195,6 +208,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/text"
+            style="@style/TextBackgroundButton"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -204,6 +218,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/info_text"
+            style="@style/TextBackgroundButton"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -213,6 +228,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/alert"
+            style="@style/TextBackgroundButton"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -222,6 +238,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/block_text_shadow"
+            style="@style/TextBackgroundButton"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -248,6 +265,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/metronome"
+            style="@style/TextBackgroundButton"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -257,6 +275,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/page_buttons"
+            style="@style/TextBackgroundButton"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -283,6 +302,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/text"
+            style="@style/TextBackgroundButton"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -292,6 +312,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/background"
+            style="@style/TextBackgroundButton"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -318,6 +339,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/text"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -327,6 +349,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/background"
+                style="@style/TextBackgroundButton"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />

@@ -83,13 +83,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="vertical">
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/doMove"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_margin="12dp"
                 android:padding="12dp"
+                style="@style/TextBackgroundButton"
                 android:text="@string/move_to_folder"/>
 
             <TextView
