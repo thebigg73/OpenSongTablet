@@ -107,11 +107,19 @@
     </style>
 
     <!--For the song and set menu -->
+    <style name="cardView_Title" parent="AppTheme">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="cardView_Subtitle" parent="AppTheme">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="setItem" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="contentPadding">2dp</item>
-        <item name="cardCornerRadius">8dp</item>
-        <item name="cardBackgroundColor">@color/transparent</item>
-        <item name="android:layout_margin">2dp</item>
+        <item name="contentPadding">8dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="elevation">8dp</item>
+        <item name="cardBackgroundColor">@color/colorAltPrimary</item>
     </style>
 
     <style name="menuTabs" parent="@style/Widget.MaterialComponents.TabLayout">
@@ -161,8 +169,27 @@
         <!-- However, we have to manually set the scrim colour and touch cancel in the fragment-->
         <item name="android:windowIsFloating">false</item>
         <item name="expanded">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.8</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="behavior_fitToContents">true</item>
+        <item name="android:state_expanded">true</item>
     </style>
 
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+
+    <style name="FullscreenBottomSheet" parent="BottomSheetDialogTheme">
+        <item name="behavior_skipCollapsed">true</item>
+        <item name="behavior_fitToContents">true</item>
+        <item name="behavior_peekHeight">0dp</item> // yep, that helped to skip collapsed state at initial
+        <item name="behavior_hideable">true</item>
+    </style>
     <style name="RoundedBox" parent="ShapeAppearance.MaterialComponents.LargeComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">16dp</item>
@@ -210,7 +237,7 @@
 
     <style name="TextButtonNoOutline" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/white</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">16dp</item>
         <item name="android:layout_gravity">center</item>
     </style>
 

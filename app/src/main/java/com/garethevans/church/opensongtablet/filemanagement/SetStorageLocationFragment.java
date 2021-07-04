@@ -16,7 +16,6 @@ import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -29,8 +28,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
-import com.garethevans.church.opensongtablet.databinding.StorageSetstoragelocationBinding;
+import com.garethevans.church.opensongtablet.databinding.StorageChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -60,7 +60,7 @@ public class SetStorageLocationFragment extends Fragment {
     ActivityResultLauncher<Intent> folderChooser;
     ActivityResultLauncher<String> storagePermission;
 
-    private StorageSetstoragelocationBinding myView;
+    private StorageChooseBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -76,7 +76,7 @@ public class SetStorageLocationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        myView = StorageSetstoragelocationBinding.inflate(inflater, container, false);
+        myView = StorageChooseBinding.inflate(inflater, container, false);
 
         // Set up the views
         initialiseViews();
@@ -114,13 +114,8 @@ public class SetStorageLocationFragment extends Fragment {
 
         // Set the listeners for the buttons
         myView.infoButton.setOnClickListener(v -> {
-            if (myView.extraInfoSection.getVisibility()==View.VISIBLE) {
-                myView.extraInfoSection.setVisibility(View.GONE);
-                myView.scrollView.post(() -> myView.scrollView.fullScroll(ScrollView.FOCUS_UP));
-            } else {
-                myView.extraInfoSection.setVisibility(View.VISIBLE);
-                myView.scrollView.post(() -> myView.scrollView.fullScroll(ScrollView.FOCUS_DOWN));
-            }
+            BottomSheetDialogFragment dialog = new SetStorageBottomSheet();
+            dialog.show(requireActivity().getSupportFragmentManager(),"SetStorageBottomSheet");
         });
         myView.setStorage.setOnClickListener(v -> chooseStorageLocation());
         myView.findStorage.setOnClickListener(v -> startSearch());

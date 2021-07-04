@@ -393,7 +393,7 @@
     <string name="set_help">"Przeciągnij piosenki wokół, aby zmienić kolejność zestawu"</string>
     <string name="set_manage_click">"Kliknij na element w zestawie, by go zobaczyć"</string>
     <string name="set_manage_swipe">"Przesuń palec, aby usunąć element z listy ustalonej"</string>
-    <string name="set_name">"Nowy zestaw Nazwa"</string>
+    <string name="set_new_name">"Nowy zestaw Nazwa"</string>
     <string name="set_new">"Oczyścić"</string>
     <string name="sethasbeendeleted">"zostało usunięte z folderu 'ustawia."</string>
     <string name="song_menu_checkboxes">"Pokaż zaznaczone pola wyboru w menu piosenki"</string>

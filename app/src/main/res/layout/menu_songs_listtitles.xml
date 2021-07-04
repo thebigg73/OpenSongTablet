@@ -10,7 +10,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/title"
+        android:text="@string/song"
+        android:padding="8dp"
         style="@style/backFragHeading"/>
 
     <TextView
@@ -18,7 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/set"
+        android:padding="8dp"
         android:layout_marginStart="4dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="40dp"
         style="@style/backFragHeading" />
 </LinearLayout>

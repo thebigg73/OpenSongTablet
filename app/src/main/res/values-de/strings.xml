@@ -393,7 +393,7 @@
     <string name="set_help">"Elemente verschieben um die Reihenfolge im aktuellen Set zu ändern"</string>
     <string name="set_manage_click">"Auf ein Element aus dem Set klicken, um es anzuzeigen."</string>
     <string name="set_manage_swipe">"Wischen, um ein Element aus der Setlist zu entfernen."</string>
-    <string name="set_name">"Neue Set-Namen"</string>
+    <string name="set_new_name">"Neue Set-Namen"</string>
     <string name="set_new">"Zurücksetzen"</string>
     <string name="sethasbeendeleted">"wurde aus Ihrem Ordner 'Sets' gelöscht."</string>
     <string name="song_menu_checkboxes">"Set-Kontrollkästchen im Liedmenü anzeigen"</string>

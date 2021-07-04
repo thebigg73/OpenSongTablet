@@ -393,7 +393,7 @@
     <string name="set_help">"Drag dalok körül, hogy a sorrend megváltoztatása a beállított"</string>
     <string name="set_manage_click">"Kattintson egy elemre, a készlet a megtekintéshez"</string>
     <string name="set_manage_swipe">"Ellop eltávolítani egy elemet a beállítás listáról"</string>
-    <string name="set_name">"Új nevet"</string>
+    <string name="set_new_name">"Új nevet"</string>
     <string name="set_new">"Vámkezeltet"</string>
     <string name="sethasbeendeleted">"törölték a \"készletek\" mappába."</string>
     <string name="song_menu_checkboxes">"Itt található készlet jelölőnégyzetet dal menü"</string>

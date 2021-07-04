@@ -1,71 +1,89 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/PrefScrollView"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/PrefScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-                <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/infoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/storage_graph_overview_info" />
 
-        <TextView
-            android:id="@+id/infoText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="@string/storage_graph_overview_info" />
+                <LinearLayout
+                    android:id="@+id/storageGraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-        <TextView
-            android:id="@+id/rootFolder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:background="@color/lightred"
-            android:padding="12dp"
-            android:text="@string/app_name"/>
+                    <TextView
+                        android:id="@+id/rootFolder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@color/lightred"
+                        android:gravity="center_horizontal"
+                        android:padding="12dp"
+                        android:text="@string/app_name" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/scroll_down"
-            android:src="@drawable/ic_arrow_down_white_36dp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/scroll_down"
+                        android:src="@drawable/ic_arrow_down_white_36dp" />
 
-        <TextView
-            android:id="@+id/mainFolder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:background="@color/lightgreen"
-            android:padding="12dp"
-            android:text="@string/mainfoldername"/>
+                    <TextView
+                        android:id="@+id/mainFolder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@color/lightgreen"
+                        android:gravity="center_horizontal"
+                        android:padding="12dp"
+                        android:text="@string/mainfoldername" />
 
-        <ImageView
-            android:id="@+id/subFolderArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/scroll_down"
-            android:src="@drawable/ic_arrow_down_white_36dp"
-            android:visibility="gone"/>
+                    <ImageView
+                        android:id="@+id/subFolderArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/scroll_down"
+                        android:src="@drawable/ic_arrow_down_white_36dp"
+                        android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/folderList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"/>
+                    <LinearLayout
+                        android:id="@+id/folderList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone" />
 
                 </LinearLayout>
+            </LinearLayout>
         </ScrollView>
+    </LinearLayout>
 
-
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible" />
+</RelativeLayout>

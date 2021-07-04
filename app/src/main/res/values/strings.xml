@@ -5,6 +5,7 @@
     <string name="about_description">App info, help, user guide, etc.</string>
     <string name="action">Action</string>
     <string name="actions">Actions</string>
+    <string name="actions_current_song">Actions for current song</string>
     <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned
         to song actions such as metronomes, transpose, pads, etc.\nLong pressing on the main button
         lets you change the settings of each button.\nLong pressing on some page buttons performs
@@ -103,6 +104,7 @@
     <string name="date">Date</string>
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
     <string name="delete">Delete</string>
+    <string name="delete_folder_info">Delete song subdirectory</string>
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!\n\nPlease make sure you have made and saved backups of ALL your files before proceeding!!!</string>
     <string name="display">Display</string>
     <string name="display_settings">Change display settings (what you see on screen)</string>
@@ -134,6 +136,7 @@
     <string name="folder">Folder</string>
     <string name="folder_exists">This folder already exists!</string>
     <string name="folder_move_contents">Move folder contents</string>
+    <string name="folder_move_contents_info">Move songs between song folders</string>
     <string name="folder_rename">Edit song folder name</string>
     <string name="font_browse">Browse all Google Fonts</string>
     <string name="font_choose">Change fonts</string>
@@ -156,6 +159,7 @@
     <string name="image_slide">Image slideshow</string>
     <string name="import_basic">Import</string>
     <string name="import_main">Import or create songs</string>
+    <string name="import_from_file">Import from a saved file</string>
     <string name="file">File</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
@@ -261,6 +265,7 @@
     <string name="music_score">Music score</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="new_folder">Create new song folder</string>
+    <string name="new_folder_info">Add subfolders in your Songs folder</string>
     <string name="new_folder_name">Enter a new folder name</string>
     <string name="new_something">New</string>
     <string name="next">Next</string>
@@ -320,6 +325,7 @@
     <string name="rename">Rename</string>
     <string name="reprise">Reprise</string>
     <string name="respect_copyright">Respect copyright - always use legally</string>
+    <string name="restore">Restore</string>
     <string name="resume">Resume</string>
     <string name="root">ROOT</string>
     <string name="save">Save</string>
@@ -343,8 +349,17 @@
     <string name="set_current">Current set</string>
     <string name="set_manage">Manage your sets</string>
     <string name="set_new">Create a new set</string>
+    <string name="set_load_info">Load a previously saved set</string>
+    <string name="set_manage_info">Save, load, export, remove, import and backup sets</string>
+    <string name="set_name">Set name</string>
+    <string name="set_new_info">Remove all songs from the current set</string>
+    <string name="set_new_name">New set name</string>
+    <string name="set_save_info">Save the current set for future use</string>
+    <string name="set_share_info">Share or export a set with others</string>
     <string name="set_shuffle">Shuffle set</string>
+    <string name="set_shuffle_info">Randomise the order of songs in the set</string>
     <string name="settings">Settings</string>
+    <string name="share">Share</string>
     <string name="show">Show</string>
     <string name="show_capo">Show capo chords</string>
     <string name="show_chords">Show chords</string>
@@ -797,7 +812,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="set_help">Drag songs around to change the order of your set</string>
     <string name="set_manage_click">Click on an item in the set to view it</string>
     <string name="set_manage_swipe">Swipe to remove an item from your set list</string>
-    <string name="set_name">New set name</string>
     <string name="sethasbeendeleted">has been deleted from your \'Sets\' folder.</string>
     <string name="setxmargins">Horizontal margin size</string>
     <string name="setymargins">Vertical margin size</string>

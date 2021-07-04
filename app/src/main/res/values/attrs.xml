@@ -3,6 +3,7 @@
     <declare-styleable name="PrefTextLinkView">
         <attr name="main" format="string"/>
         <attr name="sub" format="string"/>
+        <attr name="myicon" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="PrefEditTextView">

@@ -155,6 +155,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return new ArrayList<>();
         }
     }
+    public String getKey(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+        try (SQLiteDatabase db = getDB(c)) {
+            return mainActivityInterface.getCommonSQL().getKey(db, folder, filename);
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
 }
 

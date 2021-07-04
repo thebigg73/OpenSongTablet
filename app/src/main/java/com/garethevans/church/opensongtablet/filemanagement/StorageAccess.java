@@ -864,6 +864,39 @@ public class StorageAccess {
         return isImgOrPDF;
     }
 
+    public boolean isSpecificFileExtension(String whichType, String filename) {
+        String toCheck = "";
+        switch (whichType) {
+            case "image":
+                toCheck = ".jpg.jpeg.gif.bmp";
+                break;
+            case "pdf":
+                toCheck = ".pdf";
+                break;
+            case "imageorpdf":
+                toCheck = ".jpg.jpeg.gif.bmp.pdf";
+                break;
+            case "chordpro":
+                toCheck = ".cho.crd.chopro.pro";
+                break;
+            case "onsong":
+                toCheck = ".onsong";
+                break;
+            case "text":
+                toCheck = ".txt";
+                break;
+        }
+        // This is a simple check for file extensions that tell the app which database to use
+        filename = filename.toLowerCase(Locale.ROOT);
+        if (filename.contains(".")) {
+            filename = filename.substring(filename.lastIndexOf("."));
+            return toCheck.contains(filename);
+        } else {
+            return false;
+        }
+    }
+
+
 
 
 

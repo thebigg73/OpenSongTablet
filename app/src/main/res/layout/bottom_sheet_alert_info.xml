@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorAltPrimary"
-    app:elevation="4dp">
+    android:orientation="vertical">
 
-    <ScrollView
+    <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/storage_change" />
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -14,13 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
-                android:id="@+id/dialogHeading"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="@string/information" />
-            <TableRow style="@style/DividerLine" />
 
             <LinearLayout
                 android:id="@+id/appUpdated"
@@ -31,15 +30,16 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/latest_updates"
-                    android:padding="16dp"/>
+                    android:padding="16dp"
+                    android:text="@string/latest_updates" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/showUpdates"
+                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/information"
-                    style="@style/TextBackgroundButton"/>
+                    android:text="@string/information" />
+
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
@@ -57,10 +57,11 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/playServicesInfo"
+                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/play_services_how"
-                    style="@style/TextBackgroundButton"/>
+                    android:text="@string/play_services_how" />
+
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
@@ -69,7 +70,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
 
                 <TextView
                     android:id="@+id/backupDescription"
@@ -80,15 +80,16 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/backupNow_Button"
+                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/backup_now"
-                    style="@style/TextBackgroundButton"/>
+                    android:text="@string/backup_now" />
+
                 <TableRow style="@style/DividerLine" />
             </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

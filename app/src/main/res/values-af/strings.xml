@@ -392,7 +392,7 @@
     <string name="set_help">"Sleep liedjies rondom die einde van jou stel om te verander"</string>
     <string name="set_manage_click">"Klik op \'n item in die stel om dit te kan sien"</string>
     <string name="set_manage_swipe">"Swipe om \'n item uit jou stel lys verwyder"</string>
-    <string name="set_name">"Nuwe stel naam"</string>
+    <string name="set_new_name">"Nuwe stel naam"</string>
     <string name="set_new">"Opruim"</string>
     <string name="sethasbeendeleted">"is van jou gids stelle 'verwyder."</string>
     <string name="song_menu_checkboxes">"Wys verstek bokse in die lied menu"</string>

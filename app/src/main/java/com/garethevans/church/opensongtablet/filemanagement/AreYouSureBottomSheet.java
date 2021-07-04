@@ -1,33 +1,31 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.AreyousureDialogBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetAreYouSureBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
-public class AreYouSureDialogFragment extends BottomSheetDialogFragment {
+public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -35,21 +33,25 @@ public class AreYouSureDialogFragment extends BottomSheetDialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @NonNull
     @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
-        super.onCancel(dialog);
-        dismiss();
-        mainActivityInterface.songMenuActionButtonShow(true);
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
     }
 
-    private final String action;
-    private final String what;
+    private final String action, what, fragName;
     private final ArrayList<String> arguments;
-    private final String fragName;
     private final Fragment callingFragment;  // can be null if not needed for MainActivity to refresh the fragment
     private final Song song;
 
-    public AreYouSureDialogFragment(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
+    public AreYouSureBottomSheet(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
         this.what = what;
         this.action = action;
         this.arguments = arguments;
@@ -60,21 +62,14 @@ public class AreYouSureDialogFragment extends BottomSheetDialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        AreyousureDialogBinding areYouSureBinding = AreyousureDialogBinding.inflate(inflater, container, false);
-        if (getDialog()!=null) {
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
-            getDialog().setCanceledOnTouchOutside(true);
-        }
-
-        areYouSureBinding.action.setText(action);
-        areYouSureBinding.cancelButton.setOnClickListener(v -> {
-            mainActivityInterface.confirmedAction(false,what,arguments,fragName,callingFragment,song);
-            dismiss();
-        });
-        areYouSureBinding.okButton.setOnClickListener(v -> {
+        BottomSheetAreYouSureBinding myView = BottomSheetAreYouSureBinding.inflate(inflater, container, false);
+        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(getString(R.string.areyousure));
+        myView.action.setText(action);
+        myView.okButton.setOnClickListener(v -> {
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);
             dismiss();
         });
-        return areYouSureBinding.getRoot();
+        return myView.getRoot();
     }
 }

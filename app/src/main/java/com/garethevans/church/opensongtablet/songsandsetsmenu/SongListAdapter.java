@@ -48,8 +48,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
     private void initialiseCheckedArray(CurrentSet currentSet) {
         for (int i = 0; i < songList.size(); i++) {
-            if (currentSet.getCurrentSet().contains(mainActivityInterface.getSetActions().
-                    setSongForSetWork(c, songList.get(i)))) {
+            if (currentSet.getSetItems().contains(mainActivityInterface.getSetActions().
+                    getSongForSetWork(c, songList.get(i)))) {
                 checkedArray.put(i, true);
             }
         }
@@ -83,7 +83,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         }
         songItemViewHolder.itemTitle.setText(filename);
         songItemViewHolder.itemFolder.setText(folder);
-        songItemViewHolder.itemAuthor.setText(author);
+        if (author.isEmpty()) {
+            songItemViewHolder.itemAuthor.setVisibility(View.GONE);
+        } else {
+            songItemViewHolder.itemAuthor.setText(author);
+        }
 
         // Set the key if it exists
         if (!key.isEmpty()) {
@@ -91,7 +95,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             songItemViewHolder.itemKey.setText(key);
             songItemViewHolder.itemKey.setVisibility(View.VISIBLE);
         } else {
-            songItemViewHolder.itemKey.setVisibility(View.INVISIBLE);
+            songItemViewHolder.itemKey.setVisibility(View.GONE);
         }
 
         // Set the author if it exists
@@ -99,7 +103,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             songItemViewHolder.itemAuthor.setText(author);
             songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
         } else {
-            songItemViewHolder.itemAuthor.setVisibility(View.INVISIBLE);
+            songItemViewHolder.itemAuthor.setVisibility(View.GONE);
         }
 
         // Set the checkbox if the song is in the set
@@ -110,7 +114,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         songItemViewHolder.itemCard.setOnClickListener(v -> {
             song.setFilename(mfilename);
             song.setFolder(songfolder);
-            mainActivityInterface.getSetActions().setSongForSetWork(c,song);
+            mainActivityInterface.getSetActions().getSongForSetWork(c,song);
             if (callback!=null) {
                 callback.onItemClicked(i,songfolder,mfilename);
             }
@@ -121,7 +125,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             songItemViewHolder.itemCard.setOnContextClickListener(v -> {
                 song.setFilename(mfilename);
                 song.setFolder(songfolder);
-                mainActivityInterface.getSetActions().setSongForSetWork(c,song);
+                mainActivityInterface.getSetActions().getSongForSetWork(c,song);
                 if (callback!=null) {
                     callback.onItemLongClicked(i,songfolder,mfilename);
                 }
@@ -132,7 +136,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         songItemViewHolder.itemCard.setOnLongClickListener(v -> {
             song.setFilename(mfilename);
             song.setFolder(songfolder);
-            mainActivityInterface.getSetActions().setSongForSetWork(c,song);
+            mainActivityInterface.getSetActions().getSongForSetWork(c,song);
             if (callback!=null) {
                 callback.onItemLongClicked(i,songfolder,mfilename);
             }
@@ -144,7 +148,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             if (!checkedArray.get(adapterPosition, false)) {
                 songItemViewHolder.itemChecked.setChecked(true);
                 checkedArray.put(adapterPosition, true);
-                mainActivityInterface.getSetActions().addToSet(c,mainActivityInterface);
+                mainActivityInterface.getSetActions().addToSet(c,mainActivityInterface,song);
 
             }
             else  {

@@ -72,7 +72,7 @@ import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
-import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
+import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.filemanagement.ExportFiles;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
@@ -570,11 +570,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         song.setFolder(preferences.getMyPreferenceString(this, "whichSongFolder", getString(R.string.mainfoldername)));
 
         // Set
-        currentSet.setCurrentSetString(preferences.getMyPreferenceString(this,"setCurrent",""));
-        // TODO
-        currentSet.setCurrentSetString("$**_Abba Father_**$$**_Above all_**$");
-
-        setActions.setStringToSet(this,mainActivityInterface);
+        // TODO remove the temp made up set
+        preferences.setMyPreferenceString(this, "setCurrent",
+                "$**_MAIN/Abba Father_***G***__**$$**_MAIN/All I need_**$$**_Band/500 miles_***E***__**$");
+        setActions.preferenceStringToArrays(this,mainActivityInterface);
 
         // Set the locale
         fixLocale.setLocale(this,mainActivityInterface);
@@ -642,7 +641,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-                hideActionButton(false);
+                if (activityMainBinding.drawerLayout.getDrawerLockMode(GravityCompat.START) ==
+                        DrawerLayout.LOCK_MODE_UNLOCKED) {
+                    hideActionButton(false);
+                } else {
+                    hideActionBar(true);
+                }
                 hideKeyboard();
             }
 
@@ -853,11 +857,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string
         windowFlags.setWindowFlags();
-        if (title!=null) {
-            appActionBar.setActionBar(this,mainActivityInterface,title);
-        } else {
-            appActionBar.setActionBar(this,mainActivityInterface,null);
-        }
+        appActionBar.setActionBar(this,mainActivityInterface, title);
 
         if (title!=null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
             // Make sure the content shows below the action bar
@@ -1023,6 +1023,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 songListBuildIndex.setIndexComplete(true);
                 showToast.doIt(this,getString(R.string.search_index_end));
                 updateSongMenu(song);
+                updateSetMenu();
             });
         }).start();
     }
@@ -1037,6 +1038,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             Log.d(TAG, "songMenuFragment not available");
         }
     }
+    public void updateSetMenu() {
+        // Something might have changed in the set menu
+        if (setMenuFragment != null) {
+            setMenuFragment.prepareCurrentSet();
+        } else {
+            Log.d(TAG, "setMenuFragment not available");
+        }
+    }
+
     private void setUpSongMenuTabs() {
         adapter = new ViewPagerAdapter(getSupportFragmentManager(),MainActivity.this.getLifecycle());
         adapter.createFragment(0);
@@ -1277,9 +1287,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void navigateToFragment(String deepLink, int id) {
         // Either sent a deeplink string, or a fragment id
-        hideActionButton(true);
-        closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         lockDrawer(true);
+        closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
+        hideActionButton(true);
         try {
             if (deepLink!=null) {
                 navController.navigate(Uri.parse(deepLink));
@@ -1335,12 +1345,19 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                             ShowToast.showToast(this,getString(R.string.error));
                         }
                     }
+                    break;
+
+                case "shuffleSet":
+                    // User has the set menu open and wants to shuffle the set
+                    if (setMenuFragment!=null) {
+                        setMenuFragment.shuffleSet();
+                    }
             }
         }
     }
     @Override
     public void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
-        AreYouSureDialogFragment dialogFragment = new AreYouSureDialogFragment(what,action,arguments,fragName,callingFragment,song);
+        AreYouSureBottomSheet dialogFragment = new AreYouSureBottomSheet(what,action,arguments,fragName,callingFragment,song);
         dialogFragment.show(this.getSupportFragmentManager(), "areYouSure");
     }
     @Override
@@ -2169,6 +2186,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             switch (local) {
                 case "mode":
                     location = "https://www.opensongapp.com/user-guide/the-app-modes";
+                    break;
+                case "storage":
+                    location = "https://www.opensongapp.com/user-guide/setting-up-and-using-opensongapp/setting-up-opensong-tablet";
                     break;
             }
         }

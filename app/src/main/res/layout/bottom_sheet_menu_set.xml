@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="true"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+                android:id="@+id/closeView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                android:id="@+id/createSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:main="@string/set_new"
+                app:sub="@string/set_new_info"
+                app:myicon="@drawable/ic_table_edit_white_36dp" />
+
+            <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                android:id="@+id/manageSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:main="@string/set_manage"
+                app:sub="@string/set_manage_info"
+                app:myicon="@drawable/ic_database_white_36dp" />
+
+            <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                android:id="@+id/addCustom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:main="@string/custom_slide"
+                app:sub="@string/add_custom_slide"
+                app:myicon="@drawable/ic_format_list_bulleted_white_36dp" />
+
+            <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                android:id="@+id/shuffleSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:main="@string/set_shuffle"
+                app:sub="@string/set_shuffle_info"
+                app:myicon="@drawable/ic_shuffle_white_36dp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -393,7 +393,7 @@
     <string name="set_help">"Canciones Arrastre alrededor para cambiar el orden de su aparato"</string>
     <string name="set_manage_click">"Haga clic en un elemento en el conjunto para visualizarla"</string>
     <string name="set_manage_swipe">"Pase al eliminar un elemento de la lista de temas"</string>
-    <string name="set_name">"Nuevo nombre de conjunto"</string>
+    <string name="set_new_name">"Nuevo nombre de conjunto"</string>
     <string name="set_new">"Despejar"</string>
     <string name="sethasbeendeleted">"ha sido borrado de la carpeta de \"conjuntos\"."</string>
     <string name="song_menu_checkboxes">"Mostrar casillas de verificación en el menú de canciones"</string>

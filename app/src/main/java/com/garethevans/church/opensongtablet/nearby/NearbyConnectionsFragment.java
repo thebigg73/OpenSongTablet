@@ -17,7 +17,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsNearbyconnectionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
-import com.garethevans.church.opensongtablet.preferences.TextInputDialogFragment;
+import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 public class NearbyConnectionsFragment extends Fragment {
 
@@ -180,7 +180,7 @@ public class NearbyConnectionsFragment extends Fragment {
     }
 
     private void textInputDialog() {
-        TextInputDialogFragment dialogFragment = new TextInputDialogFragment(this,
+        TextInputBottomSheet dialogFragment = new TextInputBottomSheet(this,
                 "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),
                 "deviceId", mainActivityInterface.getNearbyConnections().deviceId,true);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");

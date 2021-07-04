@@ -114,7 +114,7 @@
     <string name="select_page">"Odabrati stranu"</string>
     <string name="set">"SET LISTA"</string>
     <string name="load">"Učitati"</string>
-    <string name="set_name">"Novo ime set liste"</string>
+    <string name="set_new_name">"Novo ime set liste"</string>
     <string name="set_new">"Očistiti"</string>
     <string name="delete">"Obrisati"</string>
     <string name="export">"Izvoz"</string>

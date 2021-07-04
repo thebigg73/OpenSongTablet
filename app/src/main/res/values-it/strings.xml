@@ -393,7 +393,7 @@
     <string name="set_help">"Trascinare brani intorno per cambiare l' ordine del set"</string>
     <string name="set_manage_click">"Clicca su una voce nel set per vederlo"</string>
     <string name="set_manage_swipe">"Swipe per rimuovere un elemento dall\'elenco set"</string>
-    <string name="set_name">"Nuovo nome set"</string>
+    <string name="set_new_name">"Nuovo nome set"</string>
     <string name="set_new">"Pulisci"</string>
     <string name="sethasbeendeleted">"è stato eliminato dalla cartella tua 'Set'."</string>
     <string name="song_menu_checkboxes">"Mostra le caselle di controllo nel menu song"</string>

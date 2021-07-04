@@ -393,7 +393,7 @@
     <string name="set_help">"Переместите песни, чтобы изменить порядок в списке"</string>
     <string name="set_manage_click">"Нажмите на пункт списка, для просмотра"</string>
     <string name="set_manage_swipe">"Проведите, чтобы удалить элемент из вашего списка"</string>
-    <string name="set_name">"Переименование"</string>
+    <string name="set_new_name">"Переименование"</string>
     <string name="set_new">"Новый / Очистка текущего"</string>
     <string name="sethasbeendeleted">"Удалено из папки \"Sets\"."</string>
     <string name="song_menu_checkboxes">"Показывать установленные флажки в меню песен"</string>

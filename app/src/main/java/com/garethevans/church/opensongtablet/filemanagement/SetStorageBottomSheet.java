@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsetsmenu;
+package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,23 +10,17 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.BottomSheetMenuSetBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetStorageChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class SetMenuBottomSheet extends BottomSheetDialogFragment {
+public class SetStorageBottomSheet extends BottomSheetDialogFragment {
 
-    BottomSheetMenuSetBinding myView;
-    MainActivityInterface mainActivityInterface;
-
-    String fragName;
-    Fragment callingFragment;
-
+    private MainActivityInterface mainActivityInterface;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,23 +44,13 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = BottomSheetMenuSetBinding.inflate(inflater, container, false);
+        BottomSheetStorageChooseBinding myView = BottomSheetStorageChooseBinding.inflate(inflater, container, false);
 
-        myView.closeView.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        myView.createSet.setOnClickListener(v -> {
-            mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,fragName,callingFragment,null);
+        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        myView.webHelp.setOnClickListener(v -> {
+            mainActivityInterface.openWebPage("storage",null);
             dismiss();
         });
-        myView.shuffleSet.setOnClickListener(v -> {
-            mainActivityInterface.updateFragment("shuffleSet",null,null);
-            dismiss();
-        });
-        myView.manageSet.setOnClickListener(v -> {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/sets",-1);
-            dismiss();
-        });
-
         return myView.getRoot();
     }
-
 }

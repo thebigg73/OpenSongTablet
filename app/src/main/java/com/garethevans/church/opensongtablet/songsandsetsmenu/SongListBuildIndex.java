@@ -106,8 +106,9 @@ public class SongListBuildIndex {
                 }
             } while (cursor.moveToNext());
             cursor.close();
-            mainActivityInterface.getSongListBuildIndex().setIndexRequired(false);
-            mainActivityInterface.getSongListBuildIndex().setIndexComplete(true);
+            indexRequired = false;
+            indexComplete = true;
+            mainActivityInterface.getSetActions().checkMissingKeys(c,mainActivityInterface);
             returnString.append(c.getString(R.string.search_index_end)).append("\n");
 
         } catch (Exception e) {

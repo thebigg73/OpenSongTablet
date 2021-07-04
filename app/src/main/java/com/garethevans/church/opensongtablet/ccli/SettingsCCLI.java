@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsCcliBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.TextInputDialogFragment;
+import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 public class SettingsCCLI extends Fragment {
 
@@ -55,11 +55,11 @@ public class SettingsCCLI extends Fragment {
     }
 
     private void setListeners() {
-        myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputDialogFragment(this,
+        myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputBottomSheet(this,
                 "SettingsCCLI", getString(R.string.ccli_church), getString(R.string.ccli_church),
                 "ccliChurchName", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliChurchName", ""),true)));
-        myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputDialogFragment(this,
+        myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputBottomSheet(this,
                 "SettingsCCLI", getString(R.string.ccli_licence), getString(R.string.ccli_licence),
                 "ccliLicence", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliLicence", ""),true)));
@@ -71,7 +71,7 @@ public class SettingsCCLI extends Fragment {
                 getString(R.string.ccli_reset),null,"SettingsCCLI", this, null));
     }
 
-    private void showDialog(TextInputDialogFragment dialogFragment) {
+    private void showDialog(TextInputBottomSheet dialogFragment) {
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");
     }
 

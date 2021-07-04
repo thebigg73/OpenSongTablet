@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/PrefScrollView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+                    android:id="@+id/setName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:editTextVal="@string/set_name"
+                    app:hintTextVal="@string/set_name"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/exposedDropDown"
+                        android:id="@+id/setCategoryLayout"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/category"
+                        android:labelFor="@+id/setCategory">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/setCategory"
+                            style="@style/exposedDropDownItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:dropDownHeight="200dp"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/newCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_plus_white_36dp"
+                        app:useCompatPadding="true"
+                        android:contentDescription="@string/new_category" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/setLists"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:isScrollContainer="true"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/loadorsaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:text="@string/load"
+            app:icon="@drawable/ic_content_save_white_36dp"
+            android:layout_margin="16dp"
+            android:padding="16dp"/>
+
+    </FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+ <!--
+
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+-->

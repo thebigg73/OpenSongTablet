@@ -51,6 +51,7 @@ public class StorageManagementFragment extends Fragment {
 
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> {
+                myView.progressBar.setVisibility(View.VISIBLE);
                 String text = "OpenSong\n("+getString(R.string.root)+")";
                 myView.rootFolder.setText(text);
                 myView.rootFolder.setOnClickListener(v -> showActionDialog(true,false,""));
@@ -59,9 +60,10 @@ public class StorageManagementFragment extends Fragment {
                 myView.mainFolder.setOnClickListener(v -> showActionDialog(false,true,""));
                 // Now look for subfolders
                 createNodes();
-
                 myView.getRoot().invalidate();
                 myView.folderList.invalidate();
+                myView.storageGraph.setVisibility(View.VISIBLE);
+                myView.progressBar.setVisibility(View.GONE);
             });
 
             // Prepare the showcase
@@ -119,7 +121,7 @@ public class StorageManagementFragment extends Fragment {
     }
 
     private void showActionDialog(boolean root, boolean songs, String folder) {
-        FolderManagementDialog dialogFragment = new FolderManagementDialog(this,root,songs,folder);
+        FolderManagementBottomSheet dialogFragment = new FolderManagementBottomSheet(this,root,songs,folder);
         dialogFragment.show(requireActivity().getSupportFragmentManager(),"folderManagementDialog");
     }
 

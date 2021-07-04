@@ -24,7 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterEditBinding;
-import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
+import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -398,10 +398,10 @@ public class HighlighterEditFragment extends Fragment {
         } else {
             orientation = getString(R.string.landscape);
         }
-        AreYouSureDialogFragment areYouSureDialogFragment = new AreYouSureDialogFragment("deleteHighlighter",
+        AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("deleteHighlighter",
                 getString(R.string.delete) + " " + getString(R.string.highlight) + " (" + orientation + ")",null,
                 "highlighterEditFragment",this,mainActivityInterface.getSong());
-        areYouSureDialogFragment.show(requireActivity().getSupportFragmentManager(),"areyousure");
+        areYouSureBottomSheet.show(requireActivity().getSupportFragmentManager(),"areyousure");
     }
     public void doDelete(boolean confirmed) {
         if (confirmed) {

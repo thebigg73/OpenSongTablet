@@ -31,10 +31,28 @@ public class ModeFragment extends Fragment {
         myView = SettingsModeBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.choose_app_mode));
 
+        // Highlight the current mode
+        highlightMode();
+
         // Set the listeners
         setListeners();
 
         return myView.getRoot();
+    }
+
+    private void highlightMode() {
+        switch (mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
+                "whichMode","Performance")) {
+            case "Performance":
+                myView.performanceMode.findViewById(R.id.selected).setVisibility(View.VISIBLE);
+                break;
+            case "Presentation":
+                myView.presentationMode.findViewById(R.id.selected).setVisibility(View.VISIBLE);
+                break;
+            case "Stage":
+                myView.stageMode.findViewById(R.id.selected).setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     private void setListeners() {

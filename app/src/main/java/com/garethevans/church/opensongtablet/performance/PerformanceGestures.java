@@ -53,8 +53,8 @@ public class PerformanceGestures {
     }
 
     // Add to set
-    private void gesture3(Context c,Song song) {
-        String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(c,song.getFolder(),song.getFilename());
+    private void gesture3(Context c, Song song) {
+        String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(song);
 
         // Allow the song to be added, even if it is already there
         String val = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent","") + itemForSet;

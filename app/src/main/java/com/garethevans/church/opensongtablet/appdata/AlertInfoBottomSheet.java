@@ -1,22 +1,25 @@
 package com.garethevans.church.opensongtablet.appdata;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.AlertinfoDialogBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetAlertInfoBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 /*
@@ -29,7 +32,7 @@ This file shows the user any appropriate warnings.  These can be
 public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
-    private AlertinfoDialogBinding myView;
+    private BottomSheetAlertInfoBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -37,14 +40,23 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = AlertinfoDialogBinding.inflate(inflater,container,false);
-        if (getDialog()!=null) {
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
-            getDialog().setCanceledOnTouchOutside(true);
-        }
+        myView = BottomSheetAlertInfoBinding.inflate(inflater,container,false);
 
         // Show/hide the appropriate alerts
         whatAlerts();

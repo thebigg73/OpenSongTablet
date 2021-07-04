@@ -73,7 +73,9 @@ public class StickyPopUp {
         floatWindow.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
                 R.drawable.popup_sticky,null);
-        drawable.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
+        if (drawable!=null) {
+            drawable.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
+        }
         floatWindow.setBackground(drawable);
         floatWindow.setPadding(16,16,16,16);
 

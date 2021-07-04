@@ -1,27 +1,28 @@
 package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.MenuSongsDialogBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetMenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
-    private MenuSongsDialogBinding myView;
+    private BottomSheetMenuSongsBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final FloatingActionButton fab;
 
@@ -35,21 +36,23 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @NonNull
     @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
-        super.onCancel(dialog);
-        dismiss();
-        mainActivityInterface.songMenuActionButtonShow(true);
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = MenuSongsDialogBinding.inflate(inflater,container,false);
-        if (getDialog()!=null) {
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
-            getDialog().setCanceledOnTouchOutside(true);
-        }
+        myView = BottomSheetMenuSongsBinding.inflate(inflater,container,false);
 
         // Set up the views
         setListeners();
@@ -59,21 +62,25 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
     private void setListeners() {
         // Set up the dialog title
-        ((TextView)myView.closeView.findViewById(R.id.title)).setText(getString(R.string.song));
+        ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText("");
 
         // Set up the song title
         String songTitle = mainActivityInterface.getSong().getTitle();
         if (songTitle==null || songTitle.isEmpty() || songTitle.equals("Welcome to OpenSongApp")) {
             myView.songActions.setVisibility(View.GONE);
+            myView.addToSet.setVisibility(View.GONE);
         } else {
             myView.songActions.setVisibility(View.VISIBLE);
-            ((TextView)myView.songActions.findViewById(R.id.mainText)).setText(songTitle);
+            myView.addToSet.setVisibility(View.VISIBLE);
+            ((TextView)myView.songActions.findViewById(R.id.subText)).setText(songTitle);
+            ((TextView)myView.addToSet.findViewById(R.id.subText)).setText(songTitle);
         }
 
         // Listener for buttons
-        myView.closeView.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         myView.songActions.setOnClickListener(v -> navigateTo("opensongapp://settings/actions"));
         myView.newSongs.setOnClickListener(v -> navigateTo("opensongapp://settings/import"));
+        myView.addToSet.setOnClickListener(v -> addToSet());
     }
 
     private void navigateTo(String deepLink) {
@@ -82,21 +89,12 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         dismiss();
     }
 
-    @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (fab!=null) {
-            try {
-                fab.show();
-            } catch (Exception e) {
-                Log.d("SongMenuDialog","Can't show menu button");
-            }
-        }
+    private void addToSet() {
+        // Firstly add the song to the current set
+        mainActivityInterface.getCurrentSet().
+                addToCurrentSet(mainActivityInterface.getSetActions().
+                        getSongForSetWork(requireContext(),mainActivityInterface.getSong()));
+
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        myView = null;
-    }
 }

@@ -392,7 +392,7 @@
     <string name="set_help">"Přetažením písně , a tak změnit pořadí vašeho přístroje"</string>
     <string name="set_manage_click">"Klepněte na položku v sadě pro zobrazení"</string>
     <string name="set_manage_swipe">"Přejeďte odstranit položku ze seznamu set"</string>
-    <string name="set_name">"Nový set jméno"</string>
+    <string name="set_new_name">"Nový set jméno"</string>
     <string name="set_new">"Vymazat"</string>
     <string name="sethasbeendeleted">"ze složky svého \"sad\" byl smazán."</string>
     <string name="song_menu_checkboxes">"Zobrazit zaškrtávací políčka v nabídce skladby"</string>

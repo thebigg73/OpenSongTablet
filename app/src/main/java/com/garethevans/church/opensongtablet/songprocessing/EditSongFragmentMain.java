@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.chords.TransposeDialogFragment;
+import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.databinding.FragmentEditSong1Binding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongMainFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -222,7 +222,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
 
         transpose.setOnClickListener(v -> {
             Log.d("Editsong", "key="+key);
-            TransposeDialogFragment dialogFragment = new TransposeDialogFragment(true);
+            TransposeBottomSheet dialogFragment = new TransposeBottomSheet(true);
             dialogFragment.show(requireActivity().getSupportFragmentManager(), "transposeAction");
         });
         autoFix.setOnClickListener(v -> doAutoFix());

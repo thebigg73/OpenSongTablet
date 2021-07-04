@@ -393,7 +393,7 @@
     <string name="set_help">"Drag songs around to change the order of your set"</string>
     <string name="set_manage_click">"Πάτα σε ένα αντικείμενο της σειράς για προβολή"</string>
     <string name="set_manage_swipe">"Σύρε για την διαγραφή αντικειμένου από την λίστα"</string>
-    <string name="set_name">"Όνομα νεάς σειράς"</string>
+    <string name="set_new_name">"Όνομα νεάς σειράς"</string>
     <string name="set_new">"Νέα σειρά"</string>
     <string name="sethasbeendeleted">"διαγράφηκε απο τον φάκελο\'Sets\'."</string>
     <string name="song_menu_checkboxes">"Εμφάνιση των πλαισίων ελέγχου στο μενού τραγουδιών"</string>

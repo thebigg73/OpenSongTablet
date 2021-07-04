@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class KitKatFolderChoose extends Fragment {
+public class KitKatFolderChooseFragment extends Fragment {
     // I had used external libraries, but wanted to break free!!!
 
     private MainActivityInterface mainActivityInterface;

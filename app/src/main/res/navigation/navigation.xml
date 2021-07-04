@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_performanceFragment_to_alertInfoDialogFragment"
             app:destination="@id/alertInfoDialogFragment" />
+        <action
+            android:id="@+id/action_performanceFragment_to_set_graph"
+            app:destination="@id/set_graph" />
     </fragment>
 
     <!-- The presentation fragment -->
@@ -67,6 +70,9 @@
         <action
             android:id="@+id/action_presentationFragment_to_alertInfoDialogFragment"
             app:destination="@id/alertInfoDialogFragment" />
+        <action
+            android:id="@+id/action_presentationFragment_to_set_graph"
+            app:destination="@id/set_graph" />
     </fragment>
 
     <!-- The preferences graph -->
@@ -142,7 +148,7 @@
                 android:id="@+id/setStorageLocationFragment"
                 android:name="com.garethevans.church.opensongtablet.filemanagement.SetStorageLocationFragment"
                 android:label="fragment_setstoragelocation"
-                tools:layout="@layout/storage_setstoragelocation">
+                tools:layout="@layout/storage_choose">
                 <deepLink
                     android:id="@+id/setStorageDeepLink"
                     app:uri="opensongapp://settings/storage/setstorage" />
@@ -153,7 +159,7 @@
 
             <fragment
                 android:id="@+id/kitKatFolderChoose"
-                android:name="com.garethevans.church.opensongtablet.filemanagement.KitKatFolderChoose"
+                android:name="com.garethevans.church.opensongtablet.filemanagement.KitKatFolderChooseFragment"
                 android:label="storage_kitkat_choose"
                 tools:layout="@layout/storage_kitkat_chooser">
                 <deepLink
@@ -602,7 +608,30 @@
             tools:layout="@layout/fragment_edit_song_3"/>
 
     </navigation>
-
+    <navigation android:id="@+id/set_graph"
+        app:startDestination="@id/setActionsFragment">
+        <fragment
+            android:id="@+id/setActionsFragment"
+            android:name="com.garethevans.church.opensongtablet.setprocessing.SetActionsFragment"
+            android:label="SetActionsFragment"
+            tools:layout="@layout/settings_sets">
+            <deepLink
+                android:id="@+id/deepLink23"
+                app:uri="opensongapp://settings/sets" />
+            <action
+                android:id="@+id/action_setActionsFragment_to_setManageFragment"
+                app:destination="@id/setManageFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/setManageFragment"
+            android:name="com.garethevans.church.opensongtablet.setprocessing.SetManageFragment"
+            android:label="SetManageFragment"
+            tools:layout="@layout/settings_sets_manage">
+            <deepLink
+                android:id="@+id/deepLink24"
+                app:uri="opensongapp://settings/sets/manage" />
+            </fragment>
+    </navigation>
 
 
 </navigation>

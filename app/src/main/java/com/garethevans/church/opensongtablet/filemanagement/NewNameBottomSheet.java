@@ -16,20 +16,20 @@ import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.NewNameDialogBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetNewNameBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
-public class NewNameDialog extends DialogFragment {
+public class NewNameBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
-    private NewNameDialogBinding myView;
+    private BottomSheetNewNameBinding myView;
     private final boolean isfile;
     private final String currentDir;
     private final String currentSubDir;
@@ -40,7 +40,7 @@ public class NewNameDialog extends DialogFragment {
     private final boolean rename;
     private String parentFolder = "";
 
-    public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile,
+    public NewNameBottomSheet(Fragment callingFragment, String fragName, boolean isfile,
                          String currentDir, String currentSubDir, Song song, boolean rename) {
         this.isfile = isfile;  // True to create a file, false to create a folder
         this.currentDir = currentDir;
@@ -66,7 +66,7 @@ public class NewNameDialog extends DialogFragment {
             w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        myView = NewNameDialogBinding.inflate(inflater,container,false);
+        myView = BottomSheetNewNameBinding.inflate(inflater,container,false);
 
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
         if (song!=null) {
@@ -75,7 +75,7 @@ public class NewNameDialog extends DialogFragment {
 
         // Set listeners
         myView.okButton.setOnClickListener(v -> doSave());
-        myView.cancelButton.setOnClickListener(v -> dismiss());
+        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         if (rename) {
             String currentName = currentSubDir;
             // Only show the last section
@@ -84,10 +84,10 @@ public class NewNameDialog extends DialogFragment {
                 currentName = currentSubDir.substring(currentSubDir.lastIndexOf("/"));
                 currentName = currentName.replace("/","");
             }
-            myView.title.setText(currentName);
+            myView.newName.getEditText().setText(currentName);
         }
 
-        myView.title.setOnEditorActionListener((v, actionId, event) -> {
+        myView.newName.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) ||
                     actionId == EditorInfo.IME_ACTION_DONE) {
                 myView.okButton.performClick();
@@ -95,7 +95,7 @@ public class NewNameDialog extends DialogFragment {
             return false;
         });
 
-        myView.title.addTextChangedListener(new TextWatcher() {
+        myView.newName.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -104,7 +104,7 @@ public class NewNameDialog extends DialogFragment {
                 if (s != null) {
                     String string = mainActivityInterface.getStorageAccess().safeFilename(s.toString());
                     if (!s.toString().equals(string)) {
-                        myView.title.setText(string);
+                        myView.newName.getEditText().setText(string);
                     }
                 }
             }
@@ -122,10 +122,10 @@ public class NewNameDialog extends DialogFragment {
         String message = getString(R.string.error);
         String success = getString(R.string.success);
 
-        if (myView.title!=null && myView.title.getText()!=null && !myView.title.getText().toString().isEmpty()) {
-            newName = myView.title.getText().toString();
+        if (myView.newName.getEditText()!=null && myView.newName.getEditText().getText()!=null) {
+            newName = myView.newName.getEditText().getText().toString();
             newName = mainActivityInterface.getStorageAccess().safeFilename(newName);
-            myView.title.setText(newName);
+            myView.newName.getEditText().setText(newName);
             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, currentDir, currentSubDir, newName);
             exists = mainActivityInterface.getStorageAccess().uriExists(getContext(),uri);
             if (rename) {

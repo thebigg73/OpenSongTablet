@@ -1,86 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    card_view:contentPadding="2dp"
-    card_view:cardCornerRadius="4dp"
-    android:layout_margin="4dp"
-    android:padding="12dp"
-    card_view:cardBackgroundColor="@color/colorAltPrimary"
-    app:elevation="4dp">
+    card_view:cardBackgroundColor="@color/colorAltPrimary">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cardview_layout">
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cardview_layout"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/songClickSpace"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         <TextView
             android:id="@+id/cardview_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/cardview_setcheck"
             android:text="@string/title"
-            android:textSize="18sp"
-            android:layout_margin="0dp"/>
+            style="@style/cardView_Title"/>
 
         <TextView
             android:id="@+id/cardview_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:layout_toStartOf="@+id/cardview_setcheck"
-            android:layout_below="@+id/cardview_title"
             android:text="@string/author"
-            android:layout_margin="0dp" />
+            style="@style/cardView_Subtitle"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/cardview_author"
-            android:layout_toStartOf="@id/cardview_setcheck"
-            android:id="@+id/content"
-            android:paddingBottom="8dp">
+            <TextView
+                android:id="@+id/cardview_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/key"
+                style="@style/cardView_Subtitle"/>
 
-        <TextView
-            android:id="@+id/cardview_folder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:layout_margin="0dp"
-            android:textSize="12sp"
-            android:text="@string/mainfoldername" />
-        <TextView
-            android:id="@+id/cardview_key"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:gravity="center_vertical|end"
-            android:text="@string/key"
-            android:textSize="12sp"
-            android:layout_margin="0dp"
-            android:textStyle="italic" />
+            <TextView
+                android:id="@+id/cardview_folder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mainfoldername"
+                style="@style/cardView_Subtitle"/>
 
         </LinearLayout>
+
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cardview_setcheck"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:checked="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="24dp"
-            android:padding="4dp" />
+            android:layout_height="match_parent"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="16dp"
+            android:gravity="start"
+            android:checked="true" />
 
-        <TableRow style="@style/DividerLine"
-            android:layout_below="@+id/content"/>
+    </LinearLayout>
 
-    </RelativeLayout>
+    <TableRow
+        style="@style/DividerLine"/>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>

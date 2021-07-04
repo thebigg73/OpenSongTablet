@@ -393,7 +393,7 @@
     <string name="set_help">"ドラッグ曲は周りのあなたのセットの順序を変更するには"</string>
     <string name="set_manage_click">"それを表示するには、セット内のアイテムをクリックしてください"</string>
     <string name="set_manage_swipe">"あなたのセットリストから項目を削除するには、スワイプ"</string>
-    <string name="set_name">"新しいセット名"</string>
+    <string name="set_new_name">"新しいセット名"</string>
     <string name="set_new">"引き払う"</string>
     <string name="sethasbeendeleted">"あなたの「設定」フォルダから削除されています。"</string>
     <string name="song_menu_checkboxes">"ソングメニューで設定したチェックボックスを表示する"</string>

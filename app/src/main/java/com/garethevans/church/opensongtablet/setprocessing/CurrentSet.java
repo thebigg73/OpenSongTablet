@@ -1,16 +1,18 @@
 package com.garethevans.church.opensongtablet.setprocessing;
 
 // This is the (current) set object
+// All actions related to building/processing are in the SetActions class
 
 import java.util.ArrayList;
 
 public class CurrentSet {
 
+    private String initialSetString;
     private String currentSetString;
-    private ArrayList<String> currentSet;
-    private ArrayList<String> currentSet_Folder;
-    private ArrayList<String> currentSet_Filename;
-    private ArrayList<String> currentSet_Key;
+    private ArrayList<String> setItems;           // The set item $$_folder/filename_**key**__$$
+    private ArrayList<String> setFolders;    // The folder only
+    private ArrayList<String> setFilenames;  // The filename only
+    private ArrayList<String> setKeys;       // The key only
     private int indexSongInSet;
     private String previousSongInSet;
     private String nextSongInSet;
@@ -18,13 +20,110 @@ public class CurrentSet {
     private String setFile;
     private String currentSetXML;
 
-    // The getters
+    // The current set is a combination of array lists
+    // They are built on app start by parsing the set string from preferences
+    public void initialiseTheSet() {
+        // Clears ALL arraylists and values
+        setItems = new ArrayList<>();
+        currentSetString = "";
+        initialSetString = "";
+        setName = "";
+        setFile = "";
+        initialiseTheSpecifics();
+    }
+    public void initialiseTheSpecifics() {
+        // Kept separate as when shuffling, we only call this not the initialiseTheSet()
+        setFilenames = new ArrayList<>();
+        setFolders = new ArrayList<>();
+        setKeys = new ArrayList<>();
+    }
+
+    // Add items to the set
+    public void addSetItem(String item) {
+        setItems.add(item);
+    }
+    public void addSetValues(String folder, String filename, String key) {
+        setFolders.add(folder);
+        setFilenames.add(filename);
+        setKeys.add(key);
+    }
+
+    // Get items from the set
+    public ArrayList<String> getSetItems() {
+        return setItems;
+    }
+    public String getItem(int position) {
+        return getValueAtPosition("item",position);
+    }
+    public String getFolder(int position) {
+        return getValueAtPosition("folder",position);
+    }
+    public String getFilename(int position) {
+        return getValueAtPosition("filename",position);
+    }
+    public String getKey(int position) {
+        return getValueAtPosition("key",position);
+    }
+    private String getValueAtPosition(String what, int position) {
+        String value = "";
+        try {
+            switch (what) {
+                case "item":
+                    value = setItems.get(position);
+                    break;
+                case "folder":
+                    value = setFolders.get(position);
+                    break;
+                case "filename":
+                    value = setFilenames.get(position);
+                    break;
+                case "key":
+                    value = setKeys.get(position);
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    // Set or update items in the set
+    public void setItem(int position, String value) {
+        setItems.set(position, value);
+    }
+    public void setFolder(int position, String value) {
+        setFolders.set(position, value);
+    }
+    public void setFilename(int position, String value) {
+        setFilenames.set(position, value);
+    }
+    public void setKey(int position, String value) {
+        setKeys.set(position, value);
+    }
+
+    // Set and get the initial and current set string (as saved in preferences)
+    // These can be compared to show if a save is required due to changes
+    public void setInitialSetString(String initialSetString) {
+        this.initialSetString = initialSetString;
+    }
+    public void setCurrentSetString(String currentSetString) {
+        this.currentSetString = currentSetString;
+    }
+    public String getInitialSetString() {
+        return initialSetString;
+    }
     public String getCurrentSetString() {
         return currentSetString;
     }
-    public ArrayList<String> getCurrentSet() {
-        return currentSet;
+
+    public void updateSetItem(int position, String item) {
+        setItems.set(position,item);
     }
+
+    // TODO MIGHT REMOVE THE STUFF BELOW
+    // The getters
+
+
     public int getIndexSongInSet() {
         return indexSongInSet;
     }
@@ -34,14 +133,14 @@ public class CurrentSet {
     public String getNextSongInSet() {
         return nextSongInSet;
     }
-    public ArrayList<String> getCurrentSet_Folder() {
-        return currentSet_Folder;
+    public ArrayList<String> getSetFolders() {
+        return setFolders;
     }
-    public ArrayList<String> getCurrentSet_Filename() {
-        return currentSet_Filename;
+    public ArrayList<String> getSetFilenames() {
+        return setFilenames;
     }
-    public ArrayList<String> getCurrentSet_Key() {
-        return currentSet_Key;
+    public ArrayList<String> getSetKeys() {
+        return setKeys;
     }
     public String getSetName() {
         return setName;
@@ -54,46 +153,43 @@ public class CurrentSet {
     }
 
 
-    // The setters
-    public void setCurrentSetString(String currentSetString) {
-        this.currentSetString = currentSetString;
-    }
+
     public void addToCurrentSetString(String item) {
         currentSetString = currentSetString + item;
     }
-    public void setCurrentSet(ArrayList<String> currentSet) {
-        this.currentSet = currentSet;
+    public void setSetItems(ArrayList<String> setItems) {
+        this.setItems = setItems;
     }
     public void addToCurrentSet(String item) {
-        currentSet.add(item);
+        setItems.add(item);
     }
     public int removeFromCurrentSet(int pos, String item) {
         if (pos==-1) {
             // Don't know, so look for it
-            pos = currentSet.indexOf(item);
+            pos = setItems.indexOf(item);
         }
         if (pos!=-1) {
-            currentSet.remove(pos);
+            setItems.remove(pos);
         }
         return pos;
     }
-    public void setCurrentSet_Folder(ArrayList<String> currentSet_Folder) {
-        this.currentSet_Folder = currentSet_Folder;
+    public void setSetFolders(ArrayList<String> setFolders) {
+        this.setFolders = setFolders;
     }
     public void addToCurrentSet_Folder(String item) {
-        currentSet_Folder.add(item);
+        setFolders.add(item);
     }
     public void removeFromCurrentSet_Folder(int position) {
-        currentSet_Folder.remove(position);
+        setFolders.remove(position);
     }
-    public void setCurrentSet_Filename(ArrayList<String> currentSet_Filename) {
-        this.currentSet_Filename = currentSet_Filename;
+    public void setSetFilenames(ArrayList<String> setFilenames) {
+        this.setFilenames = setFilenames;
     }
     public void addToCurrentSet_Filename(String item) {
-        currentSet_Filename.add(item);
+        setFilenames.add(item);
     }
     public void removeFromCurrentSet_Filename(int position) {
-        currentSet_Filename.remove(position);
+        setFilenames.remove(position);
     }
     public void setIndexSongInSet(int indexSongInSet) {
         this.indexSongInSet = indexSongInSet;
@@ -107,14 +203,14 @@ public class CurrentSet {
     public void setSetName(String setName) {
         this.setName = setName;
     }
-    public void setCurrentSet_Key(ArrayList<String> currentSet_Key) {
-        this.currentSet_Key = currentSet_Key;
+    public void setSetKeys(ArrayList<String> setKeys) {
+        this.setKeys = setKeys;
     }
     public void addToCurrentSet_Key(String item) {
-        currentSet_Key.add(item);
+        setKeys.add(item);
     }
     public void removeFromCurrentSet_Key(int position) {
-        currentSet_Key.remove(position);
+        setKeys.remove(position);
     }
     public void setCurrentSetXML(String currentSetXML) {
         this.currentSetXML = currentSetXML;

@@ -392,7 +392,7 @@
     <string name="set_help">"Deplacez les chansons dans l\'ordre choisis"</string>
     <string name="set_manage_click">"Cliquez sur un élément dans la liste pour le voir"</string>
     <string name="set_manage_swipe">"Glissez pour supprimer un élément de votre liste"</string>
-    <string name="set_name">"Nouveau nom de la liste"</string>
+    <string name="set_new_name">"Nouveau nom de la liste"</string>
     <string name="set_new">"Vider"</string>
     <string name="sethasbeendeleted">"a été supprimé de votre dossier \'Sets\'."</string>
     <string name="song_menu_checkboxes">"Afficher les cases à cocher dans le menu de la chanson"</string>

@@ -393,7 +393,7 @@
     <string name="set_help">"Arraste as músicas ao redor para mudar a ordem do seu conjunto"</string>
     <string name="set_manage_click">"Clique em um item no conjunto para vê-lo"</string>
     <string name="set_manage_swipe">"Passe para remover um item do seu set list"</string>
-    <string name="set_name">"Novo nome do conjunto"</string>
+    <string name="set_new_name">"Novo nome do conjunto"</string>
     <string name="set_new">"Esvaziar"</string>
     <string name="sethasbeendeleted">"foi excluído da sua pasta de \"conjuntos\"."</string>
     <string name="song_menu_checkboxes">"Mostrar caixas de seleção no menu de músicas"</string>

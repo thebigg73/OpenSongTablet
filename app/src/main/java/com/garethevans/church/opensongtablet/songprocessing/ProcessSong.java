@@ -1033,30 +1033,34 @@ public class ProcessSong {
         // Best way to determine if the song is in multiline format is
         // Look for [v] or [c] case insensitive
         // And it needs to be followed by a line starting with 1 and 2
-        try {
-            String[] sl = string.split("\n");
-            boolean has_multiline_vtag = false;
-            boolean has_multiline_ctag = false;
-            boolean has_multiline_1tag = false;
-            boolean has_multiline_2tag = false;
+        if (string!=null) {
+            try {
+                String[] sl = string.split("\n");
+                boolean has_multiline_vtag = false;
+                boolean has_multiline_ctag = false;
+                boolean has_multiline_1tag = false;
+                boolean has_multiline_2tag = false;
 
-            for (String l : sl) {
-                if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[v]")) {
-                    has_multiline_vtag = true;
-                } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[c]")) {
-                    has_multiline_ctag = true;
-                } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("1") ||
-                        l.toLowerCase(mainActivityInterface.getLocale()).startsWith(" 1")) {
-                    has_multiline_1tag = true;
-                } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("2") ||
-                        l.toLowerCase(mainActivityInterface.getLocale()).startsWith(" 2")) {
-                    has_multiline_2tag = true;
+                for (String l : sl) {
+                    if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[v]")) {
+                        has_multiline_vtag = true;
+                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[c]")) {
+                        has_multiline_ctag = true;
+                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("1") ||
+                            l.toLowerCase(mainActivityInterface.getLocale()).startsWith(" 1")) {
+                        has_multiline_1tag = true;
+                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("2") ||
+                            l.toLowerCase(mainActivityInterface.getLocale()).startsWith(" 2")) {
+                        has_multiline_2tag = true;
+                    }
                 }
-            }
 
-            return (has_multiline_vtag || has_multiline_ctag) && has_multiline_1tag && has_multiline_2tag;
-        } catch (Exception e) {
-            e.printStackTrace();
+                return (has_multiline_vtag || has_multiline_ctag) && has_multiline_1tag && has_multiline_2tag;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
             return false;
         }
     }

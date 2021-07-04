@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/transpose" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <SeekBar
+                android:id="@+id/transposeSeekBar"
+                style="@style/MySeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:padding="16dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/transposeValTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:text="@string/key"
+                android:textSize="32sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/keyChangeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:text="@string/key"
+                android:textSize="28sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/assumePreferred_SwitchCompat"
+                style="@style/MySwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:checked="true"
+                android:padding="16dp"
+                android:text="@string/chordformat_default" />
+
+            <LinearLayout
+                android:id="@+id/chooseFormat_LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/detectedChordFormatText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="0dp"
+                    android:text="@string/chordformat_detected" />
+
+                <RadioGroup
+                    android:id="@+id/detectedChordFormat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingTop="0dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="16dp">
+
+                    <RadioButton
+                        android:id="@+id/chordFormat1Radio"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/chordformat_1" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat2Radio"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_2" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat3Radio"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_3" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat4Radio"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_4" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat5Radio"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_5" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat6Radio"
+                        style="@style/RadioButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_6" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/doTransposeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:text="@string/transpose"
+                style="@style/TextBackgroundButton" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

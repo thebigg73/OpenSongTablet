@@ -392,7 +392,7 @@
     <string name="set_help">"拖动歌曲各地更改设置的顺序"</string>
     <string name="set_manage_click">"单击某个项目的设置进行查看"</string>
     <string name="set_manage_swipe">刷卡从您所设定的列表中删除一个项目</string>
-    <string name="set_name">"新集名称"</string>
+    <string name="set_new_name">"新集名称"</string>
     <string name="set_new">"明确"</string>
     <string name="sethasbeendeleted">"从你的“设置”文件夹已被删除。"</string>
     <string name="song_menu_checkboxes">"在歌曲菜单中显示设置复选框"</string>

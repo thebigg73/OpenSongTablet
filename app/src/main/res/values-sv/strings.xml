@@ -393,7 +393,7 @@
     <string name="set_help">"Dra sånger runt för att ändra ordning på din uppsättning"</string>
     <string name="set_manage_click">"Klicka på ett objekt i uppsättningen för att visa den"</string>
     <string name="set_manage_swipe">"Dra för att ta bort ett objekt från din uppsättningslista"</string>
-    <string name="set_name">"Nytt inställt namn"</string>
+    <string name="set_new_name">"Nytt inställt namn"</string>
     <string name="set_new">"Skapa en ny uppsättning"</string>
     <string name="sethasbeendeleted">"Har tagits bort från mappen \"Sets\"."</string>
     <string name="song_menu_checkboxes">"Visa inställda kryssrutor i låtmenyn"</string>

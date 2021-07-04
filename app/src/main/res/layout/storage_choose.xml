@@ -28,7 +28,6 @@
         android:layout_below="@+id/headerText"
         android:layout_above="@+id/startApp">
 
-
     <LinearLayout
         android:id="@+id/page"
         android:layout_width="match_parent"
@@ -49,13 +48,6 @@
             android:padding="12dp"
             app:editTextVal="@string/current_location"
             app:hintTextVal="@string/current_location"/>
-
-
-
-
-
-
-
 
         <Button
             android:id="@+id/setStorage"
@@ -105,37 +97,6 @@
             android:layout_margin="12dp"
             android:visibility="gone"/>
 
-        <Button
-            android:id="@+id/infoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="12dp"
-            android:padding="12dp"
-            android:text="@string/information"/>
-
-        <LinearLayout
-            android:id="@+id/extraInfoSection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/storage_help"
-                android:padding="12dp"/>
-
-            <TextView
-                android:id="@+id/storageInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:text="@string/storage_quicktip"/>
-        </LinearLayout>
-
-
     </LinearLayout>
     </ScrollView>
 
@@ -143,18 +104,26 @@
         android:id="@+id/startApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/infoButton"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp"
-        android:padding="12dp"
+        android:layout_margin="16dp"
+        android:padding="16dp"
         android:text="@string/start"
         android:textColor="#fff"
         android:textSize="24sp"
-        app:backgroundTint="@color/green"
-        android:visibility="gone"/>
+        android:visibility="visible"
+        app:backgroundTint="@color/green" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/infoButton"
+        app:useCompatPadding="true"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_information_white_36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/information" />
 
 </RelativeLayout>

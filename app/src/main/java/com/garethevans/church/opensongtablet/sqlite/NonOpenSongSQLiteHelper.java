@@ -88,6 +88,14 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    public String getKey(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+        try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
+            return mainActivityInterface.getCommonSQL().getKey(db2, folder, filename);
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
     // TODO MIGHT REMOVE AS THE CONTENTS OF THIS DATABASE ARE PULLED INTO THE MAIN ONE AT RUNTIME
     // Find specific song

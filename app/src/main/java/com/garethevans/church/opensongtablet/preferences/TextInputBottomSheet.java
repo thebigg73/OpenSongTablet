@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.preferences;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,15 +18,17 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.databinding.TextInputBottomsheetBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetTextInputBinding;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
-public class TextInputDialogFragment extends BottomSheetDialogFragment {
+public class TextInputBottomSheet extends BottomSheetDialogFragment {
 
     private final Fragment fragment;
     private final String fragname;
@@ -34,12 +39,12 @@ public class TextInputDialogFragment extends BottomSheetDialogFragment {
     private ArrayList<String> prefChoices;
     private final boolean simpleEditText, singleLine;
 
-    private TextInputBottomsheetBinding myView;
+    private BottomSheetTextInputBinding myView;
     private DialogReturnInterface dialogReturnInterface;
     private MainActivityInterface mainActivityInterface;
 
-    public TextInputDialogFragment(Fragment fragment, String fragname, String title, String hint,
-                                   String prefName, String prefVal, boolean singleLine) {
+    public TextInputBottomSheet(Fragment fragment, String fragname, String title, String hint,
+                                String prefName, String prefVal, boolean singleLine) {
         this.fragment = fragment;
         this.fragname = fragname;
         this.title = title;
@@ -50,9 +55,9 @@ public class TextInputDialogFragment extends BottomSheetDialogFragment {
         simpleEditText = true;
     }
 
-    public TextInputDialogFragment(Fragment fragment, String fragname,
-                                   String title, String hint, String prefName, String prefVal,
-                                   ArrayList<String> prefChoices) {
+    public TextInputBottomSheet(Fragment fragment, String fragname,
+                                String title, String hint, String prefName, String prefVal,
+                                ArrayList<String> prefChoices) {
         this.fragment = fragment;
         this.fragname = fragname;
         this.title = title;
@@ -71,10 +76,23 @@ public class TextInputDialogFragment extends BottomSheetDialogFragment {
         dialogReturnInterface = (DialogReturnInterface) context;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = TextInputBottomsheetBinding.inflate(inflater,container,false);
+        myView = BottomSheetTextInputBinding.inflate(inflater,container,false);
         if (getDialog()!=null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
             getDialog().setCanceledOnTouchOutside(true);
@@ -90,7 +108,7 @@ public class TextInputDialogFragment extends BottomSheetDialogFragment {
     }
 
     private void setViews() {
-        myView.dialogTitle.setText(title);
+        ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(title);
 
         if (simpleEditText) {
             // Hide the unwanted views
@@ -113,7 +131,7 @@ public class TextInputDialogFragment extends BottomSheetDialogFragment {
             ((TextInputLayout)myView.prefEditText.findViewById(R.id.holderLayout)).setHint(hint);
 
         } else {
-            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(getContext(),R.layout.exposed_dropdown,prefChoices);
+            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.exposed_dropdown,prefChoices);
             myView.textValues.setAdapter(arrayAdapter);
             myView.textValues.setText(prefVal);
             ((TextInputLayout)myView.textValues.findViewById(R.id.textLayout)).setHint(hint);
@@ -121,11 +139,15 @@ public class TextInputDialogFragment extends BottomSheetDialogFragment {
     }
 
     private void setListeners() {
-        myView.cancelButton.setOnClickListener(v -> dismiss());
+        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         myView.okButton.setOnClickListener(v -> {
             // Grab the new value
             if (simpleEditText) {
-                prefVal = myView.prefEditText.getEditText().getText().toString();
+                if (myView.prefEditText.getEditText()!=null && myView.prefEditText.getEditText().getText()!=null) {
+                    prefVal = myView.prefEditText.getEditText().getText().toString();
+                } else {
+                    prefVal = "";
+                }
             } else {
                 prefVal = myView.textValues.getText().toString();
             }

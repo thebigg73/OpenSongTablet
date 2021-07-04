@@ -118,11 +118,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     myView.filters.folderSearch.setAdapter(folderArrayAdapter);
                     folderSearchVal = song.getFolder();
                     myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
-                    if (myView.filters.folderSearch != null) {
-                        int pos = foundFolders.indexOf(song.getFolder());
-                        if (pos >= 0) {
-                            myView.filters.folderSearch.setText(foundFolders.get(pos));
-                        }
+                    int pos = foundFolders.indexOf(song.getFolder());
+                    if (pos >= 0) {
+                        myView.filters.folderSearch.setText(foundFolders.get(pos));
                     }
                     myView.filters.keySearch.setAdapter(keyArrayAdapter);
                     myView.filters.keySearch.addTextChangedListener(new MyTextWatcher("key"));
@@ -384,22 +382,13 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     public void moveToSongInMenu(Song song) {
         //scroll to the song in the song menu
-        int index = indexOfSongInMenu(song);
+        int index = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface,song);
         try {
             if (index>=0) {
                 new Thread(() -> requireActivity().runOnUiThread(() -> songListLayoutManager.scrollToPositionWithOffset(index,0))).start();
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private int indexOfSongInMenu(Song song) {
-        if (mainActivityInterface.getSetActions()!=null && mainActivityInterface.getCurrentSet()!=null && song!=null) {
-            mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface);
-            return mainActivityInterface.getCurrentSet().getIndexSongInSet();
-        } else {
-            return -1;
         }
     }
 

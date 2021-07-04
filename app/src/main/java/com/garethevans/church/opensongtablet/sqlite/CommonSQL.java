@@ -18,7 +18,6 @@ public class CommonSQL {
     // Only the database itself is different, so as long as that is dealt with separately, we can proceed
     // When we return an SQLite object
 
-
     // Update the table.  Called for the NonOpenSong database that is persistent.
     // This is called if the db2 version is different to the version stated in NonOpenSongSQLiteHelper
     // This check we have the columns we need now
@@ -68,12 +67,12 @@ public class CommonSQL {
         String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ? ";
 
         Cursor cursor = db.rawQuery(Query, selectionArgs);
+        boolean exists = true;
         if (cursor.getCount() <= 0) {
-            cursor.close();
-            return false;
+            exists = false;
         }
-        cursor.close();
-        return true;
+        closeCursor(cursor);
+        return exists;
     }
 
     private String getSetString(Context c, String folder, String filename) {
@@ -302,14 +301,33 @@ public class CommonSQL {
         }
 
         // close cursor connection
-        try {
-            cursor.close();
-        } catch (OutOfMemoryError | Exception e) {
-            e.printStackTrace();
-        }
+        closeCursor(cursor);
 
         //Return the songs
         return songs;
+    }
+
+    public String getKey(SQLiteDatabase db, String folder, String filename) {
+        String songId = getAnySongId(folder, filename);
+        String[] selectionArgs = new String[]{songId};
+        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
+
+        Cursor cursor = db.rawQuery(sql, selectionArgs);
+
+        String key = "";
+        Log.d("CommonSQL","cursor.getCount()"+cursor.getCount());
+        // Get the first item (the matching songID)
+        if (cursor.moveToFirst()) {
+            key = getValue(cursor, SQLite.COLUMN_KEY);
+            Log.d("CommonSQL", "key="+key);
+        }
+
+        if (key==null) {
+            key = "";
+        }
+
+        closeCursor(cursor);
+        return key;
     }
 
     Song getSpecificSong(SQLiteDatabase db, String folder, String filename) {
@@ -360,11 +378,7 @@ public class CommonSQL {
             thisSong.setFiletype(getValue(cursor, SQLite.COLUMN_FILETYPE));
         }
 
-        try {
-            cursor.close();
-        } catch (OutOfMemoryError | Exception e) {
-            e.printStackTrace();
-        }
+        closeCursor(cursor);
 
         return thisSong;
     }
@@ -380,7 +394,7 @@ public class CommonSQL {
         } else {
             count = cursor.getCount();
         }
-        cursor.close();
+        closeCursor(cursor);
         return count > 0;
     }
 
@@ -399,7 +413,7 @@ public class CommonSQL {
                 }
             } while (cursor.moveToNext());
         }
-        cursor.close();
+        closeCursor(cursor);
         return folders;
     }
 
@@ -416,10 +430,19 @@ public class CommonSQL {
                 SQLite.COLUMN_FILENAME + " = ? WHERE " + SQLite.COLUMN_SONGID + " = ? ";
         Cursor cursor = db.rawQuery(q,selectionArgs);
         boolean success = cursor.getCount() > 0;
-        cursor.close();
+        closeCursor(cursor);
         return success;
     }
 
+    private void closeCursor(Cursor cursor) {
+        if (cursor!=null) {
+            try {
+                cursor.close();
+            } catch (OutOfMemoryError | Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
     // TODO go through the non-opensong database and populate that data

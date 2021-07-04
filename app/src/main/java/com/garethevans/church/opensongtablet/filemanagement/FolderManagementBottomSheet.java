@@ -1,14 +1,13 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,23 +18,23 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.StorageFolderDialogBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetStorageFolderBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class FolderManagementDialog extends DialogFragment {
+public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
 
+    private BottomSheetStorageFolderBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final boolean root;
-    private final boolean songs;
+    private final boolean root, songs;
     private final String subdir;
     private final Fragment callingFragment;
 
-    FolderManagementDialog(Fragment callingFragment, boolean root, boolean songs, String subdir) {
+    FolderManagementBottomSheet(Fragment callingFragment, boolean root, boolean songs, String subdir) {
         this.callingFragment = callingFragment;
         this.root = root;
         this.songs = songs;
@@ -58,23 +57,35 @@ public class FolderManagementDialog extends DialogFragment {
         dismiss();
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        com.garethevans.church.opensongtablet.databinding.StorageFolderDialogBinding myView = StorageFolderDialogBinding.inflate(inflater, container, false);
-        Window w = requireDialog().getWindow();
-        if (w!=null) {
-            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
+        myView = BottomSheetStorageFolderBinding.inflate(inflater, container, false);
+        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(b -> dismiss());
+        new Thread(() -> requireActivity().runOnUiThread(this::setupView)).start();
 
-        StorageAccess storageAccess = mainActivityInterface.getStorageAccess();
-        Preferences preferences = mainActivityInterface.getPreferences();
-        Locale locale = mainActivityInterface.getLocale();
+        return myView.getRoot();
+    }
 
-        ((FloatingActionButton)myView.dialogHeading.findViewById(R.id.close)).setOnClickListener(b -> dismiss());
+    private void setupView() {
         if (root) {
             ((TextView)myView.dialogHeading.findViewById(R.id.title)).
-                    setText(storageAccess.niceUriTree(getContext(), mainActivityInterface, storageAccess.homeFolder(getContext(),null, mainActivityInterface))[1]);
+                    setText(mainActivityInterface.getStorageAccess().niceUriTree(getContext(),
+                            mainActivityInterface, mainActivityInterface.getStorageAccess().
+                                    homeFolder(getContext(),null, mainActivityInterface))[1]);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
@@ -100,8 +111,6 @@ public class FolderManagementDialog extends DialogFragment {
             myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder",0));
             myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem", 0));
         }
-
-        return myView.getRoot();
     }
 
     private class ActionClickListener implements View.OnClickListener {
@@ -142,12 +151,12 @@ public class FolderManagementDialog extends DialogFragment {
                     break;
 
                 case "createItem":
-                    dialogFragment = new NewNameDialog(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null, false);
+                    dialogFragment = new NewNameBottomSheet(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null, false);
                     dialogFragment.show(requireActivity().getSupportFragmentManager(),"createItem");
                     break;
 
                 case "renameFolder":
-                    dialogFragment = new NewNameDialog(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null, true);
+                    dialogFragment = new NewNameBottomSheet(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null, true);
                     dialogFragment.show(requireActivity().getSupportFragmentManager(),"renameFolder");
                     break;
 

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.chords;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,27 +10,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.DialogFragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.TransposeDialogBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetTransposeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.OutputStream;
 
-public class TransposeDialogFragment extends DialogFragment {
+public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
     private boolean editSong = false;  // This is set to true when coming here from EditSongFragment
 
-    private TransposeDialogBinding myView;
+    private BottomSheetTransposeBinding myView;
     private SeekBar transposeSeekBar;
     private TextView transposeValTextView,keyChange_TextView;
     private RadioButton chordFormat1Radio, chordFormat2Radio, chordFormat3Radio, chordFormat4Radio,
@@ -42,12 +47,12 @@ public class TransposeDialogFragment extends DialogFragment {
     private String transposeDirection;
     private int transposeTimes;
 
-    public TransposeDialogFragment(boolean editSong) {
+    public TransposeBottomSheet(boolean editSong) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
         this.editSong = editSong;
     }
 
-    public TransposeDialogFragment() {
+    public TransposeBottomSheet() {
         // Null initialised for when we come here from performance/presentation/stage mode
     }
 
@@ -57,9 +62,22 @@ public class TransposeDialogFragment extends DialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = TransposeDialogBinding.inflate(inflater,container,false);
+        myView = BottomSheetTransposeBinding.inflate(inflater,container,false);
         Window w = requireDialog().getWindow();
         if (w!=null) {
             w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
