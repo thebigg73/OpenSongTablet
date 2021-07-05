@@ -125,8 +125,11 @@ public class PopUpLanguageFragment extends DialogFragment {
             case "sv":
                 positionselected = 14;
                 break;
-            case "zh":
+            case "uk":
                 positionselected = 15;
+                break;
+            case "zh":
+                positionselected = 16;
                 break;
         }
 
@@ -185,6 +188,9 @@ public class PopUpLanguageFragment extends DialogFragment {
                     tempLanguage = "sv";
                     break;
                 case 15:
+                    tempLanguage = "uk";
+                    break;
+                case 16:
                     tempLanguage = "zh";
                     break;
 

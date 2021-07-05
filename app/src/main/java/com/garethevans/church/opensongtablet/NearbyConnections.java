@@ -349,7 +349,7 @@ public class NearbyConnections implements NearbyInterface {
                                             StaticVariables.isConnected = true;
                                             updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
                                             // IV - Already connected so replay last incoming song
-                                            if (incomingPrevious != "") {
+                                            if (!incomingPrevious.equals("")) {
                                                 String incoming = incomingPrevious;
                                                 incomingPrevious = "";
                                                 payloadOpenSong(incoming);
@@ -514,6 +514,8 @@ public class NearbyConnections implements NearbyInterface {
                     outputStream = storageAccess.getOutputStream(context, newLocation);
                     StaticVariables.whichSongFolder = "../Received";
                     StaticVariables.songfilename = "ReceivedSong";
+                    // IV - Store the received song filename in case the user wants to duplicate the received song
+                    StaticVariables.receivedSongfilename = receivedBits.get(1);
                 }
 
                 // Write the file to the desired output stream and load

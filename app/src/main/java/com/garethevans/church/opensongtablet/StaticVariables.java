@@ -18,13 +18,12 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.UUID;
 
 class StaticVariables {
 
     public static boolean isHost = false, isConnected = false, usingNearby = false,
             receiveHostFiles = false, keepHostFiles=false;
-    public static String connectionLog, deviceName, randomId = UUID.randomUUID().toString();
+    public static String connectionLog, deviceName;
 
     // The song fields
     static String mTitle = "Welcome to OpenSongApp", mAuthor = "Gareth Evans", mCopyright = "",
@@ -65,6 +64,9 @@ class StaticVariables {
 
     // Song locations.  These are also saved as preferences if the song loads correctly (without crashing midway)
     static String whichSongFolder = "", songfilename = "";
+
+    // Received song filename - stored when received to support possible rename/duplicate
+    static String receivedSongfilename = "";
 
     // The action bar size (used to work out song space available)
     static int ab_height;
