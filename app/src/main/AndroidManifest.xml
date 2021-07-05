@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="194"
-    android:versionName="5.3.4">
+    android:versionCode="195"
+    android:versionName="5.3.5">
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -64,7 +64,8 @@
         tools:ignore="UnusedAttribute"
         android:supportsRtl="true">
 
-        <receiver android:name=".BatteryMonitor">
+        <receiver android:name=".BatteryMonitor"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
@@ -104,7 +105,8 @@
         <activity
             android:name=".BootUpCheck"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -117,7 +119,8 @@
 
         <activity
             android:name=".ImportIntent"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:exported="true">
 
             <!--plaintext filter-->
             <intent-filter
