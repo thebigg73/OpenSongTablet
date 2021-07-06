@@ -58,11 +58,16 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
         myView.shuffleSet.setOnClickListener(v -> {
-            mainActivityInterface.updateFragment("shuffleSet",null,null);
+            mainActivityInterface.updateFragment("set_updateView",null,null);
             dismiss();
         });
         myView.manageSet.setOnClickListener(v -> {
             mainActivityInterface.navigateToFragment("opensongapp://settings/sets",-1);
+            dismiss();
+        });
+        myView.variation.setOnClickListener(v -> {
+            SetVariationBottomSheet setVariationBottomSheet = new SetVariationBottomSheet();
+            setVariationBottomSheet.show(requireActivity().getSupportFragmentManager(),"setVariation");
             dismiss();
         });
 

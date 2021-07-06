@@ -27,6 +27,7 @@ public class LoadSong {
     // we just receive the song object (can't assume mainActivityInterface.getSong()
     public Song doLoadSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong, boolean indexing) {
         // If we have finished song indexing, we get the song from the SQL database.
+        // Unless, of course it is a custom file.
         // If not, we load up from the xml file
         // We also load from the file if it is a custom file (pdf and images are dealt with separately)
 
@@ -34,19 +35,19 @@ public class LoadSong {
         String folder = thisSong.getFolder();
         String filename = thisSong.getFilename();
 
+        Log.d(TAG,"folder="+folder+"  filename="+filename);
+
         // Clear the song object then add the folder filename back
         thisSong = new Song();
         thisSong.setFolder(folder);
         thisSong.setFilename(filename);
 
-        Log.d(TAG, "folder=" + folder + "  filename=" + filename);
         // We will add to this song and then return it to the MainActivity object
         if (!mainActivityInterface.getSongListBuildIndex().getIndexComplete() ||
                 mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing() ||
-                thisSong.getFolder().contains("../")) {
+                thisSong.getFolder().contains("**")) {
             // This is set to true once the index is completed, so we either haven't finished indexing
             // or this is a custom slide/note as identified by the folder (which aren't indexed)
-            Log.d(TAG, "Load from file");
             return doLoadSongFile(c, mainActivityInterface, thisSong, indexing);
         } else {
             Log.d(TAG, "Loading from the database");
@@ -81,19 +82,8 @@ public class LoadSong {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", false);
         }
 
+        // When getting the uri, it runs a check for custom folders **Variations, etc.
         String where = "Songs";
-        if (thisSong.getFolder().startsWith("../")) {
-            where = thisSong.getFolder().replace("../", "");
-            String folder = "";
-            if (where.contains("/")) {
-                folder = where.substring(where.indexOf("/"));
-                where = where.substring(0, where.indexOf("/"));
-                folder = folder.replace("/", "");
-                where = where.replace("/", "");
-
-            }
-            thisSong.setFolder(folder);
-        }
 
         // Determine the filetype by extension - the best songs are xml (OpenSong formatted).
         thisSong.setFiletype(getFileTypeByExtension(thisSong.getFilename()));
@@ -395,6 +385,7 @@ public class LoadSong {
 
                     } catch (Exception e) {
                         Log.d(TAG, uri + ":  Not xml so exiting");
+                        e.printStackTrace();
                         eventType = XmlPullParser.END_DOCUMENT;
                         thisSong.setFiletype("?");
                     }
@@ -576,8 +567,10 @@ public class LoadSong {
         return where;
     }
 
-    public String grabNextSongInSetKey(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+    public String loadKeyOfSong(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
         String nextkey = "";
+
+        // If the indexing is done and the song is there,
 
         // Get the android version
         boolean nextisxml = true;

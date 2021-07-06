@@ -1,63 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/FullscreenBottomSheet"
+    style="FullscreenBottomSheet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
-        android:id="@+id/dialogHeading"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/title" />
+        android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+            android:id="@+id/dialogHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:title="@string/title" />
 
-            <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
-                android:id="@+id/prefEditText"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:padding="16dp"
-                app:editTextVal="@string/text"
-                app:hintTextVal="@string/text" />
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textLayout"
-                style="@style/exposedDropDown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:hint="@string/text"
-                android:labelFor="@+id/textValues">
-
-                <AutoCompleteTextView
-                    android:id="@+id/textValues"
-                    style="@style/exposedDropDownItem"
+                <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+                    android:id="@+id/prefEditText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:padding="16dp"
+                    app:editTextVal="@string/text"
+                    app:hintTextVal="@string/text" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textLayout"
+                    style="@style/exposedDropDown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:hint="@string/text"
+                    android:labelFor="@+id/textValues">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/okButton"
-                style="@style/TextButtonNoOutline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="16dp"
-                android:text="@android:string/ok" />
+                    <AutoCompleteTextView
+                        android:id="@+id/textValues"
+                        style="@style/exposedDropDownItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-        </LinearLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    </androidx.core.widget.NestedScrollView>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/okButton"
+                    style="@style/TextButtonNoOutline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="16dp"
+                    android:text="@android:string/ok" />
 
-</LinearLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

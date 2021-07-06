@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -144,17 +145,26 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         });
 
         songItemViewHolder.itemChecked.setOnClickListener(v -> {
-            int adapterPosition = songItemViewHolder.getAdapterPosition();
+            int adapterPosition = songItemViewHolder.getAbsoluteAdapterPosition();
             if (!checkedArray.get(adapterPosition, false)) {
                 songItemViewHolder.itemChecked.setChecked(true);
+                String dr = songList.get(adapterPosition).getFolder();
+                String fl = songList.get(adapterPosition).getFilename();
+                String ky = songList.get(adapterPosition).getKey();
+                String setentry = mainActivityInterface.getSetActions().getSongForSetWork(dr,fl,ky);
+
+                Log.d("SongListAdapter","setentry="+setentry);
+                mainActivityInterface.getCurrentSet().addToCurrentSetString(setentry);
+                mainActivityInterface.getCurrentSet().addSetItem(setentry);
+                mainActivityInterface.getCurrentSet().addSetValues(dr,fl,ky);
                 checkedArray.put(adapterPosition, true);
-                mainActivityInterface.getSetActions().addToSet(c,mainActivityInterface,song);
+                mainActivityInterface.updateFragment("set_updateView",null,null);
 
             }
             else  {
                 songItemViewHolder.itemChecked.setChecked(false);
                 checkedArray.put(adapterPosition, false);
-                mainActivityInterface.getSetActions().removeFromSet(c,mainActivityInterface,-1);
+                //mainActivityInterface.getSetActions().removeFromSet(c,mainActivityInterface,-1);
             }
             mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",mainActivityInterface.getCurrentSet().getCurrentSetString());
         });

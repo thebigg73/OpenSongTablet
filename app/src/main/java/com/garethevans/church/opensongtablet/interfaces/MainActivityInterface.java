@@ -82,7 +82,7 @@ public interface MainActivityInterface {
     void lockDrawer(boolean lock);
     void closeDrawer(boolean close);
     void doSongLoad(String folder, String filename);
-    void loadSongFromSet();
+    void loadSongFromSet(int position);
     void updateKeyAndLyrics(Song song);
     void editSongSaveButtonAnimation(boolean pulse);
     void registerFragment(Fragment frag, String what);

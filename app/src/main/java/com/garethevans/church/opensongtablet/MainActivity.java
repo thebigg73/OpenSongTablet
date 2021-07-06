@@ -85,7 +85,6 @@ import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
-import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
@@ -165,7 +164,7 @@ When this happens, the fragment has to be open.  Main activity keeps references 
 
 //TODO Fix unused and local
 
-public class MainActivity extends AppCompatActivity implements LoadSongInterface,
+public class MainActivity extends AppCompatActivity implements //LoadSongInterface,
         ShowCaseInterface, MainActivityInterface, MidiAdapterInterface, EditSongFragmentInterface,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, DialogReturnInterface,
         NearbyInterface, NearbyReturnActionsInterface, ActionInterface, SwipeDrawingInterface {
@@ -700,6 +699,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     @Override
     public void fullIndex() {
+        Log.d(TAG,"fullIndex() called");
         if (fullIndexRequired) {
             showToast.doIt(this,getString(R.string.search_index_start));
             new Thread(() -> {
@@ -716,7 +716,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     if (!outcome.isEmpty()) {
                         showToast.doIt(this,outcome.trim());
                     }
+                    updateFragment("set_updateKeys",null,null);
                 });
+
             }).start();
         }
     }
@@ -1014,6 +1016,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void indexSongs() {
+        Log.d(TAG,"indexSong() called");
         new Thread(() -> {
             runOnUiThread(() -> showToast.doIt(this,getString(R.string.search_index_start)));
             songListBuildIndex.setIndexComplete(false);
@@ -1023,7 +1026,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 songListBuildIndex.setIndexComplete(true);
                 showToast.doIt(this,getString(R.string.search_index_end));
                 updateSongMenu(song);
-                updateSetMenu();
+                updateFragment("set_updateKeys",null,null);
             });
         }).start();
     }
@@ -1036,14 +1039,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             songMenuFragment.updateSongMenu(song);
         } else {
             Log.d(TAG, "songMenuFragment not available");
-        }
-    }
-    public void updateSetMenu() {
-        // Something might have changed in the set menu
-        if (setMenuFragment != null) {
-            setMenuFragment.prepareCurrentSet();
-        } else {
-            Log.d(TAG, "setMenuFragment not available");
         }
     }
 
@@ -1100,8 +1095,21 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // Overrides called from fragments (Performance and Presentation) using interfaces
     @Override
-    public void loadSongFromSet() {
+    public void loadSongFromSet(int position) {
+        // Get the key of the set item
+        String setKey = currentSet.getKey(position);
+        String setFolder = currentSet.getFolder(position);
+        String setFilename = currentSet.getFilename(position);
+        String songKey;
+        // Get the song key (from the database)
+        if (storageAccess.isSpecificFileExtension("imageorpdf",currentSet.getFilename(position))) {
+            songKey = nonOpenSongSQLiteHelper.getKey(this,mainActivityInterface,setFolder,setFilename);
+        } else {
+            songKey = sqLiteHelper.getKey(this,mainActivityInterface,setFolder,setFilename);
+        }
+        Log.d(TAG,"setKey="+setKey+"  songKey="+songKey);
         Log.d(TAG,"loadSongFromSet() called");
+        doSongLoad(setFolder,setFilename);
     }
     @Override
     public void refreshAll() {
@@ -1313,6 +1321,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
         if (fragName!=null) {
+            // The fragName can also be text that hints at a fragment
             switch (fragName) {
                 case "StorageManagementFragment":
                     ((StorageManagementFragment)callingFragment).updateFragment();
@@ -1347,11 +1356,20 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     }
                     break;
 
-                case "shuffleSet":
+                case "set_updateKeys":
+                case "set_updateView":
+                case "set_updateItem":
                     // User has the set menu open and wants to shuffle the set
                     if (setMenuFragment!=null) {
-                        setMenuFragment.shuffleSet();
+                        if (fragName.equals("set_updateView")) {
+                            setMenuFragment.updateSet();
+                        } else if (fragName.equals("set_updateKeys")){
+                            setMenuFragment.updateKeys();
+                        } else if (arguments!=null && arguments.size()>0){
+                            setMenuFragment.updateItem(Integer.parseInt(arguments.get(0)));
+                        }
                     }
+                    break;
             }
         }
     }
@@ -1413,6 +1431,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                         finishAffinity();
                     }
                     allowToast = false;
+                    break;
+
+                case "newSet":
+                    // Clear the current set
+                    currentSet.initialiseTheSet();
+                    updateFragment("set_updateView",null,null);
+                    result = true;
                     break;
 
             }

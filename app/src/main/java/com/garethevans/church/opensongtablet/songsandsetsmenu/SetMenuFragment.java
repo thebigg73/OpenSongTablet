@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,12 @@ import java.util.List;
 
 public class SetMenuFragment extends Fragment {
 
+    private final String TAG = "SetMenuFragment";
+
     private MenuSetsBinding myView;
     private LinearLayoutManager llm;
+    private SetListAdapter setListAdapter;
+    List<SetItemInfo> setItemInfos;
 
     private MainActivityInterface mainActivityInterface;
 
@@ -31,16 +34,6 @@ public class SetMenuFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         mainActivityInterface = (MainActivityInterface) context;
         super.onAttach(context);
-    }
-    public interface MyInterface {
-        void loadSongFromSet();
-        //void shuffleSongsInSet();
-        void confirmedAction();
-        void refreshAll();
-        //void closePopUps();
-        //void pageButtonAlpha(String s);
-        //void windowFlags();
-        //void openFragment();
     }
 
     @Override
@@ -95,14 +88,6 @@ public class SetMenuFragment extends Fragment {
             setMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "setMenuActions");
         });
 
-            /*if (songButtonActive) {
-                songButtonActive = false;
-                Handler h = new Handler();
-                h.postDelayed(() -> songButtonActive = true,600);
-                showActionButton(false);
-                showActionDialog();
-            }*/
-
         myView.myRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -116,8 +101,7 @@ public class SetMenuFragment extends Fragment {
         });
     }
 
-    public void shuffleSet() {
-        Log.d("SetMenuFragment","shuffling");
+    public void updateSet() {
         mainActivityInterface.getSetActions().shuffleSet(getContext(),mainActivityInterface);
         prepareCurrentSet();
     }
@@ -125,9 +109,24 @@ public class SetMenuFragment extends Fragment {
     private void prepareSetListViews() {
         mainActivityInterface.getSetActions().preferenceStringToArrays(getContext(),mainActivityInterface);
         buildList();
+
     }
 
-
+    public void updateKeys() {
+        // If the key has changed on some items, update them
+        if (mainActivityInterface.getSetActions().getMissingKeyPositions()!=null &&
+                setListAdapter!=null) {
+            for (int position:mainActivityInterface.getSetActions().getMissingKeyPositions()) {
+                try {
+                    setItemInfos.get(position).songkey = mainActivityInterface.getCurrentSet().getKey(position);
+                    setListAdapter.notifyItemChanged(position);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            mainActivityInterface.getSetActions().nullMissingKeyPositions();
+        }
+    }
     public void prepareCurrentSet() {
         // We have received a call to redraw the set list either on first load or after song indexing
         mainActivityInterface.getSetActions().buildSetArraysFromItems(requireContext(),mainActivityInterface);
@@ -138,19 +137,17 @@ public class SetMenuFragment extends Fragment {
     }
 
     private void buildList() {
-        SetListAdapter setListAdapter = new SetListAdapter(mainActivityInterface, createList());
+        setListAdapter = new SetListAdapter(mainActivityInterface, createList());
+        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(mainActivityInterface,setListAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        setListAdapter.setTouchHelper(itemTouchHelper);
+        itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
         myView.myRecyclerView.setAdapter(setListAdapter);
-        setListAdapter.notifyDataSetChanged();
-        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter,mainActivityInterface);
-        ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(myView.myRecyclerView);
     }
 
     // Get the set list item objects for the recyclerview
     private List<SetItemInfo> createList() {
-        List<SetItemInfo> result = new ArrayList<>();
-
-        Log.d("SetMenuFragment","size="+mainActivityInterface.getCurrentSet().getSetItems().size());
+        setItemInfos = new ArrayList<>();
 
         mainActivityInterface.getSetActions().buildSetArraysFromItems(requireContext(), mainActivityInterface);
         for (int i = 0; i<mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
@@ -159,8 +156,6 @@ public class SetMenuFragment extends Fragment {
             si.songfolder = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
             si.songtitle = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
             si.songkey = mainActivityInterface.getCurrentSet().getSetKeys().get(i);
-
-            Log.d("SetMenuFragment","key="+si.songkey);
 
             // Decide on the icon to use for the set item
             if (si.songfolder.equals("**" + getString(R.string.slide))) {
@@ -178,9 +173,19 @@ public class SetMenuFragment extends Fragment {
             } else {
                 si.songicon = getString(R.string.song);
             }
-            result.add(si);
+            setItemInfos.add(si);
         }
-        return result;
+        return setItemInfos;
+    }
+
+    public void updateItem(int position) {
+        String folder = mainActivityInterface.getCurrentSet().getFolder(position);
+        String filename = mainActivityInterface.getCurrentSet().getFilename(position);
+        setItemInfos.get(position).songfolder = folder;
+        // Check for icon
+        setItemInfos.get(position).songicon = mainActivityInterface.getSetActions().
+                getIconIdentifier(requireContext(), mainActivityInterface,folder,filename);
+        setListAdapter.notifyItemChanged(position);
     }
 
 }

@@ -314,7 +314,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         Set<String> setString = map.keySet();
         List<String> indexList = new ArrayList<>(setString);
         for (String index : indexList) {
-            textView = (TextView) View.inflate(getActivity(), R.layout.leftmenu, null);
+            textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
             textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f));
             int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f) *2;
             textView.setPadding(i,i,i,i);
@@ -325,9 +325,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                     if (selectedIndex.getText() != null && getActivity()!=null &&
                             myView.songListRecyclerView.getLayoutManager()!=null) {
                         String myval = selectedIndex.getText().toString();
-                        Integer obj = map.get(myval);
-
-                        songListLayoutManager.scrollToPositionWithOffset(obj,0);
+                        if (!map.isEmpty()) {
+                            Integer obj = map.get(myval);
+                            if (obj!=null) {
+                                songListLayoutManager.scrollToPositionWithOffset(obj, 0);
+                            }
+                        }
                         mainActivityInterface.hideKeyboard();
                     }
                 } catch (Exception e) {

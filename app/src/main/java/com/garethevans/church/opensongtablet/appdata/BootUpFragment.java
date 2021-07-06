@@ -174,7 +174,7 @@ public class BootUpFragment extends Fragment {
 
                 } else {
                     // There was a problem with the folders, so restart the app!
-                    Log.d("BootUpFragment", "problem with folders");
+                    Log.d("BootUpFragment", "Problem with app folders - restarting");
                     requireActivity().recreate();
                 }
             }).start();

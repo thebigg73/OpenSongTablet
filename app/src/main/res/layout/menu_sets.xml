@@ -8,7 +8,8 @@
     <TextView
         android:id="@+id/setTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="16dp"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -30,8 +31,8 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_plus_white_36dp"
         app:useCompatPadding="true"
+        android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:contentDescription="@string/action" />

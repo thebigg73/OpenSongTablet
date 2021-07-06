@@ -70,17 +70,21 @@ public class PerformanceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        Log.d(TAG,"binding");
         myView = PerformanceBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
 
         // Initialise the helper classes that do the heavy lifting
+        Log.d(TAG,"binding");
         initialiseHelpers();
+
         mainActivityInterface.lockDrawer(false);
         //mainActivityInterface.hideActionBar(false);
         mainActivityInterface.hideActionButton(false);
 
         //mainActivityInterface.changeActionBarVisible(false,false);
         // Load in preferences
+        Log.d(TAG,"loadPreferences()");
         loadPreferences();
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
@@ -89,6 +93,7 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.fullIndex();
         }
 
+        Log.d(TAG,"doSongLoad()");
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
@@ -207,7 +212,6 @@ public class PerformanceFragment extends Fragment {
         // Get the song sheet headers
         mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
                 mainActivityInterface,mainActivityInterface.getSong(),scaleComments,false));
-        Log.d(TAG,"songSheetTitleLayout="+mainActivityInterface.getSongSheetTitleLayout());
         myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
 
         // Now prepare the song sections views so we can measure them for scaling using a view tree observer
@@ -257,8 +261,6 @@ public class PerformanceFragment extends Fragment {
                 myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
                 songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax);
 
-        Log.d(TAG,"scaleFactor="+scaleFactor);
-
         // Set up the type of animate in
         if (R2L) {
             animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
@@ -276,7 +278,6 @@ public class PerformanceFragment extends Fragment {
                     // Get the width and height of the view
                     int w = myView.songView.getMeasuredWidth();
                     int h = myView.songView.getMeasuredHeight();
-                    Log.d(TAG,"w="+w+" h="+h);
 
                     // Now deal with the highlighter file
                     dealWithHighlighterFile(w,h);
@@ -293,7 +294,6 @@ public class PerformanceFragment extends Fragment {
             }
         });
         myView.songView.startAnimation(animSlideIn);
-        Log.d(TAG,"count = "+myView.songSheetTitle.getChildCount());
         myView.songSheetTitle.startAnimation(animSlideIn);
     }
     private void dealWithHighlighterFile(int w, int h) {
@@ -315,7 +315,6 @@ public class PerformanceFragment extends Fragment {
                 myView.highlighterView.startAnimation(animSlideIn);
                 // Hide after a certain length of time
                 int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
-                Log.d(TAG, "timetohide=" + timetohide);
                 if (timetohide != 0) {
                     new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
                 }

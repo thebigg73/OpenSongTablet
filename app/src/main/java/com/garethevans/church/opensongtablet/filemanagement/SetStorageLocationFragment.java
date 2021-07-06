@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,7 +117,13 @@ public class SetStorageLocationFragment extends Fragment {
             dialog.show(requireActivity().getSupportFragmentManager(),"SetStorageBottomSheet");
         });
         myView.setStorage.setOnClickListener(v -> chooseStorageLocation());
-        myView.findStorage.setOnClickListener(v -> startSearch());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Hide the previous location button as we can't use it without full manage storage control
+            // Don't want the hassle of requesting this.
+            myView.findStorage.setVisibility(View.GONE);
+        } else {
+            myView.findStorage.setOnClickListener(v -> startSearch());
+        }
         myView.startApp.setOnClickListener(v -> goToSongs());
     }
 
@@ -215,11 +220,12 @@ public class SetStorageLocationFragment extends Fragment {
 
         // Initialise the available storage locations
         locations = new ArrayList<>();
-
         findLocations();
     }
     private void findLocations() {
         // Run in a new thread
+        // This is only for KitKat up to Oreo.  Not allowed for newer versions without
+        // Manage Storage permissions, which is overkill!
         new Thread(() -> {
             // Go through the directories recursively and add them to an arraylist
             folder = new File("/storage");
@@ -263,6 +269,7 @@ public class SetStorageLocationFragment extends Fragment {
         }).start();
     }
     private void walkFiles(File root) {
+
         if (root!=null && root.exists() && root.isDirectory()) {
             File[] list = root.listFiles();
             if (list != null) {
@@ -272,8 +279,8 @@ public class SetStorageLocationFragment extends Fragment {
                         String extra;
                         displayWhere(where);
 
-                        if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
-                            int count = mainActivityInterface.getStorageAccess().songCountAtLocation(f);
+                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
+                             int count = mainActivityInterface.getStorageAccess().songCountAtLocation(f);
                             extra = count + " Songs";
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
                             // IV - Add  a leading ¬ and remove trailing /Songs
@@ -397,16 +404,14 @@ public class SetStorageLocationFragment extends Fragment {
             if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
                 intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
                 // IV - 'Commented in' this extra to try to always show internal and sd card storage
                 intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uriTree);
-                }
-
                 folderChooser.launch(intent);
+
             } else {
                 mainActivityInterface.navigateToFragment(null,R.id.kitKatFolderChoose);
 

@@ -9,7 +9,7 @@ public class CurrentSet {
 
     private String initialSetString;
     private String currentSetString;
-    private ArrayList<String> setItems;           // The set item $$_folder/filename_**key**__$$
+    private ArrayList<String> setItems;      // The set item $$_folder/filename_**key**__$$
     private ArrayList<String> setFolders;    // The folder only
     private ArrayList<String> setFilenames;  // The filename only
     private ArrayList<String> setKeys;       // The key only
@@ -24,6 +24,10 @@ public class CurrentSet {
     // They are built on app start by parsing the set string from preferences
     public void initialiseTheSet() {
         // Clears ALL arraylists and values
+        if (setItems!=null) {
+            setItems.clear();
+            setItems = null;
+        }
         setItems = new ArrayList<>();
         currentSetString = "";
         initialSetString = "";
@@ -33,8 +37,20 @@ public class CurrentSet {
     }
     public void initialiseTheSpecifics() {
         // Kept separate as when shuffling, we only call this not the initialiseTheSet()
+        if (setFilenames!=null) {
+            setFilenames.clear();
+            setFilenames = null;
+        }
         setFilenames = new ArrayList<>();
+        if (setFolders!=null) {
+            setFolders.clear();
+            setFolders = null;
+        }
         setFolders = new ArrayList<>();
+        if (setKeys!=null) {
+            setKeys.clear();
+            setKeys = null;
+        }
         setKeys = new ArrayList<>();
     }
 

@@ -21,6 +21,9 @@ public class CommonSQL {
     // Update the table.  Called for the NonOpenSong database that is persistent.
     // This is called if the db2 version is different to the version stated in NonOpenSongSQLiteHelper
     // This check we have the columns we need now
+
+    private final String TAG = "CommonSQL";
+
     void updateTable(SQLiteDatabase db2) {
         // This is called if the database version changes.  It will attempt to add each column
         // It will throw an error if it already exists, but we will catch it
@@ -51,7 +54,7 @@ public class CommonSQL {
             try {
                 db2.execSQL(thisQuery);
             } catch (Exception e) {
-                Log.d("CommonSQL", "Attempting to add " + column + " but it already exists.");
+                Log.d(TAG, "Attempting to add " + column + " but it already exists.");
             }
         }
     }
@@ -67,20 +70,9 @@ public class CommonSQL {
         String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = ? ";
 
         Cursor cursor = db.rawQuery(Query, selectionArgs);
-        boolean exists = true;
-        if (cursor.getCount() <= 0) {
-            exists = false;
-        }
+        boolean exists = cursor.getCount() > 0;
         closeCursor(cursor);
         return exists;
-    }
-
-    private String getSetString(Context c, String folder, String filename) {
-        if (folder == null || folder.equals(c.getString(R.string.mainfoldername)) || folder.isEmpty()) {
-            return "$**_" + filename + "_**$";
-        } else {
-            return "$**_" + folder + "/" + filename + "_**$";
-        }
     }
 
     // Create, delete and update
@@ -105,7 +97,7 @@ public class CommonSQL {
             try {
                 db.insert(SQLite.TABLE_NAME, null, values);
             } catch (Exception e) {
-                Log.d("CommonSQL", songid + " already exists in the table, not able to create.");
+                Log.d(TAG, songid + " already exists in the table, not able to create.");
             }
         }
     }
@@ -203,7 +195,7 @@ public class CommonSQL {
     }
 
     // Search for values in the table
-    ArrayList<Song> getSongsByFilters(Context c, SQLiteDatabase db, boolean searchByFolder,
+    ArrayList<Song> getSongsByFilters(SQLiteDatabase db, boolean searchByFolder,
                                       boolean searchByArtist, boolean searchByKey, boolean searchByTag,
                                       boolean searchByFilter, String folderVal, String artistVal,
                                       String keyVal, String tagVal, String filterVal) {
@@ -295,7 +287,7 @@ public class CommonSQL {
                 songs.add(song);
 
                 // Is this in the set?  This will add a tick for the songlist checkbox
-                String setString = getSetString(c, fo, fi);
+                // String setString = getSetString(c, fo, fi);
             }
             while (cursor.moveToNext());
         }
@@ -315,11 +307,9 @@ public class CommonSQL {
         Cursor cursor = db.rawQuery(sql, selectionArgs);
 
         String key = "";
-        Log.d("CommonSQL","cursor.getCount()"+cursor.getCount());
         // Get the first item (the matching songID)
         if (cursor.moveToFirst()) {
             key = getValue(cursor, SQLite.COLUMN_KEY);
-            Log.d("CommonSQL", "key="+key);
         }
 
         if (key==null) {
@@ -388,7 +378,7 @@ public class CommonSQL {
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "=\"" + songId + "\"";
         Cursor cursor = db.rawQuery(sql, null);
         int count;
-        if (cursor != null) {
+        if (cursor == null) {
             // Error, so not found
             return false;
         } else {
@@ -594,7 +584,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                 try {
                     db.insert(SQLite.TABLE_NAME, null, values);
                 } catch (Exception e) {
-                    Log.d("SQLiteHelper",songid + " already exists in the table, not able to create.");
+                    Log.d(TAG,songid + " already exists in the table, not able to create.");
                 }
             }
         }
@@ -705,7 +695,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                     db.close();
                     return sqLite;
                 } catch (Exception e) {
-                    Log.d("SQLiteHelper", "Song not found");
+                    Log.d(TAG, "Song not found");
                     return null;
                 } finally {
                     db.close();

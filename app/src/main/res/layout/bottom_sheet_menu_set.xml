@@ -5,57 +5,72 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+            android:id="@+id/closeView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:isScrollContainer="true"
-            android:orientation="vertical">
+            android:layout_height="wrap_content" />
 
-            <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
-                android:id="@+id/closeView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-                android:id="@+id/createSet"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                app:main="@string/set_new"
-                app:sub="@string/set_new_info"
-                app:myicon="@drawable/ic_table_edit_white_36dp" />
+                android:isScrollContainer="true"
+                android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-                android:id="@+id/manageSet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                app:main="@string/set_manage"
-                app:sub="@string/set_manage_info"
-                app:myicon="@drawable/ic_database_white_36dp" />
+                <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                    android:id="@+id/createSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:main="@string/set_new"
+                    app:myicon="@drawable/ic_table_edit_white_36dp"
+                    app:sub="@string/set_new_info" />
 
-            <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-                android:id="@+id/addCustom"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                app:main="@string/custom_slide"
-                app:sub="@string/add_custom_slide"
-                app:myicon="@drawable/ic_format_list_bulleted_white_36dp" />
+                <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                    android:id="@+id/manageSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:main="@string/set_manage"
+                    app:myicon="@drawable/ic_database_white_36dp"
+                    app:sub="@string/set_manage_info" />
 
-            <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-                android:id="@+id/shuffleSet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                app:main="@string/set_shuffle"
-                app:sub="@string/set_shuffle_info"
-                app:myicon="@drawable/ic_shuffle_white_36dp" />
+                <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                    android:id="@+id/variation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:main="@string/variation"
+                    app:myicon="@drawable/ic_pencil_white_36dp"
+                    app:sub="@string/variation_make" />
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                    android:id="@+id/addCustom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:main="@string/custom_slide"
+                    app:myicon="@drawable/ic_format_list_bulleted_white_36dp"
+                    app:sub="@string/add_custom_slide" />
+
+                <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+                    android:id="@+id/shuffleSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:main="@string/set_shuffle"
+                    app:myicon="@drawable/ic_shuffle_white_36dp"
+                    app:sub="@string/set_shuffle_info" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
