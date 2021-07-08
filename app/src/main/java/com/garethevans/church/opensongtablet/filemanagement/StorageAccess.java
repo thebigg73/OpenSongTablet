@@ -38,12 +38,16 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1140,13 +1144,24 @@ public class StorageAccess {
     }
     public boolean writeFileFromString(String s, OutputStream os) {
         try {
-            os.write(s.getBytes());
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(os);
+            bufferedOutputStream.write(s.getBytes(StandardCharsets.UTF_8));
+            bufferedOutputStream.flush();
+            bufferedOutputStream.close();
+            /*os.write(s.getBytes());
             os.flush();
-            os.close();
+            os.close();*/
             return true;
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
+        // If there was a problem, close the outputstream and return false
+        try {
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     public void writeFileFromDecodedImageString(OutputStream os, byte[] bytes) {
         try {
@@ -1167,7 +1182,28 @@ public class StorageAccess {
             e.printStackTrace();
         }
     }
-    public String readTextFileToString(InputStream in) {
+    public String readTextFileToString(InputStream inputStream) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (inputStream != null) {
+            String string;
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                while ((string = reader.readLine()) != null) {
+                    stringBuilder.append(string).append("\n");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    inputStream.close();
+                } catch (Throwable ignore) {
+                }
+            }
+
+            return stringBuilder.toString();
+
+        /*
+        // Older method
         if (in != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
@@ -1191,7 +1227,7 @@ public class StorageAccess {
                 return outputStream.toString();
             } catch (Exception | OutOfMemoryError e) {
                 return "";
-            }
+            }*/
 
         } else {
             return "";
