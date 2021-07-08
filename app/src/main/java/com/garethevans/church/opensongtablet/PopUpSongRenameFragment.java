@@ -253,7 +253,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
         protected void onPostExecute(String s) {
             // The song folder
-            foldernames.add(0, getString(R.string.mainfoldername));
+            // IV - Commented out as preparesongfolders already adds mainfoldername at 0
+            //foldernames.add(0, getString(R.string.mainfoldername));
             ArrayAdapter<String> folders = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, foldernames);
             folders.setDropDownViewResource(R.layout.my_spinner);
             newFolderSpinner.setAdapter(folders);
