@@ -25,8 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportOnlineBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -97,18 +97,18 @@ public class ImportOnlineFragment extends Fragment {
         myView.webLayout.setVisibility(View.GONE);
         myView.saveLayout.setVisibility(View.GONE);
 
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, sources);
+        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, sources);
         myView.onlineSource.setAdapter(exposedDropDownArrayAdapter);
         // Set the position in the list to the chosen value
-        exposedDropDownSelection1.keepSelectionPosition(myView.exposedSourceLayout, myView.onlineSource, sources);
+        exposedDropDownSelection1.keepSelectionPosition(myView.onlineSource, sources);
         if (mainActivityInterface.getCheckInternet().getSearchPhrase() != null) {
-            myView.searchPhrase.getEditText().setText(mainActivityInterface.getCheckInternet().getSearchPhrase());
+            myView.searchPhrase.setText(mainActivityInterface.getCheckInternet().getSearchPhrase());
         }
         if (mainActivityInterface.getCheckInternet().getSearchSite() != null) {
             myView.onlineSource.setText(mainActivityInterface.getCheckInternet().getSearchSite());
         }
         //TODO - remove the next 2 lines
-        myView.searchPhrase.post(() -> myView.searchPhrase.getEditText().setText("I surrender all"));
+        myView.searchPhrase.post(() -> myView.searchPhrase.setText("I surrender all"));
         myView.onlineSource.post(() -> myView.onlineSource.setText("UltimateGuitar"));
 
         setupWebView();
@@ -240,10 +240,8 @@ public class ImportOnlineFragment extends Fragment {
             // Get the search string and build the web address
             String webAddress = "";
             String extra = "";
-            if (myView.searchPhrase.getEditText().getText() != null) {
-                mainActivityInterface.getCheckInternet().
-                        setSearchPhrase(myView.searchPhrase.getEditText().getText().toString());
-            }
+            mainActivityInterface.getCheckInternet().
+                        setSearchPhrase(myView.searchPhrase.getText().toString());
             if (myView.onlineSource.getText() != null) {
                 mainActivityInterface.getCheckInternet().
                             setSearchSite(myView.onlineSource.getText().toString());
@@ -440,34 +438,31 @@ public class ImportOnlineFragment extends Fragment {
         if (uri!=null) {
             showDownloadProgress(false);
             changeLayouts(false, false, true);
-            String filename = "";
             // Firstly use what has been entered into the name box by parsing the song
-            if (myView.saveFilename.getEditText() != null && myView.saveFilename.getEditText().getText()!=null) {
-                filename = myView.saveFilename.getEditText().getText().toString();
-            }
+            String filename = myView.saveFilename.getText().toString();
             // If we don't have a good name, try to base it on the filename
             if (filename.isEmpty() && uri.getLastPathSegment() != null) {
                 filename = uri.getLastPathSegment();
             }
             setupSaveLayout();
-            myView.saveFilename.getEditText().setText(filename);
+            myView.saveFilename.setText(filename);
             myView.saveSong.setOnClickListener(v -> copyPDF(uri));
         }
     }
 
     private void setupSaveLayout() {
         // Set up the save layout
-        myView.saveFilename.post(() -> myView.saveFilename.getEditText().setText(newSong.getTitle()));
+        myView.saveFilename.post(() -> myView.saveFilename.setText(newSong.getTitle()));
         // Get the folders available
         ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),
                 mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface), true, null);
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                R.layout.exposed_dropdown,availableFolders);
+                R.layout.view_exposed_dropdown_item,availableFolders);
         myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
         myView.folderChoice.setText(mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)));
         // Set the position in the list to the chosen value
-        exposedDropDownSelection2.keepSelectionPosition(myView.exposedFolderLayout,myView.folderChoice,availableFolders);
+        exposedDropDownSelection2.keepSelectionPosition(myView.folderChoice,availableFolders);
         changeLayouts(false,false,true);
         myView.saveSong.setOnClickListener(v -> saveTheSong());
         showDownloadProgress(false);
@@ -481,8 +476,8 @@ public class ImportOnlineFragment extends Fragment {
         if (myView.folderChoice.getText()!=null) {
             folder = myView.folderChoice.getText().toString();
         }
-        if (myView.saveFilename.getEditText()!=null && myView.saveFilename.getEditText().getText()!=null) {
-            filename = myView.saveFilename.getEditText().getText().toString();
+        if (!myView.saveFilename.getText().toString().isEmpty()) {
+            filename = myView.saveFilename.getText().toString();
         }
         if (!filename.toLowerCase().endsWith(".pdf")) {
             filename = filename + ".pdf";
@@ -534,8 +529,8 @@ public class ImportOnlineFragment extends Fragment {
         // Update the newSong values from what the user chose
         String getName = newSong.getTitle();
         String getFolder = getString(R.string.mainfoldername);
-        if (myView.saveFilename.getEditText().getText()!=null) {
-            getName = myView.saveFilename.getEditText().getText().toString();
+        if (myView.saveFilename.getText()!=null) {
+            getName = myView.saveFilename.getText().toString();
         }
         if (myView.folderChoice.getText()!=null) {
             getFolder = myView.folderChoice.getText().toString();

@@ -97,6 +97,7 @@ public class SettingsCategories extends Fragment {
         myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.storage_graph));
         myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.display_graph));
         myView.actionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.actions_graph));
+        myView.setActionsButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.set_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.control_graph));
         myView.connectButton.setOnClickListener(v -> {
             // Check we have the required permissions

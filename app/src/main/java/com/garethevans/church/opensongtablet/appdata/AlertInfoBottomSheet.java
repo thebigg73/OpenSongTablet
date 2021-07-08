@@ -61,7 +61,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         // Show/hide the appropriate alerts
         whatAlerts();
 
-        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(b -> dismiss());
+        myView.dialogHeading.closeAction(this);
 
         return myView.getRoot();
     }

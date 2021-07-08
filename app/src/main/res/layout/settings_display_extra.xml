@@ -1,175 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!--Extra info-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/info_text"
-            android:layout_marginTop="16dp"
-            style="@style/largeText"/>
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/songSheet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/songsheet" />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/nextInSet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/shownextinset" />
-        <TableRow style="@style/DividerLine" />
-
-
-        <!--Bold chords and headings, lyrics box-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/song_display"
-            style="@style/largeText"/>
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/boldChordsHeadings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/bold_chords_headings" />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/hideLyricsBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hidelyricsbox" />
-        <TableRow style="@style/DividerLine" />
-
-        <!--Section trimming and spaces-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/song_sections"
-            android:layout_marginTop="16dp"
-            style="@style/largeText"/>
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/trimSections"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/trim_sections" />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/addSectionSpace"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/section_space" />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/trimLineSpacing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/linespacing" />
-        <LinearLayout
-            android:id="@+id/trimLineSpacingLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <SeekBar
-                android:id="@+id/trimLineSpacingSeekBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:max="99"
-                android:padding="16dp" />
-
-            <TextView
-                android:id="@+id/trimLineSpacingText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="0dp" />
-
-        </LinearLayout>
-        <TableRow style="@style/DividerLine" />
-
-        <!--Section filtering-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_section"
-            android:layout_marginTop="16dp"
-            style="@style/largeText"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_info"/>
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/filterSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/filter_section" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/filterLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!--Extra info-->
             <TextView
+                style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/filter_mode_info"/>
+                android:text="@string/info_text" />
+
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/filterShow"
+                android:id="@+id/songSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/show" />
+                android:text="@string/songsheet" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/nextInSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/shownextinset" />
+
+            <TableRow style="@style/DividerLine" />
+
+
+            <!--Bold chords and headings, lyrics box-->
+            <TextView
+                style="@style/largeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/song_display" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/boldChordsHeadings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bold_chords_headings" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/hideLyricsBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hidelyricsbox" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <!--Section trimming and spaces-->
+            <TextView
+                style="@style/largeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/song_sections" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/trimSections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/trim_sections" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/addSectionSpace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/section_space" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/trimLineSpacing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/linespacing" />
+
+            <LinearLayout
+                android:id="@+id/trimLineSpacingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <SeekBar
+                    android:id="@+id/trimLineSpacingSeekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="99"
+                    android:padding="16dp" />
+
+                <TextView
+                    android:id="@+id/trimLineSpacingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="0dp" />
+
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <!--Section filtering-->
+            <TextView
+                style="@style/largeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/filter_section" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/filter_entry"/>
+                android:text="@string/filter_info" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/editTextLayoutOutline"
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/filterSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="top"
-                android:hint="@string/filters"
-                android:labelFor="@+id/filters"
-                app:hintEnabled="true">
+                android:text="@string/filter_section" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/filters"
+            <LinearLayout
+                android:id="@+id/filterLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:minHeight="200dp"
-                    android:singleLine="false"
-                    android:imeOptions="actionNone"
-                    android:textCursorDrawable="@null"
-                    android:inputType="textMultiLine"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginTop="16dp"
+                    android:text="@string/filter_mode_info" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/filterSave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/save"/>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/filterShow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/show" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/filter_entry" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/EditTextLayoutOutline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="top"
+                    android:hint="@string/filters"
+                    android:labelFor="@+id/filters"
+                    app:hintEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/filters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top"
+                        android:imeOptions="actionNone"
+                        android:inputType="textMultiLine"
+                        android:minHeight="200dp"
+                        android:singleLine="false"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/filterSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/save" />
+
+            </LinearLayout>
+
+            <TableRow
+                style="@style/DividerLine"
+                android:layout_marginBottom="100dp" />
 
         </LinearLayout>
-        <TableRow style="@style/DividerLine" android:layout_marginBottom="100dp" />
 
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

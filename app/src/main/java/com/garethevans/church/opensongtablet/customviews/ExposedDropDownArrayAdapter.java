@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.appdata;
+package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;

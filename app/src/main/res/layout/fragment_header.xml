@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appBarFragment"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
+    android:layout_alignParentStart="true"
     android:background="@color/colorPrimary"
     app:elevation="8dp"
-    tools:showIn="@layout/fragment_edit_song"
-    android:layout_alignParentStart="true">
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="0dp"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:background="@color/colorPrimary"
-    app:elevation="24dp">
+    tools:showIn="@layout/fragment_edit_song">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fragBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_left_white_36dp"
-        android:layout_margin="@dimen/fab_margin"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:elevation="24dp">
 
-    <TextView
-        android:id="@+id/previousHeading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        style="@style/backFragHeading"
-        android:text="Category"
-        tools:ignore="HardcodedText" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_arrow_left_white_36dp" />
 
-    <TextView
-        android:id="@+id/separatorHeading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        style="@style/backFragHeading"
-        android:text=" > "
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/previousHeading"
+            style="@style/backFragHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Category"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/pageHeading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Current"
-        style="@style/currFragHeading"
-        tools:ignore="HardcodedText" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/separatorHeading"
+            style="@style/backFragHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text=" > "
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/pageHeading"
+            style="@style/currFragHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Current"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 </androidx.appcompat.widget.Toolbar>

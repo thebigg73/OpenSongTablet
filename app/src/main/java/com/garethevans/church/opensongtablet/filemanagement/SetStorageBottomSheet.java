@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetStorageChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -46,7 +45,7 @@ public class SetStorageBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         BottomSheetStorageChooseBinding myView = BottomSheetStorageChooseBinding.inflate(inflater, container, false);
 
-        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        myView.dialogHeading.closeAction(this);
         myView.webHelp.setOnClickListener(v -> {
             mainActivityInterface.openWebPage("storage",null);
             dismiss();

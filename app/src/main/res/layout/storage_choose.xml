@@ -38,23 +38,22 @@
             android:id="@+id/firstRun"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
+            android:padding="16dp"
             android:text="@string/first_run" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
             android:id="@+id/progressText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            app:editTextVal="@string/current_location"
-            app:hintTextVal="@string/current_location"/>
+            android:text="@string/current_location"
+            android:hint="@string/current_location"/>
 
         <Button
             android:id="@+id/setStorage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
-            android:padding="12dp"
+            android:padding="16dp"
             android:layout_gravity="center_horizontal"
             android:text="@string/storage_change"
             android:textColor="#fff"
@@ -65,8 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="12dp"
-            android:padding="12dp"
+            android:layout_margin="16dp"
+            android:padding="16dp"
             android:text="@string/find_existing"
             android:textColor="#fff"
             app:backgroundTint="@color/darkyellow" />
@@ -75,7 +74,7 @@
             android:id="@+id/previousStorageTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
+            android:padding="16dp"
             android:text="@string/no_previous_found"
             android:visibility="gone" />
 
@@ -83,7 +82,7 @@
             android:id="@+id/previousStorageHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="12dp"
+            android:padding="16dp"
             android:text="@string/existing_found"
             android:visibility="gone" />
 
@@ -93,8 +92,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/section_box"
             android:orientation="vertical"
-            android:padding="12dp"
-            android:layout_margin="12dp"
+            android:padding="16dp"
+            android:layout_margin="16dp"
             android:visibility="gone"/>
 
     </LinearLayout>

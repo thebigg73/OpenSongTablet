@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.songsandsetsmenu;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +22,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class SetMenuBottomSheet extends BottomSheetDialogFragment {
 
-    BottomSheetMenuSetBinding myView;
-    MainActivityInterface mainActivityInterface;
+    private BottomSheetMenuSetBinding myView;
+    private MainActivityInterface mainActivityInterface;
 
-    String fragName;
-    Fragment callingFragment;
+    private String fragName;
+    private Fragment callingFragment;
+    private static final String TAG = "SetMenuBottomSheet";
 
 
     @Override
@@ -52,16 +54,18 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetMenuSetBinding.inflate(inflater, container, false);
 
-        myView.closeView.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        myView.dialogHeading.closeAction(this);
         myView.createSet.setOnClickListener(v -> {
             mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,fragName,callingFragment,null);
             dismiss();
         });
         myView.shuffleSet.setOnClickListener(v -> {
+            mainActivityInterface.getSetActions().shuffleSet(requireContext(),mainActivityInterface);
             mainActivityInterface.updateFragment("set_updateView",null,null);
             dismiss();
         });
         myView.manageSet.setOnClickListener(v -> {
+            Log.d(TAG, "fragManager: "+requireActivity().getSupportFragmentManager());
             mainActivityInterface.navigateToFragment("opensongapp://settings/sets",-1);
             dismiss();
         });

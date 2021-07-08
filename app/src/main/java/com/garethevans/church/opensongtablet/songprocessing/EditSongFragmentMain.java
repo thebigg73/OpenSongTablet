@@ -9,20 +9,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
 import com.garethevans.church.opensongtablet.databinding.FragmentEditSong1Binding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongMainFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,8 +34,8 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
     private FragmentEditSong1Binding myView;
     MaterialButton openSongFormat, chordProFormat, transpose, autoFix;
     MaterialButtonToggleGroup formatButton;
-    TextInputEditText title, filename, artist, lyrics;
-    AutoCompleteTextView folder, key;
+    MaterialEditText title, filename, artist, lyrics;
+    ExposedDropDown folder, key;
     int activeColor, inactiveColor;
     private MainActivityInterface mainActivityInterface;
     private ArrayList<String> foundFolders;
@@ -117,8 +117,8 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
     private void setUpDropDowns() {
         new Thread(() -> {
             foundFolders = mainActivityInterface.getSQLiteHelper().getFolders(requireContext(),mainActivityInterface);
-            folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
-            keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
+            folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, foundFolders);
+            keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
             getActivity().runOnUiThread(() -> {
                 folder.setAdapter(folderArrayAdapter);
                 if (song.getFolder() != null) {

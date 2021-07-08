@@ -1,17 +1,28 @@
 <resources>
 
-    <declare-styleable name="PrefTextLinkView">
-        <attr name="main" format="string"/>
-        <attr name="sub" format="string"/>
-        <attr name="myicon" format="reference"/>
+    <declare-styleable name="MaterialTextView">
+        <attr name="android:text" format="string"/>
+        <attr name="android:hint" format="string"/>
+        <attr name="android:icon" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="PrefEditTextView">
-        <attr name="editTextVal" format="string"/>
-        <attr name="hintTextVal" format="string"/>
+    <declare-styleable name="MaterialEditText">
+        <attr name="android:text" format="string"/>
+        <attr name="android:hint" format="string"/>
+        <attr name="android:digits" format="string"/>
+        <attr name="android:singleLine" format="boolean"/>
+        <attr name="android:minHeight" format="integer"/>
+        <attr name="android:imeOptions" format="string"/>
+        <attr name="android:inputType" format="string"/>
+        <attr name="android:typeface" format="string"/>
     </declare-styleable>
 
-    <declare-styleable name="DialogTitle">
-        <attr name="title" format="string"/>
+    <declare-styleable name="DialogTitleClose">
+        <attr name="android:text" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="ExposedDropDown">
+        <attr name="android:text" format="string"/>
+        <attr name="android:hint" format="string"/>
     </declare-styleable>
 </resources>

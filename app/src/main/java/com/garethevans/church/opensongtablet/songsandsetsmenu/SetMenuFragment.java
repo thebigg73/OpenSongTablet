@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,8 @@ public class SetMenuFragment extends Fragment {
     private void setListeners() {
         myView.setMasterFAB.setOnClickListener(v -> {
             SetMenuBottomSheet setMenuBottomSheet = new SetMenuBottomSheet();
-            setMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "setMenuActions");
+            Log.d(TAG, "fragManager: "+requireActivity().getSupportFragmentManager());
+            setMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "setMenuBottomSheet");
         });
 
         myView.myRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

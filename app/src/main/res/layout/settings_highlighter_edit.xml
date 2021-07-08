@@ -21,9 +21,9 @@
 
         <com.garethevans.church.opensongtablet.customviews.DrawNotes
             android:id="@+id/drawNotes"
-            android:layout_centerHorizontal="true"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
             android:background="@color/transparent" />
 
         <FrameLayout
@@ -295,6 +295,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

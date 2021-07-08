@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/pageButtons"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:main="@string/page_buttons"
-            app:sub="@string/quicklaunch_title" />
-        <TableRow style="@style/DividerLine" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/pedals"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/pedal"
-            app:sub="@string/pedal_controls" />
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/pageButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/page_buttons"
+                android:hint="@string/quicklaunch_title" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/customGestures"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/custom_gestures"
-            app:sub="@string/custom_gestures_info" />
-        <TableRow style="@style/DividerLine" />
+            <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/swipe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/swipe"
-            app:sub="@string/swipe_info" />
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/pedals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pedal"
+                android:hint="@string/pedal_controls" />
 
-    </LinearLayout>
+            <TableRow style="@style/DividerLine" />
 
-</androidx.core.widget.NestedScrollView>
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/customGestures"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_gestures"
+                android:hint="@string/custom_gestures_info" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/swipe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/swipe"
+                android:hint="@string/swipe_info" />
+
+            <TableRow style="@style/DividerLine" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -16,13 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.DisplayColorSettingsBinding;
+import com.garethevans.church.opensongtablet.databinding.SettingsColorChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ChooseColorFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    private DisplayColorSettingsBinding myView;
+    private SettingsColorChooseBinding myView;
 
     private String newColorHex;
     private String alphaHex;
@@ -40,7 +40,7 @@ public class ChooseColorFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = DisplayColorSettingsBinding.inflate(inflater,container,false);
+        myView = SettingsColorChooseBinding.inflate(inflater,container,false);
 
         mainActivityInterface.updateToolbar(getName());
 
@@ -87,6 +87,14 @@ public class ChooseColorFragment extends Fragment {
                     text = text.replace("#", "");
                     // Make sure there are only hex characters
                     text = text.replaceAll("[^A-Fa-f0-9]", "0");
+                    if (text.length()>8) {
+                        // Trim off the end
+                        text = text.substring(0,8);
+                        text = "#" + text;
+                        myView.hexColor.setText(text);
+                        myView.hexColor.setSelection(1);
+                    }
+
                     if (text.length()==8) {
                         newColorInt = getColorFromHex(text);
                         // Fix it back to properHex with 8 characters

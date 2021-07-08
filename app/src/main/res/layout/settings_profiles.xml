@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/loadButton"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:main="@string/load"
-            app:sub="@string/profile_restore" />
-        <TableRow style="@style/DividerLine" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/saveButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/save"
-            app:sub="@string/profile_backup" />
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/loadButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/load"
+                android:hint="@string/profile_restore" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/resetButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/reset"
-            app:sub="@string/reset_text" />
-        <TableRow style="@style/DividerLine" />
+            <TableRow style="@style/DividerLine" />
 
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/saveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:hint="@string/profile_backup" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/resetButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reset"
+                android:hint="@string/reset_text" />
+
+            <TableRow style="@style/DividerLine" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

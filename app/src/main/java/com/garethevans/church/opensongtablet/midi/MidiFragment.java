@@ -33,7 +33,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsMidiBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
@@ -106,7 +106,7 @@ public class MidiFragment extends Fragment {
         midiCommand.add(getString(R.string.midi_controller));
         midiCommand.add("MSB");
         midiCommand.add("LSB");
-        ExposedDropDownArrayAdapter midiCommandAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, midiCommand);
+        ExposedDropDownArrayAdapter midiCommandAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, midiCommand);
         myView.midiCommand.setAdapter(midiCommandAdapter);
     }
     private void setUpMidiChannels() {
@@ -117,7 +117,7 @@ public class MidiFragment extends Fragment {
             midiChannel.add(""+i);
             i++;
         }
-        ExposedDropDownArrayAdapter midiChannelAdpter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, midiChannel);
+        ExposedDropDownArrayAdapter midiChannelAdpter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, midiChannel);
         myView.midiChannel.setAdapter(midiChannelAdpter);
     }
     private void setUpMidiValues() {
@@ -127,7 +127,7 @@ public class MidiFragment extends Fragment {
             midiValue.add(""+i);
             i++;
         }
-        ExposedDropDownArrayAdapter midiValueAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, midiValue);
+        ExposedDropDownArrayAdapter midiValueAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, midiValue);
         myView.midiController.setAdapter(midiValueAdapter);
         myView.midiValue.setAdapter(midiValueAdapter);
         myView.midiVelocity.setAdapter(midiValueAdapter);
@@ -141,7 +141,7 @@ public class MidiFragment extends Fragment {
             midiNote.add(mainActivityInterface.getMidi().getNoteFromInt(i));
             i++;
         }
-        ExposedDropDownArrayAdapter midiNoteAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, midiNote);
+        ExposedDropDownArrayAdapter midiNoteAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, midiNote);
         myView.midiNote.setAdapter(midiNoteAdapter);
     }
     private void setValues() {
@@ -193,31 +193,23 @@ public class MidiFragment extends Fragment {
     private void setVisibilites(boolean note, boolean controller, boolean value, boolean velocity) {
         if (note) {
             myView.midiNote.setVisibility(View.VISIBLE);
-            myView.midiNoteLayout.setVisibility(View.VISIBLE);
         } else {
             myView.midiNote.setVisibility(View.GONE);
-            myView.midiNoteLayout.setVisibility(View.GONE);
         }
         if (controller) {
             myView.midiController.setVisibility(View.VISIBLE);
-            myView.midiControllerLayout.setVisibility(View.VISIBLE);
         } else {
             myView.midiController.setVisibility(View.GONE);
-            myView.midiControllerLayout.setVisibility(View.GONE);
         }
         if (value) {
             myView.midiValue.setVisibility(View.VISIBLE);
-            myView.midiValueLayout.setVisibility(View.VISIBLE);
         } else {
             myView.midiValue.setVisibility(View.GONE);
-            myView.midiValueLayout.setVisibility(View.GONE);
         }
         if (velocity) {
             myView.midiVelocity.setVisibility(View.VISIBLE);
-            myView.midiVelocityLayout.setVisibility(View.VISIBLE);
         } else {
             myView.midiVelocity.setVisibility(View.GONE);
-            myView.midiVelocityLayout.setVisibility(View.GONE);
         }
     }
     // Set the view listeners
@@ -304,9 +296,7 @@ public class MidiFragment extends Fragment {
         if (mainActivityInterface.getMidi().getMidiManager()!=null) {
             usbDevices = mainActivityInterface.getMidi().getMidiManager().getDevices();
             usbNames = new ArrayList<>();
-            usbNames.clear();
             usbManufact = new ArrayList<>();
-            usbManufact.clear();
             for (MidiDeviceInfo md : usbDevices) {
                 String manuf = getString(R.string.unknown);
                 String device = getString(R.string.unknown);
@@ -343,7 +333,6 @@ public class MidiFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startScanBluetooth() {
         bluetoothDevices = new ArrayList<>();
-        bluetoothDevices.clear();
         myView.foundDevicesLayout.removeAllViews();
         myView.devicesText.setVisibility(View.GONE);
         // Stops scanning after a pre-defined scan period.
@@ -663,11 +652,8 @@ public class MidiFragment extends Fragment {
         // specify an adapter (see also next example)
         midiMessagesAdapter = new MidiMessagesAdapter(getContext(),midiAdapterInterface,songMidiMessages);
         myView.recyclerView.setAdapter(midiMessagesAdapter);
-        midiMessagesAdapter.notifyDataSetChanged();
-
     }
     private void updateCurrentMessages() {
-        midiMessagesAdapter.notifyDataSetChanged();
         myView.recyclerView.setAdapter(midiMessagesAdapter);
     }
 

@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.FragmentOsbDetailsBinding;
+import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.BufferedInputStream;
@@ -33,7 +33,7 @@ public class ImportOSBFragment extends Fragment {
     // It uses the same layout as the export fragment, but changes the appopriate text
 
     private MainActivityInterface mainActivityInterface;
-    private FragmentOsbDetailsBinding myView;
+    private StorageBackupBinding myView;
 
     private String importFilename;
     private Uri importUri;
@@ -65,7 +65,7 @@ public class ImportOSBFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = FragmentOsbDetailsBinding.inflate(inflater,container,false);
+        myView = StorageBackupBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.import_basic));
 
         // Set up helpers
@@ -87,8 +87,8 @@ public class ImportOSBFragment extends Fragment {
 
     private void setupValues() {
         myView.importTitle.setText(getString(R.string.import_osb));
-        myView.backupName.getEditText().setText(importFilename);
-        myView.backupName.getEditText().setEnabled(true);
+        myView.backupName.setText(importFilename);
+        myView.backupName.setEnabled(true);
         myView.backupName.setFocusable(false);
         myView.overWrite.setVisibility(View.VISIBLE);
     }

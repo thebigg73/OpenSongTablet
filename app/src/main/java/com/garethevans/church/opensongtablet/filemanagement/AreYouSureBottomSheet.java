@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,8 +62,8 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         BottomSheetAreYouSureBinding myView = BottomSheetAreYouSureBinding.inflate(inflater, container, false);
-        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
-        ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(getString(R.string.areyousure));
+        myView.dialogHeading.closeAction(this);
+        myView.dialogHeading.setText(getString(R.string.areyousure));
         myView.action.setText(action);
         myView.okButton.setOnClickListener(v -> {
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);

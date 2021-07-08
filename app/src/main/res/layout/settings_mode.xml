@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="fill_vertical"
-    style="@style/PrefScrollView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_gravity="fill_vertical">
 
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/performanceMode"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/performance_mode"
+                android:hint="@string/performance_mode_info" />
 
-                <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-                    android:id="@+id/performanceMode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:main="@string/performance_mode"
-                    app:sub="@string/performance_mode_info" />
+            <TableRow style="@style/DividerLine" />
 
-                <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/stageMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stage_mode"
+                android:hint="@string/stage_mode_info" />
 
-                <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-                    android:id="@+id/stageMode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:main="@string/stage_mode"
-                    app:sub="@string/stage_mode_info" />
+            <TableRow style="@style/DividerLine" />
 
-                <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/presentationMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/presentation_mode"
+                android:hint="@string/presentation_mode_info" />
 
-                <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-                    android:id="@+id/presentationMode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:main="@string/presentation_mode"
-                    app:sub="@string/presentation_mode_info" />
+            <TableRow style="@style/DividerLine" />
 
-                <TableRow style="@style/DividerLine" />
+        </LinearLayout>
 
-            </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        </androidx.core.widget.NestedScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/webLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="12dp"
+        android:contentDescription="@string/help"
+        android:src="@drawable/ic_help_outline_white_36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:useCompatPadding="true" />
 
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-android:id="@+id/webLink"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_margin="12dp"
-android:contentDescription="@string/help"
-android:src="@drawable/ic_help_outline_white_36dp"
-app:useCompatPadding="true"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentBottom="true"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
 </RelativeLayout>

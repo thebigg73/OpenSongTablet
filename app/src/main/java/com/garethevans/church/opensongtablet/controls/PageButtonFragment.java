@@ -8,9 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +16,13 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
-import com.garethevans.church.opensongtablet.customviews.PrefTextLinkView;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
+import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -36,10 +34,9 @@ public class PageButtonFragment extends Fragment {
     private ArrayList<FloatingActionButton> myButtons;
     private ArrayList<LinearLayout> myLayouts;
     private ArrayList<SwitchCompat> mySwitches;
-    private ArrayList<TextInputLayout> textInputLayouts;
-    private ArrayList<AutoCompleteTextView> autoCompleteTextViews;
-    private ArrayList<PrefTextLinkView> shortTexts;
-    private ArrayList<PrefTextLinkView> longTexts;
+    private ArrayList<ExposedDropDown> exposedDropDowns;
+    private ArrayList<MaterialTextView> shortTexts;
+    private ArrayList<MaterialTextView> longTexts;
     private SettingsPagebuttonsBinding myView;
     private ExposedDropDownArrayAdapter arrayAdapter;
     private ExposedDropDownSelection exposedDropDownSelection;
@@ -92,7 +89,7 @@ public class PageButtonFragment extends Fragment {
                     mySwitches.get(x).setOnCheckedChangeListener((buttonView, isChecked) -> changeVisibilityPreference(finalX, isChecked));
                 }
             });
-            arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.exposed_dropdown, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+            arrayAdapter = new ExposedDropDownArrayAdapter(requireActivity(), R.layout.view_exposed_dropdown_item, mainActivityInterface.getPageButtons().getPageButtonAvailableText());
             requireActivity().runOnUiThread(() -> {
                 for (int x=0;x<6;x++) {
                     setTheDropDowns(x);
@@ -131,23 +128,15 @@ public class PageButtonFragment extends Fragment {
         myLayouts.add(myView.button6View);
     }
     private void addTextViews() {
-        autoCompleteTextViews = new ArrayList<>();
-        textInputLayouts = new ArrayList<>();
+        exposedDropDowns = new ArrayList<>();
         shortTexts = new ArrayList<>();
         longTexts = new ArrayList<>();
-        autoCompleteTextViews.add(myView.button1Opt);
-        autoCompleteTextViews.add(myView.button2Opt);
-        autoCompleteTextViews.add(myView.button3Opt);
-        autoCompleteTextViews.add(myView.button4Opt);
-        autoCompleteTextViews.add(myView.button5Opt);
-        autoCompleteTextViews.add(myView.button6Opt);
-
-        textInputLayouts.add(myView.button1OptLayout);
-        textInputLayouts.add(myView.button2OptLayout);
-        textInputLayouts.add(myView.button3OptLayout);
-        textInputLayouts.add(myView.button4OptLayout);
-        textInputLayouts.add(myView.button5OptLayout);
-        textInputLayouts.add(myView.button6OptLayout);
+        exposedDropDowns.add(myView.button1Opt);
+        exposedDropDowns.add(myView.button2Opt);
+        exposedDropDowns.add(myView.button3Opt);
+        exposedDropDowns.add(myView.button4Opt);
+        exposedDropDowns.add(myView.button5Opt);
+        exposedDropDowns.add(myView.button6Opt);
 
         shortTexts.add(myView.button1ShortPress);
         shortTexts.add(myView.button2ShortPress);
@@ -180,9 +169,9 @@ public class PageButtonFragment extends Fragment {
     }
 
     private void setTheDropDowns(int pos) {
-        autoCompleteTextViews.get(pos).setAdapter(arrayAdapter);
-        autoCompleteTextViews.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
-        exposedDropDownSelection.keepSelectionPosition(textInputLayouts.get(pos),autoCompleteTextViews.get(pos),mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+        exposedDropDowns.get(pos).setAdapter(arrayAdapter);
+        exposedDropDowns.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
+        exposedDropDownSelection.keepSelectionPosition(exposedDropDowns.get(pos),mainActivityInterface.getPageButtons().getPageButtonAvailableText());
         /*autoCompleteTextViews.get(pos).setOnClickListener(new View.OnClickListener() {
             boolean showing = false;
             @Override
@@ -197,7 +186,7 @@ public class PageButtonFragment extends Fragment {
                 }
             }
         });*/
-        autoCompleteTextViews.get(pos).addTextChangedListener(new TextWatcher() {
+        exposedDropDowns.get(pos).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -212,8 +201,8 @@ public class PageButtonFragment extends Fragment {
         });
     }
     private void setTheText(int pos) {
-        ((TextView)shortTexts.get(pos).findViewById(R.id.subText)).setText(mainActivityInterface.getPageButtons().getPageButtonShortText(pos));
-        ((TextView)longTexts.get(pos).findViewById(R.id.subText)).setText(mainActivityInterface.getPageButtons().getPageButtonLongText(pos));
+        shortTexts.get(pos).setHint(mainActivityInterface.getPageButtons().getPageButtonShortText(pos));
+        longTexts.get(pos).setHint(mainActivityInterface.getPageButtons().getPageButtonLongText(pos));
         if (mainActivityInterface.getPageButtons().getPageButtonShortText(pos).isEmpty()) {
             shortTexts.get(pos).setVisibility(View.GONE);
         } else {

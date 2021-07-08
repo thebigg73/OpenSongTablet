@@ -1,70 +1,51 @@
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/PrefScrollView"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:text="@string/doubleTap" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/doubleTapLayout"
-            style="@style/exposedDropDown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/action"
-            android:labelFor="@+id/doubleTap"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="@string/doubleTap" />
 
-            <AutoCompleteTextView
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/doubleTap"
-                style="@style/exposedDropDownItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:dropDownHeight="200dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/action" />
 
-        <TableRow style="@style/DividerLine" />
+            <TableRow style="@style/DividerLine" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:text="@string/longPress" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@string/longPress" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/longPressLayout"
-            style="@style/exposedDropDown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/action"
-            android:labelFor="@+id/longPress"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
-
-            <AutoCompleteTextView
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/longPress"
-                style="@style/exposedDropDownItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:dropDownHeight="200dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/action" />
 
-        <TableRow
-            style="@style/DividerLine"
-            android:layout_marginBottom="200dp" />
+            <TableRow
+                style="@style/DividerLine"
+                android:layout_marginBottom="200dp" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

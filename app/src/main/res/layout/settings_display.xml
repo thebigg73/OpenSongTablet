@@ -1,79 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/themeButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:main="@string/theme_choose"
-            app:sub="@string/theme_dark" />
+            android:orientation="vertical">
 
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/themeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/theme_choose"
+                android:hint="@string/theme_dark" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/fontButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/font_choose"
-            app:sub="@string/font_choose_description" />
+            <TableRow style="@style/DividerLine" />
 
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/fontButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/font_choose"
+                android:hint="@string/font_choose_description" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/scalingButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/scaling"
-            app:sub="@string/scaling_info" />
+            <TableRow style="@style/DividerLine" />
 
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/scalingButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/scaling"
+                android:hint="@string/scaling_info" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/extraSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/song_display"
-            app:sub="@string/extra_settings" />
+            <TableRow style="@style/DividerLine" />
 
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/extraSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/song_display"
+                android:hint="@string/extra_settings" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/connectedDisplay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/connected_display"
-            app:sub="@string/connected_display_description" />
+            <TableRow style="@style/DividerLine" />
 
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/connectedDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/connected_display"
+                android:hint="@string/connected_display_description" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/actionBarSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/actionbar_display"
-            app:sub="@string/actionbar_info" />
+            <TableRow style="@style/DividerLine" />
 
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/actionBarSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/actionbar_display"
+                android:hint="@string/actionbar_info" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/menuSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/menu_settings"
-            app:sub="@string/menu_settings_description" />
+            <TableRow style="@style/DividerLine" />
 
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/menuSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/menu_settings"
+                android:hint="@string/menu_settings_description" />
 
-    </LinearLayout>
+            <TableRow style="@style/DividerLine" />
 
-</androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

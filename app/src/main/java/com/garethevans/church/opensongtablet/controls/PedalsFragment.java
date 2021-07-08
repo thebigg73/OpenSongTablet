@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -20,11 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsPedalBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -48,8 +47,7 @@ public class PedalsFragment extends Fragment {
     private String[] longActions;
     private TextView[] buttonCodes, buttonMidis;
     private RelativeLayout[] buttonHeaders;
-    private AutoCompleteTextView[] shortTexts, longTexts;
-    private TextInputLayout[] shortTextInputs, longTextInputs;
+    private ExposedDropDown[] shortTexts, longTexts;
 
     private Handler pageButtonWaiting;
     private Runnable stopListening;
@@ -126,21 +124,14 @@ public class PedalsFragment extends Fragment {
                 myView.button3Header, myView.button4Header, myView.button5Header,
                 myView.button6Header, myView.button7Header, myView.button8Header};
 
-        shortTexts = new AutoCompleteTextView[]{null, myView.shortButton1Text, myView.shortButton2Text,
+        shortTexts = new ExposedDropDown[]{null, myView.shortButton1Text, myView.shortButton2Text,
                 myView.shortButton3Text, myView.shortButton4Text, myView.shortButton5Text,
                 myView.shortButton6Text, myView.shortButton7Text, myView.shortButton8Text};
 
-        shortTextInputs = new TextInputLayout[] {null, myView.shortButton1, myView.shortButton2,
-                myView.shortButton3, myView.shortButton4, myView.shortButton5,
-                myView.shortButton6, myView.shortButton7, myView.shortButton8};
-
-        longTexts = new AutoCompleteTextView[]{null, myView.longButton1Text, myView.longButton2Text,
+        longTexts = new ExposedDropDown[]{null, myView.longButton1Text, myView.longButton2Text,
                 myView.longButton3Text, myView.longButton4Text, myView.longButton5Text,
                 myView.longButton6Text, myView.longButton7Text, myView.longButton8Text};
 
-        longTextInputs = new TextInputLayout[] {null, myView.longButton1, myView.longButton2,
-                myView.longButton3, myView.longButton4, myView.longButton5,
-                myView.longButton6, myView.longButton7, myView.longButton8};
     }
 
     private String charFromInt(int i) {
@@ -152,7 +143,7 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupDropDowns() {
-        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.exposed_dropdown,actions);
+        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.view_exposed_dropdown_item,actions);
         for (int s=1; s<=8; s++) {
             doDropDowns(s,true);
         }
@@ -161,26 +152,23 @@ public class PedalsFragment extends Fragment {
         }
     }
     private void doDropDowns(int which,boolean isShort) {
-        TextInputLayout ti;
-        AutoCompleteTextView tv;
+        ExposedDropDown exposedDropDown;
         String pref;
         String defpref;
         if (isShort) {
-            tv = shortTexts[which];
-            ti = shortTextInputs[which];
+            exposedDropDown = shortTexts[which];
             pref = "pedal"+which+"ShortPressAction";
             defpref = shortActions[which];
         } else {
-            tv = longTexts[which];
-            ti = longTextInputs[which];
+            exposedDropDown = longTexts[which];
             pref = "pedal" + which + "LongPressAction";
             defpref = longActions[which];
         }
-        tv.setAdapter(arrayAdapter);
-        tv.setText(getActionFromActionCode(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),
+        exposedDropDown.setAdapter(arrayAdapter);
+        exposedDropDown.setText(getActionFromActionCode(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),
                     pref, defpref)));
-        exposedDropDownSelection.keepSelectionPosition(ti,tv,actions);
-        tv.addTextChangedListener(new MyTextWatcher(pref));
+        exposedDropDownSelection.keepSelectionPosition(exposedDropDown,actions);
+        exposedDropDown.addTextChangedListener(new MyTextWatcher(pref));
     }
 
     private String getActionCodeFromAction(String s) {

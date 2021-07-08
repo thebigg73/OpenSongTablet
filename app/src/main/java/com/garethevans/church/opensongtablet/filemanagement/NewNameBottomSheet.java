@@ -1,8 +1,7 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,8 +10,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +21,8 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetNewNameBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
@@ -57,14 +58,23 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        Window w = requireDialog().getWindow();
-        if (w!=null) {
-            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
 
         myView = BottomSheetNewNameBinding.inflate(inflater,container,false);
 
@@ -75,7 +85,7 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
 
         // Set listeners
         myView.okButton.setOnClickListener(v -> doSave());
-        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        myView.dialogHeading.closeAction(this);
         if (rename) {
             String currentName = currentSubDir;
             // Only show the last section
@@ -84,10 +94,10 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
                 currentName = currentSubDir.substring(currentSubDir.lastIndexOf("/"));
                 currentName = currentName.replace("/","");
             }
-            myView.newName.getEditText().setText(currentName);
+            myView.newName.setText(currentName);
         }
 
-        myView.newName.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+        myView.newName.setOnEditorActionListener((v, actionId, event) -> {
             if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) ||
                     actionId == EditorInfo.IME_ACTION_DONE) {
                 myView.okButton.performClick();
@@ -95,7 +105,7 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
             return false;
         });
 
-        myView.newName.getEditText().addTextChangedListener(new TextWatcher() {
+        myView.newName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -104,7 +114,7 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
                 if (s != null) {
                     String string = mainActivityInterface.getStorageAccess().safeFilename(s.toString());
                     if (!s.toString().equals(string)) {
-                        myView.newName.getEditText().setText(string);
+                        myView.newName.setText(string);
                     }
                 }
             }
@@ -122,10 +132,10 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
         String message = getString(R.string.error);
         String success = getString(R.string.success);
 
-        if (myView.newName.getEditText()!=null && myView.newName.getEditText().getText()!=null) {
-            newName = myView.newName.getEditText().getText().toString();
+        if (!myView.newName.getText().toString().isEmpty()) {
+            newName = myView.newName.getText().toString();
             newName = mainActivityInterface.getStorageAccess().safeFilename(newName);
-            myView.newName.getEditText().setText(newName);
+            myView.newName.setText(newName);
             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, currentDir, currentSubDir, newName);
             exists = mainActivityInterface.getStorageAccess().uriExists(getContext(),uri);
             if (rename) {

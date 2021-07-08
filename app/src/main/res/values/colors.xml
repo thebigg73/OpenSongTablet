@@ -12,9 +12,7 @@
     <!--Showcase overlay colour-->
     <color name="showcaseColor">#ee141B22</color>
 
-
-    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/lightgrey</color>
-
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#888888</color>
 
     <!--Obviously named colours used as needed-->
     <color name="transparent">#00000000</color>
@@ -22,8 +20,8 @@
     <color name="black">#000000</color>
     <color name="purple">#452277</color>
     <color name="blue">#0000aa</color>
-    <color name="red">#aa0000</color>
-    <color name="darkred">#770000</color>
+    <color name="red">#ff0000</color>
+    <color name="darkred">#aa0000</color>
     <color name="lightred">#884646</color>
     <color name="green">#00aa00</color>
     <color name="darkgreen">#005500</color>
@@ -36,10 +34,5 @@
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
     <color name="darkyellow">#BBBB00</color>
-
-
-
-
-
 
 </resources>

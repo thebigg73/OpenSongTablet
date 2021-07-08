@@ -116,6 +116,7 @@ import com.garethevans.church.opensongtablet.secondarydisplay.MySessionManagerLi
 import com.garethevans.church.opensongtablet.secondarydisplay.PresentationCommon;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
+import com.garethevans.church.opensongtablet.setprocessing.SetManageFragment;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
@@ -159,7 +160,7 @@ All fragments get access to these using getters and setters via the MainActivity
 This avoids loads of static variables
 
 Fragments sometimes send info back to the MainActivity and ask this activity to send the details back
-When this happens, the fragment has to be open.  Main activity keeps references anc checks before doing!!
+When this happens, the fragment has to be open.  Main activity keeps references and checks before doing!!
 */
 
 //TODO Fix unused and local
@@ -644,7 +645,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                         DrawerLayout.LOCK_MODE_UNLOCKED) {
                     hideActionButton(false);
                 } else {
-                    hideActionBar(true);
+                    hideActionButton(true);
                 }
                 hideKeyboard();
             }
@@ -1645,6 +1646,10 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     }
     @Override
     public void updateValue(Fragment fragment, String fragname, String which, String value) {
+        // This takes the info from the TextInputBottomSheet and passes back to the calling fragment
+        Log.d(TAG, "fragment: "+fragment);
+        Log.d(TAG, "fragname: "+fragname);
+        Log.d(TAG, "value: "+value);
         if (fragment!=null) {
             switch (fragname) {
                 case "SettingsCCLI":
@@ -1652,6 +1657,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                     break;
                 case "NearbyConnectionsFragment":
                     ((NearbyConnectionsFragment)fragment).updateValue(which,value);
+                    break;
+                case "SetManageFragment":
+                    ((SetManageFragment)fragment).updateValue(which,value);
                     break;
             }
         }

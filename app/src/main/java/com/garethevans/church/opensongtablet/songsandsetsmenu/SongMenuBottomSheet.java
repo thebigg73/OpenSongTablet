@@ -54,6 +54,10 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetMenuSongsBinding.inflate(inflater,container,false);
 
+        // Set up the dialog title
+        myView.dialogHeading.setText("");
+        myView.dialogHeading.closeAction(this);
+
         // Set up the views
         setListeners();
 
@@ -61,8 +65,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setListeners() {
-        // Set up the dialog title
-        ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText("");
 
         // Set up the song title
         String songTitle = mainActivityInterface.getSong().getTitle();
@@ -77,7 +79,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Listener for buttons
-        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         myView.songActions.setOnClickListener(v -> navigateTo("opensongapp://settings/actions"));
         myView.newSongs.setOnClickListener(v -> navigateTo("opensongapp://settings/import"));
         myView.addToSet.setOnClickListener(v -> addToSet());

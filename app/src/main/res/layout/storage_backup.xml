@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinator"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
-        style="@style/PrefScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,49 +19,38 @@
                 android:id="@+id/importTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="16dp"
-                android:text="@string/backup_osb"/>
+                android:padding="16dp"
+                android:text="@string/backup_osb" />
 
-            <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/backupName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:editTextVal="@string/app_name"
-                app:hintTextVal="@string/filename" />
+                android:text="@string/app_name"
+                android:hint="@string/filename" />
 
             <TextView
                 android:id="@+id/progressText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/section_box"
-                android:padding="24dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="32dp"
-                android:visibility="gone"/>
+                android:padding="16dp"
+                android:visibility="gone" />
 
             <CheckBox
                 android:id="@+id/overWrite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/overwrite"
-                android:paddingTop="24dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="24dp"
                 android:layout_gravity="center_vertical"
-                android:visibility="gone"/>
+                android:padding="16dp"
+                android:text="@string/overwrite"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingTop="24dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="16dp"
-                android:text="@string/choosefolders"/>
+                android:padding="16dp"
+                android:text="@string/choosefolders" />
 
             <LinearLayout
                 android:id="@+id/foundFolders_ListView"
@@ -70,30 +58,29 @@
                 android:layout_height="wrap_content"
                 android:isScrollContainer="true"
                 android:orientation="vertical"
-                android:paddingStart="8dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="96dp"/>
+                android:padding="16dp" />
 
         </LinearLayout>
 
 
     </androidx.core.widget.NestedScrollView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createBackup_FAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="24dp"
         android:contentDescription="@string/save"
         android:src="@drawable/ic_content_save_white_36dp"
-        android:layout_margin="24dp"
-        app:useCompatPadding="true"/>
+        app:useCompatPadding="true" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

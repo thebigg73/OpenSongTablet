@@ -122,6 +122,7 @@
     <string name="extra">Extra information</string>
     <string name="extra_settings">Advanced settings</string>
     <string name="file_exists">File already exists.  Please rename it.</string>
+    <string name="file_choose_info">Select the required file(s) below.</string>
     <string name="filename">Filename</string>
     <string name="filter_by_this_value">Further filter by this value.  This filter searches titles, filenames, user fields and hymn numbers</string>
     <string name="filter_by_folder">This button is used to include a folder filter for your song list.  Turn it off to remove the filter.</string>
@@ -350,6 +351,7 @@
     <string name="set_manage">Manage your sets</string>
     <string name="set_new">Create a new set</string>
     <string name="set_load_info">Load a previously saved set</string>
+    <string name="set_load_merge">Choosing more than one will merge them in the order selected.</string>
     <string name="set_manage_info">Save, load, export, remove, import and backup sets</string>
     <string name="set_name">Set name</string>
     <string name="set_new_info">Remove all songs from the current set</string>
@@ -900,4 +902,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="gesture3">Add song to set</string>
     <string name="autorepeat_time">Auto repeat time (pedal setting)</string>
     <string name="choose_background">Click on a background to use it. Long press / right click to change it.</string>
+    <string name="hex_color_code">Hex color code</string>
 </resources>

@@ -74,7 +74,8 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetStorageFolderBinding.inflate(inflater, container, false);
-        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(b -> dismiss());
+
+        myView.dialogHeading.closeAction(this);
         new Thread(() -> requireActivity().runOnUiThread(this::setupView)).start();
 
         return myView.getRoot();
@@ -82,10 +83,10 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
 
     private void setupView() {
         if (root) {
-            ((TextView)myView.dialogHeading.findViewById(R.id.title)).
-                    setText(mainActivityInterface.getStorageAccess().niceUriTree(getContext(),
-                            mainActivityInterface, mainActivityInterface.getStorageAccess().
-                                    homeFolder(getContext(),null, mainActivityInterface))[1]);
+            myView.dialogHeading.setText(mainActivityInterface.getStorageAccess().
+                    niceUriTree(getContext(), mainActivityInterface,
+                            mainActivityInterface.getStorageAccess().homeFolder(getContext(),
+                                    null, mainActivityInterface))[1]);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
@@ -94,7 +95,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage", R.id.setStorageLocationFragment));
         } else if (songs) {
             String s = "OpenSong/Songs";
-            ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(s);
+            myView.dialogHeading.setText(s);
             myView.changeLocation.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents",0));

@@ -1,30 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-        android:id="@+id/churchDetails"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:main="@string/ccli_church"
-        app:sub="@string/ccli_licence" />
-    <TableRow style="@style/DividerLine" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/logSize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/filename" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
-        android:id="@+id/zoomLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/churchDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/ccli_church"
+                android:hint="@string/ccli_licence" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <TextView
+                android:id="@+id/logSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/filename" />
+
+            <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
+                android:id="@+id/zoomLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

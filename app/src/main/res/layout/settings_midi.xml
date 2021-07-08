@@ -1,308 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/midiPage"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="100dp">
+        android:layout_height="match_parent">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
+            android:layout_marginBottom="100dp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/connections_connect"
-                style="@style/largeText"/>
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/enableBluetooth"
-                style="@style/PrefSwitch"
-                android:text="@string/midi_bluetooth" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/searchDevices"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextOnlyButton"
-                android:text="@string/search"/>
-
-            <RelativeLayout
-                android:id="@+id/searchProgressLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/devicesText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true"
-                    android:text="@string/midi_devices"/>
-                    
-            <LinearLayout
-                android:id="@+id/foundDevicesLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/devicesText"
-                android:gravity="center_horizontal"/>
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/devicesText"
-                    android:layout_centerInParent="true"/>
-
-            </RelativeLayout>
-        </LinearLayout>
-        <TableRow style="@style/DividerLine"/>
-
-        <LinearLayout
-            android:id="@+id/connectionStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/connections_device_name"
-                style="@style/largeText"/>
-            
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/connectedDevice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/connections_device_name"
-            app:sub="@string/connections_device_name" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/testMidiDevice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TextOnlyButton"
-                    android:padding="12dp"
-                    android:layout_margin="12dp"
-                    android:text="@string/midi_test"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/disconnectMidiDevice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/TextOnlyButton"
-                    android:padding="12dp"
-                    android:layout_margin="12dp"
-                    android:text="@string/midi_disconnect"/>
-
-            </LinearLayout>
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/midiAsPedal"
-                style="@style/PrefSwitch"
-                android:text="@string/midi_pedal" />
-        </LinearLayout>
-        <TableRow style="@style/DividerLine"/>
-
-    <LinearLayout
-        android:id="@+id/midiMessages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="0dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/midi_commands"
-            style="@style/largeText" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/autoSendBluetooth"
-            style="@style/PrefSwitch"
-            android:text="@string/midi_auto"/>
-
-            <LinearLayout
-                android:id="@+id/songActionsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="0dp"
+                android:layout_margin="0dp"
                 android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/midiCommandLayout"
-                    style="@style/exposedDropDown"
+                <TextView
+                    style="@style/largeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/action"
-                    android:labelFor="@+id/midiCommand">
+                    android:text="@string/connections_connect" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/midiCommand"
-                        style="@style/exposedDropDownItem"
-                        android:dropDownAnchor="@+id/midiCommandLayout"
-                        android:dropDownHeight="200dp"
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/enableBluetooth"
+                    style="@style/PrefSwitch"
+                    android:text="@string/midi_bluetooth" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/searchDevices"
+                    style="@style/TextOnlyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search" />
+
+                <RelativeLayout
+                    android:id="@+id/searchProgressLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/devicesText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="@string/midi_devices" />
+
+                    <LinearLayout
+                        android:id="@+id/foundDevicesLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/devicesText"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/devicesText"
+                        android:layout_centerInParent="true" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <LinearLayout
+                android:id="@+id/connectionStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/largeText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/connections_device_name" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/connectedDevice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/connections_device_name"
+                    android:hint="@string/connections_device_name" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:baselineAligned="false">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/midiChannelLayout"
-                        style="@style/exposedDropDown"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/testMidiDevice"
+                        style="@style/TextOnlyButton"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:hint="@string/midi_channel"
-                        android:labelFor="@+id/midiChannel">
+                        android:layout_margin="12dp"
+                        android:padding="12dp"
+                        android:text="@string/midi_test" />
 
-                        <AutoCompleteTextView
-                            android:id="@+id/midiChannel"
-                            style="@style/exposedDropDownItem"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:dropDownAnchor="@+id/midiChannelLayout"
-                            android:dropDownHeight="200dp"
-                            android:background="@null" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/midiNoteLayout"
-                        style="@style/exposedDropDown"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/disconnectMidiDevice"
+                        style="@style/TextOnlyButton"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:hint="@string/midi_note"
-                        android:labelFor="@+id/midiNote">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/midiNote"
-                            style="@style/exposedDropDownItem"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:dropDownAnchor="@+id/midiNoteLayout"
-                            android:dropDownHeight="200dp"
-                            android:background="@null" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/midiControllerLayout"
-                        style="@style/exposedDropDown"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:hint="@string/midi_controller"
-                        android:labelFor="@+id/midiController">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/midiController"
-                            style="@style/exposedDropDownItem"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:dropDownAnchor="@+id/midiControllerLayout"
-                            android:dropDownHeight="200dp"
-                            android:background="@null" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/midiValueLayout"
-                        style="@style/exposedDropDown"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:hint="@string/midi_value"
-                        android:labelFor="@+id/midiValue">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/midiValue"
-                            style="@style/exposedDropDownItem"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:dropDownAnchor="@+id/midiValueLayout"
-                            android:dropDownHeight="200dp"
-                            android:background="@null" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/midiVelocityLayout"
-                        style="@style/exposedDropDown"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:hint="@string/midi_velocity"
-                        android:labelFor="@+id/midiVelocity">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/midiVelocity"
-                            style="@style/exposedDropDownItem"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:dropDownAnchor="@+id/midiVelocityLayout"
-                            android:dropDownHeight="200dp"
-                            android:background="@null" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_margin="12dp"
+                        android:padding="12dp"
+                        android:text="@string/midi_disconnect" />
 
                 </LinearLayout>
 
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/midiAsPedal"
+                    style="@style/PrefSwitch"
+                    android:text="@string/midi_pedal" />
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <LinearLayout
+                android:id="@+id/midiMessages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="0dp"
+                android:orientation="vertical">
+
                 <TextView
-                    android:id="@+id/midiCode"
+                    style="@style/largeText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/midi_value"
-                    android:padding="8dp"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/lightgrey"/>
+                    android:text="@string/midi_commands" />
 
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/autoSendBluetooth"
+                    style="@style/PrefSwitch"
+                    android:text="@string/midi_auto" />
+
+                <LinearLayout
+                    android:id="@+id/songActionsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="0dp">
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/midiCommand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/action" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                            android:id="@+id/midiChannel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="@string/midi_channel" />
+
+                        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                            android:id="@+id/midiNote"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="@string/midi_note" />
+
+                        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                            android:id="@+id/midiController"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="@string/midi_controller" />
+
+                        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                            android:id="@+id/midiValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="@string/midi_value" />
+
+                        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                            android:id="@+id/midiVelocity"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="@string/midi_velocity" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/midiCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:padding="8dp"
+                        android:text="@string/midi_value"
+                        android:textColor="@color/lightgrey" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/midiTest"
+                        style="@style/TextOnlyButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/TextOnlyButton"
                         android:padding="8dp"
-                        android:text="@string/midi_test"/>
+                        android:text="@string/midi_test" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/midiAdd"
+                        style="@style/TextOnlyButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/TextOnlyButton"
                         android:padding="8dp"
-                        android:text="@string/midi_add"/>
+                        android:text="@string/midi_add" />
 
-
-            </LinearLayout>
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -312,10 +241,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
         </LinearLayout>
-        <TableRow style="@style/DividerLine"/>
-    </LinearLayout>
 
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

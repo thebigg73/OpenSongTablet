@@ -1,84 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        style="@style/PrefScrollView"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/infoText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="16dp"
+                android:text="@string/storage_graph_overview_info" />
+
+            <LinearLayout
+                android:id="@+id/storageGraph"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
-                    android:id="@+id/infoText"
-                    android:layout_width="match_parent"
+                    android:id="@+id/rootFolder"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/storage_graph_overview_info" />
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/lightred"
+                    android:gravity="center_horizontal"
+                    android:padding="12dp"
+                    android:text="@string/app_name" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/scroll_down"
+                    android:src="@drawable/ic_arrow_down_white_36dp" />
+
+                <TextView
+                    android:id="@+id/mainFolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/lightgreen"
+                    android:gravity="center_horizontal"
+                    android:padding="12dp"
+                    android:text="@string/mainfoldername" />
+
+                <ImageView
+                    android:id="@+id/subFolderArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/scroll_down"
+                    android:src="@drawable/ic_arrow_down_white_36dp"
+                    android:visibility="gone" />
 
                 <LinearLayout
-                    android:id="@+id/storageGraph"
+                    android:id="@+id/folderList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/rootFolder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@color/lightred"
-                        android:gravity="center_horizontal"
-                        android:padding="12dp"
-                        android:text="@string/app_name" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:contentDescription="@string/scroll_down"
-                        android:src="@drawable/ic_arrow_down_white_36dp" />
-
-                    <TextView
-                        android:id="@+id/mainFolder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@color/lightgreen"
-                        android:gravity="center_horizontal"
-                        android:padding="12dp"
-                        android:text="@string/mainfoldername" />
-
-                    <ImageView
-                        android:id="@+id/subFolderArrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:contentDescription="@string/scroll_down"
-                        android:src="@drawable/ic_arrow_down_white_36dp"
-                        android:visibility="gone" />
-
-                    <LinearLayout
-                        android:id="@+id/folderList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
-
-                </LinearLayout>
             </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -86,4 +80,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="visible" />
+
 </RelativeLayout>

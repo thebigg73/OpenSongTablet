@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -84,7 +84,7 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void setupDropDowns() {
-        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, fontNames);
+        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, fontNames);
         myView.lyricFont.setAdapter(arrayAdapter);
         myView.chordFont.setAdapter(arrayAdapter);
         myView.presoFont.setAdapter(arrayAdapter);
@@ -105,11 +105,11 @@ public class FontSetupFragment extends Fragment {
 
         // Set the position in the lists to the chosen values
         ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
-        exposedDropDownSelection.keepSelectionPosition(myView.lyricFontLayout,myView.lyricFont,fontNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.chordFontLayout,myView.chordFont,fontNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.stickyFontLayout,myView.stickyFont,fontNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.presoFontLayout,myView.presoFont,fontNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.presoInfoFontLayout,myView.presoInfoFont,fontNames);
+        exposedDropDownSelection.keepSelectionPosition(myView.lyricFont,fontNames);
+        exposedDropDownSelection.keepSelectionPosition(myView.chordFont,fontNames);
+        exposedDropDownSelection.keepSelectionPosition(myView.stickyFont,fontNames);
+        exposedDropDownSelection.keepSelectionPosition(myView.presoFont,fontNames);
+        exposedDropDownSelection.keepSelectionPosition(myView.presoInfoFont,fontNames);
 
     }
 

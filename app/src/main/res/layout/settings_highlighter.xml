@@ -1,68 +1,76 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:isScrollContainer="true">
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/autoShowHighlight"
-            style="@style/PrefSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/autoshow_highlight" />
-
-        <TableRow style="@style/DividerLine" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/highlighterTimeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TableRow
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/autoShowHighlight"
+                style="@style/PrefSwitch"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/displayTime"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingStart="0dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="16dp"
-                android:text="@string/time" />
-
-            <SeekBar
-                android:id="@+id/timeToDisplayHighlighter"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:max="20"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp" />
-            </TableRow>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/autoshow_highlight" />
 
             <TableRow style="@style/DividerLine" />
 
+            <LinearLayout
+                android:id="@+id/highlighterTimeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/displayTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingStart="0dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="16dp"
+                        android:text="@string/time" />
+
+                    <SeekBar
+                        android:id="@+id/timeToDisplayHighlighter"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:max="20"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp" />
+                </TableRow>
+
+                <TableRow style="@style/DividerLine" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:useCompatPadding="true"
-        android:src="@drawable/ic_pencil_white_36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:contentDescription="@string/edit"
-        android:layout_gravity="bottom|end"/>
+        android:src="@drawable/ic_pencil_white_36dp"
+        app:useCompatPadding="true" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

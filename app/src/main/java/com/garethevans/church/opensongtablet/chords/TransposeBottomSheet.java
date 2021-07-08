@@ -2,14 +2,11 @@ package com.garethevans.church.opensongtablet.chords;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -78,10 +75,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = BottomSheetTransposeBinding.inflate(inflater,container,false);
-        Window w = requireDialog().getWindow();
-        if (w!=null) {
-            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
+
+        myView.dialogHeading.setText(getString(R.string.transpose));
 
         // Initialise views
         initialiseViews();
@@ -94,6 +89,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
         // Initialise the transpose values
         transposeDirection = "";
+        // TODO fix the get the right value
         transposeTimes = Math.abs(0);
 
         // Decide if we are using preferred chord format
@@ -157,6 +153,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setListeners() {
+        myView.dialogHeading.closeAction(this);
+
         //0=-6, 1=-5, 2=-4, 3=-3, 4=-2, 5=-1, 6=0, 7=1, 8=2, 9=3, 10=4, 11=5, 12=6
         transposeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

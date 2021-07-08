@@ -16,7 +16,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.FragmentOsbDetailsBinding;
+import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class BackupOSBFragment extends Fragment {
     // Show the user which folders are detected and can be backed up.
     // By default it will be all of them
 
-    private FragmentOsbDetailsBinding myView;
+    private StorageBackupBinding myView;
     private MainActivityInterface mainActivityInterface;
 
     private String backupFilename;
@@ -53,11 +53,11 @@ public class BackupOSBFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = FragmentOsbDetailsBinding.inflate(inflater,container,false);
+        myView = StorageBackupBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.backup));
 
         setupViews();
-        
+
         return myView.getRoot();
     }
 
@@ -65,7 +65,7 @@ public class BackupOSBFragment extends Fragment {
         new Thread(() -> {
             // Get the default file name
             String deffilename = defaultFilename();
-            requireActivity().runOnUiThread(() -> myView.backupName.getEditText().setText(deffilename));
+            requireActivity().runOnUiThread(() -> myView.backupName.setText(deffilename));
 
             // Get a list of available folders in the app
             ArrayList<String> folders = mainActivityInterface.getCommonSQL().getFolders(mainActivityInterface.getSQLiteHelper().getDB(getContext()));
@@ -86,7 +86,8 @@ public class BackupOSBFragment extends Fragment {
 
         }).start();    
     }
-    
+
+
     private String defaultFilename() {
         // Get the date for the file
         Calendar cal = Calendar.getInstance();
@@ -116,8 +117,8 @@ public class BackupOSBFragment extends Fragment {
             requireActivity().runOnUiThread(() -> {
                 if (alive) {
                     // Check the backup file name
-                    if (myView.backupName.getEditText().getText()!=null) {
-                        backupFilename = myView.backupName.getEditText().getText().toString();
+                    if (myView.backupName.getText()!=null) {
+                        backupFilename = myView.backupName.getText().toString();
                     } else {
                         backupFilename = defaultFilename();
                     }
@@ -233,13 +234,14 @@ public class BackupOSBFragment extends Fragment {
     }
 
     private void exportBackup() {
+        // TODO Currently doesn't see the folders, so not working!!!!
         // Make sure we have an available backup folder
         File backupFile = new File(requireContext().getExternalFilesDir("Backups"), backupFilename);
 
         Log.d("BackupOSBFrag","File="+backupFile);
         Uri uri = FileProvider.getUriForFile(requireContext(), "com.garethevans.church.opensongtablet.fileprovider",backupFile);
         Intent intent = mainActivityInterface.getExportActions().exportBackup(requireContext(),uri,backupFilename);
-        requireActivity().startActivityForResult(Intent.createChooser(intent,getString(R.string.backup_info)), 12345);
+        startActivity(Intent.createChooser(intent,getString(R.string.backup_info)));
     }
 
     @Override

@@ -1,52 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/PrefScrollView"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/songMenuCheckboxes"
-            style="@style/PrefSwitch"
-            android:text="@string/song_menu_checkboxes" />
-
-        <TableRow style="@style/DividerLine" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/songAlphabeticalShow"
-            style="@style/PrefSwitch"
-            android:text="@string/alphabetical" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/songAlphabeticalSizeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
+            android:layout_marginBottom="100dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/size" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/songMenuCheckboxes"
+                style="@style/PrefSwitch"
+                android:text="@string/song_menu_checkboxes" />
 
-            <SeekBar
-                android:id="@+id/songAlphabeticalSize"
+            <TableRow style="@style/DividerLine" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/songAlphabeticalShow"
+                style="@style/PrefSwitch"
+                android:text="@string/alphabetical" />
+
+            <LinearLayout
+                android:id="@+id/songAlphabeticalSizeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="16"
-                android:padding="8dp" />
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@string/size" />
+
+                <SeekBar
+                    android:id="@+id/songAlphabeticalSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="16"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
         </LinearLayout>
 
-        <TableRow style="@style/DividerLine" />
-
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

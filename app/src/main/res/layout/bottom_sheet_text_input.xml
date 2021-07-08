@@ -25,31 +25,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/prefEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
-                    android:padding="16dp"
-                    app:editTextVal="@string/text"
-                    app:hintTextVal="@string/text" />
+                    android:text="@string/text"
+                    android:hint="@string/text" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textLayout"
-                    style="@style/exposedDropDown"
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/textValues"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:hint="@string/text"
-                    android:labelFor="@+id/textValues">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/textValues"
-                        style="@style/exposedDropDownItem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:hint="@string/text"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/okButton"

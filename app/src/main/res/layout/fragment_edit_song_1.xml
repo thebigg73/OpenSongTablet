@@ -18,23 +18,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="500dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="500dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/editTextLayoutOutline"
-                android:layout_width="match_parent"
+        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/title"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/folderName"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:hint="@string/title"
-                android:labelFor="@+id/songTitle">
+                android:layout_weight="0.8"
+                android:hint="@string/folder" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/title"
-                    style="@style/editTextFieldOutline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                android:id="@+id/fileName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.2"
+                android:hint="@string/filename" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,78 +55,22 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/exposedDropDown"
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/key"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
                     android:layout_weight="0.8"
-                    android:hint="@string/folder"
-                    android:labelFor="@+id/folderName">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/folderName"
-                        style="@style/exposedDropDownItem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/editTextLayoutOutline"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/key" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    android:id="@+id/artist"
+                    android:layout_width="0dp"
                     android:layout_weight="1.2"
-                    android:hint="@string/filename"
-                    android:labelFor="@+id/fileName">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fileName"
-                        style="@style/editTextFieldOutline"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/exposedDropDown"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:layout_weight="0.8"
-                    android:hint="@string/key"
-                    android:labelFor="@+id/key">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/key"
-                        style="@style/exposedDropDownItem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/editTextLayoutOutline"
-                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1.2"
-                    android:hint="@string/artist"
-                    android:labelFor="@+id/artist">
+                    android:hint="@string/artist" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/artist"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/editTextLayoutOutline"/>
-                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButtonToggleGroup
@@ -127,20 +83,20 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="0dp"
-                android:weightSum="2"
                 android:paddingBottom="0dp"
+                android:weightSum="2"
                 app:checkedButton="@+id/openSongFormat"
                 app:singleSelection="true">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/openSongFormat"
                     style="@style/TextOnlyButton"
-                    app:backgroundTint="@color/colorSecondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="OpenSong"
-                    tools:ignore="HardcodedText"/>
+                    app:backgroundTint="@color/colorSecondary"
+                    tools:ignore="HardcodedText" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/chordProFormat"
@@ -150,34 +106,19 @@
                     android:layout_weight="1"
                     android:text="ChordPro"
                     tools:ignore="HardcodedText" />
+
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/editTextLayoutOutline"
+            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                android:id="@+id/lyrics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="top"
                 android:hint="@string/lyrics"
-                android:labelFor="@+id/lyrics"
-                app:hintEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/lyrics"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:minHeight="200dp"
-                    android:singleLine="false"
-                    style="@style/editTextLayoutOutline"
-                    android:typeface="monospace"
-                    android:scrollHorizontally="true"
-                    android:inputType="text"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
+                android:singleLine="false"
+                android:minHeight="200dp"
+                android:gravity="top"
+                android:typeface="monospace"/>
+                    </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

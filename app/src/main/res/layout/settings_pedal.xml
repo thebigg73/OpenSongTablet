@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
@@ -156,42 +161,20 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/shortButton1"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/shortButton1Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button1Header"
-                android:layout_marginTop="12dp"
-                android:hint="@string/tap"
-                android:labelFor="@+id/shortButton1Text">
+                android:layout_below="@id/button1Header"
+                android:hint="@string/tap" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/shortButton1Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/longButton1"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/longButton1Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shortButton1"
-                android:hint="@string/long_press"
-                android:labelFor="@+id/longButton1Text">
+                android:layout_below="@id/shortButton1Text"
+                android:hint="@string/long_press" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/longButton1Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 
 
@@ -243,42 +226,20 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/shortButton2"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/shortButton2Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button2Header"
-                android:hint="@string/tap"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/shortButton2Text">
+                android:layout_below="@id/button2Header"
+                android:hint="@string/tap" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/shortButton2Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/longButton2"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/longButton2Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shortButton2"
-                android:hint="@string/long_press"
-                android:labelFor="@+id/longButton2Text">
+                android:layout_below="@id/shortButton2Text"
+                android:hint="@string/long_press" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/longButton2Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 
 
@@ -332,42 +293,20 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/shortButton3"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/shortButton3Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button3Header"
-                android:hint="@string/tap"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/shortButton3Text">
+                android:layout_below="@id/button3Header"
+                android:hint="@string/tap" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/shortButton3Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/longButton3"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/longButton3Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shortButton3"
-                android:hint="@string/long_press"
-                android:labelFor="@+id/longButton3Text">
+                android:layout_below="@id/shortButton3Text"
+                android:hint="@string/long_press" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/longButton3Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 
 
@@ -420,42 +359,20 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/shortButton4"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/shortButton4Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button4Header"
-                android:hint="@string/tap"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/shortButton4Text">
+                android:layout_below="@id/button4Header"
+                android:hint="@string/tap" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/shortButton4Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/longButton4"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/longButton4Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shortButton4"
-                android:hint="@string/long_press"
-                android:labelFor="@+id/longButton4Text">
+                android:layout_below="@id/shortButton4Text"
+                android:hint="@string/long_press" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/longButton4Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 
 
@@ -508,42 +425,20 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/shortButton5"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/shortButton5Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button5Header"
-                android:hint="@string/tap"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/shortButton5Text">
+                android:layout_below="@id/button5Header"
+                android:hint="@string/tap" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/shortButton5Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/longButton5"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/longButton5Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shortButton5"
-                android:hint="@string/long_press"
-                android:labelFor="@+id/longButton5Text">
+                android:layout_below="@id/shortButton5Text"
+                android:hint="@string/long_press" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/longButton5Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 
 
@@ -595,43 +490,21 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/shortButton6"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/shortButton6Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button6Header"
-                android:hint="@string/tap"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/shortButton6Text">
+                android:layout_below="@id/button6Header"
+                android:hint="@string/tap" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/shortButton6Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/longButton6"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/longButton6Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shortButton6"
-                android:hint="@string/long_press"
-                android:labelFor="@+id/longButton6Text">
+                android:layout_below="@id/shortButton6Text"
+                android:hint="@string/long_press" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/longButton6Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </RelativeLayout>
+            </RelativeLayout>
 
 
 
@@ -684,42 +557,20 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/shortButton7"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/shortButton7Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button7Header"
-                android:hint="@string/tap"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/shortButton7Text">
+                android:layout_below="@id/button7Header"
+                android:hint="@string/tap" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/shortButton7Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/longButton7"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/longButton7Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shortButton7"
-                android:hint="@string/long_press"
-                android:labelFor="@+id/longButton7Text">
+                android:layout_below="@id/shortButton7Text"
+                android:hint="@string/long_press" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/longButton7Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 
 
@@ -771,44 +622,23 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/shortButton8"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/shortButton8Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/button8Header"
-                android:hint="@string/tap"
-                android:layout_marginTop="12dp"
-                android:labelFor="@+id/shortButton8Text">
+                android:layout_below="@id/button8Header"
+                android:hint="@string/tap" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/shortButton8Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
-                android:id="@+id/longButton8"
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/longButton8Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/shortButton8"
-                android:hint="@string/long_press"
-                android:labelFor="@+id/longButton8Text">
+                android:layout_below="@id/shortButton8Text"
+                android:hint="@string/long_press" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/longButton8Text"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dropDownHeight="200dp"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
         </RelativeLayout>
 
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
+</LinearLayout>

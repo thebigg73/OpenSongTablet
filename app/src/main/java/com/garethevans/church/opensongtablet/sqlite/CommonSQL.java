@@ -394,14 +394,25 @@ public class CommonSQL {
                 SQLite.COLUMN_FOLDER + " ASC";
 
         Cursor cursor = db.rawQuery(q, null);
+        Log.d(TAG, "cursor.getCount(): "+cursor.getCount());
         cursor.moveToFirst();
-        if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER)>0) {
-            do {
+        Log.d(TAG, "cursor.getColumnCount(): "+cursor.getColumnCount());
+        Log.d(TAG, "cursor.getColumIndex(): "+cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
+
+        if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER)==0) {
+            for (int x=0; x<cursor.getCount(); x++) {
+                Log.d(TAG, "x: "+x);
+                cursor.moveToPosition(x);
+                String folder = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
+                Log.d(TAG, "folder: "+folder);
+                folders.add(folder);
+            }
+            /*do {
                 String s = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
                 if (s != null && !s.isEmpty()) {
                     folders.add(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
                 }
-            } while (cursor.moveToNext());
+            } while (cursor.moveToNext());*/
         }
         closeCursor(cursor);
         return folders;

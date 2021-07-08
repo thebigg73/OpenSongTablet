@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownSelection;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsGesturesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -54,7 +54,7 @@ public class GesturesFragment extends Fragment {
     private void setupDropDowns() {
         // Get the arrays for the dropdowns
         ArrayList<String> availableDescriptions = mainActivityInterface.getGestures().getGestureDescriptions();
-        ExposedDropDownArrayAdapter descriptionsAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, availableDescriptions);
+        ExposedDropDownArrayAdapter descriptionsAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, availableDescriptions);
         myView.doubleTap.setAdapter(descriptionsAdapter);
         myView.longPress.setAdapter(descriptionsAdapter);
 
@@ -67,8 +67,8 @@ public class GesturesFragment extends Fragment {
         myView.doubleTap.addTextChangedListener(new MyTextWatcher("longPress"));
 
         // Set the position in the list to the chosen value
-        exposedDropDownSelection.keepSelectionPosition(myView.doubleTapLayout,myView.doubleTap, mainActivityInterface.getGestures().getGestureDescriptions());
-        exposedDropDownSelection.keepSelectionPosition(myView.longPressLayout,myView.longPress, mainActivityInterface.getGestures().getGestureDescriptions());
+        exposedDropDownSelection.keepSelectionPosition(myView.doubleTap, mainActivityInterface.getGestures().getGestureDescriptions());
+        exposedDropDownSelection.keepSelectionPosition(myView.longPress, mainActivityInterface.getGestures().getGestureDescriptions());
     }
 
     private class MyTextWatcher implements TextWatcher {

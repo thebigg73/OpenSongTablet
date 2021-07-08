@@ -29,6 +29,8 @@ public class SetActionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         SettingsSetsBinding myView = SettingsSetsBinding.inflate(inflater, container, false);
 
+        mainActivityInterface.updateToolbar(getString(R.string.set_manage));
+
         myView.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,"SetActionsFragment",this,null));
         myView.loadSet.setOnClickListener(v -> {
             mainActivityInterface.setWhattodo("loadset");

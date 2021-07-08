@@ -6,80 +6,34 @@
     tools:showIn="@layout/menu_songs"
     android:orientation="vertical">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/folderRow"
+    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+        android:id="@+id/folderSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:hint="@string/folder"
-        style="@style/exposedDropDown"
-        android:labelFor="@+id/folderSearch">
+        android:hint="@string/folder" />
 
-        <AutoCompleteTextView
-            android:id="@+id/folderSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/exposedDropDownItem"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/artistRow"
+    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+        android:id="@+id/artistSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/artist"
-        android:labelFor="@+id/artistSearch"
-        android:layout_margin="2dp"
-        style="@style/editTextLayoutOutline">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/artistSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/editTextFieldOutline"/>
-    </com.google.android.material.textfield.TextInputLayout>
+        android:hint="@string/artist" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/keyRow"
+    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+        android:id="@+id/keySearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:hint="@string/key"
-        style="@style/exposedDropDown"
-        android:labelFor="@+id/keySearch">
+        android:hint="@string/key" />
 
-        <AutoCompleteTextView
-            android:id="@+id/keySearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/exposedDropDownItem"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tagRow"
+    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+        android:id="@+id/tagSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/theme"
-        android:labelFor="@+id/tagSearch"
-        android:layout_margin="2dp"
-        style="@style/editTextLayoutOutline">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tagSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/editTextFieldOutline" />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:hint="@string/theme" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/filterRow"
+    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+        android:id="@+id/filterSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/filter_results"
-        android:labelFor="@+id/filterSearch"
-        android:layout_margin="2dp"
-        style="@style/editTextLayoutOutline">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/filterSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/editTextFieldOutline"/>
-    </com.google.android.material.textfield.TextInputLayout>
+        android:hint="@string/filter_results" />
+
 </LinearLayout>

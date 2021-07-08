@@ -1,397 +1,338 @@
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button1Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/button1View"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/button1Active"
+                style="@style/PrefSwitch"
+                android:text="@string/visible" />
+
+            <LinearLayout
+                android:id="@+id/button1View"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/button"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="true" />
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/button1OptLayout"
-                style="@style/exposedDropDown"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/action"
-                android:labelFor="@+id/button1Opt">
-
-                <AutoCompleteTextView
-                    android:id="@+id/button1Opt"
-                    style="@style/exposedDropDownItem"
-                    android:dropDownHeight="200dp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/ic_help_outline_white_36dp"
+                        app:useCompatPadding="true" />
 
-        </LinearLayout>
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/button1Opt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:hint="@string/action" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button1ShortPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Short press/click action"
-            app:sub="" />
+                </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button1LongPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Additional long press action"
-            app:sub="" />
-        </LinearLayout>
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button1ShortPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Short press/click action"
+                    android:hint="" />
 
-        <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button1LongPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Additional long press action"
+                    android:hint="" />
+            </LinearLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button2Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
+            <TableRow style="@style/DividerLine" />
 
-    <LinearLayout
-        android:id="@+id/button2View"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/button2Active"
+                style="@style/PrefSwitch"
+                android:text="@string/visible" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/button2View"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/button"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="true" />
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/button2OptLayout"
-                style="@style/exposedDropDown"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/action"
-                android:labelFor="@+id/button2Opt">
-
-                <AutoCompleteTextView
-                    android:id="@+id/button2Opt"
-                    style="@style/exposedDropDownItem"
-                    android:dropDownHeight="200dp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-        </LinearLayout>
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/ic_help_outline_white_36dp"
+                        app:useCompatPadding="true" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button2ShortPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Short press/click action"
-            app:sub="" />
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/button2Opt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:hint="@string/action" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button2LongPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Additional long press action"
-            app:sub="" />
+                </LinearLayout>
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button2ShortPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Short press/click action"
+                    android:hint="" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button2LongPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Additional long press action"
+                    android:hint="" />
 
-    </LinearLayout>
-        <TableRow style="@style/DividerLine" />
+            </LinearLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button3Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
+            <TableRow style="@style/DividerLine" />
 
-    <LinearLayout
-        android:id="@+id/button3View"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/button3Active"
+                style="@style/PrefSwitch"
+                android:text="@string/visible" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/button3View"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/button"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="true" />
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/button3OptLayout"
-                style="@style/exposedDropDown"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/action"
-                android:labelFor="@+id/button3Opt">
-
-                <AutoCompleteTextView
-                    android:id="@+id/button3Opt"
-                    style="@style/exposedDropDownItem"
-                    android:dropDownHeight="200dp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/button3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/ic_help_outline_white_36dp"
+                        app:useCompatPadding="true" />
 
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/button3Opt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:hint="@string/action" />
 
-        </LinearLayout>
+                </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button3ShortPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Short press/click action"
-            app:sub="" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button3ShortPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Short press/click action"
+                    android:hint="" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button3LongPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Additional long press action"
-            app:sub="" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button3LongPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Additional long press action"
+                    android:hint="" />
 
+            </LinearLayout>
 
+            <TableRow style="@style/DividerLine" />
 
-    </LinearLayout>
-        <TableRow style="@style/DividerLine" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/button4Active"
+                style="@style/PrefSwitch"
+                android:text="@string/visible" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button4Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
-
-    <LinearLayout
-        android:id="@+id/button4View"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/button4View"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/button"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="true" />
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/button4OptLayout"
-                style="@style/exposedDropDown"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/action"
-                android:labelFor="@+id/button4Opt">
-
-                <AutoCompleteTextView
-                    android:id="@+id/button4Opt"
-                    style="@style/exposedDropDownItem"
-                    android:dropDownHeight="200dp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/button4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/ic_help_outline_white_36dp"
+                        app:useCompatPadding="true" />
 
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/button4Opt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:hint="@string/action" />
 
-        </LinearLayout>
+                </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button4ShortPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Short press/click action"
-            app:sub="" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button4ShortPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Short press/click action"
+                    android:hint="" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button4LongPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Additional long press action"
-            app:sub="" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button4LongPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Additional long press action"
+                    android:hint="" />
 
+            </LinearLayout>
 
+            <TableRow style="@style/DividerLine" />
 
-    </LinearLayout>
-        <TableRow style="@style/DividerLine" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/button5Active"
+                style="@style/PrefSwitch"
+                android:text="@string/visible" />
 
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button5Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
-
-    <LinearLayout
-        android:id="@+id/button5View"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button5"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/button5View"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/button"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="true" />
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/button5OptLayout"
-                style="@style/exposedDropDown"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/action"
-                android:labelFor="@+id/button5Opt">
-
-                <AutoCompleteTextView
-                    android:id="@+id/button5Opt"
-                    style="@style/exposedDropDownItem"
-                    android:dropDownHeight="200dp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-        </LinearLayout>
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/button5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/ic_help_outline_white_36dp"
+                        app:useCompatPadding="true" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button5ShortPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Short press/click action"
-            app:sub="" />
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/button5Opt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:hint="@string/action" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button5LongPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Additional long press action"
-            app:sub="" />
+                </LinearLayout>
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button5ShortPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Short press/click action"
+                    android:hint="" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button5LongPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Additional long press action"
+                    android:hint="" />
 
-    </LinearLayout>
-        <TableRow style="@style/DividerLine" />
+            </LinearLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/button6Active"
-            style="@style/PrefSwitch"
-            android:text="@string/visible" />
+            <TableRow style="@style/DividerLine" />
 
-    <LinearLayout
-        android:id="@+id/button6View"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/button6Active"
+                style="@style/PrefSwitch"
+                android:text="@string/visible" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/button6"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/button6View"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/button"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                app:useCompatPadding="true" />
+                android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/button6OptLayout"
-                style="@style/exposedDropDown"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="@string/action"
-                android:labelFor="@+id/button6Opt">
-
-                <AutoCompleteTextView
-                    android:id="@+id/button6Opt"
-                    style="@style/exposedDropDownItem"
-                    android:dropDownHeight="200dp"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/button6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/button"
+                        android:src="@drawable/ic_help_outline_white_36dp"
+                        app:useCompatPadding="true" />
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/button6Opt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_weight="1"
+                        android:hint="@string/action" />
+
+                </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button6ShortPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Short press/click action"
+                    android:hint="" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/button6LongPress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Additional long press action"
+                    android:hint="" />
+
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
 
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button6ShortPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Short press/click action"
-            app:sub="" />
-
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/button6LongPress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:main="Additional long press action"
-            app:sub="" />
-
-    </LinearLayout>
-        <TableRow style="@style/DividerLine" />
-
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

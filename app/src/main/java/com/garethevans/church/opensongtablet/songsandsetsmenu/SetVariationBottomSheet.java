@@ -55,8 +55,8 @@ public class SetVariationBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetVariationBinding.inflate(inflater, container, false);
 
-        ((TextView)myView.closeView.findViewById(R.id.title)).setText(getString(R.string.select_item_variation));
-        myView.closeView.findViewById(R.id.close).setOnClickListener(v -> dismiss());
+        myView.dialogHeading.setText(getString(R.string.select_item_variation));
+        myView.dialogHeading.closeAction(this);
 
         // Build the set view items
         buildSetItems(inflater, container);

@@ -1,119 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/PrefScrollView"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/swipeActive"
-        style="@style/PrefSwitch"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/song_swipe_toggle" />
-
-    <TableRow style="@style/DividerLine" />
-
-    <ScrollView
-        android:id="@+id/swipeOptionsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TableRow android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="0dp"
-                        android:paddingTop="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingBottom="16dp"
-                        android:text="@string/swipe_distance" />
-
-                    <SeekBar
-                        android:id="@+id/swipeDistance"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="9"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp" />
-                </TableRow>
-
-                <TableRow android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="0dp"
-                        android:paddingTop="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingBottom="16dp"
-                        android:text="@string/time" />
-
-                    <SeekBar
-                        android:id="@+id/swipeSpeed"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="9"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp" />
-                </TableRow>
-
-                <TableRow android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="0dp"
-                        android:paddingTop="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingBottom="16dp"
-                        android:text="@string/swipe_allowance" />
-
-                    <SeekBar
-                        android:id="@+id/swipeHeight"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="9"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp" />
-                </TableRow>
-
-            </TableLayout>
-
-            <TableRow style="@style/DividerLine" />
-
-            <TextView
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swipeActive"
+                style="@style/PrefSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/midi_test" />
-
-            <com.garethevans.church.opensongtablet.customviews.DrawNotes
-                android:id="@+id/drawingArea"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@color/colorSecondary" />
+                android:text="@string/song_swipe_toggle" />
 
             <TableRow style="@style/DividerLine" />
 
+            <LinearLayout
+                android:id="@+id/swipeOptionsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="0dp"
+                            android:paddingTop="16dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="16dp"
+                            android:text="@string/swipe_distance" />
+
+                        <SeekBar
+                            android:id="@+id/swipeDistance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="9"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp" />
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="0dp"
+                            android:paddingTop="16dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="16dp"
+                            android:text="@string/time" />
+
+                        <SeekBar
+                            android:id="@+id/swipeSpeed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="9"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp" />
+                    </TableRow>
+
+                    <TableRow android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="0dp"
+                            android:paddingTop="16dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="16dp"
+                            android:text="@string/swipe_allowance" />
+
+                        <SeekBar
+                            android:id="@+id/swipeHeight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="9"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <TableRow style="@style/DividerLine" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/midi_test" />
+
+                <com.garethevans.church.opensongtablet.customviews.DrawNotes
+                    android:id="@+id/drawingArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/colorSecondary" />
+
+                <TableRow style="@style/DividerLine" />
+
+            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
-
-

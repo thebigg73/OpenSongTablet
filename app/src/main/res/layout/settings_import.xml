@@ -1,86 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinator"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-<androidx.core.widget.NestedScrollView
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/PrefScrollView">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/importOnline"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:main="@string/online"
-            app:sub="@string/online_services" />
-        <TableRow style="@style/DividerLine" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/importFile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/file"
-            app:sub="@string/import_other" />
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/importOnline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/online"
+                android:hint="@string/online_services" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/importCamera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/camera"
-            app:sub="@string/camera_info" />
-        <TableRow style="@style/DividerLine" />
+            <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/importOSB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/app_name"
-            app:sub="@string/import_osb" />
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/importFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/file"
+                android:hint="@string/import_other" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/importiOS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/onsong"
-            app:sub="@string/onsong_import" />
-        <TableRow style="@style/DividerLine" />
+            <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/importChurch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/my_church"
-            app:sub="@string/respect_copyright" />
-        <TableRow style="@style/DividerLine" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/importCamera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/camera"
+                android:hint="@string/camera_info" />
 
-        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
-            android:id="@+id/importBand"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:main="@string/my_band"
-            app:sub="@string/respect_copyright" />
-        <TableRow style="@style/DividerLine" />
+            <TableRow style="@style/DividerLine" />
 
-    </LinearLayout>
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/importOSB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:hint="@string/import_osb" />
 
-</androidx.core.widget.NestedScrollView>
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/importiOS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/onsong"
+                android:hint="@string/onsong_import" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/importChurch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/my_church"
+                android:hint="@string/respect_copyright" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/importBand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/my_band"
+                android:hint="@string/respect_copyright" />
+
+            <TableRow style="@style/DividerLine" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

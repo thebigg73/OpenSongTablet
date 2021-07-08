@@ -2,22 +2,21 @@ package com.garethevans.church.opensongtablet.preferences;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetTextInputBinding;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -30,6 +29,7 @@ import java.util.ArrayList;
 
 public class TextInputBottomSheet extends BottomSheetDialogFragment {
 
+    private static final String TAG = "TextInputBottomSheet";
     private final Fragment fragment;
     private final String fragname;
     private final String title;
@@ -39,8 +39,8 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
     private ArrayList<String> prefChoices;
     private final boolean simpleEditText, singleLine;
 
+    public DialogReturnInterface dialogReturnInterface;
     private BottomSheetTextInputBinding myView;
-    private DialogReturnInterface dialogReturnInterface;
     private MainActivityInterface mainActivityInterface;
 
     public TextInputBottomSheet(Fragment fragment, String fragname, String title, String hint,
@@ -69,13 +69,6 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         singleLine = false;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mainActivityInterface = (MainActivityInterface) context;
-        dialogReturnInterface = (DialogReturnInterface) context;
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -89,14 +82,20 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         return dialog;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
+        dialogReturnInterface = (DialogReturnInterface) context;
+     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetTextInputBinding.inflate(inflater,container,false);
-        if (getDialog()!=null) {
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.scrim)));
-            getDialog().setCanceledOnTouchOutside(true);
-        }
+
+        myView.dialogHeading.setText(title);
+        myView.dialogHeading.closeAction(this);
 
         // Set the views
         setViews();
@@ -108,19 +107,17 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setViews() {
-        ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(title);
 
         if (simpleEditText) {
             // Hide the unwanted views
-            myView.textLayout.setVisibility(View.GONE);
             myView.textValues.setVisibility(View.GONE);
 
             // Set the current values
-            myView.prefEditText.getEditText().setText(prefVal);
+            myView.prefEditText.setText(prefVal);
             if (singleLine) {
-                myView.prefEditText.getEditText().setLines(1);
-                myView.prefEditText.getEditText().setMaxLines(1);
-                myView.prefEditText.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+                myView.prefEditText.setLines(1);
+                myView.prefEditText.setMaxLines(1);
+                myView.prefEditText.setOnEditorActionListener((v, actionId, event) -> {
                     if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) ||
                             actionId == EditorInfo.IME_ACTION_DONE) {
                         myView.okButton.performClick();
@@ -131,33 +128,39 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
             ((TextInputLayout)myView.prefEditText.findViewById(R.id.holderLayout)).setHint(hint);
 
         } else {
-            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.exposed_dropdown,prefChoices);
+            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.view_exposed_dropdown_item,prefChoices);
             myView.textValues.setAdapter(arrayAdapter);
             myView.textValues.setText(prefVal);
-            ((TextInputLayout)myView.textValues.findViewById(R.id.textLayout)).setHint(hint);
+            myView.textValues.setHint(hint);
         }
     }
 
     private void setListeners() {
-        myView.dialogHeading.findViewById(R.id.close).setOnClickListener(v -> dismiss());
         myView.okButton.setOnClickListener(v -> {
             // Grab the new value
             if (simpleEditText) {
-                if (myView.prefEditText.getEditText()!=null && myView.prefEditText.getEditText().getText()!=null) {
-                    prefVal = myView.prefEditText.getEditText().getText().toString();
-                } else {
-                    prefVal = "";
-                }
+                prefVal = myView.prefEditText.getText().toString();
             } else {
                 prefVal = myView.textValues.getText().toString();
             }
 
-            // Save the preference
-            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),prefName,prefVal);
+            // Save the preference if we didn't send null as the prefName
+            if (prefName!=null) {
+                mainActivityInterface.getPreferences().setMyPreferenceString(getContext(), prefName, prefVal);
+            }
 
             // Update the calling fragment
+            Log.d(TAG, "fragname: "+fragname);
             dialogReturnInterface.updateValue(fragment,fragname,prefName,prefVal);
             dismiss();
+        });
+        myView.prefEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // The user has clicked Enter/Done, so the keyboard has closed
+                // Click on the ok button to save it
+                myView.okButton.performClick();
+            }
+            return false;
         });
     }
 }

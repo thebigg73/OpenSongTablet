@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsThemeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -57,7 +57,7 @@ public class ThemeSetupFragment extends Fragment {
         themes.add(getString(R.string.theme_custom1));
         themes.add(getString(R.string.theme_custom2));
 
-        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.exposed_dropdown,themes);
+        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.view_exposed_dropdown_item,themes);
         myTheme = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"appTheme","dark");
         switch (myTheme) {
             case "dark":

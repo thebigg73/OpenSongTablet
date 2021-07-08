@@ -8,7 +8,7 @@ android:layout_width="match_parent"
     android:orientation="vertical">
 
     <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
-        android:id="@+id/closeView"
+        android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

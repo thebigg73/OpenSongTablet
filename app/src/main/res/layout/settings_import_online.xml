@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/PrefScrollView"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,31 +14,20 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
             android:id="@+id/searchPhrase"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:editTextVal="@null"
-            app:hintTextVal="@string/search" />
+            android:text="@null"
+            android:hint="@string/search" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/exposedSourceLayout"
-            style="@style/exposedDropDown"
+        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+            android:id="@+id/onlineSource"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="16dp"
-            android:hint="@string/website"
-            android:labelFor="@+id/onlineSource">
-
-            <AutoCompleteTextView
-                android:id="@+id/onlineSource"
-                style="@style/exposedDropDownItem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:dropDownHeight="200dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:hint="@string/website" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchButton"
@@ -128,31 +117,20 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
             android:id="@+id/saveFilename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:editTextVal="@null"
-            app:hintTextVal="@string/filename" />
+            android:text="@null"
+            android:hint="@string/filename" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/exposedFolderLayout"
-            style="@style/exposedDropDown"
+        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+            android:id="@+id/folderChoice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="16dp"
-            android:hint="@string/choosefolder"
-            android:labelFor="@+id/folderChoice">
-
-            <AutoCompleteTextView
-                android:id="@+id/folderChoice"
-                style="@style/exposedDropDownItem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:dropDownHeight="200dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:hint="@string/choosefolder" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/saveSong"
