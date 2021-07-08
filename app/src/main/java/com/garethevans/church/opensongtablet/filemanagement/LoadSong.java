@@ -490,6 +490,9 @@ public class LoadSong {
                         String startbit = "<"+bit.substring(0,postofix);
                         String bittofix = doFix(bit.substring(postofix));
                         newXML.append(startbit).append(bittofix);
+                    } else {
+                        // No closing tag identifier, so add it
+                        newXML.append("<").append(bit).append(">");
                     }
                 }
             } else {
@@ -573,18 +576,15 @@ public class LoadSong {
         // If the indexing is done and the song is there,
 
         // Get the android version
-        boolean nextisxml = true;
-        if (filename==null || filename.isEmpty() ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".doc") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".docx") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".png") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".gif") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
-            nextisxml = false;
-        }
+        boolean nextisxml = filename != null && !filename.isEmpty() &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".pdf") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".doc") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".docx") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".jpg") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".jpeg") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".png") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".gif") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".bmp");
 
         String nextutf = null;
 
@@ -626,8 +626,13 @@ public class LoadSong {
                         }
                     }
                 }
-                inputStream.close();
-
+                if (inputStream!=null) {
+                    try {
+                        inputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } catch (Exception e) {
             Log.d(TAG,"Error trying to read XML from "+uri);
