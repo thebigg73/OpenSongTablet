@@ -3,47 +3,70 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class DialogTitleClose extends LinearLayout {
+public class DialogTitleClose extends LinearLayout implements View.OnClickListener{
 
-    private final TextView title;
-    private final FloatingActionButton close;
+    private TextView titleView;
+    private FloatingActionButton closeView;
+    private BottomSheetDialogFragment bottomSheetDialogFragment;
 
-    public DialogTitleClose(Context context, @Nullable AttributeSet attrs) {
+    public DialogTitleClose(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_dialogtitle_close,this);
+        super.setOnClickListener(this);
 
-        int[] set = new int[]{android.R.attr.text, android.R.attr.hint, android.R.attr.icon};
+        inflate(context, R.layout.view_dialogtitle_close, this);
+
+        int[] set = new int[]{android.R.attr.text};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
 
-        title = findViewById(R.id.title);
-        close = findViewById(R.id.close);
+        identifyViews();
 
-        if (text!=null) {
-            title.setText(text);
+        if (text != null) {
+            titleView.setText(text);
         }
 
         a.recycle();
     }
 
+    private void identifyViews() {
+        titleView = findViewById(R.id.titleView);
+        closeView = findViewById(R.id.closeView);
+    }
+
     public void setText(String titleText) {
-        title.setText(titleText);
+        titleView.setText(titleText);
     }
 
     public FloatingActionButton getClose() {
-        return close;
+        if (bottomSheetDialogFragment!=null) {
+
+        }
+        return new FloatingActionButton(titleView.getContext());
     }
 
-    public void closeAction(BottomSheetDialogFragment closeThis) {
-        closeThis.dismiss();
+
+    OnClickListener consumerListener = null;
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        consumerListener = l;
+        // DO NOT CALL SUPER HERE
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.i("dev","perform my custom functions, and then ...");
+        if (consumerListener != null) { consumerListener.onClick(v); }
     }
 }

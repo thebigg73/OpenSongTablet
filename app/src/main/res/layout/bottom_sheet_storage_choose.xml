@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/information" />
+        android:text="@string/information" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

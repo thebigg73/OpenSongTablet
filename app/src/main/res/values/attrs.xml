@@ -3,7 +3,7 @@
     <declare-styleable name="MaterialTextView">
         <attr name="android:text" format="string"/>
         <attr name="android:hint" format="string"/>
-        <attr name="android:icon" format="reference"/>
+        <attr name="mydrawable" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="MaterialEditText">
@@ -15,6 +15,10 @@
         <attr name="android:imeOptions" format="string"/>
         <attr name="android:inputType" format="string"/>
         <attr name="android:typeface" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="DialogHeader">
+        <attr name="android:text" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="DialogTitleClose">

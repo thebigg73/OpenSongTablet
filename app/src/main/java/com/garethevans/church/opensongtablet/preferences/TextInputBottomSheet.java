@@ -95,7 +95,9 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetTextInputBinding.inflate(inflater,container,false);
 
         myView.dialogHeading.setText(title);
-        myView.dialogHeading.closeAction(this);
+
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
 
         // Set the views
         setViews();

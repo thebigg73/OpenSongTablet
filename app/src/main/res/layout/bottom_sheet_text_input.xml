@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -10,11 +9,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+        <com.garethevans.church.opensongtablet.customviews.DialogHeader
             android:id="@+id/dialogHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="@string/title" />
+            android:text="@string/title" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -30,14 +29,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
-                    android:text="@string/text"
-                    android:hint="@string/text" />
+                    android:hint="@string/text"
+                    android:text="@string/text" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/textValues"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/text"/>
+                    android:hint="@string/text" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/okButton"

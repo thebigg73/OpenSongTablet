@@ -35,7 +35,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
@@ -731,7 +730,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     private boolean setSongMenuFragment() {
         runOnUiThread(() -> {
             if (songMenuFragment!=null) {
-                songMenuFragment.showActionButton(true);
+                //songMenuFragment.showActionButton(true);
                 if (showSetMenu) {
                     viewPager.setCurrentItem(1);
                 } else {
@@ -1185,7 +1184,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     @Override
     public void songMenuActionButtonShow(boolean show) {
         if (songMenuFragment!=null) {
-            songMenuFragment.showActionButton(show);
+            //songMenuFragment.showActionButton(show);
         }
     }
     @Override
@@ -1316,8 +1315,12 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         navController.popBackStack(id,inclusive);
     }
     @Override
-    public void openDialog(DialogFragment frag, String tag) {
-        frag.show(getSupportFragmentManager(), tag);
+    public void openDialog(BottomSheetDialogFragment frag, String tag) {
+        try {
+            frag.show(getSupportFragmentManager(), tag);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments) {

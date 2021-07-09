@@ -56,7 +56,9 @@ public class SetVariationBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetVariationBinding.inflate(inflater, container, false);
 
         myView.dialogHeading.setText(getString(R.string.select_item_variation));
-        myView.dialogHeading.closeAction(this);
+
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
 
         // Build the set view items
         buildSetItems(inflater, container);

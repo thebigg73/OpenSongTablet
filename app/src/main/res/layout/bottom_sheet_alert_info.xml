@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/storage_change" />
+        android:text="@string/information"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

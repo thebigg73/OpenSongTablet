@@ -78,6 +78,9 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
 
         myView = BottomSheetNewNameBinding.inflate(inflater,container,false);
 
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
+
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
         if (song!=null) {
             songContent = mainActivityInterface.getProcessSong().getXML(requireContext(),mainActivityInterface,song);
@@ -85,7 +88,6 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
 
         // Set listeners
         myView.okButton.setOnClickListener(v -> doSave());
-        myView.dialogHeading.closeAction(this);
         if (rename) {
             String currentName = currentSubDir;
             // Only show the last section

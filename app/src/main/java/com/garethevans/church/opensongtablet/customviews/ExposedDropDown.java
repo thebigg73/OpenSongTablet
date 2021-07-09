@@ -15,21 +15,20 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class ExposedDropDown extends TextInputLayout {
 
-    private final AutoCompleteTextView autoCompleteTextView;
-    private final TextInputLayout textInputLayout;
+    private AutoCompleteTextView autoCompleteTextView;
+    private TextInputLayout textInputLayout;
 
     public ExposedDropDown(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_exposed_dropdown,this);
 
+        identifyViews();
+
         int[] set = new int[]{android.R.attr.text, android.R.attr.hint};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
-
-        autoCompleteTextView = findViewById(R.id.textView);
         autoCompleteTextView.setSingleLine(true);
-        textInputLayout = findViewById(R.id.textLayout);
 
         if (text!=null) {
             autoCompleteTextView.setText(text);
@@ -39,6 +38,11 @@ public class ExposedDropDown extends TextInputLayout {
         }
 
         a.recycle();
+    }
+
+    private void identifyViews() {
+        autoCompleteTextView = findViewById(R.id.textView);
+        textInputLayout = findViewById(R.id.textLayout);
     }
 
     public Editable getText() {

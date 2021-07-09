@@ -153,7 +153,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setListeners() {
-        myView.dialogHeading.closeAction(this);
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
 
         //0=-6, 1=-5, 2=-4, 3=-3, 4=-2, 5=-1, 6=0, 7=1, 8=2, 9=3, 10=4, 11=5, 12=6
         transposeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetAreYouSureBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -62,8 +61,10 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         BottomSheetAreYouSureBinding myView = BottomSheetAreYouSureBinding.inflate(inflater, container, false);
-        myView.dialogHeading.closeAction(this);
-        myView.dialogHeading.setText(getString(R.string.areyousure));
+
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
+
         myView.action.setText(action);
         myView.okButton.setOnClickListener(v -> {
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);

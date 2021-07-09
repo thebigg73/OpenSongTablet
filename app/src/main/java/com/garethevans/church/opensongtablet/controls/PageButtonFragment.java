@@ -201,8 +201,8 @@ public class PageButtonFragment extends Fragment {
         });
     }
     private void setTheText(int pos) {
-        shortTexts.get(pos).setHint(mainActivityInterface.getPageButtons().getPageButtonShortText(pos));
-        longTexts.get(pos).setHint(mainActivityInterface.getPageButtons().getPageButtonLongText(pos));
+        shortTexts.get(pos).setHintText(mainActivityInterface.getPageButtons().getPageButtonShortText(pos));
+        longTexts.get(pos).setHintText(mainActivityInterface.getPageButtons().getPageButtonLongText(pos));
         if (mainActivityInterface.getPageButtons().getPageButtonShortText(pos).isEmpty()) {
             shortTexts.get(pos).setVisibility(View.GONE);
         } else {

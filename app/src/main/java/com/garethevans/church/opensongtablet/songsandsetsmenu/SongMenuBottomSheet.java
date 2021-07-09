@@ -7,28 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetMenuSongsBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final FloatingActionButton fab;
-
-    SongMenuBottomSheet(FloatingActionButton fab) {
-        this.fab = fab;
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,11 +44,10 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = BottomSheetMenuSongsBinding.inflate(inflater,container,false);
+        myView = BottomSheetMenuSongsBinding.inflate(inflater, container, false);
 
-        // Set up the dialog title
-        myView.dialogHeading.setText("");
-        myView.dialogHeading.closeAction(this);
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
 
         // Set up the views
         setListeners();
@@ -65,17 +56,16 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setListeners() {
-
         // Set up the song title
         String songTitle = mainActivityInterface.getSong().getTitle();
-        if (songTitle==null || songTitle.isEmpty() || songTitle.equals("Welcome to OpenSongApp")) {
+        if (songTitle == null || songTitle.isEmpty() || songTitle.equals("Welcome to OpenSongApp")) {
             myView.songActions.setVisibility(View.GONE);
             myView.addToSet.setVisibility(View.GONE);
         } else {
             myView.songActions.setVisibility(View.VISIBLE);
             myView.addToSet.setVisibility(View.VISIBLE);
-            ((TextView)myView.songActions.findViewById(R.id.subText)).setText(songTitle);
-            ((TextView)myView.addToSet.findViewById(R.id.subText)).setText(songTitle);
+            myView.songActions.setHintText(songTitle);
+            myView.addToSet.setHintText(songTitle);
         }
 
         // Listener for buttons
@@ -86,7 +76,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
     private void navigateTo(String deepLink) {
         mainActivityInterface.closeDrawer(true);
-        mainActivityInterface.navigateToFragment(deepLink,0);
+        mainActivityInterface.navigateToFragment(deepLink, 0);
         dismiss();
     }
 
@@ -94,7 +84,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         // Firstly add the song to the current set
         mainActivityInterface.getCurrentSet().
                 addToCurrentSet(mainActivityInterface.getSetActions().
-                        getSongForSetWork(requireContext(),mainActivityInterface.getSong()));
+                        getSongForSetWork(requireContext(), mainActivityInterface.getSong()));
 
     }
 

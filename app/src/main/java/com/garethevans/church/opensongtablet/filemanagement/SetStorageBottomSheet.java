@@ -45,7 +45,9 @@ public class SetStorageBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         BottomSheetStorageChooseBinding myView = BottomSheetStorageChooseBinding.inflate(inflater, container, false);
 
-        myView.dialogHeading.closeAction(this);
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
+
         myView.webHelp.setOnClickListener(v -> {
             mainActivityInterface.openWebPage("storage",null);
             dismiss();

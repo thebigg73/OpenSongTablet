@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/storage_change" />
+        android:text="@string/storage_change" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -26,55 +26,55 @@
                 android:id="@+id/changeLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/storage_reset"
+                custom:mydrawable="@drawable/ic_database_white_36dp"
                 android:padding="16dp"
-                android:text="@string/storage_change"
-                android:icon="@drawable/ic_database_white_36dp"
-                android:hint="@string/storage_reset" />
+                android:text="@string/storage_change" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/backupFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/backup_osb"
+                custom:mydrawable="@drawable/ic_database_export_white_36dp"
                 android:padding="16dp"
-                android:text="@string/backup"
-                android:icon="@drawable/ic_database_export_white_36dp"
-                android:hint="@string/backup_osb" />
+                android:text="@string/backup" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/createSubdirectory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/new_folder_info"
+                custom:mydrawable="@drawable/ic_folder_new_white_36dp"
                 android:padding="16dp"
-                android:text="@string/new_folder"
-                android:icon="@drawable/ic_folder_new_white_36dp"
-                android:hint="@string/new_folder_info" />
+                android:text="@string/new_folder" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/renameFolder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/folder_rename"
+                custom:mydrawable="@drawable/ic_folder_edit_white_36dp"
                 android:padding="16dp"
-                android:text="@string/rename"
-                android:icon="@drawable/ic_folder_edit_white_36dp"
-                android:hint="@string/folder_rename" />
+                android:text="@string/rename" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/moveContents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/folder_move_contents_info"
+                custom:mydrawable="@drawable/ic_content_copy_white_36dp"
                 android:padding="16dp"
-                android:text="@string/folder_move_contents"
-                android:icon="@drawable/ic_content_copy_white_36dp"
-                android:hint="@string/folder_move_contents_info" />
+                android:text="@string/folder_move_contents" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/deleteSubdirectory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/delete_folder_info"
+                custom:mydrawable="@drawable/ic_delete_white_36dp"
                 android:padding="16dp"
-                android:text="@string/delete"
-                android:icon="@drawable/ic_delete_white_36dp"
-                android:hint="@string/delete_folder_info" />
+                android:text="@string/delete" />
 
         </LinearLayout>
 

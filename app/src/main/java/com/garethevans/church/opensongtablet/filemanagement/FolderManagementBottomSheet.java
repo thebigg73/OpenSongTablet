@@ -75,7 +75,9 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetStorageFolderBinding.inflate(inflater, container, false);
 
-        myView.dialogHeading.closeAction(this);
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
+
         new Thread(() -> requireActivity().runOnUiThread(this::setupView)).start();
 
         return myView.getRoot();

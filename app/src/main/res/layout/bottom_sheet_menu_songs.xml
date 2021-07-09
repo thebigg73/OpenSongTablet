@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -24,28 +24,28 @@
                 android:id="@+id/songActions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@string/actions_current_song"
                 android:hint="@string/actions_current_song"
-                android:icon="@drawable/ic_bullseye_white_36dp" />
+                custom:mydrawable="@drawable/ic_bullseye_white_36dp"
+                android:padding="16dp"
+                android:text="@string/actions_current_song" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/addToSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@string/add_song_to_set"
                 android:hint="@string/add_song_to_set"
-                android:icon="@drawable/ic_plus_white_36dp" />
+                custom:mydrawable="@drawable/ic_plus_white_36dp"
+                android:padding="16dp"
+                android:text="@string/add_song_to_set" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/newSongs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@string/add_songs"
                 android:hint="@string/import_main"
-                android:icon="@drawable/ic_database_import_white_36dp" />
+                custom:mydrawable="@drawable/ic_database_import_white_36dp"
+                android:padding="16dp"
+                android:text="@string/add_songs" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -32,10 +32,12 @@ This file shows the user any appropriate warnings.  These can be
 public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
+    private static final String TAG = "AlertInfoBottomSheet";
     private BottomSheetAlertInfoBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
+        Log.d(TAG, "onattach(): ");
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
     }
@@ -61,7 +63,8 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         // Show/hide the appropriate alerts
         whatAlerts();
 
-        myView.dialogHeading.closeAction(this);
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
 
         return myView.getRoot();
     }

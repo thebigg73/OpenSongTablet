@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
@@ -61,6 +60,7 @@ import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -91,7 +91,7 @@ public interface MainActivityInterface {
     void refreshAll();
     void doExport(String what);
     void refreshSetList();
-    void openDialog(DialogFragment frag, String tag);
+    void openDialog(BottomSheetDialogFragment frag, String tag);
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(Song song);

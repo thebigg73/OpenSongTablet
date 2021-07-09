@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.DialogTitleClose
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="@string/transpose" />
+        android:text="@string/transpose" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -132,12 +131,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/doTransposeButton"
+                style="@style/TextBackgroundButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:padding="16dp"
-                android:text="@string/transpose"
-                style="@style/TextBackgroundButton" />
+                android:text="@string/transpose" />
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

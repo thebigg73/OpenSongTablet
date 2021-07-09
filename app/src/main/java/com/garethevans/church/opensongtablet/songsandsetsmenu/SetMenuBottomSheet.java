@@ -54,7 +54,9 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetMenuSetBinding.inflate(inflater, container, false);
 
-        myView.dialogHeading.closeAction(this);
+        // Initialise the 'close' floatingactionbutton
+        myView.dialogHeading.setClose(this);
+
         myView.createSet.setOnClickListener(v -> {
             mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,fragName,callingFragment,null);
             dismiss();

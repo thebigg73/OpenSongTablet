@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pagesplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:padding="12dp">
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/splashlogo"
-        android:layout_width="512dp"
-        android:layout_height="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/currentAction"
+        android:scaleType="centerInside"
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ost_logo" />
+        android:src="@drawable/ost_logo"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/currentAction"
