@@ -5126,42 +5126,38 @@ public class StageMode extends AppCompatActivity implements
     private void displayIndex(ArrayList<SongMenuViewItems> songMenuViewItems,
                               SongMenuAdapter songMenuAdapter) {
         LinearLayout indexLayout = findViewById(R.id.side_index);
-        if (preferences.getMyPreferenceBoolean(StageMode.this,"songMenuAlphaIndexShow",true)) {
-            indexLayout.setVisibility(View.VISIBLE);
-        } else {
-            indexLayout.setVisibility(View.GONE);
-        }
+    // IV - Always displayed for layout consistency - only populate if in use.
         indexLayout.removeAllViews();
-        TextView textView;
-        final Map<String,Integer> map = songMenuAdapter.getAlphaIndex(StageMode.this,songMenuViewItems);
-        Set<String> setString = map.keySet();
-        List<String> indexList = new ArrayList<>(setString);
-        for (String index : indexList) {
-            textView = (TextView) View.inflate(StageMode.this,
-                    R.layout.leftmenu, null);
-
-            textView.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f));
-            int i = (int) preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f) *2;
-            textView.setPadding(i,i,i,i);
-            textView.setText(index);
-            textView.setOnClickListener(view -> {
-                TextView selectedIndex = (TextView) view;
-                try {
-                    if (selectedIndex.getText() != null) {
-                        String myval = selectedIndex.getText().toString();
-                        Object obj = map.get(myval);
-                        if (obj!=null) {
-                            song_list_view.setSelection((int)obj);
+        if (preferences.getMyPreferenceBoolean(StageMode.this,"songMenuAlphaIndexShow",true)) {
+            TextView textView;
+            final Map<String, Integer> map = songMenuAdapter.getAlphaIndex(StageMode.this,songMenuViewItems);
+            Set<String> setString = map.keySet();
+            List<String> indexList = new ArrayList<>(setString);
+            for (String index : indexList) {
+                textView = (TextView) View.inflate(StageMode.this,R.layout.leftmenu, null);
+                textView.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f));
+                int i = (int) preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f) *2;
+                textView.setPadding(i,i,i,i);
+                textView.setText(index);
+                textView.setOnClickListener(view -> {
+                    TextView selectedIndex = (TextView) view;
+                    try {
+                        if (selectedIndex.getText() != null) {
+                            String myval = selectedIndex.getText().toString();
+                            Object obj = map.get(myval);
+                            if (obj!=null) {
+                                song_list_view.setSelection((int) obj);
+                            }
+                            /*
+                            int i = map.get(myval);
+                            song_list_view.setSelection(i);*/
                         }
-                        /*
-                        int i = map.get(myval);
-                        song_list_view.setSelection(i);*/
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-            indexLayout.addView(textView);
+                });
+                indexLayout.addView(textView);
+            }
         }
     }
 

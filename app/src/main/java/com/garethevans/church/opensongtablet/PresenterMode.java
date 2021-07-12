@@ -2686,39 +2686,35 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void displayIndex(ArrayList<SongMenuViewItems> songMenuViewItems,
                               SongMenuAdapter songMenuAdapter) {
         LinearLayout indexLayout = findViewById(R.id.side_index);
-        if (preferences.getMyPreferenceBoolean(PresenterMode.this,"songMenuAlphaIndexShow",true)) {
-            indexLayout.setVisibility(View.VISIBLE);
-        } else {
-            indexLayout.setVisibility(View.GONE);
-        }
+        // IV - Always displayed for layout consistency - only populate if in use.
         indexLayout.removeAllViews();
-        TextView textView;
-        final Map<String,Integer> map = songMenuAdapter.getAlphaIndex(PresenterMode.this,songMenuViewItems);
-        Set<String> setString = map.keySet();
-        List<String> indexList = new ArrayList<>(setString);
-        for (String index : indexList) {
-            textView = (TextView) View.inflate(PresenterMode.this,
-                    R.layout.leftmenu, null);
-
-            textView.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f));
-            int i = (int) preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f) *2;
-            textView.setPadding(i,i,i,i);
-            textView.setText(index);
-            textView.setOnClickListener(view -> {
-                TextView selectedIndex = (TextView) view;
-                try {
-                    if (selectedIndex.getText() != null) {
-                        String myval = selectedIndex.getText().toString();
-                        Object obj = map.get(myval);
-                        if (obj!=null) {
-                            song_list_view.setSelection((int)obj);
+        if (preferences.getMyPreferenceBoolean(PresenterMode.this,"songMenuAlphaIndexShow",true)) {
+            TextView textView;
+            final Map<String,Integer> map = songMenuAdapter.getAlphaIndex(PresenterMode.this,songMenuViewItems);
+            Set<String> setString = map.keySet();
+            List<String> indexList = new ArrayList<>(setString);
+            for (String index : indexList) {
+                textView = (TextView) View.inflate(PresenterMode.this,R.layout.leftmenu, null);
+                textView.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize", 4.0f));
+                int i = (int) preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f) *2;
+                textView.setPadding(i,i,i,i);
+                textView.setText(index);
+                textView.setOnClickListener(view -> {
+                    TextView selectedIndex = (TextView) view;
+                    try {
+                        if (selectedIndex.getText() != null) {
+                            String myval = selectedIndex.getText().toString();
+                            Object obj = map.get(myval);
+                            if (obj!=null) {
+                                song_list_view.setSelection((int)obj);
+                            }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-            indexLayout.addView(textView);
+                });
+                indexLayout.addView(textView);
+            }
         }
     }
 
