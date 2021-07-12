@@ -33,7 +33,7 @@
 
     <RelativeLayout
         android:id="@+id/lblListCheckLayout"
-        android:padding="8dp"
+        android:padding="12dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
