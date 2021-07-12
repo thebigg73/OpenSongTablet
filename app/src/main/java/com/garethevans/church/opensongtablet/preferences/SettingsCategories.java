@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,14 +70,14 @@ public class SettingsCategories extends Fragment {
                 mode = getString(R.string.presentation_mode);
                 break;
         }
-        ((TextView) myView.modeButton.findViewById(R.id.subText)).setText(mode);
+        myView.modeButton.setHintText(mode);
     }
 
     private void setPlayEnabled(boolean enabled) {
         myView.connectButton.setEnabled(enabled);
         myView.connectLine.setEnabled(enabled);
         if (!enabled) {
-            ((TextView) myView.connectButton.findViewById(R.id.subText)).setText(getString(R.string.play_services_error));
+            myView.connectButton.setHintText(getString(R.string.play_services_error));
         }
     }
 
@@ -90,7 +89,7 @@ public class SettingsCategories extends Fragment {
             message = getString(R.string.not_available);
         }
         myView.midiButton.setEnabled(enabled);
-        ((TextView) myView.midiButton.findViewById(R.id.subText)).setText(message);
+        myView.midiButton.setHintText(message);
     }
 
     private void setListeners() {

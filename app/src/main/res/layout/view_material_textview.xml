@@ -42,7 +42,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/selectedView"
+        android:id="@+id/checkMark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/set"

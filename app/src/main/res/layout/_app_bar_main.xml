@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme.ActionBar">
 
         <include android:id="@+id/toolBar"
-            layout="@layout/newtoolbarinclude"
+            layout="@layout/_newtoolbarinclude"
             style="@style/AppTheme.ActionBar"/>
 
     </com.google.android.material.appbar.AppBarLayout>

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +17,8 @@ public class MaterialTextView extends LinearLayout {
 
     private final TextView textView;
     private final TextView hintView;
-    ImageView imageView;
+    private final ImageView imageView;
+    private final ImageView checkMark;
 
     public MaterialTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -27,12 +27,14 @@ public class MaterialTextView extends LinearLayout {
         textView = findViewById(R.id.textView);
         hintView = findViewById(R.id.hintView);
         imageView = findViewById(R.id.imageView);
+        checkMark = findViewById(R.id.checkMark);
 
         int[] set = new int[] {android.R.attr.text, android.R.attr.hint};
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialTextView);
         Drawable drawable = a.getDrawable(R.styleable.MaterialTextView_mydrawable);
+        boolean isChecked = a.getBoolean(R.styleable.MaterialTextView_showCheckMark,false);
 
         String mainText = typedArray.getString(0);
         if (mainText!=null) {
@@ -44,11 +46,13 @@ public class MaterialTextView extends LinearLayout {
             hintView.setText(hintText);
         }
 
-        Log.d("MaterialTextView", "drawable="+drawable);
         if (drawable!=null) {
             imageView.setImageDrawable(drawable);
             imageView.setVisibility(View.VISIBLE);
         }
+
+        showCheckMark(isChecked);
+
         typedArray.recycle();
         a.recycle();
     }
@@ -61,6 +65,13 @@ public class MaterialTextView extends LinearLayout {
         textView.setText(mainText);
     }
 
+    public void showCheckMark(boolean isChecked) {
+        if (isChecked) {
+            checkMark.setVisibility(View.VISIBLE);
+        } else {
+            checkMark.setVisibility(View.GONE);
+        }
+    }
 }
 
 //

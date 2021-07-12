@@ -128,13 +128,6 @@
                     android:gravity="center_horizontal"
                     android:layout_marginBottom="8dp"/>
 
-                <TextView
-                    android:id="@+id/override_TextView"
-                    style="@style/MyInfoText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/override_scale_explanation" />
-
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/overrideFull_Switch"
                     android:layout_width="match_parent"
@@ -241,6 +234,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/override_TextView"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/override_scale_explanation" />
 
         </LinearLayout>
 

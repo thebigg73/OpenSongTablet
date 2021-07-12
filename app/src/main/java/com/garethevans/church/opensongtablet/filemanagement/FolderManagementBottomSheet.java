@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,7 +105,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB", 0));
         } else {
             String s = "OpenSong/Songs/" + subdir;
-            ((TextView)myView.dialogHeading.findViewById(R.id.title)).setText(s);
+            myView.dialogHeading.setText(s);
             myView.changeLocation.setVisibility(View.GONE);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));

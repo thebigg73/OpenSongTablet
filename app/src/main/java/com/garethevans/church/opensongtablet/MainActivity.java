@@ -492,8 +492,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
             navController = navHostFragment.getNavController();
         }
 
-        /*navController = Navigation.findNavController(this, R.id.nav_host_fragment);*/
-
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.bootUpFragment,
@@ -502,7 +500,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        //NavigationUI.setupWithNavController(activityMainBinding.navView, navController);
     }
 
     // Initialise the MainActivity components

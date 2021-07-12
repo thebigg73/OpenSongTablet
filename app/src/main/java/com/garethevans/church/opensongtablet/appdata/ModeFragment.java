@@ -44,13 +44,13 @@ public class ModeFragment extends Fragment {
         switch (mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "whichMode","Performance")) {
             case "Performance":
-                myView.performanceMode.findViewById(R.id.selected).setVisibility(View.VISIBLE);
+                myView.performanceMode.showCheckMark(true);
                 break;
             case "Presentation":
-                myView.presentationMode.findViewById(R.id.selected).setVisibility(View.VISIBLE);
+                myView.presentationMode.showCheckMark(true);
                 break;
             case "Stage":
-                myView.stageMode.findViewById(R.id.selected).setVisibility(View.VISIBLE);
+                myView.stageMode.showCheckMark(true);
                 break;
         }
     }

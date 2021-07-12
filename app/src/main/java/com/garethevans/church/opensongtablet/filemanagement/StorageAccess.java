@@ -1567,6 +1567,17 @@ public class StorageAccess {
             return false;
         }
     }
+    public void wipeFolder(Context c, MainActivityInterface mainActivityInterface,
+                           String folder, String subfolder) {
+        Uri uri = getUriForItem(c,mainActivityInterface,folder,subfolder,null);
+        if (lollipopOrLater()) {
+            DocumentFile df = DocumentFile.fromTreeUri(c,uri);
+            wipeFolder_SAF(df);
+        } else {
+            File f = new File(uri.getPath());
+            wipeFolder_File(f);
+        }
+    }
     public void wipeFolder_File(File f) {
         File[] fs = f.listFiles();
         if (fs != null) {
