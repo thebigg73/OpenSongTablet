@@ -231,8 +231,13 @@ public class SetManageFragment extends Fragment {
                         requireContext(),mainActivityInterface);
                 if (mainActivityInterface.getStorageAccess().writeFileFromString(
                         setXML, outputStream)) {
+                    // Update the last loaded set now it is saved.
+                    mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                            "setCurrentBeforeEdits",
+                            mainActivityInterface.getCurrentSet().getCurrentSetString());
                     mainActivityInterface.getShowToast().doIt(requireContext(),
-                            getString(R.string.success));
+                            getString(R.string.set_current) + " - " +
+                                    getString(R.string.success));
                 } else {
                     mainActivityInterface.getShowToast().doIt(requireContext(),
                             getString(R.string.error));

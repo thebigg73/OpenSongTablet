@@ -62,7 +62,13 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_song_details, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(StaticVariables.songfilename);
+        // IV - If ReceivedSong then, if available, use the stored received song filename
+        if (mainActivityInterface.getSong().getFilename().equals("ReceivedSong") &&
+        !mainActivityInterface.getSetActions().getReceivedSongFilename.equals("")) {
+            title.setText("ReceivedSong: " + mainActivityInterface.getSetActions().getReceivedSongFilename);
+        } else {
+            title.setText(StaticVariables.songfilename);
+        }
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override

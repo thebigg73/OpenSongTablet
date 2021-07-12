@@ -85,16 +85,12 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 // Copy
                 storageAccess.copyFile(inputStream, outputStream);
 
-                // Remove the original if it is a new file location and we aren't duplicating
-                if (!StaticVariables.whattodo.equals("duplicate") && to.getPath() != null && !to.getPath().equals(from.getPath())) {
-                    storageAccess.deleteFile(getActivity(), from);
-                }
-
                 StaticVariables.whichSongFolder = tempNewFolder;
                 StaticVariables.songfilename = tempNewSong;
 
                 // Update the SQLite database
-                if (StaticVariables.whattodo.equals("duplicate")) {
+                // IV - Duplicate a received or variation song (the variation is still needed by the set)
+                if (FullscreenActivity.whattodo.equals("duplicate") | oldsongname.equals("ReceivedSong") | tempOldFolder.equals("../Variations")) {
                     sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
                     sqLite = sqLiteHelper.getSong(getActivity(), songId);
@@ -116,6 +112,10 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     sqLite.setUser3(StaticVariables.mUser3);
                     sqLite.setSongid(songId);
                 } else {
+                    // Remove the original if it is a new file location
+                    if (to.getPath() != null && !to.getPath().equals(from.getPath())) {
+                        storageAccess.deleteFile(getContext(), from);
+                    }
                     String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
                     sqLite.setSongid(songId);
                     sqLite.setFolder(StaticVariables.whichSongFolder);
@@ -128,15 +128,17 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     mListener.loadSong();
                     mListener.prepareSongMenu();
                 }
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    Log.d("PopUpSongRename","Popup already closed");
-                }
+
 
             } catch (Exception e) {
                 Log.d("d", "Error renaming");
             }
+
+            try {
+                    dismiss();
+                } catch (Exception e) {
+                    Log.d("PopUpSongRename","Popup already closed");
+                }
 
         } else {
             StaticVariables.myToastMessage = getResources().getString(R.string.file_exists);

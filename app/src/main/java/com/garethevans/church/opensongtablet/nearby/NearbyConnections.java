@@ -58,6 +58,7 @@ public class NearbyConnections implements NearbyInterface {
     DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
     // The stuff used for Google Nearby for connecting devices
     String serviceId = "com.garethevans.church.opensongtablet";
+    private String receivedSongFilename;
     private MainActivityInterface mainActivityInterface;
 
     public NearbyConnections(Context c, MainActivityInterface mainActivityInterface) {
@@ -360,7 +361,7 @@ public class NearbyConnections implements NearbyInterface {
                                             isConnected = true;
                                             updateConnectionLog(c.getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
                                             // IV - Already connected so replay last incoming song
-                                            if (incomingPrevious != null) {
+                                            if (incomingPrevious != null && !incomingPrevious.equals("")) {
                                                 String incoming = incomingPrevious;
                                                 incomingPrevious = null;
                                                 payloadOpenSong(c, mainActivityInterface, incoming);
@@ -547,11 +548,17 @@ public class NearbyConnections implements NearbyInterface {
                 }
             }
 
+            // IV - Store the received song filename in case the user wants to duplicate the received song
+            receivedSongFilename = receivedBits.get(1);
+
         } else {
             Log.d(TAG, "payloadOpenSong - no change as unchanged payload");
         }
     }
 
+    public String getReceivedSongFilename() {
+        return getReceivedSongFilename();
+    }
     private void payloadFile(Context c, MainActivityInterface mainActivityInterface, Payload payload, String foldernamepair) {
         // If songs are too big, then we receive them as a file rather than bytes
         Log.d(TAG, "foldernamepair=" + foldernamepair);

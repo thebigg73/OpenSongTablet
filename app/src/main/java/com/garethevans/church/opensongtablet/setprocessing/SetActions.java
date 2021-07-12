@@ -359,6 +359,10 @@ public class SetActions {
         // This is also called after an item is clicked in a set with a different key to the default
         // If this happens, the variation is transposed by the required amount
 
+        // The set may have been edited and then the user clicks on a song, so save the set to preferences first
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",
+                mainActivityInterface.getCurrentSet().getCurrentSetString());
+
         // Get the current set item values
         String filename = mainActivityInterface.getCurrentSet().getFilename(position);
         String folder = mainActivityInterface.getCurrentSet().getFolder(position);
