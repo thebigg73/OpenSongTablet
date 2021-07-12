@@ -369,13 +369,17 @@ class CreateNewSet {
 
             Log.d("CreateNewSet","StaticVariables.settoload="+StaticVariables.settoload);
 
-            OutputStream outputStream = storageAccess.getOutputStream(c,uri);
-            if (storageAccess.writeFileFromString(StaticVariables.newSetContents,outputStream)) {
-                StaticVariables.myToastMessage = "yes";
-                // Update the last loaded set now it is saved.
-                preferences.setMyPreferenceString(c,"setCurrentBeforeEdits",preferences.getMyPreferenceString(c,"setCurrent",""));
-            } else {
-                StaticVariables.myToastMessage = "no";
+            if (!StaticVariables.settoload.equals("")) {
+                OutputStream outputStream = storageAccess.getOutputStream(c,uri);
+                if (storageAccess.writeFileFromString(StaticVariables.newSetContents,outputStream)) {
+                    StaticVariables.myToastMessage = c.getResources().getString(R.string.currentset) +
+                            " - " + c.getResources().getString(R.string.ok);
+                    // Update the last loaded set now it is saved.
+                    preferences.setMyPreferenceString(c,"setCurrentBeforeEdits",preferences.getMyPreferenceString(c,"setCurrent",""));
+                    // IV - Removed 'no' as confusing
+                    //} else {
+                    //    StaticVariables.myToastMessage = "no";
+                }
             }
 
             preferences.setMyPreferenceString(c,"setCurrentLastName",StaticVariables.settoload);

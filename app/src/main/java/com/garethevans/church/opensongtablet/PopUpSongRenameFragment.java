@@ -74,16 +74,12 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 // Copy
                 storageAccess.copyFile(inputStream, outputStream);
 
-                // Remove the original if it is a new file location and we aren't duplicating
-                if (!FullscreenActivity.whattodo.equals("duplicate") && to.getPath() != null && !to.getPath().equals(from.getPath())) {
-                    storageAccess.deleteFile(getContext(), from);
-                }
-
                 StaticVariables.whichSongFolder = tempNewFolder;
                 StaticVariables.songfilename = tempNewSong;
 
                 // Update the SQLite database
-                if (FullscreenActivity.whattodo.equals("duplicate")) {
+                // IV - Duplicate a received or variation song (the variation is still needed by the set)
+                if (FullscreenActivity.whattodo.equals("duplicate") | oldsongname.equals("ReceivedSong") | tempOldFolder.equals("../Variations")) {
                     sqLiteHelper.createSong(getContext(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
                     sqLite = sqLiteHelper.getSong(getContext(), songId);
@@ -105,6 +101,10 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     sqLite.setUser3(StaticVariables.mUser3);
                     sqLite.setSongid(songId);
                 } else {
+                    // Remove the original if it is a new file location
+                    if (to.getPath() != null && !to.getPath().equals(from.getPath())) {
+                        storageAccess.deleteFile(getContext(), from);
+                    }
                     String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
                     sqLite.setSongid(songId);
                     sqLite.setFolder(StaticVariables.whichSongFolder);
@@ -117,20 +117,17 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     mListener.loadSong();
                     mListener.prepareSongMenu();
                 }
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    Log.d("PopUpSongRename","Popup already closed");
-                }
-
             } catch (Exception e) {
                 Log.d("d", "Error renaming");
             }
-
+            try {
+                dismiss();
+            } catch (Exception e) {
+                Log.d("PopUpSongRename", "Popup already closed");
+            }
         } else {
             StaticVariables.myToastMessage = getString(R.string.file_exists);
             ShowToast.showToast(getContext());
-
         }
     }
 
@@ -204,7 +201,12 @@ public class PopUpSongRenameFragment extends DialogFragment {
         newSongNameEditText = V.findViewById(R.id.newSongNameEditText);
 
         oldsongname = StaticVariables.songfilename;
-        newSongNameEditText.setText(storageAccess.safeFilename(oldsongname));
+        // IV - When a received song - use the stored received song filename
+        if (StaticVariables.songfilename.equals("ReceivedSong")) {
+            newSongNameEditText.setText(storageAccess.safeFilename(StaticVariables.receivedSongfilename));
+        } else {
+            newSongNameEditText.setText(storageAccess.safeFilename(StaticVariables.songfilename ));
+        }
         isPDF = oldsongname.endsWith(".pdf") || oldsongname.endsWith(".PDF");
 
         // Set up the folderspinner
@@ -251,7 +253,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
         protected void onPostExecute(String s) {
             // The song folder
-            foldernames.add(0, getString(R.string.mainfoldername));
+            // IV - Commented out as preparesongfolders already adds mainfoldername at 0
+            //foldernames.add(0, getString(R.string.mainfoldername));
             ArrayAdapter<String> folders = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, foldernames);
             folders.setDropDownViewResource(R.layout.my_spinner);
             newFolderSpinner.setAdapter(folders);

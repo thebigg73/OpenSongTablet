@@ -297,7 +297,7 @@ class SetActions {
         }
 
         if (StaticVariables.myToastMessage.equals("yes")) {
-            StaticVariables.myToastMessage = c.getString(R.string.save)
+            StaticVariables.myToastMessage = c.getString(R.string.currentset)
                     + " - " + c.getString(R.string.ok);
         }
     }
@@ -308,6 +308,7 @@ class SetActions {
         StaticVariables.setView = false;
 
         preferences.setMyPreferenceString(c,"setCurrentLastName","");
+        StaticVariables.settoload = "";
 
         StaticVariables.myToastMessage = c.getString(R.string.set_new) + " " +
                 c.getString(R.string.ok);

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -111,6 +112,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     static class ViewHolder {
         TextView lblListItem;
         TextView lblListItemAuthor;
+        RelativeLayout lblListCheckLayout;
         CheckBox lblListCheck;
         boolean isTicked;
         int position;
@@ -131,6 +133,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
                 viewHolder.lblListItem = convertView.findViewById(R.id.lblListItem);
                 viewHolder.lblListItemAuthor = convertView.findViewById(R.id.lblListItemAuthor);
+                viewHolder.lblListCheckLayout = convertView.findViewById(R.id.lblListCheckLayout);
                 viewHolder.lblListCheck = convertView.findViewById(R.id.lblListCheck);
                 viewHolder.position = position;
                 viewHolder.isTicked = false;
@@ -195,8 +198,10 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 }
 
                 if (preferences.getMyPreferenceBoolean(c,"songMenuSetTicksShow",true) && !isdirectory) {
+                    viewHolder.lblListCheckLayout.setVisibility(View.VISIBLE);
                     viewHolder.lblListCheck.setVisibility(View.VISIBLE);
                 } else {
+                    viewHolder.lblListCheckLayout.setVisibility(View.GONE);
                     viewHolder.lblListCheck.setVisibility(View.GONE);
                 }
 
@@ -235,6 +240,10 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
                 // Now either hide the tick boxes or set up their actions
                 if (preferences.getMyPreferenceBoolean(c,"songMenuSetTicksShow",true)) {
+
+                    viewHolder.lblListCheckLayout.setOnClickListener(v -> {
+                    // IV - Consume the click - Do nothing
+                    });
 
                     viewHolder.lblListCheck.setOnClickListener(v -> {
                         int position1 = (Integer) v.getTag();

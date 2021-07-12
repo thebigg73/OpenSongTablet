@@ -49,6 +49,23 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     static void makeVariation(Context c, Preferences preferences) {
+        // The set may have been edited and then the user clicks on a song, so save the set first
+        if (mListener != null) {
+            FullscreenActivity.whattodo = "saveset";
+            StaticVariables.myToastMessage = "yes";
+            StringBuilder tempmySet = new StringBuilder();
+            String tempItem;
+            if (StaticVariables.mTempSetList == null) {
+                StaticVariables.mTempSetList = new ArrayList<>();
+            }
+            for (int z = 0; z < StaticVariables.mTempSetList.size(); z++) {
+                tempItem = StaticVariables.mTempSetList.get(z);
+                tempmySet.append("$**_").append(tempItem).append("_**$");
+            }
+            preferences.setMyPreferenceString(c,"setCurrent",tempmySet.toString());
+            mListener.confirmedAction();
+            StaticVariables.setchanged = false;
+        }
         // Prepare the name of the new variation slide
         // If the file already exists, add _ to the filename
         StringBuilder newsongname = new StringBuilder(StaticVariables.songfilename);
