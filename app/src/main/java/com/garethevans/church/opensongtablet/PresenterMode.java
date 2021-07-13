@@ -2987,9 +2987,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_blank_group.setEnabled(false);
 
         logoButton_isSelected = !logoButton_isSelected;
-        backgroundButton_isSelected = false;
 
         if (logoButton_isSelected) {
+            backgroundButton_isSelected = false;
             // IV - If coming from a blank screen do fade quicker
             long tDelay;
             if (blankButton_isSelected) {
@@ -3011,7 +3011,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }, tDelay);
                 if (blankButton_isSelected) {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
-                    blankButton_isSelected = false;
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 PresentationServiceHDMI.showLogoPrep();
@@ -3026,9 +3025,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 },tDelay);
                 if (blankButton_isSelected) {
                     PresentationServiceHDMI.blankUnblankDisplay(true);
-                    blankButton_isSelected = false;
                 }
             }
+            blankButton_isSelected = false;
         } else {
             // Fade out the logo
             if (mSelectedDevice != null) {
@@ -3069,9 +3068,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_blank_group.setEnabled(false);
 
         backgroundButton_isSelected = !backgroundButton_isSelected;
-        logoButton_isSelected = false;
 
         if (backgroundButton_isSelected) {
+            logoButton_isSelected = false;
             // IV - If coming from a blank screen do fade quicker
             long tDelay;
             if (blankButton_isSelected) {
@@ -3093,7 +3092,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }, tDelay);
                 if (blankButton_isSelected) {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
-                    blankButton_isSelected = false;
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 PresentationServiceHDMI.showBackgroundPrep();
@@ -3108,9 +3106,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 },tDelay);
                 if (blankButton_isSelected) {
                     PresentationServiceHDMI.blankUnblankDisplay(true);
-                    blankButton_isSelected = false;
                 }
             }
+            blankButton_isSelected = false;
         } else {
             // Fade out the logo
             if (mSelectedDevice != null) {
