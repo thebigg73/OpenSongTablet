@@ -424,9 +424,6 @@ class PresentationCommon {
             if (projected_LinearLayout.getAlpha() > 0.0f) {
                 CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
             }
-            if (projected_LinearLayout.getAlpha() > 0.0f) {
-                CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
-            }
             if (projected_Logo.getAlpha() > 0.0f) {
                 CustomAnimations.faderAnimation(projected_Logo, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
             }
