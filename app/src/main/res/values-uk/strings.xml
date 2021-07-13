@@ -530,4 +530,5 @@
     <string name="connections_actasclient">Діяти як клієнт</string>
     <string name="autorepeat_time">Час автоповтора (з налаштувань педалі)</string>
     <string name="information_bar_opacity">Непрозорість інформаційної панелі</string>
+    <string name="presoShowBackground">Фону</string>
 </resources>

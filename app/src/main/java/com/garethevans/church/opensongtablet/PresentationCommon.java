@@ -40,6 +40,7 @@ class PresentationCommon {
     boolean doUpdateActive = false;
     boolean animateOutActive = false;
     boolean showLogoActive = false;
+    boolean showBackgroundActive = false;
     boolean blankActive = false;
 
     // The screen and layout defaults starting the projected display
@@ -399,8 +400,14 @@ class PresentationCommon {
         // IV - Logo display removed.  A change meaning showLogo (with all of it's logic) must be explicitly made to display logo
     }
     void showLogoPrep () {
-        // IV - Indicates the delayed showLogo call will be active unless overridden
+        // IV - Indicates the delayed show call will be active unless overridden
         showLogoActive = true;
+        showBackgroundActive = false;
+    }
+    void showBackgroundPrep () {
+        // IV - Indicates the delayed show call will be active unless overridden
+        showLogoActive = true;
+        showBackgroundActive = true;
     }
     void showLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
                   ImageView projected_Logo) {
@@ -417,12 +424,20 @@ class PresentationCommon {
             if (projected_LinearLayout.getAlpha() > 0.0f) {
                 CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
             }
+            if (projected_LinearLayout.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
+            }
+            if (projected_Logo.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_Logo, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
+            }
 
             Handler h = new Handler();
             h.postDelayed(() -> {
                 if (showLogoActive) {
                     // Fade in logo
-                    CustomAnimations.faderAnimation(projected_Logo, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                    if (!showBackgroundActive) {
+                        CustomAnimations.faderAnimation(projected_Logo, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                    }
                     // If we are black screen, fade the page back in
                     if (pageHolder.getVisibility() == View.INVISIBLE) {
                         CustomAnimations.faderAnimation(pageHolder,2 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
@@ -433,7 +448,9 @@ class PresentationCommon {
             Handler h2 = new Handler();
             h2.postDelayed(() -> {
                 if (showLogoActive) {
-                    projected_Logo.setAlpha(1.00f);
+                    if (!showBackgroundActive) {
+                        projected_Logo.setAlpha(1.00f);
+                    }
                     pageHolder.setAlpha(1.00f);
                 }
             }, 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
@@ -446,6 +463,7 @@ class PresentationCommon {
         }
         // IV - Makes sure any delayed showLogo calls do not undo the fade!
         showLogoActive = false;
+        showBackgroundActive = false;
         // IV - Make sure song Alert display is considered (song / alert state may have changed)
         infoBarAlertState = "";
         CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);

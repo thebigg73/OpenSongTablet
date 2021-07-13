@@ -530,4 +530,5 @@
     <string name="connections_actasclient">Agir en tant que client</string>
     <string name="autorepeat_time">Temps de répétition automatique (à partir des réglages de la pédale)</string>
     <string name="information_bar_opacity">Opacité de la barre d\'informations</string>
+    <string name="presoShowBackground">Fon</string>
 </resources>
