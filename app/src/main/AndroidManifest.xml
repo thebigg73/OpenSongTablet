@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="195"
-    android:versionName="5.3.5">
+    android:versionCode="196"
+    android:versionName="5.3.6">
 
     <uses-feature
         android:name="android.hardware.touchscreen"

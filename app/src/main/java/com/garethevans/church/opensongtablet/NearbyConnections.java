@@ -57,7 +57,7 @@ public class NearbyConnections implements NearbyInterface {
 
     // Handler for stop of discovery
     private final Handler stopDiscoveryHandler = new Handler();
-    private final Runnable stopDiscoveryRunnable = () -> stopDiscovery();
+    private final Runnable stopDiscoveryRunnable = this::stopDiscovery;
 
     NearbyConnections(Context context, Preferences preferences, StorageAccess storageAccess,
                       ProcessSong processSong, OptionMenuListeners optionMenuListeners,
@@ -202,7 +202,7 @@ public class NearbyConnections implements NearbyInterface {
         return StaticVariables.deviceName;
     }
     private String userConnectionInfo(String endpointId, ConnectionInfo connectionInfo) {
-        Log.d("NearbyConnections", "endpointId=" + endpointId + "  name=" + connectionInfo.getEndpointName() + "  getAuthenticationToken=" + connectionInfo.getAuthenticationToken());
+        Log.d("NearbyConnections", "endpointId=" + endpointId + "  name=" + connectionInfo.getEndpointName() + "  getAuthenticationToken=" + connectionInfo.getAuthenticationDigits());
         return endpointId + "__" + connectionInfo.getEndpointName();
     }
     private void delayAcceptConnection(String endpointId, ConnectionInfo connectionInfo) {
@@ -236,7 +236,7 @@ public class NearbyConnections implements NearbyInterface {
                     if (StaticVariables.whichOptionMenu.equals("CONNECT") || (StaticVariables.isHost && !preferences.getMyPreferenceBoolean(context, "nearbyHostMenuOnly", false))) {
                         new AlertDialog.Builder(context)
                                 .setTitle(context.getResources().getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
-                                .setMessage(context.getResources().getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
+                                .setMessage(context.getResources().getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationDigits())
                                 .setPositiveButton(
                                         context.getResources().getString(R.string.ok),
                                         (DialogInterface dialog, int which) -> delayAcceptConnection(endpointId, connectionInfo))
@@ -493,7 +493,7 @@ public class NearbyConnections implements NearbyInterface {
 
                 // If the user wants to keep the host file, we will save it to our storage.
                 // If we already have it, it will overwrite it, if not, we add it
-                Uri newLocation = null;
+                Uri newLocation;
                 if (StaticVariables.keepHostFiles) {
                     // Prepare the output stream in the client Songs folder
                     // Check the folder exists, if not, create it

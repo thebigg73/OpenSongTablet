@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.Toast;
 
 public class ShowToast extends Activity {
@@ -34,7 +33,6 @@ public class ShowToast extends Activity {
                 //mySnackbar.show();
 
 				Toast toast = Toast.makeText(view, StaticVariables.myToastMessage, Toast.LENGTH_LONG);
-				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 
 				StaticVariables.myToastMessage = null;
@@ -49,7 +47,6 @@ public class ShowToast extends Activity {
     void showToastMessage(Context c, String message) {
         try {
             Toast toast = Toast.makeText(c, message, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } catch (Exception e) {
             Log.d("d","Error showing toast message");

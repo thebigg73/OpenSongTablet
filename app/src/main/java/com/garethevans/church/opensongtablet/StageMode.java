@@ -1,5 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -106,9 +109,6 @@ import java.util.Map;
 import java.util.Set;
 
 import lib.folderpicker.FolderPicker;
-
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
 
 // This includes all recent version pulls from IV and GE
 
@@ -852,10 +852,8 @@ public class StageMode extends AppCompatActivity implements
         v.setOnSystemUiVisibilityChangeListener(null);
         v.setOnFocusChangeListener(null);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
@@ -5600,6 +5598,7 @@ public class StageMode extends AppCompatActivity implements
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
@@ -6856,7 +6855,6 @@ public class StageMode extends AppCompatActivity implements
 
         // IV - Used by all methods
         keyRepeatCount++;
-        //Log.d("StageMode", "onKeyDown: " + keyRepeatCount);
 
         if (keyCode == KeyEvent.KEYCODE_MENU && event.isLongPress()) {
             // Open up the song search intent instead of bringing up the keyboard
@@ -6886,7 +6884,6 @@ public class StageMode extends AppCompatActivity implements
                 if (!blockKeyAction && (keyRepeatCount > 6)) {
                     doLongKeyPressAction(keyCode);
                 }
-                //Log.d("StageMode", "OnKeyDown: Tracking");
                 event.startTracking();
                 return true;
             }
@@ -7354,7 +7351,6 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         keyRepeatCount++;
-        //Log.d("StageMode", "onKeyUp " + keyRepeatCount);
         // If we are using an AirTurn pedal it will send onKeyDown then onKeyUp and quickly repeat for long press
         // Set a listener for the keyRepeatTime + 100ms  to detect the last (no change in keyRepeatCount) onKeyUp and do a short press
         if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {

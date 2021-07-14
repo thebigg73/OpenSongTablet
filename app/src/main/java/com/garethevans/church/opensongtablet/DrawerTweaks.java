@@ -1,13 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
+import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 
 class DrawerTweaks {
 
@@ -28,7 +27,6 @@ class DrawerTweaks {
                               LinearLayout song,
                               LinearLayout option,
                               String which) {
-        Log.d("DrawerTweaks", "which=" + which);
         switch (which) {
             case "both":
                 drawer.openDrawer(song);
