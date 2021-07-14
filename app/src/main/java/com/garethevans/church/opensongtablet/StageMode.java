@@ -35,6 +35,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
@@ -4546,7 +4547,7 @@ public class StageMode extends AppCompatActivity implements
                 stickycurrtime = System.currentTimeMillis();
 
                 // Set the time to close the sticky note
-                stickytimetohide = stickycurrtime + (preferences.getMyPreferenceInt(StageMode.this,"timeToDisplaySticky",5) * 1000);
+                stickytimetohide = stickycurrtime + (preferences.getMyPreferenceInt(StageMode.this,"timeToDisplaySticky",5) * 1000L);
 
                 if (preferences.getMyPreferenceInt(StageMode.this,"timeToDisplaySticky",5) == 0) {
                     stickydonthide = true;
@@ -4985,7 +4986,7 @@ public class StageMode extends AppCompatActivity implements
 
                     // Set the time to close the highlighter note
                     int time = preferences.getMyPreferenceInt(StageMode.this,"timeToDisplayHighlighter",0);
-                    highlighttimetohide = highlightcurrtime + (time * 1000);
+                    highlighttimetohide = highlightcurrtime + (time * 1000L);
 
                     if (time == 0) {
                         highlightdonthide = true;
