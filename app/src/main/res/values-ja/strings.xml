@@ -530,4 +530,5 @@
     <string name="connections_actasclient">クライアントとして行動する</string>
     <string name="information_bar_opacity">情報バーの不透明度</string>
     <string name="autorepeat_time">自動リピート時間（ペダル設定から）</string>
+    <string name="presoShowBackground">背景</string>
 </resources>

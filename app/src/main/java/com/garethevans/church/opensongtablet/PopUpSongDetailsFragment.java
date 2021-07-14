@@ -61,7 +61,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
 
         TextView title = V.findViewById(R.id.dialogtitle);
         // IV - If ReceivedSong then, if available, use the stored received song filename
-        if (StaticVariables.songfilename.equals("ReceivedSong") & !StaticVariables.receivedSongfilename.equals("")) {
+        if (StaticVariables.songfilename.equals("ReceivedSong") && !StaticVariables.receivedSongfilename.equals("")) {
             title.setText("ReceivedSong: " + StaticVariables.receivedSongfilename);
         } else {
             title.setText(StaticVariables.songfilename);

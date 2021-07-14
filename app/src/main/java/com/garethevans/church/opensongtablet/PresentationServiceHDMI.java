@@ -265,6 +265,9 @@ import android.widget.TextView;
         static void showLogoPrep() {
             presentationCommon.showLogoPrep();
         }
+        static void showBackgroundPrep() {
+            presentationCommon.showBackgroundPrep();
+        }
         static void showLogo() {
             presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder, projected_Logo);
         }

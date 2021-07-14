@@ -55,6 +55,19 @@
                 android:text="@string/presoShowLogo" />
 
             <TextView
+                android:id="@+id/presenter_background_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_margin="4dp"
+                android:drawableStart="@drawable/ic_projector_background_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/presoShowBackground" />
+
+            <TextView
                 android:id="@+id/presenter_blank_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"

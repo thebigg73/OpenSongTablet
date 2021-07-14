@@ -530,4 +530,5 @@
     <string name="connections_actasclient">Fungera som klient</string>
     <string name="information_bar_opacity">Informationsfältets opacitet</string>
     <string name="autorepeat_time">Autorepeat-tid (från pedalinställningar)</string>
+    <string name="presoShowBackground">Bakgrund</string>
 </resources>

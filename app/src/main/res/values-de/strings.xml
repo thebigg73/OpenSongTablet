@@ -530,4 +530,5 @@
     <string name="connections_actasclient">Als Kunde auftreten</string>
     <string name="autorepeat_time">Autorepeat-Zeit (aus den Pedaleinstellungen)</string>
     <string name="information_bar_opacity">Deckkraft der Informationsleiste</string>
+    <string name="presoShowBackground">Hintergrund</string>
 </resources>

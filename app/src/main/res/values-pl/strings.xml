@@ -530,4 +530,5 @@
     <string name="connections_actasclient">Działaj jako klient</string>
     <string name="autorepeat_time">Czas autopowtarzania (z ustawień pedału)</string>
     <string name="information_bar_opacity">Nieprzezroczystość paska informacyjnego</string>
+    <string name="presoShowBackground">Tło</string>
 </resources>

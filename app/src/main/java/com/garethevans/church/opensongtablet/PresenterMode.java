@@ -217,6 +217,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // The buttons
     private TextView presenter_project_group;
     private TextView presenter_logo_group;
+    private TextView presenter_background_group;
     private TextView presenter_blank_group;
     private TextView presenter_alert_group;
     private TextView presenter_audio_group;
@@ -250,6 +251,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private boolean projectButton_isSelected = false;
     private boolean blankButton_isSelected = false;
     static boolean logoButton_isSelected = false;
+    static boolean backgroundButton_isSelected = false;
     static String alert_on = "N";
     // IV - Support a half highlight of buttons during transitions
     private boolean buttonInTransition = false;
@@ -275,6 +277,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         } else {
             unhighlightButtonClicked(presenter_logo_group);
         }
+        if (backgroundButton_isSelected) {
+            highlightButtonClicked(presenter_background_group);
+        } else {
+            unhighlightButtonClicked(presenter_background_group);
+        }
         if (projectButton_isSelected) {
             highlightButtonClicked(presenter_project_group);
         } else {
@@ -282,6 +289,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
         presenter_project_group.setEnabled(true);
         presenter_logo_group.setEnabled(true);
+        presenter_background_group.setEnabled(true);
         presenter_blank_group.setEnabled(true);
         buttonInTransition = false;
     };
@@ -1118,6 +1126,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // The buttons
         presenter_project_group = findViewById(R.id.presenter_project_group);
         presenter_logo_group = findViewById(R.id.presenter_logo_group);
+        presenter_background_group = findViewById(R.id.presenter_background_group);
         presenter_blank_group = findViewById(R.id.presenter_blank_group);
         presenter_alert_group = findViewById(R.id.presenter_alert_group);
         presenter_audio_group = findViewById(R.id.presenter_audio_group);
@@ -1247,6 +1256,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         });
         presenter_project_group.setOnClickListener(view -> projectButtonClick());
         presenter_logo_group.setOnClickListener(view -> logoButtonClick());
+        presenter_background_group.setOnClickListener(view -> backgroundButtonClick());
         presenter_blank_group.setOnClickListener(view -> blankButtonClick());
         presenter_alert_group.setOnClickListener(view -> alertButtonClick());
         presenter_audio_group.setOnClickListener(view -> audioButtonClick());
@@ -1841,11 +1851,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (!buttonInTransition) {
             highlightButtonClickedHalf(presenter_project_group);
             unhighlightButtonClicked(presenter_logo_group);
+            unhighlightButtonClicked(presenter_background_group);
             unhighlightButtonClicked(presenter_blank_group);
         }
         // IV - Disable action buttons here
         presenter_project_group.setEnabled(false);
         presenter_logo_group.setEnabled(false);
+        presenter_background_group.setEnabled(false);
         presenter_blank_group.setEnabled(false);
 
         try {
@@ -1866,6 +1878,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Turn off the other actions buttons as we are now projecting!
             if (logoButton_isSelected) {
                 presenter_logo_group.performClick();  // This turns off the logo
+            }
+            if (backgroundButton_isSelected) {
+                presenter_background_group.performClick();  // This turns off background only
             }
             if (blankButton_isSelected) {
                 presenter_blank_group.performClick();
@@ -2686,39 +2701,35 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void displayIndex(ArrayList<SongMenuViewItems> songMenuViewItems,
                               SongMenuAdapter songMenuAdapter) {
         LinearLayout indexLayout = findViewById(R.id.side_index);
-        if (preferences.getMyPreferenceBoolean(PresenterMode.this,"songMenuAlphaIndexShow",true)) {
-            indexLayout.setVisibility(View.VISIBLE);
-        } else {
-            indexLayout.setVisibility(View.GONE);
-        }
+        // IV - Always displayed for layout consistency - only populate if in use.
         indexLayout.removeAllViews();
-        TextView textView;
-        final Map<String,Integer> map = songMenuAdapter.getAlphaIndex(PresenterMode.this,songMenuViewItems);
-        Set<String> setString = map.keySet();
-        List<String> indexList = new ArrayList<>(setString);
-        for (String index : indexList) {
-            textView = (TextView) View.inflate(PresenterMode.this,
-                    R.layout.leftmenu, null);
-
-            textView.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f));
-            int i = (int) preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f) *2;
-            textView.setPadding(i,i,i,i);
-            textView.setText(index);
-            textView.setOnClickListener(view -> {
-                TextView selectedIndex = (TextView) view;
-                try {
-                    if (selectedIndex.getText() != null) {
-                        String myval = selectedIndex.getText().toString();
-                        Object obj = map.get(myval);
-                        if (obj!=null) {
-                            song_list_view.setSelection((int)obj);
+        if (preferences.getMyPreferenceBoolean(PresenterMode.this,"songMenuAlphaIndexShow",true)) {
+            TextView textView;
+            final Map<String,Integer> map = songMenuAdapter.getAlphaIndex(PresenterMode.this,songMenuViewItems);
+            Set<String> setString = map.keySet();
+            List<String> indexList = new ArrayList<>(setString);
+            for (String index : indexList) {
+                textView = (TextView) View.inflate(PresenterMode.this,R.layout.leftmenu, null);
+                textView.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize", 4.0f));
+                int i = (int) preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f) *2;
+                textView.setPadding(i,i,i,i);
+                textView.setText(index);
+                textView.setOnClickListener(view -> {
+                    TextView selectedIndex = (TextView) view;
+                    try {
+                        if (selectedIndex.getText() != null) {
+                            String myval = selectedIndex.getText().toString();
+                            Object obj = map.get(myval);
+                            if (obj!=null) {
+                                song_list_view.setSelection((int)obj);
+                            }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-            indexLayout.addView(textView);
+                });
+                indexLayout.addView(textView);
+            }
         }
     }
 
@@ -2967,15 +2978,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (!buttonInTransition) {
             unhighlightButtonClicked(presenter_project_group);
             highlightButtonClickedHalf(presenter_logo_group);
+            unhighlightButtonClicked(presenter_background_group);
             unhighlightButtonClicked(presenter_blank_group);
         }
         presenter_project_group.setEnabled(false);
         presenter_logo_group.setEnabled(false);
+        presenter_background_group.setEnabled(false);
         presenter_blank_group.setEnabled(false);
 
         logoButton_isSelected = !logoButton_isSelected;
 
         if (logoButton_isSelected) {
+            backgroundButton_isSelected = false;
             // IV - If coming from a blank screen do fade quicker
             long tDelay;
             if (blankButton_isSelected) {
@@ -2997,7 +3011,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }, tDelay);
                 if (blankButton_isSelected) {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
-                    blankButton_isSelected = false;
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 PresentationServiceHDMI.showLogoPrep();
@@ -3012,9 +3025,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 },tDelay);
                 if (blankButton_isSelected) {
                     PresentationServiceHDMI.blankUnblankDisplay(true);
-                    blankButton_isSelected = false;
                 }
             }
+            blankButton_isSelected = false;
         } else {
             // Fade out the logo
             if (mSelectedDevice != null) {
@@ -3033,8 +3046,89 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             }
         }
-        // IV - If we end up not 'blank' and not 'logo' then a 'project' is needed
-        if (!blankButton_isSelected && !logoButton_isSelected && !projectButton_isSelected) {
+        // IV - If we end up not 'blank' and not 'logo' and not 'background' then a 'project' is needed
+        if (!blankButton_isSelected && !logoButton_isSelected && !backgroundButton_isSelected && !projectButton_isSelected) {
+            presenter_project_group.performClick();
+        }
+
+        enableActionButtonsHandler.removeCallbacks(enableActionButtonsRunnable);
+        enableActionButtonsHandler.postDelayed(enableActionButtonsRunnable, (long) (3.2 * preferences.getMyPreferenceInt(this, "presoTransitionTime",800)));
+    }
+
+    private void backgroundButtonClick() {
+        if (!buttonInTransition) {
+            unhighlightButtonClicked(presenter_project_group);
+            unhighlightButtonClicked(presenter_logo_group);
+            highlightButtonClickedHalf(presenter_background_group);
+            unhighlightButtonClicked(presenter_blank_group);
+        }
+        presenter_project_group.setEnabled(false);
+        presenter_logo_group.setEnabled(false);
+        presenter_background_group.setEnabled(false);
+        presenter_blank_group.setEnabled(false);
+
+        backgroundButton_isSelected = !backgroundButton_isSelected;
+
+        if (backgroundButton_isSelected) {
+            logoButton_isSelected = false;
+            // IV - If coming from a blank screen do fade quicker
+            long tDelay;
+            if (blankButton_isSelected) {
+                tDelay = 0;
+            } else {
+                tDelay = preferences.getMyPreferenceInt(this, "presoTransitionTime",800);
+            }
+            // Fade to the background
+            if (mSelectedDevice != null) {
+                PresentationService.ExternalDisplay.showBackgroundPrep();
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    try {
+                        PresentationService.ExternalDisplay.showLogo();
+                        PresentationService.ExternalDisplay.wipeProjectedLayout();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, tDelay);
+                if (blankButton_isSelected) {
+                    PresentationService.ExternalDisplay.blankUnblankDisplay(true);
+                }
+            } else if (FullscreenActivity.isHDMIConnected) {
+                PresentationServiceHDMI.showBackgroundPrep();
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    try {
+                        PresentationServiceHDMI.showLogo();
+                        PresentationServiceHDMI.wipeProjectedLayout();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },tDelay);
+                if (blankButton_isSelected) {
+                    PresentationServiceHDMI.blankUnblankDisplay(true);
+                }
+            }
+            blankButton_isSelected = false;
+        } else {
+            // Fade out the logo
+            if (mSelectedDevice != null) {
+                try {
+                    PresentationService.ExternalDisplay.wipeProjectedLayout();
+                    PresentationService.ExternalDisplay.hideLogo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (FullscreenActivity.isHDMIConnected) {
+                try {
+                    PresentationServiceHDMI.wipeProjectedLayout();
+                    PresentationServiceHDMI.hideLogo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        // IV - If we end up not 'blank' and not 'logo' and not 'background' then a 'project' is needed
+        if (!blankButton_isSelected && !logoButton_isSelected && !backgroundButton_isSelected && !projectButton_isSelected) {
             presenter_project_group.performClick();
         }
 
@@ -3045,11 +3139,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (!buttonInTransition) {
             unhighlightButtonClicked(presenter_project_group);
             unhighlightButtonClicked(presenter_logo_group);
+            unhighlightButtonClicked(presenter_background_group);
             highlightButtonClickedHalf(presenter_blank_group);
         }
 
         presenter_project_group.setEnabled(false);
         presenter_logo_group.setEnabled(false);
+        presenter_background_group.setEnabled(false);
         presenter_blank_group.setEnabled(false);
 
         blankButton_isSelected = !blankButton_isSelected;
@@ -3074,6 +3170,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (logoButton_isSelected) {
                 presenter_logo_group.performClick();
              }
+            if (backgroundButton_isSelected) {
+                presenter_background_group.performClick();
+            }
         } else {
              // Fade back everything
             if (mSelectedDevice != null) {
@@ -3092,7 +3191,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             }
         }
-        if (!blankButton_isSelected && !logoButton_isSelected && !projectButton_isSelected) {
+        if (!blankButton_isSelected && !logoButton_isSelected && !backgroundButton_isSelected && !projectButton_isSelected) {
             presenter_project_group.performClick();
         }
         enableActionButtonsHandler.removeCallbacks(enableActionButtonsRunnable);
@@ -3153,6 +3252,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void noSecondScreen() {
         unhighlightButtonClicked(presenter_project_group);
         unhighlightButtonClicked(presenter_logo_group);
+        unhighlightButtonClicked(presenter_background_group);
         unhighlightButtonClicked(presenter_blank_group);
         unhighlightButtonClicked(presenter_alert_group);
         unhighlightButtonClicked(presenter_audio_group);
@@ -3162,6 +3262,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         unhighlightButtonClicked(presenter_display_group);
         presenter_project_group.setEnabled(true);
         presenter_logo_group.setEnabled(true);
+        presenter_background_group.setEnabled(true);
         presenter_blank_group.setEnabled(true);
         presenter_alert_group.setEnabled(true);
         presenter_audio_group.setEnabled(true);
@@ -3176,6 +3277,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void isSecondScreen() {
         presenter_project_group.setEnabled(true);
         presenter_logo_group.setEnabled(true);
+        presenter_background_group.setEnabled(true);
         presenter_blank_group.setEnabled(true);
         presenter_alert_group.setEnabled(true);
         presenter_audio_group.setEnabled(true);
