@@ -6,6 +6,7 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
@@ -22,8 +23,10 @@ import java.util.ArrayList;
 
 public class PageButtons {
 
+    private final String TAG = "PageButtons";
+
     // For the actions
-    ActionInterface actionInterface;
+    private final ActionInterface actionInterface;
 
     // Everything available for the buttons
     private ArrayList<String> actions, text, shortText, longText;
@@ -323,13 +326,14 @@ public class PageButtons {
             } else if (x==1) {
                 fallback = "transpose";
             } else if (x==2) {
-                fallback = "edit";
+                fallback = "editsong";
             } else if (x==3) {
                 fallback = "autoscroll";
             } else if (x==4) {
                 fallback = "metronome";
             }
             String action = preferences.getMyPreferenceString(c,"pageButton"+(x+1),fallback);
+            Log.d(TAG, "x: "+x+"  action:"+action);
             pageButtonAction.add(action);
             int pos = getButtonInArray(action);
             if (pos>=0) {
@@ -436,12 +440,14 @@ public class PageButtons {
 
     // This deals with the actions from the page buttons
     public void sendPageAction(int x, boolean isLongPress) {
+        Log.d(TAG,"x="+x+"  isLongPress="+isLongPress);
         // Get the action we are trying to run
         switch(actions.get(x)) {
             case "":
                 actionInterface.navigateToFragment("opensongapp://settings/controls/pagebuttons",0);
                 break;
             case "set":
+                Log.d(TAG, "Show set");
                 actionInterface.chooseMenu(true);
                 break;
             case "transpose":
@@ -456,7 +462,7 @@ public class PageButtons {
                 }
                 break;
             case "metronome":
-                //TODO
+                actionInterface.metronomeToggle();
                 break;
             case "autoscroll":
                 //TODO
@@ -468,6 +474,7 @@ public class PageButtons {
                 //TODO
                 break;
             case "stickynotes":
+                Log.d(TAG,"Stickynotes");
                 if (isLongPress) {
                     actionInterface.navigateToFragment("opensongapp://settings/actions/stickynotes",0);
                 } else {

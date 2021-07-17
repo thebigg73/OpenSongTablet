@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -14,6 +15,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class AppActionBar {
 
     private final ActionBar actionBar;
+    private final RelativeLayout actionBarBackground;
     private final TextView title;
     private final TextView author;
     private final TextView key;
@@ -24,11 +26,12 @@ public class AppActionBar {
     private final BatteryStatus batteryStatus;
     private final Handler delayactionBarHide;
     private final Runnable hideActionBarRunnable;
+    private int colorOn, colorOff;
 
     private boolean hideActionBar;
     private boolean performanceMode;
 
-    public AppActionBar(ActionBar actionBar, BatteryStatus batteryStatus, TextView title, TextView author, TextView key, TextView capo, ImageView batteryDial,
+    public AppActionBar(ActionBar actionBar, RelativeLayout actionBarBackground, BatteryStatus batteryStatus, TextView title, TextView author, TextView key, TextView capo, ImageView batteryDial,
                         TextView batteryText, TextView clock, boolean hideActionBar) {
         if (batteryStatus==null) {
             this.batteryStatus = new BatteryStatus();
@@ -43,6 +46,7 @@ public class AppActionBar {
         this.batteryDial = batteryDial;
         this.batteryText = batteryText;
         this.clock = clock;
+        this.actionBarBackground = actionBarBackground;
         this.hideActionBar = hideActionBar;
         delayactionBarHide = new Handler();
         hideActionBarRunnable = () -> {
@@ -84,7 +88,7 @@ public class AppActionBar {
             } else {
                 hideView(key, true);
             }
-        } else if (newtitle !=null ){
+        } else {
             // We are in a different fragment, so don't hide the song info stuff
             actionBar.show();
             if (title != null) {
@@ -95,7 +99,6 @@ public class AppActionBar {
             }
         }
     }
-
     public void setActionBarCapo(TextView capo, String string) {
         capo.setText(string);
     }
@@ -213,4 +216,20 @@ public class AppActionBar {
             // Change the top padding of the view underneath
         }
     }
+
+    public void setMetronomeColors(int colorOn, int colorOff) {
+        this.colorOn = colorOn;
+        this.colorOff = colorOff;
+    }
+    // Flash on/off for metronome
+    public void doFlash(int delayTime) {
+        actionBarBackground.setBackgroundColor(colorOn);
+        new Handler().postAtTime(hideFlashRunnable,delayTime);
+    }
+    private final Runnable hideFlashRunnable = new Runnable() {
+        @Override
+        public void run() {
+            actionBarBackground.setBackgroundColor(colorOff);
+        }
+    };
 }

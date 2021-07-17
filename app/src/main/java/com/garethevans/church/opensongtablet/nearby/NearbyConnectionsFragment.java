@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,7 +58,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
     public void updateViews() {
         // Set the device name
-        ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(mainActivityInterface.getNearbyConnections().getUserNickname(requireContext(),mainActivityInterface));
+        myView.deviceButton.setHintText(mainActivityInterface.getNearbyConnections().getUserNickname(requireContext(),mainActivityInterface));
 
         // Set the default values for off/host/client
         if (mainActivityInterface.getNearbyConnections().isHost) {
@@ -105,7 +104,7 @@ public class NearbyConnectionsFragment extends Fragment {
         if (mainActivityInterface.getNearbyConnections().connectionLog ==null) {
             mainActivityInterface.getNearbyConnections().connectionLog = "";
         }
-        ((TextView)myView.connectionsLog.findViewById(R.id.subText)).setText(mainActivityInterface.getNearbyConnections().connectionLog);
+        myView.connectionsLog.setHintText(mainActivityInterface.getNearbyConnections().connectionLog);
     }
 
     public void setListeners() {
@@ -189,7 +188,7 @@ public class NearbyConnectionsFragment extends Fragment {
     // Called from MainActivity after TextInputDialogFragment save
     public void updateValue(String which, String value) {
         if (which.equals("deviceName")) {
-            ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(value);
+            myView.deviceButton.setHintText(value);
             mainActivityInterface.getNearbyConnections().deviceId = value;
         }
     }

@@ -167,8 +167,8 @@ public class MidiFragment extends Fragment {
             myView.connectionStatus.setVisibility(View.GONE);
         } else {
             myView.connectionStatus.setVisibility(View.VISIBLE);
-            ((TextView) myView.connectedDevice.findViewById(R.id.mainText)).setText(mainActivityInterface.getMidi().getMidiDeviceName());
-            ((TextView) myView.connectedDevice.findViewById(R.id.subText)).setText(mainActivityInterface.getMidi().getMidiDeviceAddress());
+            myView.connectedDevice.setMainText(mainActivityInterface.getMidi().getMidiDeviceName());
+            myView.connectedDevice.setHintText(mainActivityInterface.getMidi().getMidiDeviceAddress());
         }
         if (isSearchingDevices) {
             myView.searchProgressLayout.setVisibility(View.VISIBLE);
@@ -405,13 +405,13 @@ public class MidiFragment extends Fragment {
                 mainActivityInterface.getMidi().getMidiDeviceAddress() != null) {
             myView.searchProgressLayout.setVisibility(View.GONE);
             myView.connectionStatus.setVisibility(View.VISIBLE);
-            ((TextView) myView.connectedDevice.findViewById(R.id.mainText)).setText(mainActivityInterface.getMidi().getMidiDeviceName());
-            ((TextView) myView.connectedDevice.findViewById(R.id.subText)).setText(mainActivityInterface.getMidi().getMidiDeviceAddress());
+            myView.connectedDevice.setMainText(mainActivityInterface.getMidi().getMidiDeviceName());
+            myView.connectedDevice.setHintText(mainActivityInterface.getMidi().getMidiDeviceAddress());
         } else {
             myView.searchProgressLayout.setVisibility(View.VISIBLE);
             myView.connectionStatus.setVisibility(View.GONE);
-            ((TextView) myView.connectedDevice.findViewById(R.id.mainText)).setText("");
-            ((TextView) myView.connectedDevice.findViewById(R.id.subText)).setText("");
+            myView.connectedDevice.setMainText("");
+            myView.connectedDevice.setHintText("");
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
+    <com.garethevans.church.opensongtablet.customviews.MaterialTextView
         android:id="@+id/versionCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:gravity="end"
         android:padding="12dp"
         android:background="@color/colorAltPrimary"
-        app:drawableStartCompat="@drawable/ic_arrow_left_white_36dp" />
+        custom:mydrawable="@drawable/ic_arrow_left_white_36dp" />
 
 <com.google.android.material.tabs.TabLayout
     android:id="@+id/tabs"

@@ -28,7 +28,7 @@
         android:id="@+id/performanceFragment"
         android:name="com.garethevans.church.opensongtablet.performance.PerformanceFragment"
         android:label="fragment_performance"
-        tools:layout="@layout/performance">
+        tools:layout="@layout/mode_performance">
         <action
             android:id="@+id/action_performanceFragment_to_preferences_graph"
             app:destination="@id/preferences_graph" />

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -80,9 +79,9 @@ public class SettingsCCLI extends Fragment {
     // Called from MainActivity after TextInputDialogFragment save
     public void updateValue(String which, String value) {
         if (which.equals("ccliChurchName")) {
-            ((TextView)myView.ccliChurch.findViewById(R.id.subText)).setText(value);
+            myView.ccliChurch.setHintText(value);
         } else if (which.equals("ccliLicence")){
-            ((TextView)myView.ccliLicence.findViewById(R.id.subText)).setText(value);
+            myView.ccliLicence.setHintText(value);
         }
     }
 

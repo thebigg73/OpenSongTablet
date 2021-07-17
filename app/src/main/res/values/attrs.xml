@@ -5,6 +5,7 @@
         <attr name="android:hint" format="string"/>
         <attr name="mydrawable" format="reference" />
         <attr name="showCheckMark" format="boolean"/>
+        <attr name="showCheckBox" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="MaterialEditText">

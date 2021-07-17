@@ -261,7 +261,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private void prepareSearch() {
-        Log.d(TAG, "prepareSearch() running");
         getSearchVals();
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> buttonsEnabled(false));

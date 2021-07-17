@@ -307,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         View view = activityMainBinding.getRoot();
         setContentView(view);
 
+        Log.d(TAG, "STARTING MAIN ACTIVITY: ");
         // Initialise the most important stuff
         initialiseHelpers1();
 
@@ -427,7 +428,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         pedalActions = new PedalActions();
         padFunctions = new PadFunctions();
         autoscrollActions = new AutoscrollActions();
-        metronome = new Metronome(this,ab);
+        metronome = new Metronome();
         gestures = new Gestures(this,mainActivityInterface);
         gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
         swipes = new Swipes(this,mainActivityInterface);
@@ -439,7 +440,8 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     }
     private void initialiseHelpers3() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(ab,batteryStatus,activityMainBinding.toolBar.songtitleAb,
+        appActionBar = new AppActionBar(ab,activityMainBinding.toolBar.actionBarBackground,
+                batteryStatus,activityMainBinding.toolBar.songtitleAb,
                 activityMainBinding.toolBar.songauthorAb, activityMainBinding.toolBar.songkeyAb,
                 activityMainBinding.toolBar.songcapoAb,activityMainBinding.toolBar.batteryimage,
                 activityMainBinding.toolBar.batterycharge,activityMainBinding.toolBar.digitalclock,
@@ -2160,12 +2162,23 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     @Override
     public void showSticky() {
         // Try to show the sticky note
+        Log.d(TAG,"showSticky");
         if (!whichMode.equals("Presentation") && performanceFragment!=null) {
             try {
                 performanceFragment.dealWithStickyNotes(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+    @Override
+    public void metronomeToggle() {
+        Log.d(TAG, mainActivityInterface.getSong().getTitle());
+        Log.d(TAG, "metronomeToggle()  isRunning="+metronome.getIsRunning());
+        if (!metronome.getIsRunning()) {
+            metronome.startMetronome(this,this,mainActivityInterface);
+        } else {
+            metronome.stopMetronome();
         }
     }
 

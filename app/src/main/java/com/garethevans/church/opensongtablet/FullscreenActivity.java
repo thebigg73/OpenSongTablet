@@ -19,11 +19,8 @@ public class FullscreenActivity extends AppCompatActivity {
 
     public static Uri file_uri;
 
-    // Screencapture variables
-    public static Bitmap bmScreen;
 
     // Custom note/slide variables
-    public static String noteorslide = "";
     public static String customslide_title = "";
     public static String customslide_content = "";
     public static String customimage_list = "";
@@ -39,7 +36,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
     public static int myWidthAvail;
 
-    public static final String webpage = "https://www.google.com";
 
     public static ArrayList<String> exportsetfilenames = new ArrayList<>(), exportsetfilenames_ost = new ArrayList<>();
 
@@ -48,17 +44,10 @@ public class FullscreenActivity extends AppCompatActivity {
 
     public static String emailtext = "";
 
-    public static String whattodo;
 
     public static String mCurrentPhotoPath;
 
     public static int pdfPageCurrent = 0, pdfPageCount = 0;
-    public static boolean isPDF = false;
-    public static boolean isImage = false;
-    public static boolean isSong = false;
-    public static boolean isSlide = false;
-    public static boolean isScripture = false;
-    public static boolean isImageSlide = false;
     public static final boolean isVideo = false;
 
     // Views and bits on the pages
@@ -80,11 +69,7 @@ public class FullscreenActivity extends AppCompatActivity {
     public static boolean scalingfiguredout = false;
     public static int splitpoint, thirdsplitpoint, twothirdsplitpoint, halfsplit_section,
             thirdsplit_section, twothirdsplit_section;
-    public static String myLyrics = "";
-    public static String myXML = "", mynewXML = "";
-    public static String linkclicked = "";
     public static int numrowstowrite;
-    public static String[] myParsedLyrics, myTransposedLyrics;
 
     public static String mScripture = "";
     public static final String incoming_text = "";
@@ -105,7 +90,6 @@ public class FullscreenActivity extends AppCompatActivity {
     // TODO move to StaticVariables if still needed
     public static boolean needtorefreshsongmenu = false, needtoeditsong = false;
     public static final String indexlog = "";
-    public static String currentFolder = "";
     public static String newFolder = "";
     public static boolean appRunning = false;
     public static int currentSongIndex;
@@ -116,10 +100,6 @@ public class FullscreenActivity extends AppCompatActivity {
     public static int keyindex;
     public static float autoscroll_pixels = 0.0f, newPosFloat = 0.0f;
     public static long time_start, time_passed = 0;
-    public static final short minBpm = 40, maxBpm = 199;
-    public static short noteValue = 4, beats = 4;
-    public static final double beatSound = 1200;
-    public static final double sound = 1600;
     public static final MediaPlayer mPlayer1 = new MediaPlayer();
     public static final MediaPlayer mPlayer2 = new MediaPlayer();
     public static boolean mPlayer1Paused = false, mPlayer2Paused = false;

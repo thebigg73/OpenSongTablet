@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,8 +47,8 @@ public class AboutAppFragment extends Fragment {
     }
 
     private void updateMenuText() {
-        mainActivityInterface.getVersionNumber().updateMenuVersionNumber(requireContext(),myView.latestVersion.findViewById(R.id.subText));
-        ((TextView)myView.languageButton.findViewById(R.id.subText)).setText(mainActivityInterface.getLocale().getDisplayLanguage());
+        mainActivityInterface.getVersionNumber().updateMenuVersionNumber(requireContext(),myView.latestVersion);
+        myView.languageButton.setHintText(mainActivityInterface.getLocale().getDisplayLanguage());
     }
 
     private void setListeners() {

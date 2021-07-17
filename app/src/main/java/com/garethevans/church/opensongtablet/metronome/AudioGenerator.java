@@ -35,72 +35,30 @@ public class AudioGenerator {
         return generatedSound;
     }
 
-    public void createPlayer(String pan, float vol){
+    public void createPlayer(float volumeLeft, float volumeRight){
         try {
-
             audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                     sampleRate, AudioFormat.CHANNEL_OUT_STEREO,
                     AudioFormat.ENCODING_PCM_16BIT, sampleRate,
                     AudioTrack.MODE_STREAM);
-
+            audioTrack.setStereoVolume(volumeLeft, volumeRight);
+            audioTrack.play();
         } catch (Exception e) {
             Log.d("audiotrack","Can't initialise");
         }
-
-        float leftVolume = vol;
-        float rightVolume = vol;
-
-        if (pan.equals("L")) {
-            rightVolume = 0.0f;
-        } else if (pan.equals("R")) {
-            leftVolume = 0.0f;
-        }
-
-        try {
-            audioTrack.setStereoVolume(leftVolume, rightVolume);
-            audioTrack.play();
-        } catch (Exception e) {
-            Log.d("audioTrack","Can't play it");
-        }
     }
 
-    void writeSound(String pan, float vol, double[] samples, boolean metronomeOn) {
+    void writeSound(float volumeLeft, float volumeRight, double[] samples) {
+        audioTrack.setStereoVolume(volumeLeft, volumeRight);
+
         byte[] generatedSnd = get16BitPcm(samples);
-        if (metronomeOn &&
-                audioTrack.getState()==AudioTrack.STATE_INITIALIZED &&
+        if (audioTrack.getState()==AudioTrack.STATE_INITIALIZED &&
                 audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
             try {
                 audioTrack.write(generatedSnd, 0, generatedSnd.length);
             } catch (Exception e) {
                 // This will catch any exception, because they are all descended from Exception
                 Log.d("whoops","error writing sound");
-            }
-            switch (pan) {
-                case "L":
-                    try {
-                        audioTrack.setStereoVolume(vol, 0.0f);
-                    } catch (Exception e) {
-                        // This will catch any exception, because they are all descended from Exception
-                        Log.d("whoops", "error setting volume left");
-                    }
-                    break;
-                case "R":
-                    try {
-                        audioTrack.setStereoVolume(0.0f, vol);
-                    } catch (Exception e) {
-                        // This will catch any exception, because they are all descended from Exception
-                        Log.d("whoops", "error setting volume right");
-                    }
-                    break;
-                default:
-                    try {
-                        audioTrack.setStereoVolume(vol, vol);
-
-                    } catch (Exception e) {
-                        // This will catch any exception, because they are all descended from Exception
-                        Log.d("whoops", "error setting volume both");
-                    }
-                    break;
             }
         }
     }

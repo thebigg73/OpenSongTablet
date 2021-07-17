@@ -6,7 +6,6 @@ package com.garethevans.church.opensongtablet.preferences;
 // These are the ones that are frequently accessed, so easier just to be static
 
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -105,15 +104,8 @@ public class StaticVariables {
 
     // The song secions.  Used when paring songs into bits
     public static String[] songSections;
-    static String[] songSectionsLabels;
-    static String[] songSectionsTypes;
-    static String[][] sectionContents, sectionLineTypes, projectedContents, projectedLineTypes;
-    static String songSection_holder; // This carries on section types after line breaks
-    static float[] sectionScaleValue;
     public static int currentSection;
 
-    // The fonts used.  They are preloaded in SetTypeFace
-    public static Typeface typefaceLyrics, typefaceChords, typefaceSticky, typefacePreso, typefacePresoInfo, typefaceCustom, typefaceMono;
 
 
     // Song scaling used for scaling overrides if appropriate (matches to user preference)

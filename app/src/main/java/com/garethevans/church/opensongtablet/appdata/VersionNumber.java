@@ -3,7 +3,8 @@ package com.garethevans.church.opensongtablet.appdata;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.view.View;
-import android.widget.TextView;
+
+import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
 
 public class VersionNumber {
 
@@ -42,13 +43,14 @@ public class VersionNumber {
         }
     }
 
-    public void updateMenuVersionNumber(Context c, TextView showVersion) {
+    public void updateMenuVersionNumber(Context c, MaterialTextView showVersion) {
         // Update the app version in the menu
         setupPackage(c);
         if (!versionName.equals("?") && versionCode > 0) {
             if (showVersion != null) {
                 showVersion.setVisibility(View.VISIBLE);
-                showVersion.setText(getFullVersionInfo());
+                showVersion.setMainText(getFullVersionInfo());
+                showVersion.setHintText(""+getVersionCode());
             }
         } else {
             if (showVersion != null) {
@@ -62,6 +64,6 @@ public class VersionNumber {
     }
 
     public String getFullVersionInfo() {
-        return "V" + versionName + " (" + versionCode + ")";
+        return "V" + versionName;
     }
 }

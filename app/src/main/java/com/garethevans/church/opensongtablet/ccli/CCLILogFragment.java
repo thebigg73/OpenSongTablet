@@ -50,7 +50,7 @@ public class CCLILogFragment extends Fragment {
         ((TextView)myView.churchDetails.findViewById(R.id.mainText)).setText(churchName);
         String churchLicence = getString(R.string.ccli_licence) + ": " +
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliLicence","");
-        ((TextView)myView.churchDetails.findViewById(R.id.subText)).setText(churchLicence);
+        myView.churchDetails.setHintText(churchLicence);
 
         TableLayout tableLayout = mainActivityInterface.getCCLILog().getTableLayout(requireContext());
 

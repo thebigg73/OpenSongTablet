@@ -4,11 +4,13 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -16,7 +18,9 @@ import java.util.ArrayList;
 
 public class PerformanceGestures {
 
+    private final String TAG = "PerformanceGestures";
     private final MainActivityInterface mainActivityInterface;
+    private final ActionInterface actionInterface;
     private final DrawerLayout drawerLayout;
     private final MediaPlayer mPlayer1;
     private final MediaPlayer mPlayer2;
@@ -29,6 +33,7 @@ public class PerformanceGestures {
         this.drawerLayout = drawerLayout;
         this.mPlayer1 = mPlayer1;
         this.mPlayer2 = mPlayer2;
+        actionInterface = (ActionInterface) c;
     }
 
     // Open/close the drawers
@@ -120,8 +125,9 @@ public class PerformanceGestures {
 
     // Start or stop the metronome
     public void gesture7(Context c, Song song) {
-        mainActivityInterface.getDoVibrate().vibrate(c, 50);
-        boolean metronomeok = mainActivityInterface.getMetronome().isMetronomeValid(song);
+        Log.d(TAG,"gesture7()");
+        actionInterface.metronomeToggle();
+        /*boolean metronomeok = mainActivityInterface.getMetronome().isMetronomeValid();
         if (metronomeok || mainActivityInterface.getMetronome().getClickedOnMetronomeStart()) {
             // IV - clickedOnMetronomeStart is set elsewhere (Metronome class)
             mainActivityInterface.getMetronome().startstopMetronome(c,song,
@@ -132,7 +138,7 @@ public class PerformanceGestures {
         } else {
             mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.metronome) + " - " +
                     c.getString(R.string.not_set));
-        }
+        }*/
     }
 
 

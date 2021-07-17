@@ -5,4 +5,5 @@ public interface ActionInterface {
     void showSticky();
     void chooseMenu(boolean showSetMenu);
     void onBackPressed();
+    void metronomeToggle();
 }

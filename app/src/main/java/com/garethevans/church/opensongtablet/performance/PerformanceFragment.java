@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
-import com.garethevans.church.opensongtablet.databinding.PerformanceBinding;
+import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
@@ -43,7 +43,7 @@ public class PerformanceFragment extends Fragment {
     private static int screenHeight;
     public static int songViewWidth, songViewHeight, screenWidth;
     private String autoScale;
-    private PerformanceBinding myView;
+    private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
     // Attaching and destroying
     @Override
@@ -71,7 +71,7 @@ public class PerformanceFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         Log.d(TAG,"binding");
-        myView = PerformanceBinding.inflate(inflater, container, false);
+        myView = ModePerformanceBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
 
         // Initialise the helper classes that do the heavy lifting
@@ -326,6 +326,7 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void dealWithStickyNotes(boolean forceShow) {
+        Log.d(TAG, "dealWithStickyNotes");
         // This is called from the MainActivity when we clicked on the page button
         if ((mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
                 mainActivityInterface.getSong().getNotes()!=null &&

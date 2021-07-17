@@ -37,24 +37,6 @@
         android:clickable="true"
         android:focusable="true">
 
-<!--    <com.otaliastudios.zoom.ZoomLayout-->
-<!--        android:id="@+id/zoomLayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_alignParentStart="true"-->
-<!--        android:clipChildren="false"-->
-<!--        android:clipToPadding="false"-->
-<!--        android:scrollbarStyle="insideOverlay"-->
-<!--        app:alignment="top|left"-->
-<!--        app:transformation="none"-->
-<!--        app:overScrollHorizontal="false"-->
-<!--        app:overScrollVertical="false"-->
-<!--        app:minZoom="0.2"-->
-<!--        app:maxZoom="4.0"-->
-<!--        android:padding="0dp"-->
-<!--        app:hasClickableChildren="true">-->
-
                 <RelativeLayout
                     android:id="@+id/pageHolder"
                     android:layout_width="wrap_content"
@@ -63,7 +45,6 @@
                     android:clipToPadding="false" >
 
                     <!-- The song lyrics etc. go here -->
-
 
 
                     <LinearLayout
@@ -137,5 +118,4 @@
                 </RelativeLayout>
 
     </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>
-    <!--</com.otaliastudios.zoom.ZoomLayout>-->
     </RelativeLayout>

@@ -1,164 +1,174 @@
 package com.garethevans.church.opensongtablet.metronome;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.appcompat.app.ActionBar;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 
 public class Metronome {
 
-    private int bpm, noteValue, beat;
-    private int silence, tempo, beats;
-    private float metrovol;
-    private String whichbeat;
-    int minBpm = 40, maxBpm = 199;
+    // This object holds all of the metronome activity
 
-    private boolean metronomeOn, clickedOnMetronomeStart, timeSigValid;
-    
-    private double beatSound, sound;
-    private boolean play = true;
+    private final String TAG = "Metronome";
+    private final int sampleRate = 8000;
+    private long beatTimeNext;
+    private long postDelayedTime;
+    private int beatTimeLength;
+    private int beats;
+    private int divisions;
+    private int metronomeFlashOnColor;
+    private int metronomeFlashOffColor;
+    private int beatsRequired;
+    private int beatsRunningTotal;
+    private int beat;
+    private float volumeLeft = 0.0f, volumeRight = 0.0f;
+    private boolean visualMetronome = false, isRunning = false, validTimeSig = false, validTempo = false;
+    private double[] tick, tock;
+    private final AudioGenerator audioGenerator = new AudioGenerator(sampleRate);
+    private Activity activity;  // For run on UI updates
+    private Handler metronomeHandler;
+    private Thread metronomeThread;
+    private ActionBar actionBar;
+    private AppActionBar appActionBar;
 
-    private final AudioGenerator audioGenerator = new AudioGenerator(8000);
-    private double[] soundTickArray, soundTockArray, silenceSoundArray;
-    private int currentBeat = 1;
-    private int runningBeatCount;
-    private int maxBeatCount;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (beatsRunningTotal <= beatsRequired) {
+                try {
 
-    // Variables for metronome to work
-    // Keeping them as public/static to allow them to be accessed without the dialogfragment
+                    // If this is beat 1, it is a tick, if not a tock
+                    double[] sound;
+                    if (beat == 1) {
+                        sound = tick;
+                    } else {
+                        sound = tock;
+                    }
+                    // Play the sound after getting the time
+                    setBeatSystemTimes();
+                    audioGenerator.writeSound(volumeLeft, volumeRight, sound);
 
-    Context c;
-    ActionBar ab;
+                    if (visualMetronome) {
+                        appActionBar.doFlash(beatTimeLength/2);
+                    }
+                    // Set the correct beat
+                    beat++;
+                    beatsRunningTotal++;
+                    if (beat > divisions) {
+                        beat = 1;
+                    }
 
-    MetronomeAsyncTask metroTask;
-    VisualMetronomeAsyncTask visualMetronome;
+                    // This calculates how long from the now until we need to start the beeps again.
+                    // If it is a negative number, it will be sent immediately!!
+                    // Get the current time again as we will be later after playing the sound
+                    postDelayedTime = beatTimeNext - System.currentTimeMillis();
+                    if (postDelayedTime < 0) {
+                        postDelayedTime = 0;
+                    }
 
-    public Metronome(Context c, ActionBar ab) {
-        this.c = c;
-        this.ab = ab;
+                    while (isRunning) {
+                        metronomeHandler.postAtTime(this, postDelayedTime);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+
+    public boolean getIsRunning() {
+        return isRunning;
     }
+    public void startMetronome(Activity activity, Context c, MainActivityInterface mainActivityInterface) {
+        // This starts the metronome activity
+        this.activity = activity;  // Destroyed on stop
+        initialiseMetronome(c, mainActivityInterface);
 
-    private Metronome(String pan, float vol) {
-        audioGenerator.createPlayer(pan,vol);
-    }
-
-    private void calcSilence(Song song) {
-
-        //TEST
-        beat = getBeat();
-        noteValue = getNoteValue();
-        bpm = getBpm(song);
-
-        if (noteValue<1) {
-            noteValue=4;
-        }
-        if (bpm<1) {
-            bpm=120;
-        }
-
-        // 3/4 3 beats per bar, each quarter notes
-        // 3/8 3 beats per bar, each eigth notes = tempo is twice as fast
-
-        // Tempos that I have
-        // 2/2   2/4   3/2    3/4   3/8   4/4   5/4   5/8   6/4   6/8   7/4   7/8   1/4
-        // First number is the number of beats and is the easiest bit
-        // The second number is the length of each beat
-        // 2 = half notes, 4 = quarter notes, 8 = eigth notes
-
-        if (beat==6 || beat==9) {
-            noteValue = (short)(noteValue/(beat/3));
-        } else if (beat==5 || beat==7) {
-            noteValue = (short)(noteValue/2);
-        }
-
-        int resolutionmeter = (int) (8.0f / (float) noteValue);
-
-        if (resolutionmeter ==0) {
-            resolutionmeter =1;
-        }
-
-        int tick1 = 600;
-        try {
-            silence = ((60/bpm)*(4000* resolutionmeter)- tick1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        soundTickArray = new double[tick1];
-        soundTockArray = new double[tick1];
-        if (silence>10000) {
-            silence = 10000;
-        }
-        silenceSoundArray = new double[this.silence];
-        double[] tick;
-        double[] tock;
-        if (song.getTimesig().equals("1/4")) {
-            tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
-            tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
-
+        // First beep & actionbar update
+        if (visualMetronome) {
+            mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOnColor);
         } else {
-            tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
-            tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, sound/ resolutionmeter);
+            mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOffColor);
         }
-        for(int i = 0; i< tick1; i++) {
-            soundTickArray[i] = tick[i];
-            soundTockArray[i] = tock[i];
+
+        if (metronomeValid()) {
+            isRunning = true;
+            postDelayedTime = 0;
+            metronomeHandler = new Handler(Looper.getMainLooper());
+            metronomeThread = new Thread(runnable);
+            metronomeThread.start();
+            //metronomeHandler.postAtTime(runnable, postDelayedTime);
         }
-        for(int i=0;i<silence;i++)
-            silenceSoundArray[i] = 0;
     }
 
-    private void play(Song song, String pan, float vol) {
-        calcSilence(song);
-        do {
-            if(currentBeat == 1) {
-                audioGenerator.writeSound(pan,vol,soundTockArray,metronomeOn);
-            } else {
-                audioGenerator.writeSound(pan,vol,soundTickArray,metronomeOn);
-            }
-            audioGenerator.writeSound(pan,vol,silenceSoundArray,metronomeOn);
-
-            currentBeat++;
-            runningBeatCount++;
-            if (maxBeatCount>0 && runningBeatCount>=maxBeatCount) { // This is if the user has specified max metronome time
-                play=false;
-                metronomeOn = false;
-                // IV - This variable is a state indicator set in this function only
-                clickedOnMetronomeStart = false;
-            }
-            if(currentBeat > beat)
-                currentBeat = 1;
-        } while(play);
+    public void stopMetronome() {
+        activity = null;
+        isRunning = false;
     }
 
-    private void stop() {
-        play = false;
-        audioGenerator.destroyAudioTrack();
-    }
+    private void initialiseMetronome(Context c, MainActivityInterface mainActivityInterface) {
+        // Does the user want the visual metronome?
+        setVisualMetronome(c, mainActivityInterface);
 
+        // Get the volume and pan of the metronome and bars required
+        setVolumes(c, mainActivityInterface);
 
+        // Get the song tempo and time signatures
+        // TODO remove
+        mainActivityInterface.getSong().setTimesig("4/4");
+        mainActivityInterface.getSong().setTempo("100");
+        setSongValues(mainActivityInterface);
 
-    // The getters and setters
-    public boolean getClickedOnMetronomeStart() {
-        return clickedOnMetronomeStart;
-    }
-    public void setClickedOnMetronomeStart(boolean clickedOnMetronomeStart) {
-        this.clickedOnMetronomeStart = clickedOnMetronomeStart;
-    }
+        // Get the bars and beats required
+        setBarsAndBeats(c, mainActivityInterface);
 
-    private int getBpm(Song song) {
-        return processTempo(song);
+        // Now get the audioPlayer ready
+        audioGenerator.createPlayer(volumeLeft, volumeRight);
+
+        // Get the tick and tock samples
+        setTickTock(mainActivityInterface);
+
+        // Set beatLast and beatNext times using the system timer
+        setBeatSystemTimes();
     }
-    private void setBpm(int bpm) {
-        this.bpm = bpm;
+    private void setVisualMetronome(Context c, MainActivityInterface mainActivityInterface) {
+        visualMetronome = mainActivityInterface.getPreferences().
+                getMyPreferenceBoolean(c, "metronomeShowVisual", false);
+
+        metronomeFlashOffColor = c.getResources().getColor(R.color.colorAltPrimary);
+        metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
+
+        mainActivityInterface.getAppActionBar().setMetronomeColors(metronomeFlashOnColor,metronomeFlashOffColor);
     }
-    private int processTempo(Song song) {
-        String t = song.getMetronomebpm();
+    private void setVolumes(Context c, MainActivityInterface mainActivityInterface) {
+        String pan = mainActivityInterface.getPreferences().getMyPreferenceString(c,"metronomePan","C");
+        float vol = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "metronomeVol",0.5f);
+        switch (pan) {
+            case "C":
+            default:
+                volumeLeft = vol;
+                volumeRight = vol;
+                break;
+            case "L":
+                volumeLeft = vol;
+                volumeRight = 0.0f;
+                break;
+            case "R":
+                volumeLeft = 0.0f;
+                volumeRight = vol;
+        }
+    }
+    private void setSongValues(MainActivityInterface mainActivityInterface) {
+        // First up the tempo
+        validTempo = false;
+        String t = mainActivityInterface.getSong().getTempo();
         // Check for text version from desktop app
         t = t.replace("Very Fast", "140");
         t = t.replace("Fast", "120");
@@ -166,443 +176,98 @@ public class Metronome {
         t = t.replace("Slow", "80");
         t = t.replace("Very Slow", "60");
         t = t.replaceAll("[\\D]", "");
+        int tempo;
         try {
-            bpm = (short) Integer.parseInt(t);
+            tempo = (short) Integer.parseInt(t);
+            validTempo = true;
         } catch (NumberFormatException nfe) {
-            bpm = 0;
+            tempo = 0;
         }
 
-        if (bpm<40 || bpm>299) {
-            bpm = 260;  // These are the 'not set' values
+        // Check the tempo is within the permitted range
+        if (tempo <40 || tempo >299) {
+            tempo = 0;
+            validTempo = false;
+        }
+
+        if (tempo >0) {
+            // Calculate the time between beats in ms
+            // We base this on a 6th of a beat (IV) and then scale later depending on time sig
+            beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f)/6.0f);
         } else {
-            tempo = bpm;
+            beatTimeLength = 0;
         }
 
-        return bpm;
-    }
-    public void processTimeSig(Song song) {
-        switch (song.getTimesig()) {
-            case "2/2":
-                beats = 2;
-                noteValue = 2;
-                timeSigValid = true;
-                break;
-            case "2/4":
-                beats = 2;
-                noteValue = 4;
-                timeSigValid = true;
-                break;
-            case "3/2":
-                beats = 3;
-                noteValue = 2;
-                timeSigValid = true;
-                break;
-            case "3/4":
-                beats = 3;
-                noteValue = 4;
-                timeSigValid = true;
-                break;
-            case "3/8":
-                beats = 3;
-                noteValue = 8;
-                timeSigValid = true;
-                break;
-            case "4/4":
-                beats = 4;
-                noteValue = 4;
-                timeSigValid = true;
-                break;
-            case "5/4":
-                beats = 5;
-                noteValue = 4;
-                timeSigValid = true;
-                break;
-            case "5/8":
-                beats = 5;
-                noteValue = 8;
-                timeSigValid = true;
-                break;
-            case "6/4":
-                beats = 6;
-                noteValue = 4;
-                timeSigValid = true;
-                break;
-            case "6/8":
-                beats = 6;
-                noteValue = 8;
-                timeSigValid = true;
-                break;
-            case "7/4":
-                beats = 7;
-                noteValue = 4;
-                timeSigValid = true;
-                break;
-            case "7/8":
-                beats = 7;
-                noteValue = 8;
-                timeSigValid = true;
-                break;
-            case "1/4":
-                beats = 1;
-                noteValue = 4;
-                timeSigValid = true;
-                break;
-            default:
-                beats = 4;
-                noteValue = 4;
-                timeSigValid = false;
-                break;
-        }
+        // Now the time signature
 
-    }
+        // 3/4 3 beats per bar, each quarter notes
+        // 3/8 3 beats per bar, each eigth notes
+        // 6/8 2 beats per bar. each dotted quarter note
+        // tempo is taken as being given for the beat of the time signature
 
-    private int getNoteValue() {
-        return noteValue;
-    }
-    private void setNoteValue(int noteValue) {
-        this.noteValue = noteValue;
-    }
+        // Time signatures that I have
+        // 2/2   2/4   3/2    3/4   3/8   4/4   5/4   5/8   6/4   6/8   7/4   7/8   1/4
 
-    private int getBeat() {
-        return beat;
-    }
-    private void setBeat(int beat) {
-        this.beat = beat;
-    }
-
-    private void setBeatSound(double beatSound) {
-        this.beatSound = beatSound;
-    }
-    private void setSound(double sound) {
-        this.sound = sound;
-    }
-
-    private void setVolume(float metrovol) {
-        this.metrovol = metrovol;
-    }
-    public float getVolume () {
-        return metrovol;
-    }
-
-    private void setCurrentBeat(int currentBeat) {
-        this.currentBeat = currentBeat;
-    }
-    private int getCurrentBeat() {
-        return currentBeat;
-    }
-
-
-
-    void setBeatValues(Song song) {
-        String bpmString = song.getMetronomebpm();
-        short r = 0;
-        if (bpmString.startsWith("1/")) {
-            r = 4;
-        } else if (bpmString.startsWith("2/")) {
-            r = 2;
-        } else if (bpmString.startsWith("3/")) {
-            r = 3;
-        } else if (bpmString.startsWith("4/")) {
-            r = 4;
-        } else if (bpmString.startsWith("5/")) {
-            r = 5;
-        } else if (bpmString.startsWith("6/")) {
-            r = 6;
-        } else if (bpmString.startsWith("7/")) {
-            r = 7;
-        }
-        beats = r;
-    }
-
-    void setNoteValues(Song song) {
-        short r = 0;
-        String bpmString = song.getMetronomebpm();
-        if (bpmString.endsWith("/2")) {
-            r = 2;
-        } else if (bpmString.endsWith("/4")) {
-            r = 4;
-        } else if (bpmString.endsWith("/8")) {
-            r = 2; //8
-        }
-        noteValue = r;
-    }
-
-    public void startstopMetronome(Context c, Song song, boolean showvisual, int metronomeColor, String pan, float vol, int barlength) {
-        if (checkMetronomeValid(c,song) && !metronomeOn) {
-            // Start the metronome
-            metronomeOn = true;
-            whichbeat = "b";
-            // This is a state indicator set in this function only
-            clickedOnMetronomeStart = true;
-            metroTask = new MetronomeAsyncTask(song,pan,vol,barlength,bpm,noteValue,beats,maxBeatCount,beatSound,sound,minBpm,maxBpm);
+        String ts = mainActivityInterface.getSong().getTimesig();
+        if (ts!=null && !ts.isEmpty() && ts.contains("/") && ts.length()==3) {
+            validTimeSig = true;
             try {
-                metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                beats = Integer.parseInt(ts.substring(0, 1));
+                divisions = Integer.parseInt(ts.substring(2));
             } catch (Exception e) {
-                Log.d("d","Error starting the metronome");
+                // Badly formatted time signature
+                validTimeSig = false;
+                beats = 0;
+                divisions = 1;  // So we don't divide by 0 accidentally!
             }
-            startstopVisualMetronome(showvisual,metronomeColor);
-            // IV - A stop perhaps does not need to consider if it is valid
-        } else if (metronomeOn) {
-            // Stop the metronome
-            metronomeOn = false;
-            // This a state indicator set in this function only
-            clickedOnMetronomeStart = false;
-            if (metroTask!=null) {
-                metroTask.stop();
-            }
-            // IV - Do not go to setting page as metronome 'not set' may be valid
+        } else {
+            validTimeSig = false;
+            beats = 0;
+            divisions = 1;  // So we don't divide by 0 accidentally!
+        }
+
+        // IV  - Override for 6/8 compound time signature to give 3 sounds (triplet) per beat
+        // Otherwise one sound per beat
+        if (beats == 6 && divisions == 8) {
+            beatTimeLength = beatTimeLength * 2;
+            divisions = 2;
+            tempo = tempo * 3;
+        } else {
+            beatTimeLength = beatTimeLength * 6;
+        }
+        // 1/4 timing should be single beats
+        if (beats == 1) {
+            beats = 4;
         }
     }
-
-    private boolean checkMetronomeValid(Context c, Song song) {
-        boolean validTimeSig = false;
-        boolean validBPM = true;
-        boolean validMetro = false;
-
-        if (getBpm(song)==260) {
-            validBPM = false;
-        }
-
-        String[] arrayvals = c.getResources().getStringArray(R.array.time_signatures);
-
-        for (String arrayval : arrayvals) {
-            if (song.getMetronomebpm().equals(arrayval)) {
-                validTimeSig = true;
-                break;
-            }
-        }
-
-        if (validBPM && validTimeSig) {
-            validMetro = true;
-        }
-
-        return validMetro;
+    private void setBarsAndBeats(Context c, MainActivityInterface mainActivityInterface) {
+        int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "metronomeLength", 0);
+        beatsRequired = barsRequired * beats;
     }
-
-    void startstopVisualMetronome(boolean showvisual, int metronomeColor) {
-        visualMetronome = new VisualMetronomeAsyncTask(ab,showvisual, metronomeColor,whichbeat,metronomeOn,bpm,noteValue);
-        try {
-            visualMetronome.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            Log.d("d","Error starting visual metronome");
+    private void setTickTock(MainActivityInterface mainActivityInterface) {
+        int tickTockSamples = 600;
+        int soundTock = 1200;
+        if (mainActivityInterface.getSong().getTimesig().equals("1/4")) {
+            tick = audioGenerator.getSineWave(tickTockSamples, sampleRate, soundTock);
+            tock = audioGenerator.getSineWave(tickTockSamples, sampleRate, soundTock);
+        } else {
+            tick = audioGenerator.getSineWave(tickTockSamples, sampleRate, soundTock);
+            int soundTick = 1600;
+            tock = audioGenerator.getSineWave(tickTockSamples, sampleRate, soundTick);
         }
     }
-    private static class VisualMetronomeAsyncTask extends AsyncTask<Void, Integer, String> {
-
-        int noteValue;
-        long time_in_millisecs;
-        long oldtime;
-        long nexttime;
-        boolean showvisual, metronomeOn;
-        int metronomeColor;
-        ActionBar ab;
-        String whichbeat;
-
-        VisualMetronomeAsyncTask(ActionBar ab, boolean showvis, int metronomeColor, String whichbeat, boolean metronomeOn, int bpm, int noteValue) {
-            this.metronomeColor = metronomeColor;
-            this.showvisual = showvis;
-            this.ab = ab;
-            this.whichbeat = whichbeat;
-            this.metronomeOn = metronomeOn;
-            this.noteValue = noteValue;
-            time_in_millisecs = (long) (((60.0f / (float) bpm) * (4.0f / (float) noteValue))* 1000);
-            oldtime = System.currentTimeMillis();
-            nexttime = oldtime + time_in_millisecs;
-        }
-
-        VisualMetronomeAsyncTask(boolean metronomeOn) {
-            this.metronomeOn = metronomeOn;
-        }
-
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            publishProgress(1);
-            while (metronomeOn) {
-                // Post this activity based on the bpm
-                if (System.currentTimeMillis() >= nexttime) {
-                    oldtime = nexttime;
-                    nexttime = oldtime + time_in_millisecs;
-                    publishProgress(1);
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... integers) {
-            if (showvisual) {
-                if (whichbeat.equals("a")) {
-                    whichbeat = "b";
-                    if (ab != null) {
-                        ab.setBackgroundDrawable(new ColorDrawable(0xff232333));
-                    }
-                } else {
-                    whichbeat = "a";
-                    if (ab != null) {
-                        ab.setBackgroundDrawable(new ColorDrawable(metronomeColor));
-                    }
-                }
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if (ab != null) {
-                ab.setBackgroundDrawable(new ColorDrawable(0xff232333));
-            }
-        }
+    private void setBeatSystemTimes() {
+        // This is based on the system clock to keep better sync
+        long beatTimeLast = System.currentTimeMillis();
+        beatTimeNext = beatTimeLast + beatTimeLength;
+    }
+    private boolean metronomeValid() {
+        Log.d(TAG, "validTempo: "+validTempo);
+        Log.d(TAG, "validTimeSig: "+validTimeSig);
+        return validTempo && validTimeSig;
     }
 
-    static class MetronomeAsyncTask extends AsyncTask<Void, Void, String> {
 
-        Song song;
-        Metronome metronome;
-        final String pan;
-        final float vol;
-        int barsrequired;
-        int maxBeatCount;
-        int beats;
-        int bpm;
-        int noteValue;
-        int minBpm, maxBpm;
-        double beatSound, sound;
-        int beat;
-
-        MetronomeAsyncTask(Song song, String pan, float vol, int barlength, int bpm, int noteValue, int beats, int maxBeatCount, double beatSound, double sound, int minBpm, int maxBpm) {
-            this.song = song;
-            metronome = new Metronome(pan,vol);
-            this.pan = pan;
-            this.vol = vol;
-            barsrequired = barlength;
-            this.maxBeatCount = maxBeatCount;
-            this.beats = beats;
-            this.bpm = bpm;
-            this.minBpm = minBpm;
-            this.maxBpm = maxBpm;
-            this.noteValue = noteValue;
-            this.beatSound = beatSound;
-            this.sound = sound;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // Figure out how many beats we should use
-            maxBeatCount = beats * barsrequired;
-        }
-
-        void setNoteValue(int noteVal) {
-            if (metronome != null && bpm >= minBpm && bpm <= maxBpm && noteVal > 0) {
-                metronome.setNoteValue(noteVal);
-                try {
-                    metronome.calcSilence(song);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        void setBeat(int beat) {
-            if (metronome != null) {
-                metronome.setBeat(beat);
-                try {
-                    metronome.calcSilence(song);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        void setBpm(int bpm) {
-            if (metronome != null && bpm >= minBpm && bpm <= maxBpm && noteValue > 0) {
-                metronome.setBpm(bpm);
-                try {
-                    metronome.calcSilence(song);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        void setCurrentBeat(int currentBeat) {
-            if (metronome != null) {
-                metronome.setCurrentBeat(currentBeat);
-                try {
-                    metronome.calcSilence(song);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        void setBeatSound(double beatSound) {
-            if (metronome != null) {
-                metronome.setBeatSound(beatSound);
-                try {
-                    metronome.calcSilence(song);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        void setSound(double sound) {
-            if (metronome != null) {
-                metronome.setSound(sound);
-                try {
-                    metronome.calcSilence(song);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        void setVolume(float metrovol) {
-            if (metronome != null)
-                metronome.setVolume(metrovol);
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            setBeat(beats);
-            setNoteValue(noteValue);
-            setBpm(bpm);
-            setBeatSound(beatSound);
-            setSound(sound);
-            setVolume(vol);
-            beat ++;
-            if (beat>maxBeatCount) {
-                beat = 1;
-            }
-            setCurrentBeat(beat);
-            play(pan, vol);
-            return null;
-        }
-
-        public void stop() {
-            if (metronome != null) {
-                metronome.stop();
-                metronome = null;
-            }
-        }
-
-        void play(String pan, float vol) {
-            if (metronome != null) {
-                metronome.play(song,pan,vol);
-                metronome = null;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            stop();
-        }
-    }
-
-    public boolean isMetronomeValid(Song song) {
-        int t = getBpm(song);
-        return t>=minBpm && t<maxBpm && song.getTimesig()!=null && !song.getTimesig().isEmpty();
-    }
 
 
 }

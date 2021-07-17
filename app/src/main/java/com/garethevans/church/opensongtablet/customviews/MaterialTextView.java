@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,8 +19,9 @@ public class MaterialTextView extends LinearLayout {
 
     private final TextView textView;
     private final TextView hintView;
-    private final ImageView imageView;
     private final ImageView checkMark;
+    private final CheckBox checkBox;
+    private final FrameLayout checkBoxHolder;
 
     public MaterialTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -26,8 +29,10 @@ public class MaterialTextView extends LinearLayout {
 
         textView = findViewById(R.id.textView);
         hintView = findViewById(R.id.hintView);
-        imageView = findViewById(R.id.imageView);
+        ImageView imageView = findViewById(R.id.imageView);
         checkMark = findViewById(R.id.checkMark);
+        checkBox = findViewById(R.id.checkBox);
+        checkBoxHolder = findViewById(R.id.checkBoxHolder);
 
         int[] set = new int[] {android.R.attr.text, android.R.attr.hint};
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
@@ -35,7 +40,7 @@ public class MaterialTextView extends LinearLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MaterialTextView);
         Drawable drawable = a.getDrawable(R.styleable.MaterialTextView_mydrawable);
         boolean isChecked = a.getBoolean(R.styleable.MaterialTextView_showCheckMark,false);
-
+        boolean isCheckBox = a.getBoolean(R.styleable.MaterialTextView_showCheckBox, false);
         String mainText = typedArray.getString(0);
         if (mainText!=null) {
             textView.setText(mainText);
@@ -52,6 +57,7 @@ public class MaterialTextView extends LinearLayout {
         }
 
         showCheckMark(isChecked);
+        showCheckBox(isCheckBox);
 
         typedArray.recycle();
         a.recycle();
@@ -71,6 +77,22 @@ public class MaterialTextView extends LinearLayout {
         } else {
             checkMark.setVisibility(View.GONE);
         }
+    }
+
+    public void showCheckBox(boolean isCheckBox) {
+        if (isCheckBox) {
+            checkBoxHolder.setVisibility(View.VISIBLE);
+        } else {
+            checkBoxHolder.setVisibility(View.GONE);
+        }
+    }
+
+    public void setCheckBox(boolean checked) {
+        checkBox.setChecked(checked);
+    }
+
+    public boolean isChecked() {
+        return checkBox.isChecked();
     }
 }
 

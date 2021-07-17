@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    style="@style/BottomSheetDialogTheme"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/handleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="4dp"
+            android:src="@drawable/ic_menu_white_36dp"
+            android:contentDescription="@string/tool" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.gridlayout.widget.GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:isScrollContainer="true"
+                    custom:columnCount="4"
+                    custom:useDefaultMargins="true">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/cast_skip_prev"
+                        android:src="@drawable/ic_skip_backward_white_36dp"
+                        custom:useCompatPadding="true" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/back"
+                        android:src="@drawable/ic_skip_previous_white_36dp"
+                        custom:useCompatPadding="true" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/next"
+                        android:src="@drawable/ic_skip_next_white_36dp"
+                        custom:useCompatPadding="true" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/cast_skip_next"
+                        android:src="@drawable/ic_skip_forward_white_36dp"
+                        custom:useCompatPadding="true" />
+
+                </androidx.gridlayout.widget.GridLayout>
+
+                <TableRow style="@style/DividerLine" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/display_settings"
+                    android:padding="16dp"
+                    android:text="@string/connected_display"
+                    custom:mydrawable="@drawable/ic_monitor_white_36dp" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/bible_verse"
+                    android:padding="16dp"
+                    android:text="@string/scripture"
+                    custom:mydrawable="@drawable/ic_bible_white_36dp" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/add_custom_slide"
+                    android:padding="16dp"
+                    android:text="@string/custom_slide"
+                    custom:mydrawable="@drawable/ic_projector_screen_white_36dp" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/file_chooser"
+                    android:padding="16dp"
+                    android:text="@string/audio"
+                    custom:mydrawable="@drawable/ic_music_note_white_36dp" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/file_chooser"
+                    android:padding="16dp"
+                    android:text="@string/video"
+                    custom:mydrawable="@drawable/ic_slow_motion_video_white_36dp" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/alert_text"
+                    android:padding="16dp"
+                    android:text="@string/alert"
+                    custom:mydrawable="@drawable/ic_message_alert_white_36dp"
+                    custom:showCheckBox="true"/>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
