@@ -35,7 +35,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
@@ -2199,9 +2198,14 @@ public class StageMode extends AppCompatActivity implements
 
     private void doScrollDown() {
         // Temporarily pause any running autoscroll
+        Log.d("StageMode","doScrollDown()");
         pauseAutoscroll();
 
         if (StaticVariables.whichMode.equals("Stage")) {
+            if (StaticVariables.currentSection==StaticVariables.songSections.length) {
+                // We are at the end of the song, so allow next
+                Log.d("d","End of the song");
+            }
             try {
                 StaticVariables.currentSection += 1;
                 selectSection(StaticVariables.currentSection);
@@ -3079,7 +3083,6 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public boolean onQueryTextSubmit(String newText) {
-        // TODO Not sure if this does anything as FullscreenActivity.sva is never assigned anything!
         SearchViewItems item = (SearchViewItems) FullscreenActivity.sva.getItem(0);
         StaticVariables.songfilename = item.getFilename();
         StaticVariables.whichSongFolder = item.getFolder();
@@ -3094,7 +3097,6 @@ public class StageMode extends AppCompatActivity implements
     public boolean onQueryTextChange(String newText) {
         // Replace unwanted symbols
         newText = processSong.removeUnwantedSymbolsAndSpaces(StageMode.this,preferences,newText);
-        // TODO Not sure if this does anything as FullscreenActivity.sva is never assigned anything!
         if (FullscreenActivity.sva != null) {
             FullscreenActivity.sva.getFilter().filter(newText);
         }
@@ -3565,10 +3567,7 @@ public class StageMode extends AppCompatActivity implements
                 StaticVariables.myToastMessage = getString(R.string.highlight_notallowed);
                 ShowToast.showToast(StageMode.this);
             } else {
-                boolean vis = false;
-                if (highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
-                    vis = true;
-                }
+                boolean vis = highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE;
 
                 if (vis) {
                     highlightNotes.setVisibility(View.GONE);
@@ -3736,7 +3735,8 @@ public class StageMode extends AppCompatActivity implements
                                     & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                                     | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                             // Check for the freshest data.
-                            getContentResolver().takePersistableUriPermission(FullscreenActivity.file_uri, takeFlags);
+                            getContentResolver().takePersistableUriPermission(FullscreenActivity.file_uri,
+                                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -4721,25 +4721,25 @@ public class StageMode extends AppCompatActivity implements
                     settings,
                     new CastRemoteDisplayLocalService.Callbacks() {
                         @Override
-                        public void onServiceCreated(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        public void onServiceCreated(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
                             Log.d("StageMode","onServiceCreated()");
                             Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                         }
 
                         @Override
-                        public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        public void onRemoteDisplaySessionStarted(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
                             Log.d("StageMode","onRemoteDisplaySessionStarted()");
                             Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                         }
 
                         @Override
-                        public void onRemoteDisplaySessionError(Status status) {
+                        public void onRemoteDisplaySessionError(@NonNull Status status) {
                             Log.d("StageMode","onRemoteDisplaySessionError()");
                             Log.d("StageMode","status="+status);
                         }
 
                         @Override
-                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
                             Log.d("StageMode","onRemoteDisplaySessionEnded()");
                             Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                         }
@@ -7751,13 +7751,15 @@ public class StageMode extends AppCompatActivity implements
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             // Scroll the song menu up
             scrollMenu("up");
-        } else {
-            if (!drawerOrFragmentActive && checkCanScrollUp()) {
-                CustomAnimations.animateFAB(scrollUpButton, StageMode.this);
-                doScrollUp();
-                if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
-                    PedalNeedsConfirmTrueAfterDelay();
-                }
+        } else if (StaticVariables.whichMode.equals("Stage") &&
+                StaticVariables.currentSection==0 &&
+                preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove", true)) {
+            pedalPrevious();
+        } else if (!drawerOrFragmentActive && checkCanScrollUp()) {
+            CustomAnimations.animateFAB(scrollUpButton, StageMode.this);
+            doScrollUp();
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                PedalNeedsConfirmTrueAfterDelay();
             }
         }
     }
@@ -7765,13 +7767,15 @@ public class StageMode extends AppCompatActivity implements
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             // Scroll the song menu down
             scrollMenu("down");
-        } else {
-            if (!drawerOrFragmentActive && checkCanScrollDown()) {
-                CustomAnimations.animateFAB(scrollDownButton, StageMode.this);
-                doScrollDown();
-                if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
-                    PedalNeedsConfirmTrueAfterDelay();
-                }
+        } else if (StaticVariables.whichMode.equals("Stage") &&
+                    StaticVariables.currentSection==(StaticVariables.songSections.length-1) &&
+                    preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove", true)) {
+                pedalNext();
+        } else if (!drawerOrFragmentActive && checkCanScrollDown()) {
+            CustomAnimations.animateFAB(scrollDownButton, StageMode.this);
+            doScrollDown();
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                PedalNeedsConfirmTrueAfterDelay();
             }
         }
     }

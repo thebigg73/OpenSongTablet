@@ -450,7 +450,7 @@ class PresentationCommon {
                     }
                     pageHolder.setAlpha(1.00f);
                 }
-            }, 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+            }, 5L * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
         }
     }
     void hideLogo(Context c, Preferences preferences, ImageView projected_Logo) {
@@ -485,7 +485,7 @@ class PresentationCommon {
             } else {
                 pageHolder.setAlpha(1.00f);
             }
-        }, 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+        }, 5L * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
     }
     private void animateIn(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
@@ -547,7 +547,7 @@ class PresentationCommon {
 
             // Just in case there is a glitch, make the stuff visible after 5x transition time
             // IV - Panic request is prevented on display of logo or blank by setting panicRequired = false;
-            panicDelay = 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
+            panicDelay = 5L * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
             // IV - There can be multiple postDelayed calls running, each call sets a later 'After' time.
             panicAfterTime = System.currentTimeMillis() + panicDelay;
             Handler panic = new Handler();

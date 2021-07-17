@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
@@ -42,7 +44,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     }
 
     @Override
-    public void onCreatePresentation(Display display) {
+    public void onCreatePresentation(@NonNull Display display) {
         if (processSong == null) {
             processSong = new ProcessSong();
         }
