@@ -142,6 +142,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
+    private final String TAG = "StageMode";
     // The toolbar and menu
     private Toolbar ab_toolbar;
     public static ActionBar ab;
@@ -434,7 +435,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("StageMode", "Welcome to Stage Mode");
+        Log.d(TAG, "Welcome to Stage Mode");
 
         StaticVariables.activity = StageMode.this;
         FullscreenActivity.mContext = StageMode.this;
@@ -510,7 +511,7 @@ public class StageMode extends AppCompatActivity implements
         try {
             CastContext.getSharedInstance(this);
         } catch (Exception e) {
-            Log.d("StageMode", "No Google Services");
+            Log.d(TAG, "No Google Services");
         }
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
@@ -1275,14 +1276,14 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.appRunning = false;
             mMediaRouter.removeCallback(mMediaRouterCallback);
         } catch (Exception e) {
-            Log.d("StageMode", "Problem removing mediaroutercallback");
+            Log.d(TAG, "Problem removing mediaroutercallback");
         }
 
         if (br!=null) {
             try {
                 StageMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                Log.d("StageMode", "Battery receiver not registered, so no need to unregister");
+                Log.d(TAG, "Battery receiver not registered, so no need to unregister");
             }
         }
         tryCancelAsyncTasks();
@@ -1322,7 +1323,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 StageMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                Log.d("StageMode", "Battery monitor not registered anymore");
+                Log.d(TAG, "Battery monitor not registered anymore");
             }
         }
         tryCancelAsyncTasks();
@@ -1889,7 +1890,7 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.whattodo = "drawnotes";
                 openFragment();
             } else {
-                Log.d("StageMode", "screenshot is null");
+                Log.d(TAG, "screenshot is null");
             }
             return true;
         });
@@ -1910,7 +1911,7 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.whattodo = "drawnotes";
                 openFragment();
             } else {
-                Log.d("StageMode", "screenshot is null");
+                Log.d(TAG, "screenshot is null");
             }
             return true;
         });
@@ -2198,7 +2199,7 @@ public class StageMode extends AppCompatActivity implements
 
     private void doScrollDown() {
         // Temporarily pause any running autoscroll
-        Log.d("StageMode","doScrollDown()");
+        Log.d(TAG,"doScrollDown()");
         pauseAutoscroll();
 
         if (StaticVariables.whichMode.equals("Stage")) {
@@ -3049,7 +3050,7 @@ public class StageMode extends AppCompatActivity implements
 
                     } catch (OutOfMemoryError | Exception e) {
                         e.printStackTrace();
-                        Log.d("StageMode", "Oops - error, likely too big an image!");
+                        Log.d(TAG, "Oops - error, likely too big an image!");
                     }
                     FullscreenActivity.highlightOn = true;
                 } else {
@@ -3060,7 +3061,7 @@ public class StageMode extends AppCompatActivity implements
                             FullscreenActivity.whattodo = "drawnotes";
                             openFragment();
                         } else {
-                            Log.d("StageMode", "screenshot is null");
+                            Log.d(TAG, "screenshot is null");
                         }
                     }
                     FullscreenActivity.highlightOn = false;
@@ -3122,7 +3123,7 @@ public class StageMode extends AppCompatActivity implements
                 try {
                     android.os.Process.killProcess(android.os.Process.myPid());
                 } catch (Exception e) {
-                    Log.d("StageMode", "Couldn't close the application!");
+                    Log.d(TAG, "Couldn't close the application!");
                 }
                 break;
 
@@ -3580,9 +3581,9 @@ public class StageMode extends AppCompatActivity implements
                     try {
                         FullscreenActivity.bmScreen = glideimage_ScrollView.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
-                        Log.d("StageMode", "error getting the screenshot!");
+                        Log.d(TAG, "error getting the screenshot!");
                     } catch (OutOfMemoryError e) {
-                        Log.d("StageMode", "not enough memory");
+                        Log.d(TAG, "not enough memory");
                     }
 
                 } else {
@@ -3593,9 +3594,9 @@ public class StageMode extends AppCompatActivity implements
                     try {
                         FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
-                        Log.d("StageMode", "error getting the screenshot!");
+                        Log.d(TAG, "error getting the screenshot!");
                     } catch (OutOfMemoryError o) {
-                        Log.d("StageMode", "Out of memory");
+                        Log.d(TAG, "Out of memory");
                     }
 
                 }
@@ -3668,7 +3669,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("StageMode", "Error sending activity result to fragment");
+                Log.d(TAG, "Error sending activity result to fragment");
             }
 
         } else if (requestCode==StaticVariables.REQUEST_IMAGE_CODE) {
@@ -3676,7 +3677,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("StageMode", "Error sending activity result to fragment");
+                Log.d(TAG, "Error sending activity result to fragment");
             }
 
         } else if (requestCode==StaticVariables.REQUEST_BACKGROUND_IMAGE1 ||
@@ -3688,7 +3689,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("StageMode", "Error sending activity result to fragment");
+                Log.d(TAG, "Error sending activity result to fragment");
             }
 
         } else if (requestCode == StaticVariables.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
@@ -4106,7 +4107,7 @@ public class StageMode extends AppCompatActivity implements
         try {
             FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
         } catch (Exception e) {
-            Log.d("StageMode", "Section not found");
+            Log.d(TAG, "Section not found");
         }
 
         // Smooth scroll to show this view at the top of the page unless we are autoscrolling
@@ -4115,7 +4116,7 @@ public class StageMode extends AppCompatActivity implements
                 songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
             }
         } catch (Exception e) {
-            Log.d("StageMode", "Section not found");
+            Log.d(TAG, "Section not found");
         }
 
         try {
@@ -4722,31 +4723,31 @@ public class StageMode extends AppCompatActivity implements
                     new CastRemoteDisplayLocalService.Callbacks() {
                         @Override
                         public void onServiceCreated(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("StageMode","onServiceCreated()");
-                            Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                            Log.d(TAG,"onServiceCreated()");
+                            Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                         }
 
                         @Override
                         public void onRemoteDisplaySessionStarted(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("StageMode","onRemoteDisplaySessionStarted()");
-                            Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                            Log.d(TAG,"onRemoteDisplaySessionStarted()");
+                            Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                         }
 
                         @Override
                         public void onRemoteDisplaySessionError(@NonNull Status status) {
-                            Log.d("StageMode","onRemoteDisplaySessionError()");
-                            Log.d("StageMode","status="+status);
+                            Log.d(TAG,"onRemoteDisplaySessionError()");
+                            Log.d(TAG,"status="+status);
                         }
 
                         @Override
                         public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("StageMode","onRemoteDisplaySessionEnded()");
-                            Log.d("StageMode","castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                            Log.d(TAG,"onRemoteDisplaySessionEnded()");
+                            Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                         }
 
                         @Override
                         public void zza() {
-                            Log.d("StageMode","zza()");
+                            Log.d(TAG,"zza()");
                         }
                     });
 
@@ -5096,9 +5097,9 @@ public class StageMode extends AppCompatActivity implements
                 try {
                     FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                 } catch (Exception e) {
-                    Log.d("StageMode", "ShareSong error getting the screenshot!");
+                    Log.d(TAG, "ShareSong error getting the screenshot!");
                 } catch (OutOfMemoryError o) {
-                    Log.d("StageMode", "ShareSong Out of memory");
+                    Log.d(TAG, "ShareSong Out of memory");
                 }
 
             } catch (Exception e) {
@@ -5606,7 +5607,7 @@ public class StageMode extends AppCompatActivity implements
 
                 case 404:
                     // Access fine location, so can open the menu at 'Connect devices'
-                    Log.d("StageMode", "FINE LOCATION granted!");
+                    Log.d(TAG, "FINE LOCATION granted!");
                     break;
             }
         }
@@ -6215,10 +6216,10 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.mPlayer1.setVolume(PadFunctions.getVol(padpan,padvol,0), PadFunctions.getVol(padpan,padvol,1));
             FullscreenActivity.mPlayer1.setOnCompletionListener(mp -> {
                 if (!PadFunctions.getLoop()) {
-                    Log.d("StageMode", "Reached end and not looping");
+                    Log.d(TAG, "Reached end and not looping");
 
                 } else {
-                    Log.d("StageMode", "Reached end but looping");
+                    Log.d(TAG, "Reached end but looping");
                 }
             });
             // IV - Logic of time display content is elsewhere
@@ -6267,10 +6268,10 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.mPlayer2.setVolume(PadFunctions.getVol(padpan,padvol,0), PadFunctions.getVol(padpan,padvol,1));
             FullscreenActivity.mPlayer2.setOnCompletionListener(mp -> {
                 if (!PadFunctions.getLoop()) {
-                    Log.d("StageMode", "Reached end and not looping");
+                    Log.d(TAG, "Reached end and not looping");
 
                 } else {
-                    Log.d("StageMode", "Reached end but looping");
+                    Log.d(TAG, "Reached end but looping");
                 }
             });
             // IV - Logic of time display content is elsewhere
@@ -7008,7 +7009,7 @@ public class StageMode extends AppCompatActivity implements
                             glideimage.setImageDrawable(null);
 
                         } catch (Exception e) {
-                            Log.d("StageMode", "error updating the views");
+                            Log.d(TAG, "error updating the views");
                         }
                         // Load the song
                         doCancelAsyncTask(loadsong_async);
@@ -7056,7 +7057,7 @@ public class StageMode extends AppCompatActivity implements
                 try {
                     LoadXML.loadXML(StageMode.this, preferences, storageAccess, processSong);
                 } catch (Exception e) {
-                    Log.d("StageMode", "Error loading song:" + StaticVariables.songfilename);
+                    Log.d(TAG, "Error loading song:" + StaticVariables.songfilename);
                 }
 
                 // Send Nearby song intent
@@ -7094,7 +7095,7 @@ public class StageMode extends AppCompatActivity implements
                             StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1);
                         }
                     } catch (Exception e) {
-                        Log.d("StageMode", "Error checking the chord format");
+                        Log.d(TAG, "Error checking the chord format");
                     }
 
                     // Sort song formatting
@@ -7163,7 +7164,7 @@ public class StageMode extends AppCompatActivity implements
                             try {
                                 processSong.lookForSplitPoints();
                             } catch (Exception e) {
-                                Log.d("StageMode", "Split point not worth it");
+                                Log.d(TAG, "Split point not worth it");
                             }
                         } else {
                             FullscreenActivity.splitpoint = 0;
@@ -7356,10 +7357,10 @@ public class StageMode extends AppCompatActivity implements
             // Check again after the keyRepeatTime + 100ms to see if the count has increased.  If it hasn't, short press action should be called.
             new Handler().postDelayed(() -> {
                 if (initialAirTurnCount==keyRepeatCount) {
-                    //Log.d("StageMode","onKeyUp: short press triggered " + initialAirTurnCount + " : " + keyRepeatCount);
+                    //Log.d(TAG,"onKeyUp: short press triggered " + initialAirTurnCount + " : " + keyRepeatCount);
                     doShortPressAction(keyCode, event);
                 } //else {
-                    //Log.d("StageMode","onKeyUp: short press overridden " + initialAirTurnCount + " : " + keyRepeatCount);
+                    //Log.d(TAG,"onKeyUp: short press overridden " + initialAirTurnCount + " : " + keyRepeatCount);
                 //}
             }, keyRepeatTime);
             return false;
@@ -7377,7 +7378,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void doShortPressAction(int keyCode, KeyEvent event) {
-        //Log.d("StageMode", "doShortPressAction:");
+        //Log.d(TAG, "doShortPressAction:");
         keyRepeatCount = 0;
         event.startTracking();
         View rf = getCurrentFocus();
@@ -7386,7 +7387,7 @@ public class StageMode extends AppCompatActivity implements
         }
 
         if (!blockKeyAction) {
-            //Log.d("StageMode", "doShortPressAction: Actioned");
+            //Log.d(TAG, "doShortPressAction: Actioned");
             // Reset immersive mode
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
                 restoreTranslucentBarsDelayed();
@@ -7429,12 +7430,12 @@ public class StageMode extends AppCompatActivity implements
                 doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal6ShortPressAction", "next"));
             }
         } else {
-            //Log.d("StageMode", "doShortPressAction: Action blocked");
+            //Log.d(TAG, "doShortPressAction: Action blocked");
             blockKeyAction = false;
         }
 
-        //Log.d("StageMode", "doShortPressAction: -> Unblocked key actions");
-        //Log.d("StageMode", "doShortPressAction: ------------ END");
+        //Log.d(TAG, "doShortPressAction: -> Unblocked key actions");
+        //Log.d(TAG, "doShortPressAction: ------------ END");
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -7782,18 +7783,18 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        //Log.d("StageMode", "onKeyLongPress:");
+        //Log.d(TAG, "onKeyLongPress:");
         boolean actionrecognised = doLongKeyPressAction(keyCode);
 
         if (actionrecognised) {
             return true;
         }
-        //Log.d("StageMode", "onKeyLongPress: Action not recognised");
+        //Log.d(TAG, "onKeyLongPress: Action not recognised");
         return super.onKeyLongPress(keyCode, event);
     }
 
     private boolean doLongKeyPressAction(int keyCode) {
-        //Log.d("StageMode", "doLongKeyPressAction:");
+        //Log.d(TAG, "doLongKeyPressAction:");
         keyRepeatCount = 0;
         boolean actionrecognised = false;
 
@@ -7823,12 +7824,12 @@ public class StageMode extends AppCompatActivity implements
                 doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal6LongPressAction", "editset"));
             }
         } //else {
-            //Log.d("StageMode", "doLongKeyPressAction: Blocked");
+            //Log.d(TAG, "doLongKeyPressAction: Blocked");
         //}
         //if (actionrecognised) {
-            //Log.d("StageMode", "doLongKeyPressAction: Actioned");
+            //Log.d(TAG, "doLongKeyPressAction: Actioned");
         //}
-        //Log.d("StageMode", "doLongKeyPressAction: -> Blocked key actions");
+        //Log.d(TAG, "doLongKeyPressAction: -> Blocked key actions");
 
         // IV - After the first long press action block further action.  Sequences will now end with a blocked short press which only sets blockKeyPress false
         blockKeyAction = true;
@@ -8002,7 +8003,7 @@ public class StageMode extends AppCompatActivity implements
                 try {
                     optionmenu.removeAllViews();
                 } catch (Exception e) {
-                    Log.d("StageMode", "Error removing view");
+                    Log.d(TAG, "Error removing view");
                 }
                 optionmenu.addView(OptionMenuListeners.prepareOptionMenu(StageMode.this,getSupportFragmentManager()));
                 if (optionmenu != null) {
@@ -8343,7 +8344,7 @@ public class StageMode extends AppCompatActivity implements
                 return false;
 
             } catch (Exception e) {
-                Log.d("StageMode", "error");
+                Log.d(TAG, "error");
             }
             return false;
         }
@@ -8576,7 +8577,7 @@ public class StageMode extends AppCompatActivity implements
                             validlinkaudio = true;
                         } catch (Exception e) {
                             validlinkaudio = false;
-                            Log.d("StageMode", "Something went wrong with the media");
+                            Log.d(TAG, "Something went wrong with the media");
                         }
 
                         if (!validlinkaudio) {

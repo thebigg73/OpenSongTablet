@@ -1004,10 +1004,13 @@ class SetActions {
 
     void doMoveInSet(Context c, Preferences preferences) {
         MyInterface mListener = (MyInterface) c;
-        boolean justmovingsections = false;
+        //boolean justmovingsections = false;
+
+        // GE - reverting this behaviour as next/prev in set buttons should do that
+        // The scroll buttons do the section changes, as will pedals with toggle scroll switched on
 
         // If we are in Stage Mode, check the sections first
-        if (StaticVariables.whichMode.equals("Stage")) {
+        /*if (StaticVariables.whichMode.equals("Stage")) {
 
             // Might be staying on the same song but moving section
             if (StaticVariables.setMoveDirection.equals("back")) {
@@ -1025,9 +1028,9 @@ class SetActions {
                     StaticVariables.currentSection = 0;
                 }
             }
-        }
+        }*/
 
-        if (!justmovingsections) {
+        //if (!justmovingsections) {
             // Moving to a different song
             if (StaticVariables.setMoveDirection.equals("back")) {
                 if (StaticVariables.indexSongInSet>0) {
@@ -1063,7 +1066,7 @@ class SetActions {
             mListener.loadSong();
         }
 
-    }
+    //}
 
     String fixIsInSetSearch(String s) {
         if (s.contains("**_Variations/")) {
