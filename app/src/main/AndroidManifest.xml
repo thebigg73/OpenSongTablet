@@ -4,7 +4,7 @@
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
     android:versionCode="200"
-    android:versionName="5.9.9" >
+    android:versionName="5.9.9b" >
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -23,6 +23,12 @@
         android:required="false" />
     <uses-feature
         android:name="android.hardware.location.gps"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.bluetooth"
         android:required="false" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />

@@ -7,7 +7,7 @@
     <string name="actions">Actions</string>
     <string name="actions_current_song">Actions for current song</string>
     <string name="action_button_info">Click to show or hide your page buttons.\n\nEach one can be assigned
-        to song actions such as metronomes, transpose, pads, etc.\nLong pressing on the main button
+        to song actions such as metronome, transpose, pads, etc.\nLong pressing on the main button
         lets you change the settings of each button.\nLong pressing on some page buttons performs
         quick actions such as start/stop/edit</string>
     <string name="actionbar_display">Actionbar</string>

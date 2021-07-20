@@ -2,141 +2,134 @@ package com.garethevans.church.opensongtablet.metronome;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-
-import androidx.appcompat.app.ActionBar;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Metronome {
 
     // This object holds all of the metronome activity
 
     private final String TAG = "Metronome";
-    private final int sampleRate = 8000;
-    private long beatTimeNext;
-    private long postDelayedTime;
-    private int beatTimeLength;
-    private int beats;
-    private int divisions;
-    private int metronomeFlashOnColor;
-    private int metronomeFlashOffColor;
-    private int beatsRequired;
-    private int beatsRunningTotal;
-    private int beat;
-    private float volumeLeft = 0.0f, volumeRight = 0.0f;
-    private boolean visualMetronome = false, isRunning = false, validTimeSig = false, validTempo = false;
-    private double[] tick, tock;
-    private final AudioGenerator audioGenerator = new AudioGenerator(sampleRate);
     private Activity activity;  // For run on UI updates
-    private Handler metronomeHandler;
-    private Thread metronomeThread;
-    private ActionBar actionBar;
-    private AppActionBar appActionBar;
+    private int beat, beats, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
+            metronomeFlashOnColor, metronomeFlashOffColor;
+    private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f, volumeTockRight = 1.0f;
+    private boolean visualMetronome = false, isRunning = false, validTimeSig = false,
+            validTempo = false, tickPlayerReady, tockPlayerReady;
+    private String tickSound, tockSound;
+    private MediaPlayer tickPlayer, tockPlayer;
+    private Timer metronomeTimer, visualTimer;
+    private TimerTask metronomeTimerTask, visualTimerTask;
+    private final Handler metronomeTimerHandler = new Handler();
+    private final Handler visualTimerHandler = new Handler();
 
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (beatsRunningTotal <= beatsRequired) {
-                try {
-
-                    // If this is beat 1, it is a tick, if not a tock
-                    double[] sound;
-                    if (beat == 1) {
-                        sound = tick;
-                    } else {
-                        sound = tock;
-                    }
-                    // Play the sound after getting the time
-                    setBeatSystemTimes();
-                    audioGenerator.writeSound(volumeLeft, volumeRight, sound);
-
-                    if (visualMetronome) {
-                        appActionBar.doFlash(beatTimeLength/2);
-                    }
-                    // Set the correct beat
-                    beat++;
-                    beatsRunningTotal++;
-                    if (beat > divisions) {
-                        beat = 1;
-                    }
-
-                    // This calculates how long from the now until we need to start the beeps again.
-                    // If it is a negative number, it will be sent immediately!!
-                    // Get the current time again as we will be later after playing the sound
-                    postDelayedTime = beatTimeNext - System.currentTimeMillis();
-                    if (postDelayedTime < 0) {
-                        postDelayedTime = 0;
-                    }
-
-                    while (isRunning) {
-                        metronomeHandler.postAtTime(this, postDelayedTime);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
-
-    public boolean getIsRunning() {
-        return isRunning;
-    }
-    public void startMetronome(Activity activity, Context c, MainActivityInterface mainActivityInterface) {
+    // The call to start and stop the metronome called from MainActivity
+    public void startMetronome(Activity activity, Context c,
+                               MainActivityInterface mainActivityInterface, Song thisSong) {
         // This starts the metronome activity
-        this.activity = activity;  // Destroyed on stop
-        initialiseMetronome(c, mainActivityInterface);
+        Log.d(TAG,"Metronome started");
+        this.activity = activity;  // Destroyed on stop to avoid memory leaks
 
-        // First beep & actionbar update
-        if (visualMetronome) {
-            mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOnColor);
+        // Initialise the varibles
+        initialiseMetronome(c, mainActivityInterface, thisSong);
+
+        Log.d(TAG,"metronomeValid()="+metronomeValid()+"  isRunning="+isRunning);
+        // If the metronome is valid and not running, start. If not stop
+        if (metronomeValid() && !isRunning){
+            // Get the tick and tock sounds ready
+            setupPlayers(c,mainActivityInterface);
         } else {
-            mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOffColor);
-        }
-
-        if (metronomeValid()) {
-            isRunning = true;
-            postDelayedTime = 0;
-            metronomeHandler = new Handler(Looper.getMainLooper());
-            metronomeThread = new Thread(runnable);
-            metronomeThread.start();
-            //metronomeHandler.postAtTime(runnable, postDelayedTime);
+            stopMetronome(mainActivityInterface);
         }
     }
-
-    public void stopMetronome() {
+    public void stopMetronome(MainActivityInterface mainActivityInterface) {
+        Log.d(TAG,"Metronome stopped");
         activity = null;
         isRunning = false;
+        // Make sure the action bar resets to the off color
+        mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOffColor);
+
+        // Stop the metronome timer stuff
+        if (metronomeTimerTask != null) {
+            metronomeTimerTask.cancel();
+            metronomeTimerTask = null;
+        }
+        if (metronomeTimer != null) {
+            metronomeTimer.cancel();
+            metronomeTimer.purge();
+        }
+
+        // Stop the visual metronome timer stuff
+        if (visualTimerTask!=null) {
+            visualTimerTask.cancel();
+            visualTimerTask = null;
+        }
+        if (visualTimer != null) {
+            visualTimer.cancel();
+            visualTimer.purge();
+        }
     }
 
-    private void initialiseMetronome(Context c, MainActivityInterface mainActivityInterface) {
+    // Set up the metronome values (tempo, time signature, user preferences, etc)
+    private void initialiseMetronome(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // Does the user want the visual metronome?
         setVisualMetronome(c, mainActivityInterface);
+
+        // Reset the beats
+        beatsRunningTotal = 0;
+        beat = 1;
 
         // Get the volume and pan of the metronome and bars required
         setVolumes(c, mainActivityInterface);
 
         // Get the song tempo and time signatures
         // TODO remove
-        mainActivityInterface.getSong().setTimesig("4/4");
-        mainActivityInterface.getSong().setTempo("100");
-        setSongValues(mainActivityInterface);
+        thisSong.setTimesig("4/4");
+        thisSong.setTempo("60");
+        visualMetronome = true;
+        setSongValues(thisSong);
 
         // Get the bars and beats required
         setBarsAndBeats(c, mainActivityInterface);
+    }
+    private void setupPlayers(Context c, MainActivityInterface mainActivityInterface) {
+        setTickTockSounds(c,mainActivityInterface);
 
-        // Now get the audioPlayer ready
-        audioGenerator.createPlayer(volumeLeft, volumeRight);
-
-        // Get the tick and tock samples
-        setTickTock(mainActivityInterface);
-
-        // Set beatLast and beatNext times using the system timer
-        setBeatSystemTimes();
+        tickPlayer = new MediaPlayer();
+        tockPlayer = new MediaPlayer();
+        tickPlayer.setOnPreparedListener(mediaPlayer -> {
+            tickPlayerReady = true;
+            checkPlayersReady(mainActivityInterface);
+        });
+        tockPlayer.setOnPreparedListener(mediaPlayer -> {
+            tockPlayerReady = true;
+            checkPlayersReady(mainActivityInterface);
+        });
+        tickPlayerReady = false;
+        tockPlayerReady = false;
+        try {
+            AssetFileDescriptor tickFile = c.getAssets().openFd("metronome/"+tickSound+".mp3");
+            AssetFileDescriptor tockFile = c.getAssets().openFd("metronome/"+tockSound+".mp3");
+            tickPlayer.setDataSource(tickFile.getFileDescriptor(), tickFile.getStartOffset(), tickFile.getLength());
+            tockPlayer.setDataSource(tockFile.getFileDescriptor(), tockFile.getStartOffset(), tockFile.getLength());
+            tickPlayer.prepareAsync();
+            tockPlayer.prepareAsync();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setTickTockSounds(Context c, MainActivityInterface mainActivityInterface) {
+        tickSound = mainActivityInterface.getPreferences().getMyPreferenceString(c,"tickSound","stick_high");
+        tockSound = mainActivityInterface.getPreferences().getMyPreferenceString(c,"tockSound", "stick_low");
     }
     private void setVisualMetronome(Context c, MainActivityInterface mainActivityInterface) {
         visualMetronome = mainActivityInterface.getPreferences().
@@ -144,31 +137,30 @@ public class Metronome {
 
         metronomeFlashOffColor = c.getResources().getColor(R.color.colorAltPrimary);
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
-
-        mainActivityInterface.getAppActionBar().setMetronomeColors(metronomeFlashOnColor,metronomeFlashOffColor);
     }
     private void setVolumes(Context c, MainActivityInterface mainActivityInterface) {
         String pan = mainActivityInterface.getPreferences().getMyPreferenceString(c,"metronomePan","C");
-        float vol = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "metronomeVol",0.5f);
+        float tickVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "metronomeTickVol",0.8f);
+        float tockVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "metronomeTockVol",0.6f);
+        volumeTickLeft = tickVol;
+        volumeTickRight = tickVol;
+        volumeTockLeft = tockVol;
+        volumeTockRight = tockVol;
         switch (pan) {
-            case "C":
-            default:
-                volumeLeft = vol;
-                volumeRight = vol;
-                break;
             case "L":
-                volumeLeft = vol;
-                volumeRight = 0.0f;
+                volumeTickRight = 0.0f;
+                volumeTockRight = 0.0f;
                 break;
             case "R":
-                volumeLeft = 0.0f;
-                volumeRight = vol;
+                volumeTickLeft = 0.0f;
+                volumeTockLeft = 0.0f;
+                break;
         }
     }
-    private void setSongValues(MainActivityInterface mainActivityInterface) {
+    private void setSongValues(Song thisSong) {
         // First up the tempo
         validTempo = false;
-        String t = mainActivityInterface.getSong().getTempo();
+        String t = thisSong.getTempo();
         // Check for text version from desktop app
         t = t.replace("Very Fast", "140");
         t = t.replace("Fast", "120");
@@ -190,14 +182,6 @@ public class Metronome {
             validTempo = false;
         }
 
-        if (tempo >0) {
-            // Calculate the time between beats in ms
-            // We base this on a 6th of a beat (IV) and then scale later depending on time sig
-            beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f)/6.0f);
-        } else {
-            beatTimeLength = 0;
-        }
-
         // Now the time signature
 
         // 3/4 3 beats per bar, each quarter notes
@@ -208,7 +192,7 @@ public class Metronome {
         // Time signatures that I have
         // 2/2   2/4   3/2    3/4   3/8   4/4   5/4   5/8   6/4   6/8   7/4   7/8   1/4
 
-        String ts = mainActivityInterface.getSong().getTimesig();
+        String ts = thisSong.getTimesig();
         if (ts!=null && !ts.isEmpty() && ts.contains("/") && ts.length()==3) {
             validTimeSig = true;
             try {
@@ -228,13 +212,22 @@ public class Metronome {
 
         // IV  - Override for 6/8 compound time signature to give 3 sounds (triplet) per beat
         // Otherwise one sound per beat
-        if (beats == 6 && divisions == 8) {
-            beatTimeLength = beatTimeLength * 2;
-            divisions = 2;
-            tempo = tempo * 3;
+
+        // Rather than getting the time, rounding then scaling the rounding error,
+        // Deal with the timings here
+        if (tempo >0) {
+            // Calculate the time between beats in ms
+            // We base this on a 6th of a beat (IV) and then scale later depending on time sig
+            if (beats == 6 && divisions == 8) {
+                beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f) / 3.0f);
+                divisions = 2;
+            } else {
+                beatTimeLength = Math.round((60.0f / (float) tempo) * 1000.0f);
+            }
         } else {
-            beatTimeLength = beatTimeLength * 6;
+            beatTimeLength = 0;
         }
+
         // 1/4 timing should be single beats
         if (beats == 1) {
             beats = 4;
@@ -242,32 +235,73 @@ public class Metronome {
     }
     private void setBarsAndBeats(Context c, MainActivityInterface mainActivityInterface) {
         int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "metronomeLength", 0);
-        beatsRequired = barsRequired * beats;
+        beatsRequired = barsRequired * beats;  // If 0, that's fine
     }
-    private void setTickTock(MainActivityInterface mainActivityInterface) {
-        int tickTockSamples = 600;
-        int soundTock = 1200;
-        if (mainActivityInterface.getSong().getTimesig().equals("1/4")) {
-            tick = audioGenerator.getSineWave(tickTockSamples, sampleRate, soundTock);
-            tock = audioGenerator.getSineWave(tickTockSamples, sampleRate, soundTock);
-        } else {
-            tick = audioGenerator.getSineWave(tickTockSamples, sampleRate, soundTock);
-            int soundTick = 1600;
-            tock = audioGenerator.getSineWave(tickTockSamples, sampleRate, soundTick);
-        }
-    }
-    private void setBeatSystemTimes() {
-        // This is based on the system clock to keep better sync
-        long beatTimeLast = System.currentTimeMillis();
-        beatTimeNext = beatTimeLast + beatTimeLength;
-    }
+
+    // Checks to the metronome
     private boolean metronomeValid() {
         Log.d(TAG, "validTempo: "+validTempo);
         Log.d(TAG, "validTimeSig: "+validTimeSig);
         return validTempo && validTimeSig;
     }
+    public boolean getIsRunning() {
+        return isRunning;
+    }
+    private void checkPlayersReady(MainActivityInterface mainActivityInterface) {
+        // Called when the mediaPlayer are prepared
+        if (tickPlayerReady && tockPlayerReady) {
+            // Get any reduction in tock volume from preferences
+            tickPlayer.setVolume(volumeTickLeft,volumeTickRight);
+            tockPlayer.setVolume(volumeTockLeft,volumeTockRight);
+            timerMetronome(mainActivityInterface);
+            if (visualMetronome) {
+                timerVisual(mainActivityInterface);
+            }
+        }
+    }
 
+    // The metronome timers and runnables
+    private void timerMetronome(MainActivityInterface mainActivityInterface) {
+        isRunning = true;
+        metronomeTimer = new Timer();
+        metronomeTimerTask = new TimerTask() {
+            public void run() {
+                metronomeTimerHandler.post(() -> {
 
-
+                    if (beat>divisions) {
+                        beat = 1;
+                    }
+                    if (beat==1) {
+                        tickPlayer.seekTo(0);
+                        tickPlayer.start();
+                    } else {
+                        tockPlayer.seekTo(0);
+                        tockPlayer.start();
+                    }
+                    if (visualMetronome) {
+                        activity.runOnUiThread(() -> mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOnColor));
+                    }
+                    beat ++;
+                    beatsRunningTotal ++;
+                    if (beatsRequired>0 && beatsRunningTotal>beatsRequired) {
+                        // Stop the metronome (beats and visual)
+                        stopMetronome(mainActivityInterface);
+                    }
+                });
+            }
+        };
+        metronomeTimer.scheduleAtFixedRate(metronomeTimerTask, 0, beatTimeLength);
+    }
+    private void timerVisual(MainActivityInterface mainActivityInterface) {
+        // The flash on is handled in the metronome.
+        // This timer is runs half way through the beat to turn the flash off
+        visualTimer = new Timer();
+        visualTimerTask = new TimerTask() {
+            public void run() {
+                visualTimerHandler.post(() -> activity.runOnUiThread(() -> mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOffColor)));
+            }
+        };
+        visualTimer.scheduleAtFixedRate(visualTimerTask, beatTimeLength/2, beatTimeLength);
+    }
 
 }

@@ -1,21 +1,22 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class AppActionBar {
 
     private final ActionBar actionBar;
-    private final RelativeLayout actionBarBackground;
+    private final Toolbar toolbar;
     private final TextView title;
     private final TextView author;
     private final TextView key;
@@ -31,9 +32,9 @@ public class AppActionBar {
     private boolean hideActionBar;
     private boolean performanceMode;
 
-    public AppActionBar(ActionBar actionBar, RelativeLayout actionBarBackground, BatteryStatus batteryStatus, TextView title, TextView author, TextView key, TextView capo, ImageView batteryDial,
+    public AppActionBar(ActionBar actionBar, Toolbar toolbar, BatteryStatus batteryStatus, TextView title, TextView author, TextView key, TextView capo, ImageView batteryDial,
                         TextView batteryText, TextView clock, boolean hideActionBar) {
-        if (batteryStatus==null) {
+        if (batteryStatus == null) {
             this.batteryStatus = new BatteryStatus();
         } else {
             this.batteryStatus = batteryStatus;
@@ -46,16 +47,17 @@ public class AppActionBar {
         this.batteryDial = batteryDial;
         this.batteryText = batteryText;
         this.clock = clock;
-        this.actionBarBackground = actionBarBackground;
+        this.toolbar = toolbar;
         this.hideActionBar = hideActionBar;
         delayactionBarHide = new Handler();
         hideActionBarRunnable = () -> {
             if (actionBar != null && actionBar.isShowing()) {
-                Log.d("AppActionBar","hide actionBar");
+                Log.d("AppActionBar", "hide actionBar");
                 actionBar.hide();
             }
         };
     }
+
 
     public void setHideActionBar(boolean hideActionBar) {
         this.hideActionBar = hideActionBar;
@@ -217,19 +219,9 @@ public class AppActionBar {
         }
     }
 
-    public void setMetronomeColors(int colorOn, int colorOff) {
-        this.colorOn = colorOn;
-        this.colorOff = colorOff;
-    }
     // Flash on/off for metronome
-    public void doFlash(int delayTime) {
-        actionBarBackground.setBackgroundColor(colorOn);
-        new Handler().postAtTime(hideFlashRunnable,delayTime);
+    public void doFlash(int colorBar) {
+        actionBar.setBackgroundDrawable(new ColorDrawable(colorBar));
+        //toolbar.setBackgroundDrawable(new ColorDrawable(colorBar));
     }
-    private final Runnable hideFlashRunnable = new Runnable() {
-        @Override
-        public void run() {
-            actionBarBackground.setBackgroundColor(colorOff);
-        }
-    };
 }

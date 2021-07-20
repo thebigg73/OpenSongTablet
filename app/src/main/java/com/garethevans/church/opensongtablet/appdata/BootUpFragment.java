@@ -61,7 +61,7 @@ public class BootUpFragment extends Fragment {
 
         // TODO
         // REMOVE BEFORE RELEASE!!!!!
-        // MaterialShowcaseView.resetAll(requireActivity());
+        //MaterialShowcaseView.resetAll(requireActivity());
 
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();

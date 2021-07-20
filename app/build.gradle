@@ -3,8 +3,8 @@ apply plugin: "androidx.navigation.safeargs"
 
 android {
 
-    compileSdkVersion 30
-    buildToolsVersion '31.0.0 rc4'
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
     buildTypes {
         release {
             minifyEnabled true
@@ -24,7 +24,7 @@ android {
     defaultConfig {
         applicationId "com.garethevans.church.opensongtablet"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 31
         multiDexEnabled true
     }
 
@@ -95,7 +95,5 @@ dependencies {
     // TODO Check I can get rid of the following - I want to minimise external libraries
     //implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
     //implementation 'com.annimon:stream:1.2.1'                           // Not sure if I need this anymore
-    //implementation 'lib.kashif:folderpicker:2.4'                        // Not sure if I need this anymore
     //implementation 'com.otaliastudios:zoomlayout:1.8.0'                 // For file structure graph - removing as only in jcenter()
-    //implementation 'com.github.droidhubworld:AndroidFilePicker:1.0.0'   // For KitKat only to choose a folder
 }

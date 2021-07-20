@@ -440,7 +440,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     }
     private void initialiseHelpers3() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(ab,activityMainBinding.toolBar.actionBarBackground,
+        appActionBar = new AppActionBar(ab,activityMainBinding.toolBar.getRoot(),
                 batteryStatus,activityMainBinding.toolBar.songtitleAb,
                 activityMainBinding.toolBar.songauthorAb, activityMainBinding.toolBar.songkeyAb,
                 activityMainBinding.toolBar.songcapoAb,activityMainBinding.toolBar.batteryimage,
@@ -631,7 +631,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
             public void onDrawerOpened(@NonNull View drawerView) {
                 hideActionButton(true);
                 setWindowFlags();
-                showTutorial("songsetmenu");
                 if (setSongMenuFragment()) {
                     showTutorial("songsetMenu");
                 }
@@ -873,6 +872,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         settingsButton = menu.findItem(R.id.settings_menu_item);
         MenuItem alertButton = menu.findItem(R.id.alert_info_item);
 
@@ -968,19 +968,46 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         if (settingsButton==null) {
             invalidateOptionsMenu();
         }
+        initialiseArrayLists();
         switch (what) {
             case "performanceView":
-                showCase.singleShowCase(this,activityMainBinding.pageButtonRight.actionFAB,
-                        null,getString(R.string.action_button_info),false,"pageActionFAB");
+                // Try to get the hamburger icon
+                Log.d(TAG, "Trying to get hamburger icon: ");
+                if (activityMainBinding.toolBar.getRoot().getChildCount() > 2) {
+                    final View view = activityMainBinding.toolBar.getRoot().getChildAt(2);
+                    targets.add(view);
+                    infos.add("Open the menu to view and manage your songs and sets");
+                }
+
+                for (int i = 0; i < activityMainBinding.toolBar.getRoot().getChildCount(); ++i) {
+                    final View child = activityMainBinding.toolBar.getRoot().getChildAt(i);
+                    if (child != null && child.getClass().toString().contains("ImageView")) {
+                        targets.add(child);
+                        infos.add("Open the menu to view and manage your songs and sets");
+                    }
+                }
+
+                //showCase.singleShowCase(this,activityMainBinding.pageButtonRight.actionFAB,
+                //        null,getString(R.string.action_button_info),false,"pageActionFAB");
+                targets.add(findViewById(R.id.menuSettings));
+                infos.add(getString(R.string.extra_settings));
+                targets.add(activityMainBinding.pageButtonRight.actionFAB);
+                infos.add(getString(R.string.action_button_info));
+                dismisses.add(null);
+                dismisses.add(null);
+                dismisses.add(null);
+                rects.add(false);
+                rects.add(false);
+                rects.add(false);
+                showCase.sequenceShowCase(this,targets,dismisses,infos,rects,"performanceMode");
+
                 break;
-            case "songsetmenu":
+            case "songsetMenu":
                 // Initialise the arraylists
                 initialiseArrayLists();
-                if (activityMainBinding != null) {
-                    targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(0)).view);
-                    targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(1)).view);
-                    targets.add(Objects.requireNonNull(activityMainBinding.viewpager.findViewById(R.id.actionFAB)));
-                }
+                targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(0)).view);
+                targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(1)).view);
+                targets.add(Objects.requireNonNull(activityMainBinding.viewpager.findViewById(R.id.actionFAB)));
                 infos.add(getString(R.string.menu_song_info));
                 infos.add(getString(R.string.menu_set_info));
                 infos.add (getString(R.string.add_songs)+" / "+getString(R.string.song_actions));
@@ -989,7 +1016,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 dismisses.add(null);
                 rects.add(true);
                 rects.add(true);
-                rects.add(true);
+                rects.add(false);
                 showCase.sequenceShowCase(this,targets,dismisses,infos,rects,"songSetMenu");
         }
     }
@@ -2176,9 +2203,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         Log.d(TAG, mainActivityInterface.getSong().getTitle());
         Log.d(TAG, "metronomeToggle()  isRunning="+metronome.getIsRunning());
         if (!metronome.getIsRunning()) {
-            metronome.startMetronome(this,this,mainActivityInterface);
+            metronome.startMetronome(this,this,mainActivityInterface,song);
         } else {
-            metronome.stopMetronome();
+            metronome.stopMetronome(mainActivityInterface);
         }
     }
 
