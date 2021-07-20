@@ -919,4 +919,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="choose_background">Click on a background to use it. Long press / right click to change it.</string>
     <string name="hex_color_code">Hex color code</string>
     <string name="video">Video</string>
+    <string name="beats">Beats</string>
+    <string name="divisions">Divisions</string>
 </resources>

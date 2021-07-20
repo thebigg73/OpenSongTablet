@@ -10,6 +10,7 @@ import android.util.Log;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -83,7 +84,7 @@ public class Metronome {
         setVisualMetronome(c, mainActivityInterface);
 
         // Reset the beats
-        beatsRunningTotal = 0;
+        beatsRunningTotal = 1;
         beat = 1;
 
         // Get the volume and pan of the metronome and bars required
@@ -191,9 +192,30 @@ public class Metronome {
         // 6/8 2 beats per bar. each dotted quarter note
         // tempo is taken as being given for the beat of the time signature
 
-        // Time signatures that I have
-        // 2/2   2/4   3/2    3/4   3/8   4/4   5/4   5/8   6/4   6/8   7/4   7/8   1/4
+        processTimeSignature(mainActivityInterface);
 
+        // IV  - Override for 6/8 compound time signature to give 3 sounds (triplet) per beat
+        // Otherwise one sound per beat
+
+        // Rather than getting the time, rounding then scaling the rounding error,
+        // Deal with the timings here
+        if (tempo >0) {
+            // Compound times split the note into 3s
+            // Compound times are 3/8, 5/8,
+            if (compoundTime()) {
+                beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f) / 3.0f);
+            } else {
+                beatTimeLength = Math.round((60.0f / (float) tempo) * 1000.0f);
+            }
+            // Calculate the time between beats in ms
+            // We base this on a 6th of a beat (IV) and then scale later depending on time sig
+
+        } else {
+            beatTimeLength = 0;
+        }
+    }
+    public ArrayList<String> processTimeSignature(MainActivityInterface mainActivityInterface) {
+        ArrayList<String> timeSignature = new ArrayList<>();
         String ts = mainActivityInterface.getSong().getTimesig();
         if (ts!=null && !ts.isEmpty() && ts.contains("/") && ts.length()==3) {
             validTimeSig = true;
@@ -211,29 +233,14 @@ public class Metronome {
             beats = 0;
             divisions = 1;  // So we don't divide by 0 accidentally!
         }
+        timeSignature.add(""+beats);
+        timeSignature.add(""+divisions);
+        return timeSignature;  // Used when editing
+    }
 
-        // IV  - Override for 6/8 compound time signature to give 3 sounds (triplet) per beat
-        // Otherwise one sound per beat
-
-        // Rather than getting the time, rounding then scaling the rounding error,
-        // Deal with the timings here
-        if (tempo >0) {
-            // Calculate the time between beats in ms
-            // We base this on a 6th of a beat (IV) and then scale later depending on time sig
-            if (beats == 6 && divisions == 8) {
-                beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f) / 3.0f);
-                divisions = 2;
-            } else {
-                beatTimeLength = Math.round((60.0f / (float) tempo) * 1000.0f);
-            }
-        } else {
-            beatTimeLength = 0;
-        }
-
-        // 1/4 timing should be single beats
-        if (beats == 1) {
-            beats = 4;
-        }
+    public boolean compoundTime() {
+        // Compound times are when beats are split into 3s
+        return beats==3 && divisions==8;
     }
     public void setBarsAndBeats(Context c, MainActivityInterface mainActivityInterface) {
         int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "metronomeLength", 0);
@@ -267,7 +274,7 @@ public class Metronome {
             public void run() {
                 metronomeTimerHandler.post(() -> {
 
-                    if (beat>divisions) {
+                    if (beat>beats) {
                         beat = 1;
                     }
                     if (beat==1 && tickPlayer!=null) {

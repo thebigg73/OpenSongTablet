@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -29,12 +30,46 @@
                 android:text="@string/actions_current_song"
                 style="@style/largeText"/>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/songTimeSignature"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/time_signature"
-                android:text="@string/time_signature" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="bottom">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_signature"
+                        android:layout_gravity="bottom"
+                        android:paddingBottom="16dp"/>
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/signatureBeats"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/beats"
+                        android:text="@string/beats" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="/"
+                        android:gravity="bottom"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        tools:ignore="HardcodedText" />
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/signatureDivisions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/divisions"
+                        android:text="@string/divisions" />
+
+                </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/songTempo"
@@ -44,6 +79,7 @@
                 android:text="@string/tempo" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/tapTempo"
                 style="@style/TextBackgroundButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

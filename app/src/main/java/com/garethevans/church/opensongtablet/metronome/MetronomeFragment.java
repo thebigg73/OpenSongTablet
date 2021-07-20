@@ -37,7 +37,8 @@ public class MetronomeFragment extends Fragment {
     private Timer isRunningTimer;
     private TimerTask isRunningTask;
     private Handler isRunningHandler = new Handler();
-
+    private long old_time = 0L;
+    private int total_calc_bpm = 0, total_counts = 0;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -87,20 +88,11 @@ public class MetronomeFragment extends Fragment {
         addSoundItem("wood_low", getString(R.string.sound_wood)+" ("+low+")");
 
         // Get the timesignatures
-        ArrayList<String> timeSignatures = new ArrayList<>();
-        timeSignatures.add("");
-        timeSignatures.add("2/2");
-        timeSignatures.add("3/2");
-        timeSignatures.add("1/4");
-        timeSignatures.add("2/4");
-        timeSignatures.add("3/4");
-        timeSignatures.add("4/4");
-        timeSignatures.add("5/4");
-        timeSignatures.add("6/4");
-        timeSignatures.add("7/4");
-        timeSignatures.add("5/8");
-        timeSignatures.add("6/8");
-        timeSignatures.add("7/8");
+        ArrayList<String> signatureBeats = new ArrayList<>();
+        signatureBeats.add("");
+        for (int x=1; x<17; x++) {
+            signatureBeats.add(""+x);
+        }
 
         // Get the tempos
         ArrayList<String> tempos = new ArrayList<>();
@@ -108,6 +100,9 @@ public class MetronomeFragment extends Fragment {
         for (int x=40; x<300; x++) {
             tempos.add(""+x);
         }
+        String tempoBpm = getString(R.string.tempo) + " (" + getString(R.string.bpm) + ")";
+        myView.songTempo.setText(tempoBpm);
+        myView.songTempo.setHint(tempoBpm);
 
         // Get the pans
         panNames = new ArrayList<>();
@@ -121,12 +116,13 @@ public class MetronomeFragment extends Fragment {
 
         // Set the adapters
         ExposedDropDownArrayAdapter soundAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, soundNames);
-        ExposedDropDownArrayAdapter timeSignatureAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, timeSignatures);
+        ExposedDropDownArrayAdapter timeSignatureAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, signatureBeats);
         ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, tempos);
         ExposedDropDownArrayAdapter panAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item,panNames);
 
         // Add them to the views
-        myView.songTimeSignature.setAdapter(timeSignatureAdapter);
+        myView.signatureBeats.setAdapter(timeSignatureAdapter);
+        myView.signatureDivisions.setAdapter(timeSignatureAdapter);
         myView.songTempo.setAdapter(tempoAdapter);
         myView.tickSound.setAdapter(soundAdapter);
         myView.tockSound.setAdapter(soundAdapter);
@@ -134,7 +130,8 @@ public class MetronomeFragment extends Fragment {
 
         // Make sure the views scroll to the selected item
         ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
-        exposedDropDownSelection.keepSelectionPosition(myView.songTimeSignature, timeSignatures);
+        exposedDropDownSelection.keepSelectionPosition(myView.signatureBeats, signatureBeats);
+        exposedDropDownSelection.keepSelectionPosition(myView.signatureDivisions, signatureBeats);
         exposedDropDownSelection.keepSelectionPosition(myView.songTempo, tempos);
         exposedDropDownSelection.keepSelectionPosition(myView.tickSound,soundNames);
         exposedDropDownSelection.keepSelectionPosition(myView.tockSound,soundNames);
@@ -148,7 +145,9 @@ public class MetronomeFragment extends Fragment {
     private void setupPreferences() {
         // Get the song values
         myView.songTempo.setText(mainActivityInterface.getSong().getTempo());
-        myView.songTimeSignature.setText(mainActivityInterface.getSong().getTimesig());
+        ArrayList<String> timeSignature = mainActivityInterface.getMetronome().processTimeSignature(mainActivityInterface);
+        myView.signatureBeats.setText(timeSignature.get(0));
+        myView.signatureDivisions.setText(timeSignature.get(1));
 
         // Get the metronome pan value
         switch (mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"metronomePan","C")) {
@@ -201,9 +200,11 @@ public class MetronomeFragment extends Fragment {
             return ""+bars;
         }
     }
+
     private void setupListeners() {
         myView.songTempo.addTextChangedListener(new MyTextWatcher("songTempo", myView.songTempo));
-        myView.songTimeSignature.addTextChangedListener(new MyTextWatcher("songTimeSignature", myView.songTimeSignature));
+        myView.signatureBeats.addTextChangedListener(new MyTextWatcher("songTimeSignature_beats", myView.signatureBeats));
+        myView.signatureDivisions.addTextChangedListener(new MyTextWatcher("songTimeSignature_divisions", myView.signatureDivisions));
         myView.metronomePan.addTextChangedListener(new MyTextWatcher("metronomePan", myView.metronomePan));
         myView.tickSound.addTextChangedListener(new MyTextWatcher("metronomeTickSound", myView.tickSound));
         myView.tockSound.addTextChangedListener(new MyTextWatcher("metronomeTockSound", myView.tockSound));
@@ -222,6 +223,7 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"metronomeShowVisual",isChecked);
             mainActivityInterface.getMetronome().setVisualMetronome(requireContext(),mainActivityInterface);
         });
+        myView.tapTempo.setOnClickListener(button -> tapTempo());
 
         // Set up a recurring task to check the isRunning status and update the button as required
         isRunningTimer = new Timer();
@@ -250,6 +252,59 @@ public class MetronomeFragment extends Fragment {
         }
     }
 
+    private void tapTempo() {
+        // This function checks the previous tap_tempo time and calculates the bpm
+        // Variables for tap tempo
+        if (mainActivityInterface.getMetronome().getIsRunning()) {
+            mainActivityInterface.getMetronome().stopMetronome(mainActivityInterface);
+        }
+
+        long new_time = System.currentTimeMillis();
+        long time_passed = new_time - old_time;
+        int calc_bpm = Math.round((1 / ((float) time_passed / 1000)) * 60);
+
+        // Need to decide on the time sig.
+        // If it ends in /2, then double the tempo
+        // If it ends in /4, then leave as is
+        // If it ends in /8, then half it
+        // If it isn't set, set it to default as 4/4
+        String timeSig = mainActivityInterface.getSong().getTimesig();
+        if (timeSig.isEmpty()) {
+            myView.signatureBeats.setText("4");
+            myView.signatureDivisions.setText("4");
+            mainActivityInterface.getSong().setTimesig("4/4");
+        } else if (timeSig.endsWith("/2")) {
+            calc_bpm = (int) ((float) calc_bpm * 2.0f);
+        } else if (timeSig.endsWith("/8")) {
+            calc_bpm = (int) ((float) calc_bpm / 2.0f);
+        }
+
+        if (time_passed < 2000) {
+            total_calc_bpm += calc_bpm;
+            total_counts++;
+        } else {
+            // Waited too long, reset count
+            total_calc_bpm = 0;
+            total_counts = 0;
+        }
+
+        int av_bpm = Math.round((float) total_calc_bpm / (float) total_counts);
+
+        if (av_bpm < 300 && av_bpm >= 40) {
+            myView.songTempo.setText(""+av_bpm);
+            mainActivityInterface.getSong().setTempo(""+av_bpm);
+
+        } else if (av_bpm <40) {
+            myView.songTempo.setText("40");
+            mainActivityInterface.getSong().setTempo("40");
+        }  else {
+            myView.songTempo.setText("299");
+            mainActivityInterface.getSong().setTempo("299");
+        }
+
+        old_time = new_time;
+    }
+
     private class MyTextWatcher implements TextWatcher {
 
         private final String preference;
@@ -275,8 +330,23 @@ public class MetronomeFragment extends Fragment {
                     // TODO initiate save song
                     // TODO update the sql or nonopensongsql databases too
                     break;
-                case "songTimeSignature":
-                    mainActivityInterface.getSong().setTimesig(exposedDropDown.getText().toString());
+                case "songTimeSignature_beats":
+                case "songTimeSignature_divisions":
+                    String beats;
+                    String divisions;
+                    if (preference.endsWith("_beats")) {
+                        beats = exposedDropDown.getText().toString();
+                        divisions = myView.signatureDivisions.getText().toString();
+                    } else {
+                        divisions = exposedDropDown.getText().toString();
+                        beats = myView.signatureBeats.getText().toString();
+                    }
+                    String timeSig = beats + "/" + divisions;
+                    if (!beats.isEmpty() && !divisions.isEmpty()) {
+                        mainActivityInterface.getSong().setTimesig(timeSig);
+                    } else {
+                        mainActivityInterface.getSong().setTimesig("");
+                    }
                     restartMetronome();
                     // TODO initiate save song
                     // TODO update the sql or nonopensongsql databases too
