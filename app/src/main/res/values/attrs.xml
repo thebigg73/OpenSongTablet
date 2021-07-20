@@ -19,6 +19,15 @@
         <attr name="android:typeface" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="MaterialSlider">
+        <attr name="android:text"/>
+        <attr name="android:hint"/>
+        <attr name="android:valueFrom"/>
+        <attr name="android:valueTo"/>
+        <attr name="android:stepSize"/>
+        <attr name="android:value"/>
+    </declare-styleable>
+
     <declare-styleable name="DialogHeader">
         <attr name="android:text" format="string"/>
     </declare-styleable>

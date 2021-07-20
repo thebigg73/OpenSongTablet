@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/startStopButton">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -16,7 +16,147 @@
             android:layout_marginBottom="100dp"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/section_box"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/actions_current_song"
+                style="@style/largeText"/>
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/songTimeSignature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/time_signature"
+                android:text="@string/time_signature" />
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/songTempo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/tempo"
+                android:text="@string/tempo" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/TextBackgroundButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                android:text="@string/tap_tempo" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/section_box"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/metronome_info"
+                style="@style/largeText"/>
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/metronomePan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pan"
+                android:text="@string/pan" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/visualMetronome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/visualmetronome"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/maxBars"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/metronome_duration"
+                    android:hint="@string/volume"
+                    android:valueFrom="0"
+                    android:valueTo="64"
+                    android:stepSize="1"
+                    android:value="0" />
+
+                <TableRow style="@style/DividerLine" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/beat_tick"/>
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/tickSound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/sound"
+                android:text="@string/sound" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/tickVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/volume"
+                android:hint="@string/volume"
+                android:valueFrom="0"
+                android:valueTo="100"
+                android:stepSize="1"
+                android:value="80" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/beat_tock"/>
+
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                android:id="@+id/tockSound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/sound"
+                android:text="@string/sound" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/tockVolume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/volume"
+                    android:hint="@string/volume"
+                    android:valueFrom="0"
+                    android:valueTo="100"
+                    android:stepSize="1"
+                    android:value="80" />
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/startStopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_play_white_36dp"
+        app:useCompatPadding="true"
+        android:contentDescription="@string/start_stop_metronome" />
+</RelativeLayout>

@@ -160,12 +160,16 @@ public class StickyPopUp {
         });
     }
 
+    public void closeSticky() {
+        popupWindow.dismiss();
+    }
+
     private void dealWithAutohide(Context c, MainActivityInterface mainActivityInterface) {
         Handler handler = new Handler();
-        long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"timeToDisplaySticky",0) * 1000;
+        long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"timeToDisplaySticky",0) * 1000L;
         if (displayTime>0) {
             try {
-                handler.postDelayed(() -> popupWindow.dismiss(), displayTime);
+                handler.postDelayed(() -> closeSticky(), displayTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }

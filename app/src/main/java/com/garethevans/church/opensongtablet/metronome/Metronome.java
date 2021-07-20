@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,14 +32,13 @@ public class Metronome {
     private final Handler visualTimerHandler = new Handler();
 
     // The call to start and stop the metronome called from MainActivity
-    public void startMetronome(Activity activity, Context c,
-                               MainActivityInterface mainActivityInterface, Song thisSong) {
+    public void startMetronome(Activity activity, Context c, MainActivityInterface mainActivityInterface) {
         // This starts the metronome activity
         Log.d(TAG,"Metronome started");
         this.activity = activity;  // Destroyed on stop to avoid memory leaks
 
         // Initialise the varibles
-        initialiseMetronome(c, mainActivityInterface, thisSong);
+        initialiseMetronome(c, mainActivityInterface);
 
         Log.d(TAG,"metronomeValid()="+metronomeValid()+"  isRunning="+isRunning);
         // If the metronome is valid and not running, start. If not stop
@@ -80,7 +78,7 @@ public class Metronome {
     }
 
     // Set up the metronome values (tempo, time signature, user preferences, etc)
-    private void initialiseMetronome(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    private void initialiseMetronome(Context c, MainActivityInterface mainActivityInterface) {
         // Does the user want the visual metronome?
         setVisualMetronome(c, mainActivityInterface);
 
@@ -92,11 +90,7 @@ public class Metronome {
         setVolumes(c, mainActivityInterface);
 
         // Get the song tempo and time signatures
-        // TODO remove
-        thisSong.setTimesig("4/4");
-        thisSong.setTempo("60");
-        visualMetronome = true;
-        setSongValues(thisSong);
+        setSongValues(mainActivityInterface);
 
         // Get the bars and beats required
         setBarsAndBeats(c, mainActivityInterface);
@@ -117,28 +111,36 @@ public class Metronome {
         tickPlayerReady = false;
         tockPlayerReady = false;
         try {
-            AssetFileDescriptor tickFile = c.getAssets().openFd("metronome/"+tickSound+".mp3");
-            AssetFileDescriptor tockFile = c.getAssets().openFd("metronome/"+tockSound+".mp3");
-            tickPlayer.setDataSource(tickFile.getFileDescriptor(), tickFile.getStartOffset(), tickFile.getLength());
-            tockPlayer.setDataSource(tockFile.getFileDescriptor(), tockFile.getStartOffset(), tockFile.getLength());
-            tickPlayer.prepareAsync();
-            tockPlayer.prepareAsync();
+            if (tickSound!=null && !tickSound.isEmpty()) {
+                AssetFileDescriptor tickFile = c.getAssets().openFd("metronome/" + tickSound + ".mp3");
+                tickPlayer.setDataSource(tickFile.getFileDescriptor(), tickFile.getStartOffset(), tickFile.getLength());
+                tickPlayer.prepareAsync();
+            } else {
+                tickPlayer = null;
+            }
+            if (tockSound!=null && !tockSound.isEmpty()) {
+                AssetFileDescriptor tockFile = c.getAssets().openFd("metronome/" + tockSound + ".mp3");
+                tockPlayer.setDataSource(tockFile.getFileDescriptor(), tockFile.getStartOffset(), tockFile.getLength());
+                tockPlayer.prepareAsync();
+            } else {
+                tockPlayer = null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     private void setTickTockSounds(Context c, MainActivityInterface mainActivityInterface) {
-        tickSound = mainActivityInterface.getPreferences().getMyPreferenceString(c,"tickSound","stick_high");
-        tockSound = mainActivityInterface.getPreferences().getMyPreferenceString(c,"tockSound", "stick_low");
+        tickSound = mainActivityInterface.getPreferences().getMyPreferenceString(c,"metronomeTickSound","digital_high");
+        tockSound = mainActivityInterface.getPreferences().getMyPreferenceString(c,"metronomeTockSound", "digital_low");
     }
-    private void setVisualMetronome(Context c, MainActivityInterface mainActivityInterface) {
+    public void setVisualMetronome(Context c, MainActivityInterface mainActivityInterface) {
         visualMetronome = mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean(c, "metronomeShowVisual", false);
 
         metronomeFlashOffColor = c.getResources().getColor(R.color.colorAltPrimary);
         metronomeFlashOnColor = mainActivityInterface.getMyThemeColors().getMetronomeColor();
     }
-    private void setVolumes(Context c, MainActivityInterface mainActivityInterface) {
+    public void setVolumes(Context c, MainActivityInterface mainActivityInterface) {
         String pan = mainActivityInterface.getPreferences().getMyPreferenceString(c,"metronomePan","C");
         float tickVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "metronomeTickVol",0.8f);
         float tockVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "metronomeTockVol",0.6f);
@@ -157,10 +159,10 @@ public class Metronome {
                 break;
         }
     }
-    private void setSongValues(Song thisSong) {
+    private void setSongValues(MainActivityInterface mainActivityInterface) {
         // First up the tempo
         validTempo = false;
-        String t = thisSong.getTempo();
+        String t = mainActivityInterface.getSong().getTempo();
         // Check for text version from desktop app
         t = t.replace("Very Fast", "140");
         t = t.replace("Fast", "120");
@@ -192,7 +194,7 @@ public class Metronome {
         // Time signatures that I have
         // 2/2   2/4   3/2    3/4   3/8   4/4   5/4   5/8   6/4   6/8   7/4   7/8   1/4
 
-        String ts = thisSong.getTimesig();
+        String ts = mainActivityInterface.getSong().getTimesig();
         if (ts!=null && !ts.isEmpty() && ts.contains("/") && ts.length()==3) {
             validTimeSig = true;
             try {
@@ -233,13 +235,13 @@ public class Metronome {
             beats = 4;
         }
     }
-    private void setBarsAndBeats(Context c, MainActivityInterface mainActivityInterface) {
+    public void setBarsAndBeats(Context c, MainActivityInterface mainActivityInterface) {
         int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "metronomeLength", 0);
         beatsRequired = barsRequired * beats;  // If 0, that's fine
     }
 
     // Checks to the metronome
-    private boolean metronomeValid() {
+    public boolean metronomeValid() {
         Log.d(TAG, "validTempo: "+validTempo);
         Log.d(TAG, "validTimeSig: "+validTimeSig);
         return validTempo && validTimeSig;
@@ -250,9 +252,6 @@ public class Metronome {
     private void checkPlayersReady(MainActivityInterface mainActivityInterface) {
         // Called when the mediaPlayer are prepared
         if (tickPlayerReady && tockPlayerReady) {
-            // Get any reduction in tock volume from preferences
-            tickPlayer.setVolume(volumeTickLeft,volumeTickRight);
-            tockPlayer.setVolume(volumeTockLeft,volumeTockRight);
             timerMetronome(mainActivityInterface);
             if (visualMetronome) {
                 timerVisual(mainActivityInterface);
@@ -271,11 +270,13 @@ public class Metronome {
                     if (beat>divisions) {
                         beat = 1;
                     }
-                    if (beat==1) {
+                    if (beat==1 && tickPlayer!=null) {
                         tickPlayer.seekTo(0);
+                        tickPlayer.setVolume(volumeTickLeft,volumeTickRight);
                         tickPlayer.start();
-                    } else {
+                    } else if (beat!=1 && tockPlayer!=null) {
                         tockPlayer.seekTo(0);
+                        tockPlayer.setVolume(volumeTockLeft,volumeTockRight);
                         tockPlayer.start();
                     }
                     if (visualMetronome) {

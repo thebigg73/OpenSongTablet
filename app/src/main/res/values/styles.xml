@@ -45,6 +45,7 @@
 
         <!-- Override widgets throughout the app -->
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
+        <item name="sliderStyle">@style/Slider</item>
         <!--
 
 <item name="android:textCursorDrawable">@drawable/text_cursor</item>
@@ -261,6 +262,15 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">16dp</item>
         <item name="cornerSizeTopRight">16dp</item>
+    </style>
+    <style name="Slider" parent="Widget.MaterialComponents.Slider">
+        <item name="materialThemeOverlay">@style/SliderOverlay</item>
+    </style>
+
+    <style name="SliderOverlay" parent="">
+        <item name="colorPrimary">@color/colorSecondary</item>
+        <item name="colorOnPrimary">@color/colorSecondary</item>
+        <item name="colorOnSurface">@color/colorSecondary</item>
     </style>
     <style name="PeekableBottomSheet" parent="BottomSheetDialogTheme">
 

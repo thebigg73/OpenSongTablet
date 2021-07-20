@@ -2187,12 +2187,12 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         // TODO
     }
     @Override
-    public void showSticky() {
+    public void showSticky(boolean forceshow, boolean hide) {
         // Try to show the sticky note
         Log.d(TAG,"showSticky");
         if (!whichMode.equals("Presentation") && performanceFragment!=null) {
             try {
-                performanceFragment.dealWithStickyNotes(true);
+                performanceFragment.dealWithStickyNotes(forceshow, hide);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2200,12 +2200,16 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     }
     @Override
     public void metronomeToggle() {
-        Log.d(TAG, mainActivityInterface.getSong().getTitle());
-        Log.d(TAG, "metronomeToggle()  isRunning="+metronome.getIsRunning());
-        if (!metronome.getIsRunning()) {
-            metronome.startMetronome(this,this,mainActivityInterface,song);
+        if (metronome.metronomeValid()) {
+            // Toggle the start or stop
+            if (!metronome.getIsRunning()) {
+                metronome.startMetronome(this,this,mainActivityInterface);
+            } else {
+                metronome.stopMetronome(mainActivityInterface);
+            }
         } else {
-            metronome.stopMetronome(mainActivityInterface);
+            // Open up the metronome settings
+            navigateToFragment("opensongapp://settings/actions/metronome",0);
         }
     }
 

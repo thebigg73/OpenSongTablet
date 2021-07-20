@@ -462,7 +462,11 @@ public class PageButtons {
                 }
                 break;
             case "metronome":
-                actionInterface.metronomeToggle();
+                if (isLongPress) {
+                    actionInterface.navigateToFragment("opensongapp://settings/actions/metronome",0);
+                } else {
+                    actionInterface.metronomeToggle();
+                }
                 break;
             case "autoscroll":
                 //TODO
@@ -478,7 +482,8 @@ public class PageButtons {
                 if (isLongPress) {
                     actionInterface.navigateToFragment("opensongapp://settings/actions/stickynotes",0);
                 } else {
-                    actionInterface.showSticky();
+                    // Toggle the force show (hide is for moving away from performace/stage mode)
+                    actionInterface.showSticky(true,false);
                 }
                 break;
             case "pdfpage":

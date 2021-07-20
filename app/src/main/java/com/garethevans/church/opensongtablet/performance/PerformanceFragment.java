@@ -55,6 +55,7 @@ public class PerformanceFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        dealWithStickyNotes(false,true);
         if (mainActivityInterface.getAppActionBar()!=null) {
             mainActivityInterface.getAppActionBar().setPerformanceMode(false);
         }
@@ -283,7 +284,7 @@ public class PerformanceFragment extends Fragment {
                     dealWithHighlighterFile(w,h);
 
                     // Load up the sticky notes if the user wants them
-                    dealWithStickyNotes(false);
+                    dealWithStickyNotes(false,false);
 
                     // Now take a screenshot (only runs is w!=0 and h!=0)
                     myView.songView.postDelayed(() -> requireActivity().runOnUiThread(() -> getScreenshot(w,h)), 2000);
@@ -325,21 +326,27 @@ public class PerformanceFragment extends Fragment {
             myView.highlighterView.setVisibility(View.GONE);
         }
     }
-    public void dealWithStickyNotes(boolean forceShow) {
+    public void dealWithStickyNotes(boolean forceShow, boolean hide) {
         Log.d(TAG, "dealWithStickyNotes");
-        // This is called from the MainActivity when we clicked on the page button
-        if ((mainActivityInterface!=null && mainActivityInterface.getSong()!=null &&
-                mainActivityInterface.getSong().getNotes()!=null &&
-                !mainActivityInterface.getSong().getNotes().isEmpty() &&
-        mainActivityInterface.getPreferences().
-                getMyPreferenceBoolean(requireContext(),"stickyAuto",true)) || forceShow) {
-            stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);
+        if (hide) {
+            stickyPopUp.closeSticky();
+        } else {
+
+            if ((mainActivityInterface != null && mainActivityInterface.getSong() != null &&
+                    mainActivityInterface.getSong().getNotes() != null &&
+                    !mainActivityInterface.getSong().getNotes().isEmpty() &&
+                    mainActivityInterface.getPreferences().
+                            getMyPreferenceBoolean(requireContext(), "stickyAuto", true)) || forceShow) {
+                // This is called from the MainActivity when we clicked on the page button
+
+                stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);
+            }
         }
     }
 
     // The scale and gesture bits of the code
     //private ScaleGestureDetector scaleDetector;
-    static float scaleFactor = 1.0f;
+    private float scaleFactor = 1.0f;
     //private GestureDetector detector;
     @SuppressLint("ClickableViewAccessibility")
     private void setGestureListeners(){

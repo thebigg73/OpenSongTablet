@@ -512,6 +512,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_exportFragment"
                     app:destination="@id/exportFragment" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_metronomeFragment"
+                    app:destination="@id/metronomeFragment" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -557,6 +560,15 @@
                 <deepLink
                     android:id="@+id/deepLink"
                     app:uri="opensongapp://settings/actions/export" />
+            </fragment>
+            <fragment
+                android:id="@+id/metronomeFragment"
+                android:name="com.garethevans.church.opensongtablet.metronome.MetronomeFragment"
+                android:label="MetronomeFragment"
+                tools:layout="@layout/settings_metronome">
+                <deepLink
+                    android:id="@+id/metronomeDeepLink"
+                    app:uri="opensongapp://settings/actions/metronome" />
             </fragment>
         </navigation>
         <fragment

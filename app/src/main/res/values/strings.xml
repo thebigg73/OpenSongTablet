@@ -33,6 +33,8 @@
     <string name="backup_and_restore">Backup and restore</string>
     <string name="backup_now">Create a backup now</string>
     <string name="backup_osb">Create a backup of OpenSongApp songs (*.osb)</string>
+    <string name="beat_tick">Beat 1 (tick)</string>
+    <string name="beat_tock">Beat 2 (tock)</string>
     <string name="bible_verse">Bible verse</string>
     <string name="bible_search">Phrase or verse to search</string>
     <string name="black_screen">Black screen</string>
@@ -289,6 +291,10 @@
     <string name="other">Other</string>
     <string name="pad">Pad</string>
     <string name="page_buttons">Page buttons</string>
+    <string name="pan">Pan</string>
+    <string name="pan_center">Center</string>
+    <string name="pan_left">Left</string>
+    <string name="pan_right">Right</string>
     <string name="pause">Pause</string>
     <string name="paypal" translatable="false">PayPal</string>
     <string name="paypal_description">Send me a donation if you find the app useful</string>
@@ -381,6 +387,16 @@
     <string name="song_title">Song title</string>
     <string name="songs">Songs</string>
     <string name="songsheet">Songsheet</string>
+    <string name="sound">Sound</string>
+    <string name="sound_bass_drum">Bass drum</string>
+    <string name="sound_bell">Bell</string>
+    <string name="sound_click">Click</string>
+    <string name="sound_digital">Digital</string>
+    <string name="sound_high">High</string>
+    <string name="sound_hihat">Hihat</string>
+    <string name="sound_low">Low</string>
+    <string name="sound_stick">Stick</string>
+    <string name="sound_wood">Wood</string>
     <string name="stage_mode">Stage Mode</string>
     <string name="stage_mode_info">Display songs split into sections or as a stage monitor</string>
     <string name="start">Start</string>
@@ -769,7 +785,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="pagebutton_visibility">Show/hide page buttons</string>
     <string name="pageturn_instructions">"This page allows you to assign buttons from a page turning device (such as a bluetooth footswitch) to control moving through sets or scrolling up and down on a song page.\n\nYou must ensure that the device is already connected to your Android tablet and switched on.\n\nClick on the green or blue buttons below then press the desired control button on your footswitch, etc."</string>
     <string name="pageturn_next">Next</string>
-    <string name="pan">Pan</string>
     <string name="pdf_functionnotavailable">This function is not available for PDF documents</string>
     <string name="pdfonly">No ChordPro, just the PDF</string>
     <string name="pdftotext_extract">Extract text from PDF</string>
