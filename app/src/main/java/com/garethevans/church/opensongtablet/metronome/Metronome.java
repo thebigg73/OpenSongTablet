@@ -22,7 +22,8 @@ public class Metronome {
     private Activity activity;  // For run on UI updates
     private int beat, beats, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
             metronomeFlashOnColor, metronomeFlashOffColor;
-    private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f, volumeTockRight = 1.0f;
+    private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
+            volumeTockRight = 1.0f, meterTimeDivision = 1.0f;
     private boolean visualMetronome = false, isRunning = false, validTimeSig = false,
             validTempo = false, tickPlayerReady, tockPlayerReady;
     private String tickSound, tockSound;
@@ -31,6 +32,7 @@ public class Metronome {
     private TimerTask metronomeTimerTask, visualTimerTask;
     private final Handler metronomeTimerHandler = new Handler();
     private final Handler visualTimerHandler = new Handler();
+    private ArrayList<Integer> tickBeats;
 
     // The call to start and stop the metronome called from MainActivity
     public void startMetronome(Activity activity, Context c, MainActivityInterface mainActivityInterface) {
@@ -185,31 +187,15 @@ public class Metronome {
             validTempo = false;
         }
 
-        // Now the time signature
-
-        // 3/4 3 beats per bar, each quarter notes
-        // 3/8 3 beats per bar, each eigth notes
-        // 6/8 2 beats per bar. each dotted quarter note
-        // tempo is taken as being given for the beat of the time signature
-
+        // This bit splits the time signature into beats and divisions
+        // We then deal with compound time signatures and get a division factor
+        // Compound and complex time signatures can have additional emphasis beats (not just beat 1)
         processTimeSignature(mainActivityInterface);
+        meterTimeFactor(); // 1.0f for simple signatures, 2.0f or 3.0f for compound ones
+        getEmphasisBeats();   // Always has beat 1, but can have more
 
-        // IV  - Override for 6/8 compound time signature to give 3 sounds (triplet) per beat
-        // Otherwise one sound per beat
-
-        // Rather than getting the time, rounding then scaling the rounding error,
-        // Deal with the timings here
         if (tempo >0) {
-            // Compound times split the note into 3s
-            // Compound times are 3/8, 5/8,
-            if (compoundTime()) {
-                beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f) / 3.0f);
-            } else {
-                beatTimeLength = Math.round((60.0f / (float) tempo) * 1000.0f);
-            }
-            // Calculate the time between beats in ms
-            // We base this on a 6th of a beat (IV) and then scale later depending on time sig
-
+            beatTimeLength = Math.round(((60.0f / (float) tempo) * 1000.0f) / meterTimeDivision);
         } else {
             beatTimeLength = 0;
         }
@@ -217,11 +203,12 @@ public class Metronome {
     public ArrayList<String> processTimeSignature(MainActivityInterface mainActivityInterface) {
         ArrayList<String> timeSignature = new ArrayList<>();
         String ts = mainActivityInterface.getSong().getTimesig();
-        if (ts!=null && !ts.isEmpty() && ts.contains("/") && ts.length()==3) {
+        if (ts!=null && !ts.isEmpty() && ts.contains("/")) {
             validTimeSig = true;
             try {
-                beats = Integer.parseInt(ts.substring(0, 1));
-                divisions = Integer.parseInt(ts.substring(2));
+                String[] splits = ts.split("/");
+                beats = Integer.parseInt(splits[0]);
+                divisions = Integer.parseInt(splits[1]);
             } catch (Exception e) {
                 // Badly formatted time signature
                 validTimeSig = false;
@@ -238,9 +225,60 @@ public class Metronome {
         return timeSignature;  // Used when editing
     }
 
-    public boolean compoundTime() {
-        // Compound times are when beats are split into 3s
-        return beats==3 && divisions==8;
+    public float meterTimeFactor() {
+        // Compound times are when beats are split into triplets (divide by 3)
+        // Complex times are split differently, but usually into eighth notes (divide by 2)
+        // All versions with x/1, x/2 and x/4 are simple time, so only some x/8 are compound
+        // The if statements are explicit and could be simplified, but wanted to show all variations
+        // The factor is used to divide the time
+        meterTimeDivision = 1.0f;
+        if (divisions==8) {
+            if (beats==3 || beats==6 || beats==9 || beats==12) {
+                meterTimeDivision = 3.0f;
+            } else if (beats==5 || beats==7 || beats==11 || beats==13 || beats==15) {
+                meterTimeDivision = 2.0f;
+            }
+            // beats==2 || beats==4 || beats==8 || beats==10 || beats==14 || beats==16
+            // meterTimeDivision = 1.0f;
+        }
+        return meterTimeDivision;
+    }
+
+    public ArrayList<Integer> getEmphasisBeats() {
+        // This is only necessary for compound times only
+        tickBeats = new ArrayList<>();
+        tickBeats.add(1);
+        if (divisions==8) {
+            if (beats==5 || beats==6 || beats==7 || beats==9 || beats==12 ||
+                    beats==14 || beats==15) {
+                tickBeats.add(4);
+            }
+            if (beats==8 || beats==10 || beats==11 || beats==13 || beats==16) {
+                tickBeats.add(5);
+            }
+            if (beats==7) {
+                tickBeats.add(6);
+            }
+            if (beats==9 || beats==12 || beats==14 || beats==15) {
+                tickBeats.add(7);
+            }
+            if (beats==11 || beats==13) {
+                tickBeats.add(8);
+            }
+            if (beats==10 || beats==16) {
+                tickBeats.add(9);
+            }
+            if (beats==11 || beats==12 || beats==13 || beats==14 || beats==15) {
+                tickBeats.add(10);
+            }
+            if (beats==13) {
+                tickBeats.add(12);
+            }
+            if (beats==14 || beats==15 || beats==16) {
+                tickBeats.add(13);
+            }
+        }
+        return tickBeats;
     }
     public void setBarsAndBeats(Context c, MainActivityInterface mainActivityInterface) {
         int barsRequired = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "metronomeLength", 0);
@@ -277,11 +315,11 @@ public class Metronome {
                     if (beat>beats) {
                         beat = 1;
                     }
-                    if (beat==1 && tickPlayer!=null) {
+                    if (tickBeats.contains(beat) && tickPlayer!=null) {
                         tickPlayer.seekTo(0);
                         tickPlayer.setVolume(volumeTickLeft,volumeTickRight);
                         tickPlayer.start();
-                    } else if (beat!=1 && tockPlayer!=null) {
+                    } else if (tockPlayer!=null) {
                         tockPlayer.seekTo(0);
                         tockPlayer.setVolume(volumeTockLeft,volumeTockRight);
                         tockPlayer.start();

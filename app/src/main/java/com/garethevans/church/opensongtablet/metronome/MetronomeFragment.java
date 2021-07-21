@@ -36,7 +36,8 @@ public class MetronomeFragment extends Fragment {
     private ArrayList<String> panLetters;
     private Timer isRunningTimer;
     private TimerTask isRunningTask;
-    private Handler isRunningHandler = new Handler();
+    private Handler isRunningHandler = new Handler(), tapTempoHandlerCheck, tapTempoHandlerReset;
+    private Runnable tapTempoRunnableCheck, tapTempoRunnableReset;
     private long old_time = 0L;
     private int total_calc_bpm = 0, total_counts = 0;
 
@@ -93,6 +94,12 @@ public class MetronomeFragment extends Fragment {
         for (int x=1; x<17; x++) {
             signatureBeats.add(""+x);
         }
+        ArrayList<String> signatureDivisions = new ArrayList<>();
+        signatureDivisions.add("");
+        signatureDivisions.add("1");
+        signatureDivisions.add("2");
+        signatureDivisions.add("4");
+        signatureDivisions.add("8");
 
         // Get the tempos
         ArrayList<String> tempos = new ArrayList<>();
@@ -116,13 +123,14 @@ public class MetronomeFragment extends Fragment {
 
         // Set the adapters
         ExposedDropDownArrayAdapter soundAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, soundNames);
-        ExposedDropDownArrayAdapter timeSignatureAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, signatureBeats);
+        ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, signatureBeats);
+        ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, signatureDivisions);
         ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, tempos);
         ExposedDropDownArrayAdapter panAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item,panNames);
 
         // Add them to the views
-        myView.signatureBeats.setAdapter(timeSignatureAdapter);
-        myView.signatureDivisions.setAdapter(timeSignatureAdapter);
+        myView.signatureBeats.setAdapter(signatureBeatAdapter);
+        myView.signatureDivisions.setAdapter(signatureDivisionAdapter);
         myView.songTempo.setAdapter(tempoAdapter);
         myView.tickSound.setAdapter(soundAdapter);
         myView.tockSound.setAdapter(soundAdapter);
@@ -131,7 +139,7 @@ public class MetronomeFragment extends Fragment {
         // Make sure the views scroll to the selected item
         ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
         exposedDropDownSelection.keepSelectionPosition(myView.signatureBeats, signatureBeats);
-        exposedDropDownSelection.keepSelectionPosition(myView.signatureDivisions, signatureBeats);
+        exposedDropDownSelection.keepSelectionPosition(myView.signatureDivisions, signatureDivisions);
         exposedDropDownSelection.keepSelectionPosition(myView.songTempo, tempos);
         exposedDropDownSelection.keepSelectionPosition(myView.tickSound,soundNames);
         exposedDropDownSelection.keepSelectionPosition(myView.tockSound,soundNames);
@@ -195,7 +203,7 @@ public class MetronomeFragment extends Fragment {
 
     private String getMaxBars(int bars) {
         if (bars==0) {
-            return "-";
+            return getString(R.string.on);
         } else {
             return ""+bars;
         }
@@ -233,6 +241,38 @@ public class MetronomeFragment extends Fragment {
             }
         };
         isRunningTimer.schedule(isRunningTask,0,1000);
+
+        // Initialise the tapTempo values
+        total_calc_bpm = 0;
+        total_counts = 0;
+        tapTempoRunnableCheck = () -> {
+            // This is called after 2 seconds when a tap is initiated
+            // Any previous instance is of course cancelled first
+            requireActivity().runOnUiThread(() -> {
+                myView.tapTempo.setEnabled(false);
+                myView.tapTempo.setText(getString(R.string.reset));
+                myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                // Waited too long, reset count
+                total_calc_bpm = 0;
+                total_counts = 0;
+            });
+            if (tapTempoHandlerReset!=null) {
+                tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
+            }
+            tapTempoHandlerReset = new Handler();
+            tapTempoHandlerReset.postDelayed(tapTempoRunnableReset,500);
+        };
+        tapTempoRunnableReset = () -> {
+            // Reset the tap tempo timer
+            requireActivity().runOnUiThread(() -> {
+                myView.tapTempo.setEnabled(true);
+                myView.tapTempo.setText(getString(R.string.tap_tempo));
+                myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
+            });
+            // Start the metronome
+            mainActivityInterface.getMetronome().startMetronome(requireActivity(),
+                    requireContext(),mainActivityInterface);
+        };
     }
 
     private void restartMetronome() {
@@ -255,6 +295,9 @@ public class MetronomeFragment extends Fragment {
     private void tapTempo() {
         // This function checks the previous tap_tempo time and calculates the bpm
         // Variables for tap tempo
+
+        // When tapping for compound/complex time signatures
+        // They sometimes go in double or triple time
         if (mainActivityInterface.getMetronome().getIsRunning()) {
             mainActivityInterface.getMetronome().stopMetronome(mainActivityInterface);
         }
@@ -273,13 +316,9 @@ public class MetronomeFragment extends Fragment {
             myView.signatureBeats.setText("4");
             myView.signatureDivisions.setText("4");
             mainActivityInterface.getSong().setTimesig("4/4");
-        } else if (timeSig.endsWith("/2")) {
-            calc_bpm = (int) ((float) calc_bpm * 2.0f);
-        } else if (timeSig.endsWith("/8")) {
-            calc_bpm = (int) ((float) calc_bpm / 2.0f);
         }
 
-        if (time_passed < 2000) {
+        if (time_passed < 1500) {
             total_calc_bpm += calc_bpm;
             total_counts++;
         } else {
@@ -288,7 +327,9 @@ public class MetronomeFragment extends Fragment {
             total_counts = 0;
         }
 
-        int av_bpm = Math.round((float) total_calc_bpm / (float) total_counts);
+        // Based on the time signature, get a meterDivisionFactor
+        float meterTimeFactor = mainActivityInterface.getMetronome().meterTimeFactor();
+        int av_bpm = Math.round(((float) total_calc_bpm / (float) total_counts) / meterTimeFactor);
 
         if (av_bpm < 300 && av_bpm >= 40) {
             myView.songTempo.setText(""+av_bpm);
@@ -303,6 +344,14 @@ public class MetronomeFragment extends Fragment {
         }
 
         old_time = new_time;
+
+        // Set a handler to check the button tap.
+        // If the counts haven't increased after 1.5 seconds, reset it
+        if (tapTempoHandlerCheck!=null) {
+            tapTempoHandlerCheck.removeCallbacks(tapTempoRunnableCheck);
+        }
+        tapTempoHandlerCheck = new Handler();
+        tapTempoHandlerCheck.postDelayed(tapTempoRunnableCheck,1500);
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -424,6 +473,7 @@ public class MetronomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         // Remove the timer task that checks for metronome isRunning
+        // Also remove any tap temp handlers
         if (isRunningTimer!=null) {
             isRunningTimer.cancel();
             isRunningTimer.purge();
@@ -433,5 +483,13 @@ public class MetronomeFragment extends Fragment {
             isRunningTask = null;
         }
         isRunningHandler = null;
+        if (tapTempoHandlerCheck!=null) {
+            tapTempoHandlerCheck.removeCallbacks(tapTempoRunnableCheck);
+            tapTempoHandlerCheck = null;
+        }
+        if (tapTempoHandlerReset!=null) {
+            tapTempoHandlerReset.removeCallbacks(tapTempoRunnableReset);
+            tapTempoHandlerReset = null;
+        }
     }
 }
