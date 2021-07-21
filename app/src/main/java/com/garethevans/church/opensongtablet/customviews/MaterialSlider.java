@@ -56,16 +56,45 @@ public class MaterialSlider extends LinearLayout {
     public float getValue() {
         return slider.getValue();
     }
+    public Slider getSlider() {
+        return slider;
+    }
 
     // The setters
+    public void setValueFrom(float valueFrom) {
+        // Check any set value is ok
+        if (slider.getValue() < valueFrom) {
+            slider.setValue(valueFrom);
+        }
+        slider.setValueFrom(valueFrom);
+    }
+    public void setValueTo(float valueTo) {
+        // Check any set value is ok
+        if (slider.getValue() > valueTo) {
+            slider.setValue(valueTo);
+        }
+        slider.setValueTo(valueTo);
+    }
+    public void setStepSize(float stepSize) {
+        slider.setStepSize(stepSize);
+    }
     public void setValue(float value) {
+        // Check it is within the bounds!
+        if (value > slider.getValueTo()) {
+            value = slider.getValueTo();
+        } else if (value < slider.getValueFrom()) {
+            value = slider.getValueFrom();
+        }
         slider.setValue(value);
     }
     public void setHint(String hint) {
         valueTextView.setText(hint);
     }
-    public void setTitle(String title) {
-        titleTextView.setText(title);
+    public void setText(String text) {
+        titleTextView.setText(text);
+    }
+    public void setHintTextSize(float textSize) {
+        valueTextView.setTextSize(textSize);
     }
     public void addOnSliderTouchListener(Slider.OnSliderTouchListener onSliderTouchListener) {
         slider.addOnSliderTouchListener(onSliderTouchListener);

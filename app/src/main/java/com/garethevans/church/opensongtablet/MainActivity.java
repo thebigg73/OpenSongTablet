@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -480,8 +479,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         if (activityMainBinding.pageButtonRight.actionFAB.getRotation()!=0) {
             pageButtons.animatePageButton(this,false);
         }
-        activityMainBinding.pageButtonRight.actionFAB.setBackgroundTintList(ColorStateList.valueOf(themeColors.getPageButtonsColor()));
-        activityMainBinding.pageButtonRight.actionFAB.setAlpha(pageButtons.getPageButtonAlpha());
+
+        pageButtons.setPageButton(this, activityMainBinding.pageButtonRight.actionFAB, themeColors.getPageButtonsColor(), -1, false);
+        //activityMainBinding.pageButtonRight.actionFAB.setBackgroundTintList(ColorStateList.valueOf(themeColors.getPageButtonsColor()));
         for (int x=0; x<6; x++) {
             pageButtons.setPageButton(this,pageButtons.getFAB(x), themeColors.getPageButtonsColor(), x, false);
         }
@@ -583,7 +583,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
         // ThemeColors
         themeColors.getDefaultColors(this,mainActivityInterface);
-        pageButtons.setPageButtonAlpha(preferences.getMyPreferenceFloat(this,"pageButtonAlpha",0.6f));
 
         // Typefaces
         setTypeFace.setUpAppFonts(this,mainActivityInterface,new Handler(),new Handler(),new Handler(),new Handler(),new Handler());
@@ -603,6 +602,10 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 h.postDelayed(() -> pageButtonActive = true,600);
                 animatePageButtons();
             }
+        });
+        activityMainBinding.pageButtonRight.actionFAB.setOnLongClickListener(view -> {
+            navigateToFragment("opensongapp://settings/controls/pagebuttons",0);
+            return true;
         });
 
         activityMainBinding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
@@ -1302,7 +1305,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 activityMainBinding.pageButtonRight.actionFAB.show();
                 activityMainBinding.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
                 // Do this with a delay
-                customAnimation.fadeActionButton(activityMainBinding.pageButtonRight.actionFAB, pageButtons.getPageButtonAlpha());
+                customAnimation.fadeActionButton(activityMainBinding.pageButtonRight.actionFAB, pageButtons.getAlpha());
             }
         }
     }
@@ -1482,27 +1485,34 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
     @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
-        // This is a full rebuild
-        // If sent called from another fragment the fragName and callingFragment are used to run an update listener
-        songListBuildIndex.setIndexComplete(false);
-        // Get all of the files as an array list
-        ArrayList<String> songIds = storageAccess.listSongs(this, mainActivityInterface);
-        // Write this to text file
-        storageAccess.writeSongIDFile(this, mainActivityInterface, songIds);
-        // Try to create the basic databases
-        sqLiteHelper.resetDatabase(this);
-        nonOpenSongSQLiteHelper.initialise(this, mainActivityInterface);
-        // Add entries to the database that have songid, folder and filename fields
-        // This is the minimum that we need for the song menu.
-        // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
-        // Also will later include all the stuff for the search index as well
-        sqLiteHelper.insertFast(this, mainActivityInterface);
-        if (fragName!=null) {
-            //Update the fragment
-            updateFragment(fragName,callingFragment,arguments);
+        // If the fragName is menuSettingsFragment, we just want to change the alpha index view
+        if (fragName!=null && fragName.equals("menuSettingsFragment")) {
+            if (songMenuFragment!=null) {
+                songMenuFragment.changeAlphabeticalLayout(this);
+            }
+        } else {
+            // This is a full rebuild
+            // If sent called from another fragment the fragName and callingFragment are used to run an update listener
+            songListBuildIndex.setIndexComplete(false);
+            // Get all of the files as an array list
+            ArrayList<String> songIds = storageAccess.listSongs(this, mainActivityInterface);
+            // Write this to text file
+            storageAccess.writeSongIDFile(this, mainActivityInterface, songIds);
+            // Try to create the basic databases
+            sqLiteHelper.resetDatabase(this);
+            nonOpenSongSQLiteHelper.initialise(this, mainActivityInterface);
+            // Add entries to the database that have songid, folder and filename fields
+            // This is the minimum that we need for the song menu.
+            // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
+            // Also will later include all the stuff for the search index as well
+            sqLiteHelper.insertFast(this, mainActivityInterface);
+            if (fragName != null) {
+                //Update the fragment
+                updateFragment(fragName, callingFragment, arguments);
+            }
+            // Now build it properly
+            indexSongs();
         }
-        // Now build it properly
-        indexSongs();
     }
     @Override
     public void doExport(String what) {
@@ -2019,6 +2029,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
             return false;
         }
     }
+
     @Override
     public void installPlayServices() {
         Snackbar.make(findViewById(R.id.coordinator_layout), R.string.play_services_error,
@@ -2072,11 +2083,10 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
                 case 404:
                 case 403:
-                    // Access fine location, so can open the menu at 'Connect devices'
-                    if (whattodo.equals("nearby")) {
-                        openNearbyFragment();
-                    }
+                    // Access coarse/fine location, so can open the menu at 'Connect devices'
+                    // The following checks we have both before navigating
                     Log.d("d", "LOCATION granted!");
+                    openNearbyFragment();
                     break;
             }
         }

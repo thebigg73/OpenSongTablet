@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 public class HighlighterFragment extends Fragment {
 
@@ -44,10 +44,10 @@ public class HighlighterFragment extends Fragment {
     private void setupViews() {
         boolean drawingAutoDisplay = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",true);
         myView.autoShowHighlight.setChecked(drawingAutoDisplay);
-        hideView(myView.highlighterTimeLayout,drawingAutoDisplay);
+        hideView(myView.timeToDisplayHighlighter,drawingAutoDisplay);
         int timeToDisplayHighlighter = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
-        myView.timeToDisplayHighlighter.setProgress(timeToDisplayHighlighter);
-        setTimeText(timeToDisplayHighlighter);
+        myView.timeToDisplayHighlighter.setValue(timeToDisplayHighlighter);
+        setHintTime(timeToDisplayHighlighter);
         hideView(myView.edit,mainActivityInterface.getMode().equals("Performance"));
     }
 
@@ -58,35 +58,32 @@ public class HighlighterFragment extends Fragment {
             view.setVisibility(View.GONE);
         }
     }
-    private void setTimeText(int timeToDisplayHighlighter) {
-        String s = getString(R.string.time) + "\n";
+    private void setHintTime(int timeToDisplayHighlighter) {
+        String s;
         if (timeToDisplayHighlighter == 0) {
-            s += "(" + getString(R.string.on) + ")";
+            s = getString(R.string.on);
         } else {
-            s += "(" + timeToDisplayHighlighter + " s)";
+            s = timeToDisplayHighlighter + "s";
         }
-        myView.displayTime.setText(s);
+        myView.timeToDisplayHighlighter.setHint(s);
     }
 
     private void setListeners() {
         myView.autoShowHighlight.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            hideView(myView.highlighterTimeLayout,isChecked);
+            hideView(myView.timeToDisplayHighlighter,isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",isChecked);
         });
-        myView.timeToDisplayHighlighter.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        myView.timeToDisplayHighlighter.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                setTimeText(progress);
-            }
+            public void onStartTrackingTouch(@NonNull Slider slider) { }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",seekBar.getProgress());
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",Math.round(myView.timeToDisplayHighlighter.getValue()));
             }
         });
+        myView.timeToDisplayHighlighter.addOnChangeListener((slider, value, fromUser) -> setHintTime(Math.round(value)));
+
         myView.edit.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.highlighterEditFragment));
     }
 

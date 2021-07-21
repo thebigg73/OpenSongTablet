@@ -190,9 +190,8 @@
 
             <TableRow
                 style="@style/DividerLine"
-                android:layout_marginBottom="100dp" />
+                android:layout_marginBottom="400dp" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

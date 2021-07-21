@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsColorChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 public class ChooseColorFragment extends Fragment {
 
@@ -57,17 +57,26 @@ public class ChooseColorFragment extends Fragment {
     }
 
     private void setSliderValues() {
-        myView.alphaSlider.setProgress(getIntFromHex(alphaHex));
-        myView.redSlider.setProgress(getIntFromHex(redHex));
-        myView.greenSlider.setProgress(getIntFromHex(greenHex));
-        myView.blueSlider.setProgress(getIntFromHex(blueHex));
+        myView.alphaSlider.setValue(getIntFromHex(alphaHex));
+        myView.alphaSlider.setHint(alphaHex);
+        myView.redSlider.setValue(getIntFromHex(redHex));
+        myView.redSlider.setHint(redHex);
+        myView.greenSlider.setValue(getIntFromHex(greenHex));
+        myView.greenSlider.setHint(greenHex);
+        myView.blueSlider.setValue(getIntFromHex(blueHex));
+        myView.blueSlider.setHint(blueHex);
     }
 
     private void setListeners() {
-        myView.alphaSlider.setOnSeekBarChangeListener(new MySeekBarListener());
-        myView.redSlider.setOnSeekBarChangeListener(new MySeekBarListener());
-        myView.greenSlider.setOnSeekBarChangeListener(new MySeekBarListener());
-        myView.blueSlider.setOnSeekBarChangeListener(new MySeekBarListener());
+        myView.alphaSlider.addOnSliderTouchListener(new MySliderTouchListener());
+        myView.alphaSlider.addOnChangeListener(new MySliderChangeListener());
+        myView.redSlider.addOnSliderTouchListener(new MySliderTouchListener());
+        myView.redSlider.addOnChangeListener(new MySliderChangeListener());
+        myView.greenSlider.addOnSliderTouchListener(new MySliderTouchListener());
+        myView.greenSlider.addOnChangeListener(new MySliderChangeListener());
+        myView.blueSlider.addOnSliderTouchListener(new MySliderTouchListener());
+        myView.blueSlider.addOnChangeListener(new MySliderChangeListener());
+
         myView.hexColor.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -209,36 +218,48 @@ public class ChooseColorFragment extends Fragment {
         return hex;
     }
 
-    private class MySeekBarListener implements SeekBar.OnSeekBarChangeListener {
+    private class MySliderTouchListener implements Slider.OnSliderTouchListener {
 
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (seekBar==myView.alphaSlider) {
-                alphaHex = getHexFromSlider(progress);
-            } else if (seekBar==myView.redSlider) {
-                redHex = getHexFromSlider(progress);
-            } else if (seekBar==myView.greenSlider) {
-                greenHex = getHexFromSlider(progress);
-            } else if (seekBar==myView.blueSlider) {
-                blueHex = getHexFromSlider(progress);
-            }
-            updateColors();
-        }
-
-        @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {
+        public void onStartTrackingTouch(@NonNull Slider slider) {
             sliding = true;
         }
 
         @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
+        public void onStopTrackingTouch(@NonNull Slider slider) {
             sliding = false;
         }
     }
 
+    private class MySliderChangeListener implements Slider.OnChangeListener {
+
+        @Override
+        public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+            if (slider==myView.alphaSlider.getSlider()) {
+                alphaHex = getHexFromSlider(Math.round(value));
+                myView.alphaSlider.setHint(alphaHex);
+            } else if (slider==myView.redSlider.getSlider()) {
+                redHex = getHexFromSlider(Math.round(value));
+                myView.redSlider.setHint(redHex);
+            } else if (slider==myView.greenSlider.getSlider()) {
+                greenHex = getHexFromSlider(Math.round(value));
+                myView.greenSlider.setHint(greenHex);
+            } else if (slider==myView.blueSlider.getSlider()) {
+                blueHex = getHexFromSlider(Math.round(value));
+                myView.blueSlider.setHint(blueHex);
+            }
+            updateColors();
+        }
+    }
     private void doSave(String which) {
         // Set the preference
         mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),themePrefix+"_"+which,newColorInt);
+
+        // If we changed the page button color...
+        if (which.equals("pageButtonsColor")) {
+            mainActivityInterface.updatePageButtonLayout();
+        }
+
         // Navigate back
         mainActivityInterface.popTheBackStack(R.id.themeSetupFragment,true);
         mainActivityInterface.navigateToFragment(null,R.id.themeSetupFragment);

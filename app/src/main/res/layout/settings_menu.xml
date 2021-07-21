@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,30 +27,15 @@
                 style="@style/PrefSwitch"
                 android:text="@string/alphabetical" />
 
-            <LinearLayout
-                android:id="@+id/songAlphabeticalSizeLayout"
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/songAlphabeticalSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="@string/size" />
-
-                <SeekBar
-                    android:id="@+id/songAlphabeticalSize"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="16"
-                    android:padding="8dp" />
-            </LinearLayout>
-
-            <TableRow style="@style/DividerLine" />
+                android:contentDescription="@string/size"
+                android:text="@string/size"
+                android:value="6.0"
+                android:valueFrom="6.0"
+                android:valueTo="24.0" />
 
         </LinearLayout>
 

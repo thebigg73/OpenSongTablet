@@ -56,79 +56,45 @@
                 android:digits="abcdefABCDEF0123456789#"
                 android:hint="@string/hex_color_code" />
 
-            <TableLayout
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/alphaSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp">
+                android:text="@string/alpha"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:valueFrom="0"
+                android:valueTo="255"/>
 
-                <TableRow>
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/redSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/red"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:valueFrom="0"
+                android:valueTo="255"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/alpha" />
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/greenSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/green"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:valueFrom="0"
+                android:valueTo="255"/>
 
-                    <androidx.appcompat.widget.AppCompatSeekBar
-                        android:id="@+id/alphaSlider"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_weight="1"
-                        android:max="255" />
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/red" />
-
-                    <androidx.appcompat.widget.AppCompatSeekBar
-                        android:id="@+id/redSlider"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_weight="1"
-                        android:max="255" />
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/green" />
-
-                    <androidx.appcompat.widget.AppCompatSeekBar
-                        android:id="@+id/greenSlider"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_weight="1"
-                        android:max="255" />
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/blue" />
-
-                    <androidx.appcompat.widget.AppCompatSeekBar
-                        android:id="@+id/blueSlider"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:layout_weight="1"
-                        android:max="255" />
-                </TableRow>
-            </TableLayout>
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/blueSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/blue"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:valueFrom="0"
+                android:valueTo="255"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/saveColor"

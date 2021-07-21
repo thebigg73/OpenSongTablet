@@ -297,11 +297,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void displayIndex(ArrayList<Song> songMenuViewItems,
                               SongListAdapter songListAdapter) {
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songMenuAlphaIndexShow", true)) {
-            myView.songmenualpha.sideIndex.setVisibility(View.VISIBLE);
-        } else {
-            myView.songmenualpha.sideIndex.setVisibility(View.GONE);
-        }
         myView.songmenualpha.sideIndex.removeAllViews();
         TextView textView;
         final Map<String, Integer> map = songListAdapter.getAlphaIndex(songMenuViewItems);
@@ -309,8 +304,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         List<String> indexList = new ArrayList<>(setString);
         for (String index : indexList) {
             textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
-            textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(), "songMenuAlphaIndexSize", 14.0f));
-            int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(), "songMenuAlphaIndexSize", 14.0f) * 2;
+            textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(), "songMenuAlphaIndexSize", 14.0f));
+            int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(), "songMenuAlphaIndexSize", 14.0f) * 2;
             textView.setPadding(i, i, i, i);
             textView.setText(index);
             textView.setOnClickListener(view -> {
@@ -333,8 +328,27 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             });
             myView.songmenualpha.sideIndex.addView(textView);
         }
+        changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(), "songMenuAlphaIndexShow", true));
     }
 
+    public void changeAlphabeticalLayout(Context c) {
+        // We have asked for the visibility or the font size to change
+        /*boolean showMenu = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,
+                "songMenuAlphaIndexShow", true);
+        boolean showChecks = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,
+                "songMenuSetTicksShow", true);
+        float fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,
+                "songMenuAlphaIndexSize", 12.0f);
+        changeAlphabeticalVisibility(showMenu);*/
+        updateSongList();
+    }
+    private void changeAlphabeticalVisibility(boolean isVisible) {
+        if (isVisible) {
+            myView.songmenualpha.sideIndex.setVisibility(View.VISIBLE);
+        } else {
+            myView.songmenualpha.sideIndex.setVisibility(View.GONE);
+        }
+    }
     @Override
     public void onItemClicked(int position, String folder, String filename) {
         mainActivityInterface.hideKeyboard();

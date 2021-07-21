@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsStickynotesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 public class StickyNotesFragment extends Fragment {
 
@@ -43,39 +43,33 @@ public class StickyNotesFragment extends Fragment {
 
     private void setupViews() {
         myView.stickyNotes.setText(mainActivityInterface.getSong().getNotes());
+        myView.stickyNotes.setLines(8);
+        myView.stickyNotes.setMinLines(8);
         myView.autoShowSticky.setChecked(mainActivityInterface.getPreferences().
                 getMyPreferenceBoolean(requireContext(),"stickyAuto",true));
         int time = mainActivityInterface.getPreferences().
                 getMyPreferenceInt(requireContext(),"timeToDisplaySticky",0);
-        myView.timeSeekBar.setProgress(time);
-        progressToTime(time);
+        myView.timeSlider.setValue((float)time);
+        setTimeHint(time);
         float alpha = mainActivityInterface.getPreferences().
                 getMyPreferenceFloat(requireContext(),"stickyAlpha",0.8f);
-        myView.alphaSeekBar.setProgress(alphaToProgress(alpha));
+        myView.alphaSlider.setValue(alpha*100.0f);
+        setAlphaHint(alpha*100.0f);
     }
 
-    private void progressToTime(int time) {
+    private void setTimeHint(int time) {
         String val = "s";
         if (time==0) {
             val = getString(R.string.on);
         } else {
             val = time + val;
         }
-        myView.timeText.setText(val);
+        myView.timeSlider.setHint(val);
     }
 
-    private int alphaToProgress(float alpha) {
-        int val = (int)(alpha*100.0f);
-        String s = val + "%";
-        // Min seekbar position is 10;
-        myView.alphaText.setText(s);
-        return val-10;
-    }
-    private float progressToAlphaText(int progress) {
-        // Min seekbar position is 0, but is worth 10;
-        String s = (progress+10) + "%";
-        myView.alphaText.setText(s);
-        return ((float)progress+10.0f)/100.0f;
+    private void setAlphaHint(float alpha) {
+        String s = (int)alpha + "%";
+        myView.alphaSlider.setHint(s);
     }
 
     private void setupListeners() {
@@ -89,41 +83,28 @@ public class StickyNotesFragment extends Fragment {
                 mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
             }
         });
-        myView.alphaSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        myView.alphaSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressToAlphaText(progress);
-            }
+            public void onStartTrackingTouch(@NonNull Slider slider) { }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                float pref = progressToAlphaText(seekBar.getProgress());
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(
-                        requireContext(), "stickyAlpha", pref);
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                        "stickyAlpha", slider.getValue()/100.0f);
             }
         });
-        myView.timeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        myView.alphaSlider.addOnChangeListener((slider, value, fromUser) -> setAlphaHint(value));
+        myView.timeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressToTime(progress);
-            }
+            public void onStartTrackingTouch(@NonNull Slider slider) {}
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = seekBar.getProgress();
-                progressToTime(progress);
-                mainActivityInterface.getPreferences().setMyPreferenceInt(
-                        requireContext(),"timeToDisplaySticky",progress);
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                        "timeToDisplaySticky", Math.round(slider.getValue()));
             }
         });
+        myView.timeSlider.addOnChangeListener((slider, value, fromUser) -> setTimeHint(Math.round(value)));
     }
 
     @Override

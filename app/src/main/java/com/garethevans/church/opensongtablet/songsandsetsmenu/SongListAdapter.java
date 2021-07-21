@@ -28,6 +28,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final SparseBooleanArray checkedArray = new SparseBooleanArray();
+    private final boolean showChecked;
 
     AdapterCallback callback;
 
@@ -45,6 +46,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         if (songList!=null) {
             initialiseCheckedArray(mainActivityInterface.getCurrentSet());
         }
+        this.showChecked = mainActivityInterface.getPreferences().
+                getMyPreferenceBoolean(c,"songMenuSetTicksShow", true);
     }
 
     private void initialiseCheckedArray(CurrentSet currentSet) {
@@ -109,6 +112,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
         // Set the checkbox if the song is in the set
         bindCheckBox(songItemViewHolder.itemChecked,i);
+
+        if (showChecked) {
+            songItemViewHolder.itemChecked.setVisibility(View.VISIBLE);
+        } else {
+            songItemViewHolder.itemChecked.setVisibility(View.GONE);
+        }
 
         // Set the listener
         final String mfilename = filename;
@@ -180,7 +189,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     public SongItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.menu_songs_itemrow, viewGroup, false);
+        /*if (showChecked) {
+            itemView.findViewById(R.id.cardview_setcheck).setVisibility(View.VISIBLE);
+        } else {
+            itemView.findViewById(R.id.cardview_setcheck).setVisibility(View.GONE);
 
+        }*/
         return new SongItemViewHolder(itemView);
     }
 

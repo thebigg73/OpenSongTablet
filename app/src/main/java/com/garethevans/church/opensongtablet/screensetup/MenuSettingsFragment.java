@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsMenuBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 public class MenuSettingsFragment extends Fragment {
 
@@ -49,50 +49,46 @@ public class MenuSettingsFragment extends Fragment {
                 getMyPreferenceBoolean(requireContext(),"songMenuSetTicksShow",true);
 
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
-        myView.songAlphabeticalSize.setProgress(fontFloatToProgress(fontSize));
+        myView.songAlphabeticalSize.setValue(fontSize);
+        myView.songAlphabeticalSize.setHint(fontSize+"px");
         myView.songMenuCheckboxes.setChecked(showTickBoxes);
 
         showHideSize(showAlphabetical);
     }
 
     private void setupListeners() {
-        myView.songMenuCheckboxes.setOnCheckedChangeListener((buttonView, isChecked) ->
-                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"songMenuSetTicksShow",isChecked));
+        myView.songMenuCheckboxes.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(), "songMenuSetTicksShow", isChecked);
+            // Try to update the song menu
+            mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
+        });
         myView.songAlphabeticalShow.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"songMenuAlphaIndexShow",isChecked);
             showHideSize(isChecked);
+            // Try to update the song menu
+            mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
         });
-        myView.songAlphabeticalSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        myView.songAlphabeticalSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
+            public void onStartTrackingTouch(@NonNull Slider slider) { }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int progress = myView.songAlphabeticalSize.getProgress();
-                mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songMenuAlphaIndexSize", progressToFontFloat(progress));
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                float myVal = myView.songAlphabeticalSize.getValue();
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),"songMenuAlphaIndexSize", myVal);
+                // Try to update the song menu
+                mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
             }
         });
-    }
-
-    private float progressToFontFloat(int progress) {
-        // The smallest font size allowed is 6dp, the max 22dp = size 16
-        return (float)(progress + 6);
-    }
-
-    private int fontFloatToProgress(float fontSize) {
-        // The smallest font size allowed is 6dp, the max 22dp = size 16
-        return (int)(fontSize - 6);
+        myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> myView.songAlphabeticalSize.setHint(value+"px"));
     }
 
     private void showHideSize(boolean show) {
         // If we are showing check boxes, we can show the size layout, if not, hide it
         if (show) {
-            myView.songAlphabeticalSizeLayout.setVisibility(View.VISIBLE);
+            myView.songAlphabeticalSize.setVisibility(View.VISIBLE);
         } else {
-            myView.songAlphabeticalSizeLayout.setVisibility(View.GONE);
+            myView.songAlphabeticalSize.setVisibility(View.GONE);
         }
     }
 

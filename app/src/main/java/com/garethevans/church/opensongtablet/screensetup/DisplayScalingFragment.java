@@ -5,22 +5,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayScalingBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 public class DisplayScalingFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsDisplayScalingBinding myView;
-    private final int minTextSize = 5;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,12 +50,12 @@ public class DisplayScalingFragment extends Fragment {
         myView.overrideWidthSwitch.setChecked(getChecked("songAutoScaleOverrideWidth",false));
 
         // The seekbars
-        setSeekBarProgress(myView.manualFontSize,myView.manualFontSizeText,"fontSize",20.0f,1,minTextSize,"px");
-        setSeekBarProgress(myView.minFontSize,myView.minFontSizeText,"fontSizeMin",10.0f,1,minTextSize,"px");
-        setSeekBarProgress(myView.maxFontSize,myView.maxFontSizeText,"fontSizeMax",50.0f,1,minTextSize,"px");
-        setSeekBarProgress(myView.scaleHeading,myView.scaleHeadingText,"scaleHeadings",0.6f,100,0,"%");
-        setSeekBarProgress(myView.scaleChords,myView.scaleChordsText,"scaleChords",0.8f,100,0,"%");
-        setSeekBarProgress(myView.scaleComments,myView.scaleCommentsText,"scaleChords",0.8f,100,0,"%");
+        setSliderValue(myView.manualFontSize,"fontSize",20.0f,1,"px");
+        setSliderValue(myView.minFontSize,"fontSizeMin",10.0f,1,"px");
+        setSliderValue(myView.maxFontSize,"fontSizeMax",50.0f,1,"px");
+        setSliderValue(myView.scaleHeading,"scaleHeadings",0.6f,100,"%");
+        setSliderValue(myView.scaleChords,"scaleChords",0.8f,100,"%");
+        setSliderValue(myView.scaleComments,"scaleChords",0.8f,100,"%");
     }
 
     private void setAutoscaleMode() {
@@ -65,21 +64,21 @@ public class DisplayScalingFragment extends Fragment {
         switch (mode) {
             case "Y":
                 modeSwitches(true,false);
-                visibilityByBoolean(myView.manualFontSizeLayout,false);
+                visibilityByBoolean(myView.manualFontSize,false);
                 visibilityByBoolean(myView.autoFontSizeLayout,true);
                 visibilityByBoolean(myView.overrideFull,true);
                 visibilityByBoolean(myView.overrideWidthSwitch,true);
                 break;
             case "W":
                 modeSwitches(true,true);
-                visibilityByBoolean(myView.manualFontSizeLayout,false);
+                visibilityByBoolean(myView.manualFontSize,false);
                 visibilityByBoolean(myView.autoFontSizeLayout,true);
                 visibilityByBoolean(myView.overrideFull,false);
                 visibilityByBoolean(myView.overrideWidthSwitch,true);
                 break;
             case "N":
                 modeSwitches(false,false);
-                visibilityByBoolean(myView.manualFontSizeLayout,true);
+                visibilityByBoolean(myView.manualFontSize,true);
                 visibilityByBoolean(myView.autoFontSizeLayout,false);
                 break;
         }
@@ -96,19 +95,20 @@ public class DisplayScalingFragment extends Fragment {
         }
     }
 
-    private void setSeekBarProgress(SeekBar seekBar, TextView textView, String prefName,
-                                    float fallback, int multiplier, int minVal, String unit) {
-        // Get the float
+    private void setSliderValue(MaterialSlider slider, String prefName, float fallback,
+                                int multiplier, String unit) {
+        // Get the float (% values need to be scaled by 100 multiplier
         float val = multiplier * mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),prefName,fallback);
-        updateText(textView,val,unit);
-        seekBar.setProgress((int)val-minVal);
+        updateHint(slider,val,unit);
+        slider.setValue(val);
     }
-    private void updateText(TextView textView, float size, String unit) {
+
+    private void updateHint(MaterialSlider slider, float size, String unit) {
         if (unit.equals("px")) {
-            textView.setTextSize(size);
+            slider.setHintTextSize(size);
         }
-        String text = (int)size + unit;
-        textView.setText(text);
+        String hint = (int)size + unit;
+        slider.setHint(hint);
     }
 
     private void getAutoscaleMode() {
@@ -118,19 +118,19 @@ public class DisplayScalingFragment extends Fragment {
         String val;
         if (useAutoscale && scaleWidth) {
             val = "W";
-            visibilityByBoolean(myView.manualFontSizeLayout,false);
+            visibilityByBoolean(myView.manualFontSize,false);
             visibilityByBoolean(myView.autoFontSizeLayout,true);
             visibilityByBoolean(myView.overrideFull,false);
             visibilityByBoolean(myView.overrideWidthSwitch,true);
         } else if (useAutoscale) {
             val = "Y";
-            visibilityByBoolean(myView.manualFontSizeLayout,false);
+            visibilityByBoolean(myView.manualFontSize,false);
             visibilityByBoolean(myView.autoFontSizeLayout,true);
             visibilityByBoolean(myView.overrideFull,true);
             visibilityByBoolean(myView.overrideWidthSwitch,true);
         } else {
             val = "N";
-            visibilityByBoolean(myView.manualFontSizeLayout,true);
+            visibilityByBoolean(myView.manualFontSize,true);
             visibilityByBoolean(myView.autoFontSizeLayout,false);
         }
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"songAutoScale",val);
@@ -141,11 +141,11 @@ public class DisplayScalingFragment extends Fragment {
     }
     private void checkMinMaxSizes() {
         // If the min size is bigger than the max size, then swap them
-        int minSize = myView.minFontSize.getProgress();
-        int maxSize = myView.maxFontSize.getProgress();
+        float minSize = myView.minFontSize.getValue();
+        float maxSize = myView.maxFontSize.getValue();
         if (minSize>maxSize) {
-            myView.minFontSize.setProgress(maxSize);
-            myView.maxFontSize.setProgress(minSize);
+            myView.minFontSize.setValue(maxSize);
+            myView.maxFontSize.setValue(minSize);
         }
     }
 
@@ -157,125 +157,65 @@ public class DisplayScalingFragment extends Fragment {
         myView.overrideFull.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleOverrideFull",isChecked));
         myView.overrideWidthSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songAutoScaleOverrideWidth",isChecked));
 
-        // The seekbars
-        myView.manualFontSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                updateText(myView.manualFontSizeText,(float)progress+minTextSize,"px");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                updateSeekBar(myView.manualFontSize,myView.manualFontSizeText,"fontSize",
-                        minTextSize,1.0f,"px");
-            }
-        });
-        myView.minFontSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                updateText(myView.minFontSizeText,(float)progress+minTextSize,"px");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                checkMinMaxSizes();
-                updateSeekBar(myView.minFontSize,myView.minFontSizeText,"fontSizeMin",
-                        minTextSize,1.0f,"px");
-            }
-        });
-        myView.maxFontSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                updateText(myView.maxFontSizeText,(float)progress+minTextSize,"px");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                checkMinMaxSizes();
-                updateSeekBar(myView.maxFontSize,myView.maxFontSizeText,"fontSizeMax",
-                        minTextSize,1.0f,"px");
-            }
-        });
-        myView.scaleHeading.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                updateText(myView.scaleHeadingText,(float)progress,"%");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                checkMinMaxSizes();
-                updateSeekBar(myView.scaleHeading,myView.scaleHeadingText,"scaleHeadings",
-                        0,100.0f,"%");
-            }
-        });
-        myView.scaleChords.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                updateText(myView.scaleChordsText,(float)progress,"%");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                checkMinMaxSizes();
-                updateSeekBar(myView.scaleChords,myView.scaleChordsText,"scaleChords",
-                        0,100.0f,"%");
-            }
-        });
-        myView.scaleComments.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                updateText(myView.scaleCommentsText,(float)progress,"%");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                checkMinMaxSizes();
-                updateSeekBar(myView.scaleComments,myView.scaleCommentsText,"scaleComments",
-                        0,100.0f,"%");
-            }
-        });
+        // The sliders
+        setSliderListeners(myView.manualFontSize, "fontSize", 1.0f, "px");
+        setSliderListeners(myView.minFontSize, "fontSizeMin", 1.0f, "px");
+        setSliderListeners(myView.maxFontSize, "fontSizeMax", 1.0f, "px");
+        setSliderListeners(myView.scaleHeading, "scaleHeadings", 100.f, "%");
+        setSliderListeners(myView.scaleChords, "scaleChords", 100.f, "%");
+        setSliderListeners(myView.scaleComments, "scaleComments", 100.f, "%");
     }
 
     private void updateBooleanPreference(String prefName, boolean isChecked) {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),prefName,isChecked);
     }
 
-    private void updateSeekBar(SeekBar seekBar, TextView textView, String prefName, int minVal, float multiplier, String unit) {
-        // The actual value is the progress + the minVal
-        float val = seekBar.getProgress() + minVal;
+    private void updateSlider(MaterialSlider slider, String prefName, float multiplier, String unit) {
         // The float to store could be out of 100, or 1.  Use the multiplier to convert
-        mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName, val/multiplier);
-        updateText(textView,(float)val,unit);
+        float sliderVal = slider.getValue();
+        mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName, sliderVal/multiplier);
+        updateHint(slider, sliderVal, unit);
+    }
+
+    private void setSliderListeners(MaterialSlider slider, String pref, float multiplier, String unit) {
+        slider.addOnSliderTouchListener(new MyOnSliderTouchListener(slider,pref,unit,multiplier));
+        slider.addOnChangeListener(new MyOnChangeListener(slider,unit));
+    }
+    private class MyOnSliderTouchListener implements Slider.OnSliderTouchListener {
+        MaterialSlider materialSlider;
+        String pref;
+        String unit;
+        float multiplier;
+
+        MyOnSliderTouchListener (MaterialSlider materialSlider, String pref, String unit, float multiplier) {
+            this.materialSlider = materialSlider;
+            this.pref = pref;
+            this.unit = unit;
+            this.multiplier = multiplier;
+        }
+        @Override
+        public void onStartTrackingTouch(@NonNull Slider slider) { }
+
+        @Override
+        public void onStopTrackingTouch(@NonNull Slider slider) {
+            updateSlider(materialSlider,pref, multiplier,unit);
+            // If we changed the min and max font sizes, make sure they are the right way
+            if (materialSlider==myView.minFontSize || materialSlider==myView.maxFontSize) {
+                checkMinMaxSizes();
+            }
+        }
+    }
+    private class MyOnChangeListener implements Slider.OnChangeListener {
+        MaterialSlider materialSlider;
+        String unit;
+
+        MyOnChangeListener (MaterialSlider materialSlider, String unit) {
+            this.materialSlider = materialSlider;
+            this.unit = unit;
+        }
+        @Override
+        public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+            updateHint(materialSlider,value,unit);
+        }
     }
 }

@@ -7,15 +7,16 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MaterialSlider;
 import com.garethevans.church.opensongtablet.databinding.SettingsSwipesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 
@@ -76,14 +77,89 @@ public class SwipeFragment extends Fragment {
         // Measure the view and set the sizes based on this and user preferences
         mainActivityInterface.getSwipes().setSizes(mainActivityInterface.getDrawNotes().getMeasuredWidth(), mainActivityInterface.getDrawNotes().getMeasuredHeight());
 
-
-        // Set up the seekBars
-        setSeekBar(myView.swipeDistance, "swipeWidth", mainActivityInterface.getSwipes().getWidthPx(), mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), true);
-        setSeekBar(myView.swipeHeight, "swipeHeight", mainActivityInterface.getSwipes().getHeightPx(), mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), true);
-        setSeekBar(myView.swipeSpeed, "swipeTime", mainActivityInterface.getSwipes().getTimeMs(), mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), true);
+        // Set up the sliders
+        setSlider(myView.swipeDistance, "swipeWidth", mainActivityInterface.getSwipes().getWidthPx(), mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), "px", true);
+        setSlider(myView.swipeHeight, "swipeHeight", mainActivityInterface.getSwipes().getHeightPx(), mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), "px", true);
+        setSlider(myView.swipeSpeed, "swipeTime", mainActivityInterface.getSwipes().getTimeMs(), mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), "s", true);
     }
 
-    private void setSeekBar(SeekBar seekBar, String pref, int myval, int min, int max, boolean createListener) {
+    private void setSlider(MaterialSlider slider, String pref, int myval, int min, int max, String unit, boolean createListener) {
+        // How far up should we be?
+        // position 0 -> min
+        // position 9 -> max
+        // divisions = max-min / 9
+        slider.setValueFrom(min);
+        slider.setValueTo(max);
+        slider.setStepSize(1.0f);
+        if (myval<min) {
+            myval = min;
+        } else if (myval > max) {
+            myval = max;
+        }
+        slider.setValue(myval);
+        slider.setHint(Math.round(myval)+unit);
+
+        // Create listeners
+        if (createListener) {
+            slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                @Override
+                public void onStartTrackingTouch(@NonNull Slider slider) {}
+
+                @Override
+                public void onStopTrackingTouch(@NonNull Slider slider) {
+                    // Update the preference
+                    float sliderVal = slider.getValue();
+                    if (sliderVal < min) {
+                        sliderVal = min;
+                    } else if (sliderVal > max) {
+                        sliderVal = max;
+                    }
+                    int newVal = Math.round(sliderVal);
+                    switch (pref) {
+                        case "swipeWidth":
+                            mainActivityInterface.getSwipes().fixWidth(requireContext(), mainActivityInterface, newVal);
+                            break;
+
+                        case "swipeHeight":
+                            mainActivityInterface.getSwipes().fixHeight(requireContext(), mainActivityInterface, newVal);
+                            break;
+
+                        case "swipeTime":
+                            mainActivityInterface.getSwipes().fixTime(requireContext(), mainActivityInterface, newVal);
+                            break;
+                    }
+                    simulateSwipe();
+                }
+            });
+            slider.addOnChangeListener((slider1, value, fromUser) -> {
+                if (!fromUser) {
+                    // Set by a drawing test
+                    // Check we are in bounds
+                    if (value < min) {
+                        value = min;
+                    } else if (value > max) {
+                        value = max;
+                    }
+                    slider1.setValue(value);
+                    simulateSwipe();
+                }
+
+                switch (pref) {
+                    case "swipeTime":
+                        myView.swipeSpeed.setHint(Math.round(value)+"s");
+                        break;
+                    case "swipeWidth":
+                        myView.swipeDistance.setHint(Math.round(value)+"px");
+                        break;
+                    case "swipeHeight":
+                        myView.swipeHeight.setHint(Math.round(value)+"px");
+                        break;
+                }
+
+            });
+        }
+    }
+    /*private void setSeekBar(SeekBar seekBar, String pref, int myval, int min, int max, boolean createListener) {
         // The seekBars have 10 positions (0-9)
         // How far up should we be?
         // position 0 -> min
@@ -115,15 +191,15 @@ public class SwipeFragment extends Fragment {
             });
         }
         seekBar.setProgress(prog);
-    }
+    }*/
 
-    private float getProgressDivision(int min, int max) {
+    /*private float getProgressDivision(int min, int max) {
         // Seekbar is a max size of 10, so 9 jumps.
         // Get the difference of max-min and divide by 9
         return (float) ((max - min) / 9.0f);
-    }
+    }*/
 
-    private int getProgressFromValue(int myval, int min, float division) {
+    /*private int getProgressFromValue(int myval, int min, float division) {
         // Because the seekbar position=0 will be worth a minimum value, remove this
         // Since we know what each position is worth the previous + division,
         // We can find out where our value lies in this range
@@ -141,8 +217,8 @@ public class SwipeFragment extends Fragment {
         }
         return progress;
     }
-
-    private void updatePreference(String pref, int val) {
+*/
+    /*private void updatePreference(String pref, int val) {
         // We've changed a preference.
         switch (pref) {
             case "swipeWidth":
@@ -157,14 +233,14 @@ public class SwipeFragment extends Fragment {
                 mainActivityInterface.getSwipes().fixTime(requireContext(), mainActivityInterface, val);
                 break;
         }
-    }
+    }*/
 
     // Get the values back from the drawNotes vies via MainActivity
     public void getSwipeValues(int returnedWidth, int returnedHeight, int returnedTime) {
-        // Change the seekbars to match
-        setSeekBar(myView.swipeDistance, "swipeWidth", returnedWidth, mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), false);
-        setSeekBar(myView.swipeHeight, "swipeHeight", returnedHeight, mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), false);
-        setSeekBar(myView.swipeSpeed, "swipeTime", returnedTime, mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), false);
+        // Change the seekbars to match, but don't change the listeners
+        setSlider(myView.swipeDistance, "swipeWidth", returnedWidth, mainActivityInterface.getSwipes().getMinWidth(), mainActivityInterface.getSwipes().getMaxWidth(), "px", false);
+        setSlider(myView.swipeHeight, "swipeHeight", returnedHeight, mainActivityInterface.getSwipes().getMinHeight(), mainActivityInterface.getSwipes().getMaxHeight(), "px", false);
+        setSlider(myView.swipeSpeed, "swipeTime", returnedTime, mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), "s", false);
     }
 
     private boolean dealingWith = false;
@@ -183,8 +259,8 @@ public class SwipeFragment extends Fragment {
             int updatesRequired = mainActivityInterface.getSwipes().getTimeMs() / timeBetween;
 
             // How much should the width and height move by each time
-            float moveByX = (float) ((float) mainActivityInterface.getSwipes().getWidthPx() / (float) updatesRequired);
-            float moveByY = (float) ((float) mainActivityInterface.getSwipes().getHeightPx() / (float) updatesRequired);
+            float moveByX = (float) mainActivityInterface.getSwipes().getWidthPx() / (float) updatesRequired;
+            float moveByY = (float) mainActivityInterface.getSwipes().getHeightPx() / (float) updatesRequired;
 
             // Move to the correct start point
             mainActivityInterface.getDrawNotes().resetSwipe();

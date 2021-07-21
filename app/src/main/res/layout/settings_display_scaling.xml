@@ -25,47 +25,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/autoscale" />
 
             <!--Manual font size-->
-            <LinearLayout
-                android:id="@+id/manualFontSizeLayout"
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/manualFontSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/choose_fontsize" />
-
-                    <SeekBar
-                        android:id="@+id/manualFontSize"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:max="94"
-                        android:padding="16dp" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/manualFontSizeText"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.4"
-                    android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="0dp" />
-
-            </LinearLayout>
+                android:text="@string/choose_fontsize"
+                android:valueFrom="5"
+                android:valueTo="90"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
 
             <!--Auto font size-->
             <LinearLayout
@@ -79,6 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/scale_width" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -86,82 +59,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/maximise_columns" />
 
-                <LinearLayout
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/maxFontSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="@string/maxfontsize"
+                    android:valueFrom="5"
+                    android:valueTo="90"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"/>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="@string/maxfontsize" />
-
-                        <SeekBar
-                            android:id="@+id/maxFontSize"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:max="94"
-                            android:padding="16dp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/maxFontSizeText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.4"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="0dp" />
-
-                </LinearLayout>
-
-
-                <LinearLayout
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/minFontSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="@string/minfontsize" />
-
-                        <SeekBar
-                            android:id="@+id/minFontSize"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:max="94"
-                            android:padding="16dp" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/minFontSizeText"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.4"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="0dp" />
-
-                </LinearLayout>
+                    android:text="@string/minfontsize"
+                    android:valueFrom="5"
+                    android:valueTo="90"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -173,6 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/override_fullautoscale" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -180,6 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:text="@string/override_widthautoscale" />
 
             </LinearLayout>
@@ -191,100 +113,41 @@
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/song_sections" />
+                android:text="@string/song_sections"/>
 
-            <TextView
+            <!--Scale headings-->
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/scaleHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/headingline_scale"
+                android:valueFrom="0"
+                android:valueTo="200"
                 android:layout_marginTop="16dp"
-                android:text="@string/headingline_scale" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/scaleHeading"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="200"
-                    android:padding="16dp" />
-
-                <TextView
-                    android:id="@+id/scaleHeadingText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="0dp" />
-
-            </LinearLayout>
+                android:layout_marginBottom="16dp"/>
 
             <!--Scale chords-->
-            <TextView
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/scaleChords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/chordline_scale"
+                android:valueFrom="0"
+                android:valueTo="200"
                 android:layout_marginTop="16dp"
-                android:text="@string/chordline_scale" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/scaleChords"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="200"
-                    android:padding="16dp" />
-
-                <TextView
-                    android:id="@+id/scaleChordsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="0dp" />
-
-            </LinearLayout>
+                android:layout_marginBottom="16dp"/>
 
             <!--Scale comments-->
-            <TextView
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/scaleComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/commentline_scale"
+                android:valueFrom="0"
+                android:valueTo="200"
                 android:layout_marginTop="16dp"
-                android:text="@string/commentline_scale" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/scaleComments"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="200"
-                    android:padding="16dp" />
-
-                <TextView
-                    android:id="@+id/scaleCommentsText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="0dp" />
-
-            </LinearLayout>
-
-            <TableRow style="@style/DividerLine" />
+                android:layout_marginBottom="16dp"/>
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

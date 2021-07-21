@@ -76,6 +76,8 @@ public class StickyPopUp {
         if (drawable!=null) {
             drawable.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
         }
+        popupWindow.setBackgroundDrawable(null);
+        floatWindow.setAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"stickyAlpha", 0.8f));
         floatWindow.setBackground(drawable);
         floatWindow.setPadding(16,16,16,16);
 

@@ -25,44 +25,19 @@
 
             <TableRow style="@style/DividerLine" />
 
-            <LinearLayout
-                android:id="@+id/highlighterTimeLayout"
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/timeToDisplayHighlighter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/displayTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:paddingStart="0dp"
-                        android:paddingTop="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingBottom="16dp"
-                        android:text="@string/time" />
-
-                    <SeekBar
-                        android:id="@+id/timeToDisplayHighlighter"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:max="20"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp" />
-                </TableRow>
-
-                <TableRow style="@style/DividerLine" />
-
-            </LinearLayout>
+                android:text="@string/time"
+                android:valueFrom="0"
+                android:valueTo="20"
+                android:value="0"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit"
         android:layout_width="wrap_content"

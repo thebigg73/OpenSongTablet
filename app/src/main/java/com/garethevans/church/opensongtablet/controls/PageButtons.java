@@ -5,6 +5,7 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,8 @@ public class PageButtons {
     // Everything available for the buttons
     private ArrayList<String> actions, text, shortText, longText;
     private ArrayList<Integer> drawableIds;
+    private int pageButtonColor;
+    private float pageButtonAlpha;
 
     // My buttons in the main activity
     private FloatingActionButton actionButton;
@@ -38,8 +41,6 @@ public class PageButtons {
     private ArrayList<FloatingActionButton> fabs;
 
     // My chosen buttons in the edit fragment
-    private float pageButtonAlpha;
-    private int pageButtonColor;
     private final int pageButtonNum = 6;
     private ArrayList<String> pageButtonAction, pageButtonText, pageButtonShortText, pageButtonLongText;
     private ArrayList<Drawable> pageButtonDrawable;
@@ -72,8 +73,11 @@ public class PageButtons {
         fabs.add(custom4);
         fabs.add(custom5);
         fabs.add(custom6);
-        this.pageButtonColor = pageButtonColor;
+        // The page button colour will include alpha.  Strip this out
+        getAlphaAndColorFromInt(pageButtonColor);
+
         this.pageButtonsLayout = pageButtonsLayout;
+        pageButtonsLayout.setAlpha(pageButtonAlpha);
     }
 
     public FloatingActionButton getFAB(int x) {
@@ -108,15 +112,18 @@ public class PageButtons {
         Runnable startRunnable = hideView(view, animateIn);
 
         if (animateIn) {
-            alpha = pageButtonAlpha;
             translationBy = -500;
-            endRunnable = () -> {};
+            alpha = pageButtonAlpha;
+            endRunnable = () -> {
+                view.setAlpha(pageButtonAlpha);
+            };
         } else {
-            startRunnable = () -> {};
+            startRunnable = () -> {
+                view.setAlpha(pageButtonAlpha);
+            };
         }
         ViewCompat.animate(view).alpha(alpha).translationYBy(translationBy).setDuration(500).
                 setInterpolator(interpolator).withStartAction(startRunnable).withEndAction(endRunnable).start();
-        actionButton.setAlpha(pageButtonAlpha);
     }
     private Runnable hideView(View view,boolean show) {
         return () -> {
@@ -306,9 +313,6 @@ public class PageButtons {
 
     // Build the arrays describing the buttons (action, short description, long description, drawable, etc) based on user preferences
     private void setPreferences(Context c, Preferences preferences) {
-        // Get the alpha
-        pageButtonAlpha = preferences.getMyPreferenceFloat(c,"pageButtonAlpha",0.6f);
-
         // Initialise the arrays
         pageButtonAction = new ArrayList<>();
         pageButtonDrawable = new ArrayList<>();
@@ -353,13 +357,26 @@ public class PageButtons {
         }
     }
 
+    private void getAlphaAndColorFromInt(int color) {
+        // The colour will include alpha.  Strip this out
+        int alpha = Math.round(Color.alpha(color));
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        pageButtonColor = Color.argb(255, red, green, blue);
+        pageButtonAlpha = alpha / 255.0f;
+    }
     // This will redesign the button for the page
     public void setPageButton(Context c, FloatingActionButton fab, int color, int buttonNum, boolean editing) {
         // The alpha is set on the linear layout, not the individual buttons
         // This bit changes the colour and the icon
-        fab.setBackgroundTintList(ColorStateList.valueOf(color));
-        pageButtonColor = color;
-        if (buttonNum<=pageButtonNum) {
+
+        // Separate the color and the alpha
+        getAlphaAndColorFromInt(color);
+        pageButtonsLayout.setAlpha(pageButtonAlpha);
+        fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+
+        if (buttonNum>=0 && buttonNum<=pageButtonNum) {
             fab.setImageDrawable(pageButtonDrawable.get(buttonNum));
             fab.setTag(pageButtonAction.get(buttonNum));
             if (pageButtonVisibility.get(buttonNum)) {
@@ -380,7 +397,7 @@ public class PageButtons {
             } else {
                 fab.setOnClickListener(null);
             }
-        } else {
+        } else if (buttonNum>=0) {
             fab.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),drawableIds.get(0),null));
             fab.setTag("");
             fab.setVisibility(View.VISIBLE);
@@ -410,7 +427,7 @@ public class PageButtons {
     public ArrayList<String> getPageButtonAvailableText() {
         return text;
     }
-    public float getPageButtonAlpha() {
+    public float getAlpha() {
         return pageButtonAlpha;
     }
 
@@ -431,11 +448,6 @@ public class PageButtons {
     }
     public void setPageButtonVisibility(int button, boolean visible) {
         pageButtonVisibility.set(button,visible);
-    }
-    public void setPageButtonAlpha(float pageButtonAlpha) {
-        this.pageButtonAlpha = pageButtonAlpha;
-        actionButton.setAlpha(pageButtonAlpha);
-        pageButtonsLayout.setAlpha(pageButtonAlpha);
     }
 
     // This deals with the actions from the page buttons
