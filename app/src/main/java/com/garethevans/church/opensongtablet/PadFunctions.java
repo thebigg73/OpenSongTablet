@@ -36,7 +36,7 @@ class PadFunctions {
     static boolean getPad1Status() {
         boolean result;
         try {
-            result = FullscreenActivity.mPlayer1 != null && FullscreenActivity.mPlayer1.isPlaying();
+            result = FullscreenActivity.mPlayer1 != null && (FullscreenActivity.mPlayer1.isPlaying() || FullscreenActivity.mPlayer1Paused);
         } catch (Exception e) {
             result = false;
         }
@@ -47,7 +47,7 @@ class PadFunctions {
     static boolean getPad2Status() {
         boolean result;
         try {
-            result = FullscreenActivity.mPlayer2 != null && FullscreenActivity.mPlayer2.isPlaying();
+            result = FullscreenActivity.mPlayer2 != null && (FullscreenActivity.mPlayer2.isPlaying() || FullscreenActivity.mPlayer2Paused);
         } catch (Exception e) {
             result = false;
         }
@@ -78,7 +78,7 @@ class PadFunctions {
 
     static void pauseOrResumePad() {
         try {
-            if (FullscreenActivity. mPlayer1Paused) {
+            if (FullscreenActivity.mPlayer1Paused) {
                 // Restart pad 1
                 FullscreenActivity.mPlayer1.start();
                 FullscreenActivity.mPlayer1Paused = false;
@@ -88,7 +88,7 @@ class PadFunctions {
                 FullscreenActivity.mPlayer1.pause();
                 FullscreenActivity.mPlayer1Paused = true;
             } else if (FullscreenActivity.mPlayer2Paused) {
-                // Restart pad 1
+                // Restart pad 2
                 FullscreenActivity.mPlayer2.start();
                 FullscreenActivity.mPlayer2Paused = false;
             } else if (getPad2Status() && !FullscreenActivity.mPlayer2Paused && !StaticVariables.pad2Fading) {

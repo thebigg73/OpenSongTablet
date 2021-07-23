@@ -1,8 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
-
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -109,6 +106,9 @@ import java.util.Map;
 import java.util.Set;
 
 import lib.folderpicker.FolderPicker;
+
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
 
 // This includes all recent version pulls from IV and GE
 
@@ -3393,9 +3393,9 @@ public class StageMode extends AppCompatActivity implements
 
         if (StaticVariables.clickedOnPadStart) {
             // Decide which player and get time
-            if ((PadFunctions.getPad1Status() && !StaticVariables.pad1Fading) || FullscreenActivity.mPlayer1Paused) {
+            if (PadFunctions.getPad1Status() && !StaticVariables.pad1Fading) {
                 text = TimeTools.timeFormatFixer((int) (FullscreenActivity.mPlayer1.getCurrentPosition() / 1000.0f));
-            } else if ((PadFunctions.getPad2Status() && !StaticVariables.pad2Fading) || FullscreenActivity.mPlayer2Paused) {
+            } else if (PadFunctions.getPad2Status() && !StaticVariables.pad2Fading) {
                 text = TimeTools.timeFormatFixer((int) (FullscreenActivity.mPlayer2.getCurrentPosition() / 1000.0f));
             }
         }
@@ -3414,7 +3414,7 @@ public class StageMode extends AppCompatActivity implements
                     padcurrentTime_TextView.setText(text);
                 }
             }
-            // IV - If we have no active, just fading, pads - Indicate fade with just the pad icon
+            // IV - If we have only fading, pads - Indicate fade with just the pad icon
             if (!StaticVariables.clickedOnPadStart) {
                     padtotalTime_TextView.setText("");
                     padTimeSeparator_TextView.setText("");
@@ -6249,7 +6249,7 @@ public class StageMode extends AppCompatActivity implements
         // If we need to display pad time do runnables otherwise stop display
         PadFunctions.getPad1Status();
         PadFunctions.getPad2Status();
-        if (StaticVariables.pad1Playing || StaticVariables.pad2Playing || FullscreenActivity.mPlayer1Paused || FullscreenActivity.mPlayer2Paused) {
+        if (StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
             dopadProgressTime.post(padprogressTimeRunnable);
             dopadProgressTime.postDelayed(onEverySecond, 1000);
         } else {
@@ -7105,8 +7105,7 @@ public class StageMode extends AppCompatActivity implements
                     // If we want info on the next song in the set, add it as a comment line
                     processSong.addExtraInfo(StageMode.this, storageAccess, preferences);
 
-                    // Decide if the pad, metronome and autoscroll are good to go
-                    //StaticVariables.padok = PadFunctions.isPadValid(StageMode.this, preferences);
+                    // Decide if the metronome and autoscroll are good to go
                     StaticVariables.metronomeok = Metronome.isMetronomeValid();
                     StaticVariables.autoscrollok = processSong.isAutoScrollValid(StageMode.this,preferences);
 
@@ -8520,9 +8519,6 @@ public class StageMode extends AppCompatActivity implements
                                     PadFunctions.getPad2Status();
                                     if (!StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
                                         FullscreenActivity.whichPad = 1;
-                                        FullscreenActivity.mPlayer1.stop();
-                                        FullscreenActivity.mPlayer1.reset();
-                                        StaticVariables.pad1Fading = false;
                                         FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
                                         if (custompad) {
                                             FullscreenActivity.mPlayer1.setDataSource(StageMode.this, Uri.parse(padpath));
@@ -8533,9 +8529,6 @@ public class StageMode extends AppCompatActivity implements
                                         FullscreenActivity.mPlayer1.prepareAsync();
                                     } else {
                                         FullscreenActivity.whichPad = 2;
-                                        FullscreenActivity.mPlayer2.stop();
-                                        FullscreenActivity.mPlayer2.reset();
-                                        StaticVariables.pad2Fading = false;
                                         FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
                                         if (custompad) {
                                             FullscreenActivity.mPlayer2.setDataSource(StageMode.this, Uri.parse(padpath));
@@ -8559,17 +8552,11 @@ public class StageMode extends AppCompatActivity implements
                             Uri uri = storageAccess.fixLocalisedUri(StageMode.this, preferences, StaticVariables.mLinkAudio);
                             if (!StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
                                 FullscreenActivity.whichPad = 1;
-                                FullscreenActivity.mPlayer1.stop();
-                                FullscreenActivity.mPlayer1.reset();
-                                StaticVariables.pad1Fading = false;
                                 FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
                                 FullscreenActivity.mPlayer1.setDataSource(StageMode.this, uri);
                                 FullscreenActivity.mPlayer1.prepareAsync();
                             } else {
                                 FullscreenActivity.whichPad = 2;
-                                FullscreenActivity.mPlayer2.stop();
-                                FullscreenActivity.mPlayer2.reset();
-                                StaticVariables.pad2Fading = false;
                                 FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
                                 FullscreenActivity.mPlayer2.setDataSource(StageMode.this, uri);
                                 FullscreenActivity.mPlayer2.prepareAsync();
