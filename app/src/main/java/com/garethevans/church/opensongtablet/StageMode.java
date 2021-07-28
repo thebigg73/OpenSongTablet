@@ -7618,15 +7618,7 @@ public class StageMode extends AppCompatActivity implements
                     checkCanGoTo();
                     // If in a set and able to move
                     if (StaticVariables.canGoToPrevious) {
-                        if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
-                            // For Stage mode only do for the top section
-                            if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == 0)) {
-                                pedalPreviousAndNextConfirm();
-                            }
-                        } else {
-                            // For Performance mode
-                            pedalPreviousAndNextConfirm();
-                        }
+                        pedalPreviousAndNextConfirm();
                     }
                 } else {
                     // If in a folder and able to move
@@ -7700,15 +7692,7 @@ public class StageMode extends AppCompatActivity implements
                     checkCanGoTo();
                     // If in a set and able to move
                     if (StaticVariables.canGoToNext) {
-                        if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
-                            // For Stage mode only do for the bottom section
-                            if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == StaticVariables.songSections.length - 1)) {
-                                pedalPreviousAndNextConfirm();
-                            }
-                        } else {
-                            // For Performance mode
-                            pedalPreviousAndNextConfirm();
-                        }
+                        pedalPreviousAndNextConfirm();
                     }
                 } else {
                     // If in a folder and able to move
@@ -8519,6 +8503,9 @@ public class StageMode extends AppCompatActivity implements
                                     PadFunctions.getPad2Status();
                                     if (!StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
                                         FullscreenActivity.whichPad = 1;
+                                        FullscreenActivity.mPlayer1.stop();
+                                        FullscreenActivity.mPlayer1.reset();
+                                        StaticVariables.pad1Fading = false;
                                         FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
                                         if (custompad) {
                                             FullscreenActivity.mPlayer1.setDataSource(StageMode.this, Uri.parse(padpath));
@@ -8529,6 +8516,9 @@ public class StageMode extends AppCompatActivity implements
                                         FullscreenActivity.mPlayer1.prepareAsync();
                                     } else {
                                         FullscreenActivity.whichPad = 2;
+                                        FullscreenActivity.mPlayer2.stop();
+                                        FullscreenActivity.mPlayer2.reset();
+                                        StaticVariables.pad2Fading = false;
                                         FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
                                         if (custompad) {
                                             FullscreenActivity.mPlayer2.setDataSource(StageMode.this, Uri.parse(padpath));
@@ -8552,11 +8542,17 @@ public class StageMode extends AppCompatActivity implements
                             Uri uri = storageAccess.fixLocalisedUri(StageMode.this, preferences, StaticVariables.mLinkAudio);
                             if (!StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
                                 FullscreenActivity.whichPad = 1;
+                                FullscreenActivity.mPlayer1.stop();
+                                FullscreenActivity.mPlayer1.reset();
+                                StaticVariables.pad1Fading = false;
                                 FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
                                 FullscreenActivity.mPlayer1.setDataSource(StageMode.this, uri);
                                 FullscreenActivity.mPlayer1.prepareAsync();
                             } else {
                                 FullscreenActivity.whichPad = 2;
+                                FullscreenActivity.mPlayer2.stop();
+                                FullscreenActivity.mPlayer2.reset();
+                                StaticVariables.pad2Fading = false;
                                 FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
                                 FullscreenActivity.mPlayer2.setDataSource(StageMode.this, uri);
                                 FullscreenActivity.mPlayer2.prepareAsync();
