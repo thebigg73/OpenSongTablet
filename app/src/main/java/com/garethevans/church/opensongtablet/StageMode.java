@@ -1,5 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -106,9 +109,6 @@ import java.util.Map;
 import java.util.Set;
 
 import lib.folderpicker.FolderPicker;
-
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
 
 // This includes all recent version pulls from IV and GE
 
