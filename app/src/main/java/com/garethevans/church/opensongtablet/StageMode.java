@@ -7457,26 +7457,15 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... params) {
             try {
-                String where;
                 songsInFolder = sqLiteHelper.getSongsInFolder(StageMode.this, StaticVariables.whichSongFolder);
                 // Remove any that aren't there (due to updating something) - permanently fixed on reboot
                 for (SQLite s:songsInFolder) {
-                    // IV - Handle 'null' used for MAIN folder
-                    where = s.getFolder();
-                    if (where==null) {
-                        where = "";
-                    }
-                    if (s!=null && s.getFilename()!=null) {
-                        Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", where, s.getFilename());
+                    if (s!=null && s.getFolder()==null && s.getFilename()!=null) {
+                        Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", StaticVariables.whichSongFolder, s.getFilename());
                         if (!storageAccess.uriExists(StageMode.this, u)) {
                             songsInFolder.remove(s);
                             // IV - We have a DB entry for a missing song - so delete it
-                            if (where.equals("")) {
-                                where = "MAIN/" + s.getFilename();
-                            } else {
-                                where = where + "/" + s.getFilename();
-                            }
-                            sqLiteHelper.deleteSong(StageMode.this,where);
+                            sqLiteHelper.deleteSong(StageMode.this, StaticVariables.whichSongFolder + "/" + s.getFilename());
                         }
                     }
                 }
