@@ -660,15 +660,16 @@ class ChordProConvert {
             Log.d("ChordProConvert","outputStream="+outputStream);
 
             if (outputStream != null) {
-                // Change the songId (references to the uri)
-                // Now remove the old chordpro file
                 storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
-                Log.d("ChordProConvert","attempt to deletefile="+storageAccess.deleteFile(c, oldUri));
 
                 // Remove old song from database
                 SQLiteHelper sqLiteHelper = new SQLiteHelper(c);
                 String songid = songSubFolder+"/"+oldSongFileName;
                 sqLiteHelper.deleteSong(c,songid);
+
+                // Remove the old chordpro file (IV - Moved after SQLite work)
+                Boolean deleteFileResult = storageAccess.deleteFile(c, oldUri);
+                Log.d("ChordProConvert","attempt to deletefile="+deleteFileResult);
             }
 
             // Update the song filename
@@ -697,6 +698,9 @@ class ChordProConvert {
                 sqLite.setTitle(StaticVariables.mTitle);
                 sqLite.setLyrics(StaticVariables.mLyrics);
                 sqLite.setFolder(songSubFolder);
+                // IV - Update fields used by song menu too
+                sqLite.setAuthor(StaticVariables.mAuthor);
+                sqLite.setKey(StaticVariables.mKey);
                 sqLiteHelper.updateSong(c,sqLite);
             }
         }
