@@ -1,117 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical">
-
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/searchButtonGroup"
-            style="@style/menuToggle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:weightSum="5"
-            app:checkedButton="@+id/folderButton">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/folderButton"
-                style="@style/IconOnlyButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:icon="@drawable/ic_folder_search_white_36dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/artistButton"
-                style="@style/IconOnlyButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:icon="@drawable/ic_account_music_white_36dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/keyButton"
-                style="@style/IconOnlyButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:icon="@drawable/ic_music_clef_treble_white_36dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/tagButton"
-                style="@style/IconOnlyButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:icon="@drawable/ic_tag_white_36dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/filterButton"
-                style="@style/IconOnlyButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:icon="@drawable/ic_magnify_white_36dp" />
-
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-        <include
-            android:id="@+id/filters"
-            layout="@layout/menu_songs_filters"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/menu_songs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:orientation="horizontal">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
+
+            <!-- Filter buttons -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/searchButtonGroup"
+                style="@style/menuToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:weightSum="5"
+                app:checkedButton="@+id/folderButton">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/folderButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:icon="@drawable/ic_folder_search_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/artistButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:icon="@drawable/ic_account_music_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/keyButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:icon="@drawable/ic_music_clef_treble_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tagButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:icon="@drawable/ic_tag_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/filterButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:icon="@drawable/ic_magnify_white_36dp" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
             <include
-                android:id="@+id/songmenualpha"
-                layout="@layout/menu_song_alphaindex" />
+                android:id="@+id/filters"
+                layout="@layout/menu_songs_filters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
+                android:id="@+id/menu_songs"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
 
                 <include
-                    layout="@layout/menu_songs_listtitles"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:id="@+id/songmenualpha"
+                    layout="@layout/menu_song_alphaindex" />
 
-                <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
-                    android:id="@+id/songListRecyclerView"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingStart="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="100dp"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbarSize="8dp"
-                    android:scrollbarThumbVertical="@color/grey"
-                    app:fastScrollAutoHide="false"
-                    app:fastScrollEnableThumbInactiveColor="false"
-                    app:fastScrollPopupBgColor="@color/colorSecondary"
-                    app:fastScrollPopupTextColor="@color/white"
-                    app:fastScrollThumbColor="@color/colorSecondary"
-                    app:fastScrollTrackColor="@color/darkgrey" />
+                    android:orientation="vertical">
 
+                    <include
+                        layout="@layout/menu_songs_listtitles"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+                        android:id="@+id/songListRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="100dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbarSize="8dp"
+                        android:scrollbarThumbVertical="@color/grey"
+                        app:fastScrollAutoHide="false"
+                        app:fastScrollEnableThumbInactiveColor="false"
+                        app:fastScrollPopupBgColor="@color/colorSecondary"
+                        app:fastScrollPopupTextColor="@color/white"
+                        app:fastScrollThumbColor="@color/colorSecondary"
+                        app:fastScrollTrackColor="@color/darkgrey" />
+
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/actionFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/action"
+            android:src="@drawable/ic_plus_white_36dp"
+            app:useCompatPadding="true" />
+
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -120,17 +140,7 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:scaleX="0.4"
-        android:scaleY="0.4" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/actionFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/action"
-        android:src="@drawable/ic_plus_white_36dp"
-        app:useCompatPadding="true" />
-
-</RelativeLayout>
+        android:scaleY="0.4"
+        app:layout_anchor="@+id/relativeLayout"
+        app:layout_anchorGravity="center" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

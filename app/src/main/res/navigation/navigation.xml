@@ -515,6 +515,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_metronomeFragment"
                     app:destination="@id/metronomeFragment" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_linksFragment"
+                    app:destination="@id/linksFragment" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -570,6 +573,23 @@
                     android:id="@+id/metronomeDeepLink"
                     app:uri="opensongapp://settings/actions/metronome" />
             </fragment>
+            <fragment
+                android:id="@+id/linksFragment"
+                android:name="com.garethevans.church.opensongtablet.links.LinksFragment"
+                android:label="LinksFragment"
+                tools:layout="@layout/settings_links">
+                <deepLink
+                    android:id="@+id/linksDeepLink"
+                    app:uri="opensongapp://settings/actions/links" />
+                <action
+                    android:id="@+id/action_linksFragment_to_linksBottomSheet"
+                    app:destination="@id/linksBottomSheet" />
+            </fragment>
+            <dialog
+                android:id="@+id/linksBottomSheet"
+                android:name="com.garethevans.church.opensongtablet.links.LinksBottomSheet"
+                android:label="LinksBottomSheet"
+                tools:layout="@layout/bottom_sheet_links"/>
         </navigation>
         <fragment
             android:id="@+id/modeFragment"
@@ -614,7 +634,7 @@
             android:id="@+id/editSongFragment"
             android:name="com.garethevans.church.opensongtablet.songprocessing.EditSongFragment"
             android:label="EditSongFragment"
-            tools:layout="@layout/fragment_edit_song">
+            tools:layout="@layout/edit_song">
             <action
                 android:id="@+id/action_editSongFragment_to_editSongFragmentMain"
                 app:destination="@id/editSongFragmentMain" />
@@ -631,21 +651,21 @@
             android:id="@+id/editSongFragmentMain"
             android:name="com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentMain"
             android:label="fragment_edit_song_1"
-            tools:layout="@layout/fragment_edit_song_1"/>
+            tools:layout="@layout/edit_song_main"/>
 
         <!-- The song features -->
         <fragment
             android:id="@+id/editsongFeatures"
             android:name="com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentFeatures"
             android:label="fragment_edit_song_2"
-            tools:layout="@layout/fragment_edit_song_2"/>
+            tools:layout="@layout/edit_song_lyrics"/>
 
         <!-- The song tags -->
         <fragment
             android:id="@+id/editSongTags"
             android:name="com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentTags"
             android:label="fragment_edit_song_3"
-            tools:layout="@layout/fragment_edit_song_3"/>
+            tools:layout="@layout/edit_song_features"/>
 
     </navigation>
     <navigation android:id="@+id/song_menu_graph"

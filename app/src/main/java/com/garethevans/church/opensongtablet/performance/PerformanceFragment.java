@@ -329,9 +329,10 @@ public class PerformanceFragment extends Fragment {
     public void dealWithStickyNotes(boolean forceShow, boolean hide) {
         Log.d(TAG, "dealWithStickyNotes");
         if (hide) {
-            stickyPopUp.closeSticky();
+            if (stickyPopUp!=null) {
+                stickyPopUp.closeSticky();
+            }
         } else {
-
             if ((mainActivityInterface != null && mainActivityInterface.getSong() != null &&
                     mainActivityInterface.getSong().getNotes() != null &&
                     !mainActivityInterface.getSong().getNotes().isEmpty() &&

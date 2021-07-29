@@ -47,8 +47,8 @@ public class SettingsCCLI extends Fragment {
 
     private void setCurrentValues() {
         myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "ccliAutomaticLogging", false));
-        myView.ccliChurch.setHintText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliChurchName", ""));
-        myView.ccliLicence.setHintText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliLicence", ""));
+        myView.ccliChurch.setHint(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliChurchName", ""));
+        myView.ccliLicence.setHint(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliLicence", ""));
     }
 
     private void setListeners() {
@@ -79,9 +79,9 @@ public class SettingsCCLI extends Fragment {
     // Called from MainActivity after TextInputDialogFragment save
     public void updateValue(String which, String value) {
         if (which.equals("ccliChurchName")) {
-            myView.ccliChurch.setHintText(value);
+            myView.ccliChurch.setHint(value);
         } else if (which.equals("ccliLicence")){
-            myView.ccliLicence.setHintText(value);
+            myView.ccliLicence.setHint(value);
         }
     }
 

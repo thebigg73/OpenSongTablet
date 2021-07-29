@@ -3,6 +3,7 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -26,6 +27,7 @@
             android:stepSize="1"
             android:valueFrom="0"
             android:valueTo="100"
+            android:value="50"
             style="@style/Slider"/>
 
         <TextView

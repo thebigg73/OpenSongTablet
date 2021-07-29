@@ -167,8 +167,8 @@ public class MidiFragment extends Fragment {
             myView.connectionStatus.setVisibility(View.GONE);
         } else {
             myView.connectionStatus.setVisibility(View.VISIBLE);
-            myView.connectedDevice.setMainText(mainActivityInterface.getMidi().getMidiDeviceName());
-            myView.connectedDevice.setHintText(mainActivityInterface.getMidi().getMidiDeviceAddress());
+            myView.connectedDevice.setText(mainActivityInterface.getMidi().getMidiDeviceName());
+            myView.connectedDevice.setHint(mainActivityInterface.getMidi().getMidiDeviceAddress());
         }
         if (isSearchingDevices) {
             myView.searchProgressLayout.setVisibility(View.VISIBLE);
@@ -405,13 +405,13 @@ public class MidiFragment extends Fragment {
                 mainActivityInterface.getMidi().getMidiDeviceAddress() != null) {
             myView.searchProgressLayout.setVisibility(View.GONE);
             myView.connectionStatus.setVisibility(View.VISIBLE);
-            myView.connectedDevice.setMainText(mainActivityInterface.getMidi().getMidiDeviceName());
-            myView.connectedDevice.setHintText(mainActivityInterface.getMidi().getMidiDeviceAddress());
+            myView.connectedDevice.setText(mainActivityInterface.getMidi().getMidiDeviceName());
+            myView.connectedDevice.setHint(mainActivityInterface.getMidi().getMidiDeviceAddress());
         } else {
             myView.searchProgressLayout.setVisibility(View.VISIBLE);
             myView.connectionStatus.setVisibility(View.GONE);
-            myView.connectedDevice.setMainText("");
-            myView.connectedDevice.setHintText("");
+            myView.connectedDevice.setText("");
+            myView.connectedDevice.setHint("");
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -681,8 +681,6 @@ public class MidiFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // Save the song
-        mainActivityInterface.getSaveSong().doSave(getContext(),mainActivityInterface,mainActivityInterface.getSong(),
-                mainActivityInterface.getSong(),false,
-                mainActivityInterface.getSong().getFiletype().equals("PDF")||mainActivityInterface.getSong().getFiletype().equals("IMG"));
+        mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface);
     }
 }

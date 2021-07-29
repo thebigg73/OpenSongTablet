@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="@color/colorAltPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/cardview_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/songClickSpace"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/cardview_title"
+                    style="@style/cardView_Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/cardview_author"
+                    style="@style/cardView_Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/author" />
+
+            </LinearLayout>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cardview_setcheck"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="32dp"
+                android:checked="true"
+                android:gravity="start"
+                android:minWidth="0dp"
+                android:minHeight="0dp" />
+
+        </LinearLayout>
+
+        <TableRow style="@style/DividerLine" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

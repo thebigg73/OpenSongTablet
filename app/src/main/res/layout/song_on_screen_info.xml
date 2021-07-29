@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="false"
+    android:background="@color/colorSecondary"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/capoInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:padding="16dp"
+        app:drawableStartCompat="@drawable/ic_capo_white_36dp" />
+
+    <TextView
+        android:id="@+id/learnAutoScroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:padding="16dp"
+        app:drawableStartCompat="@drawable/ic_rotate_right_white_36dp" />
+
+    <TextView
+        android:id="@+id/padPlayback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:drawableStartCompat="@drawable/ic_amplifier_white_36dp" />
+
+</LinearLayout>

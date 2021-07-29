@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,31 +21,25 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <SeekBar
-                android:id="@+id/transposeSeekBar"
-                style="@style/MySeekBar"
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/transposeSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="16dp" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/transposeValTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:gravity="center"
-                android:text="@string/key"
-                android:textSize="32sp" />
+                android:padding="16dp"
+                android:stepSize="1"
+                android:text="@null"
+                android:valueFrom="-6"
+                android:valueTo="6"
+                app:trackColor="@color/colorAltPrimary" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/keyChangeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
                 android:gravity="center"
+                android:padding="16dp"
                 android:text="@string/key"
-                android:textSize="28sp" />
+                android:textSize="26sp" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/assumePreferred_SwitchCompat"
@@ -52,7 +47,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
                 android:checked="true"
                 android:padding="16dp"
                 android:text="@string/chordformat_default" />
@@ -65,14 +59,14 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/detectedChordFormatText"
+                    style="@style/largeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
                     android:paddingStart="16dp"
                     android:paddingTop="16dp"
                     android:paddingEnd="16dp"
                     android:paddingBottom="0dp"
-                    android:text="@string/chordformat_detected" />
+                    android:text="@string/chord_format" />
 
                 <RadioGroup
                     android:id="@+id/detectedChordFormat"

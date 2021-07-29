@@ -3,120 +3,100 @@ package com.garethevans.church.opensongtablet.filemanagement;
 import android.content.Context;
 import android.net.Uri;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class SaveSong {
 
-    public boolean doSave(Context c, MainActivityInterface mainActivityInterface,
-                          Song newSong, Song originalSong, boolean fromEditFragment, boolean imgOrPDF) {
+    public boolean doSave(Context c, MainActivityInterface mainActivityInterface, Song newSong) {
+        // This is called from the EditSong fragment where we check for file/folder changes too
+        // Because we haven't written the changes, we receive the 'newSong' object to compare with the current song
 
         // Only if we aren't messing with the welcome song!
-        if (!newSong.getFilename().equals("Welcome to OpenSongApp") &&
-                !originalSong.getFilename().equals("Welcome to OpenSongApp")) {
-            boolean saveOK = false;
+        if (checkNotWelcomeSong(mainActivityInterface)) {
+            // Check for folders
+            String oldFolder = mainActivityInterface.getSong().getFolder();
+            String oldFilename = mainActivityInterface.getSong().getFilename();
+            boolean folderChange = !newSong.getFolder().equals(oldFolder);
+            boolean filenameChange = !newSong.getFilename().equals(oldFilename);
 
-            String where = mainActivityInterface.getStorageAccess().
-                    safeFilename(mainActivityInterface.getProcessSong().getLocation(newSong.getFolder()));
-            String folder = mainActivityInterface.getStorageAccess().
-                    safeFilename(newSong.getFolder()).replace(".." + where + "/", "");
-            String filename = mainActivityInterface.getStorageAccess().
-                    safeFilename(newSong.getFilename());
+            // The folder may not be in 'Songs'.  If this is the case, it starts with ../
+            // This is most common if a user wants to save a received song (set/nearby)
+            ArrayList<String> oldLocation = mainActivityInterface.getStorageAccess().fixNonSongs(oldFolder);
 
-            // If we are editing as chordpro, convert the lyrics back to back to OpenSong first
-            // This is only checked if we've come from the song edit fragment.
-            if (fromEditFragment && mainActivityInterface.getPreferences().
-                    getMyPreferenceBoolean(c, "editAsChordPro", false)) {
-                newSong.setLyrics(mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(newSong.getLyrics()));
-            }
+            // Write the changes to the current Song object
+            mainActivityInterface.setSong(newSong);
 
-            // Decide if we need to remove the original after writing the new song
-            // This happens if the user has changed the filename or folder
-            boolean removeOriginal = false;
-            Uri oldUri = null;
-            String oldwhere, oldfolder, oldfilename;
-            if (originalSong != null) {
-                oldwhere = mainActivityInterface.getStorageAccess().
-                        safeFilename(mainActivityInterface.getProcessSong().getLocation(mainActivityInterface.getSong().getFolder()));
-                oldfolder = mainActivityInterface.getStorageAccess().
-                        safeFilename(originalSong.getFolder()).replace(".." + where + "/", "");
-                oldfilename = mainActivityInterface.getStorageAccess().
-                        safeFilename(originalSong.getFilename());
-
-                removeOriginal = !oldfolder.isEmpty() && oldfilename != null && !oldfilename.isEmpty() &&
-                        (!oldwhere.equals(where) || !oldfolder.equals(folder) || !oldfilename.equals(filename));
-
-                oldUri = mainActivityInterface.getStorageAccess().
-                        getUriForItem(c, mainActivityInterface, oldwhere, oldfolder, oldfilename);
-
-            }
-            Uri newUri = mainActivityInterface.getStorageAccess().
-                    getUriForItem(c, mainActivityInterface, where, folder, filename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface,
-                    newUri, null, where, folder, filename);
-
-            if (!imgOrPDF || (removeOriginal && oldUri != null)) {
-                // Updated the song name, folder or contents, so write to the new/original file as appropriate
-                // Check the uri exists for the outputstream to be valid
-                mainActivityInterface.getStorageAccess().
-                        lollipopCreateFileForOutputStream(c, mainActivityInterface, newUri, null,
-                                where, folder, filename);
-
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newUri);
-                if (imgOrPDF && removeOriginal) {
-                    // PDFs and images don't store the data - this goes into the nonOpenSongSQL database
-                    // Just move the file by copying it to the new location.  Removal comes later
-                    InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, oldUri);
-                    saveOK = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
-                    try {
-                        inputStream.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    // Prepare a new XML version of the song from the statics (OpenSong song only)
-                    String newXML = mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface, newSong);
-                    saveOK = mainActivityInterface.getStorageAccess().writeFileFromString(newXML, outputStream);
-                }
-                try {
-                    outputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if (folderChange || filenameChange) {
+                // We need to create a new entry in the database
+                mainActivityInterface.getSQLiteHelper().createSong(c, mainActivityInterface,
+                        newSong.getFolder(), newSong.getFilename());
+                if (!newSong.getFiletype().equals("XML")) {
+                    // If it isn't an XML file, also update the persistent database
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(c, mainActivityInterface,
+                            newSong.getFolder(), newSong.getFilename());
                 }
             }
 
-            // Update the default non persistent database for all songs (keeps menus and search up to date
-            // Only update the song id/filename/folder if we:
-            // Flagged to remove the original and save of the new file was successful
-            if (!removeOriginal || !saveOK) {
-                mainActivityInterface.setSong(newSong);
+            // Now save the new song
+            boolean saveSuccessful = updateSong(c, mainActivityInterface);
+
+            // Now, if the save was successful and the folder/filename changes, delete the old stuff
+            if ((folderChange || filenameChange) && saveSuccessful) {
+                mainActivityInterface.getSQLiteHelper().deleteSong(c,mainActivityInterface,oldFolder,oldFilename);
+                if (!newSong.getFiletype().equals("XML")) {
+                    // If it isn't an XML file, also update the persistent database
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().deleteSong(c,mainActivityInterface,oldFolder,oldFilename);
+                }
+
+                Uri oldUri = mainActivityInterface.getStorageAccess().
+                        getUriForItem(c, mainActivityInterface, oldLocation.get(0), oldLocation.get(1), oldFilename);
+                mainActivityInterface.getStorageAccess().deleteFile(c, oldUri);
             }
+
+            return saveSuccessful;
+        } else {
+            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.error_song_not_saved));
+            return false;
+        }
+    }
+
+    public boolean updateSong(Context c, MainActivityInterface mainActivityInterface) {
+        // This is called if we just want to save the current song updates stored in the current song
+        // This only works is the folder and filename haven't changed (done in the step above from edit song instead)
+
+        // Won't do anything if this is the 'Welcome' song
+        if (checkNotWelcomeSong(mainActivityInterface)) {
+            // First update the song database
             mainActivityInterface.getSQLiteHelper().updateSong(c, mainActivityInterface, mainActivityInterface.getSong());
 
-            // If it was a PDF/IMG, update the persistent database as well
-            // If save wasn't successful, we sorted the folder/filename/id already
-            if (imgOrPDF) {
+            // If this is a non-OpenSong song (PDF, IMG), update the persistent database
+            if (!mainActivityInterface.getSong().getFiletype().equals("XML")) {
                 // If update fails (due to no existing row, a new one is created)
                 mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c, mainActivityInterface,
                         mainActivityInterface.getSong());
             }
 
-            // If we need to remove the original for non-pdfand the new file was successfully created, make the change
-            if (saveOK && removeOriginal) {
-                mainActivityInterface.getStorageAccess().deleteFile(c, oldUri);
+            // Update the CCLI log if required
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "ccliAutomaticLogging", false)) {
+                mainActivityInterface.getCCLILog().addEntry(c, mainActivityInterface,
+                        mainActivityInterface.getSong(), "3"); // 3=edited
             }
 
-            // If we are autologging CCLI information
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "ccliAutomaticLogging", false)) {
-                mainActivityInterface.getCCLILog().addEntry(c, mainActivityInterface, mainActivityInterface.getSong(), "3"); // 3=edited
-            }
-            return saveOK;
+            // Now save the song file and return the success!
+            return mainActivityInterface.getStorageAccess().saveSongFile(c, mainActivityInterface);
+
         } else {
-            return false;
+            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.error_song_not_saved));
+            return false; //Welcome song, so no saving!
         }
     }
 
+    private boolean checkNotWelcomeSong(MainActivityInterface mainActivityInterface) {
+        return (!mainActivityInterface.getSong().getFilename().equals("Welcome to OpenSongApp") &&
+                !mainActivityInterface.getSong().getFilename().equals("Welcome to OpenSongApp"));
+    }
 }

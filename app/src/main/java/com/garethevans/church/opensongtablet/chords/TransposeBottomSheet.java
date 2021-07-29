@@ -100,9 +100,9 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
     // Initialise the views
     private void initialiseViews() {
-        transposeSeekBar = myView.transposeSeekBar;
+        //transposeSeekBar = myView.transposeSeekBar;
         keyChange_TextView = myView.keyChangeTextView;
-        transposeValTextView = myView.transposeValTextView;
+        //transposeValTextView = myView.transposeValTextView;
         chordFormat1Radio = myView.chordFormat1Radio;
         chordFormat2Radio = myView.chordFormat2Radio;
         chordFormat3Radio = myView.chordFormat3Radio;

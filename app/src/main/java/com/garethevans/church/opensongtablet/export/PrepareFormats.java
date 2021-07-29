@@ -76,7 +76,7 @@ public class PrepareFormats {
         s.append(replaceNulls("","\n",thisSong.getTitle()));
         s.append(replaceNulls("","\n",thisSong.getAuthor()));
         s.append(replaceNulls("Key: ","\n",thisSong.getKey()));
-        s.append(replaceNulls("Tempo: ","\n",thisSong.getMetronomebpm()));
+        s.append(replaceNulls("Tempo: ","\n",thisSong.getTempo()));
         s.append(replaceNulls("Time signature: ","\n",thisSong.getTimesig()));
         s.append(replaceNulls("Copyright: ","\n",thisSong.getCopyright()));
         s.append(replaceNulls("CCLI: ","\n",thisSong.getCcli()));
@@ -99,7 +99,7 @@ public class PrepareFormats {
         s.append(replaceNulls("{title:","}\n",thisSong.getTitle()));
         s.append(replaceNulls("{artist:","}\n",thisSong.getAuthor()));
         s.append(replaceNulls("{key:","}\n",thisSong.getKey()));
-        s.append(replaceNulls("{tempo:","}\n",thisSong.getMetronomebpm()));
+        s.append(replaceNulls("{tempo:","}\n",thisSong.getTempo()));
         s.append(replaceNulls("{time:","}\n",thisSong.getTimesig()));
         s.append(replaceNulls("{copyright:","}\n",thisSong.getCopyright()));
         s.append(replaceNulls("{ccli:","}\n",thisSong.getCcli()));
@@ -136,7 +136,7 @@ public class PrepareFormats {
         s.append(replaceNulls("","\n",thisSong.getTitle()));
         s.append(replaceNulls("","\n",thisSong.getAuthor()));
         s.append(replaceNulls("Key: ","\n",thisSong.getKey()));
-        s.append(replaceNulls("Tempo: ","\n",thisSong.getMetronomebpm()));
+        s.append(replaceNulls("Tempo: ","\n",thisSong.getTempo()));
         s.append(replaceNulls("Time signature: ","\n",thisSong.getTimesig()));
         s.append(replaceNulls("Copyright: ","\n",thisSong.getCopyright()));
         s.append(replaceNulls("CCLI: ","\n",thisSong.getCcli()));

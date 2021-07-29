@@ -46,7 +46,6 @@ public class SQLite {
     linkweb
     linkyoutube
     lyrics
-    metronomebpm
     midi
     midiindex
     notes
@@ -88,7 +87,7 @@ public class SQLite {
     public static final String COLUMN_AKA = "aka";
     public static final String COLUMN_AUTOSCROLL_DELAY = "autoscrolldelay";
     public static final String COLUMN_AUTOSCROLL_LENGTH = "autoscrolllength";
-    public static final String COLUMN_METRONOME_BPM = "metronomebpm";
+    public static final String COLUMN_TEMPO = "tempo";
     public static final String COLUMN_PAD_FILE = "padfile";
     public static final String COLUMN_PAD_LOOP = "padloop";
     public static final String COLUMN_MIDI = "midi";
@@ -128,7 +127,7 @@ public class SQLite {
                     + COLUMN_AKA + " TEXT,"
                     + COLUMN_AUTOSCROLL_DELAY + " TEXT,"
                     + COLUMN_AUTOSCROLL_LENGTH + " TEXT,"
-                    + COLUMN_METRONOME_BPM + " TEXT,"
+                    + COLUMN_TEMPO + " TEXT,"
                     + COLUMN_PAD_FILE + " TEXT,"
                     + COLUMN_PAD_LOOP + " TEXT,"
                     + COLUMN_MIDI + " TEXT,"

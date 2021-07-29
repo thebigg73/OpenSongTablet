@@ -18,7 +18,6 @@ import java.util.Locale;
 
 public class LoadSong {
 
-    //private boolean isXML, isPDF, isIMG, isCustom,
     private final String TAG = "LoadSong";
     private Uri uri;
 
@@ -326,7 +325,7 @@ public class LoadSong {
                                 thisSong.setCapo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                 break;
                             case "tempo":
-                                thisSong.setMetronomebpm(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                                thisSong.setTempo(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
                                 break;
                             case "time_sig":
                                 thisSong.setTimesig(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));

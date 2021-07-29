@@ -1,102 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainpage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimary"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@color/colorPrimary">
 
     <TextView
         android:id="@+id/headerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_margin="0dp"
-        android:padding="12dp"
+        android:background="@color/colorAltPrimary"
+        android:drawablePadding="12dp"
         android:gravity="center_vertical"
+        android:padding="16dp"
         android:text="@string/storage_choose"
         android:textSize="22sp"
-        android:background="@color/colorAltPrimary"
-        app:drawableStartCompat="@mipmap/ic_round_launcher"
-        android:drawablePadding="12dp"
-        android:layout_alignParentTop="true"/>
+        app:drawableStartCompat="@mipmap/ic_round_launcher" />
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/headerText"
-        android:layout_above="@+id/startApp">
-
-    <LinearLayout
-        android:id="@+id/page"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/firstRun"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/first_run" />
-
-        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
-            android:id="@+id/progressText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/current_location"
-            android:hint="@string/current_location"/>
-
-        <Button
-            android:id="@+id/setStorage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:padding="16dp"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/storage_change"
-            android:textColor="#fff"
-            app:backgroundTint="@color/red" />
-
-        <Button
-            android:id="@+id/findStorage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
-            android:padding="16dp"
-            android:text="@string/find_existing"
-            android:textColor="#fff"
-            app:backgroundTint="@color/darkyellow" />
-
-        <TextView
-            android:id="@+id/previousStorageTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/no_previous_found"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/previousStorageHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/existing_found"
-            android:visibility="gone" />
+        android:layout_above="@+id/startApp"
+        android:layout_below="@+id/headerText">
 
         <LinearLayout
-            android:id="@+id/previousStorageLocations"
+            android:id="@+id/page"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/section_box"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_margin="16dp"
-            android:visibility="gone"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/firstRun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/first_run" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                android:id="@+id/progressText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/current_location"
+                android:paddingStart="16dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="4dp"
+                android:text="@string/current_location" />
+
+            <Button
+                android:id="@+id/setStorage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:text="@string/storage_change"
+                app:backgroundTint="@color/red" />
+
+            <Button
+                android:id="@+id/findStorage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:text="@string/find_existing"
+                app:backgroundTint="@color/darkyellow" />
+
+            <TextView
+                android:id="@+id/previousStorageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/no_previous_found"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/previousStorageHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/existing_found"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/previousStorageLocations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
     </ScrollView>
 
     <Button
@@ -109,20 +110,17 @@
         android:layout_margin="16dp"
         android:padding="16dp"
         android:text="@string/start"
-        android:textColor="#fff"
-        android:textSize="24sp"
         android:visibility="visible"
         app:backgroundTint="@color/green" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/infoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/infoButton"
-        app:useCompatPadding="true"
-        android:layout_margin="8dp"
-        android:src="@drawable/ic_information_white_36dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:contentDescription="@string/information" />
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/information"
+        android:src="@drawable/ic_information_white_36dp"
+        app:useCompatPadding="true" />
 
 </RelativeLayout>

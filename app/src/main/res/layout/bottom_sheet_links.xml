@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/link_info" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                android:id="@+id/linkLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/link"
+                android:saveEnabled="false"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
+
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/searchLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search"
+                android:padding="16dp"
+                app:mydrawable="@drawable/ic_magnify_white_36dp" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/saveLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/save_changes"
+                android:text="@string/save"
+                android:padding="16dp"
+                app:mydrawable="@drawable/ic_content_save_white_36dp" />
+
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/padLink"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/link_audio_pad"
+                    android:text="@string/pad"
+                    android:padding="16dp"
+                    app:mydrawable="@drawable/ic_amplifier_white_36dp"
+                    android:visibility="gone"/>
+
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/resetLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/link_reset"
+                android:text="@string/delete"
+                android:padding="16dp"
+                app:mydrawable="@drawable/ic_delete_white_36dp" />
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/openLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:contentDescription="@string/open"
+                android:src="@drawable/ic_web_white_36dp"
+                app:useCompatPadding="true" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

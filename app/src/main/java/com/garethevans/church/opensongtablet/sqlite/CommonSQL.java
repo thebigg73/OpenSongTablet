@@ -32,7 +32,7 @@ public class CommonSQL {
                 SQLite.COLUMN_HYMNNUM, SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME, SQLite.COLUMN_ALTTHEME,
                 SQLite.COLUMN_USER1, SQLite.COLUMN_USER2, SQLite.COLUMN_USER3, SQLite.COLUMN_KEY,
                 SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA, SQLite.COLUMN_AUTOSCROLL_DELAY,
-                SQLite.COLUMN_AUTOSCROLL_LENGTH, SQLite.COLUMN_METRONOME_BPM, SQLite.COLUMN_PAD_FILE,
+                SQLite.COLUMN_AUTOSCROLL_LENGTH, SQLite.COLUMN_TEMPO, SQLite.COLUMN_PAD_FILE,
                 SQLite.COLUMN_PAD_LOOP, SQLite.COLUMN_MIDI, SQLite.COLUMN_MIDI_INDEX, SQLite.COLUMN_CAPO,
                 SQLite.COLUMN_CAPO_PRINT, SQLite.COLUMN_CUSTOM_CHORDS, SQLite.COLUMN_NOTES, SQLite.COLUMN_ABC,
                 SQLite.COLUMN_LINK_YOUTUBE, SQLite.COLUMN_LINK_YOUTUBE, SQLite.COLUMN_LINK_WEB,
@@ -131,7 +131,7 @@ public class CommonSQL {
         values.put(SQLite.COLUMN_AKA, thisSong.getAka());
         values.put(SQLite.COLUMN_AUTOSCROLL_DELAY, thisSong.getAutoscrolldelay());
         values.put(SQLite.COLUMN_AUTOSCROLL_LENGTH, thisSong.getAutoscrolllength());
-        values.put(SQLite.COLUMN_METRONOME_BPM, thisSong.getMetronomebpm());
+        values.put(SQLite.COLUMN_TEMPO, thisSong.getTempo());
         values.put(SQLite.COLUMN_PAD_FILE, thisSong.getPadfile());
         values.put(SQLite.COLUMN_PAD_LOOP, thisSong.getPadloop());
         values.put(SQLite.COLUMN_MIDI, thisSong.getMidi());
@@ -350,7 +350,7 @@ public class CommonSQL {
             thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
             thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));
             thisSong.setAutoscrolllength(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_LENGTH));
-            thisSong.setMetronomebpm(getValue(cursor, SQLite.COLUMN_METRONOME_BPM));
+            thisSong.setTempo(getValue(cursor, SQLite.COLUMN_TEMPO));
             thisSong.setPadfile(getValue(cursor, SQLite.COLUMN_PAD_FILE));
             thisSong.setPadloop(getValue(cursor, SQLite.COLUMN_PAD_LOOP));
             thisSong.setMidi(getValue(cursor, SQLite.COLUMN_MIDI));

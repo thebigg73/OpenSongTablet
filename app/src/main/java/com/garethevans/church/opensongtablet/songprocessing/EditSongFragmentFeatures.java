@@ -10,12 +10,12 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.databinding.FragmentEditSong2Binding;
+import com.garethevans.church.opensongtablet.databinding.EditSong2Binding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class EditSongFragmentFeatures extends Fragment {
 
-    FragmentEditSong2Binding myView;
+    EditSong2Binding myView;
     MainActivityInterface mainActivityInterface;
 
     @Override
@@ -33,7 +33,7 @@ public class EditSongFragmentFeatures extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        myView = FragmentEditSong2Binding.inflate(inflater, container, false);
+        myView = EditSong2Binding.inflate(inflater, container, false);
 
         return myView.getRoot();
     }

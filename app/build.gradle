@@ -86,7 +86,8 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.4.0'
 
-    implementation 'org.apache.commons:commons-compress:1.20'           // For creating and editing compressed files (osb, backup)
+    implementation 'org.apache.commons:commons-compress:1.21'
+    // For creating and editing compressed files (osb, backup)
     implementation 'com.github.bumptech.glide:glide:4.12.0'             // For better setting of images
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'     // For better setting of images
     implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'   // Used for song and set menu

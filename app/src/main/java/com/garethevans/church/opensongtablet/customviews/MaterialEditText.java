@@ -3,11 +3,13 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +27,11 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
 
     private final TextInputEditText editText;
     private final TextInputLayout textInputLayout;
+    private final boolean restoreState;
+
+    // By default this is a single line edit text
+    // For multiline, the number of lines has to be specified (maxLines/lines)
+    // The lines has to be greater than 1
 
     public MaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -38,21 +45,27 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
                 android.R.attr.maxLines,
                 android.R.attr.imeOptions,
                 android.R.attr.inputType,
-                android.R.attr.typeface};
+                android.R.attr.saveEnabled,
+                R.attr.endIconMode,
+                R.attr.useMonospace};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
         CharSequence digits = a.getText(2);
-        int lines = a.getInteger(3,0);
-        int minLines = a.getInteger(4,0);
-        int maxLines = a.getInteger(5,0);
+        int lines = a.getInteger(3,1);
+        int minLines = a.getInteger(4,1);
+        int maxLines = a.getInteger(5,1);
         CharSequence imeOptions = a.getText(6);
-        CharSequence inputType = a.getText(7);
-        CharSequence typeface = a.getText(8);
+        int inputType = a.getInt(7,InputType.TYPE_CLASS_TEXT);
+        restoreState = a.getBoolean(8,true);
+        int endIconMode = a.getInt(9, TextInputLayout.END_ICON_NONE);
+        boolean useMonospace = a.getBoolean(10, false);
 
         editText = findViewById(R.id.editText);
-        editText.setImeActionLabel(context.getString(R.string.select), EditorInfo.IME_ACTION_DONE);
         textInputLayout = findViewById(R.id.holderLayout);
+
+        editText.setId(View.generateViewId());
+        textInputLayout.setId(View.generateViewId());
 
         if (text != null) {
             editText.setText(text);
@@ -63,28 +76,21 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         if (digits != null) {
             editText.setKeyListener(DigitsKeyListener.getInstance(digits.toString()));
         }
-        if (inputType != null) {
-            int type = InputType.TYPE_TEXT_FLAG_CAP_SENTENCES;
-            if (inputType.equals("textMultiline")) {
-                type = InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE;
-            }
-            editText.setInputType(type);
+        editText.setInputType(inputType);
+        if (inputType == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+            editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
         }
-        if (lines!=0) {
+        if (lines>1) {
+            allowScrolling();
             editText.setLines(lines);
-            allowScrolling();
-        } else {
-            editText.setLines(1);
         }
-        if (minLines!=0) {
+        if (minLines>1) {
+            allowScrolling();
             editText.setMinLines(minLines);
-            allowScrolling();
         }
-        if (maxLines>0) {
-            editText.setMaxLines(maxLines);
+        if (maxLines>1) {
             allowScrolling();
-        } else {
-            editText.setMaxLines(1);
+            editText.setMaxLines(maxLines);
         }
         if (imeOptions != null) {
             int option = EditorInfo.IME_ACTION_UNSPECIFIED;
@@ -100,15 +106,26 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
                     break;
             }
             editText.setImeOptions(option);
+        } else {
+            editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         }
-        if (typeface != null && typeface.equals("monospace")) {
+        if (useMonospace) {
             editText.setTypeface(Typeface.MONOSPACE);
         }
 
+        // By default restore the state/temp text for rotating, etc.
+        // Can override if a fragment is reused
+        editText.setSaveEnabled(restoreState);
+
+        textInputLayout.setEndIconMode(endIconMode);
+        Log.d("MaterialEditText","endIconMode="+endIconMode);
         a.recycle();
     }
 
     public void setText(String text) {
+        if (text.isEmpty()) {
+            editText.setText(null);
+        }
         editText.setText(text);
     }
 
@@ -163,6 +180,8 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         editText.setVerticalScrollBarEnabled(true);
         editText.setScrollbarFadingEnabled(false);
         editText.setGravity(Gravity.TOP);
+        int type = InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE;
+        editText.setInputType(type);
     }
 
     @Override
@@ -173,4 +192,13 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         }
         return false;
     }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (!restoreState) {
+            editText.setText("");
+        }
+        super.onRestoreInstanceState(state);
+    }
+
 }

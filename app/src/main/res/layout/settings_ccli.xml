@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,8 +25,8 @@
                 android:id="@+id/ccliChurch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/ccli_church"
-                android:hint="@string/ccli_church" />
+                android:hint="@string/ccli_church"
+                android:text="@string/ccli_church" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -35,8 +34,8 @@
                 android:id="@+id/ccliLicence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ccli_licence"
-                android:hint="@string/ccli_licence" />
+                android:hint="@string/ccli_licence"
+                android:text="@string/ccli_licence" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -44,8 +43,8 @@
                 android:id="@+id/ccliView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/ccli_view"
-                android:hint="@string/ccli_log" />
+                android:hint="@string/ccli_log"
+                android:text="@string/ccli_view" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -53,8 +52,8 @@
                 android:id="@+id/ccliExport"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/export"
-                android:hint="@string/ccli_export" />
+                android:hint="@string/ccli_export"
+                android:text="@string/export" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -62,8 +61,8 @@
                 android:id="@+id/ccliDelete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/delete"
-                android:hint="@string/ccli_reset" />
+                android:hint="@string/ccli_reset"
+                android:text="@string/delete" />
 
             <TableRow style="@style/DividerLine" />
 

@@ -62,10 +62,14 @@ public class SongListBuildIndex {
                 mainActivityInterface.setIndexingSong(new Song());
 
                 // Set the folder and filename from the database entry
-                if (cursor.getColumnIndex(SQLite.COLUMN_ID) > -1 && cursor.getCount()>0 && cursor.getColumnCount()>0) {
-                    mainActivityInterface.getIndexingSong().setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
-                    mainActivityInterface.getIndexingSong().setFolder(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
-                    mainActivityInterface.getIndexingSong().setFilename(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
+                int indexId = cursor.getColumnIndex(SQLite.COLUMN_ID);
+                int indexFolder = cursor.getColumnIndex(SQLite.COLUMN_FOLDER);
+                int indexFilename = cursor.getColumnIndex(SQLite.COLUMN_FILENAME);
+
+                if (indexId >= 0 && indexFolder >= 0 && indexFilename >= 0) {
+                    mainActivityInterface.getIndexingSong().setId(cursor.getInt(indexId));
+                    mainActivityInterface.getIndexingSong().setFolder(cursor.getString(indexFolder));
+                    mainActivityInterface.getIndexingSong().setFilename(cursor.getString(indexFilename));
 
                     // Now we have the info to open the file and extract what we need
                     if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DefaultView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/linkYouTube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/link_youtube"
+                android:text="@string/link_youtube" />
+            <TableRow style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/linkOnline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/link_web"
+                android:text="@string/link_web" />
+            <TableRow style="@style/DividerLine"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/linkAudio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/link_audio"
+                android:text="@string/link_audio" />
+            <TableRow style="@style/DividerLine"/>
+
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/linkOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/link_file"
+            android:text="@string/link_file" />
+        <TableRow style="@style/DividerLine"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

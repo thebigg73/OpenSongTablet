@@ -58,7 +58,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
     public void updateViews() {
         // Set the device name
-        myView.deviceButton.setHintText(mainActivityInterface.getNearbyConnections().getUserNickname(requireContext(),mainActivityInterface));
+        myView.deviceButton.setHint(mainActivityInterface.getNearbyConnections().getUserNickname(requireContext(),mainActivityInterface));
 
         // Set the default values for off/host/client
         if (mainActivityInterface.getNearbyConnections().isHost) {
@@ -104,7 +104,7 @@ public class NearbyConnectionsFragment extends Fragment {
         if (mainActivityInterface.getNearbyConnections().connectionLog ==null) {
             mainActivityInterface.getNearbyConnections().connectionLog = "";
         }
-        myView.connectionsLog.setHintText(mainActivityInterface.getNearbyConnections().connectionLog);
+        myView.connectionsLog.setHint(mainActivityInterface.getNearbyConnections().connectionLog);
     }
 
     public void setListeners() {
@@ -188,7 +188,7 @@ public class NearbyConnectionsFragment extends Fragment {
     // Called from MainActivity after TextInputDialogFragment save
     public void updateValue(String which, String value) {
         if (which.equals("deviceName")) {
-            myView.deviceButton.setHintText(value);
+            myView.deviceButton.setHint(value);
             mainActivityInterface.getNearbyConnections().deviceId = value;
         }
     }

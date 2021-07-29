@@ -63,11 +63,11 @@ public class MaterialTextView extends LinearLayout {
         a.recycle();
     }
 
-    public void setHintText(String hintText) {
+    public void setHint(String hintText) {
         hintView.setText(hintText);
     }
 
-    public void setMainText(String mainText) {
+    public void setText(String mainText) {
         textView.setText(mainText);
     }
 

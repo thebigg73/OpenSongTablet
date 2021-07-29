@@ -1,8 +1,10 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,7 +27,8 @@ public class MaterialSlider extends LinearLayout {
                 android.R.attr.valueFrom,
                 android.R.attr.valueTo,
                 android.R.attr.stepSize,
-                android.R.attr.value};
+                android.R.attr.value,
+                R.attr.trackColor};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
@@ -33,6 +36,7 @@ public class MaterialSlider extends LinearLayout {
         float valueTo = a.getFloat(3,11);
         float stepSize = a.getFloat(4,1);
         float value = a.getFloat(5,0);
+        int track = a.getColor(6,0);
 
         slider = findViewById(R.id.slider);
         titleTextView = findViewById(R.id.titleText);
@@ -40,15 +44,22 @@ public class MaterialSlider extends LinearLayout {
 
         if (text!=null) {
             titleTextView.setText(text);
+        } else {
+            titleTextView.setVisibility(View.GONE);
         }
         if (hint!=null) {
             valueTextView.setText(hint);
+        } else {
+            valueTextView.setVisibility(View.GONE);
         }
         slider.setValueFrom(valueFrom);
         slider.setValueTo(valueTo);
         slider.setStepSize(stepSize);
         slider.setValue(value);
 
+        if (track!=0) {
+            slider.setTrackTintList(ColorStateList.valueOf(track));
+        }
         a.recycle();
     }
 

@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,31 +10,21 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.FragmentEditSongBinding;
+import com.garethevans.church.opensongtablet.databinding.EditSongBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-// When editing a song, we don't rely on the database values
-// The song gets loaded from storage, parsed into a new song object (held in EditContent)
-// When we save, we write this into the new/existing file
+// When we edit a song, we create a write the current song to tempSong in MainActivity
+// We compare the two objects to look for changes and save if requested
+// This way changes are temporary until specifically saved
 
 public class EditSongFragment extends Fragment implements EditSongFragmentInterface {
 
-    private FragmentEditSongBinding myView;
+    private EditSongBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private EditContent editContent;
-    private boolean imgOrPDF;
-    private Bundle savedInstanceState;
-    private Fragment fragment;
-
-    Song song,originalSong;
-
-    boolean saveOK = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -53,7 +42,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = getActivity().getWindow();
+        Window w = requireActivity().getWindow();
         if (w!=null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
@@ -62,78 +51,61 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        myView = FragmentEditSongBinding.inflate(inflater, container, false);
-        this.savedInstanceState = savedInstanceState;
-        fragment = this;
+        myView = EditSongBinding.inflate(inflater, container, false);
 
-        // Set up toolbar
+        // Update the toolbar
         mainActivityInterface.updateToolbar(getResources().getString(R.string.edit));
 
-        // Stop the song menu from opening and hide the page button
-        mainActivityInterface.hideActionButton(true);
-        mainActivityInterface.lockDrawer(true);
-
-        song = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,song.getFolder(),song.getFilename());
-
-        // The folder and filename were passed in the starting song object.  Now update with the file contents
-        song = mainActivityInterface.getLoadSong().doLoadSong(getActivity(),mainActivityInterface,song, false);
-
-        // Can't just do song=originalSong as they become clones.  Changing one changes the other.
-        originalSong = new Song(song);
-
-        // A quick test of images or PDF files (sent when saving)
-        imgOrPDF = (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG"));
+        // Set up the updated song (a copy of the current song for editing)
+        mainActivityInterface.setTempSong(new Song(mainActivityInterface.getSong()));
 
         // Initialise views
         setUpTabs();
 
+        // Set the save listener
         myView.saveChanges.setOnClickListener(v -> doSaveChanges());
         return myView.getRoot();
     }
 
     private void setUpTabs() {
-        EditSongViewPagerAdapter adapter = new EditSongViewPagerAdapter(requireActivity().getSupportFragmentManager(), requireActivity().getLifecycle());
+        EditSongViewPagerAdapter adapter = new EditSongViewPagerAdapter(requireActivity().getSupportFragmentManager(),
+                requireActivity().getLifecycle());
         adapter.createFragment(0);
-        EditSongFragmentMain editSongFragmentMain = (EditSongFragmentMain) adapter.menuFragments[0];
-        EditSongFragmentFeatures editSongFragmentFeatures = (EditSongFragmentFeatures) adapter.createFragment(1);
-        EditSongFragmentTags editSongFragmentTags = (EditSongFragmentTags) adapter.createFragment(2);
-        ViewPager2 viewPager = myView.viewpager;
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(1);
-        TabLayout tabLayout = myView.tabButtons;
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+        myView.viewpager.setAdapter(adapter);
+        myView.viewpager.setOffscreenPageLimit(1);
+        new TabLayoutMediator(myView.tabButtons, myView.viewpager, (tab, position) -> {
             switch (position) {
                 case 0:
                 default:
-                    tab.setText(getString(R.string.mainfoldername));
+                    tab.setText(getString(R.string.lyrics));
                     break;
                 case 1:
-                    tab.setText(getString(R.string.song_features));
+                    tab.setText(getString(R.string.mainfoldername));
                     break;
                 case 2:
+                    tab.setText(getString(R.string.song_features));
+                    break;
+                case 3:
                     tab.setText(getString(R.string.tag));
                     break;
             }
         }).attach();
     }
 
-    public void pulseSaveChanges(boolean pulse) {
-        if (pulse) {
-            myView.saveChanges.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
-            mainActivityInterface.getCustomAnimation().pulse(requireContext(),myView.saveChanges);
+
+    public void showSaveAllowed(boolean showSave) {
+        if (showSave) {
+            myView.saveChanges.setVisibility(View.VISIBLE);
         } else {
-            myView.saveChanges.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));
-            myView.saveChanges.clearAnimation();
+            myView.saveChanges.setVisibility(View.GONE);
         }
     }
 
     private void doSaveChanges() {
         // Send this off for processing in a new Thread
         new Thread(() -> {
-            /*saveOK = saveSong.doSave(requireContext(),mainActivityInterface,song,
-                    editContent.getCurrentSong(), imgOrPDF);
-*/
-            if (saveOK) {
+            if (mainActivityInterface.getSaveSong().doSave(requireContext(), mainActivityInterface,
+                    mainActivityInterface.getTempSong())) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
                 requireActivity().runOnUiThread(() -> mainActivityInterface.navHome());
             } else {
@@ -142,22 +114,39 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         }).start();
     }
 
-    // These are triggered from one of the viewpager pages, through the mainactivity, back here
-    public void updateSong(Song song) {
-        this.song = song;
+    // The stuff for the bottom sheet
+
+    /*
+
+
+
+        activeColor = requireContext().getResources().getColor(R.color.colorSecondary);
+        inactiveColor = requireContext().getResources().getColor(R.color.colorPrimary);
+
+
+    if (editAsChoPro) {
+            // Do the conversion
+            // Initially set this to false so it triggers
+            editAsChoPro = false;
+            dealWithEditMode(true);
+            setButtonOn(chordProFormat,true);
+            setButtonOn(openSongFormat,false);
+        } else {
+            setButtonOn(chordProFormat,false);
+            setButtonOn(openSongFormat,true);
+        }
+
+
+    private void setButtonOn(MaterialButton button, boolean on) {
+        if (on) {
+            button.setBackgroundTintList(ColorStateList.valueOf(activeColor));
+        } else {
+            button.setBackgroundTintList(ColorStateList.valueOf(inactiveColor));
+        }
     }
-    public Song getSong() {
-        return song;
-    }
-    public void setOriginalSong(Song originalSong) {
-        this.originalSong = originalSong;
-    }
-    public Song getOriginalSong() {
-        return originalSong;
-    }
-    public boolean songChanged() {
-        return !song.equals(originalSong);
-    }
+     */
+
+
 
     @Override
     public void onDestroyView() {

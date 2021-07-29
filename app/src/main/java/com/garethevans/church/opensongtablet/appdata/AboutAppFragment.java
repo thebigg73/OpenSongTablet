@@ -48,17 +48,17 @@ public class AboutAppFragment extends Fragment {
 
     private void updateMenuText() {
         mainActivityInterface.getVersionNumber().updateMenuVersionNumber(requireContext(),myView.latestVersion);
-        myView.languageButton.setHintText(mainActivityInterface.getLocale().getDisplayLanguage());
+        myView.languageButton.setHint(mainActivityInterface.getLocale().getDisplayLanguage());
     }
 
     private void setListeners() {
-        myView.visitWebsite.setOnClickListener(v -> mainActivityInterface.openWebPage(null,website));
-        myView.latestVersion.setOnClickListener(v -> mainActivityInterface.openWebPage(null,latest));
-        myView.manualButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,userguide));
-        myView.forumButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,groups));
-        myView.rateButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,rate+requireActivity().getPackageName()));
-        myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,paypal));
-        myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openWebPage(null,github));
+        myView.visitWebsite.setOnClickListener(v -> mainActivityInterface.openDocument(null,website));
+        myView.latestVersion.setOnClickListener(v -> mainActivityInterface.openDocument(null,latest));
+        myView.manualButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,userguide));
+        myView.forumButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,groups));
+        myView.rateButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,rate+requireActivity().getPackageName()));
+        myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,paypal));
+        myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,github));
         myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.languageFragment));
     }
 

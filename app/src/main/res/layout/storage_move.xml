@@ -20,15 +20,21 @@
                 android:id="@+id/currentFolderChoice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/move_from"/>
-
-            <TableRow style="@style/DividerLine" />
+                android:hint="@string/move_from"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp" />
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/folderChoice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/move_from"/>
+                android:hint="@string/move_from"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -36,7 +42,8 @@
                 android:id="@+id/selectAllCheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="@string/select_all" />
 
             <TableRow style="@style/DividerLine" />
@@ -44,16 +51,14 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <LinearLayout
                     android:id="@+id/folderContentsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
 
             </ScrollView>
-
-
-
         </LinearLayout>
 
         <TableRow style="@style/DividerLine" />
@@ -64,32 +69,34 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:orientation="vertical">
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/doMove"
+                style="@style/TextBackgroundButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_margin="12dp"
-                android:padding="12dp"
-                style="@style/TextBackgroundButton"
-                android:text="@string/move_to_folder"/>
+                android:layout_margin="16dp"
+                android:padding="16dp"
+                android:text="@string/move_to_folder" />
 
             <TextView
                 android:id="@+id/progressText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="12dp"
-                android:visibility="gone"/>
+                android:padding="16dp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
     </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

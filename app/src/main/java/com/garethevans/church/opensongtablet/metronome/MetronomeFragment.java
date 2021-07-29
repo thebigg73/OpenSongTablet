@@ -371,13 +371,13 @@ public class MetronomeFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable editable) {
+            // Some of these are saved as preferences, others are saved with the song
             int position;
             switch (preference) {
                 case "songTempo":
                     mainActivityInterface.getSong().setTempo(exposedDropDown.getText().toString());
+                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface);
                     restartMetronome();
-                    // TODO initiate save song
-                    // TODO update the sql or nonopensongsql databases too
                     break;
                 case "songTimeSignature_beats":
                 case "songTimeSignature_divisions":
@@ -397,8 +397,7 @@ public class MetronomeFragment extends Fragment {
                         mainActivityInterface.getSong().setTimesig("");
                     }
                     restartMetronome();
-                    // TODO initiate save song
-                    // TODO update the sql or nonopensongsql databases too
+                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface);
                     break;
                 case "metronomePan":
                     String chosen = exposedDropDown.getText().toString();

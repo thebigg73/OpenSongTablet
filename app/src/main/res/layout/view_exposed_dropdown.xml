@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/textLayout"
-    style="@style/ExposedDropDown"
+<com.google.android.material.textfield.TextInputLayout android:id="@+id/textLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    style="@style/ExposedDropDown"
     tools:hint="Hint"
-    android:labelFor="@+id/textView">
+    android:labelFor="@+id/textView"
+    android:clipChildren="true"
+    android:clipToPadding="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <AutoCompleteTextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dropDownHeight="200dp"
+        android:padding="16dp"
+        android:includeFontPadding="false"
         tools:text="Text"/>
 
 </com.google.android.material.textfield.TextInputLayout>

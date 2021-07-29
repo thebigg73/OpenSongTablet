@@ -33,7 +33,6 @@ public class Song {
     private String aka="";
     private String autoscrolldelay="";
     private String autoscrolllength="";
-    private String metronomebpm="";
     private String padfile="";
     private String padloop="";
     private String midi="";
@@ -123,7 +122,6 @@ public class Song {
     }
     public String getAutoscrolldelay() {return autoscrolldelay;}
     public String getAutoscrolllength() {return autoscrolllength;}
-    public String getMetronomebpm() {return metronomebpm;}
     public String getPadfile() {return padfile;}
     public String getPadloop() {return padloop;}
     public String getMidi() {return midi;}
@@ -247,7 +245,6 @@ public class Song {
     }
     public void setAutoscrolldelay(String autoscrolldelay) {this.autoscrolldelay = autoscrolldelay;}
     public void setAutoscrolllength(String autoscrolllength) {this.autoscrolllength = autoscrolllength;}
-    public void setMetronomebpm(String metronomebpm) {this.metronomebpm  = metronomebpm;}
     public void setPadfile(String padfile) {this.padfile = padfile;}
     public void setPadloop(String padloop) {this.padloop = padloop;}
     public void setMidi(String midi) {this.midi = midi;}
@@ -330,7 +327,7 @@ public class Song {
         this.aka = toCopy.aka;
         this.autoscrolldelay = toCopy.autoscrolldelay;
         this.autoscrolllength = toCopy.autoscrolllength;
-        this.metronomebpm = toCopy.metronomebpm;
+        this.tempo = toCopy.tempo;
         this.padfile = toCopy.padfile;
         this.padloop = toCopy.padloop;
         this.midi = toCopy.midi;
@@ -379,7 +376,7 @@ public class Song {
                     user1.equals(song.user1) && user2.equals(song.user2) && user3.equals(song.user3) &&
                     key.equals(song.key) && timesig.equals(song.timesig) && aka.equals(song.aka) &&
                     autoscrolldelay.equals(song.autoscrolldelay) && autoscrolllength.equals(song.autoscrolllength) &&
-                    metronomebpm.equals(song.metronomebpm) && padfile.equals(song.padfile) &&
+                    tempo.equals(song.tempo) && padfile.equals(song.padfile) &&
                     padloop.equals(song.padloop) && midi.equals(song.midi) && midiindex.equals(song.midiindex) &&
                     capo.equals(song.capo) && capoprint.equals(song.capoprint) && customchords.equals(song.customchords) &&
                     notes.equals(song.notes) && abc.equals(song.abc) && linkyoutube.equals(song.linkyoutube) &&

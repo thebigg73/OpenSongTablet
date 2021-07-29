@@ -49,7 +49,7 @@ public class SetStorageBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeading.setClose(this);
 
         myView.webHelp.setOnClickListener(v -> {
-            mainActivityInterface.openWebPage("storage",null);
+            mainActivityInterface.openDocument("storage",null);
             dismiss();
         });
         return myView.getRoot();

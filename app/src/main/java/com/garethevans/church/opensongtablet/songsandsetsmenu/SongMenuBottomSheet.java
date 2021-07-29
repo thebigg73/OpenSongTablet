@@ -64,8 +64,8 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         } else {
             myView.songActions.setVisibility(View.VISIBLE);
             myView.addToSet.setVisibility(View.VISIBLE);
-            myView.songActions.setHintText(songTitle);
-            myView.addToSet.setHintText(songTitle);
+            myView.songActions.setHint(songTitle);
+            myView.addToSet.setHint(songTitle);
         }
 
         // Listener for buttons

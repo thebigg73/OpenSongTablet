@@ -20,7 +20,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     // All the helpers we need to access are in the MainActivity
     private final MainActivityInterface mainActivityInterface;
-    private final List<SetItemInfo> setList;
+    private List<SetItemInfo> setList;
     private ItemTouchHelper itemTouchHelper;
     private final String TAG = "SetListAdapter";
 
@@ -30,6 +30,10 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     SetListAdapter(MainActivityInterface mainActivityInterface, List<SetItemInfo> setList) {
         this.mainActivityInterface = mainActivityInterface;
+        this.setList = setList;
+    }
+
+    public void changeSetList(List<SetItemInfo> setList) {
         this.setList = setList;
     }
 
@@ -78,7 +82,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @NonNull
     @Override
     public String getSectionName(int position) {
-        return null;
+        return setList.get(position).songitem;
     }
 
     @Override
@@ -95,12 +99,16 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemSwiped(int fromPosition) {
-        setList.remove(fromPosition);
-        notifyItemRemoved(fromPosition);
-        // Go through the setList from this position and sort the numbers
-        for (int x=fromPosition; x<setList.size(); x++) {
-            setList.get(x).songitem = (x+1)+".";
-            notifyItemChanged(x);
+        try {
+            setList.remove(fromPosition);
+            notifyItemRemoved(fromPosition);
+            // Go through the setList from this position and sort the numbers
+            for (int x = fromPosition; x < setList.size(); x++) {
+                setList.get(x).songitem = (x + 1) + ".";
+                notifyItemChanged(x);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

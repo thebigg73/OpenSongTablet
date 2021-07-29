@@ -49,8 +49,8 @@ public class VersionNumber {
         if (!versionName.equals("?") && versionCode > 0) {
             if (showVersion != null) {
                 showVersion.setVisibility(View.VISIBLE);
-                showVersion.setMainText(getFullVersionInfo());
-                showVersion.setHintText(""+getVersionCode());
+                showVersion.setText(getFullVersionInfo());
+                showVersion.setHint(""+getVersionCode());
             }
         } else {
             if (showVersion != null) {

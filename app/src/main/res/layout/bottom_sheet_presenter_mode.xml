@@ -15,9 +15,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/tool"
             android:padding="4dp"
-            android:src="@drawable/ic_menu_white_36dp"
-            android:contentDescription="@string/tool" />
+            android:src="@drawable/ic_menu_white_36dp" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                     android:padding="16dp"
                     android:text="@string/alert"
                     custom:mydrawable="@drawable/ic_message_alert_white_36dp"
-                    custom:showCheckBox="true"/>
+                    custom:showCheckBox="true" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

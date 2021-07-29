@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/prefEditLayout"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/holderLayout"
+    style="@style/EditTextLayoutOutline"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:labelFor="@+id/editText"
+    tools:hint="Hint">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/holderLayout"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/editText"
+        style="@style/EditTextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:hint="Hint"
-        android:labelFor="@+id/editText"
-        style="@style/EditTextLayoutOutline">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="The text"
-            style="@style/EditTextLayout" />
-    </com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>
+        android:layout_margin="0dp"
+        android:padding="16dp"
+        tools:text="The text" />
+</com.google.android.material.textfield.TextInputLayout>

@@ -9,7 +9,7 @@
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -25,27 +25,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/actions_current_song"
-                custom:mydrawable="@drawable/ic_bullseye_white_36dp"
                 android:padding="16dp"
-                android:text="@string/actions_current_song" />
+                android:text="@string/actions_current_song"
+                custom:mydrawable="@drawable/ic_bullseye_white_36dp" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/addToSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_song_to_set"
-                custom:mydrawable="@drawable/ic_plus_white_36dp"
                 android:padding="16dp"
-                android:text="@string/add_song_to_set" />
+                android:text="@string/add_song_to_set"
+                custom:mydrawable="@drawable/ic_plus_white_36dp" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/newSongs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/import_main"
-                custom:mydrawable="@drawable/ic_database_import_white_36dp"
                 android:padding="16dp"
-                android:text="@string/add_songs" />
+                android:text="@string/add_songs"
+                custom:mydrawable="@drawable/ic_database_import_white_36dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

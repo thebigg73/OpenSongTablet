@@ -12,7 +12,7 @@ import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView.M
 
 public class EditSongViewPagerAdapter extends FragmentStateAdapter implements MeasurableAdapter<RecyclerView.ViewHolder> {
 
-    public final Fragment[] menuFragments = {new EditSongFragmentMain(), new EditSongFragmentFeatures(), new EditSongFragmentTags()};
+    public final Fragment[] menuFragments = {new EditSongFragmentLyrics(), new EditSongFragmentMain(), new EditSongFragmentFeatures(), new EditSongFragmentTags()};
 
     public EditSongViewPagerAdapter(@NonNull FragmentManager fragmentManager,Lifecycle lifecycle) {
         super(fragmentManager,lifecycle);

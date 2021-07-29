@@ -59,7 +59,7 @@ public class ModeFragment extends Fragment {
         myView.performanceMode.setOnClickListener(v -> updatePreference("Performance"));
         myView.stageMode.setOnClickListener(v -> updatePreference("Stage"));
         myView.presentationMode.setOnClickListener(v -> updatePreference("Presentation"));
-        myView.webLink.setOnClickListener(v -> mainActivityInterface.openWebPage("mode",null));
+        myView.webLink.setOnClickListener(v -> mainActivityInterface.openDocument("mode",null));
     }
 
     private void updatePreference(String which) {

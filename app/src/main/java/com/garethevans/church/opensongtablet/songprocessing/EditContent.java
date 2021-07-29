@@ -1,19 +1,19 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
 public class EditContent {
 
-    Song song, originalSong;
+    private Song editedSong;
 
-    Song getCurrentSong() {return song;}
-    void setCurrentSong(Song song) {this.song = song;}
+    public Song getEditedSong() {return editedSong;}
+    public void setEditedSong(Song editedSong) {this.editedSong = editedSong;}
 
-    Song getOriginalSong() {return originalSong;}
-    void setOriginalSong(Song originalSong) {this.originalSong = originalSong;}
-
-    boolean songChanged() {
-        return song==originalSong;
+    public boolean songChanged(MainActivityInterface mainActivityInterface) {
+        return editedSong == mainActivityInterface.getSong();
     }
 
+    // The getters and setters
 
 
 /*

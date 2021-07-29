@@ -5,6 +5,7 @@ import static com.google.android.material.snackbar.Snackbar.make;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -24,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -89,6 +91,7 @@ import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
 import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
+import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
@@ -185,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     private ConvertTextSong convertTextSong;
     private ProcessSong processSong;
     private LoadSong loadSong;
-    private Song song, indexingSong, tempSong;
+    private Song song, indexingSong, tempSong, editedSong;
     private CurrentSet currentSet;
     private SetActions setActions;
     private SongListBuildIndex songListBuildIndex;
@@ -448,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         pageButtons.setMainFABS(activityMainBinding.pageButtonRight.actionFAB, activityMainBinding.pageButtonRight.custom1Button,
                 activityMainBinding.pageButtonRight.custom2Button,activityMainBinding.pageButtonRight.custom3Button,
                 activityMainBinding.pageButtonRight.custom4Button,activityMainBinding.pageButtonRight.custom5Button,
-                activityMainBinding.pageButtonRight.custom6Button,activityMainBinding.pageButtonRight.pageButtonsLayout,
+                activityMainBinding.pageButtonRight.custom6Button,activityMainBinding.pageButtonRight.bottomButtons,
                 themeColors.getPageButtonsColor());
         pageButtons.animatePageButton(this,false);
     }
@@ -1231,10 +1234,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         editSongFragmentMain.updateKeyAndLyrics(song);
     }
     @Override
-    public void updateSong(Song song) {
-        editSongFragment.updateSong(song);
-    }
-    @Override
     public Song getSong() {
         return song;
     }
@@ -1259,21 +1258,13 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         this.tempSong = tempSong;
     }
     @Override
-    public void setOriginalSong(Song originalSong) {
-        editSongFragment.setOriginalSong(originalSong);
-    }
-    @Override
-    public Song getOriginalSong() {
-        return editSongFragment.getOriginalSong();
-    }
-    @Override
     public boolean songChanged() {
-        return editSongFragment.songChanged();
+        return song!=tempSong;
     }
     @Override
-    public void editSongSaveButtonAnimation(boolean pulse) {
+    public void showSaveAllowed(boolean showSave) {
         if (editSongFragment!=null) {
-            editSongFragment.pulseSaveChanges(pulse);
+            editSongFragment.showSaveAllowed(showSave);
         }
     }
 
@@ -1400,6 +1391,16 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                             setMenuFragment.updateKeys();
                         } else if (arguments!=null && arguments.size()>0){
                             setMenuFragment.updateItem(Integer.parseInt(arguments.get(0)));
+                        }
+                    }
+                    break;
+                case "linksFragment":
+                    // Update the values in the links
+                    if (callingFragment!=null && callingFragment.isVisible()) {
+                        try {
+                            ((LinksFragment) callingFragment).setupViews();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                     break;
@@ -2265,7 +2266,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     }
 
     @Override
-    public void openWebPage(String local, String location) {
+    public void openDocument(String local, String location) {
         // I could pass the address in as a location string,
         // However, for the user-guide to avoid having to change loads of files
         // I keep them listed here.
@@ -2282,11 +2283,35 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(location));
+            if (location.startsWith("http")) {
+                intent.setData(Uri.parse(location));
+            } else {
+                String mimeType = null;
+                if (location.contains(".")) {
+                    String extension = location.substring(location.lastIndexOf(".") + 1);
+                    Log.d(TAG,"location: "+location);
+                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                    mimeType= myMime.getMimeTypeFromExtension(extension);
+                }
+                if (mimeType == null) {
+                    mimeType = "*/*";
+                }
+                Uri uri = Uri.parse(location);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                Log.d(TAG,"mimeType: "+mimeType);
+                intent.setDataAndType(uri,mimeType);
+            }
+
             startActivity(intent);
+        } catch (ActivityNotFoundException nf) {
+            // No suitable application to open the document
+            showToast.doIt(this,getString(R.string.no_suitable_application));
+            nf.printStackTrace();
+
         } catch (Exception e) {
             // Probably no browser installed or no internet permission given.
             e.printStackTrace();
         }
     }
+
 }

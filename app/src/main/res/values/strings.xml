@@ -921,4 +921,14 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="video">Video</string>
     <string name="beats">Beats</string>
     <string name="divisions">Divisions</string>
+    <string name="link_reset">Reset the link above</string>
+    <string name="link_search_youtube">Try to find this song on YouTube. If you find the correct item, select the \'Share\' option and then copy the link to the clipboard. You can then return here and paste the link above.</string>
+    <string name="link_search_web">Search for this song on the internet. If you find a suitable web page, copy the web address to the clipboard, then return here and pasete it into the box above.</string>
+    <string name="link_search_document">Select a document on your device. If you want to allow synchronising across devices, this file should be saved somewhere inside your OpenSong folder.</string>
+    <string name="link_error">The link is not valid, please reset the link.</string>
+    <string name="link_audio_pad">Set this as the song pad/backing track</string>
+    <string name="no_suitable_application">No application is available or installed that can open this item.</string>
+    <string name="error_song_not_saved">There was an error saving the song.</string>
+    <string name="chord_format">Chord format</string>
+    <string name="tag_song">Song tags</string>
 </resources>

@@ -64,7 +64,7 @@ public class ProcessSong {
         myNEWXML += "  <hymn_number>" + parseToHTMLEntities(thisSong.getHymnnum()) + "</hymn_number>\n";
         myNEWXML += "  <capo print=\"" + parseToHTMLEntities(thisSong.getCapoprint()) + "\">" +
                 parseToHTMLEntities(thisSong.getCapo()) + "</capo>\n";
-        myNEWXML += "  <tempo>" + parseToHTMLEntities(thisSong.getMetronomebpm()) + "</tempo>\n";
+        myNEWXML += "  <tempo>" + parseToHTMLEntities(thisSong.getTempo()) + "</tempo>\n";
         myNEWXML += "  <time_sig>" + parseToHTMLEntities(thisSong.getTimesig()) + "</time_sig>\n";
         myNEWXML += "  <duration>" + parseToHTMLEntities(thisSong.getAutoscrolllength()) + "</duration>\n";
         myNEWXML += "  <predelay>" + parseToHTMLEntities(thisSong.getAutoscrolldelay()) + "</predelay>\n";

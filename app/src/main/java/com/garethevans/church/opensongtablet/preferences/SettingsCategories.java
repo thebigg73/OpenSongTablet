@@ -70,14 +70,14 @@ public class SettingsCategories extends Fragment {
                 mode = getString(R.string.presentation_mode);
                 break;
         }
-        myView.modeButton.setHintText(mode);
+        myView.modeButton.setHint(mode);
     }
 
     private void setPlayEnabled(boolean enabled) {
         myView.connectButton.setEnabled(enabled);
         myView.connectLine.setEnabled(enabled);
         if (!enabled) {
-            myView.connectButton.setHintText(getString(R.string.play_services_error));
+            myView.connectButton.setHint(getString(R.string.play_services_error));
         }
     }
 
@@ -89,7 +89,7 @@ public class SettingsCategories extends Fragment {
             message = getString(R.string.not_available);
         }
         myView.midiButton.setEnabled(enabled);
-        myView.midiButton.setHintText(message);
+        myView.midiButton.setHint(message);
     }
 
     private void setListeners() {

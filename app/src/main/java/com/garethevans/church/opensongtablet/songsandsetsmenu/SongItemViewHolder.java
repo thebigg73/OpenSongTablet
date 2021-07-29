@@ -12,9 +12,7 @@ import com.garethevans.church.opensongtablet.R;
 class SongItemViewHolder extends RecyclerView.ViewHolder {
 
     final TextView itemTitle;
-    final TextView itemFolder;
     final TextView itemAuthor;
-    final TextView itemKey;
     final CheckBox itemChecked;
     final LinearLayout itemCard;
 
@@ -22,9 +20,7 @@ class SongItemViewHolder extends RecyclerView.ViewHolder {
         super(v);
         itemCard = v.findViewById(R.id.songClickSpace);
         itemTitle = v.findViewById(R.id.cardview_title);
-        itemFolder = v.findViewById(R.id.cardview_folder);
         itemAuthor = v.findViewById(R.id.cardview_author);
-        itemKey = v.findViewById(R.id.cardview_key);
         itemChecked = v.findViewById(R.id.cardview_setcheck);
     }
 }

@@ -28,15 +28,16 @@
                     android:id="@+id/prefEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
                     android:hint="@string/text"
+                    android:padding="16dp"
                     android:text="@string/text" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/textValues"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/text" />
+                    android:hint="@string/text"
+                    android:padding="16dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/okButton"
@@ -48,8 +49,6 @@
                     android:text="@android:string/ok" />
 
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
-
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

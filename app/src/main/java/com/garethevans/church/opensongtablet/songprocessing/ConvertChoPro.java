@@ -551,7 +551,7 @@ public class ConvertChoPro {
         thisSong.setTitle(title.trim());
         thisSong.setAuthor(author.trim());
         thisSong.setCopyright(copyright.trim());
-        thisSong.setMetronomebpm(tempo.trim());
+        thisSong.setTempo(tempo.trim());
         thisSong.setTimesig(time_sig.trim());
         thisSong.setCcli(ccli.trim());
         thisSong.setKey(key.trim());

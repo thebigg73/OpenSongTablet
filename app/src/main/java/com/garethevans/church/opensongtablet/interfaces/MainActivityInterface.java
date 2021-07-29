@@ -84,7 +84,7 @@ public interface MainActivityInterface {
     void doSongLoad(String folder, String filename);
     void loadSongFromSet(int position);
     void updateKeyAndLyrics(Song song);
-    void editSongSaveButtonAnimation(boolean pulse);
+    void showSaveAllowed(boolean saveAllowed);
     void registerFragment(Fragment frag, String what);
     void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
     void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
@@ -95,9 +95,6 @@ public interface MainActivityInterface {
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(Song song);
-    void updateSong(Song song);
-    void setOriginalSong(Song originalSong);
-    Song getOriginalSong();
     boolean songChanged();
     void updateSetList();
     void stopAutoscroll();
@@ -196,7 +193,7 @@ public interface MainActivityInterface {
     Display getDisplay();
     ExternalDisplay getExternalDisplay();
     PresentationCommon getPresentationCommon();
-    void openWebPage(String guideId, String location);
+    void openDocument(String guideId, String location);
     PrepareFormats getPrepareFormats();
     void setSectionViews(ArrayList<View> views);
     ArrayList<View> getSectionViews();

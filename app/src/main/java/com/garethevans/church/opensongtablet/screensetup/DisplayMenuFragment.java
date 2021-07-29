@@ -58,7 +58,7 @@ public class DisplayMenuFragment extends Fragment {
                 themeName = getString(R.string.theme_custom2);
                 break;
         }
-        myView.themeButton.setHintText(themeName);
+        myView.themeButton.setHint(themeName);
     }
 
     private void setListeners() {

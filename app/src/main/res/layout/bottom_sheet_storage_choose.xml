@@ -24,14 +24,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:text="@string/storage_help" />
 
             <TextView
                 android:id="@+id/storageInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
+                android:padding="16dp"
                 android:text="@string/storage_quicktip" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

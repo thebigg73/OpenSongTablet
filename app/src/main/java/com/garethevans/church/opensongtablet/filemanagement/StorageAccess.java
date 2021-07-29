@@ -534,7 +534,26 @@ public class StorageAccess {
             uriString = "../OpenSong/Backgrounds/" + uriString;
         }
 
-        if (uriString.startsWith("../OpenSong/Media/")) {
+        // Basically replace ../OpenSong/ with the root app home folder
+        if (uriString.startsWith("../OpenSong/")) {
+            uriString = uriString.replace("../OpenSong/","");
+            String rootFolder = "";
+            if (uriString.contains("/")) {
+                // Get the first folder as the new root
+                rootFolder = uriString.substring(0,uriString.indexOf("/"));
+                uriString = uriString.replace(rootFolder+"/","");
+            }
+            Log.d(TAG,"rootFolder:"+rootFolder+"  uriString="+uriString);
+            // Try to get the actual uri
+            Uri uri = getUriForItem(c,mainActivityInterface,rootFolder,"",uriString);
+            Log.d(TAG,"uri="+uri);
+            return uri;
+        } else {
+            // Now get the actual uri
+            return Uri.parse(uriString);
+        }
+
+        /*if (uriString.startsWith("../OpenSong/Media/")) {
             // Remove this and get the proper location
             uriString = uriString.replace("../OpenSong/Media/", "");
             uriString = uriString.replace("%20", " ");
@@ -562,14 +581,14 @@ public class StorageAccess {
         } else {
             // Now get the actual uri
             return Uri.parse(uriString);
-        }
+        }*/
     }
-    String fixUriToLocal(Uri uri) {
+    public String fixUriToLocal(Uri uri) {
         // If a file is in the OpenSong/ folder, let's localise it (important for sync)
         String path = "";
         if (uri != null && uri.getPath() != null) {
             path = uri.getPath();
-            if (path.contains("OpenSong/Media/") || path.contains("OpenSong/Pads/") || path.contains("OpenSong/Backgrounds/")) {
+            if (path.contains("OpenSong/")) {
                 path = path.substring(path.lastIndexOf("OpenSong/") + 9);
                 path = "../OpenSong/" + path;
             } else {
@@ -1084,6 +1103,34 @@ public class StorageAccess {
 
 
     // Basic file actions (read, create, copy, delete, write)
+    public boolean saveSongFile(Context c, MainActivityInterface mainActivityInterface) {
+        // This is called from the SaveSong class and uses the current Song object in MainActivity
+        // First get the song uri
+        // Because it may not be in the songs folder, lets check!
+        ArrayList<String> newLocation = fixNonSongs(mainActivityInterface.getSong().getFolder());
+        // Write the string file
+        return doStringWriteToFile(c,mainActivityInterface,newLocation.get(0), newLocation.get(1),
+                mainActivityInterface.getSong().getFilename(),
+                mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, mainActivityInterface.getSong()));
+    }
+    public ArrayList<String> fixNonSongs(String folderToCheck) {
+        // Return any subfolder and change the 'Songs' folder as required
+        ArrayList<String> fixedFolders = new ArrayList<>();
+        String where = "Songs";
+        if (folderToCheck.contains("../")) {
+            where = folderToCheck.replace("../","");
+            if (where.contains("_cache")) {
+                folderToCheck = "_cache";
+                where = where.substring(0,where.indexOf("/_cache"));
+            } else {
+                folderToCheck = "";
+                where = folderToCheck;
+            }
+        }
+        fixedFolders.add(where);
+        fixedFolders.add(folderToCheck);
+        return fixedFolders;
+    }
     public void lollipopCreateFileForOutputStream(Context c, MainActivityInterface mainActivityInterface, Uri uri, String mimeType, String folder, String subfolder, String filename) {
         if (lollipopOrLater() && !uriExists(c, uri)) {
             // Only need to do this for Lollipop or later
@@ -1135,27 +1182,33 @@ public class StorageAccess {
             Uri uri = getUriForItem(c, mainActivityInterface, folder, subfolder, filename);
             lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null, folder, subfolder, filename);
             OutputStream outputStream = getOutputStream(c, uri);
-            writeFileFromString(string, outputStream);
-            return true;
+            return writeFileFromString(string, outputStream);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
     public boolean writeFileFromString(String s, OutputStream os) {
+        BufferedOutputStream bufferedOutputStream = null;
         try {
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(os);
+            bufferedOutputStream = new BufferedOutputStream(os);
             bufferedOutputStream.write(s.getBytes(StandardCharsets.UTF_8));
             bufferedOutputStream.flush();
             bufferedOutputStream.close();
-            /*os.write(s.getBytes());
-            os.flush();
-            os.close();*/
+            // All good (this also closes the output stream).  Return true
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            // Oops.  We need to try closing the streams again
         }
         // If there was a problem, close the outputstream and return false
+        if (bufferedOutputStream!=null) {
+            try {
+                bufferedOutputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         try {
             os.close();
         } catch (Exception e) {

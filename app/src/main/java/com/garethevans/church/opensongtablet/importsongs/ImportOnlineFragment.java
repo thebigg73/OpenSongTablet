@@ -540,7 +540,7 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setFolder(getFolder);
         newSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(getFolder,getName));
         if (mainActivityInterface.getSaveSong().
-                doSave(requireContext(),mainActivityInterface,newSong,newSong,false,false)) {
+                doSave(requireContext(),mainActivityInterface,newSong)) {
             // Update the songid file (used later)
             mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),
                     mainActivityInterface,

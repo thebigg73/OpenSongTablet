@@ -484,7 +484,7 @@ public class PageButtons {
                 //TODO
                 break;
             case "link":
-                //TODO
+                actionInterface.navigateToFragment("opensongapp://settings/actions/links",0);
                 break;
             case "chordfingerings":
                 //TODO

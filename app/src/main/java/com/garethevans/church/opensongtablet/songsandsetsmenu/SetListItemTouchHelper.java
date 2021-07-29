@@ -84,6 +84,7 @@ class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         //Remove item
         int fromPosition = viewHolder.getAbsoluteAdapterPosition();
+        Log.d("SetListItem","fromPosition="+fromPosition);
         setItemTouchInterface.onItemSwiped(fromPosition);
         //mAdapter.remove(mainActivityInterface.getCurrentSet(),position);
     }
