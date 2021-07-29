@@ -87,4 +87,37 @@ public class EditSongFragmentLyrics extends Fragment {
                     fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics()));
         }
     }
+
+    // The stuff for the bottom sheet
+
+    /*
+
+
+
+        activeColor = requireContext().getResources().getColor(R.color.colorSecondary);
+        inactiveColor = requireContext().getResources().getColor(R.color.colorPrimary);
+
+
+    if (editAsChoPro) {
+            // Do the conversion
+            // Initially set this to false so it triggers
+            editAsChoPro = false;
+            dealWithEditMode(true);
+            setButtonOn(chordProFormat,true);
+            setButtonOn(openSongFormat,false);
+        } else {
+            setButtonOn(chordProFormat,false);
+            setButtonOn(openSongFormat,true);
+        }
+
+
+    private void setButtonOn(MaterialButton button, boolean on) {
+        if (on) {
+            button.setBackgroundTintList(ColorStateList.valueOf(activeColor));
+        } else {
+            button.setBackgroundTintList(ColorStateList.valueOf(inactiveColor));
+        }
+    }
+     */
+
 }

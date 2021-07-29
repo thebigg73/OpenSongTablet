@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,9 @@ public class EditSongFragmentTags extends Fragment {
         // Set up the current values
         setupValues();
 
+        // Set up the listeners
+        setupListeners();
+
         return myView.getRoot();
     }
 
@@ -53,6 +58,53 @@ public class EditSongFragmentTags extends Fragment {
         myView.user3.setText(mainActivityInterface.getTempSong().getUser3());
         myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum());
         myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
+    }
 
+    private void setupListeners() {
+        myView.ccli.addTextChangedListener(new MyTextWatcher("ccli"));
+        myView.user1.addTextChangedListener(new MyTextWatcher("user1"));
+        myView.user2.addTextChangedListener(new MyTextWatcher("user2"));
+        myView.user3.addTextChangedListener(new MyTextWatcher("user3"));
+        myView.hymnnum.addTextChangedListener(new MyTextWatcher("hymnnum"));
+
+    }
+    private class MyTextWatcher implements TextWatcher {
+
+        String what;
+        MyTextWatcher(String what) {
+            this.what = what;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            switch (what) {
+                case "tags":
+                    mainActivityInterface.getTempSong().setTheme(editable.toString());
+                    break;
+                case "user1":
+                    mainActivityInterface.getTempSong().setUser1(editable.toString());
+                    break;
+                case "user2":
+                    mainActivityInterface.getTempSong().setUser2(editable.toString());
+                    break;
+                case "user3":
+                    mainActivityInterface.getTempSong().setUser3(editable.toString());
+                    break;
+                case "ccli":
+                    mainActivityInterface.getTempSong().setCcli(editable.toString());
+                    break;
+                case "presorder":
+                    mainActivityInterface.getTempSong().setPresentationorder(editable.toString());
+                    break;
+            }
+        }
     }
 }

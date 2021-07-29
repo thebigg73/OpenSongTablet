@@ -284,7 +284,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
             // If we are just editing, update the edit fragment and dismiss, otherwise save the new values
             if (editSong) {
-                requireActivity().runOnUiThread(() -> mainActivityInterface.updateKeyAndLyrics(mainActivityInterface.getSong()));
+                //requireActivity().runOnUiThread(() -> mainActivityInterface.updateKeyAndLyrics(mainActivityInterface.getSong()));
 
             } else {
                 // Write the new improved XML file

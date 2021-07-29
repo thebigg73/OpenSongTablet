@@ -47,7 +47,8 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
                 android.R.attr.inputType,
                 android.R.attr.saveEnabled,
                 R.attr.endIconMode,
-                R.attr.useMonospace};
+                R.attr.useMonospace,
+                R.attr.suffixText};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
@@ -60,7 +61,7 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         restoreState = a.getBoolean(8,true);
         int endIconMode = a.getInt(9, TextInputLayout.END_ICON_NONE);
         boolean useMonospace = a.getBoolean(10, false);
-
+        CharSequence suffixText = a.getText(11);
         editText = findViewById(R.id.editText);
         textInputLayout = findViewById(R.id.holderLayout);
 
@@ -111,6 +112,9 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         }
         if (useMonospace) {
             editText.setTypeface(Typeface.MONOSPACE);
+        }
+        if (suffixText!=null) {
+            textInputLayout.setSuffixText(suffixText);
         }
 
         // By default restore the state/temp text for rotating, etc.

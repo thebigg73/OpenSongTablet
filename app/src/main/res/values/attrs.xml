@@ -20,6 +20,7 @@
         <attr name="useMonospace" format="boolean"/>
         <attr name="android:saveEnabled"/>
         <attr name="endIconMode"/>
+        <attr name="suffixText" />
     </declare-styleable>
 
     <declare-styleable name="MaterialSlider">

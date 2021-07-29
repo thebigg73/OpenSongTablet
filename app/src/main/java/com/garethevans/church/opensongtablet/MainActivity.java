@@ -1231,7 +1231,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     @Override
     public void updateKeyAndLyrics(Song song) {
         // This is called from the transpose class once it has done its work on the edit song fragment
-        editSongFragmentMain.updateKeyAndLyrics(song);
+        //editSongFragmentMain.updateKeyAndLyrics(song);
     }
     @Override
     public Song getSong() {
