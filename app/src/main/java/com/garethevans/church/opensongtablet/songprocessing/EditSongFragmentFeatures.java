@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,7 @@ public class EditSongFragmentFeatures extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window w = requireActivity().getWindow();
-        if (w!=null) {
+        if (w != null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
     }
@@ -65,8 +67,8 @@ public class EditSongFragmentFeatures extends Fragment {
         // The capo
         ArrayList<String> capos = new ArrayList<>();
         capos.add("");
-        for (int x=0; x<12; x++) {
-            capos.add(x+"");
+        for (int x = 0; x < 12; x++) {
+            capos.add(x + "");
         }
         ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
                 R.layout.view_exposed_dropdown_item, capos);
@@ -94,9 +96,9 @@ public class EditSongFragmentFeatures extends Fragment {
 
         // The timesig
         ArrayList<String> timesigs = new ArrayList<>();
-        for (int divisions=1; divisions<=16; divisions++) {
-            if (divisions==1 || divisions==2 || divisions==4 || divisions==8 || divisions==16) {
-                for (int beats=1; beats<=16; beats++) {
+        for (int divisions = 1; divisions <= 16; divisions++) {
+            if (divisions == 1 || divisions == 2 || divisions == 4 || divisions == 8 || divisions == 16) {
+                for (int beats = 1; beats <= 16; beats++) {
                     timesigs.add(beats + "/" + divisions);
                 }
             }
@@ -114,7 +116,18 @@ public class EditSongFragmentFeatures extends Fragment {
     }
 
     private void setupListeners() {
-
+        // The simple text only fields
+        myView.key.addTextChangedListener(new MyTextWatcher("key"));
+        myView.capo.addTextChangedListener(new MyTextWatcher("capo"));
+        myView.pad.addTextChangedListener(new MyTextWatcher("pad"));
+        myView.loop.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                mainActivityInterface.getTempSong().setPadloop("true");
+            } else {
+                mainActivityInterface.getTempSong().setPadloop("false");
+            }
+        });
+        myView.tempo.addTextChangedListener(new MyTextWatcher("tempo"));
     }
 
     private String niceTextFromPref(String prefText) {
@@ -127,6 +140,47 @@ public class EditSongFragmentFeatures extends Fragment {
                 return getString(R.string.link_audio);
             case "custom":
                 return getString(R.string.custom);
+        }
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        String what;
+
+        MyTextWatcher(String what) {
+            this.what = what;
+        }
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            switch (what) {
+                case "key":
+                    mainActivityInterface.getTempSong().setKey(editable.toString());
+                    break;
+                case "capo":
+                    mainActivityInterface.getTempSong().setCapo(editable.toString());
+                    break;
+                case "pad":
+                    // We need to save the English short text in the preferences
+                    mainActivityInterface.getTempSong().setPadfile(shortText(editable.toString()));
+            }
+        }
+    }
+
+    private String shortText(String niceText) {
+        if (niceText.equals(getString(R.string.custom))) {
+            return "custom";
+        } else if (niceText.equals(getString(R.string.link))) {
+            return "link";
+        } else if (niceText.equals(getString(R.string.pad_auto))) {
+            return "auto";
+        } else {
+            return "";
         }
     }
 

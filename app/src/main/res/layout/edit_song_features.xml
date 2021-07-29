@@ -91,7 +91,8 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/tempo"
-                app:suffixText="@string/bpm"/>
+                app:suffixText="@string/bpm"
+                android:inputType="number"/>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/timesig"
@@ -124,7 +125,8 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="8dp"
                     android:hint="@string/edit_song_duration"
-                    app:suffixText="s"/>
+                    app:suffixText="s"
+                    android:inputType="number"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/delay"
@@ -136,7 +138,8 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="0dp"
                     android:hint="@string/autoscroll_time"
-                    app:suffixText="s"/>
+                    app:suffixText="s"
+                    android:inputType="number"/>
 
             </LinearLayout>
 
