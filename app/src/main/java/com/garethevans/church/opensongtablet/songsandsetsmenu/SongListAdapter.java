@@ -73,6 +73,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     public void onBindViewHolder(@NonNull SongItemViewHolder songItemViewHolder, int i) {
         Song song = songList.get(i);
         String filename = song.getFilename();
+        String displayname = song.getFilename();
         String folder = song.getFolder();
         String author = song.getAuthor();
         String key = song.getKey();
@@ -85,6 +86,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         }
         if (filename == null) {
             filename = "";
+            displayname = "";
         }
         if (key == null) {
             key = "";
@@ -92,10 +94,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
         // Set the key if it exists
         if (!key.isEmpty()) {
-            filename += " (" + key + ")";
+            displayname += " (" + key + ")";
         }
 
-        songItemViewHolder.itemTitle.setText(filename);
+        songItemViewHolder.itemTitle.setText(displayname);
         if (author.isEmpty()) {
             songItemViewHolder.itemAuthor.setVisibility(View.GONE);
         } else {

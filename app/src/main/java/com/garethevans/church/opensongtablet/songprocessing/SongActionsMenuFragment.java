@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.controls;
+package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -39,7 +39,7 @@ public class SongActionsMenuFragment extends Fragment {
 
     private void setListeners() {
         // TODO add pages for the settings
-        myView.edit.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.editSongFragment));
+        myView.edit.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.editsong_graph));
         //myView.delete.setOnClickListener(v -> );
         myView.share.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.exportFragment));
         //myView.pad.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.padFragment));

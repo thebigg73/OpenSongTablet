@@ -351,6 +351,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
     @Override
     public void onItemClicked(int position, String folder, String filename) {
+        Log.d(TAG,"Try to load: "+folder+"/"+filename);
         mainActivityInterface.hideKeyboard();
         mainActivityInterface.doSongLoad(folder, filename);
     }

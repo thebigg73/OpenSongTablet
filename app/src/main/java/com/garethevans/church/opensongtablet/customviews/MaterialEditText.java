@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Parcelable;
 import android.text.Editable;
 import android.text.InputType;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -48,26 +50,32 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
                 android.R.attr.saveEnabled,
                 R.attr.endIconMode,
                 R.attr.useMonospace,
-                R.attr.suffixText};
+                R.attr.suffixText,
+                R.attr.helperText,
+                android.R.attr.layout_gravity};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
         CharSequence digits = a.getText(2);
-        int lines = a.getInteger(3,1);
-        int minLines = a.getInteger(4,1);
-        int maxLines = a.getInteger(5,1);
-        CharSequence imeOptions = a.getText(6);
-        int inputType = a.getInt(7,InputType.TYPE_CLASS_TEXT);
+        int lines = a.getInt(3,1);
+        int minLines = a.getInt(4,1);
+        int maxLines = a.getInt(5,1);
+        int imeOptions = a.getInt(6, EditorInfo.IME_ACTION_DONE);
+        int inputType = a.getInt(7, InputType.TYPE_CLASS_TEXT);
         restoreState = a.getBoolean(8,true);
         int endIconMode = a.getInt(9, TextInputLayout.END_ICON_NONE);
         boolean useMonospace = a.getBoolean(10, false);
         CharSequence suffixText = a.getText(11);
+        CharSequence helperText = a.getText(12);
+        int gravity = a.getInt(13,Gravity.TOP);
+
         editText = findViewById(R.id.editText);
         textInputLayout = findViewById(R.id.holderLayout);
 
         editText.setId(View.generateViewId());
         textInputLayout.setId(View.generateViewId());
 
+        // Set the text
         if (text != null) {
             editText.setText(text);
         }
@@ -77,49 +85,43 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         if (digits != null) {
             editText.setKeyListener(DigitsKeyListener.getInstance(digits.toString()));
         }
-        editText.setInputType(inputType);
-        if (inputType == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
-            editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
+
+        if (lines>minLines) {
+            minLines = lines;
+        } else if (minLines>lines) {
+            lines = minLines;
         }
-        if (lines>1) {
-            allowScrolling();
-            editText.setLines(lines);
-        }
-        if (minLines>1) {
-            allowScrolling();
-            editText.setMinLines(minLines);
-        }
+        editText.setLines(lines);
+        editText.setMinLines(minLines);
         if (maxLines>1) {
-            allowScrolling();
             editText.setMaxLines(maxLines);
         }
-        if (imeOptions != null) {
-            int option = EditorInfo.IME_ACTION_UNSPECIFIED;
-            switch (imeOptions.toString()) {
-                case "actionDone":
-                    option = EditorInfo.IME_ACTION_DONE;
-                    break;
-                case "actionGo":
-                    option = EditorInfo.IME_ACTION_GO;
-                    break;
-                case "actionNext":
-                    option = EditorInfo.IME_ACTION_NEXT;
-                    break;
-            }
-            editText.setImeOptions(option);
+
+        // Now figure out the inputType to use
+        if (inputType==InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+            editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
         } else {
-            editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            editText.setInputType(inputType);
+            editText.setImeOptions(imeOptions);
         }
+
         if (useMonospace) {
             editText.setTypeface(Typeface.MONOSPACE);
         }
         if (suffixText!=null) {
             textInputLayout.setSuffixText(suffixText);
         }
+        if (helperText!=null) {
+            textInputLayout.setHelperTextEnabled(true);
+            textInputLayout.setHelperText(helperText);
+        }
 
         // By default restore the state/temp text for rotating, etc.
         // Can override if a fragment is reused
         editText.setSaveEnabled(restoreState);
+
+        editText.setGravity(gravity);
 
         textInputLayout.setEndIconMode(endIconMode);
         Log.d("MaterialEditText","endIconMode="+endIconMode);
@@ -184,8 +186,6 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         editText.setVerticalScrollBarEnabled(true);
         editText.setScrollbarFadingEnabled(false);
         editText.setGravity(Gravity.TOP);
-        int type = InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE;
-        editText.setInputType(type);
     }
 
     @Override
@@ -205,4 +205,36 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         super.onRestoreInstanceState(state);
     }
 
+    public int getLines() {
+        return editText.getLineCount();
+    }
+
+    public int getMinLines() {
+        return editText.getMinLines();
+    }
+
+    public int getMaxLines() {
+        return editText.getMaxLines();
+    }
+
+    public int getInputType() {
+        return editText.getInputType();
+    }
+    public int getImeOptions() {
+        return editText.getImeOptions();
+    }
+    public void setInputType(int inputType) {
+        editText.setInputType(inputType);
+    }
+    public void setImeOptions(int imeOptions) {
+        editText.setImeOptions(imeOptions);
+    }
+    public void setHorizontallyScrolling(boolean horizontallyScrolling) {
+        editText.setHorizontallyScrolling(horizontallyScrolling);
+    }
+    public void setAutoSizeTextTypeUniformWithConfiguration(int minTextSize, int maxTextSize, int stepSize) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            editText.setAutoSizeTextTypeUniformWithConfiguration(minTextSize,maxTextSize,stepSize, TypedValue.COMPLEX_UNIT_SP);
+        }
+    }
 }

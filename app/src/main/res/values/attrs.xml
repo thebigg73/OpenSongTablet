@@ -21,6 +21,8 @@
         <attr name="android:saveEnabled"/>
         <attr name="endIconMode"/>
         <attr name="suffixText" />
+        <attr name="helperText" />
+        <attr name="android:layout_gravity" />
     </declare-styleable>
 
     <declare-styleable name="MaterialSlider">

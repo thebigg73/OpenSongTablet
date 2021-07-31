@@ -16,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:background="@color/colorAltPrimary" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
@@ -35,5 +36,5 @@
             app:useCompatPadding="true" />
 
     </RelativeLayout>
-    
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

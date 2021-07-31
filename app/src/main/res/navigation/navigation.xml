@@ -494,9 +494,12 @@
             app:startDestination="@id/songActionsMenuFragment">
             <fragment
                 android:id="@+id/songActionsMenuFragment"
-                android:name="com.garethevans.church.opensongtablet.controls.SongActionsMenuFragment"
+                android:name="com.garethevans.church.opensongtablet.songprocessing.SongActionsMenuFragment"
                 android:label="SongActionsMenuFragment"
                 tools:layout="@layout/settings_songactions">
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_editSongFragment"
+                    app:destination="@+id/editsong_graph" />
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_highlighterFragment"
                     app:destination="@id/highlighterFragment" />
@@ -644,6 +647,12 @@
             <action
                 android:id="@+id/action_editSongFragment_to_editSongTags"
                 app:destination="@id/editSongTags" />
+            <deepLink
+                android:id="@+id/deepLink25"
+                app:uri="opensongapp://settings/edit" />
+            <action
+                android:id="@+id/action_editSongFragment_to_editsongFeatures2"
+                app:destination="@id/editsongFeatures" />
         </fragment>
 
         <!-- The main song fields -->

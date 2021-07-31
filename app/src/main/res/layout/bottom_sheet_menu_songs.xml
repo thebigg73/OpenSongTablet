@@ -21,6 +21,15 @@
             android:orientation="vertical">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/songEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/edit_song"
+                android:padding="16dp"
+                android:text="@string/edit_song"
+                custom:mydrawable="@drawable/ic_pencil_white_36dp" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/songActions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
