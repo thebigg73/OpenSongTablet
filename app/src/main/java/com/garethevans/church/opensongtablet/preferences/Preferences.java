@@ -251,6 +251,7 @@ public class Preferences extends Activity {
     drawingPenSize                  int         The default size of the pen (def:20)
     drawingTool                     String      The current drawing tool (def:hghlighter)
     editAsChordPro                  boolean     Should the song edit window be ChordPro format (def:false)
+    editTextSize                    float       The size of the song edit text font (8-24) (def: 14)
     exportOpenSongAppSet            boolean     Should we export .osts file (def:true)
     exportOpenSongApp               boolean     Should we export .ost file (def:true)
     exportDesktop                   boolean     Should we export desktop xml file (def:true)

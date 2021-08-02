@@ -1,14 +1,20 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -17,6 +23,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelectio
 import com.garethevans.church.opensongtablet.databinding.EditSongMainBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongMainFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 import java.util.ArrayList;
 
@@ -26,6 +33,9 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
     private EditSongMainBinding myView;
     private MainActivityInterface mainActivityInterface;
     private String newFolder;
+    private TextInputBottomSheet textInputBottomSheet;
+    private ArrayList<String> folders;
+    ExposedDropDownArrayAdapter arrayAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -34,13 +44,19 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Window w = requireActivity().getWindow();
+        if (w!=null) {
+            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
     }
 
-    //TODO
-    // If editing a current song and location changes, check new location doesn't exist and warn
-    // The code to initialise this fragment
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -61,15 +77,35 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
         myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
         myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
+        myView.songNotes.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        myView.songNotes.setImeOptions(EditorInfo.IME_ACTION_NONE);
+        myView.songNotes.setHorizontallyScrolling(true);
+        myView.songNotes.setAutoSizeTextTypeUniformWithConfiguration(8,18,1);
+        checkLines();
         myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
-        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders(getContext(), mainActivityInterface);
+        folders = mainActivityInterface.getSQLiteHelper().getFolders(getContext(), mainActivityInterface);
         newFolder = "+ " + getString(R.string.newfolder);
         folders.add(newFolder);
-        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, folders);
+        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, folders);
         myView.folder.setAdapter(arrayAdapter);
         ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
         exposedDropDownSelection.keepSelectionPosition(myView.folder, folders);
         myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+        textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",getString(R.string.new_folder),getString(R.string.new_folder_name),"","",true);
+    }
+
+    private void checkLines() {
+        String[] lines = myView.songNotes.getText().toString().split("\n");
+        int num = lines.length;
+        if (num > 5) {
+            myView.songNotes.setLines(lines.length);
+            myView.songNotes.setMinLines(lines.length);
+            myView.songNotes.setLines(lines.length);
+        } else {
+            myView.songNotes.setLines(5);
+            myView.songNotes.setMinLines(5);
+            myView.songNotes.setLines(5);
+        }
     }
 
     // Sor the view visibility, listeners, etc.
@@ -99,7 +135,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (s != null) {
                 value = s.toString();
-                if (what.equals("filename") || what.equals("folder") && !value.equals(newFolder)) {
+                if (what.equals("filename")) {
                     value = mainActivityInterface.getStorageAccess().safeFilename(value);
                 }
             }
@@ -107,16 +143,20 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
 
         @Override
         public void afterTextChanged(Editable s) {
-            mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
-            updateTempSong();
+            if (what.equals("folder") && value.equals(newFolder)) {
+                myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+                textInputBottomSheet.show(requireActivity().getSupportFragmentManager(),
+                        "TextInputBottomSheet");
+            } else {
+                mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
+                updateTempSong();
+            }
         }
 
         public void updateTempSong() {
             switch (what) {
                 case "folder":
-                    if (value.equals(newFolder)) {
-                        // TODO initiate new folder bottom sheet
-                    } else {
+                    if (!what.equals(newFolder)) {
                         mainActivityInterface.getTempSong().setFolder(value);
                     }
                     break;
@@ -139,6 +179,31 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         }
     }
 
+
+    public void updateValue(String value) {
+        // New folder name given.  If it isn't null try to create it and select it
+        boolean selectNewFolder = false;
+        if (value!=null && !value.isEmpty()) {
+            // Try to create the new folder if it doesn't exist
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                    mainActivityInterface,"Songs",value,null);
+            if (!mainActivityInterface.getStorageAccess().uriExists(requireContext(),uri)) {
+                selectNewFolder = mainActivityInterface.getStorageAccess().createFolder(requireActivity(),
+                        mainActivityInterface,"Songs","",value);
+            }
+        }
+
+        if (selectNewFolder) {
+            ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(requireContext(),mainActivityInterface);
+            mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),mainActivityInterface,songIds);
+            folders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),songIds,true,null);
+            folders.add(newFolder);
+            arrayAdapter.notifyDataSetChanged();
+            myView.folder.setText(value);
+        } else {
+            myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
+        }
+    }
 
     // Finished with this view
     @Override

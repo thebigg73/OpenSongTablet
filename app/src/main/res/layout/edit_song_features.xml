@@ -81,7 +81,7 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/tempo"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -91,7 +91,6 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/tempo"
-                app:suffixText="@string/bpm"
                 android:inputType="number"/>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -201,7 +200,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/link" />
+                    android:hint="@string/link"
+                    android:layout_gravity="bottom"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/linkValue"
@@ -212,12 +212,10 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="0dp"
-                    android:hint="@string/link_choose" />
-
+                    android:hint="@string/link_choose"
+                    android:layout_gravity="bottom"/>
 
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

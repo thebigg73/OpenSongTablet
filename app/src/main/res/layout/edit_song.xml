@@ -33,7 +33,8 @@
             android:layout_alignParentBottom="true"
             android:contentDescription="@string/save_changes"
             android:src="@drawable/ic_content_save_white_36dp"
-            app:useCompatPadding="true" />
+            app:useCompatPadding="true"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

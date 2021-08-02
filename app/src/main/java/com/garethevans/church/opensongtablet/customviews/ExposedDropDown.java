@@ -41,8 +41,8 @@ public class ExposedDropDown extends TextInputLayout {
         }
 
         textInputLayout.setPadding(0,0,0,0);
-        ((LinearLayout.LayoutParams)textInputLayout.getLayoutParams()).setMargins(0,0,0,getPxFromDp(context, -22));
-        textInputLayout.setTranslationY(getPxFromDp(context, -22));
+        ((LinearLayout.LayoutParams)textInputLayout.getLayoutParams()).setMargins(0,0,0,getPxFromDp(context, -21));
+        textInputLayout.setTranslationY(getPxFromDp(context, -21));
         a.recycle();
     }
 

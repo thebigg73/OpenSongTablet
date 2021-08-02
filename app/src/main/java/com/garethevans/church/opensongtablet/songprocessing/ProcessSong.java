@@ -15,11 +15,13 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,6 +31,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 
@@ -2201,6 +2204,28 @@ public class ProcessSong {
 
 
     // This bit deals with the song headings used for PDF prints and song sheet view
+
+
+    // This bit is for the edit song fragments
+    public void editBoxToMultiline(MaterialEditText editText) {
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
+        editText.setHorizontallyScrolling(true);
+        editText.setAutoSizeTextTypeUniformWithConfiguration(8,18,1);
+    }
+    public void stretchEditBoxToLines(MaterialEditText editText, int minLines) {
+        String[] lines = editText.getText().toString().split("\n");
+        int num = lines.length;
+        if (num > 5) {
+            editText.setLines(lines.length);
+            editText.setMinLines(lines.length);
+            editText.setLines(lines.length);
+        } else {
+            editText.setLines(minLines);
+            editText.setMinLines(minLines);
+            editText.setLines(minLines);
+        }
+    }
 
 
 

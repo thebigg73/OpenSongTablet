@@ -24,6 +24,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
@@ -308,6 +309,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = activityMainBinding.getRoot();
         setContentView(view);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams. SOFT_INPUT_ADJUST_PAN);
+
 
         Log.d(TAG, "STARTING MAIN ACTIVITY: ");
         // Initialise the most important stuff
@@ -1259,7 +1263,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     }
     @Override
     public boolean songChanged() {
-        return song!=tempSong;
+        return !song.equals(tempSong);
     }
     @Override
     public void showSaveAllowed(boolean showSave) {
@@ -1691,16 +1695,23 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         Log.d(TAG, "fragname: "+fragname);
         Log.d(TAG, "value: "+value);
         if (fragment!=null) {
-            switch (fragname) {
-                case "SettingsCCLI":
-                    ((SettingsCCLI)fragment).updateValue(which,value);
-                    break;
-                case "NearbyConnectionsFragment":
-                    ((NearbyConnectionsFragment)fragment).updateValue(which,value);
-                    break;
-                case "SetManageFragment":
-                    ((SetManageFragment)fragment).updateValue(which,value);
-                    break;
+            try {
+                switch (fragname) {
+                    case "SettingsCCLI":
+                        ((SettingsCCLI) fragment).updateValue(which, value);
+                        break;
+                    case "NearbyConnectionsFragment":
+                        ((NearbyConnectionsFragment) fragment).updateValue(which, value);
+                        break;
+                    case "SetManageFragment":
+                        ((SetManageFragment) fragment).updateValue(which, value);
+                        break;
+                    case "EditSongFragmentMain":
+                        ((EditSongFragmentMain) fragment).updateValue(value);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

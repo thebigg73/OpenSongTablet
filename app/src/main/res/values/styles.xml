@@ -232,8 +232,12 @@
         <item name="behavior_fitToContents">true</item>
         <item name="android:state_expanded">true</item>
     </style>
+
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+    <style name="AppInlineStyle" parent="">
+        <item name="android:background">@color/colorAltPrimary</item>
     </style>
     <style name="FullscreenBottomSheet" parent="BottomSheetDialogTheme">
         <item name="behavior_skipCollapsed">true</item>

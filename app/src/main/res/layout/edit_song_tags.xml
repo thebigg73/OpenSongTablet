@@ -21,7 +21,15 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/tag_song" />
+            <TableRow style="@style/DividerLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                android:id="@+id/aka"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/edit_song_aka" />
             <TableRow style="@style/DividerLine"/>
 
             <LinearLayout

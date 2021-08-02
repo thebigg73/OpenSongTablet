@@ -237,4 +237,10 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
             editText.setAutoSizeTextTypeUniformWithConfiguration(minTextSize,maxTextSize,stepSize, TypedValue.COMPLEX_UNIT_SP);
         }
     }
+    public void setTextSize(float textSize) {
+        editText.setTextSize(textSize);
+    }
+    public void setSelected(boolean selected) {
+        editText.setSelected(selected);
+    }
 }
