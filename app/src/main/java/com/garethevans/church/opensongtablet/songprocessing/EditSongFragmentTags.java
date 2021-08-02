@@ -18,8 +18,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class EditSongFragmentTags extends Fragment {
 
-    MainActivityInterface mainActivityInterface;
-    EditSongTagsBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private EditSongTagsBinding myView;
+    private ThemesBottomSheet themesBottomSheet;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,7 +52,9 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private void setupValues() {
+        themesBottomSheet = new ThemesBottomSheet(this,"EditSongFragmentTags");
         myView.tags.setText(mainActivityInterface.getTempSong().getTheme());
+        myView.aka.setText(mainActivityInterface.getTempSong().getAka());
         myView.ccli.setText(mainActivityInterface.getTempSong().getCcli());
         myView.user1.setText(mainActivityInterface.getTempSong().getUser1());
         myView.user2.setText(mainActivityInterface.getTempSong().getUser2());
@@ -61,6 +64,8 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private void setupListeners() {
+        myView.tags.setFocusable(false);
+        myView.tags.setOnClickListener(v -> themesBottomSheet.show(requireActivity().getSupportFragmentManager(),"ThemesBottomSheet"));
         myView.ccli.addTextChangedListener(new MyTextWatcher("ccli"));
         myView.user1.addTextChangedListener(new MyTextWatcher("user1"));
         myView.user2.addTextChangedListener(new MyTextWatcher("user2"));
@@ -89,6 +94,8 @@ public class EditSongFragmentTags extends Fragment {
                 case "tags":
                     mainActivityInterface.getTempSong().setTheme(editable.toString());
                     break;
+                case "aka":
+                    mainActivityInterface.getTempSong().setAka(editable.toString());
                 case "user1":
                     mainActivityInterface.getTempSong().setUser1(editable.toString());
                     break;
@@ -106,5 +113,9 @@ public class EditSongFragmentTags extends Fragment {
                     break;
             }
         }
+    }
+
+    public void updateValue(String value) {
+        mainActivityInterface.getTempSong().setTheme(value);
     }
 }

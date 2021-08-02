@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: "androidx.navigation.safeargs"
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
 
@@ -35,14 +35,14 @@ android {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:4.2.2'
-            classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5"
+            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5'
         }
     }
 
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven { url "https://jitpack.io" }
     }
 
     buildFeatures {
@@ -51,18 +51,18 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src/main/res', 'src/main/res/layouts/TODELETE', 'src/main/res/layouts/TODELETE/layout'
+                srcDirs "src/main/res", "src/main/res/layouts/TODELETE", "src/main/res/layouts/TODELETE/layout"
             }
             java {
-                srcDirs 'src/main/java', 'src/main/java/com/garethevans/church/opensongtablet/import'
+                srcDirs "src/main/java", "src/main/java/com/garethevans/church/opensongtablet/import"
             }
         }
     }
 }
 
 dependencies {
-    implementation 'androidx.activity:activity:1.2.3'                                   // Required for permission requests
-    implementation 'androidx.fragment:fragment:1.3.5'                                   // Required for permission requests
+    implementation 'androidx.activity:activity:1.3.0'                                   // Required for permission requests
+    implementation 'androidx.fragment:fragment:1.3.6'                                   // Required for permission requests
     implementation 'com.google.android.gms:play-services-cast:20.0.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:20.0.0'         // For casting obviously!
     implementation 'com.google.android.gms:play-services-nearby:18.0.0'                 // For Google Nearby Connect devices
@@ -72,9 +72,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     annotationProcessor 'androidx.annotation:annotation:1.2.0'                          // Allows annotations
-    implementation 'androidx.appcompat:appcompat:1.3.0'                                 // Allows access to app: features for older devices
+    implementation 'androidx.appcompat:appcompat:1.3.1'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'                   // Constraint layouts with FAB
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'                   // Constraint layouts with FAB
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'                            // Older device support in views
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.mediarouter:mediarouter:1.2.4'

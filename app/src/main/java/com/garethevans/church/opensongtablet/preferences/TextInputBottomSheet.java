@@ -23,7 +23,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -127,7 +126,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
                     return false;
                 });
             }
-            ((TextInputLayout)myView.prefEditText.findViewById(R.id.holderLayout)).setHint(hint);
+            myView.prefEditText.setHint(hint);
 
         } else {
             ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.view_exposed_dropdown_item,prefChoices);

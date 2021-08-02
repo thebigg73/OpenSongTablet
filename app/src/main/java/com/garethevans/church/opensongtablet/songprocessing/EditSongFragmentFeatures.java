@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -33,11 +35,11 @@ public class EditSongFragmentFeatures extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window w = requireActivity().getWindow();
-        if (w != null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        if (w!=null) {
+            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
     }
 
@@ -67,7 +69,7 @@ public class EditSongFragmentFeatures extends Fragment {
         // The capo
         ArrayList<String> capos = new ArrayList<>();
         capos.add("");
-        for (int x = 0; x < 12; x++) {
+        for (int x = 1; x < 12; x++) {
             capos.add(x + "");
         }
         ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
@@ -85,13 +87,25 @@ public class EditSongFragmentFeatures extends Fragment {
                 R.layout.view_exposed_dropdown_item, padfiles);
         exposedDropDownSelection.keepSelectionPosition(myView.pad, padfiles);
         myView.pad.setAdapter(padArrayAdapter);
+        if (mainActivityInterface.getTempSong().getPadfile().isEmpty()) {
+            mainActivityInterface.getTempSong().setPadfile("auto");
+        }
         myView.pad.setText(niceTextFromPref(mainActivityInterface.getTempSong().getPadfile()));
-
 
         // The loop
         myView.loop.setChecked(mainActivityInterface.getTempSong().getPadloop().equals("true"));
 
         // The tempo
+        ArrayList<String> tempos = new ArrayList<>();
+        tempos.add("");
+        for (int x = 40; x < 300; x++) {
+            tempos.add(x + "");
+        }
+        ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+                R.layout.view_exposed_dropdown_item, tempos);
+        exposedDropDownSelection.keepSelectionPosition(myView.tempo, tempos);
+        myView.tempo.setAdapter(tempoArrayAdapter);
+        myView.tempo.setHint(getString(R.string.tempo) + " ("+getString(R.string.bpm)+")");
         myView.tempo.setText(mainActivityInterface.getTempSong().getTempo());
 
         // The timesig
@@ -109,12 +123,29 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.timesig.setAdapter(timesigArrayAdapter);
         myView.timesig.setText(mainActivityInterface.getTempSong().getTimesig());
 
+        // Duration and delay
+        myView.duration.setInputType(InputType.TYPE_CLASS_NUMBER);
+        myView.delay.setInputType(InputType.TYPE_CLASS_NUMBER);
+        myView.duration.setDigits("0123456789");
+        myView.delay.setDigits("0123456789");
+        myView.duration.setText(mainActivityInterface.getTempSong().getAutoscrolllength());
+        myView.delay.setText(mainActivityInterface.getTempSong().getAutoscrolldelay());
+
         // The midi, abc and customchords
         myView.midi.setText(mainActivityInterface.getTempSong().getMidi());
         myView.abc.setText(mainActivityInterface.getTempSong().getAbc());
         myView.customChords.setText(mainActivityInterface.getTempSong().getCustomchords());
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.midi);
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.abc);
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.customChords);
+        checkLines();
     }
 
+    private void checkLines() {
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.midi, 2);
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.abc, 2);
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.midi, 2);
+    }
     private void setupListeners() {
         // The simple text only fields
         myView.key.addTextChangedListener(new MyTextWatcher("key"));
@@ -128,6 +159,12 @@ public class EditSongFragmentFeatures extends Fragment {
             }
         });
         myView.tempo.addTextChangedListener(new MyTextWatcher("tempo"));
+        myView.timesig.addTextChangedListener(new MyTextWatcher("timesig"));
+        myView.duration.addTextChangedListener(new MyTextWatcher("duration"));
+        myView.delay.addTextChangedListener(new MyTextWatcher("delay"));
+        myView.midi.addTextChangedListener(new MyTextWatcher("midi"));
+        myView.abc.addTextChangedListener(new MyTextWatcher("abc"));
+        myView.customChords.addTextChangedListener(new MyTextWatcher("customchords"));
     }
 
     private String niceTextFromPref(String prefText) {
@@ -168,6 +205,28 @@ public class EditSongFragmentFeatures extends Fragment {
                 case "pad":
                     // We need to save the English short text in the preferences
                     mainActivityInterface.getTempSong().setPadfile(shortText(editable.toString()));
+                    break;
+                case "tempo":
+                    mainActivityInterface.getTempSong().setTempo(editable.toString());
+                    break;
+                case "timesig":
+                    mainActivityInterface.getTempSong().setTimesig(editable.toString());
+                    break;
+                case "duration":
+                    mainActivityInterface.getTempSong().setAutoscrolllength(editable.toString());
+                    break;
+                case "delay":
+                    mainActivityInterface.getTempSong().setAutoscrolldelay(editable.toString());
+                    break;
+                case "midi":
+                    mainActivityInterface.getTempSong().setMidi(editable.toString());
+                    break;
+                case "abc":
+                    mainActivityInterface.getTempSong().setAbc(editable.toString());
+                    break;
+                case "customchords":
+                    mainActivityInterface.getTempSong().setCustomChords(editable.toString());
+                    break;
             }
         }
     }

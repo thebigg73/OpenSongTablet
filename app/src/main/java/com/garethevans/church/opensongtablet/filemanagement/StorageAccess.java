@@ -1690,7 +1690,6 @@ public class StorageAccess {
         return availableFolders;
     }
 
-
     // This builds an index of all the songs on the device
     @SuppressLint("NewApi")
     public ArrayList<String> listSongs(Context c, MainActivityInterface mainActivityInterface) {

@@ -63,6 +63,11 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         setUpTabs();
 
         // Set the save listener
+        if (mainActivityInterface.songChanged()) {
+            myView.saveChanges.setVisibility(View.VISIBLE);
+        } else {
+            myView.saveChanges.setVisibility(View.GONE);
+        }
         myView.saveChanges.setOnClickListener(v -> doSaveChanges());
         return myView.getRoot();
     }
