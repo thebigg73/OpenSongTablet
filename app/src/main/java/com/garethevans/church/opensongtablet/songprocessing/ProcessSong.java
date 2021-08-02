@@ -372,52 +372,25 @@ public class ProcessSong {
         return s;
     }
 
-    String[] getChordPositions(String string) {
-        // Given a chord line, get the character positions that each chord starts at
-        // Go through the line character by character
-        // If the character isn't a " " and the character before is " " or "|" it's a new chord
-        // Add the positions to an array
+    String[] getChordPositions(String string, String lyric) {
+        // IV - Lyric is now needed. Part of preventing lyrics starting too close after a chord above a run of spaces
         ArrayList<String> chordpositions = new ArrayList<>();
+        String inString = string;
+        boolean thischaraspace;
+        boolean prevcharaspace;
 
-        // Set the start of the line as the first bit
-        if (string.startsWith(".")) {
-            chordpositions.add("1");
-        } else {
-            chordpositions.add("0");
+        if (inString.startsWith(".")) {
+            inString = inString.replaceFirst(".", " ");
         }
+        // Add a space to identify chords at the end of a line
+        inString = inString + " ";
 
+        for (int x = 1; x < (inString.length()); x++) {
+            thischaraspace = inString.startsWith(" ", x);
+            prevcharaspace = inString.startsWith(" ", x - 1);
 
-        // IV - Comments do not seem to reflect the code logic?
-        // In order to identify chords at the end of the line
-        // (My method looks for a following space)
-        // Add a space to the search string.
-        if (string.length() < 1) {
-            // GE Fix for empty line as substring(1) failed for empty lines.
-            string = " ";
-        } else {
-            string = " " + string.substring(1) + " ";
-        }
-
-        for (int x = 2; x < string.length(); x++) {
-
-            String thischar = "";
-            boolean thischarempty = false;
-            if (x < string.length() - 1) {
-                thischar = string.substring(x, x + 1);
-            }
-            if (thischar.equals(" ") || thischar.equals("|")) {
-                thischarempty = true;
-            }
-
-            String prevchar;
-            boolean prevcharempty = false;
-            prevchar = string.substring(x - 1, x);
-            if (prevchar.equals(" ") || prevchar.equals("|")) {
-                prevcharempty = true;
-            }
-
-            if (!thischarempty && prevcharempty) {
-                // This is a chord position
+            // Add the start of chord and the end of a chord where it ends above a space in the lyric
+            if ((!thischaraspace && prevcharaspace) || (thischaraspace && !prevcharaspace && lyric.startsWith(" ", x - 1))) {
                 chordpositions.add(x + "");
             }
         }
@@ -427,9 +400,9 @@ public class ProcessSong {
         return chordpos;
     }
 
-    String[] getChordSections(String string, String[] pos_string) {
-        // Go through the chord positions and extract the substrings
-        ArrayList<String> chordsections = new ArrayList<>();
+    String[] getSections(String string, String[] pos_string) {
+        // Go through the line identifying sections
+        ArrayList<String> workingsections = new ArrayList<>();
         int startpos = 0;
         int endpos = -1;
 
@@ -442,93 +415,39 @@ public class ProcessSong {
 
         for (int x = 0; x < pos_string.length; x++) {
             if (pos_string[x].equals("0")) {
-                // First chord is at the start of the line
+                // First section is at the start of the line
                 startpos = 0;
             } else if (x == pos_string.length - 1) {
-                // Last chord, so end position is end of the line
+                // Last section, so end position is end of the line
                 // First get the second last section
                 endpos = Integer.parseInt(pos_string[x]);
                 if (startpos < endpos) {
-                    chordsections.add(string.substring(startpos, endpos));
+                    workingsections.add(string.substring(startpos, endpos));
                 }
 
                 // Now get the last one
                 startpos = Integer.parseInt(pos_string[x]);
                 endpos = string.length();
                 if (startpos < endpos) {
-                    chordsections.add(string.substring(startpos, endpos));
+                    workingsections.add(string.substring(startpos, endpos));
                 }
 
             } else {
-                // We are at the start of a chord somewhere other than the start or end
-                // Get the bit of text in the previous section;
+                // We are at the start of a section somewhere other than the start or end
+                // Add the text of the previous section;
                 endpos = Integer.parseInt(pos_string[x]);
                 if (startpos < endpos) {
-                    chordsections.add(string.substring(startpos, endpos));
+                    workingsections.add(string.substring(startpos, endpos));
                 }
                 startpos = endpos;
             }
         }
         if (startpos == 0 && endpos == -1) {
-            // This is just a chord line, so add the whole line
-            chordsections.add(string);
+            // This is just line, so add the whole line
+            workingsections.add(string);
         }
-        String[] sections = new String[chordsections.size()];
-        sections = chordsections.toArray(sections);
-
-        return sections;
-    }
-
-    String[] getLyricSections(String string, String[] pos_string) {
-        // Go through the chord positions and extract the substrings
-        ArrayList<String> lyricsections = new ArrayList<>();
-        int startpos = 0;
-        int endpos = -1;
-
-        if (string == null) {
-            string = "";
-        }
-        if (pos_string == null) {
-            pos_string = new String[0];
-        }
-
-        for (int x = 0; x < pos_string.length; x++) {
-            if (pos_string[x].equals("0")) {
-                // First chord is at the start of the line
-                startpos = 0;
-            } else if (x == pos_string.length - 1) {
-                // Last chord, so end position is end of the line
-                // First get the second last section
-                endpos = Integer.parseInt(pos_string[x]);
-                if (startpos < endpos) {
-                    lyricsections.add(string.substring(startpos, endpos));
-                }
-
-                // Now get the last one
-                startpos = Integer.parseInt(pos_string[x]);
-                endpos = string.length();
-                if (startpos < endpos) {
-                    lyricsections.add(string.substring(startpos, endpos));
-                }
-
-            } else {
-                // We are at the start of a chord somewhere other than the start or end
-                // Get the bit of text in the previous section;
-                endpos = Integer.parseInt(pos_string[x]);
-                if (startpos < endpos) {
-                    lyricsections.add(string.substring(startpos, endpos));
-                }
-                startpos = endpos;
-            }
-        }
-
-        if (startpos == 0 && endpos < 0) {
-            // Just add the line
-            lyricsections.add(string);
-        }
-
-        String[] sections = new String[lyricsections.size()];
-        sections = lyricsections.toArray(sections);
+        String[] sections = new String[workingsections.size()];
+        sections = workingsections.toArray(sections);
 
         return sections;
     }
@@ -650,7 +569,7 @@ public class ProcessSong {
         } else if (string.startsWith("[")) {
             return "heading";
         } else {
-            return "lyrics";
+            return "lyric";
         }
     }
 
@@ -876,13 +795,7 @@ public class ProcessSong {
                             stillworking = false;
                         }
                     }
-                } else if (nl < lines.length && lines[nl].startsWith(".")) {
-                    // While the next line is still a chordline add this line
-                    while (nl < lines.length && lines[nl].startsWith(".")) {
-                        sb.append("____groupline_____").append(lines[nl]);
-                        i = nl;
-                        nl++;
-                    }
+                    // IV - Removed 'While the next line is still a chordline add this line' as breaks highlighting
                 }
             } else {
                 sb.append("\n").append(lines[i]);
@@ -954,27 +867,39 @@ public class ProcessSong {
         }
 
         // Get the positions of the chords.  Each will be the start of a new section
-        // Start at the beginning
+        // IV - Use getChordPosition logic which improves the layout of chords
         ArrayList<Integer> pos = new ArrayList<>();
-        pos.add(0);
-        boolean lookforstart = false;
-
-        for (int s = 1; s < (lines[0].length() - 1); s++) {
-            String mychar = lines[0].substring(s, s + 1);
-            if (!mychar.equals(" ") && lookforstart) {
-                // This is the start of a new chord!
-                pos.add(s);
-                lookforstart = false;
-            } else if (mychar.equals(" ") && !lookforstart) {
-                // We've finished the chord.  Look for new one
-                lookforstart = true;
+        if (lines.length > 1) {
+            String[] chordPos;
+            if (lines[1].startsWith(".")) {
+                // IV - A chord line follows so position this line referring only to itself
+                chordPos = getChordPositions(lines[0], lines[0]);
+            } else {
+                chordPos = getChordPositions(lines[0], lines[1]);
+            }
+            for (String p:chordPos) {
+                pos.add(Integer.valueOf(p));
             }
         }
+
+        String linetype = "";
+        String lastlinetype = "";
 
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
         for (int t = 0; t < lines.length; t++) {
             TableRow tableRow = newTableRow(c);
-            String linetype = getLineType(lines[t]);
+            linetype = getLineType(lines[t]);
+
+            // IV - Add back a quirk of the older layout engine that rendered a comment line following a chord line as a lyric line;
+            // IV - Commenting a lyric line is effective at suppressing a lyric line when presenting - useful when a line has variations with different chords
+            if (lastlinetype.equals("chord") && linetype.equals("comment")) {
+                lastlinetype = "comment";
+                linetype = "lyric";
+                lines[t] = " " + lines[t].substring(1);
+            } else {
+                lastlinetype = linetype;
+            }
+
             Typeface typeface = getTypeface(mainActivityInterface, linetype);
             float size = getFontSize(linetype, headingScale, commentScale, chordScale);
             int color = getFontColor(linetype, lyricColor, chordColor);
@@ -987,11 +912,12 @@ public class ProcessSong {
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(c, mainActivityInterface, linetype, str);
                     }
-                    if (t == 0) {
-                        str = str.trim() + " "; // Chords lines are the splitters, only have one blank space after the chord
-                    }
                     if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
                         textView.setText(highlightChords(str, highlightChordColor));
+                    } else if (linetype.equals("lyric")) {
+                        // TODO
+                        // IV - This will need more complexity depending on mode and if showing chords
+                        textView.setText(str.replaceAll("[|_]"," "));
                     } else {
                         textView.setText(str);
                     }
@@ -1006,11 +932,12 @@ public class ProcessSong {
             if (str.startsWith(".")) {
                 str = str.replaceFirst(".", "");
             }
-            if (t == 0) {
-                str = str.trim() + " ";
-            }
             if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
                 textView.setText(highlightChords(str, highlightChordColor));
+            } else if (linetype.equals("lyric")) {
+                // TODO
+                // IV - This will need more complexity depending on mode and if showing chords
+                textView.setText(str.replaceAll("[|_]"," "));
             } else {
                 textView.setText(str);
             }
@@ -1021,11 +948,22 @@ public class ProcessSong {
     }
 
     private Spannable highlightChords(String str, int highlightChordColor) {
-        // Draw the backgrounds to the chords
+        // Draw the backgrounds to the chord(s)
         Spannable span = new SpannableString(str);
-        int x = 0;
-        int y = str.indexOf(" ");
-        span.setSpan(new BackgroundColorSpan(highlightChordColor), x, y, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        str = str + " ";
+        int start = 0;
+        int end = str.indexOf(" ");
+        while (end > -1) {
+            span.setSpan(new BackgroundColorSpan(highlightChordColor), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            // IV - Move startPos past spaces to the next non space
+            start = end;
+            while (str.substring(start + 1).startsWith(" ")) {
+                start = start + 1;
+            }
+            start = start + 1;
+            // IV - See if we have more work
+            end = str.indexOf(" ", start);
+        }
         return span;
     }
 
@@ -1209,18 +1147,26 @@ public class ProcessSong {
     private TextView lineText(Context c, MainActivityInterface mainActivityInterface, String linetype,
                               String string, Typeface typeface, float size,
                               int color, boolean trimLines, float lineSpacing, boolean boldChordHeading,
-                              int highlightHeadingColor) {
+                              int highlightHeadingColor, int highlightChordColor) {
         TextView textView = newTextView(c, linetype, typeface, size, color, trimLines, lineSpacing,
                 boldChordHeading);
-        string = trimOutLineIdentifiers(c, mainActivityInterface, linetype, string);
+        String str = trimOutLineIdentifiers(c, mainActivityInterface, linetype, string);
         if (linetype.equals("heading") && highlightHeadingColor != 0x00000000) {
-            Spannable span = new SpannableString(string);
+            Spannable span = new SpannableString(str);
             int x = 0;
-            int y = string.length();
+            int y = str.length();
             span.setSpan(new BackgroundColorSpan(highlightHeadingColor), x, y, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.setText(span);
         } else {
-            textView.setText(string);
+            if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
+                textView.setText(highlightChords(str, highlightChordColor));
+            } else if (linetype.equals("lyric")) {
+                // TODO
+                // IV - This will need more complexity depending on mode and if showing chords
+                textView.setText(str.replaceAll("[|_]"," "));
+            } else {
+                textView.setText(str);
+            }
         }
         return textView;
     }
@@ -1337,12 +1283,13 @@ public class ProcessSong {
                 } else {
                     if (asPDF) {
                         linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
-                                size, color, trimLines, lineSpacing, true, Color.TRANSPARENT));
+                                size, color, trimLines, lineSpacing, true, Color.TRANSPARENT, Color.TRANSPARENT));
 
                     } else {
                         linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
                                 size, color, trimLines, lineSpacing, boldChordHeading,
-                                mainActivityInterface.getMyThemeColors().getHighlightHeadingColor()));
+                                mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
+                                mainActivityInterface.getMyThemeColors().getHighlightChordColor()));
                     }
                 }
             }
