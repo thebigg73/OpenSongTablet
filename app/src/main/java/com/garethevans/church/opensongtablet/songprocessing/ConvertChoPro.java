@@ -328,6 +328,7 @@ public class ConvertChoPro {
         // IV - OpenSongApp adopts a SongSelect-ish approach to layout below
         // IV - As a result, a SongSelect extract will have an OpenSong layout close to that of a SongSelect chord sheet (Yeah!)
         // IV - All ChordPro files will get this layout - our layout may or may not be liked!
+
         StringBuilder tempchordline = new StringBuilder();
         StringBuilder templyricline = new StringBuilder();
         if (!s.startsWith("#") && !s.startsWith(";") && !s.startsWith("{")) {
