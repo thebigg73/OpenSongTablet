@@ -915,7 +915,7 @@ public class ConvertChoPro {
                     break;
 
                 case "comment_no_chord":
-                    newlyrics.append("{c:").append(lines[y].replaceFirst(";","")).append("}");
+                    newlyrics.append("{c:").append(thisLine.replaceFirst(";","")).append("}");
                     break;
 
                 case "tab":
