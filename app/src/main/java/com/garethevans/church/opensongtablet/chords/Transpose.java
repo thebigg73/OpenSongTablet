@@ -191,7 +191,8 @@ public class Transpose {
     public String getKeyBeforeCapo(int capo, String oldkey) {
         String getkeynum = chordToNumber1(oldkey);
         getkeynum = transposeKey(getkeynum,"-1",capo);
-        return numberToChord1(getkeynum,false);
+        // IV - The returned chord may include « or » - removeAll
+        return numberToChord1(getkeynum,false).replaceAll("[«»]","");
     }
 
     public String transposeThisString(Context c, MainActivityInterface mainActivityInterface,
