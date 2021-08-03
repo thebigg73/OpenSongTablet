@@ -935,8 +935,8 @@ class ChordProConvert {
                     if (thisLine.startsWith(".")) {
                         thisLine = thisLine.replaceFirst("."," ");
                     }
-                    chords_returned = processSong.getChordSections(thisLine, positions_returned);
-                    lyrics_returned = processSong.getLyricSections(nextLine, positions_returned);
+                    chords_returned = processSong.getSections(thisLine, positions_returned);
+                    lyrics_returned = processSong.getSections(nextLine, positions_returned);
 
                     // Mark the beginning of the line
                     newlyrics.append("¬");
@@ -965,8 +965,8 @@ class ChordProConvert {
                     if (thisLine.startsWith(".")) {
                         thisLine = thisLine.replaceFirst("."," ");
                     }
-                    chords_returned = processSong.getChordSections(thisLine, positions_returned);
-                    lyrics_returned = processSong.getLyricSections(tempString, positions_returned);
+                    chords_returned = processSong.getSections(thisLine, positions_returned);
+                    lyrics_returned = processSong.getSections(tempString, positions_returned);
 
                     // Mark the beginning of the line
                     newlyrics.append("¬");
