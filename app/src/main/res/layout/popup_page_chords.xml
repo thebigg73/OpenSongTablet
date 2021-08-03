@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
-
         <include layout="@layout/popup_dialogtitle" />
     </FrameLayout>
 
@@ -30,6 +29,16 @@
             android:minWidth="250dp"
             android:orientation="vertical"
             android:padding="10dp">
+
+            <Button
+                android:id="@+id/showChords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/showcapo"
+                android:textColor="#fff" />
 
             <TextView
                 style="@style/MyHeadingText"
@@ -63,5 +72,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>
