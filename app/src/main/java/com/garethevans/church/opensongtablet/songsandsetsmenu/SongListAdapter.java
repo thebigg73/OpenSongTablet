@@ -198,7 +198,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     @NonNull
     @Override
     public String getSectionName(int position) {
-        String item = songList.get(position).getFilename();
+        String item = songList.get(position).getTitle();
         if (item.length() > 0) {
             return item.substring(0, 1);
         } else {
@@ -212,8 +212,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         if (songlist != null) {
             for (int i = 0; i < songlist.size(); i++) {
                 String index = "";
-                if (songlist.get(i) != null && songlist.get(i).getFilename() != null && !songlist.get(i).getFilename().equals("")) {
-                    index = songlist.get(i).getFilename().substring(0, 1).toUpperCase(mainActivityInterface.getLocale());
+                if (songlist.get(i) != null && songlist.get(i).getTitle() != null && !songlist.get(i).getTitle().equals("")) {
+                    index = songlist.get(i).getTitle().substring(0, 1).toUpperCase(mainActivityInterface.getLocale());
                 }
 
                 if (linkedHashMap.get(index) == null) {
