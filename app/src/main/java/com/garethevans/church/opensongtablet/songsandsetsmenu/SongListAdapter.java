@@ -73,10 +73,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     public void onBindViewHolder(@NonNull SongItemViewHolder songItemViewHolder, int i) {
         Song song = songList.get(i);
         String filename = song.getFilename();
-        String displayname = song.getFilename();
+        String displayname = song.getTitle();
         String folder = song.getFolder();
         String author = song.getAuthor();
         String key = song.getKey();
+        String folderNamePair = song.getFolderNamePair();
 
         if (folder == null) {
             folder = "";
@@ -86,6 +87,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         }
         if (filename == null) {
             filename = "";
+        }
+        if (displayname == null) {
             displayname = "";
         }
         if (key == null) {
@@ -98,19 +101,17 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         }
 
         songItemViewHolder.itemTitle.setText(displayname);
+
+        // Set the author if it exists
         if (author.isEmpty()) {
             songItemViewHolder.itemAuthor.setVisibility(View.GONE);
         } else {
             songItemViewHolder.itemAuthor.setText(author);
         }
 
-        // Set the author if it exists
-        if (!author.isEmpty()) {
-            songItemViewHolder.itemAuthor.setText(author);
-            songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
-        } else {
-            songItemViewHolder.itemAuthor.setVisibility(View.GONE);
-        }
+        // Set the path
+        songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
+        songItemViewHolder.itemFolderNamePair.setVisibility(View.VISIBLE);
 
         // Set the checkbox if the song is in the set
         bindCheckBox(songItemViewHolder.itemChecked, i);

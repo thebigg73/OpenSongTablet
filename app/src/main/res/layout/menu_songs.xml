@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -22,42 +23,10 @@
                 android:id="@+id/searchButtonGroup"
                 style="@style/menuToggle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:weightSum="5"
                 app:checkedButton="@+id/folderButton">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/folderButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/ic_folder_search_white_36dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/artistButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/ic_account_music_white_36dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/keyButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/ic_music_clef_treble_white_36dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/tagButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/ic_tag_white_36dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/filterButton"
@@ -65,7 +34,49 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
                     app:icon="@drawable/ic_magnify_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/keyButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    app:icon="@drawable/ic_music_clef_treble_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/artistButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    app:icon="@drawable/ic_account_music_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/folderButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    app:icon="@drawable/ic_folder_search_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tagButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
+                    app:icon="@drawable/ic_tag_white_36dp" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -73,7 +84,8 @@
                 android:id="@+id/filters"
                 layout="@layout/menu_songs_filters"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"/>
 
             <LinearLayout
                 android:id="@+id/menu_songs"
@@ -102,8 +114,6 @@
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
                         android:paddingStart="8dp"
-                        android:paddingTop="8dp"
-                        android:paddingEnd="8dp"
                         android:paddingBottom="100dp"
                         android:scrollbarAlwaysDrawVerticalTrack="true"
                         android:scrollbarSize="8dp"
@@ -113,7 +123,8 @@
                         app:fastScrollPopupBgColor="@color/colorSecondary"
                         app:fastScrollPopupTextColor="@color/white"
                         app:fastScrollThumbColor="@color/colorSecondary"
-                        app:fastScrollTrackColor="@color/darkgrey" />
+                        app:fastScrollTrackColor="@color/darkgrey"
+                        tools:ignore="RtlSymmetry" />
 
                 </LinearLayout>
             </LinearLayout>

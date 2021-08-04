@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.sqlite;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -190,10 +191,12 @@ public class CommonSQL {
         }
     }
 
+    @SuppressLint("Range")
     String getValue(Cursor cursor, String index) {
         return cursor.getString(cursor.getColumnIndex(index));
     }
 
+    @SuppressLint("Range")
     // Search for values in the table
     ArrayList<Song> getSongsByFilters(SQLiteDatabase db, boolean searchByFolder,
                                       boolean searchByArtist, boolean searchByKey, boolean searchByTag,
@@ -257,8 +260,9 @@ public class CommonSQL {
 
         // Select matching folder Query
         // Common strings for searching.  Don't need to grab everything here - we can get the rest later
-        String getOrderBySQL = "ORDER BY " + SQLite.COLUMN_FILENAME + " COLLATE NOCASE ASC";
-        String getBasicSQLQueryStart = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR + ", " +
+        String getOrderBySQL = " ORDER BY listname COLLATE NOCASE ASC";
+        String getBasicSQLQueryStart = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR +
+                ", IFNULL(NULLIF(" +  SQLite.COLUMN_TITLE  + ",'')," +  SQLite.COLUMN_FILENAME + ") as listname, " +
                 SQLite.COLUMN_KEY + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_THEME + ", " +
                 SQLite.COLUMN_ALTTHEME + ", " + SQLite.COLUMN_USER1 + ", " + SQLite.COLUMN_USER2 + ", " +
                 SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM +
@@ -277,12 +281,14 @@ public class CommonSQL {
                 String fo = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
                 String au = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR));
                 String ke = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY));
+                String ti = cursor.getString(cursor.getColumnIndex("listname"));
 
                 Song song = new Song();
                 song.setFilename(fi);
                 song.setFolder(fo);
                 song.setAuthor(au);
                 song.setKey(ke);
+                song.setTitle(ti);
 
                 songs.add(song);
 
@@ -320,6 +326,7 @@ public class CommonSQL {
         return key;
     }
 
+    @SuppressLint("Range")
     Song getSpecificSong(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
         String[] selectionArgs = new String[]{songId};
@@ -388,6 +395,7 @@ public class CommonSQL {
         return count > 0;
     }
 
+    @SuppressLint("Range")
     public ArrayList<String> getFolders(SQLiteDatabase db) {
         ArrayList<String> folders = new ArrayList<>();
         String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
