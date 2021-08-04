@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="@string/set"
         android:padding="8dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="28dp"
         style="@style/backFragHeading" />
 </LinearLayout>

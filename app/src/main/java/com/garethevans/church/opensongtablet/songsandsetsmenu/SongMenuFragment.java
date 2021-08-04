@@ -90,9 +90,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByFolder", false);
         if (songListSearchByFolder && folderSearchVal.isEmpty()) {
             // Likely the first run
-            folderSearchVal = song.getFolder();
-            // Do on the UI thread
-            myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(folderSearchVal));
+            // Do on the UI thread - force a folder change when the song menu is opened
+            myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(song.getFolder()));
         }
         songListSearchByArtist = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByArtist", false);
         songListSearchByKey = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByKey", false);
@@ -131,7 +130,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             Log.d(TAG, "foundFolders.size(): " + foundFolders.size());
             requireActivity().runOnUiThread(() -> {
                 myView.filters.folderSearch.setAdapter(folderArrayAdapter);
-                folderSearchVal = mainActivityInterface.getSong().getFolder();
+                //folderSearchVal = mainActivityInterface.getSong().getFolder();
                 myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
                 int pos = foundFolders.indexOf(mainActivityInterface.getSong().getFolder());
                 if (pos >= 0) {
