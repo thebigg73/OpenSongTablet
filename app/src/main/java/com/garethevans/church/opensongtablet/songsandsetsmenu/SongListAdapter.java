@@ -95,23 +95,26 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             key = "";
         }
 
-        // Set the key if it exists
+        // Add the key if it exists
         if (!key.isEmpty()) {
             displayname += " (" + key + ")";
         }
 
+        // Set the display name
         songItemViewHolder.itemTitle.setText(displayname);
 
-        // Set the author if it exists
+        // Set the author if present
         if (author.isEmpty()) {
             songItemViewHolder.itemAuthor.setVisibility(View.GONE);
         } else {
+            // IV - Weird issue that when rapidly moving through list author can exit GONE even though not set!
+            // Seen as around 1 in 18 songs with author not showing author.  To ensure stability - set VISIBLE
             songItemViewHolder.itemAuthor.setText(author);
+            songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
         }
 
         // Set the path
         songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
-        songItemViewHolder.itemFolderNamePair.setVisibility(View.VISIBLE);
 
         // Set the checkbox if the song is in the set
         bindCheckBox(songItemViewHolder.itemChecked, i);
