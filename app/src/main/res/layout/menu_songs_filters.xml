@@ -5,11 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-        android:id="@+id/folderSearch"
+    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+        android:id="@+id/filterSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/folder"
+        android:hint="@string/filter_results"
+        app:endIconMode="clear_text"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"/>
+
+    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+        android:id="@+id/keySearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/key"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="4dp"
@@ -27,12 +38,10 @@
         android:paddingBottom="4dp"/>
 
     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-        android:id="@+id/keySearch"
+        android:id="@+id/folderSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foregroundGravity="top"
-        android:gravity="fill_vertical"
-        android:hint="@string/key"
+        android:hint="@string/folder"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="4dp"
@@ -43,16 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/theme"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
-
-    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
-        android:id="@+id/filterSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/filter_results"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="4dp"

@@ -28,15 +28,19 @@
                     android:id="@+id/cardview_title"
                     style="@style/cardView_Title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/cardview_author"
                     style="@style/cardView_Subtitle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/author" />
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/cardview_foldernamepair"
+                    style="@style/cardView_Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -56,6 +60,8 @@
 
         </LinearLayout>
 
-        <TableRow style="@style/DividerLine" />
+        <TableRow style="@style/DividerLine"
+            android:layout_marginEnd="12dp" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

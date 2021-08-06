@@ -73,10 +73,16 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     public void onBindViewHolder(@NonNull SongItemViewHolder songItemViewHolder, int i) {
         Song song = songList.get(i);
         String filename = song.getFilename();
-        String displayname = song.getFilename();
+        String displayname;
+        if (!song.getTitle().isEmpty()) {
+            displayname = song.getTitle();
+        } else {
+            displayname = song.getFilename();
+        }
         String folder = song.getFolder();
         String author = song.getAuthor();
         String key = song.getKey();
+        String folderNamePair = song.getFolderNamePair();
 
         if (folder == null) {
             folder = "";
@@ -86,31 +92,34 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         }
         if (filename == null) {
             filename = "";
+        }
+        if (displayname == null) {
             displayname = "";
         }
         if (key == null) {
             key = "";
         }
 
-        // Set the key if it exists
+        // Add the key if it exists
         if (!key.isEmpty()) {
             displayname += " (" + key + ")";
         }
 
+        // Set the display name
         songItemViewHolder.itemTitle.setText(displayname);
+
+        // Set the author if present
         if (author.isEmpty()) {
             songItemViewHolder.itemAuthor.setVisibility(View.GONE);
         } else {
-            songItemViewHolder.itemAuthor.setText(author);
-        }
-
-        // Set the author if it exists
-        if (!author.isEmpty()) {
+            // IV - Weird issue that when rapidly moving through list author can exit GONE even though not set!
+            // Seen as around 1 in 18 songs with author not showing author.  To ensure stability - set VISIBLE
             songItemViewHolder.itemAuthor.setText(author);
             songItemViewHolder.itemAuthor.setVisibility(View.VISIBLE);
-        } else {
-            songItemViewHolder.itemAuthor.setVisibility(View.GONE);
         }
+
+        // Set the path
+        songItemViewHolder.itemFolderNamePair.setText(folderNamePair);
 
         // Set the checkbox if the song is in the set
         bindCheckBox(songItemViewHolder.itemChecked, i);
@@ -197,7 +206,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     @NonNull
     @Override
     public String getSectionName(int position) {
-        String item = songList.get(position).getFilename();
+        String item = songList.get(position).getTitle();
         if (item.length() > 0) {
             return item.substring(0, 1);
         } else {
@@ -211,8 +220,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         if (songlist != null) {
             for (int i = 0; i < songlist.size(); i++) {
                 String index = "";
-                if (songlist.get(i) != null && songlist.get(i).getFilename() != null && !songlist.get(i).getFilename().equals("")) {
-                    index = songlist.get(i).getFilename().substring(0, 1).toUpperCase(mainActivityInterface.getLocale());
+                if (songlist.get(i) != null && songlist.get(i).getTitle() != null && !songlist.get(i).getTitle().equals("")) {
+                    index = songlist.get(i).getTitle().substring(0, 1).toUpperCase(mainActivityInterface.getLocale());
                 }
 
                 if (linkedHashMap.get(index) == null) {

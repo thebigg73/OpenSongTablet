@@ -258,8 +258,9 @@ public class CommonSQL {
 
         // Select matching folder Query
         // Common strings for searching.  Don't need to grab everything here - we can get the rest later
-        String getOrderBySQL = "ORDER BY " + SQLite.COLUMN_FILENAME + " COLLATE NOCASE ASC";
-        String getBasicSQLQueryStart = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR + ", " +
+        String getOrderBySQL = " ORDER BY listname COLLATE NOCASE ASC";
+        String getBasicSQLQueryStart = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR +
+                ", IFNULL(NULLIF(" +  SQLite.COLUMN_TITLE  + ",'')," +  SQLite.COLUMN_FILENAME + ") as listname, " +
                 SQLite.COLUMN_KEY + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_THEME + ", " +
                 SQLite.COLUMN_ALTTHEME + ", " + SQLite.COLUMN_USER1 + ", " + SQLite.COLUMN_USER2 + ", " +
                 SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + ", " + SQLite.COLUMN_HYMNNUM +
@@ -278,12 +279,14 @@ public class CommonSQL {
                 String fo = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
                 String au = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR));
                 String ke = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY));
+                String ti = cursor.getString(cursor.getColumnIndexOrThrow("listname"));
 
                 Song song = new Song();
                 song.setFilename(fi);
                 song.setFolder(fo);
                 song.setAuthor(au);
                 song.setKey(ke);
+                song.setTitle(ti);
 
                 songs.add(song);
 

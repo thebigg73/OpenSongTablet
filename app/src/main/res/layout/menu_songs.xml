@@ -28,20 +28,13 @@
                 app:checkedButton="@+id/folderButton">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/folderButton"
+                    android:id="@+id/filterButton"
                     style="@style/IconOnlyButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:icon="@drawable/ic_folder_search_white_36dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/artistButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/ic_account_music_white_36dp" />
+                    app:iconSize="24dp"
+                    app:icon="@drawable/ic_magnify_white_36dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/keyButton"
@@ -49,7 +42,26 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    app:iconSize="24dp"
                     app:icon="@drawable/ic_music_clef_treble_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/artistButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconSize="24dp"
+                    app:icon="@drawable/ic_account_music_white_36dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/folderButton"
+                    style="@style/IconOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconSize="24dp"
+                    app:icon="@drawable/ic_folder_search_white_36dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/tagButton"
@@ -57,15 +69,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:icon="@drawable/ic_tag_white_36dp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/filterButton"
-                    style="@style/IconOnlyButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:icon="@drawable/ic_magnify_white_36dp" />
+                    app:icon="@drawable/ic_tag_white_36dp"
+                    app:iconSize="24dp"/>
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -73,7 +78,8 @@
                 android:id="@+id/filters"
                 layout="@layout/menu_songs_filters"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"/>
 
             <LinearLayout
                 android:id="@+id/menu_songs"
@@ -102,8 +108,8 @@
                         android:layout_height="match_parent"
                         android:clipToPadding="false"
                         android:paddingStart="8dp"
-                        android:paddingTop="8dp"
-                        android:paddingEnd="8dp"
+                        android:paddingTop="0dp"
+                        android:paddingEnd="0dp"
                         android:paddingBottom="100dp"
                         android:scrollbarAlwaysDrawVerticalTrack="true"
                         android:scrollbarSize="8dp"

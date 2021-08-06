@@ -4,14 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -77,11 +75,8 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         myView.author.setText(mainActivityInterface.getTempSong().getAuthor());
         myView.copyright.setText(mainActivityInterface.getTempSong().getCopyright());
         myView.songNotes.setText(mainActivityInterface.getTempSong().getNotes());
-        myView.songNotes.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        myView.songNotes.setImeOptions(EditorInfo.IME_ACTION_NONE);
-        myView.songNotes.setHorizontallyScrolling(true);
-        myView.songNotes.setAutoSizeTextTypeUniformWithConfiguration(8,18,1);
-        checkLines();
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes,5);
         myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
         folders = mainActivityInterface.getSQLiteHelper().getFolders(getContext(), mainActivityInterface);
         newFolder = "+ " + getString(R.string.newfolder);
@@ -92,20 +87,6 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         exposedDropDownSelection.keepSelectionPosition(myView.folder, folders);
         myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
         textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",getString(R.string.new_folder),getString(R.string.new_folder_name),"","",true);
-    }
-
-    private void checkLines() {
-        String[] lines = myView.songNotes.getText().toString().split("\n");
-        int num = lines.length;
-        if (num > 5) {
-            myView.songNotes.setLines(lines.length);
-            myView.songNotes.setMinLines(lines.length);
-            myView.songNotes.setLines(lines.length);
-        } else {
-            myView.songNotes.setLines(5);
-            myView.songNotes.setMinLines(5);
-            myView.songNotes.setLines(5);
-        }
     }
 
     // Sor the view visibility, listeners, etc.
