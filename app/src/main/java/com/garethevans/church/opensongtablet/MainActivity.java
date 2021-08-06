@@ -313,7 +313,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams. SOFT_INPUT_ADJUST_PAN);
 
-
         Log.d(TAG, "STARTING MAIN ACTIVITY: ");
         // Initialise the most important stuff
         initialiseHelpers1();
