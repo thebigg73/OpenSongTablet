@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.garethevans.church.opensongtablet.customviews.MaterialEditText
@@ -9,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/filter_results"
+        app:endIconMode="clear_text"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="4dp"
@@ -24,10 +26,11 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"/>
 
-    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
         android:id="@+id/artistSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
         android:hint="@string/artist"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
