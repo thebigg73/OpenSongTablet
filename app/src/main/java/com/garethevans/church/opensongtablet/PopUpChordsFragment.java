@@ -144,6 +144,27 @@ public class PopUpChordsFragment extends DialogFragment {
         r3 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_3,null);
         r4 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_4,null);
         r5 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_5,null);
+
+        // IV - A button that toggles Native and Capo chord display
+        Button showChords = V.findViewById(R.id.showChords);
+        showChords.setOnClickListener(view -> {
+            StaticVariables.showCapoInChordsFragment = !StaticVariables.showCapoInChordsFragment;
+            FullscreenActivity.whattodo = "page_chords";
+            mListener.openFragment();
+            dismiss();
+        });
+
+        if (StaticVariables.mCapo.equals("")) {
+            showChords.setVisibility(View.GONE);
+        } else {
+            // Button text changed to reflect action
+            if (StaticVariables.showCapoInChordsFragment) {
+                showChords.setText(getString(R.string.showchords));
+            } else {
+                showChords.setText(getString(R.string.showcapo));
+            }
+        }
+
         Button customchordedit = V.findViewById(R.id.customchordedit);
         customchordedit.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "customchords";
@@ -981,7 +1002,6 @@ public class PopUpChordsFragment extends DialogFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            StaticVariables.showCapoInChordsFragment = false;
         }
     }
 

@@ -660,14 +660,19 @@ class ChordProConvert {
             Log.d("ChordProConvert","outputStream="+outputStream);
 
             if (outputStream != null) {
-                // Change the songId (references to the uri)
                 // Now remove the old chordpro file
                 storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
-                Log.d("ChordProConvert","attempt to deletefile="+storageAccess.deleteFile(c, oldUri));
+                Boolean deleteFileResult = storageAccess.deleteFile(c, oldUri);
+                Log.d("ChordProConvert","attempt to deletefile="+deleteFileResult);
 
                 // Remove old song from database
                 SQLiteHelper sqLiteHelper = new SQLiteHelper(c);
-                String songid = songSubFolder+"/"+oldSongFileName;
+                String songid;
+                if (songSubFolder.equals("")) {
+                    songid = "MAIN" + "/" + oldSongFileName;
+                } else {
+                    songid = songSubFolder + "/" + oldSongFileName;
+                }
                 sqLiteHelper.deleteSong(c,songid);
             }
 
@@ -697,6 +702,9 @@ class ChordProConvert {
                 sqLite.setTitle(StaticVariables.mTitle);
                 sqLite.setLyrics(StaticVariables.mLyrics);
                 sqLite.setFolder(songSubFolder);
+                // IV - Update fields used by song menu too
+                sqLite.setAuthor(StaticVariables.mAuthor);
+                sqLite.setKey(StaticVariables.mKey);
                 sqLiteHelper.updateSong(c,sqLite);
             }
         }
@@ -927,8 +935,8 @@ class ChordProConvert {
                     if (thisLine.startsWith(".")) {
                         thisLine = thisLine.replaceFirst("."," ");
                     }
-                    chords_returned = processSong.getChordSections(thisLine, positions_returned);
-                    lyrics_returned = processSong.getLyricSections(nextLine, positions_returned);
+                    chords_returned = processSong.getSections(thisLine, positions_returned);
+                    lyrics_returned = processSong.getSections(nextLine, positions_returned);
 
                     // Mark the beginning of the line
                     newlyrics.append("¬");
@@ -957,8 +965,8 @@ class ChordProConvert {
                     if (thisLine.startsWith(".")) {
                         thisLine = thisLine.replaceFirst("."," ");
                     }
-                    chords_returned = processSong.getChordSections(thisLine, positions_returned);
-                    lyrics_returned = processSong.getLyricSections(tempString, positions_returned);
+                    chords_returned = processSong.getSections(thisLine, positions_returned);
+                    lyrics_returned = processSong.getSections(tempString, positions_returned);
 
                     // Mark the beginning of the line
                     newlyrics.append("¬");
