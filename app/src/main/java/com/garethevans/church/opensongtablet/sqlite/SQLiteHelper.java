@@ -47,10 +47,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
     void emptyTable(SQLiteDatabase db) {
         // This drops the table if it exists (wipes it ready to start again)
-        try {
-            db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME);
-        } catch (OutOfMemoryError | Exception e) {
-            e.printStackTrace();
+        if (db!=null) {
+            try {
+                db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME);
+            } catch (OutOfMemoryError | Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     public void resetDatabase(Context c) {
@@ -163,7 +165,21 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return "";
         }
     }
-
+    public ArrayList<String> getThemeTags(Context c, MainActivityInterface mainActivityInterface) {
+        // Get unique theme tags
+        try (SQLiteDatabase db = getDB(c)) {
+            return mainActivityInterface.getCommonSQL().getUniqueThemeTags(db);
+        } catch (OutOfMemoryError | Exception e) {
+            return new ArrayList<>();
+        }
+    }
+    public String songsWithThemeTags(Context c, MainActivityInterface mainActivityInterface, String tag) {
+        try (SQLiteDatabase db = getDB(c)) {
+            return mainActivityInterface.getCommonSQL().getSongsWithThemeTag(db, tag);
+        } catch (OutOfMemoryError | Exception e) {
+            return "";
+        }
+    }
 }
 
 

@@ -14,12 +14,14 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class LoadSong {
 
     private final String TAG = "LoadSong";
     private Uri uri;
+    private ArrayList<Song> songsToFix;
 
     // The song object is sent to get the folder/filename, but it is returned after adding to it
     // Since this could be an indexing action, getting the next key or an actual load, 
@@ -379,14 +381,26 @@ public class LoadSong {
                     }
                     // If it isn't an xml file, an error is about to be thrown
                     try {
+                        Log.d(TAG,"filename: "+thisSong.getFilename());
                         eventType = xpp.next();
                         thisSong.setFiletype("XML");
 
                     } catch (Exception e) {
-                        Log.d(TAG, uri + ":  Not xml so exiting");
                         e.printStackTrace();
+                        if (thisSong.getFiletype().equals("XML")) {
+                            // This was an XML file and it wasn't a simple issue
+                            // Sometimes songs get weird extra bits added after the closing tag
+                            // Try to remove that after we are finished indexing
+                            if (songsToFix==null) {
+                                songsToFix = new ArrayList<>();
+                            }
+                            songsToFix.add(thisSong);
+
+                        } else {
+                            Log.d(TAG, uri + ":  Not xml so exiting");
+                            thisSong.setFiletype("?");
+                        }
                         eventType = XmlPullParser.END_DOCUMENT;
-                        thisSong.setFiletype("?");
                     }
                 }
                 inputStream.close();
@@ -402,6 +416,36 @@ public class LoadSong {
         return thisSong;
     }
 
+    public ArrayList<Song> getSongsToFix() {
+        return songsToFix;
+    }
+
+    public void resetSongsToFix() {
+        songsToFix.clear();
+        songsToFix = null;
+    }
+
+    public void fixSongs(Context c, MainActivityInterface mainActivityInterface) {
+        if (songsToFix!=null && songsToFix.size()>0) {
+            for (Song thisSong:songsToFix) {
+                Log.d(TAG, "Fixing rogue ending: " + thisSong.getFilename());
+                Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem(c,
+                        mainActivityInterface,"Songs",thisSong.getFolder(),thisSong.getFilename());
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, thisSongUri);
+                String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
+                Log.d(TAG, "thisSongUri:" + thisSongUri);
+                if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
+                    content = content.substring(0, content.indexOf("</song>")) + "</song>";
+                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, thisSongUri);
+                    Log.d(TAG, "success saving? " + mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream));
+                    InputStream inputStream2 = mainActivityInterface.getStorageAccess().getInputStream(c, thisSongUri);
+                    String content2 = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream2);
+                    Log.d(TAG, "loadedContentafterFix:" + content2);
+                }
+            }
+        }
+        resetSongsToFix();
+    }
     public String getExtraStuff(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // This is only called if we save/edit a song and it has extra stuff marked
         // In which case we load it in as extracted text and add it back to the XML file as a returned string
@@ -477,6 +521,7 @@ public class LoadSong {
         StringBuilder newXML = new StringBuilder();
         String tofix;
 
+        Log.d(TAG,"running fixXML: filename="+thisSong.getFilename()+"  section="+section+ "  where="+where);
         // If an XML file has unencoded ampersands or quotes, fix them
         try {
             tofix = getSongAsText(c,mainActivityInterface,where,thisSong.getFolder(),thisSong.getFilename());
@@ -509,7 +554,6 @@ public class LoadSong {
                 thisSong.setFiletype("XML");
                 return newXML.substring(start,end);
             } else {
-                thisSong.setFiletype("?");
                 return newXML.toString();
             }
 

@@ -145,6 +145,7 @@ public class SetMenuFragment extends Fragment {
         setListAdapter.setTouchHelper(itemTouchHelper);
         itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
         myView.myRecyclerView.setAdapter(setListAdapter);
+        myView.myRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 
     // Get the set list item objects for the recyclerview

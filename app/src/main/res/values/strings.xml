@@ -933,4 +933,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="tag_song">Song tags</string>
     <string name="edit_text_size">Edit text size</string>
     <string name="edit_new_section">Insert new section</string>
+    <string name="tags_remove_from_songs">This theme tag will be removed from the following songs:</string>
 </resources>

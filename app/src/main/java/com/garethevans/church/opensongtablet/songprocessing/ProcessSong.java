@@ -2269,7 +2269,7 @@ public class ProcessSong {
     public void stretchEditBoxToLines(MaterialEditText editText, int minLines) {
         String[] lines = editText.getText().toString().split("\n");
         int num = lines.length;
-        if (num > 5) {
+        if (num > minLines) {
             editText.setLines(lines.length);
             editText.setMinLines(lines.length);
             editText.setLines(lines.length);

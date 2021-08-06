@@ -31,11 +31,9 @@ import com.garethevans.church.opensongtablet.databinding.StorageChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /*
 This fragment is used to set the storage location for the app.  It deals with the permissions for
@@ -105,11 +103,10 @@ public class SetStorageLocationFragment extends Fragment {
         mainActivityInterface.hideActionButton(true);
 
         // Set up the storage location currently set in an edit box that acts like a button only
-        myView.progressText.findViewById(R.id.editText).setFocusable(false);
-        myView.progressText.findViewById(R.id.editText).setClickable(true);
-        ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setMaxLines(4);
-        myView.progressText.findViewById(R.id.editText).
-                setOnClickListener(t -> myView.setStorage.performClick());
+        myView.progressText.setFocusable(false);
+        myView.progressText.setClickable(true);
+        myView.progressText.setMaxLines(4);
+        myView.progressText.setOnClickListener(t -> myView.setStorage.performClick());
 
         // Set the listeners for the buttons
         myView.infoButton.setOnClickListener(v -> {
@@ -152,6 +149,7 @@ public class SetStorageLocationFragment extends Fragment {
                         // Permission is granted.
                         checkStatus();
                         showStorageLocation();
+                        myView.setStorage.performClick();
                     }
                 });
     }
@@ -185,9 +183,7 @@ public class SetStorageLocationFragment extends Fragment {
 
     private void warningCheck() {
         // If the user tries to set the app storage to OpenSong/Songs/ warn them!
-        if (myView.progressText.findViewById(R.id.editText) != null &&
-                ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).getText()!=null &&
-                Objects.requireNonNull(((TextInputEditText) myView.progressText.findViewById(R.id.editText)).getText()).toString().contains("OpenSong/Songs/")) {
+        if (myView.progressText.getText().toString().contains("OpenSong/Songs/")) {
             Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
                     LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
             });
@@ -466,14 +462,13 @@ public class SetStorageLocationFragment extends Fragment {
         if (uriTreeHome==null) {
             uriTree = null;
             saveUriLocation();
-            ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText("");
+            myView.progressText.setText("");
         } else {
             String[] niceLocation = mainActivityInterface.getStorageAccess().niceUriTree(getContext(), mainActivityInterface, uriTreeHome);
             String outputText = niceLocation[1] + "\n" + niceLocation[0];
-            ((TextInputEditText)myView.progressText.findViewById(R.id.editText)).setText(outputText);
+            myView.progressText.setText(outputText);
             warningCheck();
         }
         checkStatus();
     }
-
 }

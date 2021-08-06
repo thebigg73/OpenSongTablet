@@ -84,6 +84,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface, blank,
                 SongMenuFragment.this);
         myView.songListRecyclerView.setAdapter(songListAdapter);
+        myView.songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 
     private void setValues(Song song) {

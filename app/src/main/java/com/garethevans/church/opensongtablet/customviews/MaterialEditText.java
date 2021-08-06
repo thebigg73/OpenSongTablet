@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
+import android.text.method.KeyListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -242,5 +243,24 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
     }
     public void setSelected(boolean selected) {
         editText.setSelected(selected);
+    }
+
+    public void setKeyListener(KeyListener keyListener) {
+        editText.setKeyListener(keyListener);
+    }
+    public void setEnabled(boolean enabled) {
+        editText.setEnabled(enabled);
+    }
+    public void setFocusable(boolean focusable) {
+        editText.setClickable(!focusable);
+        editText.setFocusable(focusable);
+        if (!focusable) {
+            editText.setInputType(InputType.TYPE_NULL);
+        }
+    }
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        textInputLayout.setOnClickListener(onClickListener);
+        editText.setOnClickListener(onClickListener);
     }
 }

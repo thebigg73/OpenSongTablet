@@ -12,6 +12,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CommonSQL {
     // This is used to perform common tasks for the SQL database and NonOpenSongSQL database.
@@ -191,7 +192,7 @@ public class CommonSQL {
     }
 
     String getValue(Cursor cursor, String index) {
-        return cursor.getString(cursor.getColumnIndex(index));
+        return cursor.getString(cursor.getColumnIndexOrThrow(index));
     }
 
     // Search for values in the table
@@ -273,10 +274,10 @@ public class CommonSQL {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                String fi = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME));
-                String fo = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
-                String au = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR));
-                String ke = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY));
+                String fi = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME));
+                String fo = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
+                String au = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_AUTHOR));
+                String ke = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_KEY));
 
                 Song song = new Song();
                 song.setFilename(fi);
@@ -330,7 +331,7 @@ public class CommonSQL {
 
         // Get the first item (the matching songID)
         if (cursor.moveToFirst()) {
-            thisSong.setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
+            thisSong.setId(cursor.getInt(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ID)));
             thisSong.setSongid(songId);
             thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
             thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
@@ -399,7 +400,7 @@ public class CommonSQL {
         if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER)==0) {
             for (int x=0; x<cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
-                String folder = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
+                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
                 folders.add(folder);
             }
             /*do {
@@ -440,6 +441,63 @@ public class CommonSQL {
         }
     }
 
+    public ArrayList<String> getUniqueThemeTags(SQLiteDatabase db) {
+        ArrayList<String> themeTags = new ArrayList<>();
+        String q = "SELECT DISTINCT " + SQLite.COLUMN_THEME + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
+                SQLite.COLUMN_THEME + " ASC";
+
+        Cursor cursor = db.rawQuery(q, null);
+        cursor.moveToFirst();
+
+        if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_THEME)==0) {
+            for (int x=0; x<cursor.getCount(); x++) {
+                cursor.moveToPosition(x);
+                String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
+                if (themes.contains(";")) {
+                    String[] themeBits = themes.split(";");
+                    for (String bit:themeBits) {
+                        if (!themeTags.contains(bit.trim()) && !bit.trim().isEmpty()) {
+                            themeTags.add(bit.trim());
+                        }
+                    }
+                } else if (!themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {
+                    themeTags.add(themes.trim());
+                }
+            }
+        }
+        closeCursor(cursor);
+        Collections.sort(themeTags);
+        return themeTags;
+    }
+
+    public String getSongsWithThemeTag(SQLiteDatabase db, String tag) {
+        StringBuilder songsFound = new StringBuilder();
+        String selectQuery = "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_FOLDER +
+                " FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_THEME + " LIKE ?;";
+
+        String[] args = {tag};
+        Cursor cursor = db.rawQuery(selectQuery, args);
+
+        if (cursor.moveToFirst()) {
+            do {
+                songsFound.append(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))).
+                        append("/").
+                        append(cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FILENAME))).
+                        append(", ");
+            }
+            while (cursor.moveToNext());
+        }
+
+        // close cursor connection
+        closeCursor(cursor);
+
+        // Remove the end comma
+        String text = songsFound.toString();
+        if (text.endsWith(", ")) {
+            text = text.substring(0,text.lastIndexOf(", "));
+        }
+        return text;
+    }
 
     // TODO go through the non-opensong database and populate that data
     // TODO delete stuff from the non-opensong database where the file has gone

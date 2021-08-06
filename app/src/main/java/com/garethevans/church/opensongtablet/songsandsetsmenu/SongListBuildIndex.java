@@ -127,6 +127,8 @@ public class SongListBuildIndex {
                     append(mainActivityInterface.getIndexingSong().getFilename()).append("\n");
         }
         currentlyIndexing = false;
+        // Any songs with rogue endings would've been logged, so fix if needed
+        mainActivityInterface.getLoadSong().fixSongs(c,mainActivityInterface);
         return returnString.toString();
     }
 

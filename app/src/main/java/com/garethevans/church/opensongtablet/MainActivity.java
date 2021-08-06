@@ -124,6 +124,7 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragment;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentMain;
+import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentTags;
 import com.garethevans.church.opensongtablet.songprocessing.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -1408,6 +1409,14 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                         }
                     }
                     break;
+                case "EditSongFragmentTags":
+                    ((EditSongFragmentTags) callingFragment).updateTheme();
+                    break;
+
+                case "confirmed_EditSongFragmentTags":
+                    ((EditSongFragmentTags) callingFragment).removeTags(arguments);
+                    break;
+
             }
         }
     }
@@ -1478,8 +1487,13 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                     result = true;
                     break;
 
+                case "removeThemeTag":
+                    // We are about to remove tags from songs.  This is done in the EditSong framgment
+                    updateFragment("confirmed_" + fragName, callingFragment, arguments);
+                    allowToast = false;
+                    break;
             }
-            if (result && allowToast) {
+            if (allowToast && result) {
                 // Don't show toast for exit, but other successful actions
                 showToast.doIt(this,getString(R.string.success));
             } else if (allowToast){
@@ -2240,7 +2254,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     @Override
     public void onBackPressed() {
         if (navController.getCurrentDestination()!=null &&
-                navController.getCurrentDestination().getId()==R.id.performanceFragment) {
+                (navController.getCurrentDestination().getId()==R.id.performanceFragment ||
+                        navController.getCurrentDestination().getId()==R.id.presentationFragment ||
+                        navController.getCurrentDestination().getId()==R.id.storageManagementFragment)) {
             displayAreYouSure("exit", getString(R.string.exit_confirm), null,
                     navController.getCurrentDestination().getNavigatorName(),
                     navHostFragment, null);

@@ -1188,10 +1188,29 @@ public class StorageAccess {
             return false;
         }
     }
-    public boolean writeFileFromString(String s, OutputStream os) {
+    public boolean writeFileFromString(String s, OutputStream outputStream) {
+        /*try {
+            outputStream.write(s.getBytes(StandardCharsets.UTF_8));
+            outputStream.flush();
+            outputStream.close();
+            return true;
+        } catch (OutOfMemoryError | Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            outputStream.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;*/
         BufferedOutputStream bufferedOutputStream = null;
         try {
-            bufferedOutputStream = new BufferedOutputStream(os);
+            bufferedOutputStream = new BufferedOutputStream(outputStream);
             bufferedOutputStream.write(s.getBytes(StandardCharsets.UTF_8));
             bufferedOutputStream.flush();
             bufferedOutputStream.close();
@@ -1209,10 +1228,17 @@ public class StorageAccess {
                 e.printStackTrace();
             }
         }
-        try {
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (outputStream!=null) {
+            try {
+                outputStream.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -1237,22 +1263,38 @@ public class StorageAccess {
     }
     public String readTextFileToString(InputStream inputStream) {
         StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader reader = null;
+        InputStreamReader inputStreamReader = null;
         if (inputStream != null) {
             String string;
             try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                inputStreamReader = new InputStreamReader(inputStream);
+                reader = new BufferedReader(inputStreamReader);
                 while ((string = reader.readLine()) != null) {
                     stringBuilder.append(string).append("\n");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
+            }
+            if (reader!=null) {
                 try {
-                    inputStream.close();
-                } catch (Throwable ignore) {
+                    reader.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-
+            if (inputStreamReader!=null) {
+                try {
+                    inputStreamReader.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                inputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return stringBuilder.toString();
 
         /*

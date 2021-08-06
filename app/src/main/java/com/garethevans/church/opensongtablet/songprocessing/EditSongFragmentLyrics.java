@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,14 +71,10 @@ public class EditSongFragmentLyrics extends Fragment {
         bottomSheetBar();
 
         myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
-        myView.lyrics.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        myView.lyrics.setImeOptions(EditorInfo.IME_ACTION_NONE);
-        myView.lyrics.setHorizontallyScrolling(true);
-        myView.lyrics.setAutoSizeTextTypeUniformWithConfiguration(8,18,1);
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"editTextSize",14);
-
         checkTextSize(0);
-        checkLines();
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
     }
 
     private void bottomSheetBar() {
@@ -155,7 +149,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                checkLines();
+                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
             }
 
             @Override
@@ -198,20 +192,6 @@ public class EditSongFragmentLyrics extends Fragment {
 
         // Save this to the user preferences
         mainActivityInterface.getPreferences().setMyPreferenceFloat(getContext(),"editTextSize",editTextSize);
-    }
-    private void checkLines() {
-        String[] lines = myView.lyrics.getText().toString().split("\n");
-        int num = lines.length;
-        Log.d(TAG,"lines="+num);
-        if (num > 20) {
-            myView.lyrics.setLines(lines.length);
-            myView.lyrics.setMinLines(lines.length);
-            myView.lyrics.setLines(lines.length);
-        } else {
-            myView.lyrics.setLines(20);
-            myView.lyrics.setMinLines(20);
-            myView.lyrics.setLines(20);
-        }
     }
 
     private void insertSection() {
