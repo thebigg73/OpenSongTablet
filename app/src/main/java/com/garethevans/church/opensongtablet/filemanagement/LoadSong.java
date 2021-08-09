@@ -381,7 +381,6 @@ public class LoadSong {
                     }
                     // If it isn't an xml file, an error is about to be thrown
                     try {
-                        Log.d(TAG,"filename: "+thisSong.getFilename());
                         eventType = xpp.next();
                         thisSong.setFiletype("XML");
 

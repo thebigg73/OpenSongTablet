@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
-    style="@style/themeItem"
+    style="@style/recyclerItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center">

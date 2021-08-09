@@ -12,46 +12,37 @@
         android:layout_height="wrap_content"
         android:text="@string/tag_song" />
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+            android:id="@+id/newTag"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:hint="@string/new_something"
+            android:padding="16dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/insertTag"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/new_something"
+            android:src="@drawable/ic_plus_white_36dp"
+            app:fabSize="mini"
+            app:useCompatPadding="true" />
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialEditText
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:hint="@string/new_something"
-                android:padding="16dp"/>
+    </LinearLayout>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_plus_white_36dp"
-                android:contentDescription="@string/new_something"
-                app:fabSize="mini"
-                app:useCompatPadding="true"
-                android:layout_gravity="center_vertical"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/currentTags"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1" />
 
-        </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/currentTags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"/>
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
-

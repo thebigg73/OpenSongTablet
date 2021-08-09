@@ -78,7 +78,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         songListLayoutManager = new LinearLayoutManager(getActivity());
         songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
         myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
-        myView.songListRecyclerView.setHasFixedSize(true);
+        myView.songListRecyclerView.setHasFixedSize(false);
         myView.songListRecyclerView.setOnClickListener(null);
         List<Song> blank = new ArrayList<>();
         songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface, blank,

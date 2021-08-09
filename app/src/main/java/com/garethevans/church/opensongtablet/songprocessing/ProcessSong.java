@@ -37,6 +37,7 @@ import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 // TODO Line and section breaks | and ||
@@ -840,7 +841,6 @@ public class ProcessSong {
             string = string.replaceFirst("____SPLIT____", "");
         }
         return string;
-
     }
 
     private TableLayout groupTable(Context c, MainActivityInterface mainActivityInterface,
@@ -2228,6 +2228,60 @@ public class ProcessSong {
     }
 
 
+    public String tidyThemeString(String themeString) {
+        // This just tidies up the theme tags.
+        // First split by ;
+        String[] stringArray = themeString.split(";");
+        ArrayList<String> newArray = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String string : stringArray) {
+            if (!string.trim().isEmpty()) {
+                newArray.add(string.trim());
+            }
+        }
+        // Sort alphabetically
+        Collections.sort(newArray);
 
+        // Build back to a string
+        for (String string : newArray) {
+            stringBuilder.append(string).append("; ");
+        }
+        themeString = stringBuilder.toString();
+        if (themeString.startsWith(";")) {
+            themeString = themeString.replaceFirst(";", "").trim();
+        }
+        if (themeString.trim().endsWith(";")) {
+            themeString = themeString.substring(0, themeString.lastIndexOf((";")));
+        }
+        return themeString;
+    }
 
+    public void getSectionHeadings(Song thisSong) {
+        // Get any named section headings i.e. [...]
+        // These are used to create buttons in the edit song tags section
+        String nums = "0123456789";
+        String[] bits = thisSong.getLyrics().split("\\[");
+        ArrayList<String> sections = new ArrayList<>();
+        boolean groupSections = false;
+        for (String bit:bits) {
+            if (bit.contains("]") && bit.indexOf("]")<20) {
+                String section = bit.substring(0,bit.indexOf("]"));
+                boolean multiverse = false;
+                // Check for multiverse/chorus
+                String[] lines = bit.split("\n");
+                for (String line:lines) {
+                    if (line.length()>2 && line.charAt(1) == '.' &&
+                    nums.contains(line.substring(0,1)) &&
+                    !sections.contains(section+line.charAt(0))) {
+                        sections.add(section+line.charAt(0));
+                        multiverse = true;
+                    }
+                }
+                if (!multiverse) {
+                sections.add(section);
+                }
+            }
+        }
+        thisSong.setSongSectionHeadings(sections);
+    }
 }

@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +19,13 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder> {
 
     private final MainActivityInterface mainActivityInterface;
     private final ArrayList<String> tags, songsWithTags;
-    private final SparseBooleanArray checkedArray = new SparseBooleanArray();
+    private final ArrayList<Boolean> checked = new ArrayList<>();
     private final String TAG = "ThemesAdapter";
     private final Fragment callingFragment;
     private final String fragName;
@@ -44,13 +44,32 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         // Search the song database for any existing tags to choose from
         tags = mainActivityInterface.getSQLiteHelper().getThemeTags(c,mainActivityInterface);
 
+        // Also add any in the current temp song tags if they aren't there already
+        String[] currTags = mainActivityInterface.getTempSong().getTheme().split(";");
+        for (String tag:currTags) {
+            if (!tag.trim().isEmpty() && !tags.contains(tag.trim())) {
+                tags.add(tag.trim());
+            }
+        }
+        // Sort again
+        Collections.sort(tags);
+
         // Now get the songs which have these tags
         songsWithTags = new ArrayList<>();
         for (int x=0; x<tags.size(); x++) {
-            songsWithTags.add(mainActivityInterface.getSQLiteHelper().songsWithThemeTags(c,
-                    mainActivityInterface,"%"+tags.get(x)+"%"));
-        }
+            String which = mainActivityInterface.getSQLiteHelper().songsWithThemeTags(c,
+                    mainActivityInterface,"%"+tags.get(x)+"%");
 
+            // Check if it is only in the current tempSong
+            if (mainActivityInterface.getTempSong().getTheme().contains(tags.get(x)) &&
+                !which.contains(mainActivityInterface.getTempSong().getSongid())) {
+                which = which + ", " + mainActivityInterface.getTempSong().getSongid();
+                if (which.startsWith(",")) {
+                    which = which.replaceFirst(",", "").trim();
+                }
+            }
+            songsWithTags.add(which);
+        }
         initialiseCheckedArray();
     }
 
@@ -61,10 +80,10 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.view_theme_item, parent, false);
+        View cardView = inflater.inflate(R.layout.view_theme_item, parent, false);
 
         // Return a new holder instance
-        return new ViewHolder(contactView);
+        return new ViewHolder(cardView);
     }
 
     @Override
@@ -106,8 +125,9 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
 
     void bindCheckBox(CheckBox checkBox, int position) {
         // use the sparse boolean array to check
-        checkBox.setChecked(checkedArray.get(position,false));
-        checkBox.setOnCheckedChangeListener((compoundButton, b) -> updateThemeTags(b, tags.get(position)));
+        checkBox.setChecked(checked.get(position));
+        // Don't use checkchange listener as this happens when recyclerview draws on scroll
+        checkBox.setOnClickListener(v -> updateThemeTags(checkBox.isChecked(),tags.get(position)));
     }
 
     private void initialiseCheckedArray() {
@@ -115,36 +135,33 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         for (int i = 0; i < tags.size(); i++) {
             Log.d(TAG, "tags.get(i): "+tags.get(i));
             if (mainActivityInterface.getTempSong().getTheme().contains(tags.get(i))) {
-                checkedArray.put(i, true);
+                checked.add(i, true);
+            } else {
+                checked.add(i, false);
             }
         }
     }
 
     private void updateThemeTags(boolean add, String themeTag) {
+        Log.d(TAG,"updateThemeTags called.  add="+add+" themeTag="+themeTag);
         String currThemeTag = mainActivityInterface.getTempSong().getTheme();
-
-        // Get rid of leading or trailing ; separator
-        currThemeTag = clearLeadingSeparator(currThemeTag);
-        currThemeTag = clearTrailingSeparator(currThemeTag);
 
         // Do either add or remove
         if (add) {
-            if (!currThemeTag.contains(themeTag + "; ") &&
+            if (!currThemeTag.contains(themeTag + ";") &&
                     !currThemeTag.endsWith(themeTag)) {
                 currThemeTag = currThemeTag + "; " + themeTag;
             }
 
         } else {
-            if (currThemeTag.contains(themeTag + "; ")) {
+            if (currThemeTag.contains(themeTag + ";")) {
                 currThemeTag = currThemeTag.replace(themeTag + "; ", "");
             } else if (currThemeTag.endsWith(themeTag)) {
                 currThemeTag = currThemeTag.replace(themeTag,"");
             }
 
         }
-        // Get rid of leading or trailing ; separator
-        currThemeTag = clearLeadingSeparator(currThemeTag);
-        currThemeTag = clearTrailingSeparator(currThemeTag);
+        currThemeTag = mainActivityInterface.getProcessSong().tidyThemeString(currThemeTag);
 
         mainActivityInterface.getTempSong().setTheme(currThemeTag);
         // Update the edit song fragment
@@ -152,30 +169,12 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
 
     }
 
-    private String clearLeadingSeparator(String currThemeTag) {
-        // Get rid of leading ; separator
-        if (currThemeTag.startsWith("; ")) {
-            currThemeTag = currThemeTag.substring(2);
-        } else if (currThemeTag.startsWith(";")) {
-            currThemeTag = currThemeTag.substring(1);
-        }
-        return currThemeTag;
-    }
-    private String clearTrailingSeparator(String currThemeTag) {
-        if (currThemeTag.endsWith("; ")) {
-            currThemeTag = currThemeTag.substring(0, currThemeTag.lastIndexOf("; "));
-        } else if (currThemeTag.endsWith(";")) {
-            currThemeTag = currThemeTag.substring(0, currThemeTag.lastIndexOf(";"));
-        }
-        return currThemeTag;
-    }
-
     public void insertThemeTag(String themeTag) {
+        Log.d(TAG,"Trying to insert: "+themeTag);
         if (!tags.contains(themeTag)) {
             tags.add(0, themeTag);
-            songsWithTags.add(0, mainActivityInterface.getTempSong().getFolder() +
-                    "/" + mainActivityInterface.getTempSong().getFilename());
-            checkedArray.put(0,true);
+            songsWithTags.add(0, mainActivityInterface.getTempSong().getSongid());
+            checked.add(0,true);
             notifyItemInserted(0);
         }
         mainActivityInterface.updateFragment(fragName,callingFragment,null);
@@ -199,7 +198,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
     public void confirmendRemoveThemeTag() {
         tags.remove(positionToRemove);
         songsWithTags.remove(positionToRemove);
-        checkedArray.delete(positionToRemove);
+        checked.remove(positionToRemove);
         notifyItemRemoved(positionToRemove);
         mainActivityInterface.updateFragment(fragName,callingFragment,null);
     }

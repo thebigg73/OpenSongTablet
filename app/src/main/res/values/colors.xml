@@ -22,6 +22,7 @@
     <color name="blue">#0000aa</color>
     <color name="red">#ff0000</color>
     <color name="darkred">#aa0000</color>
+    <color name="vdarkred">#660000</color>
     <color name="lightred">#884646</color>
     <color name="green">#00aa00</color>
     <color name="darkgreen">#005500</color>

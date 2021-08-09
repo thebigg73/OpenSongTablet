@@ -49,7 +49,7 @@ class SetListItemTouchHelper extends ItemTouchHelper.Callback {
         super.onSelectedChanged(viewHolder, actionState);
         // If lollipop+, change the tint of the cardview item
         if (actionState==ItemTouchHelper.ACTION_STATE_DRAG) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && viewHolder!=null) {
                 viewHolder.itemView.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(viewHolder.itemView.getContext(), R.color.colorSecondary)));
             }
         }
@@ -60,8 +60,6 @@ class SetListItemTouchHelper extends ItemTouchHelper.Callback {
         // To allow swiping to delete
         return true;
     }
-
-
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {

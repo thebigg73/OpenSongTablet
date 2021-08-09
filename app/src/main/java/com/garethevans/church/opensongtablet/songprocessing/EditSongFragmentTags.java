@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongTagsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -24,6 +25,7 @@ public class EditSongFragmentTags extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private EditSongTagsBinding myView;
     private ThemesBottomSheet themesBottomSheet;
+    private PresentationOrderBottomSheet presentationOrderBottomSheet;
     private final String TAG = "EditSongFragmentTags";
 
     @Override
@@ -37,7 +39,7 @@ public class EditSongFragmentTags extends Fragment {
         super.onCreate(savedInstanceState);
         Window w = requireActivity().getWindow();
         if (w!=null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
     }
 
@@ -57,6 +59,7 @@ public class EditSongFragmentTags extends Fragment {
 
     private void setupValues() {
         themesBottomSheet = new ThemesBottomSheet(this,"EditSongFragmentTags");
+        presentationOrderBottomSheet = new PresentationOrderBottomSheet(this, "EditSongFragmentTags");
         myView.tags.setFocusable(false);
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.tags);
         myView.tags.setText(themesSplitByLine());
@@ -67,13 +70,27 @@ public class EditSongFragmentTags extends Fragment {
         myView.user2.setText(mainActivityInterface.getTempSong().getUser2());
         myView.user3.setText(mainActivityInterface.getTempSong().getUser3());
         myView.hymnnum.setText(mainActivityInterface.getTempSong().getHymnnum());
+        myView.presorder.setFocusable(false);
         myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
     }
 
     private void setupListeners() {
         //myView.tags.setOnClickListener(v -> themesBottomSheet.show(requireActivity().getSupportFragmentManager(),"ThemesBottomSheet"));
         myView.tags.setOnClickListener(v -> {
-            themesBottomSheet.show(requireActivity().getSupportFragmentManager(),"ThemesBottomSheet");
+            // Only allow if indexing is complete
+            if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+                if (!themesBottomSheet.isAdded()) {
+                    themesBottomSheet.show(requireActivity().getSupportFragmentManager(), "ThemesBottomSheet");
+                }
+            } else {
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.search_index_wait));
+            }
+
+        });
+        myView.presorder.setOnClickListener(v -> {
+            if (!presentationOrderBottomSheet.isAdded()) {
+                presentationOrderBottomSheet.show(requireActivity().getSupportFragmentManager(), "PresentationOrderBottomSheet");
+            }
         });
         myView.tags.addTextChangedListener(new MyTextWatcher("tags"));
         myView.ccli.addTextChangedListener(new MyTextWatcher("ccli"));
@@ -149,8 +166,10 @@ public class EditSongFragmentTags extends Fragment {
         return fixedTheme;
     }
 
-    public void updateTheme() {
+    public void updateValue() {
+        // Updating either the theme or presoorder from bottom sheet callback
         myView.tags.setText(themesSplitByLine());
+        myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
         mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
     }
 

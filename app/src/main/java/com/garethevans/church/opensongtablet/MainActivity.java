@@ -1409,12 +1409,13 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                     }
                     break;
                 case "EditSongFragmentTags":
-                    ((EditSongFragmentTags) callingFragment).updateTheme();
+                    ((EditSongFragmentTags) callingFragment).updateValue();
                     break;
 
                 case "confirmed_EditSongFragmentTags":
                     ((EditSongFragmentTags) callingFragment).removeTags(arguments);
                     break;
+
 
             }
         }

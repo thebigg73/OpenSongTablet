@@ -63,7 +63,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
 
-
     // Create, delete and update entries
     public void insertFast(Context c, MainActivityInterface mainActivityInterface) {
         SQLiteDatabase db = getDB(c);

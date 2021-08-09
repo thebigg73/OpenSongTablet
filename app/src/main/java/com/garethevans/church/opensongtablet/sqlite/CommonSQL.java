@@ -158,7 +158,7 @@ public class CommonSQL {
 
     void insertFast(Context c, MainActivityInterface mainActivityInterface, SQLiteDatabase db) {
         // Insert new values or ignore rows that exist already
-        String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " ( songid, filename, folder ) VALUES ( ?, ?, ?)";
+        String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " ( songid, filename, folder, title ) VALUES ( ?, ?, ?, ?)";
         db.beginTransactionNonExclusive();
         SQLiteStatement stmt = db.compileStatement(sql);
         ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongIDsFromFile(c);
@@ -184,6 +184,9 @@ public class CommonSQL {
                 stmt.bindString(1, s);
                 stmt.bindString(2, filename);
                 stmt.bindString(3, foldername);
+                // Temp title for now
+                // During full indexing this will be replaced
+                stmt.bindString(4, filename);
 
                 stmt.execute();
                 stmt.clearBindings();

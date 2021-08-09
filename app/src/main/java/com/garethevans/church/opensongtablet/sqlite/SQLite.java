@@ -62,7 +62,6 @@ public class SQLite {
 
 */
 
-
     // The table columns
     public static final String DATABASE_NAME = "Songs.db";
     public static final String NON_OS_DATABASE_NAME = "NonOpenSongSongs.db";

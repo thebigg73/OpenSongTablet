@@ -936,4 +936,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="tags_remove_from_songs">This theme tag will be removed from the following songs:</string>
     <string name="fix_info">Try to fix minor formatting issues</string>
     <string name="edit_format">Song edit format</string>
+    <string name="theme_exists">That theme already exists.</string>
+    <string name="duplicate_sections">You have used the same tag multiple times in the song.  This can cause problems when setting the order.</string>
+    <string name="section_not_found">This section does not exist in the song.  Please remove this item, or create the section in the lyrics tab.</string>
 </resources>
