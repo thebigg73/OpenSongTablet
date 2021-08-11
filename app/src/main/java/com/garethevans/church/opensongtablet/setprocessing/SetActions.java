@@ -748,9 +748,8 @@ public class SetActions {
         removeCacheItemsFromDB(c, mainActivityInterface, folderImages, cache);
         removeCacheItemsFromDB(c, mainActivityInterface, folderVariations, cache);
 
-        // Create the cache directories again if any are missing
+        // Create the cache directories again as we likely deleted them in SAF
         mainActivityInterface.getStorageAccess().createOrCheckRootFolders(c,null,mainActivityInterface);
-
 
         // Now users can load multiple sets and merge them, we need to load each one it turn
         // We then add the items to a temp string 'allsongsinset'
@@ -778,56 +777,61 @@ public class SetActions {
             XmlPullParser xpp = factory.newPullParser();
             String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
-            xpp.setInput(inputStream, utf);
-            int eventType;
-            eventType = xpp.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    if (xpp.getName().equals("slide_group")) {
-                        // Is this a song?
-                        switch (xpp.getAttributeValue(null, "type")) {
-                            case "song":
-                                // Get song
-                                try {
-                                    getSong(mainActivityInterface,xpp);
-                                } catch (Exception e) {
-                                    Log.d(TAG, "Couldn't get song location from set");
-                                    e.printStackTrace();
-                                }
-                                break;
+            Log.d(TAG, "uri:" + uri);
+            Log.d(TAG, "inputStream:" + inputStream);
+            if (inputStream != null) {
+                xpp.setInput(inputStream, utf);
+                int eventType;
+                eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getName().equals("slide_group")) {
+                            // Is this a song?
+                            switch (xpp.getAttributeValue(null, "type")) {
+                                case "song":
+                                    // Get song
+                                    try {
+                                        getSong(mainActivityInterface, xpp);
+                                    } catch (Exception e) {
+                                        Log.d(TAG, "Couldn't get song location from set");
+                                        e.printStackTrace();
+                                    }
+                                    break;
 
-                            case "scripture":
-                                // Get Scripture
-                                try {
-                                    getScripture(c,mainActivityInterface, xpp);
-                                } catch (Exception e) {
-                                    Log.d(TAG, "Couldn't get scripture from set");
-                                    e.printStackTrace();
-                                }
-                                break;
-                            case "custom":
-                                // Get Custom (Note or slide or variation)
-                                getCustom(c, mainActivityInterface, xpp);
-                                break;
-                            case "image":
-                                // Get the Image(s)
-                                getImage(c,mainActivityInterface,xpp);
-                                break;
+                                case "scripture":
+                                    // Get Scripture
+                                    try {
+                                        getScripture(c, mainActivityInterface, xpp);
+                                    } catch (Exception e) {
+                                        Log.d(TAG, "Couldn't get scripture from set");
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                case "custom":
+                                    // Get Custom (Note or slide or variation)
+                                    getCustom(c, mainActivityInterface, xpp);
+                                    break;
+                                case "image":
+                                    // Get the Image(s)
+                                    getImage(c, mainActivityInterface, xpp);
+                                    break;
+                            }
                         }
                     }
-                }
-                try {
-                    eventType = xpp.next();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d(TAG, "End of XML file");
+                    try {
+                        eventType = xpp.next();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "End of XML file");
+                    }
                 }
             }
 
-        } catch (Exception e) {
-            // Error setting up the XML utility
-            e.printStackTrace();
-        }
+            } catch(Exception e){
+                // Error setting up the XML utility
+                e.printStackTrace();
+            }
+
     }
 
     private String stripSlashes(String string) {

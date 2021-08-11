@@ -420,7 +420,9 @@ public class LoadSong {
     }
 
     public void resetSongsToFix() {
-        songsToFix.clear();
+        if (songsToFix!=null) {
+            songsToFix.clear();
+        }
         songsToFix = null;
     }
 

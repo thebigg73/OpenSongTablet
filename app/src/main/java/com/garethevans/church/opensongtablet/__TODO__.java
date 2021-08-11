@@ -7,16 +7,10 @@ public class __TODO__ {
     // Anything missing has been tested as ok
     /*
 
-    Everywhere i use the autocomplete text view, I need to add a listener that moves to the selected position
-    exposedDropDownSelection = new ExposedDropDownSelection();
-    exposedDropDownSelection.keepSelectionPosition(TEXTINPUTLAYOUTPARENT,AUTOCOMPLETETEXTVIEW, ARRAYOFVALUES);
 
     The following menus still need completed
 
     Set management
-    Song actions - pad
-    Song actions - autoscroll
-
 
     Song menu action button - show song actions
     Song menu action button - find new songs
@@ -26,7 +20,6 @@ public class __TODO__ {
     Import songs - Camera
     Import songs - iOS
 
-
     Display - song display / advanced - needs ProcessSong brought fully online
     Display - connected display (HDMI/Chromecast output) - needs SecondScreen working
     Display - Action bar - auto hide action bar not working yet
@@ -34,10 +27,6 @@ public class __TODO__ {
 
     Song actions - Pad
     Song actions - Autoscroll
-    Song actions - Metronome
-    Song actions - Sticky notes
-    Song actions - Highlighter
-    Song actions - Link
     Song actions - Chords
     Song actions - ABC notation
     Song actions - MIDI

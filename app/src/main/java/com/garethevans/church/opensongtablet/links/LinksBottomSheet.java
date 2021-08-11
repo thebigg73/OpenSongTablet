@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.UriPermission;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,8 +28,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.util.List;
 
 public class LinksBottomSheet extends BottomSheetDialogFragment {
 
@@ -98,10 +95,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                                     & ( Intent.FLAG_GRANT_READ_URI_PERMISSION
                                     + Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                             ));
-                            List<UriPermission> list = resolver.getPersistedUriPermissions();
-                            for (UriPermission up:list) {
-                                Log.d(TAG, "up: " + up);
-                            }
+
                         }
                         myView.linkLocation.setText(mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri));
                     }

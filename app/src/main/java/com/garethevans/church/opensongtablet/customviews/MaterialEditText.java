@@ -130,7 +130,7 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
     }
 
     public void setText(String text) {
-        if (text.isEmpty()) {
+        if (text==null || text.isEmpty()) {
             editText.setText(null);
         }
         editText.setText(text);

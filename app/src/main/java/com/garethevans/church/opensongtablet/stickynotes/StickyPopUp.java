@@ -163,7 +163,9 @@ public class StickyPopUp {
     }
 
     public void closeSticky() {
-        popupWindow.dismiss();
+        if (popupWindow!=null) {
+            popupWindow.dismiss();
+        }
     }
 
     private void dealWithAutohide(Context c, MainActivityInterface mainActivityInterface) {

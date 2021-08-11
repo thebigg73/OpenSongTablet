@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,11 +32,11 @@ public class SetManageFragment extends Fragment {
     private static final String TAG = "SetManageFragment";
     private SettingsSetsManageBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private ArrayList<String> allSets, availableSets, categories;
+    private ArrayList<String> allSets;
+    private ArrayList<String> categories;
     private ExposedDropDownArrayAdapter categoriesAdapter;
     private ExposedDropDownSelection exposedDropDownSelection;
-    private LayoutInflater inflater;
-    private ViewGroup viewGroup;
+    private String chosenSets = "";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -49,9 +48,6 @@ public class SetManageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSetsManageBinding.inflate(inflater, container, false);
-
-        this.inflater = inflater;
-        this.viewGroup = container;
 
         // Set the additional helper
         exposedDropDownSelection = new ExposedDropDownSelection();
@@ -175,19 +171,40 @@ public class SetManageFragment extends Fragment {
     }
     private void listAvailableSets() {
         myView.setLists.removeAllViews();
-        availableSets = mainActivityInterface.getSetActions().setsInCategory(requireContext(),
+        ArrayList<String> availableSets = mainActivityInterface.getSetActions().setsInCategory(requireContext(),
                 mainActivityInterface, allSets);
 
         // It will also get MAIN, but it won't matter as it just replaces it
         String bitToRemove = myView.setCategory.getText().toString() + "__";
 
-        for (String setName:availableSets) {
+        for (String setName: availableSets) {
             Log.d(TAG,"bitToRemove"+bitToRemove);
             Log.d(TAG, "setName before: "+setName);
             @SuppressLint("InflateParams") CheckBox checkBox = (CheckBox) LayoutInflater.from(requireContext()).inflate(R.layout.view_checkbox_list_item,null);
             setName = setName.replace(bitToRemove,"");
             Log.d(TAG, "setName after: "+setName);
             checkBox.setText(setName);
+            if (mainActivityInterface.getWhattodo().equals("saveset")) {
+                checkBox.setEnabled(false);
+                checkBox.setButtonDrawable(null);
+            } else {
+                checkBox.setChecked(chosenSets.contains("%_%" + setName + "%_%"));
+            }
+            String setCategory = myView.setCategory.getText().toString();
+            String finalSetName;
+            if (setCategory.equals(getString(R.string.mainfoldername))) {
+                finalSetName = setName;
+            } else {
+                finalSetName = setCategory + "__" + setName;
+            }
+            checkBox.setOnCheckedChangeListener((compoundButton, b) -> {
+                if (b && !chosenSets.contains("%_%"+ finalSetName +"%_%")) {
+                    chosenSets = chosenSets + "%_%" + finalSetName + "%_%";
+                } else if (!b) {
+                    chosenSets = chosenSets.replace("%_%" + finalSetName + "%_%", "");
+                }
+                Log.d(TAG,"chosenSets: "+chosenSets);
+            });
             myView.setLists.addView(checkBox);
         }
     }
@@ -202,13 +219,13 @@ public class SetManageFragment extends Fragment {
         }
 
         // Get the set name
-        String setName = ((EditText)myView.setName.findViewById(R.id.editText)).getText().toString();
+        String setName = myView.setName.getText().toString();
         if (setName.isEmpty()) {
             Log.d("SetManageFragment","Bad filename");
         } else {
             // Get a nice name
             setName = mainActivityInterface.getStorageAccess().safeFilename(setName);
-            ((EditText)myView.setName.findViewById(R.id.editText)).setText(setName);
+            myView.setName.setText(setName);
             setName = category + setName;
 
             // If the file already exists and we aren't overwriting, alert the user to rename it
@@ -247,11 +264,42 @@ public class SetManageFragment extends Fragment {
     }
 
     private void loadSet() {
-        Log.d(TAG, "loadSet() called");
+        // Initialise the current set
+        mainActivityInterface.getCurrentSet().initialiseTheSet();
+        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "setCurrent", "");
+
+        // Because we can import multiple sets, we need to get them into an array
+        ArrayList<Uri> setUris = new ArrayList<>();
+        StringBuilder setNameBuilder = new StringBuilder("_");
+
+        // Split the sets chosen up into individual sets and get their uris
+        String[] setBits = chosenSets.split("%_%");
+        for (String setBit:setBits) {
+            if (setBit!=null && !setBit.isEmpty()) {
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                        mainActivityInterface,"Sets","",setBit);
+                setUris.add(uri);
+                setNameBuilder.append(setBit).append("_");
+                Log.d(TAG,setBit+": "+uri);
+            }
+        }
+
+        String setName = setNameBuilder.substring(0,setNameBuilder.lastIndexOf("_"));
+        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                "setCurrent",setName);
+        mainActivityInterface.getCurrentSet().setSetName(setName);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Empty the cache directories as new sets can have custom items
+                mainActivityInterface.getSetActions().loadSets(requireContext(), mainActivityInterface, setUris);
+            }
+        }).start();
     }
 
 
-    // This comes back from the activty after it gets the text from the TextInputBottomSheet dialog
+    // This comes back from the activity after it gets the text from the TextInputBottomSheet dialog
     // This brings in a new category name
     public void updateValue(String which, String value) {
         Log.d(TAG, "value="+value);
