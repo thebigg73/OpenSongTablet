@@ -66,7 +66,7 @@ public class StorageAccess {
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
             "Sets", "Settings", "Slides", "Songs", "Variations", "Backups"};
     private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
-            "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache"};
+            "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache", "Variations/_cache"};
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
 
     // These are used primarily on start up to initialise stuff
@@ -1665,12 +1665,14 @@ public class StorageAccess {
     public void wipeFolder(Context c, MainActivityInterface mainActivityInterface,
                            String folder, String subfolder) {
         Uri uri = getUriForItem(c,mainActivityInterface,folder,subfolder,null);
-        if (lollipopOrLater()) {
-            DocumentFile df = DocumentFile.fromTreeUri(c,uri);
-            wipeFolder_SAF(df);
-        } else {
-            File f = new File(uri.getPath());
-            wipeFolder_File(f);
+        Log.d(TAG,"uri: "+uri);
+        if (uriExists(c,uri)) {
+            if (lollipopOrLater()) {
+                wipeFolder_SAF(c,uri);
+            } else {
+                File f = new File(uri.getPath());
+                wipeFolder_File(f);
+            }
         }
     }
     public void wipeFolder_File(File f) {
@@ -1681,14 +1683,15 @@ public class StorageAccess {
             }
         }
     }
-    public void wipeFolder_SAF(DocumentFile df) {
-        // Already established that this is a directory
-        DocumentFile[] dfs = df.listFiles();
-        for (DocumentFile idf : dfs) {
-            if (idf.isDirectory()) {
-                wipeFolder_SAF(idf);
-            }
-            idf.delete();
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void wipeFolder_SAF(Context c, Uri uri) {
+        // Get a contract for the desired folder
+        Uri desiredUri = DocumentsContract.buildDocumentUriUsingTree(uriTreeHome,DocumentsContract.getDocumentId(uri));
+        Log.d(TAG,"desiredUri: "+desiredUri);
+        try {
+            DocumentsContract.deleteDocument(c.getContentResolver(), desiredUri);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     public boolean createFolder(Context c, MainActivityInterface mainActivityInterface, String currentDir, String currentSubDir, String newFolder) {

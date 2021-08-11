@@ -1,21 +1,26 @@
 package com.garethevans.church.opensongtablet.backupandrestore;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
+import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.io.BufferedInputStream;
@@ -34,6 +39,7 @@ public class ImportOSBFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private StorageBackupBinding myView;
+    private final String TAG = "ImportOSBFragment";
 
     private String importFilename;
     private Uri importUri;
@@ -56,6 +62,9 @@ public class ImportOSBFragment extends Fragment {
     private String message;
     private boolean canoverwrite;
 
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -71,18 +80,65 @@ public class ImportOSBFragment extends Fragment {
         // Set up helpers
         setupHelpers();
 
-        // Set up the correct values
-        setupValues();
-
-        // Find folders in the file
-        findFolders();
-
         return myView.getRoot();
     }
 
     private void setupHelpers() {
-        importFilename = mainActivityInterface.getImportFilename();
-        importUri = mainActivityInterface.getImportUri();
+        // Initialise the launcher
+        initialiseLauncher();
+
+        if (mainActivityInterface.getWhattodo().equals("importChurchSample")) {
+            importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM","Church.osb");
+        } else if (mainActivityInterface.getWhattodo().equals("importBandSample")) {
+            importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA", "Band.osb");
+        } else {
+            importFilename = mainActivityInterface.getImportFilename();
+            importUri = mainActivityInterface.getImportUri();
+            // Set up the correct values
+            setupValues();
+
+            // Find the folders
+            findFolders();
+        }
+    }
+
+    private void initialiseLauncher() {
+        // Initialise the launcher
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            Log.d(TAG,"resultCode()="+result.getResultCode());
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                try {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        Uri contentUri = data.getData();
+                        String location = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
+                        if (location.endsWith(".osb")) {
+                            myView.importTitle.setText(location);
+                            importUri = contentUri;
+                            if (location.contains("/")) {
+                                importFilename = location.substring(location.lastIndexOf("/"));
+                                importFilename = importFilename.replace("/", "");
+                            } else {
+                                importFilename = location;
+                            }
+                            setupValues();
+                            findFolders();
+                        } else {
+                            myView.backupName.setText(getString(R.string.unknown));
+                            myView.progressText.setText(getString(R.string.unknown));
+                            importFilename = null;
+                            importUri = null;
+                            foundFolders = null;
+                            myView.foundFoldersListView.removeAllViews();
+                            okToLoad(); // Will be false!
+                        }
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void setupValues() {
@@ -91,6 +147,7 @@ public class ImportOSBFragment extends Fragment {
         myView.backupName.setEnabled(true);
         myView.backupName.setFocusable(false);
         myView.overWrite.setVisibility(View.VISIBLE);
+        myView.foundFoldersListView.removeAllViews();
     }
 
     private void findFolders() {
@@ -191,6 +248,7 @@ public class ImportOSBFragment extends Fragment {
             myView.progressBar.setVisibility(View.GONE);
         });
 
+            okToLoad();
         };
         thread = new Thread(runnable);
         thread.start();
@@ -229,9 +287,17 @@ public class ImportOSBFragment extends Fragment {
     }
 
     private void changeBackupFile() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("*/*");
+        String[] mimetypes = {"application/zip","application/octet-stream"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        activityResultLauncher.launch(intent);
+/*
         Intent intent = mainActivityInterface.getStorageAccess().selectFileIntent(new String[] {"application/zip","application/octet-stream"});
         requireActivity().startActivityForResult(intent,
                 mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"));
+*/
     }
     private void doImport() {
         // Get the folders we've selected
@@ -370,7 +436,13 @@ public class ImportOSBFragment extends Fragment {
                         myView.createBackupFAB.setEnabled(true);
                         mainActivityInterface.closeDrawer(true);
 
+                        // Update the songid file
+                        ArrayList<String> songids = mainActivityInterface.getStorageAccess().listSongs(requireContext(),mainActivityInterface);
+                        mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),mainActivityInterface,songids);
+
                         // Update the song index
+                        mainActivityInterface.getSQLiteHelper().insertFast(requireContext(),mainActivityInterface);
+                        mainActivityInterface.setFullIndexRequired(true);
                         mainActivityInterface.fullIndex();
 
                         // Navigate back to the home
@@ -383,9 +455,51 @@ public class ImportOSBFragment extends Fragment {
                 e.printStackTrace();
                 mainActivityInterface.getAb().setHomeButtonEnabled(true);
                 if (getContext()!=null && alive) {
-                    requireActivity().runOnUiThread(() -> myView.progressText.setText(getString(R.string.error)));
-                    myView.progressBar.setVisibility(View.GONE);
-                    myView.createBackupFAB.setEnabled(true);
+                    requireActivity().runOnUiThread(() -> {
+                        myView.progressText.setText(getString(R.string.error));
+                        myView.progressBar.setVisibility(View.GONE);
+                        myView.createBackupFAB.setEnabled(true);
+                    });
+                }
+            }
+        };
+        thread = new Thread(runnable);
+        thread.start();
+    }
+
+    private void importSample(String url, String filename) {
+        importFilename = filename;
+        // Get the WebDownload
+        WebDownload webDownload = mainActivityInterface.getWebDownload();
+        // Run this in a new thread
+        runnable = () -> {
+            if (alive) {
+                requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.VISIBLE));
+            }
+            String[] messages = webDownload.doDownload(getContext(),url,filename);
+            if (alive) {
+                requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.GONE));
+            }
+            if (messages[1]==null) {
+                // There was a problem
+                mainActivityInterface.getShowToast().doIt(getContext(),messages[0]);
+                requireActivity().runOnUiThread(() -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
+
+            } else {
+                mainActivityInterface.setImportFilename(filename);
+                mainActivityInterface.setImportUri(Uri.parse(messages[1]));
+                importUri = Uri.parse(messages[1]);
+                if (alive) {
+                    requireActivity().runOnUiThread(() -> {
+                        // Set up the correct values
+                        setupValues();
+
+                        // Find the folders
+                        findFolders();
+
+                        // Check we are ok to load
+                        okToLoad();
+                    });
                 }
             }
         };
@@ -412,6 +526,21 @@ public class ImportOSBFragment extends Fragment {
             thread.interrupt();
             runnable = null;
             thread = null;
+        }
+    }
+
+    private void okToLoad() {
+        Log.d(TAG,"myView.importTitle.getText().toString()="+myView.importTitle.getText().toString());
+        Log.d(TAG,"foundFolders="+foundFolders);
+        //Log.d(TAG,"foundFolders.size()="+foundFolders.size());
+        Log.d(TAG,"importUri="+importUri);
+
+        if (myView.importTitle.getText()!=null && foundFolders!=null && foundFolders.size()>0 &&
+                !myView.importTitle.getText().toString().isEmpty() && importUri!=null) {
+            // Udpate as post to keep on UI thread
+            myView.createBackupFAB.post(() -> myView.createBackupFAB.setVisibility(View.VISIBLE));
+        } else {
+            myView.createBackupFAB.post(() -> myView.createBackupFAB.setVisibility(View.GONE));
         }
     }
 }

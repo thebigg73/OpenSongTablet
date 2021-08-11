@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.importsongs;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,40 +51,21 @@ public class ImportOptionsFragment extends Fragment {
         myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));
         myView.importiOS.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE"),validBackups));
         myView.importOnline.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.importOnlineFragment));
-        myView.importBand.setOnClickListener(v -> importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA","Band.osb"));
-        myView.importChurch.setOnClickListener(v -> importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM","Church.osb"));
+        //myView.importBand.setOnClickListener(v -> importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA","Band.osb"));
+        //myView.importChurch.setOnClickListener(v -> importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM","Church.osb"));
+        myView.importChurch.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("importChurchSample");
+            mainActivityInterface.navigateToFragment(null,R.id.importOSBFragment);
+        });
+        myView.importBand.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("importBandSample");
+            mainActivityInterface.navigateToFragment(null,R.id.importOSBFragment);
+        });
     }
 
     private void selectFile(int id, String[] mimeTypes) {
         Intent intent = mainActivityInterface.getStorageAccess().selectFileIntent(mimeTypes);
         requireActivity().startActivityForResult(intent, id);
-    }
-
-    private void importSample(String url, String filename) {
-        // Get the WebDownload
-        WebDownload webDownload = mainActivityInterface.getWebDownload();
-        // Run this in a new thread
-        runnable = () -> {
-            if (alive) {
-                requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.VISIBLE));
-            }
-            String[] messages = webDownload.doDownload(getContext(),url,filename);
-            if (alive) {
-                requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.GONE));
-            }
-            if (messages[1]==null) {
-                // There was a problem
-                mainActivityInterface.getShowToast().doIt(getContext(),messages[0]);
-            } else {
-                mainActivityInterface.setImportFilename(filename);
-                mainActivityInterface.setImportUri(Uri.parse(messages[1]));
-                if (alive) {
-                    requireActivity().runOnUiThread(() -> mainActivityInterface.navigateToFragment(null,R.id.importOSBFragment));
-                }
-            }
-        };
-        thread = new Thread(runnable);
-        thread.start();
     }
 
     @Override
