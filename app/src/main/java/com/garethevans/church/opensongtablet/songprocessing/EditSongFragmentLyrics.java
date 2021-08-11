@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -86,27 +85,11 @@ public class EditSongFragmentLyrics extends Fragment {
                 " , [V1]="+getString(R.string.verse)+" 1, [C]="+getString(R.string.chorus) +
                 ", [B]="+getString(R.string.bridge)+", [P]="+getString(R.string.prechorus) +
                 ", [...]="+getString(R.string.custom));
-        myView.dimBackground.setClickable(true);
 
-        // Set the peek height to match the drag icon
-        ViewTreeObserver vto = myView.bottomSheetLayout.handleView.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                int size = myView.bottomSheetLayout.handleView.getHeight();
-                Log.d(TAG,"size="+size);
-                bottomSheetBehavior.setPeekHeight(size);
-                bottomSheetBehavior.setFitToContents(false);
-                int screenHeight = myView.parentView.getMeasuredHeight();
-                int bottomsheetHeight = myView.bottomSheetLayout.bottomSheet.getMeasuredHeight();
-                int offset = screenHeight-bottomsheetHeight;
-                bottomSheetBehavior.setExpandedOffset(offset);
-                myView.bottomSheetLayout.handleView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
 
-        myView.dimBackground.setOnClickListener(v -> myView.bottomSheetLayout.handleView.performClick());
-        myView.bottomSheetLayout.handleView.setOnClickListener(v -> {
+        //myView.dimBackground.setClickable(true);
+        //myView.dimBackground.setOnClickListener(v -> myView.bottomSheetLayout.handleView.performClick());
+        myView.bottomSheetTab.setOnClickListener(v -> {
             if (bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 myView.lyrics.setEnabled(false);
@@ -142,6 +125,13 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     private void setupListeners() {
+        myView.lyrics.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                Log.d(TAG,"b="+b);
+                mainActivityInterface.enableSwipe(!b);
+            }
+        });
         myView.lyrics.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:backgroundTint="@color/colorAltPrimary"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:layout_insetEdge="bottom">
+
+    <LinearLayout
+        android:id="@+id/lyricsEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/insertSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/edit_new_section" />
+
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fix_info"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/fix" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="0dp"
+            android:text="@string/edit_format" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                app:backgroundTint="@color/colorSecondary"
+                android:padding="8dp"
+                android:text="@string/opensong" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                app:backgroundTint="@color/colorAltPrimary"
+                android:padding="8dp"
+                android:text="@string/chordpro" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="0dp"
+            android:text="@string/edit_text_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingTop="0dp"
+            android:paddingBottom="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/textSizeDown"
+                style="@style/TextBackgroundButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0.5"
+                android:padding="8dp"
+                android:text="@string/minus_1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/textSizeUp"
+                style="@style/TextBackgroundButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="0.5"
+                android:padding="8dp"
+                android:text="@string/plus_1" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="0dp"
+            android:text="@string/transpose" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="64dp"
+            android:orientation="horizontal"
+            android:paddingTop="0dp"
+            android:paddingBottom="8dp">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/TextBackgroundButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0.5"
+                android:padding="8dp"
+                android:text="@string/minus_1" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/TextBackgroundButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="0.5"
+                android:padding="8dp"
+                android:text="@string/plus_1" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

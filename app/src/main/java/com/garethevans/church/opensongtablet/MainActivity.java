@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     private ConvertTextSong convertTextSong;
     private ProcessSong processSong;
     private LoadSong loadSong;
-    private Song song, indexingSong, tempSong, editedSong;
+    private Song song, indexingSong, tempSong;
     private CurrentSet currentSet;
     private SetActions setActions;
     private SongListBuildIndex songListBuildIndex;
@@ -1269,6 +1269,12 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     public void showSaveAllowed(boolean showSave) {
         if (editSongFragment!=null) {
             editSongFragment.showSaveAllowed(showSave);
+        }
+    }
+    @Override
+    public void enableSwipe(boolean canSwipe) {
+        if (editSongFragment!=null) {
+            editSongFragment.enableSwipe(canSwipe);
         }
     }
 

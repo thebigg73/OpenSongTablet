@@ -205,4 +205,5 @@ public interface MainActivityInterface {
     SongSheetHeaders getSongSheetHeaders();
     ArrayList<Integer> getSongSheetTitleLayoutSize();
     void setSongSheetTitleLayoutSize(ArrayList<Integer> sizes);
+    void enableSwipe(boolean canSwipe);
 }

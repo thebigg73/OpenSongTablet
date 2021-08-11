@@ -942,4 +942,8 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="presentation_order_info">The song presentation order is shown below.  You can drag items to rearrange the order and swipe to remove.</string>
     <string name="song_sections_info">The sections found in your song lyrics are shown below.  Click on the buttons to add them to the presentation order.</string>
     <string name="song_features_warning">These values are best set using the dedicated song feature options in the settings menu. Save the song first. You can, however, manually edit the values here.</string>
+    <string name="opensong">OpenSong</string>
+    <string name="chordpro">ChordPro</string>
+    <string name="minus_1">-1</string>
+    <string name="plus_1">+1</string>
 </resources>

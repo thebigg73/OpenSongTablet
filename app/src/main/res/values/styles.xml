@@ -233,36 +233,36 @@
     <style name="BottomSheetDialogTheme" parent="Widget.MaterialComponents.BottomSheet">
         <!-- If this isn't overridden, the navigation bar at the bottom is ugly-->
         <!-- However, we have to manually set the scrim colour and touch cancel in the fragment-->
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
         <item name="android:windowIsFloating">false</item>
         <item name="expanded">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.8</item>
         <item name="android:windowFrame">@null</item>
         <item name="behavior_fitToContents">true</item>
         <item name="android:state_expanded">true</item>
+
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
     </style>
-    <style name="AppInlineStyle" parent="">
-        <item name="android:background">@color/colorAltPrimary</item>
-    </style>
+
     <style name="FullscreenBottomSheet" parent="BottomSheetDialogTheme">
         <item name="behavior_skipCollapsed">true</item>
         <item name="behavior_fitToContents">true</item>
         <item name="behavior_peekHeight">0dp</item> // yep, that helped to skip collapsed state at initial
         <item name="behavior_hideable">true</item>
     </style>
-    <style name="RoundedBox" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <style name="RoundedBox" parent="FullscreenBottomSheet">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">16dp</item>
         <item name="cornerSizeTopRight">16dp</item>
     </style>
+
     <style name="Slider" parent="Widget.MaterialComponents.Slider">
         <item name="materialThemeOverlay">@style/SliderOverlay</item>
     </style>

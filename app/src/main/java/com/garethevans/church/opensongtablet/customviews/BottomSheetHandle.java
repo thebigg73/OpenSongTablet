@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,12 +11,14 @@ import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 
-
 public class BottomSheetHandle extends FrameLayout {
 
     private final ImageView handle;
-    private final String TAG = "BottomSheetHandle";
     private boolean isDraggableX;
+    private float startX;
+    private long startTime;
+    float handleWidth, handleX;
+    boolean clickedOnHandle;
 
     public BottomSheetHandle(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -27,7 +28,6 @@ public class BottomSheetHandle extends FrameLayout {
         handle.setFocusableInTouchMode(true);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetHandle);
         isDraggableX = a.getBoolean(R.styleable.BottomSheetHandle_isDraggableX, false);
-        Log.d(TAG, "isDraggableX=" + isDraggableX);
         a.recycle();
     }
 
@@ -45,58 +45,48 @@ public class BottomSheetHandle extends FrameLayout {
         return super.performClick();
     }
 
-    private float startX;
-    private long startTime;
-    float handleWidth, handleX;
-    boolean clickedOnHandle;
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent motionEvent) {
-        Log.d(TAG, "onTouch  isDraggableX=" + isDraggableX);
-
+        handleX = handle.getX();
         if (handleWidth <= 0) {
             handleWidth = handle.getWidth();
         }
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startX = motionEvent.getRawX();
+                if (!clickOnHandle()) {
+                    return false;
+                }
+                startTime = System.currentTimeMillis();
+                handleX = handle.getX();
+                break;
 
-        handleX = handle.getX();
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    startX = motionEvent.getRawX();
-                    clickedOnHandle = clickOnHandle();
-                    startTime = System.currentTimeMillis();
-                    handleX = handle.getX();
-                    break;
-
-                case MotionEvent.ACTION_MOVE:
-                    if (clickedOnHandle) {
-                        float newX = motionEvent.getRawX();
-                        Log.d(TAG, "move  newX=" + newX + "  startX=" + startX);
-
-                        if ((newX - startX) > 20 || (newX - startX) < -20) {
-                            handle.setX(motionEvent.getRawX() - handle.getWidth() / 2f);
-                            handleX = handle.getX();
-                        }
-                    } else {
-                        return false;
+            case MotionEvent.ACTION_MOVE:
+                if (clickedOnHandle && isDraggableX) {
+                    float newX = motionEvent.getRawX();
+                    if ((newX - startX) > 20 || (newX - startX) < -20) {
+                        handle.setX(motionEvent.getRawX() - handle.getWidth() / 2f);
+                        handleX = handle.getX();
                     }
-                    break;
+                } else {
+                    return false;
+                }
+                break;
 
-                case MotionEvent.ACTION_UP:
-                    handleX = handle.getX();
-                    if (clickedOnHandle && System.currentTimeMillis() - startTime < 500) {
-                        clickedOnHandle = false;
-                        performClick();
-                    }
-                    break;
-            }
-
+            case MotionEvent.ACTION_UP:
+                handleX = handle.getX();
+                if (clickedOnHandle && System.currentTimeMillis() - startTime < 500) {
+                    clickedOnHandle = false;
+                    performClick();
+                }
+                break;
+        }
         return true;
     }
 
     private boolean clickOnHandle() {
-        Log.d(TAG,"startX:"+startX+" handleX:"+handleX+" handleWidth:"+handleWidth);
-        //return startX >= handleX && startX < (handleX + handleWidth);
-        return true;
+        clickedOnHandle = startX >= handleX && startX < (handleX + handleWidth);
+        return clickedOnHandle;
     }
 }
 

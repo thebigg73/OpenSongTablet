@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
     <RelativeLayout
         android:id="@+id/backgroundView"
@@ -13,10 +13,10 @@
 
         <ImageView
             android:id="@+id/glideImage"
-            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             android:contentDescription="@string/image" />
 
         <com.garethevans.church.opensongtablet.customviews.DrawNotes
@@ -30,246 +30,22 @@
             android:id="@+id/dimBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/black"
             android:alpha="0.6"
-            android:visibility="gone"/>
+            android:background="@color/black"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
-    <!-- The bottom dialog -->
-    <LinearLayout
-        android:id="@+id/bottomSheet"
+    <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
+        android:id="@+id/bottomSheetTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        android:orientation="vertical"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_peekHeight="800dp">
+        android:layout_gravity="bottom|center_horizontal"
+        app:isDraggableX="true"
+        app:layout_dodgeInsetEdges="bottom" />
 
-        <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
-            android:id="@+id/handleView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:isDraggableX="true"/>
-
-        <LinearLayout
-            style="@style/BottomSheetDialogTheme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorAltPrimary"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tool" />
-
-            <HorizontalScrollView
-                android:id="@+id/myTools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="16dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/pencilFAB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="0dp"
-                        android:contentDescription="@string/highlight"
-                        android:src="@drawable/ic_pencil_white_36dp"
-                        app:fabSize="mini"
-                        app:useCompatPadding="true" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/highlighterFAB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="0dp"
-                        android:contentDescription="@string/highlight"
-                        android:src="@drawable/ic_highlighter_white_36dp"
-                        app:fabSize="mini"
-                        app:useCompatPadding="true" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/eraserFAB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="0dp"
-                        android:contentDescription="@string/highlight"
-                        android:src="@drawable/ic_eraser_white_36dp"
-                        app:fabSize="mini"
-                        app:useCompatPadding="true" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/undoFAB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="0dp"
-                        android:contentDescription="@string/highlight"
-                        android:src="@drawable/ic_undo_white_36dp"
-                        app:fabSize="mini"
-                        app:useCompatPadding="true" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/redoFAB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="0dp"
-                        android:contentDescription="@string/highlight"
-                        android:src="@drawable/ic_redo_white_36dp"
-                        app:fabSize="mini"
-                        app:useCompatPadding="true" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/deleteFAB"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="0dp"
-                        android:contentDescription="@string/highlight"
-                        android:src="@drawable/ic_delete_white_36dp"
-                        app:fabSize="mini"
-                        app:useCompatPadding="true" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp">
-
-                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
-                    android:id="@+id/sizeSlider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:valueFrom="1"
-                    android:valueTo="50"
-                    android:text="@string/size"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/colorsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_choose" />
-
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/color_black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="0dp"
-                            android:contentDescription="@string/color_choose"
-                            android:padding="0dp"
-                            app:backgroundTint="@color/black"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
-
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/color_white"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="0dp"
-                            android:contentDescription="@string/color_choose"
-                            android:padding="0dp"
-                            app:backgroundTint="@color/white"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
-
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/color_yellow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="0dp"
-                            android:contentDescription="@string/color_choose"
-                            android:padding="0dp"
-                            app:backgroundTint="@color/yellow"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
-
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/color_red"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="0dp"
-                            android:contentDescription="@string/color_choose"
-                            android:padding="0dp"
-                            app:backgroundTint="@color/red"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
-
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/color_green"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="0dp"
-                            android:contentDescription="@string/color_choose"
-                            android:padding="0dp"
-                            app:backgroundTint="@color/green"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
-
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/color_blue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="0dp"
-                            android:contentDescription="@string/color_choose"
-                            android:padding="0dp"
-                            app:backgroundTint="@color/blue"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
-
-                    </LinearLayout>
-
-                </HorizontalScrollView>
-
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/save"
-                android:padding="16dp"
-                android:layout_gravity="center_horizontal"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <!-- The bottom dialog -->
+    <include android:id="@+id/bottomSheet"
+        layout="@layout/bottom_sheet_highlighter" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

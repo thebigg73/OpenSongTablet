@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
     private EditSongBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private final String TAG = "EditSongFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -106,6 +108,11 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         }
     }
 
+    public void enableSwipe(boolean canSwipe) {
+        Log.d(TAG,"canSwipe: "+canSwipe);
+        myView.viewpager.setUserInputEnabled(canSwipe);
+    }
+
     private void doSaveChanges() {
         // Send this off for processing in a new Thread
         new Thread(() -> {
@@ -118,7 +125,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
             }
         }).start();
     }
-
 
     @Override
     public void onDestroyView() {
