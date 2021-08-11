@@ -26,7 +26,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:stepSize="1"
                 android:text="@null"
                 android:valueFrom="-6"
                 android:valueTo="6"

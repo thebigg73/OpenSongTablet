@@ -171,7 +171,7 @@ public class StickyPopUp {
         long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"timeToDisplaySticky",0) * 1000L;
         if (displayTime>0) {
             try {
-                handler.postDelayed(() -> closeSticky(), displayTime);
+                handler.postDelayed(this::closeSticky, displayTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }

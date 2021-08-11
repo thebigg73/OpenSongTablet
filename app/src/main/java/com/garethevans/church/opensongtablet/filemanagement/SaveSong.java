@@ -64,6 +64,7 @@ public class SaveSong {
         }
     }
 
+    // This updates the current song
     public boolean updateSong(Context c, MainActivityInterface mainActivityInterface) {
         // This is called if we just want to save the current song updates stored in the current song
         // This only works is the folder and filename haven't changed (done in the step above from edit song instead)

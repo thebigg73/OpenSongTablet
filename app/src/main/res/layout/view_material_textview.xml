@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:textColor="@color/lightgrey"
+            android:textColor="@color/vlightgrey"
             tools:text="Info text" />
 
     </LinearLayout>

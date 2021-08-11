@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.RecyclerInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,18 +25,20 @@ import java.util.Set;
 public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationOrderAdapter.ViewHolder> {
 
     private final MainActivityInterface mainActivityInterface;
+    private final RecyclerInterface recyclerInterface;
     private final String TAG = "PresentationOrderAdapter";
     private final Fragment callingFragment;
     private final String fragName;
     private final Context c;
     private final ArrayList<String> currentOrder = new ArrayList<>();
 
-    public PresentationOrderAdapter(Context c, MainActivityInterface mainActivityInterface,
+    public PresentationOrderAdapter(Context c, Fragment bottomSheet, MainActivityInterface mainActivityInterface,
                          Fragment callingFragment, String fragName) {
         this.mainActivityInterface = mainActivityInterface;
         this.callingFragment = callingFragment;
         this.fragName = fragName;
         this.c = c;
+        recyclerInterface = (RecyclerInterface) bottomSheet;
 
         // Process the song and get for any existing tags to choose from
         mainActivityInterface.getProcessSong().getSectionHeadings(
@@ -118,12 +121,14 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         Collections.swap(currentOrder,fromPosition,toPosition);
         updateValue();
         notifyItemMoved(fromPosition,toPosition);
+        recyclerInterface.onItemMove(fromPosition, toPosition);
     }
 
     public void onItemDismissed(int fromPosition) {
         currentOrder.remove(fromPosition);
         updateValue();
         notifyItemRemoved(fromPosition);
+        recyclerInterface.onItemDismiss(fromPosition);
     }
 
     public void onItemAdded(String item) {

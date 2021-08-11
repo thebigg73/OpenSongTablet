@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +46,7 @@ public class CCLILogFragment extends Fragment {
         mainActivityInterface.getCCLILog().getLogFileSize(requireContext(),mainActivityInterface,uri, myView.logSize);
         String churchName = getString(R.string.ccli_church) + ": " +
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliChurchName","");
-        ((TextView)myView.churchDetails.findViewById(R.id.mainText)).setText(churchName);
+        myView.churchDetails.setText(churchName);
         String churchLicence = getString(R.string.ccli_licence) + ": " +
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliLicence","");
         myView.churchDetails.setHint(churchLicence);

@@ -13,12 +13,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="200dp">
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button1Active"
-                style="@style/PrefSwitch"
-                android:text="@string/visible" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/visible"/>
 
             <LinearLayout
                 android:id="@+id/button1View"
@@ -38,13 +40,14 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/button"
                         android:src="@drawable/ic_help_outline_white_36dp"
-                        app:useCompatPadding="true" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"/>
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button1Opt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:hint="@string/action" />
 
@@ -55,6 +58,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Short press/click action"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -62,15 +67,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Additional long press action"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button2Active"
-                style="@style/PrefSwitch"
-                android:text="@string/visible" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/visible"/>
 
             <LinearLayout
                 android:id="@+id/button2View"
@@ -90,13 +98,14 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/button"
                         android:src="@drawable/ic_help_outline_white_36dp"
-                        app:useCompatPadding="true" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"/>
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button2Opt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:hint="@string/action" />
 
@@ -107,6 +116,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Short press/click action"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -114,16 +125,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Additional long press action"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button3Active"
-                style="@style/PrefSwitch"
-                android:text="@string/visible" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/visible"/>
 
             <LinearLayout
                 android:id="@+id/button3View"
@@ -143,13 +157,14 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/button"
                         android:src="@drawable/ic_help_outline_white_36dp"
-                        app:useCompatPadding="true" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"/>
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button3Opt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:hint="@string/action" />
 
@@ -160,6 +175,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Short press/click action"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -167,16 +184,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Additional long press action"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button4Active"
-                style="@style/PrefSwitch"
-                android:text="@string/visible" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/visible"/>
 
             <LinearLayout
                 android:id="@+id/button4View"
@@ -196,13 +216,14 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/button"
                         android:src="@drawable/ic_help_outline_white_36dp"
-                        app:useCompatPadding="true" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"/>
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button4Opt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:hint="@string/action" />
 
@@ -213,6 +234,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Short press/click action"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -220,16 +243,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Additional long press action"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button5Active"
-                style="@style/PrefSwitch"
-                android:text="@string/visible" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/visible"/>
 
             <LinearLayout
                 android:id="@+id/button5View"
@@ -249,13 +275,14 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/button"
                         android:src="@drawable/ic_help_outline_white_36dp"
-                        app:useCompatPadding="true" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"/>
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button5Opt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:hint="@string/action" />
 
@@ -266,6 +293,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Short press/click action"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -273,16 +302,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Additional long press action"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/button6Active"
-                style="@style/PrefSwitch"
-                android:text="@string/visible" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/visible"/>
 
             <LinearLayout
                 android:id="@+id/button6View"
@@ -302,13 +334,14 @@
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/button"
                         android:src="@drawable/ic_help_outline_white_36dp"
-                        app:useCompatPadding="true" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"/>
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/button6Opt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="top"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:hint="@string/action" />
 
@@ -319,6 +352,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Short press/click action"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
@@ -326,6 +361,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Additional long press action"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:hint="" />
 
             </LinearLayout>

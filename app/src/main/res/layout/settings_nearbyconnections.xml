@@ -70,11 +70,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/nearbyHostMenuOnly"
-                    style="@style/PrefSwitch"
-                    android:padding="8dp"
-                    android:text="@string/nearby_host_menu_only" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nearby_host_menu_only"
+                    android:padding="8dp"/>
 
                 <TableRow style="@style/DividerLine" />
 
@@ -86,19 +87,21 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/receiveHostFiles"
-                    style="@style/PrefSwitch"
-                    android:padding="8dp"
-                    android:text="@string/connections_receive_host" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/connections_receive_host"
+                    android:padding="8dp"/>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/keepHostFiles"
-                    style="@style/PrefSwitch"
-                    android:padding="8dp"
-                    android:text="@string/connections_keephostsongs" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/connections_keephostsongs"
+                    android:padding="8dp"/>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/searchForHosts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

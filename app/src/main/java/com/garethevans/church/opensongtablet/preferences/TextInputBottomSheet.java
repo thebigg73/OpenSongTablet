@@ -8,6 +8,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 
@@ -88,6 +90,15 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         dialogReturnInterface = (DialogReturnInterface) context;
      }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Window w = requireActivity().getWindow();
+        if (w!=null) {
+            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -127,6 +138,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
                 });
             }
             myView.prefEditText.setHint(hint);
+            myView.prefEditText.requestFocus();
 
         } else {
             ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.view_exposed_dropdown_item,prefChoices);

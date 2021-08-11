@@ -49,21 +49,22 @@
                 android:id="@+id/overWrite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:text="@string/overwrite" />
 
             <TextView
                 android:id="@+id/setLoadInfo1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
                 android:text="@string/file_choose_info" />
 
             <TextView
                 android:id="@+id/setLoadInfo2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:text="@string/set_load_merge" />
 
             <TableRow style="@style/DividerLine" />

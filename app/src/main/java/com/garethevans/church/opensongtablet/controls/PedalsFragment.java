@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +23,7 @@ import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAda
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsPedalBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 
@@ -39,8 +39,9 @@ public class PedalsFragment extends Fragment {
 
     private boolean longPressCapable = false;
     private long downTime, upTime;
-    private String currentMidiCode, keyRepeatCountText, keyRepeatTimeText;
-    private int currentListening, currentPedalCode, keyRepeatCount, keyRepeatTime;
+    private String currentMidiCode;
+    private int currentListening;
+    private int currentPedalCode;
     private int[] defKeyCodes;
     private String[] defMidiCodes;
     private String[] shortActions;
@@ -56,13 +57,13 @@ public class PedalsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        mainActivityInterface.registerFragment(this,"pedalsFragment");
+        mainActivityInterface.registerFragment(this, "pedalsFragment");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = SettingsPedalBinding.inflate(inflater,container,false);
+        myView = SettingsPedalBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.pedal));
 
@@ -73,7 +74,7 @@ public class PedalsFragment extends Fragment {
         grabViews();
 
         // Initialise the array items
-        mainActivityInterface.getPedalActions().setUpPedalActions(requireContext(),mainActivityInterface);
+        mainActivityInterface.getPedalActions().setUpPedalActions(requireContext(), mainActivityInterface);
         actionCodes = mainActivityInterface.getPedalActions().getActionCodes();
         actions = mainActivityInterface.getPedalActions().getActions();
         defKeyCodes = mainActivityInterface.getPedalActions().defPedalCodes;
@@ -104,8 +105,8 @@ public class PedalsFragment extends Fragment {
     }
 
     private void midiPedalAllowed() {
-        if (mainActivityInterface.getMidi()!=null && mainActivityInterface.getMidi().getMidiDevice()!=null &&
-                mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"midiAsPedal",false)) {
+        if (mainActivityInterface.getMidi() != null && mainActivityInterface.getMidi().getMidiDevice() != null &&
+                mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(), "midiAsPedal", false)) {
             String message = getString(R.string.midi_pedal) + ": " +
                     mainActivityInterface.getMidi().getMidiDeviceName();
             myView.midiPedal.setText(message);
@@ -113,14 +114,15 @@ public class PedalsFragment extends Fragment {
             myView.midiPedal.setText(getString(R.string.pedal_midi_warning));
         }
     }
+
     private void grabViews() {
-        buttonCodes = new TextView[] {null,myView.button1Code,myView.button2Code,myView.button3Code,myView.button4Code,
-                myView.button5Code,myView.button6Code,myView.button7Code,myView.button8Code};
+        buttonCodes = new TextView[]{null, myView.button1Code, myView.button2Code, myView.button3Code, myView.button4Code,
+                myView.button5Code, myView.button6Code, myView.button7Code, myView.button8Code};
 
-        buttonMidis = new TextView[] {null,myView.button1Midi,myView.button2Midi,myView.button3Midi,myView.button4Midi,
-                myView.button5Midi,myView.button6Midi,myView.button7Midi,myView.button8Midi};
+        buttonMidis = new TextView[]{null, myView.button1Midi, myView.button2Midi, myView.button3Midi, myView.button4Midi,
+                myView.button5Midi, myView.button6Midi, myView.button7Midi, myView.button8Midi};
 
-        buttonHeaders = new RelativeLayout[] {null, myView.button1Header, myView.button2Header,
+        buttonHeaders = new RelativeLayout[]{null, myView.button1Header, myView.button2Header,
                 myView.button3Header, myView.button4Header, myView.button5Header,
                 myView.button6Header, myView.button7Header, myView.button8Header};
 
@@ -131,11 +133,10 @@ public class PedalsFragment extends Fragment {
         longTexts = new ExposedDropDown[]{null, myView.longButton1Text, myView.longButton2Text,
                 myView.longButton3Text, myView.longButton4Text, myView.longButton5Text,
                 myView.longButton6Text, myView.longButton7Text, myView.longButton8Text};
-
     }
 
     private String charFromInt(int i) {
-        if (i==-1 || KeyEvent.keyCodeToString(i)==null) {
+        if (i == -1 || KeyEvent.keyCodeToString(i) == null) {
             return getString(R.string.not_set);
         } else {
             return KeyEvent.keyCodeToString(i);
@@ -143,21 +144,22 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupDropDowns() {
-        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.view_exposed_dropdown_item,actions);
-        for (int s=1; s<=8; s++) {
-            doDropDowns(s,true);
+        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, actions);
+        for (int s = 1; s <= 8; s++) {
+            doDropDowns(s, true);
         }
-        for (int l=1; l<=8; l++) {
-            doDropDowns(l,false);
+        for (int l = 1; l <= 8; l++) {
+            doDropDowns(l, false);
         }
     }
-    private void doDropDowns(int which,boolean isShort) {
+
+    private void doDropDowns(int which, boolean isShort) {
         ExposedDropDown exposedDropDown;
         String pref;
         String defpref;
         if (isShort) {
             exposedDropDown = shortTexts[which];
-            pref = "pedal"+which+"ShortPressAction";
+            pref = "pedal" + which + "ShortPressAction";
             defpref = shortActions[which];
         } else {
             exposedDropDown = longTexts[which];
@@ -166,19 +168,20 @@ public class PedalsFragment extends Fragment {
         }
         exposedDropDown.setAdapter(arrayAdapter);
         exposedDropDown.setText(getActionFromActionCode(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),
-                    pref, defpref)));
-        exposedDropDownSelection.keepSelectionPosition(exposedDropDown,actions);
+                pref, defpref)));
+        exposedDropDownSelection.keepSelectionPosition(exposedDropDown, actions);
         exposedDropDown.addTextChangedListener(new MyTextWatcher(pref));
     }
 
     private String getActionCodeFromAction(String s) {
         return actionCodes.get(actions.indexOf(s));
     }
+
     private String getActionFromActionCode(String s) {
-        Log.d("d","s="+s);
+        Log.d("d", "s=" + s);
         int val = actionCodes.indexOf(s);
-        Log.d("d","val="+val);
-        if (val>-1 && actions.size()>=val) {
+        Log.d("d", "val=" + val);
+        if (val > -1 && actions.size() >= val) {
             return actions.get(actionCodes.indexOf(s));
         } else {
             return "";
@@ -186,22 +189,23 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupButtons() {
-        for (int w=1; w<=8; w++) {
+        for (int w = 1; w <= 8; w++) {
             doButtons(w);
         }
     }
+
     private void doButtons(int which) {
-        buttonCodes[which].setText(charFromInt(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "pedal"+which+"Code",defKeyCodes[which])));
-        buttonMidis[which].setText(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "pedal"+which+"Midi",defMidiCodes[which]));
+        buttonCodes[which].setText(charFromInt(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "pedal" + which + "Code", defKeyCodes[which])));
+        buttonMidis[which].setText(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "pedal" + which + "Midi", defMidiCodes[which]));
         buttonHeaders[which].setOnClickListener(v -> prepareButtonListener(which));
     }
 
     private void prepareButtonListener(int which) {
         currentListening = which;
-        String codePref = "pedal"+which+"Code";
-        String midiPref = "midi"+which+"Code";
-        currentPedalCode = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),codePref,defKeyCodes[which]);
-        currentMidiCode = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),midiPref,defMidiCodes[which]);
+        String codePref = "pedal" + which + "Code";
+        String midiPref = "midi" + which + "Code";
+        currentPedalCode = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), codePref, defKeyCodes[which]);
+        currentMidiCode = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), midiPref, defMidiCodes[which]);
         buttonCodes[which].setText(getString(R.string.pedal_waiting));
         buttonMidis[which].setText(getString(R.string.pedal_waiting));
         pageButtonWaiting = new Handler();
@@ -209,18 +213,18 @@ public class PedalsFragment extends Fragment {
             buttonCodes[which].setText(charFromInt(currentPedalCode));
             buttonMidis[which].setText(currentMidiCode);
         };
-        pageButtonWaiting.postDelayed(stopListening,8000);
+        pageButtonWaiting.postDelayed(stopListening, 8000);
     }
 
     private void setupSwitches() {
-        myView.pedalToggleScrollBeforeSwipeButton.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",true));
-        myView.pedalToggleWarnBeforeSwipeButton.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",false));
-        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",isChecked));
-        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
+        myView.pedalToggleScrollBeforeSwipeButton.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(), "pedalScrollBeforeMove", true));
+        myView.pedalToggleWarnBeforeSwipeButton.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(), "pedalShowWarningBeforeMove", false));
+        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(), "pedalScrollBeforeMove", isChecked));
+        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(), "pedalShowWarningBeforeMove", isChecked));
     }
 
     private void airTurnModeActions() {
-        boolean airTurnMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"AirTurnMode",false);
+        boolean airTurnMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "AirTurnMode", false);
         myView.airTurnMode.setChecked(airTurnMode);
         if (airTurnMode) {
             myView.airTurnOptions.setVisibility(View.VISIBLE);
@@ -228,7 +232,7 @@ public class PedalsFragment extends Fragment {
             myView.airTurnOptions.setVisibility(View.GONE);
         }
         myView.airTurnMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"airTurnMode", isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(), "airTurnMode", isChecked);
             if (isChecked) {
                 myView.airTurnOptions.setVisibility(View.VISIBLE);
             } else {
@@ -236,52 +240,17 @@ public class PedalsFragment extends Fragment {
             }
         });
 
-        keyRepeatCount = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"keyRepeatCount",20);
-        keyRepeatCountText = "" + keyRepeatCount;
-        myView.autoRepeatCountTextView.setText(keyRepeatCountText);
-        myView.autoRepeatCountSeekBar.setProgress(keyRepeatCount);
-        myView.autoRepeatCountSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                keyRepeatCount = progress;
-                keyRepeatCountText = "" + progress;
-                myView.autoRepeatCountTextView.setText(keyRepeatCountText);
-            }
+        int keyRepeatCount = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "keyRepeatCount", 20);
+        myView.autoRepeatCountSlider.setValue(keyRepeatCount);
+        myView.autoRepeatCountSlider.setHint(keyRepeatCount + "");
+        myView.autoRepeatCountSlider.addOnSliderTouchListener(new MySliderTouchListener("keyRepeatCount"));
+        myView.autoRepeatCountSlider.addOnChangeListener(new MySliderChangeListener("keyRepeatCount"));
+        int keyRepeatTime = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "keyRepeatTime", 400);
+        myView.autoRepeatTimeSlider.setValue(keyRepeatTime);
+        myView.autoRepeatTimeSlider.setHint(keyRepeatTime + "ms");
+        myView.autoRepeatTimeSlider.addOnSliderTouchListener(new MySliderTouchListener("keyRepeatTime"));
+        myView.autoRepeatTimeSlider.addOnChangeListener(new MySliderChangeListener("keyRepeatTime"));
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Save the value
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"keyRepeatCount",keyRepeatCount);
-                // If 0 or 1, then no point, so switch off the AirTurn mode
-                if (keyRepeatCount<2) {
-                    myView.airTurnMode.setChecked(false);
-                }
-            }
-        });
-        keyRepeatTime = mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"keyRepeatTime",400);
-        keyRepeatTimeText = keyRepeatTime + " ms";
-        myView.autoRepeatTimeTextView.setText(keyRepeatTimeText);
-        myView.autoRepeatTimeSeekBar.setProgress((keyRepeatTime-100)/10);  // Min time of 100 is progress of 0.  Seekbar goes up in 10s
-        myView.autoRepeatTimeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                keyRepeatTime = (10*progress) + 100;
-                keyRepeatTimeText = keyRepeatTime + " ms";
-                myView.autoRepeatTimeTextView.setText(keyRepeatTimeText);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Save the value
-                mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),"keyRepeatTime",keyRepeatTime);
-            }
-        });
     }
 
     // Key listeners called from MainActivity
@@ -293,20 +262,22 @@ public class PedalsFragment extends Fragment {
             String pedalText = charFromInt(keyCode);
 
             // Run the common actions for midi and key registrations
-            commonEventDown(currentListening,keyCode,pedalText, null);
+            commonEventDown(currentListening, keyCode, pedalText, null);
 
             // Check and remove any other pedals using this code
             removePreviouslySetKey(keyCode);
         }
     }
+
     public void midiDownListener(String note) {
-        if (currentListening>0) {
-            commonEventDown(currentListening,0,null, note);
+        if (currentListening > 0) {
+            commonEventDown(currentListening, 0, null, note);
 
             // Check and remove any other pedals using this code
             removePreviouslySetMidi(note);
         }
     }
+
     private void commonEventDown(int which, int pedalCode, String pedalText, String pedalMidi) {
         // Reset the keyDown and keyUpTimes
         downTime = System.currentTimeMillis();
@@ -328,49 +299,52 @@ public class PedalsFragment extends Fragment {
         upTime = System.currentTimeMillis();
 
         // Decide if longPressCapable
-        longPressCapable = ((upTime - downTime)>300 && (upTime - downTime)<1000) || longPressCapable;
+        longPressCapable = ((upTime - downTime) > 300 && (upTime - downTime) < 1000) || longPressCapable;
     }
+
     public void commonEventLong() {
         longPressCapable = true;
     }
 
     public boolean isListening() {
-        return currentListening>-1;
+        return currentListening > -1;
     }
 
     private void updateButtonText(String keyText, String midiText) {
-        if (midiText==null) {
+        if (midiText == null) {
             midiText = currentMidiCode;
         }
-        if (keyText==null) {
+        if (keyText == null) {
             keyText = charFromInt(currentPedalCode);
         }
-        if (buttonCodes[currentListening]!=null) {
+        if (buttonCodes[currentListening] != null) {
             buttonCodes[currentListening].setText(keyText);
         }
-        if (buttonMidis[currentListening]!=null) {
+        if (buttonMidis[currentListening] != null) {
             buttonMidis[currentListening].setText(midiText);
         }
     }
 
     private void removePreviouslySetKey(int keyCode) {
         // Check for any other pedals currently set to this value and remove them.
-        for (int x=1; x<=8; x++) {
-            if (currentListening!=x && mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"pedal"+x+"Code",defKeyCodes[x])==keyCode) {
-                setPedalPreference(x,defKeyCodes[x],null);
+        for (int x = 1; x <= 8; x++) {
+            if (currentListening != x && mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "pedal" + x + "Code", defKeyCodes[x]) == keyCode) {
+                setPedalPreference(x, defKeyCodes[x], null);
                 buttonCodes[x].setText(R.string.not_set);
             }
         }
     }
+
     private void removePreviouslySetMidi(String midiCode) {
         // Check for any other pedals currently set to this value and remove them.
-        for (int x=1; x<=8; x++) {
-            if (currentListening!=x && mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"pedal"+x+"Midi",defMidiCodes[x]).equals(midiCode)) {
-                mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"pedal"+x+"Midi","");
+        for (int x = 1; x <= 8; x++) {
+            if (currentListening != x && mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "pedal" + x + "Midi", defMidiCodes[x]).equals(midiCode)) {
+                mainActivityInterface.getPreferences().setMyPreferenceString(getContext(), "pedal" + x + "Midi", "");
                 buttonMidis[x].setText(R.string.not_set);
             }
         }
     }
+
     private class MyTextWatcher implements TextWatcher {
 
         String which;
@@ -379,8 +353,10 @@ public class PedalsFragment extends Fragment {
         MyTextWatcher(String which) {
             this.which = which;
         }
+
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -389,17 +365,57 @@ public class PedalsFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),which,getActionCodeFromAction(val));
+            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(), which, getActionCodeFromAction(val));
         }
     }
 
     private void setPedalPreference(int which, int pedalCode, String pedalMidi) {
-        if (pedalMidi==null) {
+        if (pedalMidi == null) {
             // Normal key press
-            mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),"pedal"+which+"Code",pedalCode);
+            mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(), "pedal" + which + "Code", pedalCode);
         } else {
             // Midi press
-            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(), "pedal"+which+"Midi", pedalMidi);
+            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(), "pedal" + which + "Midi", pedalMidi);
+        }
+    }
+
+    private class MySliderTouchListener implements Slider.OnSliderTouchListener {
+
+        private final String prefName;
+
+        MySliderTouchListener(String prefName) {
+            this.prefName = prefName;
+        }
+
+        @Override
+        public void onStartTrackingTouch(@NonNull Slider slider) { }
+
+        @Override
+        public void onStopTrackingTouch(@NonNull Slider slider) {
+            // Save the value
+            mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), prefName, (int) slider.getValue());
+        }
+    }
+
+    private class MySliderChangeListener implements Slider.OnChangeListener {
+
+        private final String prefName;
+
+        MySliderChangeListener(String prefName) {
+            this.prefName = prefName;
+        }
+
+        @Override
+        public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+            // Update the helper text
+            switch (prefName) {
+                case "keyRepeatTime":
+                    myView.autoRepeatTimeSlider.setHint((int) value + "ms");
+                    break;
+                case "keyRepeatCount":
+                    myView.autoRepeatCountSlider.setHint((int) value + "");
+                    break;
+            }
         }
     }
 }

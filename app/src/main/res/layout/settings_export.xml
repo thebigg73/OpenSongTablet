@@ -43,8 +43,8 @@
                         android:id="@+id/pdf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:padding="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/pdf"
                         android:visibility="gone" />
 
@@ -52,8 +52,8 @@
                         android:id="@+id/image"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:padding="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/image"
                         android:visibility="gone" />
 
@@ -61,8 +61,8 @@
                         android:id="@+id/openSongApp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:padding="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/export_ost"
                         android:visibility="gone" />
 
@@ -70,8 +70,8 @@
                         android:id="@+id/openSong"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:padding="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/export_desktop"
                         android:visibility="gone" />
 
@@ -79,8 +79,8 @@
                         android:id="@+id/onSong"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:padding="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/export_onsong"
                         android:visibility="gone" />
 
@@ -88,8 +88,8 @@
                         android:id="@+id/chordPro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:padding="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/export_chordpro"
                         android:visibility="gone" />
 
@@ -97,8 +97,8 @@
                         android:id="@+id/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:padding="12dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:text="@string/export_text"
                         android:visibility="gone" />
 

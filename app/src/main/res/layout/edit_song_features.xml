@@ -12,7 +12,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="200dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,7 +74,6 @@
                     android:layout_marginBottom="16dp"/>
 
             </LinearLayout>
-            <TableRow style="@style/DividerLine"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,7 +106,6 @@
 
         </LinearLayout>
 
-            <TableRow style="@style/DividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,6 +143,12 @@
 
             <TableRow style="@style/DividerLine"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/song_features_warning"
+                style="@style/helperText" />
+
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/midi"
                 android:layout_width="match_parent"
@@ -154,9 +159,10 @@
                 app:autoSizeMaxTextSize="18sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform" />
+                app:autoSizeTextType="uniform"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
 
-            <TableRow style="@style/DividerLine"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/abc"
@@ -168,9 +174,9 @@
                 app:autoSizeMaxTextSize="18sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform" />
-
-            <TableRow style="@style/DividerLine"/>
+                app:autoSizeTextType="uniform"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/customChords"
@@ -182,40 +188,42 @@
                 app:autoSizeMaxTextSize="18sp"
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="2sp"
-                app:autoSizeTextType="uniform" />
+                app:autoSizeTextType="uniform"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"/>
 
-            <TableRow style="@style/DividerLine"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/linkType"
                     android:layout_width="0dp"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.5"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/link"
-                    android:layout_gravity="bottom"/>
+                    android:hint="@string/link"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/linkValue"
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.5"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="0dp"
-                    android:hint="@string/link_choose"
-                    android:layout_gravity="bottom"/>
+                    android:hint="@string/midi_value" />
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

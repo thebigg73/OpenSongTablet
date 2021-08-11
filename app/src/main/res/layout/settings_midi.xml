@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,10 +27,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/connections_connect" />
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/enableBluetooth"
-                    style="@style/PrefSwitch"
-                    android:text="@string/midi_bluetooth" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_bluetooth"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/searchDevices"
@@ -120,10 +120,12 @@
 
                 </LinearLayout>
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/midiAsPedal"
-                    style="@style/PrefSwitch"
-                    android:text="@string/midi_pedal" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_pedal"/>
+
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />
@@ -142,10 +144,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/midi_commands" />
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/autoSendBluetooth"
-                    style="@style/PrefSwitch"
-                    android:text="@string/midi_auto" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_auto"/>
 
                 <LinearLayout
                     android:id="@+id/songActionsLayout"

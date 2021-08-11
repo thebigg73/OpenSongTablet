@@ -939,4 +939,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="theme_exists">That theme already exists.</string>
     <string name="duplicate_sections">You have used the same tag multiple times in the song.  This can cause problems when setting the order.</string>
     <string name="section_not_found">This section does not exist in the song.  Please remove this item, or create the section in the lyrics tab.</string>
+    <string name="presentation_order_info">The song presentation order is shown below.  You can drag items to rearrange the order and swipe to remove.</string>
+    <string name="song_sections_info">The sections found in your song lyrics are shown below.  Click on the buttons to add them to the presentation order.</string>
+    <string name="song_features_warning">These values are best set using the dedicated song feature options in the settings menu. Save the song first. You can, however, manually edit the values here.</string>
 </resources>

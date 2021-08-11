@@ -40,7 +40,6 @@
                     android:id="@+id/swipeSpeed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:text="@string/time" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider

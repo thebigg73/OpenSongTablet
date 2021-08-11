@@ -14,20 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import com.garethevans.church.opensongtablet.customviews.GlideApp;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.SettingsHighlighterEditBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.slider.Slider;
 
 import java.io.OutputStream;
 
@@ -41,6 +41,8 @@ public class HighlighterEditFragment extends Fragment {
     private int buttonActive, buttonInactive, drawingPenSize, drawingHighlighterSize,
             drawingEraserSize, drawingPenColor, drawingHighlighterColor, size = 0;
     private String activeTool;
+    private long startDrag, endDrag;
+    private float startDragX, endDragX;
 
     // The colours used in drawing
     private final int penBlack = 0xff000000;
@@ -141,7 +143,6 @@ public class HighlighterEditFragment extends Fragment {
         // Set up the bottomSheet
         bottomSheetBar();
     }
-
 
     private void bottomSheetBar() {
         View bottomSheet = myView.bottomSheet;
@@ -292,27 +293,12 @@ public class HighlighterEditFragment extends Fragment {
 
     private void setSizes() {
         if (activeTool.equals("pen")) {
-            currentSize = drawingPenSize;
+            myView.sizeSlider.setValue(drawingPenSize);
         } else if (activeTool.equals("highlighter")) {
-            currentSize = drawingHighlighterSize;
+            myView.sizeSlider.setValue(drawingHighlighterSize);
         } else {
-            currentSize = drawingEraserSize;
+            myView.sizeSlider.setValue(drawingEraserSize);
         }
-        sizeToProgress(currentSize);
-    }
-
-    private void sizeToProgress(int size) {
-        // Min size = 1
-        currentSize = size-1;
-        myView.sizeSeekBar.setProgress(size-1);
-        String text = size + " px";
-        myView.sizeText.setText(text);
-    }
-    private void progressToSize(int progress) {
-        String text = (progress+1) + " px";
-        myView.sizeText.setText(text);
-        currentSize = progress+1;
-        mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize,currentColor);
     }
 
     private void setListeners() {
@@ -331,45 +317,37 @@ public class HighlighterEditFragment extends Fragment {
         myView.colorBlue.setOnClickListener(v -> changeColor(penBlue,highlighterBlue));
 
         myView.dimBackground.setOnClickListener(v -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
-        myView.sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        myView.sizeSlider.addOnChangeListener((slider, value, fromUser) -> {
+            // Update the hint text
+            myView.sizeSlider.setHint(value+"");
+        });
+        myView.sizeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressToSize(progress);
-                currentSize = progress+1;
-            }
+            public void onStartTrackingTouch(@NonNull Slider slider) {}
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                String which = null;
-                currentSize = myView.sizeSeekBar.getProgress()+1;
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                // Save the value
+                String prefName = null;
+                int size = (int)myView.sizeSlider.getValue();
                 switch (activeTool) {
                     case "pen":
-                        which = "drawingPenSize";
-                        drawingPenSize = currentSize;
+                        prefName = "drawingPenSize";
                         break;
                     case "highlighter":
-                        which = "drawingHighlighterSize";
-                        drawingHighlighterSize = currentSize;
+                        prefName = "drawingHighlighterSize";
                         break;
                     case "eraser":
-                        which = "drawingEraserSize";
-                        drawingEraserSize = currentSize;
+                        prefName = "drawingEraserSize";
                         break;
                 }
-                progressToSize(myView.sizeSeekBar.getProgress());
-                if (which!=null) {
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), which, currentSize);
+                if (prefName!=null) {
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), prefName, size);
                 }
-                mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize,currentColor);
+                mainActivityInterface.getDrawNotes().setCurrentPaint(size,currentColor);
                 mainActivityInterface.getDrawNotes().postInvalidate();
             }
         });
-
         myView.saveButton.setOnClickListener(v -> saveFile());
     }
 

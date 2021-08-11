@@ -12,132 +12,107 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="200dp"
-        android:orientation="vertical">
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pedal_instructions"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
-
-        <TextView
-            android:id="@+id/midiPedal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pedal_midi_warning"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
-
-        <TableRow style="@style/DividerLine" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/pedalToggleScrollBeforeSwipeButton"
-            style="@style/PrefSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pedal_scroll_before_move" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/pedalToggleWarnBeforeSwipeButton"
-            style="@style/PrefSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pedal_avoid_repeat" />
-
-        <TableRow style="@style/DividerLine" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/airTurnMode"
-            style="@style/PrefSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/airTurnLongPress" />
-
-        <LinearLayout
-            android:id="@+id/airTurnOptions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_marginBottom="200dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/autoRepeatRationale" />
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/pedal_instructions" />
 
             <TextView
+                android:id="@+id/midiPedal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/autoRepeatCount"/>
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/pedal_midi_warning" />
 
-            <SeekBar
-                android:id="@+id/autoRepeatCount_SeekBar"
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/pedalToggleScrollBeforeSwipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:max="300" />
+                android:text="@string/pedal_scroll_before_move" />
 
-            <TextView
-                android:id="@+id/autoRepeatCount_TextView"
-                style="@style/MyInfoText"
-                android:layout_gravity="end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal" />
-
-            <TextView
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/pedalToggleWarnBeforeSwipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/autorepeat_time"/>
+                android:text="@string/pedal_avoid_repeat" />
 
-            <SeekBar
-                android:id="@+id/autoRepeatTime_SeekBar"
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/airTurnMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:max="90" />
+                android:text="@string/airTurnLongPress" />
 
-            <TextView
-                android:id="@+id/autoRepeatTime_TextView"
-                style="@style/MyInfoText"
-                android:layout_gravity="end"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/airTurnOptions"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/autoRepeatRationale" />
 
-        <TableRow style="@style/DividerLine" />
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/autoRepeatCount_Slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="2"
+                    android:valueTo="200"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/autoRepeatCount" />
 
-        <!--BUTTON 1-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box">
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/autoRepeatTime_Slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:valueFrom="100"
+                    android:valueTo="5000"
+                    app:stepSize="100"
+                    android:text="@string/autorepeat_time" />
 
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <!--BUTTON 1-->
             <RelativeLayout
-                android:id="@+id/button1Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@color/colorSecondary">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <RelativeLayout
+                    android:id="@+id/button1Header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp">
 
                     <TextView
                         android:id="@+id/button1"
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
                         android:layout_margin="12dp"
-                        android:textSize="32sp"
                         android:text="1"
+                        android:textSize="32sp"
                         tools:ignore="HardcodedText" />
 
                     <TextView
@@ -145,500 +120,520 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@+id/button1"
-                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                         android:gravity="center_vertical"
-                        android:text="@string/not_set"/>
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
                     <TextView
                         android:id="@+id/button1Midi"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/button1"
                         android:layout_below="@+id/button1Code"
-                        app:drawableStartCompat="@drawable/ic_midi_white_36dp"
+                        android:layout_toEndOf="@+id/button1"
                         android:gravity="center_vertical"
-                        android:text="@string/not_set"/>
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+
+                </RelativeLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/shortButton1Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/button1Header"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/tap" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/longButton1Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shortButton1Text"
+                    android:hint="@string/long_press" />
 
             </RelativeLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/shortButton1Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button1Header"
-                android:hint="@string/tap" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/longButton1Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortButton1Text"
-                android:hint="@string/long_press" />
-
-        </RelativeLayout>
-
-
-        <!--BUTTON 2-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box">
-
+            <!--BUTTON 2-->
             <RelativeLayout
-                android:id="@+id/button2Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@color/colorSecondary">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button2"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:textSize="32sp"
-                    android:text="2"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/button2Code"
+                <RelativeLayout
+                    android:id="@+id/button2Header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button2"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button2Midi"
+                    <TextView
+                        android:id="@+id/button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="12dp"
+                        android:text="2"
+                        android:textSize="32sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/button2Code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/button2"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+
+                    <TextView
+                        android:id="@+id/button2Midi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button2Code"
+                        android:layout_toEndOf="@+id/button2"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+
+                </RelativeLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/shortButton2Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button2"
-                    android:layout_below="@+id/button2Code"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:layout_below="@id/button2Header"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/tap" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/longButton2Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shortButton2Text"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/long_press" />
 
             </RelativeLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/shortButton2Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button2Header"
-                android:hint="@string/tap" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/longButton2Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortButton2Text"
-                android:hint="@string/long_press" />
-
-        </RelativeLayout>
-
-
-
-
-        <!--BUTTON 3-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box">
-
+            <!--BUTTON 3-->
             <RelativeLayout
-                android:id="@+id/button3Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@color/colorSecondary">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button3"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:textSize="32sp"
-                    android:text="3"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/button3Code"
+                <RelativeLayout
+                    android:id="@+id/button3Header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button3"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button3Midi"
+                    <TextView
+                        android:id="@+id/button3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="12dp"
+                        android:text="3"
+                        android:textSize="32sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/button3Code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/button3"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+
+                    <TextView
+                        android:id="@+id/button3Midi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button3Code"
+                        android:layout_toEndOf="@+id/button3"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+
+                </RelativeLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/shortButton3Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button3"
-                    android:layout_below="@+id/button3Code"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:layout_below="@id/button3Header"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/tap" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/longButton3Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shortButton3Text"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/long_press" />
 
             </RelativeLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/shortButton3Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button3Header"
-                android:hint="@string/tap" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/longButton3Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortButton3Text"
-                android:hint="@string/long_press" />
-
-        </RelativeLayout>
-
-
-
-        <!--BUTTON 4-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box">
-
+            <!--BUTTON 4-->
             <RelativeLayout
-                android:id="@+id/button4Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@color/colorSecondary">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button4"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:textSize="32sp"
-                    android:text="4"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/button4Code"
+                <RelativeLayout
+                    android:id="@+id/button4Header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button4"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button4Midi"
+                    <TextView
+                        android:id="@+id/button4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="12dp"
+                        android:text="4"
+                        android:textSize="32sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/button4Code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/button4"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+
+                    <TextView
+                        android:id="@+id/button4Midi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button4Code"
+                        android:layout_toEndOf="@+id/button4"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+
+                </RelativeLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/shortButton4Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button4"
-                    android:layout_below="@+id/button4Code"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:layout_below="@id/button4Header"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/tap" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/longButton4Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shortButton4Text"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/long_press" />
 
             </RelativeLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/shortButton4Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button4Header"
-                android:hint="@string/tap" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/longButton4Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortButton4Text"
-                android:hint="@string/long_press" />
-
-        </RelativeLayout>
-
-
-
-        <!--BUTTON 5-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box">
-
+            <!--BUTTON 5-->
             <RelativeLayout
-                android:id="@+id/button5Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@color/colorSecondary">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button5"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:textSize="32sp"
-                    android:text="5"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/button5Code"
+                <RelativeLayout
+                    android:id="@+id/button5Header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button5"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button5Midi"
+                    <TextView
+                        android:id="@+id/button5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="12dp"
+                        android:text="5"
+                        android:textSize="32sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/button5Code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/button5"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+
+                    <TextView
+                        android:id="@+id/button5Midi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button5Code"
+                        android:layout_toEndOf="@+id/button5"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+
+                </RelativeLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/shortButton5Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button5"
-                    android:layout_below="@+id/button5Code"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:layout_below="@id/button5Header"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/tap" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/longButton5Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shortButton5Text"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/long_press" />
 
             </RelativeLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/shortButton5Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button5Header"
-                android:hint="@string/tap" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/longButton5Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortButton5Text"
-                android:hint="@string/long_press" />
-
-        </RelativeLayout>
-
-
-        <!--BUTTON 6-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box">
-
+            <!--BUTTON 6-->
             <RelativeLayout
-                android:id="@+id/button6Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@color/colorSecondary">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button6"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:textSize="32sp"
-                    android:text="6"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/button6Code"
+                <RelativeLayout
+                    android:id="@+id/button6Header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button6"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button6Midi"
+                    <TextView
+                        android:id="@+id/button6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="12dp"
+                        android:text="6"
+                        android:textSize="32sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/button6Code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/button6"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+
+                    <TextView
+                        android:id="@+id/button6Midi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button6Code"
+                        android:layout_toEndOf="@+id/button6"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+
+                </RelativeLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/shortButton6Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button6"
-                    android:layout_below="@+id/button6Code"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:layout_below="@id/button6Header"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/tap" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/longButton6Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shortButton6Text"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/long_press" />
 
             </RelativeLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/shortButton6Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button6Header"
-                android:hint="@string/tap" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/longButton6Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortButton6Text"
-                android:hint="@string/long_press" />
-
-            </RelativeLayout>
-
-
-
-
-        <!--BUTTON 7-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box">
-
+            <!--BUTTON 7-->
             <RelativeLayout
-                android:id="@+id/button7Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@color/colorSecondary">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button7"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:textSize="32sp"
-                    android:text="7"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/button7Code"
+                <RelativeLayout
+                    android:id="@+id/button7Header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button7"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button7Midi"
+                    <TextView
+                        android:id="@+id/button7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="12dp"
+                        android:text="7"
+                        android:textSize="32sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/button7Code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/button7"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+
+                    <TextView
+                        android:id="@+id/button7Midi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button7Code"
+                        android:layout_toEndOf="@+id/button7"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+
+                </RelativeLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/shortButton7Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button7"
-                    android:layout_below="@+id/button7Code"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:layout_below="@id/button7Header"
+                    android:hint="@string/tap" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/longButton7Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shortButton7Text"
+                    android:hint="@string/long_press" />
 
             </RelativeLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/shortButton7Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button7Header"
-                android:hint="@string/tap" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/longButton7Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortButton7Text"
-                android:hint="@string/long_press" />
-
-        </RelativeLayout>
-
-
-        <!--BUTTON 8-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box">
-
+            <!--BUTTON 8-->
             <RelativeLayout
-                android:id="@+id/button8Header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@color/colorSecondary">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button8"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:textSize="32sp"
-                    android:text="8"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/button8Code"
+                <RelativeLayout
+                    android:id="@+id/button8Header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button8"
-                    app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:background="@color/colorSecondary"
+                    android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/button8Midi"
+                    <TextView
+                        android:id="@+id/button8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="12dp"
+                        android:text="8"
+                        android:textSize="32sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/button8Code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/button8"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
+
+                    <TextView
+                        android:id="@+id/button8Midi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/button8Code"
+                        android:layout_toEndOf="@+id/button8"
+                        android:gravity="center_vertical"
+                        android:text="@string/not_set"
+                        app:drawableStartCompat="@drawable/ic_midi_white_36dp" />
+
+                </RelativeLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/shortButton8Text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/button8"
-                    android:layout_below="@+id/button8Code"
-                    app:drawableStartCompat="@drawable/ic_midi_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/not_set"/>
+                    android:layout_below="@id/button8Header"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/tap" />
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/longButton8Text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shortButton8Text"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:hint="@string/long_press" />
 
             </RelativeLayout>
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/shortButton8Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/button8Header"
-                android:hint="@string/tap" />
 
-            <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
-                android:id="@+id/longButton8Text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shortButton8Text"
-                android:hint="@string/long_press" />
-
-        </RelativeLayout>
-
-
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

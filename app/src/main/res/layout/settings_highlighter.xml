@@ -15,13 +15,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/autoShowHighlight"
-                style="@style/PrefSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/autoshow_highlight" />
+                android:text="@string/autoshow_highlight"
+                android:layout_marginTop="16dp"/>
 
             <TableRow style="@style/DividerLine" />
 

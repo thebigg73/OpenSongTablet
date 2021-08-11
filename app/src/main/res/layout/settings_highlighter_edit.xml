@@ -36,7 +36,6 @@
 
     </RelativeLayout>
 
-
     <!-- The bottom dialog -->
     <LinearLayout
         android:id="@+id/bottomSheet"
@@ -47,21 +46,19 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:behavior_peekHeight="800dp">
 
-        <ImageView
+        <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
             android:id="@+id/handleView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/bottomsheetbutton"
-            android:padding="4dp"
-            android:src="@drawable/ic_menu_white_36dp"
-            android:contentDescription="@string/tool" />
+            app:isDraggableX="true"/>
 
         <LinearLayout
             style="@style/BottomSheetDialogTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/colorAltPrimary"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -72,7 +69,9 @@
                 android:id="@+id/myTools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -149,44 +148,20 @@
 
             </HorizontalScrollView>
 
-            <TableRow style="@style/DividerLine" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/size" />
-
-                <LinearLayout
-                    android:id="@+id/sizeLayout"
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/sizeSlider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <SeekBar
-                        android:id="@+id/sizeSeekBar"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.8"
-                        android:max="49"
-                        android:padding="16dp" />
-
-                    <TextView
-                        android:id="@+id/sizeText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
-                        android:gravity="end"
-                        android:text="@string/size" />
-
-                </LinearLayout>
-
-                <TableRow style="@style/DividerLine" />
+                    android:valueFrom="1"
+                    android:valueTo="50"
+                    android:text="@string/size"/>
 
             </LinearLayout>
 
@@ -194,7 +169,9 @@
                 android:id="@+id/colorsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -281,8 +258,6 @@
 
                 </HorizontalScrollView>
 
-                <TableRow style="@style/DividerLine" />
-
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -290,6 +265,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
+                android:padding="16dp"
                 android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>

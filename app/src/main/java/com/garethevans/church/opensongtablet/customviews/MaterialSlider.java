@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,16 +27,16 @@ public class MaterialSlider extends LinearLayout {
                 android.R.attr.hint,
                 android.R.attr.valueFrom,
                 android.R.attr.valueTo,
-                android.R.attr.stepSize,
+                R.attr.stepSize,
                 android.R.attr.value,
                 R.attr.trackColor};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
-        float valueFrom = a.getFloat(2, 0);
-        float valueTo = a.getFloat(3,11);
-        float stepSize = a.getFloat(4,1);
-        float value = a.getFloat(5,0);
+        float valueFrom = a.getFloat(2, 0.0f);
+        float valueTo = a.getFloat(3,10.0f);
+        float stepSize = a.getFloat(4,1.0f);
+        float value = a.getFloat(5,0.0f);
         int track = a.getColor(6,0);
 
         slider = findViewById(R.id.slider);
@@ -52,6 +53,8 @@ public class MaterialSlider extends LinearLayout {
         } else {
             valueTextView.setVisibility(View.GONE);
         }
+
+        Log.d("MaterialSlider","from:"+valueFrom+"  to:"+valueTo+"  step:"+stepSize);
         slider.setValueFrom(valueFrom);
         slider.setValueTo(valueTo);
         slider.setStepSize(stepSize);
@@ -99,7 +102,12 @@ public class MaterialSlider extends LinearLayout {
         slider.setValue(value);
     }
     public void setHint(String hint) {
-        valueTextView.setText(hint);
+        if (hint!=null && !hint.isEmpty()) {
+            valueTextView.setVisibility(View.VISIBLE);
+            valueTextView.setText(hint);
+        } else {
+            valueTextView.setVisibility(View.GONE);
+        }
     }
     public void setText(String text) {
         titleTextView.setText(text);

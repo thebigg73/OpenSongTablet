@@ -61,7 +61,6 @@
                 android:text="@string/alpha"
                 android:valueFrom="50"
                 android:valueTo="100"
-                android:stepSize="1"
                 android:value="80"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -71,7 +70,6 @@
                 android:text="@string/time"
                 android:valueFrom="0"
                 android:valueTo="100"
-                android:stepSize="1"
                 android:value="0"/>
 
             <TableRow style="@style/DividerLine" />

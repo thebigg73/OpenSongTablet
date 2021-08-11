@@ -87,13 +87,12 @@ public class SongSheetHeaders {
         String keyCapoTempo = "";
 
         if (capo!=null && !capo.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.capo) + ": " + capo + " ";
+            keyCapoTempo += c.getString(R.string.capo) + ": " + capo + " ";
             if (key!=null && !key.isEmpty()) {
-                keyCapoTempo += "(" + mainActivityInterface.getTranspose().getKeyBeforeCapo(Integer.parseInt(capo), key) + ") ";
+                keyCapoTempo += "(" + mainActivityInterface.getTranspose().getKeyBeforeCapo(Integer.parseInt(capo), key) + ") |";
             }
-        }
-        if (key!=null && !key.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.tempo) + ": " + tempo + " bpm ";
+        } else if (key!=null && !key.isEmpty()) {
+            keyCapoTempo += "| " + c.getString(R.string.key) + ": " + key + " |";
         }
 
         if (tempo!=null && !tempo.isEmpty()) {
@@ -101,11 +100,17 @@ public class SongSheetHeaders {
         }
 
         if (timesig!=null && !timesig.isEmpty()) {
-            keyCapoTempo += "| " + c.getString(R.string.time_signature) + ": " + timesig + " ";
+            keyCapoTempo += "| " + c.getString(R.string.time_signature) + ": " + timesig + " |";
         }
 
-        keyCapoTempo = keyCapoTempo.trim().replaceFirst("\\| ","");
-
-        return keyCapoTempo;
+        // Remove double || and the ones at the start and the end
+        keyCapoTempo = keyCapoTempo.replace("||","|");
+        if (keyCapoTempo.startsWith("|")) {
+            keyCapoTempo = keyCapoTempo.replaceFirst("\\|","");
+        }
+        if (keyCapoTempo.endsWith("|")) {
+            keyCapoTempo = keyCapoTempo.substring(0,keyCapoTempo.lastIndexOf("|"));
+        }
+        return keyCapoTempo.trim();
     }
 }

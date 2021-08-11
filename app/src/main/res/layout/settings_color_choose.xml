@@ -64,7 +64,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:valueFrom="0"
-                android:valueTo="255"/>
+                android:valueTo="255" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/redSlider"

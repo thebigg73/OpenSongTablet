@@ -2112,7 +2112,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                     // Access coarse/fine location, so can open the menu at 'Connect devices'
                     // The following checks we have both before navigating
                     Log.d("d", "LOCATION granted!");
-                    openNearbyFragment();
+                    if (whattodo.equals("nearby")) {
+                        openNearbyFragment();
+                    }
                     break;
             }
         }

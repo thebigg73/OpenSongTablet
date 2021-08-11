@@ -22,11 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetEditSongOrderBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.RecyclerInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 
-public class PresentationOrderBottomSheet extends BottomSheetDialogFragment {
-
+public class PresentationOrderBottomSheet extends BottomSheetDialogFragment implements RecyclerInterface {
     private BottomSheetEditSongOrderBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final Fragment callingFragment;
@@ -69,7 +69,7 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment {
 
     private void prepareViews() {
         // Update the recycler view
-        presentationOrderAdapter = new PresentationOrderAdapter(requireContext(), mainActivityInterface,
+        presentationOrderAdapter = new PresentationOrderAdapter(requireContext(), this, mainActivityInterface,
                 callingFragment, fragName);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -108,14 +108,27 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void checkViewsToShow() {
-        String text = getString(R.string.presentation_order) + ": ";
         if (mainActivityInterface.getTempSong().getPresentationorder().isEmpty()) {
-            myView.showOrder.setVisibility(View.GONE);
-            text = text + getString(R.string.not_set);
-            myView.currentSectionsTextView.setText(text);
+            myView.currentSections.setVisibility(View.GONE);
+            myView.deletePresOrder.setVisibility(View.GONE);
+            myView.currentSectionsTextView.setHint(getString(R.string.not_set));
         } else {
-            myView.currentSectionsTextView.setText(text);
-            myView.showOrder.setVisibility(View.VISIBLE);
+            myView.currentSectionsTextView.setHint(getString(R.string.presentation_order_info));
+            myView.currentSections.setVisibility(View.VISIBLE);
+            myView.deletePresOrder.setVisibility((View.VISIBLE));
         }
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        // Notification that an item has moved.
+        Log.d(TAG,"Item moved from "+fromPosition+" to "+toPosition);
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        // Notification that an item has been removed
+        Log.d(TAG,"Item removed from "+position);
+        checkViewsToShow();
     }
 }

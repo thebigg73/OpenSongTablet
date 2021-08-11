@@ -38,7 +38,7 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
 
     public MaterialEditText(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_edittext, this);
+        inflate(context, R.layout.view_material_edittext, this);
 
         int[] set = new int[]{android.R.attr.text,
                 android.R.attr.hint,

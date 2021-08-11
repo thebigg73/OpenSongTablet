@@ -13,60 +13,52 @@
         android:layout_height="wrap_content"
         android:text="@string/presentation_order" />
 
-    <TextView
+    <com.garethevans.church.opensongtablet.customviews.MaterialTextView
         android:id="@+id/sectionButtonsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/song_sections" />
+        android:padding="16dp"
+        android:text="@string/song_sections"
+        android:hint="@string/song_sections_info"/>
 
     <androidx.gridlayout.widget.GridLayout
         android:id="@+id/sectionButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:padding="16dp"
         android:isScrollContainer="true"
         app:columnCount="3" />
 
-    <TextView
-        android:id="@+id/currentSectionsTextView"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/presentation_order" />
+        android:orientation="horizontal">
 
-    <LinearLayout
-        android:id="@+id/showOrder"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/deletePresOrder"
-            style="@style/TextBackgroundButton"
-            android:layout_width="match_parent"
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/currentSectionsTextView"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="@string/delete"
+            android:padding="16dp"
+            android:text="@string/presentation_order"
+            android:hint="@string/presentation_order_info"
+            android:layout_gravity="center_vertical"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/deletePresOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_delete_white_36dp"
-            android:text="@string/reset"
-            app:backgroundTint="@color/darkred" />
+            android:layout_gravity="center_vertical"
+            app:useCompatPadding="true"
+            android:contentDescription="@string/delete" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/currentSections"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
-
-    </LinearLayout>
+            android:padding="16dp"/>
 
 </LinearLayout>

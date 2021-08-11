@@ -5,7 +5,6 @@ public class __TODO__ {
     //TODO - still to complete
     // Anything still listed below needs work
     // Anything missing has been tested as ok
-
     /*
 
     Everywhere i use the autocomplete text view, I need to add a listener that moves to the selected position
@@ -14,10 +13,15 @@ public class __TODO__ {
 
     The following menus still need completed
 
+    Set management
+    Song actions - pad
+    Song actions - autoscroll
+
+
     Song menu action button - show song actions
     Song menu action button - find new songs
 
-    Import songs - online
+    Import songs - online - some working, some not
     Import songs - file
     Import songs - Camera
     Import songs - iOS

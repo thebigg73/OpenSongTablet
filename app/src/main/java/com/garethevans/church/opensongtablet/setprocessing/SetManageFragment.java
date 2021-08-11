@@ -90,8 +90,7 @@ public class SetManageFragment extends Fragment {
             myView.overWrite.setVisibility(View.VISIBLE);
             myView.setLoadInfo1.setVisibility(View.GONE);
             myView.setLoadInfo2.setVisibility(View.GONE);
-            ((EditText)myView.setName.findViewById(R.id.editText)).
-                    setText(mainActivityInterface.getCurrentSet().getSetName());
+            myView.setName.setText(mainActivityInterface.getCurrentSet().getSetName());
             myView.newCategory.setVisibility(View.VISIBLE);
             myView.loadorsaveButton.setText(getString(R.string.save));
             myView.loadorsaveButton.setOnClickListener(v -> saveSet());

@@ -27,6 +27,8 @@ public class EditSongFragmentFeatures extends Fragment {
 
     EditSongFeaturesBinding myView;
     MainActivityInterface mainActivityInterface;
+    private String whichLink = "audio";
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -87,7 +89,8 @@ public class EditSongFragmentFeatures extends Fragment {
                 R.layout.view_exposed_dropdown_item, padfiles);
         exposedDropDownSelection.keepSelectionPosition(myView.pad, padfiles);
         myView.pad.setAdapter(padArrayAdapter);
-        if (mainActivityInterface.getTempSong().getPadfile().isEmpty()) {
+        if (mainActivityInterface.getTempSong().getPadfile() == null ||
+                mainActivityInterface.getTempSong().getPadfile().isEmpty()) {
             mainActivityInterface.getTempSong().setPadfile("auto");
         }
         myView.pad.setText(niceTextFromPref(mainActivityInterface.getTempSong().getPadfile()));
@@ -139,6 +142,58 @@ public class EditSongFragmentFeatures extends Fragment {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.abc);
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.customChords);
         checkLines();
+
+        // The links
+        ArrayList<String> linkOptions = new ArrayList<>();
+        linkOptions.add(getString(R.string.link_audio));
+        linkOptions.add(getString(R.string.link_youtube));
+        linkOptions.add(getString(R.string.link_web));
+        linkOptions.add(getString(R.string.link_file));
+        ExposedDropDownArrayAdapter linkArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+                R.layout.view_exposed_dropdown_item, linkOptions);
+        exposedDropDownSelection.keepSelectionPosition(myView.linkType, linkOptions);
+        myView.linkType.setAdapter(linkArrayAdapter);
+        myView.linkType.setText(getString(R.string.link_audio));
+        setLink();
+    }
+
+    private void setLink() {
+        String linkvalue;
+        switch (whichLink) {
+            case "audio":
+            default:
+                linkvalue = mainActivityInterface.getTempSong().getLinkaudio();
+                break;
+            case "youtube":
+                linkvalue = mainActivityInterface.getTempSong().getLinkyoutube();
+                break;
+            case "web":
+                linkvalue = mainActivityInterface.getTempSong().getLinkweb();
+                break;
+            case "other":
+                linkvalue = mainActivityInterface.getTempSong().getLinkother();
+                break;
+        }
+        myView.linkValue.setText(linkvalue);
+    }
+
+    private void editLink(String value) {
+        switch (whichLink) {
+            case "audio":
+            default:
+                mainActivityInterface.getTempSong().setLinkaudio(value);
+                break;
+            case "youtube":
+                mainActivityInterface.getTempSong().setLinkyoutube(value);
+                break;
+            case "web":
+                mainActivityInterface.getTempSong().setLinkweb(value);
+                break;
+            case "other":
+                mainActivityInterface.getTempSong().setLinkother(value);
+                break;
+        }
+        mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
     }
 
     private void checkLines() {
@@ -165,6 +220,8 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.midi.addTextChangedListener(new MyTextWatcher("midi"));
         myView.abc.addTextChangedListener(new MyTextWatcher("abc"));
         myView.customChords.addTextChangedListener(new MyTextWatcher("customchords"));
+        myView.linkType.addTextChangedListener(new MyTextWatcher("linktype"));
+        myView.linkValue.addTextChangedListener(new MyTextWatcher("linkvalue"));
     }
 
     private String niceTextFromPref(String prefText) {
@@ -226,6 +283,21 @@ public class EditSongFragmentFeatures extends Fragment {
                     break;
                 case "customchords":
                     mainActivityInterface.getTempSong().setCustomChords(editable.toString());
+                    break;
+                case "linktype":
+                    if (editable.toString().equals(getString(R.string.link_audio))) {
+                        whichLink = "audio";
+                    } else if (editable.toString().equals(getString(R.string.link_youtube))) {
+                        whichLink = "youtube";
+                    } else if (editable.toString().equals(getString(R.string.link_web))) {
+                        whichLink = "web";
+                    } else if (editable.toString().equals(getString(R.string.link_file))) {
+                        whichLink = "other";
+                    }
+                    setLink();
+                    break;
+                case "linkvalue":
+                    editLink(editable.toString());
                     break;
             }
         }
