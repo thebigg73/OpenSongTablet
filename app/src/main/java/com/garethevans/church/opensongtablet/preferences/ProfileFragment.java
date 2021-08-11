@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,6 +26,7 @@ public class ProfileFragment extends Fragment {
 
     private SettingsProfilesBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private ActivityResultLauncher<Intent> activityLoadResultLauncher, activitySaveResultLauncher;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -40,6 +44,9 @@ public class ProfileFragment extends Fragment {
         // Setup helpers
         setupHelpers();
 
+        // Initialise launcher
+        initialiseLauncher();
+
         // Setup listeners
         setupListeners();
 
@@ -50,6 +57,30 @@ public class ProfileFragment extends Fragment {
         mainActivityInterface.registerFragment(this,"ProfileFragment");
     }
 
+    private void initialiseLauncher() {
+        activityLoadResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> doLoadSave(result,"load"));
+        activitySaveResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> doLoadSave(result,"save"));
+    }
+
+    private void doLoadSave(ActivityResult result, String which) {
+        boolean success = false;
+        if (result.getResultCode()==Activity.RESULT_OK) {
+            Intent intent = result.getData();
+            if (intent!=null && intent.getData()!=null) {
+                if (which.equals("load")) {
+                    success = mainActivityInterface.getProfileActions().loadProfile(requireContext(), mainActivityInterface, intent.getData());
+                } else {
+                    success = mainActivityInterface.getProfileActions().saveProfile(requireContext(), mainActivityInterface, intent.getData());
+                }
+            }
+        }
+        if (success) {
+            mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.success));
+        } else {
+            mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.error));
+        }
+    }
+
     private void setupListeners() {
         myView.loadButton.setOnClickListener(v -> loadProfile());
         myView.saveButton.setOnClickListener(v -> saveProfile());
@@ -57,7 +88,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadProfile() {
-        // Open the file picker and when the user has picked a file, on activity result will
+        // Open the file picker and when the user has picked a file, deal with it
         Intent loadIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         Uri uri = mainActivityInterface.getStorageAccess().
                 getUriForItem(requireContext(),mainActivityInterface,"Profiles","",null);
@@ -66,35 +97,18 @@ public class ProfileFragment extends Fragment {
         loadIntent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         loadIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
         loadIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-        startActivityForResult(loadIntent, 5002);
+        activityLoadResultLauncher.launch(loadIntent);
     }
 
     private void saveProfile() {
-        // Open the file picker and when the user has picked a file, on activity result will
+        // Open the file picker and when the user has picked a file, deal with it
         Intent saveIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Profiles","",null);
         saveIntent.setDataAndType(uri,"application/xml");
         saveIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
         saveIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
         saveIntent.putExtra(Intent.EXTRA_TITLE,"MyProfile");
-        startActivityForResult(saveIntent, 5001);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        super.onActivityResult(requestCode, resultCode, resultData);
-        if (resultCode == Activity.RESULT_OK && requestCode == 5002) {
-            if (mainActivityInterface.getProfileActions().loadProfile(requireContext(), mainActivityInterface, resultData.getData())) {
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
-            } else {
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
-            }
-        } else if (resultCode == Activity.RESULT_OK && requestCode == 5001) {
-            if (mainActivityInterface.getProfileActions().saveProfile(requireContext(), mainActivityInterface, resultData.getData())) {
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
-            } else {
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
-            }
-        }
+        activitySaveResultLauncher.launch(saveIntent);
     }
 
     private void resetPreferences() {
