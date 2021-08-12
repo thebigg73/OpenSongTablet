@@ -480,19 +480,8 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         appActionBar.toggleActionBar(wasScrolling,scrollButton,activityMainBinding.drawerLayout.isOpen());
     }
 
-    @Override
-    public void updatePageButtonLayout() {
-        // We have changed something about the page buttons (or initialising them
-        if (activityMainBinding.pageButtonRight.actionFAB.getRotation()!=0) {
-            pageButtons.animatePageButton(this,false);
-        }
 
-        pageButtons.setPageButton(this, activityMainBinding.pageButtonRight.actionFAB, themeColors.getPageButtonsColor(), -1, false);
-        //activityMainBinding.pageButtonRight.actionFAB.setBackgroundTintList(ColorStateList.valueOf(themeColors.getPageButtonsColor()));
-        for (int x=0; x<6; x++) {
-            pageButtons.setPageButton(this,pageButtons.getFAB(x), themeColors.getPageButtonsColor(), x, false);
-        }
-    }
+
 
     // The navigation actions
     public void setupNav() {
@@ -511,6 +500,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
     }
 
+
     // Initialise the MainActivity components
     // Some of the set up only happens once the user has passed the BootUpFragment checks
     @Override
@@ -523,48 +513,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
         // Set up page buttons
         setListeners();
-    }
-
-    private void setUpCast() {
-        try {
-            castContext = CastContext.getSharedInstance(this);
-            sessionManager = castContext.getSessionManager();
-            castSession = castContext.getSessionManager().getCurrentCastSession();
-            sessionManagerListener = new MySessionManagerListener(this);
-
-        } catch (Exception e) {
-            // No Google Service available
-            // Do nothing as the user will see a warning in the settings menu
-            Log.d(TAG,"No Google Services");
-        }
-    }
-
-    @Override
-    public void setDisplay(Display display) {
-        this.display = display;
-    }
-    @Override
-    public Display getDisplay() {
-        return display;
-    }
-    @Override
-    public ExternalDisplay getExternalDisplay() {
-        if (externalDisplay!=null && display!=null) {
-            externalDisplay = new ExternalDisplay(this,display);
-        }
-        return externalDisplay;
-    }
-    private void recoverCastState() {
-        castSession = sessionManager.getCurrentCastSession();
-        sessionManager.addSessionManagerListener(new MySessionManagerListener(this));
-    }
-    private void endCastState() {
-        sessionManager.removeSessionManagerListener(sessionManagerListener);
-        castSession = null;
-    }
-    @Override
-    public PresentationCommon getPresentationCommon() {
-        return presentationCommon;
     }
     private void initialiseStartVariables() {
         themeColors.setThemeName(preferences.getMyPreferenceString(this, "appTheme", "dark"));
@@ -600,7 +548,13 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         infos = new ArrayList<>();
         rects = new ArrayList<>();
     }
-
+    void setWindowFlags() {
+        // Fix the page flags
+        if (windowFlags==null) {
+            windowFlags = new WindowFlags(this.getWindow());
+        }
+        windowFlags.setWindowFlags();
+    }
     private void setListeners() {
         activityMainBinding.pageButtonRight.actionFAB.setOnClickListener(v  -> {
             if (pageButtonActive) {
@@ -648,12 +602,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-                if (activityMainBinding.drawerLayout.getDrawerLockMode(GravityCompat.START) ==
-                        DrawerLayout.LOCK_MODE_UNLOCKED) {
-                    hideActionButton(false);
-                } else {
-                    hideActionButton(true);
-                }
+                hideActionButton(activityMainBinding.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
                 hideKeyboard();
             }
 
@@ -664,20 +613,86 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
             }
         });
     }
+    @Override
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view!=null && imm!=null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+
+
+
+    // Casting logic and settings
+    private void setUpCast() {
+        try {
+            castContext = CastContext.getSharedInstance(this);
+            sessionManager = castContext.getSessionManager();
+            castSession = castContext.getSessionManager().getCurrentCastSession();
+            sessionManagerListener = new MySessionManagerListener(this);
+
+        } catch (Exception e) {
+            // No Google Service available
+            // Do nothing as the user will see a warning in the settings menu
+            Log.d(TAG,"No Google Services");
+        }
+    }
+    @Override
+    public void setDisplay(Display display) {
+        this.display = display;
+    }
+    @Override
+    public Display getDisplay() {
+        return display;
+    }
+    @Override
+    public ExternalDisplay getExternalDisplay() {
+        if (externalDisplay!=null && display!=null) {
+            externalDisplay = new ExternalDisplay(this,display);
+        }
+        return externalDisplay;
+    }
+    private void recoverCastState() {
+        castSession = sessionManager.getCurrentCastSession();
+        sessionManager.addSessionManagerListener(new MySessionManagerListener(this));
+    }
+    private void endCastState() {
+        sessionManager.removeSessionManagerListener(sessionManagerListener);
+        castSession = null;
+    }
+    @Override
+    public PresentationCommon getPresentationCommon() {
+        return presentationCommon;
+    }
+
+
+
+
+
+    // Page buttons
     private void animatePageButtons() {
         float rotation = activityMainBinding.pageButtonRight.actionFAB.getRotation();
         pageButtons.animatePageButton(this,rotation == 0);
     }
-
-    void setWindowFlags() {
-        // Fix the page flags
-        if (windowFlags==null) {
-            windowFlags = new WindowFlags(this.getWindow());
+    @Override
+    public void updatePageButtonLayout() {
+        // We have changed something about the page buttons (or initialising them
+        if (activityMainBinding.pageButtonRight.actionFAB.getRotation()!=0) {
+            pageButtons.animatePageButton(this,false);
         }
-        windowFlags.setWindowFlags();
+
+        pageButtons.setPageButton(this, activityMainBinding.pageButtonRight.actionFAB, themeColors.getPageButtonsColor(), -1, false);
+        //activityMainBinding.pageButtonRight.actionFAB.setBackgroundTintList(ColorStateList.valueOf(themeColors.getPageButtonsColor()));
+        for (int x=0; x<6; x++) {
+            pageButtons.setPageButton(this,pageButtons.getFAB(x), themeColors.getPageButtonsColor(), x, false);
+        }
     }
 
-    // Deal with the song menu
+
+
+    // Deal with the song and set menu
     @Override
     public void quickSongMenuBuild() {
         fullIndexRequired = true;
@@ -704,7 +719,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         // Also will later include all the stuff for the search index as well
         sqLiteHelper.insertFast(this, mainActivityInterface);
     }
-
     @Override
     public void fullIndex() {
         Log.d(TAG,"fullIndex() called");
@@ -734,7 +748,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     public void setFullIndexRequired(boolean fullIndexRequired) {
         this.fullIndexRequired = fullIndexRequired;
     }
-
     private boolean setSongMenuFragment() {
         runOnUiThread(() -> {
             if (songMenuFragment!=null) {
@@ -755,14 +768,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         closeDrawer(activityMainBinding.drawerLayout.isOpen());
     }
 
-    @Override
-    public void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        View view = getCurrentFocus();
-        if (view!=null && imm!=null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
+
 
     // MainActivity standard Overrides
     @Override
@@ -1581,40 +1587,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, final Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        if (requestCode==12345) {
-            // We initiated an OpenSongApp backup
-            preferences.setMyPreferenceInt(this,"runssincebackup",0);
-
-        } else if (intent!=null) {
-            importUri = intent.getData();
-            boolean filetypeerror = false;
-            if (intent.getDataString()!=null) {
-                importFilename = storageAccess.getActualFilename(this,intent.getDataString());
-            }
-            if (requestCode == preferences.getFinalInt("REQUEST_FILE_CHOOSER")) {
-                Log.d(TAG,"File chosen: "+intent.getData());
-            } else if (requestCode == preferences.getFinalInt("REQUEST_OSB_FILE")) {
-                if (importFilename!=null && importUri!=null &&
-                        importFilename.toLowerCase(fixLocale.getLocale()).endsWith(".osb")) {
-                    // OSB file detected
-                    navigateToFragment(null,R.id.importOSBFragment);
-
-                } else {
-                    filetypeerror = true;
-                }
-            }
-
-            if (filetypeerror) {
-                showToast.doIt(this,getString(R.string.file_type) + " - " + getString(R.string.unknown));
-            }
-        }
-
-
-    }
 
     // Get references to the objects set in MainActivity
     @Override

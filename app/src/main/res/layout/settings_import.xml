@@ -16,10 +16,19 @@
             android:orientation="vertical">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/importOnline"
+                android:id="@+id/createSong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:text="@string/create_new_song"
+                android:hint="@string/opensong" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/importOnline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/online"
                 android:hint="@string/online_services" />
 

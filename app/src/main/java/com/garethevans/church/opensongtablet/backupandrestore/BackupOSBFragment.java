@@ -238,6 +238,9 @@ public class BackupOSBFragment extends Fragment {
         // Make sure we have an available backup folder
         File backupFile = new File(requireContext().getExternalFilesDir("Backups"), backupFilename);
 
+        mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"runssincebackup",0);
+        mainActivityInterface.getAlertChecks();
+
         Log.d("BackupOSBFrag","File="+backupFile);
         Uri uri = FileProvider.getUriForFile(requireContext(), "com.garethevans.church.opensongtablet.fileprovider",backupFile);
         Intent intent = mainActivityInterface.getExportActions().exportBackup(requireContext(),uri,backupFilename);

@@ -48,7 +48,7 @@ public class Song {
     private String linkother="";
     private String presentationorder="";
     private boolean hasExtraStuff;
-    private String filetype="";
+    private String filetype="XML";
     private int detectedChordFormat=1;
     private String encoding="UTF-8";
     private ArrayList<String> songSections;
@@ -299,7 +299,7 @@ public class Song {
     }
 
 
-
+    // The constructor to create a new song object
     public Song() {}
 
     // The copy constructor (for creating a copy of the song

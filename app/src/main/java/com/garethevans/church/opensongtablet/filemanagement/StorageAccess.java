@@ -1109,6 +1109,11 @@ public class StorageAccess {
         // Because it may not be in the songs folder, lets check!
         ArrayList<String> newLocation = fixNonSongs(mainActivityInterface.getSong().getFolder());
         // Write the string file
+        Log.d(TAG,"newLocation.get(0): "+newLocation.get(0));
+        Log.d(TAG,"newLocation.get(1): "+newLocation.get(1));
+        Log.d(TAG,"filename: "+mainActivityInterface.getSong().getFilename());
+        Log.d(TAG, "XML: "+ mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, mainActivityInterface.getSong()));
+
         return doStringWriteToFile(c,mainActivityInterface,newLocation.get(0), newLocation.get(1),
                 mainActivityInterface.getSong().getFilename(),
                 mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, mainActivityInterface.getSong()));

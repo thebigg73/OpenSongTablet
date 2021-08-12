@@ -46,7 +46,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         super.onCreate(savedInstanceState);
         Window w = requireActivity().getWindow();
         if (w!=null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
     }
 

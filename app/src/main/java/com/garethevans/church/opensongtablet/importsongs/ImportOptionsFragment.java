@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class ImportOptionsFragment extends Fragment {
 
@@ -81,6 +82,10 @@ public class ImportOptionsFragment extends Fragment {
         });
     }
     private void setListeners() {
+        myView.createSong.setOnClickListener(v -> {
+            mainActivityInterface.setSong(new Song());
+            mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
+        });
         myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles));
         myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));
         myView.importiOS.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE"),validBackups));

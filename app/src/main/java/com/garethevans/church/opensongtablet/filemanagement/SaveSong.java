@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -10,6 +11,8 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import java.util.ArrayList;
 
 public class SaveSong {
+
+    private final String TAG = "SaveSong";
 
     public boolean doSave(Context c, MainActivityInterface mainActivityInterface, Song newSong) {
         // This is called from the EditSong fragment where we check for file/folder changes too
@@ -30,11 +33,19 @@ public class SaveSong {
             // Write the changes to the current Song object
             mainActivityInterface.setSong(newSong);
 
+            Log.d(TAG,"oldFolder: " + oldFolder);
+            Log.d(TAG,"oldFilename: " + oldFilename);
+            Log.d(TAG,"newFolder: " + newSong.getFolder());
+            Log.d(TAG,"newFilename: " + newSong.getFilename());
+            Log.d(TAG,"oldLocation: " + oldLocation.get(0) + ", " + oldLocation.get(1));
+            Log.d(TAG,"folderChange: " + folderChange);
+            Log.d(TAG,"filenameChange: " + filenameChange);
             if (folderChange || filenameChange) {
                 // We need to create a new entry in the database
                 mainActivityInterface.getSQLiteHelper().createSong(c, mainActivityInterface,
                         newSong.getFolder(), newSong.getFilename());
-                if (!newSong.getFiletype().equals("XML")) {
+
+                if (newSong.getFiletype().equals("PDF") || newSong.getFiletype().equals("IMG")) {
                     // If it isn't an XML file, also update the persistent database
                     mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(c, mainActivityInterface,
                             newSong.getFolder(), newSong.getFilename());
@@ -52,12 +63,17 @@ public class SaveSong {
                     mainActivityInterface.getNonOpenSongSQLiteHelper().deleteSong(c,mainActivityInterface,oldFolder,oldFilename);
                 }
 
-                Uri oldUri = mainActivityInterface.getStorageAccess().
-                        getUriForItem(c, mainActivityInterface, oldLocation.get(0), oldLocation.get(1), oldFilename);
-                mainActivityInterface.getStorageAccess().deleteFile(c, oldUri);
+                // If there wasn't an old song, don't try to delete it otherwise we delete the Songs folder!
+                if (oldFilename!=null && !oldFilename.isEmpty()) {
+                    Uri oldUri = mainActivityInterface.getStorageAccess().
+                            getUriForItem(c, mainActivityInterface, oldLocation.get(0), oldLocation.get(1), oldFilename);
+                    mainActivityInterface.getStorageAccess().deleteFile(c, oldUri);
+                    Log.d(TAG, "oldUri: " + oldUri);
+                }
             }
 
             return saveSuccessful;
+
         } else {
             mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.error_song_not_saved));
             return false;
@@ -98,6 +114,6 @@ public class SaveSong {
 
     private boolean checkNotWelcomeSong(MainActivityInterface mainActivityInterface) {
         return (!mainActivityInterface.getSong().getFilename().equals("Welcome to OpenSongApp") &&
-                !mainActivityInterface.getSong().getFilename().equals("Welcome to OpenSongApp"));
+                !mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp"));
     }
 }
