@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +33,13 @@ public class MetronomeFragment extends Fragment {
     private SettingsMetronomeBinding myView;
     private ArrayList<String> soundFiles;
     private ArrayList<String> soundNames;
-    private ArrayList<String> panNames;
-    private ArrayList<String> panLetters;
     private Timer isRunningTimer;
     private TimerTask isRunningTask;
     private Handler isRunningHandler = new Handler(), tapTempoHandlerCheck, tapTempoHandlerReset;
     private Runnable tapTempoRunnableCheck, tapTempoRunnableReset;
     private long old_time = 0L;
     private int total_calc_bpm = 0, total_counts = 0;
+    private final String TAG = "MetronomeFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -111,22 +111,11 @@ public class MetronomeFragment extends Fragment {
         myView.songTempo.setText(tempoBpm);
         myView.songTempo.setHint(tempoBpm);
 
-        // Get the pans
-        panNames = new ArrayList<>();
-        panLetters = new ArrayList<>();
-        panNames.add(getString(R.string.pan_left));
-        panNames.add(getString(R.string.pan_center));
-        panNames.add(getString(R.string.pan_right));
-        panLetters.add("L");
-        panLetters.add("C");
-        panLetters.add("R");
-
         // Set the adapters
         ExposedDropDownArrayAdapter soundAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, soundNames);
         ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, signatureBeats);
         ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, signatureDivisions);
         ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, tempos);
-        ExposedDropDownArrayAdapter panAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item,panNames);
 
         // Add them to the views
         myView.signatureBeats.setAdapter(signatureBeatAdapter);
@@ -134,7 +123,6 @@ public class MetronomeFragment extends Fragment {
         myView.songTempo.setAdapter(tempoAdapter);
         myView.tickSound.setAdapter(soundAdapter);
         myView.tockSound.setAdapter(soundAdapter);
-        myView.metronomePan.setAdapter(panAdapter);
 
         // Make sure the views scroll to the selected item
         ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
@@ -161,13 +149,13 @@ public class MetronomeFragment extends Fragment {
         switch (mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"metronomePan","C")) {
             case "C":
             default:
-                myView.metronomePan.setText(panNames.get(1));
+                myView.metronomePan.setSliderPos(1);
                 break;
             case "L":
-                myView.metronomePan.setText(panNames.get(0));
+                myView.metronomePan.setSliderPos(0);
                 break;
             case "R":
-                myView.metronomePan.setText(panNames.get(2));
+                myView.metronomePan.setSliderPos(2);
                 break;
         }
 
@@ -213,7 +201,7 @@ public class MetronomeFragment extends Fragment {
         myView.songTempo.addTextChangedListener(new MyTextWatcher("songTempo", myView.songTempo));
         myView.signatureBeats.addTextChangedListener(new MyTextWatcher("songTimeSignature_beats", myView.signatureBeats));
         myView.signatureDivisions.addTextChangedListener(new MyTextWatcher("songTimeSignature_divisions", myView.signatureDivisions));
-        myView.metronomePan.addTextChangedListener(new MyTextWatcher("metronomePan", myView.metronomePan));
+        myView.metronomePan.addOnChangeListener((slider, value, fromUser) -> updateMetronomePan());
         myView.tickSound.addTextChangedListener(new MyTextWatcher("metronomeTickSound", myView.tickSound));
         myView.tockSound.addTextChangedListener(new MyTextWatcher("metronomeTockSound", myView.tockSound));
         myView.tickVolume.addOnSliderTouchListener(new MySliderTouchListener("metronomeTickVol"));
@@ -275,6 +263,25 @@ public class MetronomeFragment extends Fragment {
         };
     }
 
+    private void updateMetronomePan() {
+        int value = myView.metronomePan.getValue();
+        String pan;
+        switch (value) {
+            case 0:
+                pan = "L";
+                break;
+            case 1:
+            default:
+                pan = "C";
+                break;
+            case 2:
+                pan = "R";
+                break;
+        }
+        Log.d(TAG,"pan="+pan);
+        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"metronomePan",pan);
+        mainActivityInterface.getMetronome().setVolumes(requireContext(),mainActivityInterface);
+    }
     private void restartMetronome() {
         if (mainActivityInterface.getMetronome().getIsRunning()) {
             mainActivityInterface.getMetronome().stopMetronome(mainActivityInterface);
@@ -398,12 +405,6 @@ public class MetronomeFragment extends Fragment {
                     }
                     restartMetronome();
                     mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface);
-                    break;
-                case "metronomePan":
-                    String chosen = exposedDropDown.getText().toString();
-                    position = panNames.indexOf(chosen);
-                    mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),preference,panLetters.get(position));
-                    mainActivityInterface.getMetronome().setVolumes(requireContext(),mainActivityInterface);
                     break;
                 case "metronomeTickSound":
                 case "metronomeTockSound":

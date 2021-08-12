@@ -38,6 +38,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
 import androidx.navigation.NavController;
@@ -498,6 +499,10 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+    }
+    @Override
+    public FragmentManager getMyFragmentManager() {
+        return getSupportFragmentManager();
     }
 
 

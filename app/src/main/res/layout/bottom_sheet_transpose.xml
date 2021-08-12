@@ -19,17 +19,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/transposeSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:text="@null"
+                app:thumbRadius="24dp"
+                app:trackHeight="8dp"
                 android:valueFrom="-6"
                 android:valueTo="6"
-                app:trackColor="@color/colorAltPrimary" />
+                app:trackColor="@color/colorSecondary"
+                app:thumbColor="@color/colorAltSecondary"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/keyChangeTextView"
@@ -38,17 +41,13 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/key"
-                android:textSize="26sp" />
+                android:textSize="24sp" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/assumePreferred_SwitchCompat"
-                style="@style/MySwitch"
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/assumePreferred"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:checked="true"
-                android:padding="16dp"
-                android:text="@string/chordformat_default" />
+                android:text="@string/chordformat_default"/>
 
             <LinearLayout
                 android:id="@+id/chooseFormat_LinearLayout"
@@ -58,56 +57,46 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/detectedChordFormatText"
-                    style="@style/largeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
                     android:paddingTop="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="0dp"
+                    android:paddingBottom="8dp"
                     android:text="@string/chord_format" />
 
                 <RadioGroup
                     android:id="@+id/detectedChordFormat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingTop="0dp"
-                    android:paddingEnd="16dp"
+                    android:paddingTop="8dp"
                     android:paddingBottom="16dp">
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat1Radio"
-                        style="@style/RadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:text="@string/chordformat_1" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat2Radio"
-                        style="@style/RadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_2" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat3Radio"
-                        style="@style/RadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_3" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat4Radio"
-                        style="@style/RadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_4" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat5Radio"
-                        style="@style/RadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_5" />

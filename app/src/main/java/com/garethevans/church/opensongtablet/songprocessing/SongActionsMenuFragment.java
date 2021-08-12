@@ -48,7 +48,7 @@ public class SongActionsMenuFragment extends Fragment {
         myView.stickyNotes.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.stickyNotesFragment));
         myView.highlighter.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.highlighterFragment));
         myView.links.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.linksFragment));
-        //myView.chords.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.chordsFragment));
+        myView.chords.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.chords_graph));
         myView.notation.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.musicScoreFragment));
         //myView.midi.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.songMidiFragment));
     }

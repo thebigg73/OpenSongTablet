@@ -35,7 +35,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="bottom"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -77,7 +79,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/tempo"
-                    android:text="@string/tempo" />
+                    android:text="@string/tempo"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/tapTempo"
@@ -105,12 +109,17 @@
                     android:layout_height="wrap_content"
                     android:text="@string/metronome_info" />
 
-                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                     android:id="@+id/metronomePan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/pan"
-                    android:text="@string/pan" />
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:label="@string/pan"
+                    app:textL="@string/pan_left"
+                    app:textC="@string/pan_center"
+                    app:textR="@string/pan_right"
+                    app:chosen="1"/>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/visualMetronome"

@@ -119,7 +119,7 @@
     <string name="custom_background">"Anpassad taggbakgrund"</string>
     <string name="custom_gestures">"Tilldela anpassade gester"</string>
     <string name="custom_slide">"Anpassad bild (med innehåll)"</string>
-    <string name="customchords">"Anpassade ackord"</string>
+    <string name="custom_chords">"Anpassade ackord"</string>
     <string name="customchords_code">"Anpassad kod"</string>
     <string name="customchords_fret">"Etikett för första fret"</string>
     <string name="customchords_name">"Ackordnamn"</string>

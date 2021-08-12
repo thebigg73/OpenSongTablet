@@ -118,7 +118,7 @@
     <string name="custom_background">"Custom tag agtergrond"</string>
     <string name="custom_gestures">"Ken persoonlike gebare"</string>
     <string name="custom_slide">"Custom slide (met inhoud)"</string>
-    <string name="customchords">Custom akkoorde</string>
+    <string name="custom_chords">Custom akkoorde</string>
     <string name="customchords_code">Custom kode</string>
     <string name="customchords_fret">Etiket vir die eerste vertoorn</string>
     <string name="customchords_name">Chord naam</string>

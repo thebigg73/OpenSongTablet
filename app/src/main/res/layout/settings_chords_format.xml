@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/DefaultView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pref_key_text"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/key" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderAb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Ab"
+                app:textRight="G#"
+                app:value="0" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderBb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Bb"
+                app:textRight="A#"
+                app:value="0" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderDb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Db"
+                app:textRight="C#"
+                app:value="0" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderEb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Eb"
+                app:textRight="D#"
+                app:value="0" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderGb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Gb"
+                app:textRight="F#"
+                app:value="0" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderAbm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Abm"
+                app:textRight="G#m"
+                app:value="1" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderBbm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Bbm"
+                app:textRight="A#m"
+                app:value="0" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderDbm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Dbm"
+                app:textRight="C#m"
+                app:value="1" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderEbm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Ebm"
+                app:textRight="D#m"
+                app:value="0" />
+
+            <com.garethevans.church.opensongtablet.customviews.TextSlider
+                android:id="@+id/sliderGbm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:textLeft="Gbm"
+                app:textRight="F#m"
+                app:value="1" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/assumePreferred"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/chordformat_default" />
+
+            <LinearLayout
+                android:id="@+id/chordFormatLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/choosechordformat"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/chord_format" />
+
+                <RadioGroup
+                    android:id="@+id/chordFormat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/chordFormat1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_1" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_2" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_3" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_4" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_5" />
+
+                    <RadioButton
+                        android:id="@+id/chordFormat6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_6" />
+
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

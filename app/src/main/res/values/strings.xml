@@ -654,7 +654,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="currentkeycode">Current keycode</string>
     <string name="custom_background">Custom tag background</string>
     <string name="custom_slide">Custom slide (with content)</string>
-    <string name="customchords">Custom chords</string>
+    <string name="custom_chords">Custom chords</string>
     <string name="customchords_code">Custom code</string>
     <string name="customchords_fret">Label for first fret</string>
     <string name="customchords_name">Chord name</string>
@@ -947,4 +947,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="minus_1">-1</string>
     <string name="plus_1">+1</string>
     <string name="random_song_info">Select a random song from those currently shown in the menu</string>
+    <string name="custom_chords_info">Custom chords saved with the current song</string>
+    <string name="transpose_info">Change the chords in the current song</string>
 </resources>

@@ -4,18 +4,15 @@ import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetTransposeBinding;
@@ -23,7 +20,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.button.MaterialButton;
 
 import java.io.OutputStream;
 
@@ -32,17 +28,10 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     private boolean editSong = false;  // This is set to true when coming here from EditSongFragment
 
     private BottomSheetTransposeBinding myView;
-    private SeekBar transposeSeekBar;
-    private TextView transposeValTextView,keyChange_TextView;
-    private RadioButton chordFormat1Radio, chordFormat2Radio, chordFormat3Radio, chordFormat4Radio,
-            chordFormat5Radio, chordFormat6Radio;
-    private SwitchCompat assumePreferred_SwitchCompat;
-    private LinearLayout chooseFormat_LinearLayout;
-    private MaterialButton doTransposeButton;
     private MainActivityInterface mainActivityInterface;
+    private final String TAG = "TransposeBottomSheet";
 
-    private String transposeDirection;
-    private int transposeTimes;
+    private String originalKey;
 
     public TransposeBottomSheet(boolean editSong) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
@@ -77,20 +66,13 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetTransposeBinding.inflate(inflater,container,false);
 
         myView.dialogHeading.setText(getString(R.string.transpose));
-
-        // Initialise views
-        initialiseViews();
+        myView.dialogHeading.setClose(this);
 
         // Set up views to match preferences
-        setButtons();
+        setupViews();
 
         // Set the listeners
         setListeners();
-
-        // Initialise the transpose values
-        transposeDirection = "";
-        // TODO fix the get the right value
-        transposeTimes = Math.abs(0);
 
         // Decide if we are using preferred chord format
         usePreferredChordFormat(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",false));
@@ -98,113 +80,91 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         return myView.getRoot();
     }
 
-    // Initialise the views
-    private void initialiseViews() {
-        //transposeSeekBar = myView.transposeSeekBar;
-        keyChange_TextView = myView.keyChangeTextView;
-        //transposeValTextView = myView.transposeValTextView;
-        chordFormat1Radio = myView.chordFormat1Radio;
-        chordFormat2Radio = myView.chordFormat2Radio;
-        chordFormat3Radio = myView.chordFormat3Radio;
-        chordFormat4Radio = myView.chordFormat4Radio;
-        chordFormat5Radio = myView.chordFormat5Radio;
-        chordFormat6Radio = myView.chordFormat6Radio;
-        assumePreferred_SwitchCompat = myView.assumePreferredSwitchCompat;
-        chooseFormat_LinearLayout = myView.chooseFormatLinearLayout;
-        doTransposeButton = myView.doTransposeButton;
-    }
+    private void setupViews() {
+        myView.transposeSlider.setValue(0);
 
-    private void setButtons() {
-        transposeSeekBar.setMax(12);
-        transposeSeekBar.setProgress(6);
-        transposeValTextView.setText("0");
-
-        // If the song has a key specified, we will add in the text for current and new key
-        if (mainActivityInterface.getSong().getKey()!=null && !mainActivityInterface.getSong().getKey().equals("")) {
-            String keychange = getString(R.string.key) + ": " + mainActivityInterface.getSong().getKey() + "\n" +
-                    getString(R.string.transpose) + ": " + mainActivityInterface.getSong().getKey();
-            keyChange_TextView.setText(keychange);
+        // Get the key of the song if set
+        if (editSong) {
+            originalKey = mainActivityInterface.getTempSong().getKey();
         } else {
-            keyChange_TextView.setText("");
-            keyChange_TextView.setVisibility(View.GONE);
+            originalKey = mainActivityInterface.getSong().getKey();
         }
+
+        if (originalKey.isEmpty()) {
+            myView.keyChangeTextView.setText(getTransposeKey("0"));
+        } else {
+            myView.keyChangeTextView.setText(getTransposeKey(originalKey));
+        }
+
+        myView.assumePreferred.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
+                requireContext(), "chordFormatUsePreferred", false));
+        usePreferredChordFormat(myView.assumePreferred.isChecked());
 
         // Set the detected chordformat
         switch (mainActivityInterface.getSong().getDetectedChordFormat()) {
             case 1:
-                chordFormat1Radio.setChecked(true);
+            default:
+                myView.chordFormat1Radio.setChecked(true);
                 break;
             case 2:
-                chordFormat2Radio.setChecked(true);
+                myView.chordFormat2Radio.setChecked(true);
                 break;
             case 3:
-                chordFormat3Radio.setChecked(true);
+                myView.chordFormat3Radio.setChecked(true);
                 break;
             case 4:
-                chordFormat4Radio.setChecked(true);
+                myView.chordFormat4Radio.setChecked(true);
                 break;
             case 5:
-                chordFormat5Radio.setChecked(true);
+                myView.chordFormat5Radio.setChecked(true);
                 break;
             case 6:
-                chordFormat6Radio.setChecked(true);
+                myView.chordFormat6Radio.setChecked(true);
                 break;
         }
     }
 
+    private String getTransposeKey(String newKey) {
+        if (originalKey==null || originalKey.isEmpty() || originalKey.equals("0")) {
+            return newKey;
+        } else {
+            return getString(R.string.key) + ": " + originalKey + "\n" +
+                    getString(R.string.transpose) + ": " + newKey;
+        }
+    }
     private void setListeners() {
-        // Initialise the 'close' floatingactionbutton
-        myView.dialogHeading.setClose(this);
-
         //0=-6, 1=-5, 2=-4, 3=-3, 4=-2, 5=-1, 6=0, 7=1, 8=2, 9=3, 10=4, 11=5, 12=6
-        transposeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int val = progress-6;
-                if (val<0) {
-                    transposeDirection = "-1";
-                    transposeTimes = Math.abs(val);
-                    String text = "-"+Math.abs(val);
-                    transposeValTextView.setText(text);
-
-                } else if (val>0) {
-                    transposeDirection = "+1";
-                    transposeTimes = Math.abs(val);
-                    String text = "+"+Math.abs(val);
-                    transposeValTextView.setText(text);
+        myView.transposeSlider.addOnChangeListener((slider, value, fromUser) -> {
+            // Update the text
+            String newKey;
+            if (originalKey==null || originalKey.isEmpty() || originalKey.equals("0")) {
+                newKey = "" + value;
+                myView.keyChangeTextView.setText(newKey);
+            } else {
+                // We need to get the transposed key
+                String keyToNum = mainActivityInterface.getTranspose().keyToNumber(originalKey);
+                if (value<0) {
+                    newKey = mainActivityInterface.getTranspose().transposeKey(keyToNum,"-1",(int)Math.abs(value));
+                } else if (value>0) {
+                    newKey = mainActivityInterface.getTranspose().transposeKey(keyToNum,"+1",(int)Math.abs(value));
                 } else {
-                    transposeDirection = "";
-                    transposeTimes = Math.abs(0);
-                    transposeValTextView.setText("0");
+                    newKey = originalKey;
                 }
-
-                // If the song has a key specified, we will add in the text for current and new key
-                if (mainActivityInterface.getSong().getKey()!=null && !mainActivityInterface.getSong().getKey().equals("")) {
-                    // Get the new key value
-                    String keynum = mainActivityInterface.getTranspose().keyToNumber(mainActivityInterface.getSong().getKey());
-                    String transpkeynum = mainActivityInterface.getTranspose().transposeKey(keynum, transposeDirection, transposeTimes);
-                    String newkey = mainActivityInterface.getTranspose().numberToKey(getActivity(), mainActivityInterface, transpkeynum);
-
-                    String keychange = getString(R.string.key) + ": " + mainActivityInterface.getSong().getKey() + "\n" +
-                            getString(R.string.transpose) + ": " + newkey;
-                    keyChange_TextView.setText(keychange);
-                } else {
-                    keyChange_TextView.setText("");
-                    keyChange_TextView.setVisibility(View.GONE);
-                }
-                doTransposeButton.setOnClickListener(v -> doTranspose());
+                newKey = mainActivityInterface.getTranspose().numberToKey(requireContext(),mainActivityInterface,newKey);
+                myView.keyChangeTextView.setText(getTransposeKey(newKey));
             }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+        myView.assumePreferred.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
             usePreferredChordFormat(isChecked);
         });
+        myView.chordFormat1Radio.setOnCheckedChangeListener(new ChangeFormat(1));
+        myView.chordFormat2Radio.setOnCheckedChangeListener(new ChangeFormat(2));
+        myView.chordFormat3Radio.setOnCheckedChangeListener(new ChangeFormat(3));
+        myView.chordFormat4Radio.setOnCheckedChangeListener(new ChangeFormat(4));
+        myView.chordFormat5Radio.setOnCheckedChangeListener(new ChangeFormat(5));
+        myView.chordFormat6Radio.setOnCheckedChangeListener(new ChangeFormat(6));
     }
 
     private void usePreferredChordFormat(boolean trueorfalse) {
@@ -213,56 +173,49 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
         if (trueorfalse) {
             formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
+            myView.chooseFormatLinearLayout.setVisibility(View.GONE);
         } else {
             formattouse = mainActivityInterface.getSong().getDetectedChordFormat();
+            myView.chooseFormatLinearLayout.setVisibility(View.VISIBLE);
         }
 
         switch (formattouse) {
             case 1:
-                chordFormat1Radio.setChecked(true);
+                myView.chordFormat1Radio.setChecked(true);
                 break;
             case 2:
-                chordFormat2Radio.setChecked(true);
+                myView.chordFormat2Radio.setChecked(true);
                 break;
             case 3:
-                chordFormat3Radio.setChecked(true);
+                myView.chordFormat3Radio.setChecked(true);
                 break;
             case 4:
-                chordFormat4Radio.setChecked(true);
+                myView.chordFormat4Radio.setChecked(true);
                 break;
             case 5:
-                chordFormat5Radio.setChecked(true);
+                myView.chordFormat5Radio.setChecked(true);
                 break;
-        }
-
-        boolean usePreferred = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",true);
-        assumePreferred_SwitchCompat.setChecked(usePreferred);
-
-        if (usePreferred) {
-            chooseFormat_LinearLayout.setVisibility(View.GONE);
-        } else {
-            chooseFormat_LinearLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private void getValues() {
         // Extract the transpose value and the chord format
-        if (chordFormat1Radio.isChecked()) {
+        if (myView.chordFormat1Radio.isChecked()) {
             mainActivityInterface.getSong().setDetectedChordFormat(1);
         }
-        if (chordFormat2Radio.isChecked()) {
+        if (myView.chordFormat2Radio.isChecked()) {
             mainActivityInterface.getSong().setDetectedChordFormat(2);
         }
-        if (chordFormat3Radio.isChecked()) {
+        if (myView.chordFormat3Radio.isChecked()) {
             mainActivityInterface.getSong().setDetectedChordFormat(3);
         }
-        if (chordFormat4Radio.isChecked()) {
+        if (myView.chordFormat4Radio.isChecked()) {
             mainActivityInterface.getSong().setDetectedChordFormat(4);
         }
-        if (chordFormat5Radio.isChecked()) {
+        if (myView.chordFormat5Radio.isChecked()) {
             mainActivityInterface.getSong().setDetectedChordFormat(5);
         }
-        if (chordFormat6Radio.isChecked()) {
+        if (myView.chordFormat6Radio.isChecked()) {
             mainActivityInterface.getSong().setDetectedChordFormat(6);
         }
     }
@@ -306,5 +259,20 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             }
             dismiss();
         }).start();
+    }
+
+    private class ChangeFormat implements CompoundButton.OnCheckedChangeListener {
+        int newFormat;
+
+        ChangeFormat(int newFormat) {
+            this.newFormat = newFormat;
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if (b) {
+                Log.d(TAG,"newChordFormat="+newFormat);
+            }
+        }
     }
 }

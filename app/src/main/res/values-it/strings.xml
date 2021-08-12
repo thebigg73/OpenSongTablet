@@ -119,7 +119,7 @@
     <string name="custom_background">"Personalizzato tag sfondo"</string>
     <string name="custom_gestures">"Assegnare gesti personalizzati"</string>
     <string name="custom_slide">"Scivolo personalizzato (con contenuto)"</string>
-    <string name="customchords">Accordi personalizzati</string>
+    <string name="custom_chords">Accordi personalizzati</string>
     <string name="customchords_code">Codice personalizzato</string>
     <string name="customchords_fret">Etichetta per il primo tasto</string>
     <string name="customchords_name">"Nome dell'accordo"</string>

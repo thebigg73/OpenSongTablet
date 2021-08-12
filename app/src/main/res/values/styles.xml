@@ -265,13 +265,22 @@
 
     <style name="Slider" parent="Widget.MaterialComponents.Slider">
         <item name="materialThemeOverlay">@style/SliderOverlay</item>
+        <item name="labelStyle">@style/SliderLabel</item>
     </style>
 
     <style name="SliderOverlay" parent="">
-        <item name="colorPrimary">@color/colorSecondary</item>
-        <item name="colorOnPrimary">@color/colorSecondary</item>
+        <item name="colorPrimary">@color/colorAltSecondary</item>
+        <item name="colorOnPrimary">@color/colorAltSecondary</item>
         <item name="colorOnSurface">@color/colorSecondary</item>
     </style>
+    <style name="SliderLabel" parent="@style/Widget.MaterialComponents.Tooltip">
+        <item name="backgroundTint">@color/colorSecondary</item>
+        <item name="android:textAppearance">@style/SliderLabelText</item>
+    </style>
+    <style name="SliderLabelText" parent="TextAppearance.MaterialComponents.Tooltip">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <style name="PeekableBottomSheet" parent="BottomSheetDialogTheme">
 
     </style>

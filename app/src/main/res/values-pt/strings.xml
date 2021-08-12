@@ -119,7 +119,7 @@
     <string name="custom_background">"Personalizado tag fundo"</string>
     <string name="custom_gestures">"Atribuir gestos personalizados"</string>
     <string name="custom_slide">"Slides personalizada (com conteúdo)"</string>
-    <string name="customchords">Acordes personalizados</string>
+    <string name="custom_chords">Acordes personalizados</string>
     <string name="customchords_code">Código personalizado</string>
     <string name="customchords_fret">Etiqueta para o primeiro traste</string>
     <string name="customchords_name">Nome do acorde</string>

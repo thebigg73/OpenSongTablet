@@ -119,7 +119,7 @@
     <string name="custom_background">"Фон пользовательского тэга"</string>
     <string name="custom_gestures">"Настройка жестов"</string>
     <string name="custom_slide">"Пользовательский слайд"</string>
-    <string name="customchords">Аккорды пользователя</string>
+    <string name="custom_chords">Аккорды пользователя</string>
     <string name="customchords_code">Пользовательский код</string>
     <string name="customchords_fret"> Номер первого лада</string>
     <string name="customchords_name">Hазвание аккорда</string>

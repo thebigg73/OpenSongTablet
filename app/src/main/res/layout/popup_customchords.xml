@@ -78,42 +78,42 @@
                             android:id="@+id/string6_top"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_top_x" />
 
                         <ImageView
                             android:id="@+id/string5_top"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_top_x" />
 
                         <ImageView
                             android:id="@+id/string4_top"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_top_x" />
 
                         <ImageView
                             android:id="@+id/string3_top"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_top_x" />
 
                         <ImageView
                             android:id="@+id/string2_top"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_top_x" />
 
                         <ImageView
                             android:id="@+id/string1_top"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_top_x" />
                     </LinearLayout>
 
@@ -127,42 +127,42 @@
                             android:id="@+id/string6_f1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_6" />
 
                         <ImageView
                             android:id="@+id/string5_f1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_5" />
 
                         <ImageView
                             android:id="@+id/string4_f1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_4" />
 
                         <ImageView
                             android:id="@+id/string3_f1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_3" />
 
                         <ImageView
                             android:id="@+id/string2_f1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_2" />
 
                         <ImageView
                             android:id="@+id/string1_f1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_1" />
                     </LinearLayout>
 
@@ -176,42 +176,42 @@
                             android:id="@+id/string6_f2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_6" />
 
                         <ImageView
                             android:id="@+id/string5_f2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_5" />
 
                         <ImageView
                             android:id="@+id/string4_f2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_4" />
 
                         <ImageView
                             android:id="@+id/string3_f2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_3" />
 
                         <ImageView
                             android:id="@+id/string2_f2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_2" />
 
                         <ImageView
                             android:id="@+id/string1_f2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_1" />
                     </LinearLayout>
 
@@ -225,42 +225,42 @@
                             android:id="@+id/string6_f3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_6" />
 
                         <ImageView
                             android:id="@+id/string5_f3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_5" />
 
                         <ImageView
                             android:id="@+id/string4_f3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_4" />
 
                         <ImageView
                             android:id="@+id/string3_f3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_3" />
 
                         <ImageView
                             android:id="@+id/string2_f3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_2" />
 
                         <ImageView
                             android:id="@+id/string1_f3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_1" />
                     </LinearLayout>
 
@@ -274,42 +274,42 @@
                             android:id="@+id/string6_f4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_6" />
 
                         <ImageView
                             android:id="@+id/string5_f4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_5" />
 
                         <ImageView
                             android:id="@+id/string4_f4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_4" />
 
                         <ImageView
                             android:id="@+id/string3_f4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_3" />
 
                         <ImageView
                             android:id="@+id/string2_f4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_2" />
 
                         <ImageView
                             android:id="@+id/string1_f4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_1" />
                     </LinearLayout>
 
@@ -323,42 +323,42 @@
                             android:id="@+id/string6_f5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_6" />
 
                         <ImageView
                             android:id="@+id/string5_f5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_5" />
 
                         <ImageView
                             android:id="@+id/string4_f5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_4" />
 
                         <ImageView
                             android:id="@+id/string3_f5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_3" />
 
                         <ImageView
                             android:id="@+id/string2_f5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_2" />
 
                         <ImageView
                             android:id="@+id/string1_f5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:contentDescription="@string/customchords"
+                            android:contentDescription="@string/custom_chords"
                             android:src="@drawable/string_1" />
                     </LinearLayout>
                 </LinearLayout>

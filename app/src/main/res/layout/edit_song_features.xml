@@ -182,7 +182,7 @@
                 android:id="@+id/customChords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/customchords"
+                android:hint="@string/custom_chords"
                 android:inputType="textMultiLine"
                 android:minLines="3"
                 app:autoSizeMaxTextSize="18sp"

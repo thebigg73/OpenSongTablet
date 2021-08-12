@@ -119,7 +119,7 @@
     <string name="custom_background">"Egyéni tag háttér"</string>
     <string name="custom_gestures">"Rendeljen egyedi gesztusok"</string>
     <string name="custom_slide">"Egyedi slide (tartalommal)"</string>
-    <string name="customchords">Egyedi akkordok</string>
+    <string name="custom_chords">Egyedi akkordok</string>
     <string name="customchords_code">Egyedi kódot</string>
     <string name="customchords_fret">Label első bund</string>
     <string name="customchords_name">Akkordnevek</string>

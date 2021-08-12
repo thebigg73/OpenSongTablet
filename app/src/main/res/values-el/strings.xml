@@ -119,7 +119,7 @@
     <string name="custom_background">"Custom tag background"</string>
     <string name="custom_gestures">"Assign custom gestures"</string>
     <string name="custom_slide">"Custom slide (with content)"</string>
-    <string name="customchords">"Custom chords"</string>
+    <string name="custom_chords">"Custom chords"</string>
     <string name="customchords_code">"Custom code"</string>
     <string name="customchords_fret">"Label for first fret"</string>
     <string name="customchords_name">"Όνομα συγχορδίας"</string>

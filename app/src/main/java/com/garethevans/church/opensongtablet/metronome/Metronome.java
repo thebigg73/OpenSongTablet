@@ -100,6 +100,20 @@ public class Metronome {
     }
     private void setupPlayers(Context c, MainActivityInterface mainActivityInterface) {
         setTickTockSounds(c,mainActivityInterface);
+        if (tickPlayer!=null) {
+            try {
+                tickPlayer.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (tockPlayer!=null) {
+            try {
+                tockPlayer.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         tickPlayer = new MediaPlayer();
         tockPlayer = new MediaPlayer();
@@ -318,11 +332,19 @@ public class Metronome {
                     if (tickBeats.contains(beat) && tickPlayer!=null) {
                         tickPlayer.seekTo(0);
                         tickPlayer.setVolume(volumeTickLeft,volumeTickRight);
-                        tickPlayer.start();
+                        try {
+                            tickPlayer.start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     } else if (tockPlayer!=null) {
                         tockPlayer.seekTo(0);
                         tockPlayer.setVolume(volumeTockLeft,volumeTockRight);
-                        tockPlayer.start();
+                        try {
+                            tockPlayer.start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                     if (visualMetronome) {
                         activity.runOnUiThread(() -> mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOnColor));

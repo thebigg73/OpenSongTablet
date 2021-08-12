@@ -119,7 +119,7 @@
     <string name="custom_background">"Fondo de la etiqueta personalizada"</string>
     <string name="custom_gestures">"Asignar gestos personalizados"</string>
     <string name="custom_slide">"Diapositivas personalizada (con contenido)"</string>
-    <string name="customchords">Acordes personalizados</string>
+    <string name="custom_chords">Acordes personalizados</string>
     <string name="customchords_code">El código personalizado</string>
     <string name="customchords_fret">Etiqueta para el primer traste</string>
     <string name="customchords_name">Nombre del acorde</string>

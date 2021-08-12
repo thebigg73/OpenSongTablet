@@ -119,7 +119,7 @@
     <string name="custom_background">"カスタムタグの背景"</string>
     <string name="custom_gestures">"カスタムジェスチャを割り当て"</string>
     <string name="custom_slide">"カスタムスライド（コンテンツを含みます）"</string>
-    <string name="customchords">カスタムコード</string>
+    <string name="custom_chords">カスタムコード</string>
     <string name="customchords_code">カスタムコード</string>
     <string name="customchords_fret">最初のフレットのラベル</string>
     <string name="customchords_name">コードネーム</string>

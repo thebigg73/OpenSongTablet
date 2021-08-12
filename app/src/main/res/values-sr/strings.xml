@@ -55,7 +55,7 @@
     <string name="tag">"Oznaka"</string>
     <string name="maxfontsize">"Najveća moguća veličina fonta za automatsku promenu veličine"</string>
     <string name="custom">"Prilagođeno"</string>
-    <string name="customchords">"Prilagođeni akordi"</string>
+    <string name="custom_chords">"Prilagođeni akordi"</string>
     <string name="customchords_saved">"Trenutno snimljeni prilagođeni akordi"</string>
     <string name="customchords_name">"Ime akorda"</string>
     <string name="customchords_save">"Snimi novi prilagođeni akord uz pesmu"</string>

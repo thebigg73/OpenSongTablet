@@ -29,7 +29,11 @@ public class MaterialSlider extends LinearLayout {
                 android.R.attr.valueTo,
                 R.attr.stepSize,
                 android.R.attr.value,
-                R.attr.trackColor};
+                R.attr.trackColor,
+                R.attr.trackHeight,
+                R.attr.thumbRadius,
+                R.attr.thumbColor
+        };
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
@@ -38,6 +42,9 @@ public class MaterialSlider extends LinearLayout {
         float stepSize = a.getFloat(4,1.0f);
         float value = a.getFloat(5,0.0f);
         int track = a.getColor(6,0);
+        float height = a.getDimensionPixelSize(7,0);
+        float radius = a.getDimensionPixelSize(8,0);
+        int thumb = a.getColor(9,0);
 
         slider = findViewById(R.id.slider);
         titleTextView = findViewById(R.id.titleText);
@@ -62,6 +69,17 @@ public class MaterialSlider extends LinearLayout {
 
         if (track!=0) {
             slider.setTrackTintList(ColorStateList.valueOf(track));
+        }
+        if (height!=0) {
+            slider.setTrackHeight((int)height);
+        }
+        if (radius!=0) {
+            slider.setThumbRadius((int)radius);
+            slider.setThumbStrokeWidth(radius);
+        }
+        if (thumb!=0) {
+            slider.setThumbStrokeColor(ColorStateList.valueOf(thumb));
+            slider.setThumbTintList(ColorStateList.valueOf(thumb));
         }
         a.recycle();
     }

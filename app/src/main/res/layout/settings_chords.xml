@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DefaultView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/chordsView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/chord_fingering"
+                android:text="@string/chords" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/chordsCustom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/custom_chords_info"
+                android:text="@string/custom_chords" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/chordsTranspose"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/transpose_info"
+                android:text="@string/transpose" />
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/chordsSettings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/pref_key_text"
+                android:text="@string/chord_settings" />
+            <TableRow style="@style/DividerLine" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

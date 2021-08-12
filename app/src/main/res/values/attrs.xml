@@ -33,10 +33,28 @@
         <attr name="stepSize" format="float"/>
         <attr name="android:value"/>
         <attr name="trackColor" format="color" />
+        <attr name="trackHeight" format="dimension"/>
+        <attr name="thumbColor" format="color"/>
+        <attr name="thumbRadius" format="dimension"/>
     </declare-styleable>
+
 
     <declare-styleable name="BottomSheetHandle">
         <attr name="isDraggableX" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="TextSlider">
+        <attr name="textLeft" format="string"/>
+        <attr name="textRight" format="string"/>
+        <attr name="value" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="TextThreeSlider">
+        <attr name="textL" format="string"/>
+        <attr name="textC" format="string"/>
+        <attr name="textR" format="string"/>
+        <attr name="chosen" format="integer"/>
+        <attr name="label" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="DialogHeader">

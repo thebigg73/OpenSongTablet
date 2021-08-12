@@ -521,6 +521,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_linksFragment"
                     app:destination="@id/linksFragment" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_chords_graph"
+                    app:destination="@id/chords_graph" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -593,6 +596,23 @@
                 android:name="com.garethevans.church.opensongtablet.links.LinksBottomSheet"
                 android:label="LinksBottomSheet"
                 tools:layout="@layout/bottom_sheet_links"/>
+            <navigation android:id="@+id/chords_graph"
+                app:startDestination="@id/chordSettingsFragment">
+                <fragment
+                    android:id="@+id/chordSettingsFragment"
+                    android:name="com.garethevans.church.opensongtablet.chords.ChordSettingsFragment"
+                    android:label="ChordSettingsFragment"
+                    tools:layout="@layout/settings_chords">
+                    <action
+                        android:id="@+id/action_chordSettingsFragment_to_chordFormatFragment"
+                        app:destination="@id/chordFormatFragment" />
+                </fragment>
+                <fragment
+                    android:id="@+id/chordFormatFragment"
+                    android:name="com.garethevans.church.opensongtablet.chords.ChordFormatFragment"
+                    android:label="ChordFormatFragment"
+                    tools:layout="@layout/settings_chords_format"/>
+            </navigation>
         </navigation>
         <fragment
             android:id="@+id/modeFragment"

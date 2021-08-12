@@ -118,7 +118,7 @@
     <string name="custom_background">"Fond des tags personnalisés"</string>
     <string name="custom_gestures">"Définir les gestes personnalisés"</string>
     <string name="custom_slide">"Diaporamas personnalisés (avec contenu)"</string>
-    <string name="customchords">Accords personnalisés</string>
+    <string name="custom_chords">Accords personnalisés</string>
     <string name="customchords_code">Accord personnalisé</string>
     <string name="customchords_fret">Numero de la première case</string>
     <string name="customchords_name">"Nom de l\'accord"</string>

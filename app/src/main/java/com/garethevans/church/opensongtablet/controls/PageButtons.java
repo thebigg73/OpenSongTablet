@@ -16,8 +16,10 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.RandomSongBottomSheet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -463,7 +465,8 @@ public class PageButtons {
                 actionInterface.chooseMenu(true);
                 break;
             case "transpose":
-                //TODO
+                TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet();
+                transposeBottomSheet.show(actionInterface.getMyFragmentManager(),"TransposeBottomSheet");
                 break;
             case "pad":
                 //TODO
@@ -510,7 +513,7 @@ public class PageButtons {
                 }
                 break;
             case "editsong":
-                //TODO
+                actionInterface.navigateToFragment("opensongapp://settings/edit",0);
                 break;
             case "theme":
                 actionInterface.navigateToFragment("opensongapp://settings/display/theme",0);
@@ -543,7 +546,14 @@ public class PageButtons {
                 actionInterface.chooseMenu(false);
                 break;
             case "randomsong":
-                //TODO
+                String whichMenu;
+                if (actionInterface.getCurrentSet().getInSet(actionInterface.getSong())) {
+                    whichMenu = "set";
+                } else {
+                    whichMenu = "song";
+                }
+                RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet(whichMenu);
+                randomSongBottomSheet.show(actionInterface.getMyFragmentManager(),"RandomSongBottomSheet");
                 break;
             case "abc":
                 //TODO

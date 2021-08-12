@@ -5,6 +5,7 @@
 
     <!--The colour used for accent elements (FABS, etc)-->
     <color name="colorSecondary">#294959</color>
+    <color name="colorAltSecondary">#5F7F8F</color>
 
     <!--The background colour of popup dialogs and the toolbar-->
     <color name="colorAltPrimary">#232333</color>

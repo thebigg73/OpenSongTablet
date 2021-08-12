@@ -118,7 +118,7 @@
     <string name="custom_background">"自定义标签的背景"</string>
     <string name="custom_gestures">"指定自定义手势"</string>
     <string name="custom_slide">"自定义幻灯片（有内容）"</string>
-    <string name="customchords">定制和弦</string>
+    <string name="custom_chords">定制和弦</string>
     <string name="customchords_code">自定义代码</string>
     <string name="customchords_fret">标签第一音品</string>
     <string name="customchords_name">和弦名称</string>

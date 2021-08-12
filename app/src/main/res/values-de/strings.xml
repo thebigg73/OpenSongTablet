@@ -119,7 +119,7 @@
     <string name="custom_background">"Hintergrund Benutzerdefinierter Tag"</string>
     <string name="custom_gestures">"Benutzerdefinierte Gesten zuweisen"</string>
     <string name="custom_slide">"Benutzerdefinierte Folien (mit Inhalt)"</string>
-    <string name="customchords">Benutzerdefinierte Akkorde</string>
+    <string name="custom_chords">Benutzerdefinierte Akkorde</string>
     <string name="customchords_code">Benutzerdefinierter Code</string>
     <string name="customchords_fret">Bezeichnung für ersten Bund</string>
     <string name="customchords_name">Akkordname</string>

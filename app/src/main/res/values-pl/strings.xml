@@ -119,7 +119,7 @@
     <string name="custom_background">"Niestandardowe tło tag"</string>
     <string name="custom_gestures">"Przypisywanie własnych gestów"</string>
     <string name="custom_slide">"Niestandardowe slajdów (z zawartością)"</string>
-    <string name="customchords">Własne akordy</string>
+    <string name="custom_chords">Własne akordy</string>
     <string name="customchords_code">Kod na zamówienie</string>
     <string name="customchords_fret">Etykieta na pierwszym progu</string>
     <string name="customchords_name">Nazwa akordu</string>

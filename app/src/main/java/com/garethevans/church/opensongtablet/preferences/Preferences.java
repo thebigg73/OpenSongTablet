@@ -392,7 +392,6 @@ public class Preferences extends Activity {
     presoXMargin                    int         The margin for the X axis on the presentation window (def:20)
     presoYMargin                    int         The margin for the Y axis on the presentation window (def:10)
     profileName                     String      The last loaded or saved profile name (def:"")
-    randomSongFolderChoice          String      A list of folders to include in the random song generation ($$_folder_$$) (def:"")
     runswithoutbackup               int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
     scaleChords                     float       The scale factor for chords relative to the lyrics (def:0.8f)
     scaleComments                   float       The scale factor for comments relative to the lyrics (def:0.8f)

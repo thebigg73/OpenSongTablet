@@ -118,7 +118,7 @@
     <string name="custom_background">"Vlastní tag na pozadí"</string>
     <string name="custom_gestures">"Přiřadit vlastní gesta"</string>
     <string name="custom_slide">"Vlastní slide (s obsahem)"</string>
-    <string name="customchords">Vlastní akordy</string>
+    <string name="custom_chords">Vlastní akordy</string>
     <string name="customchords_code">Vlastní kód</string>
     <string name="customchords_fret">Label pro první pražec</string>
     <string name="customchords_name">Název Chord</string>
