@@ -70,12 +70,23 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
             myView.songActions.setHint(songTitle);
             myView.addToSet.setHint(songTitle);
         }
+        // Check we have songs in the menu
+        if (mainActivityInterface.getSongsFound("song").size()>0) {
+            myView.randomSong.setVisibility(View.VISIBLE);
+        } else {
+            myView.randomSong.setVisibility(View.GONE);
+        }
 
         // Listener for buttons
         myView.songEdit.setOnClickListener(v -> navigateTo("opensongapp://settings/edit"));
         myView.songActions.setOnClickListener(v -> navigateTo("opensongapp://settings/actions"));
         myView.newSongs.setOnClickListener(v -> navigateTo("opensongapp://settings/import"));
         myView.addToSet.setOnClickListener(v -> addToSet());
+        myView.randomSong.setOnClickListener(v -> {
+            RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet("song");
+            randomSongBottomSheet.show(requireActivity().getSupportFragmentManager(),"RandomBottomSheet");
+            dismiss();
+        });
     }
 
     private void navigateTo(String deepLink) {

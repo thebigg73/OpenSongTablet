@@ -1084,6 +1084,29 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         }
     }
 
+    @Override
+    public ArrayList<Song> getSongsFound(String whichMenu) {
+        switch (whichMenu) {
+            case "song":
+                if (songMenuFragment != null) {
+                    try {
+                        return songMenuFragment.getSongsFound();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case "set":
+                try {
+                    return currentSet.getSetSongObject();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        return new ArrayList<>();
+    }
+
     private void setUpSongMenuTabs() {
         adapter = new ViewPagerAdapter(getSupportFragmentManager(),MainActivity.this.getLifecycle());
         adapter.createFragment(0);

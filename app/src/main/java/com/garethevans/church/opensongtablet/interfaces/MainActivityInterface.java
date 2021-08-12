@@ -206,4 +206,5 @@ public interface MainActivityInterface {
     ArrayList<Integer> getSongSheetTitleLayoutSize();
     void setSongSheetTitleLayoutSize(ArrayList<Integer> sizes);
     void enableSwipe(boolean canSwipe);
+    ArrayList<Song> getSongsFound(String whichMenu);
 }

@@ -62,6 +62,15 @@
                     android:text="@string/custom_slide" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/randomSong"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/random_song_info"
+                    android:padding="16dp"
+                    android:text="@string/random_song"
+                    custom:mydrawable="@drawable/ic_folder_search_white_36dp" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/shuffleSet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

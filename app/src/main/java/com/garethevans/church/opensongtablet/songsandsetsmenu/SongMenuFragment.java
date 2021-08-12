@@ -408,6 +408,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
+    public ArrayList<Song> getSongsFound() {
+        return songsFound;
+    }
+
     private class MyTextWatcher implements TextWatcher {
 
         String what;

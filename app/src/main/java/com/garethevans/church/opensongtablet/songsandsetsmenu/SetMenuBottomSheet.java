@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMenuSetBinding;
@@ -25,10 +24,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     private BottomSheetMenuSetBinding myView;
     private MainActivityInterface mainActivityInterface;
 
-    private String fragName;
-    private Fragment callingFragment;
     private static final String TAG = "SetMenuBottomSheet";
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,13 +53,40 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
+        // Check views allowed
+        checkViewsAllowed();
+
+        // Set up listeners
+        setListeners();
+
+        return myView.getRoot();
+    }
+
+    private void checkViewsAllowed() {
+        // Check there are songs!
+        boolean songs = mainActivityInterface.getCurrentSet().getSetFilenames().size()>0;
+
+        if (!songs) {
+            myView.createSet.setVisibility(View.GONE);
+            myView.variation.setVisibility(View.GONE);
+            myView.shuffleSet.setVisibility(View.GONE);
+            myView.randomSong.setVisibility(View.GONE);
+        }
+    }
+
+    private void setListeners() {
         myView.createSet.setOnClickListener(v -> {
-            mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,fragName,callingFragment,null);
+            mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,null,null,null);
             dismiss();
         });
         myView.shuffleSet.setOnClickListener(v -> {
             mainActivityInterface.getSetActions().shuffleSet(requireContext(),mainActivityInterface);
             mainActivityInterface.updateFragment("set_updateView",null,null);
+            dismiss();
+        });
+        myView.randomSong.setOnClickListener(v -> {
+            RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet("set");
+            randomSongBottomSheet.show(requireActivity().getSupportFragmentManager(),"RandomBottomSheet");
             dismiss();
         });
         myView.manageSet.setOnClickListener(v -> {
@@ -76,8 +99,6 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             setVariationBottomSheet.show(requireActivity().getSupportFragmentManager(),"setVariation");
             dismiss();
         });
-
-        return myView.getRoot();
     }
 
 }

@@ -13,6 +13,7 @@ import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 import java.util.ArrayList;
 
@@ -89,7 +90,7 @@ public class OCR {
     private void extractTextFromBitmap(Bitmap bmp,int rotation,int page) {
         String s = "";
         InputImage image = InputImage.fromBitmap(bmp, rotation);
-        TextRecognizer recognizer = TextRecognition.getClient();
+        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
         final int currpage = page;
         final Task<Text> result = recognizer.process(image)

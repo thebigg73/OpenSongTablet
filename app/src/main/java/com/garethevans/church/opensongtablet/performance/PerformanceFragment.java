@@ -35,7 +35,6 @@ public class PerformanceFragment extends Fragment {
     // The variables used in the fragment
     private float scaleHeadings, scaleComments, scaleChords, fontSize, fontSizeMin, fontSizeMax,
             lineSpacing;
-    private int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
     private boolean trimLines, trimSections, addSectionSpace, songAutoScaleColumnMaximise,
             songAutoScaleOverrideFull, songAutoScaleOverrideWidth, boldChordHeading,
             highlightChords,highlightHeadings;
@@ -142,9 +141,9 @@ public class PerformanceFragment extends Fragment {
         fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f);
         songAutoScaleOverrideFull = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true);
         songAutoScaleOverrideWidth = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideWidth",false);
-        swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250);
-        swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200);
-        swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600);
+        int swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumDistance", 250);
+        int swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMaxDistanceYError", 200);
+        int swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumVelocity", 600);
         highlightChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"highlightChords",false);
         highlightHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"highlightHeadings",false);
         fontSizeMax = 90.0f;

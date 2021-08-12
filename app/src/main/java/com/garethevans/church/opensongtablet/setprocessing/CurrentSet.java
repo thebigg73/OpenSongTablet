@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // This is the (current) set object
 // All actions related to building/processing are in the SetActions class
 
+import com.garethevans.church.opensongtablet.songprocessing.Song;
+
 import java.util.ArrayList;
 
 public class CurrentSet {
@@ -132,6 +134,19 @@ public class CurrentSet {
         return currentSetString;
     }
 
+    public ArrayList<Song> getSetSongObject() {
+        // This is called for random song where we need a array of songs to choose
+        ArrayList<Song> songsInSet = new ArrayList<>();
+        for (int i=0; i<setFilenames.size(); i++) {
+            Song song = new Song();
+            song.setFilename(setFilenames.get(i));
+            song.setTitle(setFilenames.get(i));
+            song.setFolder(setFolders.get(i));
+            songsInSet.add(song);
+        }
+        return songsInSet;
+    }
+
     public void updateSetItem(int position, String item) {
         setItems.set(position,item);
     }
@@ -192,21 +207,11 @@ public class CurrentSet {
     public void setSetFolders(ArrayList<String> setFolders) {
         this.setFolders = setFolders;
     }
-    public void addToCurrentSet_Folder(String item) {
-        setFolders.add(item);
-    }
-    public void removeFromCurrentSet_Folder(int position) {
-        setFolders.remove(position);
-    }
+
     public void setSetFilenames(ArrayList<String> setFilenames) {
         this.setFilenames = setFilenames;
     }
-    public void addToCurrentSet_Filename(String item) {
-        setFilenames.add(item);
-    }
-    public void removeFromCurrentSet_Filename(int position) {
-        setFilenames.remove(position);
-    }
+
     public void setIndexSongInSet(int indexSongInSet) {
         this.indexSongInSet = indexSongInSet;
     }
@@ -222,12 +227,7 @@ public class CurrentSet {
     public void setSetKeys(ArrayList<String> setKeys) {
         this.setKeys = setKeys;
     }
-    public void addToCurrentSet_Key(String item) {
-        setKeys.add(item);
-    }
-    public void removeFromCurrentSet_Key(int position) {
-        setKeys.remove(position);
-    }
+
     public void setCurrentSetXML(String currentSetXML) {
         this.currentSetXML = currentSetXML;
     }
