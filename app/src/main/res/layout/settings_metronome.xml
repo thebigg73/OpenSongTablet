@@ -143,6 +143,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
                     android:text="@string/beat_tick" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -168,7 +170,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/beat_tock" />
+                    android:text="@string/beat_tock"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/tockSound"
