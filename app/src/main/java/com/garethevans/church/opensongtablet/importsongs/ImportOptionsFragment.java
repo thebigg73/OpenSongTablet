@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,8 +27,8 @@ public class ImportOptionsFragment extends Fragment {
     private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream"};
     private final String[] validBackups = new String[] {"application/zip","application/octet-stream"};
     private Thread thread;
-    private Runnable runnable;
-    private boolean alive = true;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+    private int whichFileType;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -40,19 +43,48 @@ public class ImportOptionsFragment extends Fragment {
 
         mainActivityInterface.updateToolbar(getString(R.string.import_main));
 
+        // Set up launcher
+        setupLauncher();
+
         // Set the listeners
         setListeners();
 
         return myView.getRoot();
     }
 
+    private void setupLauncher() {
+        // Initialise the launcher
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                try {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        mainActivityInterface.setImportUri(data.getData());
+                        String filename;
+                        if (data.getDataString()!=null) {
+                            filename = mainActivityInterface.getStorageAccess().
+                                    getActualFilename(requireContext(),data.getDataString());
+                            mainActivityInterface.setImportFilename(filename);
+                        }
+                        int where = R.id.importFile;
+                        if (whichFileType == mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE")) {
+                            where = R.id.importOSBFragment;
+                        } else if (whichFileType == mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE")) {
+                            where = R.id.importiOS;
+                        }
+                        mainActivityInterface.navigateToFragment(null,where);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     private void setListeners() {
         myView.importFile.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_FILE_CHOOSER"),validFiles));
         myView.importOSB.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"),validBackups));
         myView.importiOS.setOnClickListener(v -> selectFile(mainActivityInterface.getPreferences().getFinalInt("REQUEST_IOS_FILE"),validBackups));
         myView.importOnline.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.importOnlineFragment));
-        //myView.importBand.setOnClickListener(v -> importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA","Band.osb"));
-        //myView.importChurch.setOnClickListener(v -> importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM","Church.osb"));
         myView.importChurch.setOnClickListener(v -> {
             mainActivityInterface.setWhattodo("importChurchSample");
             mainActivityInterface.navigateToFragment(null,R.id.importOSBFragment);
@@ -64,8 +96,12 @@ public class ImportOptionsFragment extends Fragment {
     }
 
     private void selectFile(int id, String[] mimeTypes) {
-        Intent intent = mainActivityInterface.getStorageAccess().selectFileIntent(mimeTypes);
-        requireActivity().startActivityForResult(intent, id);
+        whichFileType = id;
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        activityResultLauncher.launch(intent);
     }
 
     @Override
@@ -82,10 +118,8 @@ public class ImportOptionsFragment extends Fragment {
     }
 
     private void killThread() {
-        alive = false;
         if (thread!=null) {
             thread.interrupt();
-            runnable = null;
             thread = null;
         }
     }
