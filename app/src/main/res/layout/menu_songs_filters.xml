@@ -45,7 +45,7 @@
         android:hint="@string/artist"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingTop="4dp"
+        android:paddingTop="2dp"
         android:paddingBottom="4dp"/>
 
     <LinearLayout

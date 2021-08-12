@@ -493,6 +493,8 @@ public class MetronomeFragment extends Fragment {
         if (isRunningTimer!=null) {
             isRunningTimer.cancel();
             isRunningTimer.purge();
+            // IV - Occasional crash on detach - adding this may be the cure?
+            isRunningTimer = null;
         }
         if (isRunningTask!=null) {
             isRunningTask.cancel();
