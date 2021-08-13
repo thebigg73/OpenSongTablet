@@ -119,6 +119,12 @@ public class CurrentSet {
         setKeys.set(position, value);
     }
 
+    // Decide if we are viewing a set
+    public boolean getInSet(Song song) {
+        return setFilenames.contains(song.getFilename()) && setFilenames.indexOf(song.getFilename())==
+                setFolders.indexOf(song.getFolder());
+    }
+
     // Set and get the initial and current set string (as saved in preferences)
     // These can be compared to show if a save is required due to changes
     public void setInitialSetString(String initialSetString) {

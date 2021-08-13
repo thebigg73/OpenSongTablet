@@ -89,7 +89,6 @@ dependencies {
     implementation 'org.apache.commons:commons-compress:1.21'                           // For creating and editing compressed files (osb, backup)
     implementation 'com.github.bumptech.glide:glide:4.12.0'                             // For better setting of images
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'                     // For better setting of images
-    implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'                   // Used for song menu
     implementation 'com.github.deano2390:MaterialShowcaseView:1.3.4'                    // To highlight new features in the app
 
     // TODO Check I can get rid of the following - I want to minimise external libraries

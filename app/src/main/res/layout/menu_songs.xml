@@ -102,24 +102,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
-                    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <com.garethevans.church.opensongtablet.customviews.FastScrollRecyclerView
                         android:id="@+id/songListRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:clipToPadding="false"
-                        android:paddingStart="8dp"
-                        android:paddingTop="0dp"
-                        android:paddingEnd="0dp"
-                        android:paddingBottom="100dp"
-                        android:scrollbarAlwaysDrawVerticalTrack="true"
-                        android:scrollbarSize="8dp"
-                        android:scrollbarThumbVertical="@color/grey"
-                        app:fastScrollAutoHide="false"
-                        app:fastScrollEnableThumbInactiveColor="false"
-                        app:fastScrollPopupBgColor="@color/colorSecondary"
-                        app:fastScrollPopupTextColor="@color/white"
-                        app:fastScrollThumbColor="@color/colorSecondary"
-                        app:fastScrollTrackColor="@color/darkgrey" />
+                        app:bubbleColor="@color/colorSecondary"
+                        app:bubbleTextColor="@color/white"
+                        app:handleColor="@color/colorAltSecondary"
+                        app:bubbleSize="small"
+                        app:hideScrollbar="false"
+                        app:showTrack="true"
+                        app:scrollTrackColor="@color/colorPrimary" />
+                    </FrameLayout>
 
                 </LinearLayout>
             </LinearLayout>

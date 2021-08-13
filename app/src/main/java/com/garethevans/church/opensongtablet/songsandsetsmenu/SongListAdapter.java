@@ -13,28 +13,38 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
+public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> implements FastScroller.SectionIndexer {
 
     private final List<Song> songList;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final SparseBooleanArray checkedArray = new SparseBooleanArray();
     private final boolean showChecked;
+    private final String TAG = "SongListAdapter";
 
     AdapterCallback callback;
 
+    @Override
+    public CharSequence getSectionText(int position) {
+        String item = songList.get(position).getTitle();
+        if (item.length() > 0) {
+            return item.substring(0, 1);
+        } else {
+            return "" + position;
+        }
+    }
+
     public interface AdapterCallback {
         void onItemClicked(int position, String folder, String filename);
-
         void onItemLongClicked(int position, String folder, String filename);
     }
 
@@ -203,16 +213,19 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         return new SongItemViewHolder(itemView);
     }
 
-    @NonNull
-    @Override
-    public String getSectionName(int position) {
-        String item = songList.get(position).getTitle();
-        if (item.length() > 0) {
-            return item.substring(0, 1);
-        } else {
-            return "" + position;
+    public int getPositionOfSong(Song song) {
+        Log.d(TAG, "songs in list:" + songList.size());
+        for (int x=0; x<songList.size(); x++) {
+            if (songList.get(x).getFilename().equals(song.getFilename()) &&
+            songList.get(x).getFolder().equals(song.getFolder())) {
+                Log.d(TAG, "found at position:" + x);
+                return x;
+            }
         }
+        // Not found;
+        Log.d(TAG, "notfound");
 
+        return -1;
     }
 
     Map<String, Integer> getAlphaIndex(List<Song> songlist) {

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
+import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -75,7 +76,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void initialiseRecyclerView() {
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
-        songListLayoutManager = new LinearLayoutManager(getActivity());
+        songListLayoutManager = new LinearLayoutManager(requireContext());
         songListLayoutManager.setOrientation(RecyclerView.VERTICAL);
         myView.songListRecyclerView.setLayoutManager(songListLayoutManager);
         myView.songListRecyclerView.setHasFixedSize(false);
@@ -84,8 +85,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface, blank,
                 SongMenuFragment.this);
         myView.songListRecyclerView.setAdapter(songListAdapter);
-        myView.songListRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-    }
+        }
 
     private void setValues(Song song) {
         songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByFolder", false);
@@ -167,6 +167,17 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 Handler h = new Handler();
                 h.postDelayed(() -> songButtonActive = true, 600);
                 showActionDialog();
+            }
+        });
+        myView.songListRecyclerView.setFastScrollListener(new FastScroller.FastScrollListener() {
+            @Override
+            public void onFastScrollStart(@NonNull FastScroller fastScroller) {
+                myView.actionFAB.hide();
+            }
+
+            @Override
+            public void onFastScrollStop(@NonNull FastScroller fastScroller) {
+                myView.actionFAB.show();
             }
         });
         myView.songListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -283,10 +294,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songListRecyclerView.setOnClickListener(null);
         songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface,
                 songsFound, SongMenuFragment.this);
-        // TODO
-        // When the list is redrawn the set checks are wiped
 
         myView.songListRecyclerView.setAdapter(songListAdapter);
+        //myView.fastScroller.setRecyclerView(myView.songListRecyclerView);
         myView.songListRecyclerView.setFastScrollEnabled(true);
         displayIndex(songsFound, songListAdapter);
         myView.progressBar.setVisibility(View.GONE);
@@ -310,12 +320,21 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             textView.setText(index);
             textView.setOnClickListener(view -> {
                 TextView selectedIndex = (TextView) view;
+                Log.d(TAG,"selectedIndex: "+selectedIndex);
+                Log.d(TAG,"selectedIndex.getText(): "+selectedIndex.getText());
+                Log.d(TAG,"songListLayoutManager: "+songListLayoutManager);
+                Log.d(TAG,"selectedIndex: "+selectedIndex);
+
                 try {
-                    if (selectedIndex.getText() != null && getActivity() != null &&
-                            myView.songListRecyclerView.getLayoutManager() != null) {
+                    if (selectedIndex.getText() != null &&
+                            songListLayoutManager != null) {
                         String myval = selectedIndex.getText().toString();
+                        Log.d(TAG,"map="+map);
+                        Log.d(TAG,"map.isEmpty()="+map.isEmpty());
+
                         if (!map.isEmpty()) {
                             Integer obj = map.get(myval);
+                            Log.d(TAG,"obj="+obj);
                             if (obj != null) {
                                 songListLayoutManager.scrollToPositionWithOffset(obj, 0);
                             }
@@ -331,15 +350,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(), "songMenuAlphaIndexShow", true));
     }
 
-    public void changeAlphabeticalLayout(Context c) {
+    public void changeAlphabeticalLayout() {
         // We have asked for the visibility or the font size to change
-        /*boolean showMenu = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,
-                "songMenuAlphaIndexShow", true);
-        boolean showChecks = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,
-                "songMenuSetTicksShow", true);
-        float fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,
-                "songMenuAlphaIndexSize", 12.0f);
-        changeAlphabeticalVisibility(showMenu);*/
         updateSongList();
     }
     private void changeAlphabeticalVisibility(boolean isVisible) {
@@ -351,9 +363,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
     @Override
     public void onItemClicked(int position, String folder, String filename) {
-        Log.d(TAG,"Try to load: "+folder+"/"+filename);
         mainActivityInterface.hideKeyboard();
         mainActivityInterface.doSongLoad(folder, filename);
+        songListLayoutManager.scrollToPositionWithOffset(position,0);
     }
 
     @Override
@@ -398,11 +410,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     public void moveToSongInMenu(Song song) {
         //scroll to the song in the song menu
-        int index = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface, song);
         try {
-            if (index >= 0) {
-                new Thread(() -> requireActivity().runOnUiThread(() -> songListLayoutManager.scrollToPositionWithOffset(index, 0))).start();
-            }
+            new Thread(() -> requireActivity().runOnUiThread(() -> songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song), 0))).start();
         } catch (Exception e) {
             e.printStackTrace();
         }
