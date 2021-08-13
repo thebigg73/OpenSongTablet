@@ -21,11 +21,6 @@
             android:background="#000"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/mytoolbar"
-                layout="@layout/_newtoolbarinclude"
-                android:clipChildren="false"
-                android:clipToPadding="false" />
 
             <LinearLayout
                 android:id="@+id/presenter_window"
