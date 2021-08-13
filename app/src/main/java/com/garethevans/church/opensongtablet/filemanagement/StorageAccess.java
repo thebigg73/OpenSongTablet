@@ -543,10 +543,8 @@ public class StorageAccess {
                 rootFolder = uriString.substring(0,uriString.indexOf("/"));
                 uriString = uriString.replace(rootFolder+"/","");
             }
-            Log.d(TAG,"rootFolder:"+rootFolder+"  uriString="+uriString);
             // Try to get the actual uri
             Uri uri = getUriForItem(c,mainActivityInterface,rootFolder,"",uriString);
-            Log.d(TAG,"uri="+uri);
             return uri;
         } else {
             // Now get the actual uri
@@ -1109,11 +1107,6 @@ public class StorageAccess {
         // Because it may not be in the songs folder, lets check!
         ArrayList<String> newLocation = fixNonSongs(mainActivityInterface.getSong().getFolder());
         // Write the string file
-        Log.d(TAG,"newLocation.get(0): "+newLocation.get(0));
-        Log.d(TAG,"newLocation.get(1): "+newLocation.get(1));
-        Log.d(TAG,"filename: "+mainActivityInterface.getSong().getFilename());
-        Log.d(TAG, "XML: "+ mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, mainActivityInterface.getSong()));
-
         return doStringWriteToFile(c,mainActivityInterface,newLocation.get(0), newLocation.get(1),
                 mainActivityInterface.getSong().getFilename(),
                 mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, mainActivityInterface.getSong()));
@@ -1670,7 +1663,6 @@ public class StorageAccess {
     public void wipeFolder(Context c, MainActivityInterface mainActivityInterface,
                            String folder, String subfolder) {
         Uri uri = getUriForItem(c,mainActivityInterface,folder,subfolder,null);
-        Log.d(TAG,"uri: "+uri);
         if (uriExists(c,uri)) {
             if (lollipopOrLater()) {
                 wipeFolder_SAF(c,uri);
@@ -1692,7 +1684,6 @@ public class StorageAccess {
     public void wipeFolder_SAF(Context c, Uri uri) {
         // Get a contract for the desired folder
         Uri desiredUri = DocumentsContract.buildDocumentUriUsingTree(uriTreeHome,DocumentsContract.getDocumentId(uri));
-        Log.d(TAG,"desiredUri: "+desiredUri);
         try {
             DocumentsContract.deleteDocument(c.getContentResolver(), desiredUri);
         } catch (Exception e) {

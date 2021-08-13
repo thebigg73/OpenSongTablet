@@ -36,8 +36,6 @@ public class LoadSong {
         String folder = thisSong.getFolder();
         String filename = thisSong.getFilename();
 
-        Log.d(TAG,"folder="+folder+"  filename="+filename);
-
         // Clear the song object then add the folder filename back
         thisSong = new Song();
         thisSong.setFolder(folder);
@@ -434,14 +432,11 @@ public class LoadSong {
                         mainActivityInterface,"Songs",thisSong.getFolder(),thisSong.getFilename());
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, thisSongUri);
                 String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
-                Log.d(TAG, "thisSongUri:" + thisSongUri);
                 if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
                     content = content.substring(0, content.indexOf("</song>")) + "</song>";
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, thisSongUri);
-                    Log.d(TAG, "success saving? " + mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream));
+                    mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
                     InputStream inputStream2 = mainActivityInterface.getStorageAccess().getInputStream(c, thisSongUri);
-                    String content2 = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream2);
-                    Log.d(TAG, "loadedContentafterFix:" + content2);
                 }
             }
         }
@@ -522,7 +517,6 @@ public class LoadSong {
         StringBuilder newXML = new StringBuilder();
         String tofix;
 
-        Log.d(TAG,"running fixXML: filename="+thisSong.getFilename()+"  section="+section+ "  where="+where);
         // If an XML file has unencoded ampersands or quotes, fix them
         try {
             tofix = getSongAsText(c,mainActivityInterface,where,thisSong.getFolder(),thisSong.getFilename());

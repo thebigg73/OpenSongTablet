@@ -1049,13 +1049,12 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     // Deal with stuff in the song menu
     @Override
     public void moveToSongInSongMenu() {
-        if (setSongMenuFragment()) {
-            if (songMenuFragment!=null) {
-                try {
-                    songMenuFragment.moveToSongInMenu(song);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Log.d(TAG,"trying to move to song in song menu");
+        if (songMenuFragment!=null) {
+            try {
+                songMenuFragment.moveToSongInMenu(song);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             Log.d(TAG, "songMenuFragment not available");
@@ -1547,7 +1546,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         // If the fragName is menuSettingsFragment, we just want to change the alpha index view
         if (fragName!=null && fragName.equals("menuSettingsFragment")) {
             if (songMenuFragment!=null) {
-                songMenuFragment.changeAlphabeticalLayout(this);
+                songMenuFragment.changeAlphabeticalLayout();
             }
         } else {
             // This is a full rebuild

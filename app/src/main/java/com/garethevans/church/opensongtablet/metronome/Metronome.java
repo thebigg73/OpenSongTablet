@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -37,13 +36,11 @@ public class Metronome {
     // The call to start and stop the metronome called from MainActivity
     public void startMetronome(Activity activity, Context c, MainActivityInterface mainActivityInterface) {
         // This starts the metronome activity
-        Log.d(TAG,"Metronome started");
         this.activity = activity;  // Destroyed on stop to avoid memory leaks
 
         // Initialise the varibles
         initialiseMetronome(c, mainActivityInterface);
 
-        Log.d(TAG,"metronomeValid()="+metronomeValid()+"  isRunning="+isRunning);
         // If the metronome is valid and not running, start. If not stop
         if (metronomeValid() && !isRunning){
             // Get the tick and tock sounds ready
@@ -53,7 +50,6 @@ public class Metronome {
         }
     }
     public void stopMetronome(MainActivityInterface mainActivityInterface) {
-        Log.d(TAG,"Metronome stopped");
         activity = null;
         isRunning = false;
         // Make sure the action bar resets to the off color
@@ -301,8 +297,6 @@ public class Metronome {
 
     // Checks to the metronome
     public boolean metronomeValid() {
-        Log.d(TAG, "validTempo: "+validTempo);
-        Log.d(TAG, "validTimeSig: "+validTimeSig);
         return validTempo && validTimeSig;
     }
     public boolean getIsRunning() {

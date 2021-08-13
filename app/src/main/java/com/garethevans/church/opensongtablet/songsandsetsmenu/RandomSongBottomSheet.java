@@ -72,10 +72,8 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
 
     private void setupListeners() {
         myView.findRandom.setOnClickListener(v -> findRandomSong());
-        myView.loadRandom.setOnClickListener(v -> {
-            mainActivityInterface.doSongLoad(randomSong.getFolder(),randomSong.getFilename());
-            dismiss();
-        });
+        myView.loadRandom.setOnClickListener(v -> doLoad());
+        myView.currentRandomSong.setOnClickListener(v -> doLoad());
     }
 
     private void findRandomSong() {
@@ -94,4 +92,8 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
         myView.currentRandomSong.setHint(randomSong.getFolder());
     }
 
+    private void doLoad() {
+        mainActivityInterface.doSongLoad(randomSong.getFolder(),randomSong.getFilename());
+        dismiss();
+    }
 }
