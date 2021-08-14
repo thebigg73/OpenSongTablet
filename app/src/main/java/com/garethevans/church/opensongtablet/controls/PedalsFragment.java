@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsPedalBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -35,7 +34,6 @@ public class PedalsFragment extends Fragment {
     private ArrayList<String> actionCodes;
     private ArrayList<String> actions;
     private ExposedDropDownArrayAdapter arrayAdapter;
-    private ExposedDropDownSelection exposedDropDownSelection;
 
     private boolean longPressCapable = false;
     private long downTime, upTime;
@@ -67,9 +65,6 @@ public class PedalsFragment extends Fragment {
 
         mainActivityInterface.updateToolbar(getString(R.string.pedal));
 
-        // Setup the helper classes
-        setupHelpers();
-
         // Grab views
         grabViews();
 
@@ -98,10 +93,6 @@ public class PedalsFragment extends Fragment {
         airTurnModeActions();
 
         return myView.getRoot();
-    }
-
-    private void setupHelpers() {
-        exposedDropDownSelection = new ExposedDropDownSelection();
     }
 
     private void midiPedalAllowed() {
@@ -169,7 +160,7 @@ public class PedalsFragment extends Fragment {
         exposedDropDown.setAdapter(arrayAdapter);
         exposedDropDown.setText(getActionFromActionCode(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),
                 pref, defpref)));
-        exposedDropDownSelection.keepSelectionPosition(exposedDropDown, actions);
+        arrayAdapter.keepSelectionPosition(exposedDropDown, actions);
         exposedDropDown.addTextChangedListener(new MyTextWatcher(pref));
     }
 

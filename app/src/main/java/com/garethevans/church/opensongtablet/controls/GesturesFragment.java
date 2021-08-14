@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsGesturesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -24,7 +23,6 @@ public class GesturesFragment extends Fragment {
 
     private SettingsGesturesBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private ExposedDropDownSelection exposedDropDownSelection;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -38,25 +36,19 @@ public class GesturesFragment extends Fragment {
         myView = SettingsGesturesBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.custom_gestures));
 
-        // Set up the helpers
-        setupHelpers();
-
         // Set dropDowns
-        new Thread(() -> getActivity().runOnUiThread(this::setupDropDowns)).start();
+        new Thread(() -> requireActivity().runOnUiThread(this::setupDropDowns)).start();
 
         return myView.getRoot();
-    }
-
-    private void setupHelpers() {
-        exposedDropDownSelection = new ExposedDropDownSelection();
     }
 
     private void setupDropDowns() {
         // Get the arrays for the dropdowns
         ArrayList<String> availableDescriptions = mainActivityInterface.getGestures().getGestureDescriptions();
-        ExposedDropDownArrayAdapter descriptionsAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, availableDescriptions);
-        myView.doubleTap.setAdapter(descriptionsAdapter);
-        myView.longPress.setAdapter(descriptionsAdapter);
+        ExposedDropDownArrayAdapter descriptionsAdapter1 = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, availableDescriptions);
+        ExposedDropDownArrayAdapter descriptionsAdapter2 = new ExposedDropDownArrayAdapter(requireContext(), myView.longPress, R.layout.view_exposed_dropdown_item, availableDescriptions);
+        myView.doubleTap.setAdapter(descriptionsAdapter1);
+        myView.longPress.setAdapter(descriptionsAdapter2);
 
         // Set the initial values
         myView.doubleTap.setText(mainActivityInterface.getGestures().getDescriptionFromGesture(mainActivityInterface.getGestures().getDoubleTap()));
@@ -65,11 +57,7 @@ public class GesturesFragment extends Fragment {
         // Set the listeners
         myView.doubleTap.addTextChangedListener(new MyTextWatcher("doubleTap"));
         myView.doubleTap.addTextChangedListener(new MyTextWatcher("longPress"));
-
-        // Set the position in the list to the chosen value
-        exposedDropDownSelection.keepSelectionPosition(myView.doubleTap, mainActivityInterface.getGestures().getGestureDescriptions());
-        exposedDropDownSelection.keepSelectionPosition(myView.longPress, mainActivityInterface.getGestures().getGestureDescriptions());
-    }
+        }
 
     private class MyTextWatcher implements TextWatcher {
         String which;

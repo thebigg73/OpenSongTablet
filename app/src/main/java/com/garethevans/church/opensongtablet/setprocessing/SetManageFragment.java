@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsManageBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
@@ -35,7 +34,6 @@ public class SetManageFragment extends Fragment {
     private ArrayList<String> allSets;
     private ArrayList<String> categories;
     private ExposedDropDownArrayAdapter categoriesAdapter;
-    private ExposedDropDownSelection exposedDropDownSelection;
     private String chosenSets = "";
 
     @Override
@@ -48,9 +46,6 @@ public class SetManageFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSetsManageBinding.inflate(inflater, container, false);
-
-        // Set the additional helper
-        exposedDropDownSelection = new ExposedDropDownSelection();
 
         // Get the sets in the folder
         prepareSets();
@@ -105,10 +100,8 @@ public class SetManageFragment extends Fragment {
 
     private void setListener() {
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(
-                requireContext(),R.layout.view_exposed_dropdown_item,categories);
-        ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
+                requireContext(), myView.setCategory, R.layout.view_exposed_dropdown_item,categories);
         myView.setCategory.setAdapter(exposedDropDownArrayAdapter);
-        exposedDropDownSelection.keepSelectionPosition(myView.setCategory,categories);
         myView.setCategory.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -146,12 +139,11 @@ public class SetManageFragment extends Fragment {
     }
     private void listCategories() {
         categories = mainActivityInterface.getSetActions().getCategories(requireContext(), allSets);
-        categoriesAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+        categoriesAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.setCategory,
                 R.layout.view_exposed_dropdown_item, categories);
         myView.setCategory.setAdapter(categoriesAdapter);
         myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "whichSetCategory", requireContext().getString(R.string.mainfoldername)));
-        exposedDropDownSelection.keepSelectionPosition(myView.setCategory,categories);
         myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(
                 requireContext(), "whichSetCategory", getString(R.string.mainfoldername)));
         myView.setCategory.addTextChangedListener(new TextWatcher() {

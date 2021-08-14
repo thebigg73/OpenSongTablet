@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -84,12 +83,17 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void setupDropDowns() {
-        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, fontNames);
-        myView.lyricFont.setAdapter(arrayAdapter);
-        myView.chordFont.setAdapter(arrayAdapter);
-        myView.presoFont.setAdapter(arrayAdapter);
-        myView.presoInfoFont.setAdapter(arrayAdapter);
-        myView.stickyFont.setAdapter(arrayAdapter);
+        ExposedDropDownArrayAdapter lyricAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.lyricFont, R.layout.view_exposed_dropdown_item, fontNames);
+        ExposedDropDownArrayAdapter chordAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.chordFont, R.layout.view_exposed_dropdown_item, fontNames);
+        ExposedDropDownArrayAdapter presoAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.presoFont, R.layout.view_exposed_dropdown_item, fontNames);
+        ExposedDropDownArrayAdapter presoInfoAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.presoInfoFont, R.layout.view_exposed_dropdown_item, fontNames);
+        ExposedDropDownArrayAdapter stickyAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.stickyFont, R.layout.view_exposed_dropdown_item, fontNames);
+
+        myView.lyricFont.setAdapter(lyricAdapter);
+        myView.chordFont.setAdapter(chordAdapter);
+        myView.presoFont.setAdapter(presoAdapter);
+        myView.presoInfoFont.setAdapter(presoInfoAdapter);
+        myView.stickyFont.setAdapter(stickyAdapter);
 
         myView.lyricFont.setText(fontLyric);
         myView.chordFont.setText(fontChord);
@@ -102,14 +106,6 @@ public class FontSetupFragment extends Fragment {
         myView.stickyFont.addTextChangedListener(new MyTextWatcher("fontSticky"));
         myView.presoFont.addTextChangedListener(new MyTextWatcher("fontPreso"));
         myView.presoInfoFont.addTextChangedListener(new MyTextWatcher("fontPresoInfo"));
-
-        // Set the position in the lists to the chosen values
-        ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
-        exposedDropDownSelection.keepSelectionPosition(myView.lyricFont,fontNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.chordFont,fontNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.stickyFont,fontNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.presoFont,fontNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.presoInfoFont,fontNames);
 
     }
 

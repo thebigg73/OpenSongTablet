@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -39,7 +38,6 @@ public class PageButtonFragment extends Fragment {
     private ArrayList<MaterialTextView> longTexts;
     private SettingsPagebuttonsBinding myView;
     private ExposedDropDownArrayAdapter arrayAdapter;
-    private ExposedDropDownSelection exposedDropDownSelection;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -54,17 +52,10 @@ public class PageButtonFragment extends Fragment {
 
         mainActivityInterface.updateToolbar(getString(R.string.page_buttons));
 
-        // Set up helpers
-        setupHelpers();
-
         // Set up the page button icons
         setupPageButtons();
 
         return myView.getRoot();
-    }
-
-    private void setupHelpers() {
-        exposedDropDownSelection = new ExposedDropDownSelection();
     }
 
     private void setupPageButtons() {
@@ -171,7 +162,7 @@ public class PageButtonFragment extends Fragment {
     private void setTheDropDowns(int pos) {
         exposedDropDowns.get(pos).setAdapter(arrayAdapter);
         exposedDropDowns.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
-        exposedDropDownSelection.keepSelectionPosition(exposedDropDowns.get(pos),mainActivityInterface.getPageButtons().getPageButtonAvailableText());
+        arrayAdapter.keepSelectionPosition(exposedDropDowns.get(pos),mainActivityInterface.getPageButtons().getPageButtonAvailableText());
         /*autoCompleteTextViews.get(pos).setOnClickListener(new View.OnClickListener() {
             boolean showing = false;
             @Override

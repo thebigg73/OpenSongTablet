@@ -28,6 +28,7 @@ public class TextThreeSlider extends LinearLayout {
         textRight = findViewById(R.id.textRight);
         textCenter = findViewById(R.id.textCenter);
         slider = findViewById(R.id.slider);
+        slider.setStepSize(1);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextThreeSlider);
         CharSequence leftText = a.getText(R.styleable.TextThreeSlider_textL);

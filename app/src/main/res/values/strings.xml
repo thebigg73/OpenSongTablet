@@ -949,4 +949,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="random_song_info">Select a random song from those currently shown in the menu</string>
     <string name="custom_chords_info">Custom chords saved with the current song</string>
     <string name="transpose_info">Change the chords in the current song</string>
+    <string name="both">Both</string>
+    <string name="chord_capo_display">If a song has capo chords, which chords should be shown?</string>
 </resources>

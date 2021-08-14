@@ -3,16 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <TextView
         android:id="@+id/textLeft"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_gravity="center"
-        android:padding="16dp"/>
+        android:layout_gravity="center" />
 
     <com.google.android.material.slider.Slider
         android:id="@+id/slider"
@@ -22,11 +32,12 @@
         android:layout_gravity="center"
         android:valueFrom="0"
         android:valueTo="1"
-        app:trackColor="@color/lightgrey"
+        app:stepSize="1"
+        app:trackColor="@color/colorSecondary"
         app:trackHeight="8dp"
         app:labelBehavior="gone"
-        app:thumbRadius="16dp"
-        app:thumbColor="@color/colorSecondary"
+        app:thumbRadius="8dp"
+        app:thumbColor="@color/colorAltSecondary"
         android:padding="16dp" />
 
     <TextView
@@ -35,8 +46,8 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_gravity="center"
-        android:padding="16dp"/>
+        android:layout_gravity="center" />
 
+    </LinearLayout>
 
 </LinearLayout>

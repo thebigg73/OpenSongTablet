@@ -47,6 +47,7 @@
         <attr name="textLeft" format="string"/>
         <attr name="textRight" format="string"/>
         <attr name="value" format="integer"/>
+        <attr name="heading" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="TextThreeSlider">
@@ -84,5 +85,6 @@
             <enum name="small" value="1" />
         </attr>
     </declare-styleable>
+
 
 </resources>

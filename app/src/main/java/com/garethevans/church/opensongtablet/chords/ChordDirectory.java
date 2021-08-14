@@ -1,20 +1,15 @@
 package com.garethevans.church.opensongtablet.chords;
 
-import android.content.Context;
-
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-
 public class ChordDirectory {
 
-    private String simplifyChords(Context c, Preferences preferences, String tempchord) {
+    private String simplifyChords(int chordFormat, String tempchord) {
         String chordtoworkon = tempchord;
-        int myformat = preferences.getMyPreferenceInt(c,"chordFormat",1);
-        if (myformat==2) {
+        if (chordFormat==2) {
             //European Bb = B and B = H
             chordtoworkon = chordtoworkon.replace("$Bb","$A#");
             chordtoworkon = chordtoworkon.replace("$B","$A#");
             chordtoworkon = chordtoworkon.replace("$H", "$B");
-        } else if (myformat==3) {
+        } else if (chordFormat==3) {
             // Replace minors, flats and sharps
             chordtoworkon = chordtoworkon.replace("$As", "$Ab");
             chordtoworkon = chordtoworkon.replace("$Ais","$A#");
@@ -135,10 +130,10 @@ public class ChordDirectory {
         return chordtoworkon;
     }
 
-    public String guitarChords(Context c, Preferences preferences, String chord) {
+    public String guitarChords(int chordFormat, String chord) {
 
         String chordnotes;
-        String chordtoworkon = simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(chordFormat, chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -684,10 +679,10 @@ public class ChordDirectory {
        return chordnotes;
     }
 
-    public String ukuleleChords(Context c, Preferences preferences, String chord) {
+    public String ukuleleChords(int chordFormat, String chord) {
 
         String chordnotes;
-        String chordtoworkon = simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(chordFormat,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -1227,16 +1222,16 @@ public class ChordDirectory {
 
         // Standard ukulele chords all start with u_ (ukulele) and end with _0 (fret to start with)
         if (!chordnotes.contains("_")) {
-            chordnotes = chordnotes + "_0_u_"+simplifyChords(c,preferences,chord);
+            chordnotes = chordnotes + "_0_u_"+simplifyChords(chordFormat,chord);
         }
 
         return chordnotes;
     }
 
-    public String mandolinChords(Context c, Preferences preferences, String chord) {
+    public String mandolinChords(int chordFormat, String chord) {
 
         String chordnotes;
-        String chordtoworkon = simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(chordFormat,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -1783,10 +1778,10 @@ public class ChordDirectory {
         return chordnotes;
     }
 
-    public String cavaquinhoChords(Context c, Preferences preferences, String chord) {
+    public String cavaquinhoChords(int chordFormat, String chord) {
 
         String chordnotes;
-        String chordtoworkon = simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(chordFormat,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -2332,10 +2327,10 @@ public class ChordDirectory {
         return chordnotes;
     }
 
-    public String banjo4stringChords(Context c, Preferences preferences, String chord) {
+    public String banjo4stringChords(int chordFormat, String chord) {
 
         String chordnotes;
-        String chordtoworkon = simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(chordFormat,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -2882,10 +2877,10 @@ public class ChordDirectory {
         return chordnotes;
     }
 
-    public String banjo5stringChords(Context c, Preferences preferences, String chord) {
+    public String banjo5stringChords(int chordFormat, String chord) {
 
         String chordnotes;
-        String chordtoworkon = simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(chordFormat,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -3432,10 +3427,10 @@ public class ChordDirectory {
         return chordnotes;
     }
 
-    public String pianoChords(Context c, Preferences preferences, String chord) {
+    public String pianoChords(int chordFormat, String chord) {
 
         String chordnotes;
-        String chordtoworkon = simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(chordFormat,chord);
 
         // Notes C  C# D  D# E  F  F# G  G# A  A# B  C  C# D  D# E  F  F# G  G# A  A# B
         //       1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24

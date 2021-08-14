@@ -14,6 +14,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/displayChords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_chords"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/capoStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/capo_style"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"/>
+
+            <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
+                android:id="@+id/capoChords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:textL="@string/chords"
+                app:textC="@string/capo"
+                app:textR="@string/both"
+                app:label="@string/chord_capo_display"/>
+            <TableRow style="@style/DividerLine"/>
+
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -101,7 +128,6 @@
                 app:textLeft="Gbm"
                 app:textRight="F#m"
                 app:value="1" />
-
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -138,31 +164,31 @@
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_1" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_2" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_3" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_4" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/chordformat_5" />
 
-                    <RadioButton
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
-import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.List;
 
-public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter, SetItemTouchInterface {
+public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> implements FastScroller.SectionIndexer, SetItemTouchInterface {
 
     // All the helpers we need to access are in the MainActivity
     private final MainActivityInterface mainActivityInterface;
@@ -78,13 +78,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         return new SetItemViewHolder(mainActivityInterface,itemView,itemTouchHelper,this);
     }
 
-
-    @NonNull
-    @Override
-    public String getSectionName(int position) {
-        return setList.get(position).songitem;
-    }
-
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
         SetItemInfo thisItem = setList.get(fromPosition);
@@ -120,5 +113,10 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @Override
     public void onContentChanged(int position) {
         notifyItemChanged(position);
+    }
+
+    @Override
+    public CharSequence getSectionText(int position) {
+        return setList.get(position).songitem;
     }
 }

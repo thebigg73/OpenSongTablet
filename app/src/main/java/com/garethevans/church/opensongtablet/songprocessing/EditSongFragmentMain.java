@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.EditSongMainBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongMainFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -81,10 +80,8 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         folders = mainActivityInterface.getSQLiteHelper().getFolders(getContext(), mainActivityInterface);
         newFolder = "+ " + getString(R.string.newfolder);
         folders.add(newFolder);
-        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, folders);
+        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
         myView.folder.setAdapter(arrayAdapter);
-        ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
-        exposedDropDownSelection.keepSelectionPosition(myView.folder, folders);
         myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
         textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",getString(R.string.new_folder),getString(R.string.new_folder_name),"","",true);
     }

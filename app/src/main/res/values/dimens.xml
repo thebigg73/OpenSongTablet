@@ -30,4 +30,17 @@
     <dimen name="fastscroll_scrollbar_padding_start">8dp</dimen>
     <dimen name="fastscroll_scrollbar_padding_end">8dp</dimen>
 
+    <!-- For the chord diagrams -->
+    <dimen name="fingering_width">12dp</dimen>
+    <dimen name="fingering_padding">0dp</dimen>
+    <dimen name="string_width">2dp</dimen>
+    <dimen name="string_height">32dp</dimen>
+    <dimen name="string_padding">0dp</dimen>
+    <dimen name="fret_width">14dp</dimen>
+    <dimen name="fret_width_half">7dp</dimen>
+    <dimen name="fret_height">1dp</dimen>
+    <dimen name="string_marker">12sp</dimen>
+    <dimen name="fret_marker">14sp</dimen>
+    <dimen name="chord_padding">16dp</dimen>
+
 </resources>

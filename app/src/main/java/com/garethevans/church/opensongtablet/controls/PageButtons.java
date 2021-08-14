@@ -16,10 +16,12 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songsandsetsmenu.RandomSongBottomSheet;
+import com.garethevans.church.opensongtablet.tools.SoundLevelBottomSheet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -173,6 +175,7 @@ public class PageButtons {
         actions.add("toggle_autoscroll_pause");
         actions.add("midi");
         actions.add("bible");
+        actions.add("soundlevel");
         actions.add("exit");
     }
     private void prepareAvailableButtonText(Context c) {
@@ -206,6 +209,8 @@ public class PageButtons {
         text.add(c.getString(R.string.autoscroll_pause));
         text.add(c.getString(R.string.midi));
         text.add(c.getString(R.string.bible_verse));
+        // TODO string resource
+        text.add("Sound meter");
         text.add(c.getString(R.string.exit));
     }
     private void prepareShortActionText(Context c) {
@@ -239,6 +244,7 @@ public class PageButtons {
         shortText.add(c.getString(R.string.pause) + " / " + c.getString(R.string.resume));
         shortText.add(c.getString(R.string.settings));
         shortText.add(c.getString(R.string.search));
+        shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.exit) + " " + c.getString(R.string.app_name));
     }
     private void prepareLongActionText(Context c) {
@@ -267,6 +273,7 @@ public class PageButtons {
         longText.add("");
         longText.add(c.getString(R.string.settings));
         longText.add(c.getString(R.string.edit));
+        longText.add("");
         longText.add("");
         longText.add("");
         longText.add("");
@@ -305,6 +312,7 @@ public class PageButtons {
         drawableIds.add(R.drawable.ic_autoscroll_pause_white_36dp);
         drawableIds.add(R.drawable.ic_midi_white_36dp);
         drawableIds.add(R.drawable.ic_bible_white_36dp);
+        drawableIds.add(R.drawable.ic_volume_high_white_36dp);
         drawableIds.add(R.drawable.ic_exit_to_app_white_36dp);
     }
 
@@ -490,7 +498,8 @@ public class PageButtons {
                 actionInterface.navigateToFragment("opensongapp://settings/actions/links",0);
                 break;
             case "chordfingerings":
-                //TODO
+                ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
+                chordFingeringBottomSheet.show(actionInterface.getMyFragmentManager(),"ChordFingeringBottomSheet");
                 break;
             case "stickynotes":
                 Log.d(TAG,"Stickynotes");
@@ -572,6 +581,10 @@ public class PageButtons {
                 break;
             case "bible":
                 //TODO
+                break;
+            case "soundlevel":
+                SoundLevelBottomSheet soundLevelBottomSheet = new SoundLevelBottomSheet();
+                soundLevelBottomSheet.show(actionInterface.getMyFragmentManager(),"SoundLevelBottomSheet");
                 break;
             case "exit":
                 actionInterface.onBackPressed();

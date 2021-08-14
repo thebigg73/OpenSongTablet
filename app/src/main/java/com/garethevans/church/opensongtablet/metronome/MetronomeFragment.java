@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsMetronomeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
@@ -112,25 +111,19 @@ public class MetronomeFragment extends Fragment {
         myView.songTempo.setHint(tempoBpm);
 
         // Set the adapters
-        ExposedDropDownArrayAdapter soundAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, soundNames);
-        ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, signatureBeats);
-        ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, signatureDivisions);
-        ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, tempos);
+        ExposedDropDownArrayAdapter tickAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.tickSound, R.layout.view_exposed_dropdown_item, soundNames);
+        ExposedDropDownArrayAdapter tockAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.tockSound, R.layout.view_exposed_dropdown_item, soundNames);
+        ExposedDropDownArrayAdapter signatureBeatAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.signatureBeats, R.layout.view_exposed_dropdown_item, signatureBeats);
+        ExposedDropDownArrayAdapter signatureDivisionAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.signatureDivisions, R.layout.view_exposed_dropdown_item, signatureDivisions);
+        ExposedDropDownArrayAdapter tempoAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.songTempo, R.layout.view_exposed_dropdown_item, tempos);
 
         // Add them to the views
         myView.signatureBeats.setAdapter(signatureBeatAdapter);
         myView.signatureDivisions.setAdapter(signatureDivisionAdapter);
         myView.songTempo.setAdapter(tempoAdapter);
-        myView.tickSound.setAdapter(soundAdapter);
-        myView.tockSound.setAdapter(soundAdapter);
+        myView.tickSound.setAdapter(tickAdapter);
+        myView.tockSound.setAdapter(tockAdapter);
 
-        // Make sure the views scroll to the selected item
-        ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
-        exposedDropDownSelection.keepSelectionPosition(myView.signatureBeats, signatureBeats);
-        exposedDropDownSelection.keepSelectionPosition(myView.signatureDivisions, signatureDivisions);
-        exposedDropDownSelection.keepSelectionPosition(myView.songTempo, tempos);
-        exposedDropDownSelection.keepSelectionPosition(myView.tickSound,soundNames);
-        exposedDropDownSelection.keepSelectionPosition(myView.tockSound,soundNames);
     }
 
     private void addSoundItem(String filename, String description) {

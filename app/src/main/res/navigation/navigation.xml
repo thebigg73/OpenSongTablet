@@ -612,6 +612,7 @@
                     android:name="com.garethevans.church.opensongtablet.chords.ChordFormatFragment"
                     android:label="ChordFormatFragment"
                     tools:layout="@layout/settings_chords_format"/>
+
             </navigation>
         </navigation>
         <fragment

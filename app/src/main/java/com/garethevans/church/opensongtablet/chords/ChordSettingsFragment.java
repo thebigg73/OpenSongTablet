@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsChordsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -29,6 +30,8 @@ public class ChordSettingsFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsChordsBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.updateToolbar(getString(R.string.chords));
+
         // Set up listeners
         setupListeners();
 
@@ -36,9 +39,13 @@ public class ChordSettingsFragment extends DialogFragment {
     }
 
     private void setupListeners() {
-        //myView.chordsView.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.chordViewFragment));
+        myView.chordsView.setOnClickListener(v -> {
+            mainActivityInterface.navHome();
+            ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
+            chordFingeringBottomSheet.show(requireActivity().getSupportFragmentManager(),"ChordFingeringBottomSheet");
+        });
         //myView.chordsCustom.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.customChordsFragment));
-        //myView.chordsSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.chordSettingsFragment));
+        myView.chordsFormat.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.chordFormatFragment));
         myView.chordsTranspose.setOnClickListener(v -> {
             TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet();
             transposeBottomSheet.show(requireActivity().getSupportFragmentManager(),"TransposeBottomSheet");

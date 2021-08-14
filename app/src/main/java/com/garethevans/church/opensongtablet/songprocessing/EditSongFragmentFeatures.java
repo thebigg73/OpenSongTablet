@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.EditSongFeaturesBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -62,10 +61,8 @@ public class EditSongFragmentFeatures extends Fragment {
     private void setupValues() {
         // The key
         ExposedDropDownArrayAdapter keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
+                myView.key, R.layout.view_exposed_dropdown_item, getResources().getStringArray(R.array.key_choice));
         myView.key.setAdapter(keyArrayAdapter);
-        ExposedDropDownSelection exposedDropDownSelection = new ExposedDropDownSelection();
-        exposedDropDownSelection.keepSelectionPosition(myView.key, getResources().getStringArray(R.array.key_choice));
         myView.key.setText(mainActivityInterface.getTempSong().getKey());
 
         // The capo
@@ -75,8 +72,7 @@ public class EditSongFragmentFeatures extends Fragment {
             capos.add(x + "");
         }
         ExposedDropDownArrayAdapter capoArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                R.layout.view_exposed_dropdown_item, capos);
-        exposedDropDownSelection.keepSelectionPosition(myView.capo, capos);
+                myView.capo, R.layout.view_exposed_dropdown_item, capos);
         myView.capo.setAdapter(capoArrayAdapter);
         myView.capo.setText(mainActivityInterface.getTempSong().getCapo());
 
@@ -86,8 +82,7 @@ public class EditSongFragmentFeatures extends Fragment {
         padfiles.add(getString(R.string.custom));
         padfiles.add(getString(R.string.link_audio));
         ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                R.layout.view_exposed_dropdown_item, padfiles);
-        exposedDropDownSelection.keepSelectionPosition(myView.pad, padfiles);
+                myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
         myView.pad.setAdapter(padArrayAdapter);
         if (mainActivityInterface.getTempSong().getPadfile() == null ||
                 mainActivityInterface.getTempSong().getPadfile().isEmpty()) {
@@ -105,8 +100,7 @@ public class EditSongFragmentFeatures extends Fragment {
             tempos.add(x + "");
         }
         ExposedDropDownArrayAdapter tempoArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                R.layout.view_exposed_dropdown_item, tempos);
-        exposedDropDownSelection.keepSelectionPosition(myView.tempo, tempos);
+                myView.tempo, R.layout.view_exposed_dropdown_item, tempos);
         myView.tempo.setAdapter(tempoArrayAdapter);
         myView.tempo.setHint(getString(R.string.tempo) + " ("+getString(R.string.bpm)+")");
         myView.tempo.setText(mainActivityInterface.getTempSong().getTempo());
@@ -121,8 +115,7 @@ public class EditSongFragmentFeatures extends Fragment {
             }
         }
         ExposedDropDownArrayAdapter timesigArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                R.layout.view_exposed_dropdown_item, timesigs);
-        exposedDropDownSelection.keepSelectionPosition(myView.timesig, timesigs);
+                myView.timesig, R.layout.view_exposed_dropdown_item, timesigs);
         myView.timesig.setAdapter(timesigArrayAdapter);
         myView.timesig.setText(mainActivityInterface.getTempSong().getTimesig());
 
@@ -150,8 +143,7 @@ public class EditSongFragmentFeatures extends Fragment {
         linkOptions.add(getString(R.string.link_web));
         linkOptions.add(getString(R.string.link_file));
         ExposedDropDownArrayAdapter linkArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
-                R.layout.view_exposed_dropdown_item, linkOptions);
-        exposedDropDownSelection.keepSelectionPosition(myView.linkType, linkOptions);
+                myView.linkType, R.layout.view_exposed_dropdown_item, linkOptions);
         myView.linkType.setAdapter(linkArrayAdapter);
         myView.linkType.setText(getString(R.string.link_audio));
         setLink();

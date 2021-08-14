@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/string6"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:layout_width="@dimen/string_width"
+        android:layout_height="@dimen/string_height"
+        android:layout_gravity="center"
+        android:contentDescription="@string/on"
+        android:paddingStart="@dimen/string_padding"
+        android:paddingTop="0dp"
+        android:paddingEnd="@dimen/string_padding"
+        android:paddingBottom="0dp"
+        android:src="@drawable/line" />
+
+    <ImageView
+        android:layout_width="@dimen/fret_width_half"
+        android:layout_height="@dimen/fret_height"
+        android:layout_gravity="top|end"
+        android:contentDescription="@string/on"
+        android:paddingStart="@dimen/string_padding"
+        android:paddingEnd="0dp"
+        android:src="@drawable/line" />
+
+    <ImageView
+        android:layout_width="@dimen/fret_width_half"
+        android:layout_height="@dimen/fret_height"
+        android:layout_gravity="bottom|end"
+        android:contentDescription="@string/on"
+        android:paddingStart="@dimen/string_padding"
+        android:paddingEnd="0dp"
+        android:src="@drawable/line" />
+
+    <ImageView
+        android:id="@+id/stringOn"
+        android:layout_width="@dimen/fingering_width"
+        android:layout_height="@dimen/fingering_width"
+        android:layout_gravity="center"
+        android:contentDescription="@string/on"
+        android:padding="@dimen/fingering_padding"
+        android:src="@drawable/circle"
+        android:visibility="invisible" />
+</FrameLayout>

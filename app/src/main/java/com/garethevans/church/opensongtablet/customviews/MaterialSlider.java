@@ -18,7 +18,7 @@ public class MaterialSlider extends LinearLayout {
 
     private final Slider slider;
     private final TextView titleTextView, valueTextView;
-
+    private final float stepSize;
     public MaterialSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_slider, this);
@@ -39,7 +39,7 @@ public class MaterialSlider extends LinearLayout {
         CharSequence hint = a.getText(1);
         float valueFrom = a.getFloat(2, 0.0f);
         float valueTo = a.getFloat(3,10.0f);
-        float stepSize = a.getFloat(4,1.0f);
+        stepSize = a.getFloat(4,1.0f);
         float value = a.getFloat(5,0.0f);
         int track = a.getColor(6,0);
         float height = a.getDimensionPixelSize(7,0);
@@ -88,6 +88,12 @@ public class MaterialSlider extends LinearLayout {
     public float getValue() {
         return slider.getValue();
     }
+    public float getValueTo() {
+        return slider.getValueTo();
+    }
+    public float getValueFrom() {
+        return slider.getValueFrom();
+    }
     public Slider getSlider() {
         return slider;
     }
@@ -117,6 +123,11 @@ public class MaterialSlider extends LinearLayout {
         } else if (value < slider.getValueFrom()) {
             value = slider.getValueFrom();
         }
+        // Check it fits with any set step size
+        if (stepSize>1) {
+            // Round it
+            value = Math.round(value / stepSize) * stepSize;
+        }
         slider.setValue(value);
     }
     public void setHint(String hint) {
@@ -139,4 +150,5 @@ public class MaterialSlider extends LinearLayout {
     public void addOnChangeListener(Slider.OnChangeListener onChangeListener){
         slider.addOnChangeListener(onChangeListener);
     }
+
 }

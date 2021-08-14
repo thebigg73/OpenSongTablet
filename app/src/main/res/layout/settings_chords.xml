@@ -39,7 +39,7 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/chordsSettings"
+                android:id="@+id/chordsFormat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/pref_key_text"

@@ -26,7 +26,6 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
-import com.garethevans.church.opensongtablet.customviews.ExposedDropDownSelection;
 import com.garethevans.church.opensongtablet.databinding.SettingsImportOnlineBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -53,7 +52,6 @@ public class ImportOnlineFragment extends Fragment {
     private SongSelect songSelect;
     private UkuTabs ukuTabs;
     private HolyChords holyChords;
-    private ExposedDropDownSelection exposedDropDownSelection1, exposedDropDownSelection2;
     private WebView webView;
 
     @Override
@@ -87,8 +85,6 @@ public class ImportOnlineFragment extends Fragment {
         songSelect = new SongSelect();
         ukuTabs = new UkuTabs();
         holyChords = new HolyChords();
-        exposedDropDownSelection1 = new ExposedDropDownSelection();
-        exposedDropDownSelection2 = new ExposedDropDownSelection();
     }
 
     private void setupViews() {
@@ -100,7 +96,7 @@ public class ImportOnlineFragment extends Fragment {
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, sources);
         myView.onlineSource.setAdapter(exposedDropDownArrayAdapter);
         // Set the position in the list to the chosen value
-        exposedDropDownSelection1.keepSelectionPosition(myView.onlineSource, sources);
+        exposedDropDownArrayAdapter.keepSelectionPosition(myView.onlineSource, sources);
         if (mainActivityInterface.getCheckInternet().getSearchPhrase() != null) {
             myView.searchPhrase.setText(mainActivityInterface.getCheckInternet().getSearchPhrase());
         }
@@ -462,7 +458,7 @@ public class ImportOnlineFragment extends Fragment {
         myView.folderChoice.setText(mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)));
         // Set the position in the list to the chosen value
-        exposedDropDownSelection2.keepSelectionPosition(myView.folderChoice,availableFolders);
+        exposedDropDownArrayAdapter.keepSelectionPosition(myView.folderChoice,availableFolders);
         changeLayouts(false,false,true);
         myView.saveSong.setOnClickListener(v -> saveTheSong());
         showDownloadProgress(false);
