@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/whiteNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+
+    <ImageView
+        android:id="@+id/c0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/piano_note_white"
+        app:backgroundTint="@color/white"
+        android:contentDescription="@string/piano" />
+
+    <ImageView
+        android:id="@+id/d0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/piano_note_white"
+        app:backgroundTint="@color/white"
+        android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/e0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/f0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/g0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/a0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/b0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/c1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/d1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/e1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/f1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/g1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/a1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/b1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/blackNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/csharp0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_one"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/dsharp0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_half"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/fsharp0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_two"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/gsharp0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_half"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/asharp0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_half"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/csharp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_two"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/dsharp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_half"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/fsharp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_two"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/gsharp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_half"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/asharp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_half"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+    </LinearLayout>
+</RelativeLayout>

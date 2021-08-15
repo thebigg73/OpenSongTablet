@@ -39,8 +39,15 @@
     <dimen name="fret_width">14dp</dimen>
     <dimen name="fret_width_half">7dp</dimen>
     <dimen name="fret_height">1dp</dimen>
-    <dimen name="string_marker">12sp</dimen>
-    <dimen name="fret_marker">14sp</dimen>
+    <dimen name="string_marker">14sp</dimen>
+    <dimen name="fret_marker">16sp</dimen>
     <dimen name="chord_padding">16dp</dimen>
+    <dimen name="piano_white_width">16dp</dimen>
+    <dimen name="piano_white_height">64dp</dimen>
+    <dimen name="piano_black_width">12dp</dimen>
+    <dimen name="piano_black_height">38dp</dimen>
+    <dimen name="piano_black_space_one">10dp</dimen>
+    <dimen name="piano_black_space_half">4dp</dimen>
+    <dimen name="piano_black_space_two">19dp</dimen>
 
 </resources>

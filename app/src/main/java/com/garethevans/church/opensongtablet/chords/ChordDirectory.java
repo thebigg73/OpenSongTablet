@@ -3972,6 +3972,10 @@ public class ChordDirectory {
                 break;
         }
 
+        // Standard piano chords all have the annotation _p at the end
+        if (!chordnotes.contains("_p")) {
+            chordnotes = chordnotes + "_p_"+simplifyChords(chordFormat,chord);
+        }
         return chordnotes;
     }
 }

@@ -1103,27 +1103,7 @@ public class Transpose {
             key = key.replace(chordnaturalnumsb[z],naturalchords1b[z]);
         }
 
-        if (key.equals("G#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAb",true)) {
-            key = "Ab";
-        } else if (key.equals("G#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAbm",false)) {
-            key = "Abm";
-        } else if (key.equals("A#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBb",true)) {
-            key = "Bb";
-        } else if (key.equals("A#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBbm",true)) {
-            key = "Bbm";
-        } else if (key.equals("C#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDb",false)) {
-            key = "Db";
-        } else if (key.equals("C#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDbm",true)) {
-            key = "Dbm";
-        } else if (key.equals("D#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEb",true)) {
-            key = "Eb";
-        } else if (key.equals("D#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEbm",true)) {
-            key = "Ebm";
-        } else if (key.equals("F#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGb",false)) {
-            key = "Gb";
-        } else if (key.equals("F#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGbm",false)) {
-            key = "Gbm";
-        }
+        key = convertToPreferredChord(c,mainActivityInterface,key);
 
         return key;
     }
@@ -1526,7 +1506,7 @@ public class Transpose {
     }
 
     private String replaceChord(String line, String inChord, String outChord) {
-        // IV - Add markers indicating the need to add or remove spaces to adjust for adifference of size of the original and replacemnet chord
+        // IV - Add markers indicating the need to add or remove spaces to adjust for a difference of size of the original and replacemnet chord
         if (outChord.length() < inChord.length()) {
             outChord = outChord + "»»»»»»»»".substring(0,inChord.length() - outChord.length());
         }
@@ -1554,6 +1534,38 @@ public class Transpose {
         }
         return line;
     }
+
+    public String convertToPreferredChord(Context c, MainActivityInterface mainActivityInterface, String chord) {
+        // Changes Ab/G# to user's preference.  This sends out to another function which checks minor and major
+        chord = swapToPrefChords(c,mainActivityInterface,"Ab","G#", chord, false);
+        chord = swapToPrefChords(c,mainActivityInterface,"Bb","A#", chord, true);
+        chord = swapToPrefChords(c,mainActivityInterface,"Db","C#", chord, false);
+        chord = swapToPrefChords(c,mainActivityInterface,"Eb","D#", chord, true);
+        chord = swapToPrefChords(c,mainActivityInterface,"Gb","F#", chord, false);
+        return chord;
+    }
+    private String swapToPrefChords(Context c, MainActivityInterface mainActivityInterface,
+                                    String flatOption, String sharpOption, String chord,
+                                    boolean defaultFlatMinor) {
+
+        if (chord.startsWith(flatOption+"m") || chord.startsWith(sharpOption+"m")) {
+            // Check the minor chord first
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKey"+flatOption+"m",defaultFlatMinor)) {
+                chord = chord.replace(sharpOption+"m", flatOption+"m");
+            } else {
+                chord = chord.replace(flatOption+"m",sharpOption+"m");
+            }
+        } else if (chord.startsWith(flatOption) || chord.startsWith(sharpOption)) {
+            // Now check the major chord
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKey"+flatOption, true)) {
+                chord = chord.replace(sharpOption, flatOption);
+            } else {
+                chord = chord.replace(flatOption,sharpOption);
+            }
+        }
+        return chord;
+    }
+
 
 }
 

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -102,14 +103,27 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                nativeOrCapo();
                 instrumentTextToPref();
+                drawChords();
             }
         });
     }
 
     private void nativeOrCapo() {
-        if (!mainActivityInterface.getSong().getCapo().isEmpty()) {
+        if (!mainActivityInterface.getSong().getCapo().isEmpty() &&
+        !myView.instrument.getText().toString().equals(instruments.get(6))) {
+            // Only for stringed instruments!
             myView.capoChords.setVisibility(View.VISIBLE);
+            String capoText = getString(R.string.capo_chords) + " (" + getString(R.string.capo_fret) + " " +
+                    chordDisplayProcessing.getCapoPosition(requireContext(), mainActivityInterface) + ")";
+            myView.capoChords.setText(capoText);
+        } else if (!mainActivityInterface.getSong().getCapo().isEmpty() &&
+                myView.instrument.getText().toString().equals(instruments.get(6))) {
+            // Piano shows the transpose text instead
+            myView.capoChords.setVisibility(View.VISIBLE);
+            String capoText = getString(R.string.transpose) + " (+" + mainActivityInterface.getSong().getCapo() + ")";
+            myView.capoChords.setText(capoText);
         } else {
             myView.capoChords.setVisibility(View.GONE);
         }
@@ -183,17 +197,30 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         chordDisplayProcessing.setFingerings(chordDirectory, myView.instrument.getText().toString(), instruments, chordFormat);
 
         //  Now we build the chord images and show them
+        //  Piano chords get one chord per row, stringed chords get 3
+        if (myView.instrument.getText().toString().equals(instruments.get(6))) {
+            myView.chordsGridLayout.setColumnCount(1);
+        } else {
+            myView.chordsGridLayout.setColumnCount(3);
+        }
+
         for (int i=0; i<chordDisplayProcessing.getChordsInSong().size(); i++) {
-            myView.chordsGridLayout.addView(
-            chordDisplayProcessing.getChordDiagram(requireContext(), getLayoutInflater(),
-                    chordDisplayProcessing.getChordsInSong().get(i), chordDisplayProcessing.getFingerings().get(i)));
+            LinearLayout chordLayout;
+            if (myView.instrument.getText().toString().equals(instruments.get(6))) {
+                chordLayout = chordDisplayProcessing.getChordDiagramPiano(requireContext(), mainActivityInterface, getLayoutInflater(),
+                        chordDisplayProcessing.getChordsInSong().get(i), chordDisplayProcessing.getFingerings().get(i));
+            } else {
+                chordLayout = chordDisplayProcessing.getChordDiagram(requireContext(), mainActivityInterface, getLayoutInflater(),
+                        chordDisplayProcessing.getChordsInSong().get(i), chordDisplayProcessing.getFingerings().get(i));
+            }
+
+            if (chordLayout!=null) {
+                myView.chordsGridLayout.addView(chordLayout);
+            }
         }
     }
 
-
     // TODO
-    // Instrument change not working
-    // Make sure chord names are in preferred format (D#/Eb)
     // Hide diagrams that don't have fingerings (currently empty diagrams, horrible names)
     // Custom chords
 
