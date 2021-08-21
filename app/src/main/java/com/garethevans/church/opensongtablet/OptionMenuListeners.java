@@ -846,32 +846,26 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         songPadButton.setOnClickListener(v1 -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "page_pad";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+            FullscreenActivity.whattodo = "page_pad";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
         songAutoScrollButton.setOnClickListener(v12 -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "page_autoscroll";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+            FullscreenActivity.whattodo = "page_autoscroll";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
         songMetronomeButton.setOnClickListener(v13 -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "page_metronome";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+            FullscreenActivity.whattodo = "page_metronome";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
@@ -886,12 +880,10 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         songLinksButton.setOnClickListener(v15 -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "page_links";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+            FullscreenActivity.whattodo = "page_links";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
@@ -2068,12 +2060,10 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             }
         });
         autoScrollButton.setOnClickListener(v1 -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "page_autoscroll";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+            FullscreenActivity.whattodo = "page_autoscroll";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
         autoscrollActivatedSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -2151,12 +2141,10 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             }
         });
         padButton.setOnClickListener(v1 -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "page_pad";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+            FullscreenActivity.whattodo = "page_pad";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
         padStartButton.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(c,"padAutoStart",b));
@@ -2234,12 +2222,10 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         metronomeButton.setOnClickListener(v1 -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "page_metronome";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+            FullscreenActivity.whattodo = "page_metronome";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
         metronomeLengthButton.setOnClickListener(view -> {
