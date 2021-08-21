@@ -797,13 +797,8 @@ public class StageMode extends AppCompatActivity implements
 
         // Enable the song and author section to link to edit song
         songandauthor.setOnClickListener(v -> {
-            if (FullscreenActivity.isPDF) {
-                StaticVariables.myToastMessage = getString(R.string.pdf_functionnotavailable);
-                ShowToast.showToast(StageMode.this);
-            } else if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "songdetails";
-                openFragment();
-            }
+            FullscreenActivity.whattodo = "songdetails";
+            openFragment();
         });
         batteryholder.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "actionbarinfo";
@@ -2651,15 +2646,8 @@ public class StageMode extends AppCompatActivity implements
             case "abcnotation":
             case "abcnotation_editsong":
             case "showmidicommands":
-                if (s.equals("editsong") && !justSong(StageMode.this) && !FullscreenActivity.isPDF) {
-                    ShowToast.showToast(StageMode.this);
-                } else {
-                    if (FullscreenActivity.isPDF && s.equals("editsong")) {
-                        s = "extractPDF";
-                    }
-                    FullscreenActivity.whattodo = s;
-                    openFragment();
-                }
+                FullscreenActivity.whattodo = s;
+                openFragment();
                 break;
 
             case "showchords":
@@ -2755,15 +2743,8 @@ public class StageMode extends AppCompatActivity implements
             case "inc_autoscroll_speed":
             case "dec_autoscroll_speed":
             case "toggle_autoscroll_pause":
-                if (s.equals("editsong") && !justSong(StageMode.this) && !FullscreenActivity.isPDF) {
-                    ShowToast.showToast(StageMode.this);
-                } else {
-                    if (FullscreenActivity.isPDF && s.equals("editsong")) {
-                        s = "extractPDF";
-                    }
-                    FullscreenActivity.whattodo = s;
-                    openFragment();
-                }
+                FullscreenActivity.whattodo = s;
+                openFragment();
                 break;
 
             case "autoscale":
@@ -2839,13 +2820,8 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void doEdit() {
-        if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
-            openFragment();
-        } else if (FullscreenActivity.isSong){
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
-        }
+        FullscreenActivity.whattodo = "editsong";
+        openFragment();
     }
 
     @Override
@@ -3195,6 +3171,17 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void loadImage() {
+        // Set the ab title to include the song info if available
+        if (StaticVariables.mTitle.equals("")) {
+            StaticVariables.mTitle = StaticVariables.songfilename.replaceAll("\\.[^.]*$", "");
+        }
+        songtitle_ab.setText(StaticVariables.mTitle);
+        if (StaticVariables.mKey.isEmpty()) {
+            songkey_ab.setText("");
+        } else {
+            String s = " ("+StaticVariables.mKey+")";
+            songkey_ab.setText(s);
+        }
         // Process the image location into an URI
         Uri imageUri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
                 StaticVariables.whichSongFolder, StaticVariables.songfilename);
@@ -3262,12 +3249,12 @@ public class StageMode extends AppCompatActivity implements
         glideimage_ScrollView.setVisibility(View.VISIBLE);
         glideimage_HorizontalScrollView.setVisibility(View.VISIBLE);
 
-        // Set the ab title to include the page info if available
+        // Set the ab title to include the song info if available
         songtitle_ab.setText(StaticVariables.mTitle);
         if (StaticVariables.mKey.isEmpty()) {
             songkey_ab.setText("");
         } else {
-            String s = "("+StaticVariables.mKey+")";
+            String s = " ("+StaticVariables.mKey+")";
             songkey_ab.setText(s);
         }
         if (bmp != null) {
@@ -8051,16 +8038,9 @@ public class StageMode extends AppCompatActivity implements
 
     // Edit song
     private void gesture2() {
-        if (FullscreenActivity.whattodo!=null && FullscreenActivity.whattodo.equals("editsongpdf")) {
-            openFragment();
-        } else if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
-            openFragment();
-        } else if (justSong(StageMode.this)) {
-            // Edit the song
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
-        }
+        // Edit the song
+        FullscreenActivity.whattodo = "editsong";
+        openFragment();
     }
 
     // Add to set
@@ -8144,12 +8124,7 @@ public class StageMode extends AppCompatActivity implements
                             gesture1();  // Open/close the drawers
                             break;
                         case 2:
-                            if (FullscreenActivity.isSong) {
-                                gesture2();
-                            } else {
-                                FullscreenActivity.whattodo = "extractPDF";
-                                openFragment();
-                            }
+                            gesture2();  // Edit the song
                             break;
                         case 3:
                             gesture3();  // Add the song to the set

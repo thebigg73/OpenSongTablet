@@ -90,6 +90,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         TextView t_mHymnNumber = V.findViewById(R.id.t_mHymnNumber);
         TextView t_mCCLI = V.findViewById(R.id.t_mCCLI);
         TextView t_mNotes = V.findViewById(R.id.t_mNotes);
+        TextView t_mLyrics = V.findViewById(R.id.t_mLyrics);
         TextView v_mTitle = V.findViewById(R.id.v_mTitle);
         TextView v_mAuthor = V.findViewById(R.id.v_mAuthor);
         TextView v_mKey = V.findViewById(R.id.v_mKey);
@@ -102,7 +103,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
 
         String k = processSong.getSongKey();
         // Fix the key text
-        k = k.replace("(","");
+        k = k.replace(" (","");
         k = k.replace(")","");
 
         // Get the capo key if it exitst
@@ -124,7 +125,13 @@ public class PopUpSongDetailsFragment extends DialogFragment {
 
         v_mLyrics.setTypeface(StaticVariables.typefaceLyrics);
         v_mLyrics.setTextSize(8.0f);
-        v_mLyrics.setText(StaticVariables.mLyrics);
+
+        // IV - No Lyrics for PDF and Image songs
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            StaticVariables.mLyrics = "";
+        }
+
+        setContentInfo(t_mLyrics, v_mLyrics, StaticVariables.mLyrics);
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;

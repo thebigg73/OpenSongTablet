@@ -1412,15 +1412,19 @@ class Transpose {
         return line;
     }
 
+    void capoKeyTranspose(Context c, Preferences preferences) {
+        FullscreenActivity.capokey = keyToNumber(StaticVariables.mKey);
+        FullscreenActivity.capokey = transposeKey(FullscreenActivity.capokey, "-1", Integer.parseInt(StaticVariables.mCapo));
+        FullscreenActivity.capokey = numberToKey(c, preferences, FullscreenActivity.capokey);
+    }
+
     void capoTranspose(Context c, Preferences preferences) {
 
         int numtimes = Integer.parseInt(StaticVariables.mCapo);
 
         // Get the capokey if it hasn't been set
         if (StaticVariables.mKey!=null) {
-            FullscreenActivity.capokey = keyToNumber(StaticVariables.mKey);
-            FullscreenActivity.capokey = transposeKey(FullscreenActivity.capokey,"-1",numtimes);
-            FullscreenActivity.capokey = numberToKey(c, preferences, FullscreenActivity.capokey);
+            capoKeyTranspose(c, preferences);
             // Decide if flats should be used
             capousesflats = keyUsesFlats(c, preferences, FullscreenActivity.capokey);
         }

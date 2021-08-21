@@ -896,28 +896,18 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         songEditButton.setOnClickListener(view -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "editsong";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
-            } else {
-                StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                ShowToast.showToast(c);
+            FullscreenActivity.whattodo = "editsong";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
         songStickyButton.setOnClickListener(view -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "editnotes";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
-            } else {
-                StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                ShowToast.showToast(c);
+            FullscreenActivity.whattodo = "editnotes";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 

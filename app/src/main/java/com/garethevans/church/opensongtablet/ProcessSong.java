@@ -2011,6 +2011,11 @@ public class ProcessSong extends Activity {
                     s = "" + mcapo;
                 }
             }
+            // IV - Get the capokey here to support later getCapoNewKey call
+            if (StaticVariables.mKey!=null) {
+                Transpose transpose = new Transpose();
+                transpose.capoKeyTranspose(this, preferences);
+            }
         }
         return s;
     }
@@ -2668,10 +2673,9 @@ public class ProcessSong extends Activity {
     }
 
     Bitmap createPDFPage(Context c, Preferences preferences, StorageAccess storageAccess, int pagewidth, int pageheight, String scale) {
-        String tempsongtitle = StaticVariables.songfilename.replace(".pdf", "");
-        tempsongtitle = tempsongtitle.replace(".PDF", "");
-        StaticVariables.mTitle = tempsongtitle;
-        StaticVariables.mAuthor = "";
+        if (StaticVariables.mTitle.equals("")) {
+            StaticVariables.mTitle = StaticVariables.songfilename.replaceAll("\\.[^.]*$", "");
+        }
 
         // This only works for post Lollipop devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
