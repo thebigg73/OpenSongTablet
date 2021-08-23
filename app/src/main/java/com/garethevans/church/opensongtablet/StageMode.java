@@ -3024,18 +3024,25 @@ public class StageMode extends AppCompatActivity implements
 
                             }).start();
                             highlightNotes.setImageBitmap(canvasBitmap);
+                            canvasBitmap = null;
                             highlightNotes.setLayoutParams(rlp);
                             highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             if (!fromautoshow) {
                                 // If user manually wanted to show, otherwise song load animates it in
                                 highlightNotes.setVisibility(View.VISIBLE);
-                            } else {
+                            } else if (FullscreenActivity.isSong) {
                                 highlightNotes.setVisibility(View.VISIBLE);
                                 if (FullscreenActivity.whichDirection.equals("L2R")) {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
                                 } else {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
                                 }
+                            } else {
+                                // IV - Fade for PDF and Image songs
+                                Handler h = new Handler();
+                                h.postDelayed(() -> {
+                                    CustomAnimations.faderAnimation(highlightNotes, 300, true);
+                                }, 300);
                             }
                         }
 
@@ -6938,9 +6945,11 @@ public class StageMode extends AppCompatActivity implements
                             if (FullscreenActivity.whichDirection.equals("L2R")) {
                                 highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                             } else if (highlightNotes != null) {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                             }
                         }
+                    } else {
+                        // If there were highlight notes showing, remove them
+                        highlightNotes.setVisibility(View.GONE);
                     }
 
                     // Remove any capokey
