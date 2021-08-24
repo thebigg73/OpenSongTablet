@@ -2956,11 +2956,15 @@ public class StageMode extends AppCompatActivity implements
                 StaticVariables.thisSongScale = preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W");
             }
 
-            if (highlightNotes.getVisibility() == View.VISIBLE && !fromautoshow) {
+            // TODO - Fix scaling and positioning of highlightNotes when song is scaled
+            // IV - Added do not display if song is scaled
+            if ((highlightNotes.getVisibility() == View.VISIBLE && !fromautoshow) || highlightNotes.getScaleX() != 1.0f) {
                 // Hide it
                 FullscreenActivity.highlightOn = false;
                 highlightNotes.setVisibility(View.GONE);
             } else if (StaticVariables.thisSongScale.equals("Y")) {
+                // IV - Hide whilst configuring
+                highlightNotes.setVisibility(View.GONE);
                 String hname = processSong.getHighlighterName(StageMode.this);
                 Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Highlighter", "", hname);
                 if (storageAccess.uriExists(StageMode.this, uri)) {
