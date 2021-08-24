@@ -3038,7 +3038,7 @@ public class StageMode extends AppCompatActivity implements
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
                                 }
                             } else {
-                                // IV - Fade for PDF and Image songs
+                                // IV - Fade in for PDF and Image songs
                                 Handler h = new Handler();
                                 h.postDelayed(() -> {
                                     CustomAnimations.faderAnimation(highlightNotes, 300, true);
@@ -6945,6 +6945,7 @@ public class StageMode extends AppCompatActivity implements
                             if (FullscreenActivity.whichDirection.equals("L2R")) {
                                 highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                             } else if (highlightNotes != null) {
+                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                             }
                         }
                     } else {
@@ -7588,7 +7589,7 @@ public class StageMode extends AppCompatActivity implements
         if (goToItemRequired) {
             // Consider a song change warning
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
-                // IV - We warn only if we can sucessfully move
+                // IV - We warn only if we can successfully move
                 if (StaticVariables.setView) {
                     checkCanGoTo();
                     // If in a set and able to move
@@ -7663,7 +7664,7 @@ public class StageMode extends AppCompatActivity implements
         if (goToItemRequired) {
             // Consider a song change warning
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
-                // IV - We warn only if we can sucessfully move
+                // IV - We warn only if we can successfully move
                 if (StaticVariables.setView) {
                     checkCanGoTo();
                     // If in a set and able to move
@@ -7824,10 +7825,12 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
-            highlightNotes.setPivotX(glideimage.getLeft());
-            highlightNotes.setPivotY(glideimage.getTop());
-            highlightNotes.setScaleX(1.0f);
-            highlightNotes.setScaleY(1.0f);
+            // IV - HighlightNotes are not (yet) correctly scaling/positioning on scale so remove!
+            highlightNotes.setVisibility(View.GONE);
+            //highlightNotes.setPivotX(glideimage.getLeft());
+            //highlightNotes.setPivotY(glideimage.getTop());
+            //highlightNotes.setScaleX(1.0f);
+            //highlightNotes.setScaleY(1.0f);
 
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                 glideimage.getLayoutParams().width = songwidth;
