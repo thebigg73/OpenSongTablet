@@ -2939,6 +2939,8 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void displayHighlight(boolean fromautoshow) {
         highlightNotes.setVisibility(View.GONE);
+        // IV - A fade out may have occurred so set Alpha to 1
+        highlightNotes.setAlpha(1.0f);
         if (!StaticVariables.whichMode.equals("Performance")) {
             FullscreenActivity.highlightOn = false;
             if (!fromautoshow) {
@@ -2956,8 +2958,8 @@ public class StageMode extends AppCompatActivity implements
 
             // TODO - Fix scaling and positioning of highlightNotes when song is scaled
             // IV - Added restriction of do not display if song is scaled
-            if (!fromautoshow || highlightNotes.getScaleX() != 1.0f) {
-                FullscreenActivity.highlightOn = false;
+            if ((!FullscreenActivity.highlightOn && !fromautoshow) || highlightNotes.getScaleX() != 1.0f) {
+                // IV - Restrictions have nothing further to do as notes are already hidden
             } else if (StaticVariables.thisSongScale.equals("Y")) {
                 String hname = processSong.getHighlighterName(StageMode.this);
                 Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Highlighter", "", hname);
@@ -3020,11 +3022,9 @@ public class StageMode extends AppCompatActivity implements
                         if (!fromautoshow) {
                             // If user manually wanted to show, otherwise song load animates it in
                             // IV - A fade out may have occurred so set Alpha to 1
-                            highlightNotes.setAlpha(1.0f);
                             highlightNotes.setVisibility(View.VISIBLE);
                         } else if (FullscreenActivity.isSong) {
                             // IV - A fade out may have occurred so set Alpha to 1
-                            highlightNotes.setAlpha(1.0f);
                             highlightNotes.setVisibility(View.VISIBLE);
                             if (FullscreenActivity.whichDirection.equals("L2R")) {
                                 highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
@@ -6964,6 +6964,8 @@ public class StageMode extends AppCompatActivity implements
                             glideimage_ScrollView.setVisibility(View.GONE);
                             songscrollview.setVisibility(View.GONE);
                             highlightNotes.setVisibility(View.GONE);
+                            highlightNotes.setScaleX(1.0f);
+                            highlightNotes.setScaleY(1.0f);
                             FullscreenActivity.highlightOn = false;
                             glideimage_ScrollView.scrollTo(0, 0);
                             songscrollview.scrollTo(0, 0);
@@ -7818,6 +7820,7 @@ public class StageMode extends AppCompatActivity implements
         public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
             // IV - HighlightNotes are not (yet) correctly scaling/positioning on scale so remove!
             highlightNotes.setVisibility(View.GONE);
+            FullscreenActivity.highlightOn = false;
             //highlightNotes.setPivotX(glideimage.getLeft());
             //highlightNotes.setPivotY(glideimage.getTop());
             //highlightNotes.setScaleX(1.0f);
