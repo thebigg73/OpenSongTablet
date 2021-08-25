@@ -3034,8 +3034,8 @@ public class StageMode extends AppCompatActivity implements
                         } else {
                             // IV - Fade in for PDF and Image songs
                             highlightNotes.setAlpha(0.0f);
+                            // IV - Might have been scrolled
                             highlightNotes.setX(0.0f);
-                            highlightNotes.setY(0.0f);
                             CustomAnimations.faderAnimation(highlightNotes, 300, true);
                         }
                     } catch (OutOfMemoryError | Exception e) {
