@@ -51,7 +51,7 @@ class MenuHandlers {
                 break;
 
             case setadd:
-                if ((FullscreenActivity.isSong || FullscreenActivity.isPDF) && !StaticVariables.whichSongFolder.startsWith("..")) {
+                if (!StaticVariables.whichSongFolder.startsWith("..")) {
                     if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
                             StaticVariables.whichSongFolder.equals("MAIN") ||
                             StaticVariables.whichSongFolder.equals("")) {
