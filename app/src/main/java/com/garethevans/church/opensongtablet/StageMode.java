@@ -2949,112 +2949,115 @@ public class StageMode extends AppCompatActivity implements
                 ShowToast.showToast(StageMode.this);
             }
         } else {
-            // If we are trying to show notes, but they are already open, close them
-            // This is only if a manual click on the hightlight button happened
-            // Are the notes visible?
             if (StaticVariables.thisSongScale==null) {
                 StaticVariables.thisSongScale = preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W");
             }
 
             // TODO - Fix scaling and positioning of highlightNotes when song is scaled
-            // IV - Added restriction of do not display if song is scaled
-            if ((!FullscreenActivity.highlightOn && !fromautoshow) || highlightNotes.getScaleX() != 1.0f) {
-                // IV - Restrictions have nothing further to do as notes are already hidden
+            if ((!FullscreenActivity.highlightOn && !fromautoshow) ) {
+                // IV - If a manual click of highlight button to hide the highlight then hide - do nothing as already done
             } else if (StaticVariables.thisSongScale.equals("Y")) {
-                String hname = processSong.getHighlighterName(StageMode.this);
-                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Highlighter", "", hname);
-                if (storageAccess.uriExists(StageMode.this, uri)) {
-                    // Load the image in if it exists and then show it
-                    try {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                        InputStream inputStream = storageAccess.getInputStream(StageMode.this, uri);
-                        highlightNotes.setImageBitmap(BitmapFactory.decodeStream(inputStream, null, options).copy(Bitmap.Config.ARGB_8888, true));
-                        final int firstguesswidth;
-                        final int firstguessheight;
-                        if (FullscreenActivity.isSong) {
-                            firstguesswidth = songscrollview.getMeasuredWidth();
-                            firstguessheight = songscrollview.getMeasuredHeight();
-                        } else {
-                            firstguesswidth = glideimage_ScrollView.getMeasuredWidth();
-                            firstguessheight = glideimage_ScrollView.getMeasuredHeight();
-                        }
-                        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(firstguesswidth, firstguessheight);
-                        if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
-                            rlp.addRule(RelativeLayout.BELOW, 0);
-                        } else {
-                            rlp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
-                        }
-                        highlightNotes.setLayoutParams(rlp);
-                        highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-                        // Set a runnable to check the height/width after a couple of seconds to redraw the image position
-                        // Only if it has changed though
-                        new Thread(() -> {
-                            try {
-                                Thread.sleep(1000);
-                                runOnUiThread(() -> {
-                                    int secondguessheight;
-                                    int secondguesswidth;
-                                    if (FullscreenActivity.isSong) {
-                                        secondguesswidth = songscrollview.getMeasuredWidth();
-                                        secondguessheight = songscrollview.getMeasuredHeight();
-                                    } else {
-                                        secondguesswidth = glideimage_ScrollView.getMeasuredWidth();
-                                        secondguessheight = glideimage_ScrollView.getMeasuredHeight();
-                                    }
-                                    if (secondguessheight != firstguessheight || secondguesswidth != firstguesswidth) {
-                                        // Set the parameters again
-                                        RelativeLayout.LayoutParams rlp2 = new RelativeLayout.LayoutParams(secondguesswidth, secondguessheight);
-                                        if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
-                                            rlp2.addRule(RelativeLayout.BELOW, 0);
-                                        } else {
-                                            rlp2.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
-                                        }
-                                        highlightNotes.setLayoutParams(rlp2);
-                                        highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    }
-                                });
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }).start();
-                        if (!fromautoshow) {
-                            // If user manually wanted to show, otherwise song load animates it in
-                            // IV - A fade out may have occurred so set Alpha to 1
-                            highlightNotes.setVisibility(View.VISIBLE);
-                        } else if (FullscreenActivity.isSong) {
-                            // IV - A fade out may have occurred so set Alpha to 1
-                            highlightNotes.setVisibility(View.VISIBLE);
-                            if (FullscreenActivity.whichDirection.equals("L2R")) {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
-                            } else {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
-                            }
-                        } else {
-                            // IV - Fade in for PDF and Image songs
-                            highlightNotes.setAlpha(0.0f);
-                            // IV - Might have been scrolled
-                            highlightNotes.setX(0.0f);
-                            CustomAnimations.faderAnimation(highlightNotes, 300, true);
-                        }
-                    } catch (OutOfMemoryError | Exception e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "Oops - error, ran out of memory for an image!");
-                    }
-                    FullscreenActivity.highlightOn = true;
+                // IV - If the song has been scaled then reload to display without scale
+                if (highlightNotes.getScaleX() != 1.0f) {
+                    // Flag for a reload
+                    StaticVariables.reloadOfSong = true;
+                    loadSong();
                 } else {
-                    if (!fromautoshow) {
-                        // If the user has clicked the icon and no drawing exists, create one
-                        takeScreenShot();
-                        if (FullscreenActivity.bmScreen != null) {
-                            FullscreenActivity.whattodo = "drawnotes";
-                            openFragment();
-                        } else {
-                            Log.d(TAG, "screenshot is null");
+                    String hname = processSong.getHighlighterName(StageMode.this);
+                    Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Highlighter", "", hname);
+                    if (storageAccess.uriExists(StageMode.this, uri)) {
+                        // Load the image in if it exists and then show it
+                        try {
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                            InputStream inputStream = storageAccess.getInputStream(StageMode.this, uri);
+                            highlightNotes.setImageBitmap(BitmapFactory.decodeStream(inputStream, null, options).copy(Bitmap.Config.ARGB_8888, true));
+                            final int firstguesswidth;
+                            final int firstguessheight;
+                            if (FullscreenActivity.isSong) {
+                                firstguesswidth = songscrollview.getMeasuredWidth();
+                                firstguessheight = songscrollview.getMeasuredHeight();
+                            } else {
+                                firstguesswidth = glideimage_ScrollView.getMeasuredWidth();
+                                firstguessheight = glideimage_ScrollView.getMeasuredHeight();
+                            }
+                            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(firstguesswidth, firstguessheight);
+                            if (preferences.getMyPreferenceBoolean(StageMode.this, "hideActionBar", false)) {
+                                rlp.addRule(RelativeLayout.BELOW, 0);
+                            } else {
+                                rlp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
+                            }
+                            highlightNotes.setLayoutParams(rlp);
+                            highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                            // Set a runnable to check the height/width after a couple of seconds to redraw the image position
+                            // Only if it has changed though
+                            new Thread(() -> {
+                                try {
+                                    Thread.sleep(1000);
+                                    runOnUiThread(() -> {
+                                        int secondguessheight;
+                                        int secondguesswidth;
+                                        if (FullscreenActivity.isSong) {
+                                            secondguesswidth = songscrollview.getMeasuredWidth();
+                                            secondguessheight = songscrollview.getMeasuredHeight();
+                                        } else {
+                                            secondguesswidth = glideimage_ScrollView.getMeasuredWidth();
+                                            secondguessheight = glideimage_ScrollView.getMeasuredHeight();
+                                        }
+                                        if (secondguessheight != firstguessheight || secondguesswidth != firstguesswidth) {
+                                            // Set the parameters again
+                                            RelativeLayout.LayoutParams rlp2 = new RelativeLayout.LayoutParams(secondguesswidth, secondguessheight);
+                                            if (preferences.getMyPreferenceBoolean(StageMode.this, "hideActionBar", false)) {
+                                                rlp2.addRule(RelativeLayout.BELOW, 0);
+                                            } else {
+                                                rlp2.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
+                                            }
+                                            highlightNotes.setLayoutParams(rlp2);
+                                            highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                        }
+                                    });
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }).start();
+                            if (!fromautoshow) {
+                                // If user manually wanted to show, otherwise song load animates it in
+                                // IV - A fade out may have occurred so set Alpha to 1
+                                highlightNotes.setVisibility(View.VISIBLE);
+                            } else if (FullscreenActivity.isSong) {
+                                // IV - A fade out may have occurred so set Alpha to 1
+                                highlightNotes.setVisibility(View.VISIBLE);
+                                if (FullscreenActivity.whichDirection.equals("L2R")) {
+                                    highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
+                                } else {
+                                    highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
+                                }
+                            } else {
+                                // IV - Fade in for PDF and Image songs
+                                highlightNotes.setAlpha(0.0f);
+                                // IV - Might have been scrolled
+                                highlightNotes.setX(0.0f);
+                                CustomAnimations.faderAnimation(highlightNotes, 300, true);
+                            }
+                        } catch (OutOfMemoryError | Exception e) {
+                            e.printStackTrace();
+                            Log.d(TAG, "Oops - error, ran out of memory for an image!");
                         }
+                        FullscreenActivity.highlightOn = true;
+                    } else {
+                        if (!fromautoshow) {
+                            // If the user has clicked the icon and no drawing exists, create one
+                            takeScreenShot();
+                            if (FullscreenActivity.bmScreen != null) {
+                                FullscreenActivity.whattodo = "drawnotes";
+                                openFragment();
+                            } else {
+                                Log.d(TAG, "screenshot is null");
+                            }
+                        }
+                        FullscreenActivity.highlightOn = false;
                     }
-                    FullscreenActivity.highlightOn = false;
                 }
             } else {
                 if (!fromautoshow) {
