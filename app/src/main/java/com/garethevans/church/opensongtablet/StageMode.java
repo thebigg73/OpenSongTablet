@@ -8243,56 +8243,51 @@ public class StageMode extends AppCompatActivity implements
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                float velocityY) {
+            if (FullscreenActivity.tempswipeSet.equals("disable")  || !preferences.getMyPreferenceBoolean(StageMode.this, "swipeForSongs", true)) {
+                return false; // Currently disabled swiping to let screen finish drawing or not required
+            }
+
+            // We accept a fling if it is a certain velocity (swipeMinimumVelocity)
+            // and essentially in the Y or X axis for the direction of swipe (swipeMaxDistanceYError)
+            // and exceeds a certain distance (swipeMinimumDistance)
+            // and does not start on the relevant mypage edges
+
             try {
-                // Check movement along the Y-axis. If it exceeds
-                // SWIPE_MAX_OFF_PATH, then dismiss the swipe.
-                int screenwidth = mypage.getWidth();
-                int leftmargin = 40;
-                int rightmargin = screenwidth - 40;
-                if (Math.abs(e1.getY() - e2.getY()) > preferences.getMyPreferenceInt(StageMode.this,"swipeMaxDistanceYError",200)) {
-                    return false;
-                }
+                // Check for an acceptable Y-axis fling
+                if (Math.abs(velocityX) > preferences.getMyPreferenceInt(StageMode.this, "swipeMinimumVelocity", 600) &&
+                        Math.abs(e1.getY() - e2.getY()) < preferences.getMyPreferenceInt(StageMode.this,"swipeMaxDistanceYError",200) &&
+                        Math.abs(e1.getX() - e2.getX()) > preferences.getMyPreferenceInt(StageMode.this, "swipeMinimumDistance", 250) &&
+                        e1.getX() > 40 &&
+                        e1.getX() < (mypage.getWidth() - 40)) {
 
-                if (FullscreenActivity.tempswipeSet.equals("disable")) {
-                    return false; // Currently disabled swiping to let screen finish drawing.
-                }
+                    // IV - Flag this as a swipe
+                    StaticVariables.setMoveDirection = "swipe";
 
-                // Swipe from right to left.
-                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-                if (e1.getX() - e2.getX() > preferences.getMyPreferenceInt(StageMode.this,"swipeMinimumDistance",250)
-                        && e1.getX() < rightmargin
-                        && Math.abs(velocityX) > preferences.getMyPreferenceInt(StageMode.this,"swipeMinimumVelocity",600)
-                        && preferences.getMyPreferenceBoolean(StageMode.this,"swipeForSongs",true)) {
-
-                    // Trying to move to the next item
-                    try {
-                        // IV - Flag this as a swipe
-                        StaticVariables.setMoveDirection = "swipe";
+                    if (e1.getX() > e2.getX()) {
                         setForwardButton.performClick();
-                        //goToNextItem();
-                    } catch (Exception e) {
-                        // No song after
+                    } else {
+                        setBackButton.performClick();
                     }
                     return true;
                 }
 
-                // Swipe from left to right.
-                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-                if (e2.getX() - e1.getX() > preferences.getMyPreferenceInt(StageMode.this,"swipeMinimumDistance",250)
-                        && e1.getX() > leftmargin
-                        && Math.abs(velocityX) > preferences.getMyPreferenceInt(StageMode.this,"swipeMinimumVelocity",600)
-                        && preferences.getMyPreferenceBoolean(StageMode.this,"swipeForSongs",true)) {
+                 // For PDF page scroll - check for an acceptable Y-axis fling
+                if (FullscreenActivity.isPDF &&
+                        Math.abs(velocityY) > preferences.getMyPreferenceInt(StageMode.this, "swipeMinimumVelocity", 600) &&
+                        Math.abs(e1.getX() - e2.getX()) < preferences.getMyPreferenceInt(StageMode.this, "swipeMaxDistanceYError", 200) &&
+                        Math.abs(e1.getY() - e2.getY()) > preferences.getMyPreferenceInt(StageMode.this, "swipeMinimumDistance", 250) &&
+                        e1.getY() > 40 &&
+                        e1.getY() < (mypage.getHeight() - 40)) {
 
-                    // Go to previous item
-                    try {
-                        // IV - Flag this as a swipe
-                        StaticVariables.setMoveDirection = "swipe";
-                        setBackButton.performClick();
-                        //goToPreviousItem();
-                    } catch (Exception e) {
-                        // No song before
+                    // IV - Only act if not able to scroll within a page
+                    if (e1.getY() > e2.getY()) {
+                        if (!checkCanScrollDown()) {
+                            scrollDownButton.performClick();
+                        }
+                    } else {
+                        if (!checkCanScrollUp()) {
+                            scrollUpButton.performClick();
+                        }
                     }
                     return true;
                 }
