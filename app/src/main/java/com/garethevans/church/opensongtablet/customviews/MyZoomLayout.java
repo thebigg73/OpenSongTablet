@@ -32,4 +32,5 @@ public class MyZoomLayout extends NestedScrollView {
                 setMeasuredDimension(widthSize, heightSize);
             }
     }
+
 }

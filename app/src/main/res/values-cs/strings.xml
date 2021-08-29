@@ -24,7 +24,7 @@
     <string name="autoshow_highlight">"Automatické poznámky zvýrazňovače"</string>
     <string name="autostart_autoscroll">Autostart autoscroll</string>
     <string name="autostartmetronome">"Autostart metronom"</string>
-    <string name="autostartpad">"Autostart pad"</string>
+    <string name="pad_cross_fade">"Autostart pad"</string>
     <string name="average">"Průměr"</string>
     <string name="back">"Zpět"</string>
     <string name="backing_track">"Vyberte si doprovodnou stopu"</string>
@@ -318,7 +318,7 @@
     <string name="start_stop_pad">"Start / zastavit hudba na pozadí"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Vyberte klíč této písně"</string>
-    <string name="pad_error">"Klíčem této písně nebyl nastaven"</string>
+    <string name="pad_key_error">"Klíčem této písně nebyl nastaven"</string>
     <string name="pad_onoroff">"Použijte podložku s touto písní"</string>
     <string name="page_background">"Page pozadí"</string>
     <string name="pagebutton_custom_group">"Skupiny uživatelských tlačítek"</string>

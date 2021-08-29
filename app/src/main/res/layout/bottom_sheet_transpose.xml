@@ -113,7 +113,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/doTransposeButton"
-                style="@style/TextBackgroundButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"

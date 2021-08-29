@@ -14,4 +14,5 @@ public interface ActionInterface {
     FragmentManager getMyFragmentManager();
     CurrentSet getCurrentSet();
     Song getSong();
+    boolean playPad();
 }

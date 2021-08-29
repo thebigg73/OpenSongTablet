@@ -139,19 +139,30 @@ public class FontSetupFragment extends Fragment {
         myView.stickyLorem.setBackgroundColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
         myView.stickyLorem.setTextSize(22.0f);
         myView.stickyLorem.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
+
+        // Clicking on the previews will update them
+        myView.songPreview.setOnClickListener(v -> updatePreviews());
+        myView.presoPreview.setOnClickListener(v -> updatePreviews());
+        myView.stickyLorem.setOnClickListener(v -> updatePreviews());
     }
 
     private void updatePreviews() {
-        // Set up the song preview
-        myView.lyricPreview.setTypeface(mainActivityInterface.getMyFonts().getLyricFont());
-        myView.chordPreview.setTypeface(mainActivityInterface.getMyFonts().getChordFont());
+        Runnable runnable = () -> requireActivity().runOnUiThread(() -> {
+            // Set up the song preview
+            myView.lyricPreview.setTypeface(mainActivityInterface.getMyFonts().getLyricFont());
+            myView.chordPreview.setTypeface(mainActivityInterface.getMyFonts().getChordFont());
 
-        // Set the presentation preview
-        myView.presoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoFont());
-        myView.presoInfoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+            // Set the presentation preview
+            myView.presoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoFont());
+            myView.presoInfoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
 
-        // Set the sticky preview
-        myView.stickyLorem.setTypeface(mainActivityInterface.getMyFonts().getStickyFont());
+            // Set the sticky preview
+            myView.stickyLorem.setTypeface(mainActivityInterface.getMyFonts().getStickyFont());
+        });
+        // Run this now and again in about 500ms and 3 seconds (to check loading of the font has happened)
+        new Thread(runnable).start();
+        new Handler().postDelayed(runnable,500);
+        new Handler().postDelayed(runnable,3000);
     }
 
     private void openWebPreview(String which) {
@@ -184,13 +195,13 @@ public class FontSetupFragment extends Fragment {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+        @Override
+        public void afterTextChanged(Editable s) {
             // The preview method in setTypeFace deals with saving
             mainActivityInterface.getMyFonts().changeFont(getContext(),mainActivityInterface,which,s.toString(),new Handler());
             updatePreviews();
         }
-
-        @Override
-        public void afterTextChanged(Editable s) { }
     }
 }

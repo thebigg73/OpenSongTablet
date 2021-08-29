@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/info"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="false"
@@ -12,7 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_capo_white_36dp" />
 
     <TextView
@@ -20,14 +24,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_rotate_right_white_36dp" />
 
     <TextView
         android:id="@+id/padPlayback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_amplifier_white_36dp" />
 
 </LinearLayout>

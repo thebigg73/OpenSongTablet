@@ -15,14 +15,14 @@
             android:layout_marginBottom="100dp"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/songMenuCheckboxes"
                 style="@style/PrefSwitch"
                 android:text="@string/song_menu_checkboxes" />
 
             <TableRow style="@style/DividerLine" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/songAlphabeticalShow"
                 style="@style/PrefSwitch"
                 android:text="@string/alphabetical" />
@@ -33,7 +33,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/size"
                 android:text="@string/size"
-                android:value="6.0"
                 android:valueFrom="6.0"
                 android:valueTo="24.0" />
 

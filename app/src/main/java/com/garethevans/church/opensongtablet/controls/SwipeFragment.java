@@ -59,13 +59,13 @@ public class SwipeFragment extends Fragment {
     private void setupViews() {
         // The checkbox to enable/disable the settings
         myView.swipeActive.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "swipeForSongs", true));
+        showOrHide(myView.swipeActive.isChecked());
+
         myView.swipeActive.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                myView.swipeOptionsLayout.setVisibility(View.VISIBLE);
                 simulateSwipe();
-            } else {
-                myView.swipeOptionsLayout.setVisibility(View.GONE);
             }
+            showOrHide(isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(), "swipeForSongs", isChecked);
         });
 
@@ -83,11 +83,16 @@ public class SwipeFragment extends Fragment {
         setSlider(myView.swipeSpeed, "swipeTime", mainActivityInterface.getSwipes().getTimeMs(), mainActivityInterface.getSwipes().getMinTime(), mainActivityInterface.getSwipes().getMaxTime(), "s", true);
     }
 
+    private void showOrHide(boolean show) {
+        if (show) {
+            myView.swipeOptionsLayout.setVisibility(View.VISIBLE);
+            myView.drawingArea.setVisibility(View.VISIBLE);
+        } else {
+            myView.drawingArea.setVisibility(View.GONE);
+            myView.swipeOptionsLayout.setVisibility(View.GONE);
+        }
+    }
     private void setSlider(MaterialSlider slider, String pref, int myval, int min, int max, String unit, boolean createListener) {
-        // How far up should we be?
-        // position 0 -> min
-        // position 9 -> max
-        // divisions = max-min / 9
         slider.setValueFrom(min);
         slider.setValueTo(max);
         slider.setStepSize(1.0f);
@@ -159,81 +164,7 @@ public class SwipeFragment extends Fragment {
             });
         }
     }
-    /*private void setSeekBar(SeekBar seekBar, String pref, int myval, int min, int max, boolean createListener) {
-        // The seekBars have 10 positions (0-9)
-        // How far up should we be?
-        // position 0 -> min
-        // position 9 -> max
-        // divisions = max-min / 9
-        float division = getProgressDivision(min, max);
-        int prog = getProgressFromValue(myval, min, division);
 
-        // Only create a new listener if we need to
-        if (createListener) {
-            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (!fromUser) {
-                        updatePreference(pref, (int) (progress * division) + min);
-                        simulateSwipe();
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    updatePreference(pref, (int) (seekBar.getProgress() * division) + min);
-                    simulateSwipe();
-                }
-            });
-        }
-        seekBar.setProgress(prog);
-    }*/
-
-    /*private float getProgressDivision(int min, int max) {
-        // Seekbar is a max size of 10, so 9 jumps.
-        // Get the difference of max-min and divide by 9
-        return (float) ((max - min) / 9.0f);
-    }*/
-
-    /*private int getProgressFromValue(int myval, int min, float division) {
-        // Because the seekbar position=0 will be worth a minimum value, remove this
-        // Since we know what each position is worth the previous + division,
-        // We can find out where our value lies in this range
-        int progress = 0;
-        for (int x=0; x<10; x++) {
-            // Get the range of this position
-            float thisMin = (int)(min+(x*division));
-            float thisMax = (int)(min+((x+1)*division));
-            if (x==0) {
-                thisMin = 0;
-            }
-            if (myval>=thisMin && (myval<thisMax || x==9)) {
-                progress = x;
-            }
-        }
-        return progress;
-    }
-*/
-    /*private void updatePreference(String pref, int val) {
-        // We've changed a preference.
-        switch (pref) {
-            case "swipeWidth":
-                mainActivityInterface.getSwipes().fixWidth(requireContext(), mainActivityInterface, val);
-                break;
-
-            case "swipeHeight":
-                mainActivityInterface.getSwipes().fixHeight(requireContext(), mainActivityInterface, val);
-                break;
-
-            case "swipeTime":
-                mainActivityInterface.getSwipes().fixTime(requireContext(), mainActivityInterface, val);
-                break;
-        }
-    }*/
 
     // Get the values back from the drawNotes vies via MainActivity
     public void getSwipeValues(int returnedWidth, int returnedHeight, int returnedTime) {

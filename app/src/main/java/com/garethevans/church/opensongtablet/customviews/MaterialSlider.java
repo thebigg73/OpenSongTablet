@@ -65,7 +65,7 @@ public class MaterialSlider extends LinearLayout {
         slider.setValueFrom(valueFrom);
         slider.setValueTo(valueTo);
         slider.setStepSize(stepSize);
-        slider.setValue(value);
+        setValue(value);
 
         if (track!=0) {
             slider.setTrackTintList(ColorStateList.valueOf(track));
@@ -120,7 +120,8 @@ public class MaterialSlider extends LinearLayout {
         // Check it is within the bounds!
         if (value > slider.getValueTo()) {
             value = slider.getValueTo();
-        } else if (value < slider.getValueFrom()) {
+        }
+        if (value < slider.getValueFrom()) {
             value = slider.getValueFrom();
         }
         // Check it fits with any set step size
@@ -128,7 +129,11 @@ public class MaterialSlider extends LinearLayout {
             // Round it
             value = Math.round(value / stepSize) * stepSize;
         }
-        slider.setValue(value);
+        try {
+            slider.setValue(value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void setHint(String hint) {
         if (hint!=null && !hint.isEmpty()) {

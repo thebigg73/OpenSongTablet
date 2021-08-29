@@ -203,6 +203,7 @@ public class MetronomeFragment extends Fragment {
         myView.tockVolume.addOnChangeListener(new MySliderChangeListener("metronomeTockVol"));
         myView.maxBars.addOnSliderTouchListener(new MySliderTouchListener("metronomeLength"));
         myView.maxBars.addOnChangeListener(new MySliderChangeListener("metronomeLength"));
+
         myView.startStopButton.setOnClickListener(button -> {
             // Change the button based on what the metronome wasn't doing as it will be in a mo!
             setStartStopIcon(!mainActivityInterface.getMetronome().getIsRunning());

@@ -24,7 +24,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/lyricFont"
@@ -49,7 +50,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/chordFont"
@@ -105,7 +107,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/presoFont"
@@ -130,7 +133,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
 
                     <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                         android:id="@+id/presoInfoFont"

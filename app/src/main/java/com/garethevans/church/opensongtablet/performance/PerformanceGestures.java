@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.performance;
 // The gestures used in the app
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.util.Log;
 
 import androidx.core.view.GravityCompat;
@@ -14,35 +13,23 @@ import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-import java.util.ArrayList;
-
 public class PerformanceGestures {
 
     private final String TAG = "PerformanceGestures";
     private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
     private final DrawerLayout drawerLayout;
-    private final MediaPlayer mPlayer1;
-    private final MediaPlayer mPlayer2;
-    private int defmetronomecolor;
 
     PerformanceGestures(Context c, MainActivityInterface mainActivityInterface,
-                        DrawerLayout drawerLayout, MediaPlayer mPlayer1, MediaPlayer mPlayer2,
-                        int defmetronomecolor) {
+                        DrawerLayout drawerLayout) {
         this.mainActivityInterface = mainActivityInterface;
         this.drawerLayout = drawerLayout;
-        this.mPlayer1 = mPlayer1;
-        this.mPlayer2 = mPlayer2;
         actionInterface = (ActionInterface) c;
     }
 
     // Open/close the drawers
     void gesture1() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mainActivityInterface.closeDrawer(true);
-        } else {
-            mainActivityInterface.closeDrawer(false);
-        }
+        mainActivityInterface.closeDrawer(drawerLayout.isDrawerOpen(GravityCompat.START));
         mainActivityInterface.getAutoscrollActions().setWasScrolling(false);
         try {
             //appActionBar.removeCallBacks();
@@ -101,44 +88,14 @@ public class PerformanceGestures {
     }
 
     // Stop or start pads
-    public void gesture6(Context c, MainActivityInterface mainActivityInterface,
-                         Song song, boolean pad1Fading, boolean pad2Fading) {
-        ArrayList<Boolean> padsPlaying = new ArrayList<>();
-        boolean pad1Playing = mainActivityInterface.getPadFunctions().getPadStatus(mPlayer1);
-        boolean pad2Playing = mainActivityInterface.getPadFunctions().getPadStatus(mPlayer2);
-        // IV - If playing pads then fade to stop
-        if ((pad1Playing && !pad1Fading)  || (pad2Playing && !pad2Fading)) {
-            mainActivityInterface.getDoVibrate().vibrate(c, 50);
-            mainActivityInterface.fadeoutPad();
-        } else {
-            if (mainActivityInterface.getPadFunctions().isPadValid(c,mainActivityInterface)) {
-                mainActivityInterface.getDoVibrate().vibrate(c, 50);
-                mainActivityInterface.playPad();
-            } else {
-                // We inform the user - 'Not set' which can be valid
-                // IV - gesture6 is now used in page_pad - a page_pad call may result in a loop!
-                mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad) + " - " +
-                        c.getString(R.string.not_set));
-            }
-        }
+    public void gesture6(MainActivityInterface mainActivityInterface) {
+        mainActivityInterface.playPad();
     }
 
     // Start or stop the metronome
-    public void gesture7(Context c, Song song) {
+    public void gesture7() {
         Log.d(TAG,"gesture7()");
         actionInterface.metronomeToggle();
-        /*boolean metronomeok = mainActivityInterface.getMetronome().isMetronomeValid();
-        if (metronomeok || mainActivityInterface.getMetronome().getClickedOnMetronomeStart()) {
-            // IV - clickedOnMetronomeStart is set elsewhere (Metronome class)
-            mainActivityInterface.getMetronome().startstopMetronome(c,song,
-                    mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "metronomeShowVisual", false),
-                    defmetronomecolor, mainActivityInterface.getPreferences().getMyPreferenceString(c, "metronomePan", "C"),
-                    mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "metronomeVol", 0.5f),
-                    mainActivityInterface.getPreferences().getMyPreferenceInt(c, "metronomeLength", 0));
-        } else {
-            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.metronome) + " - " +
-                    c.getString(R.string.not_set));
-        }*/
     }
 
 

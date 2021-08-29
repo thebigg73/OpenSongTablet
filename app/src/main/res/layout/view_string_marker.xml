@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView android:id="@+id/stringMarker"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
+    android:gravity="center"
     android:textSize="@dimen/string_marker"
     tools:text="x"
     xmlns:tools="http://schemas.android.com/tools"

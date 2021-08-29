@@ -94,6 +94,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.renameFolder.setVisibility(View.GONE);
             myView.deleteSubdirectory.setVisibility(View.GONE);
             myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage", R.id.setStorageLocationFragment));
+            myView.exportSongList.setVisibility(View.GONE);
         } else if (songs) {
             String s = "OpenSong/Songs";
             myView.dialogHeading.setText(s);
@@ -103,6 +104,13 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.deleteSubdirectory.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
             myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB", 0));
+            myView.exportSongList.setVisibility(View.VISIBLE);
+            myView.exportSongList.setOnClickListener(v -> {
+                ExportSongListBottomSheet exportSongListBottomSheet = new ExportSongListBottomSheet();
+                exportSongListBottomSheet.show(requireActivity().getSupportFragmentManager(),"ExportSongListBottomSheet");
+                dismiss();
+            });
+
         } else {
             String s = "OpenSong/Songs/" + subdir;
             myView.dialogHeading.setText(s);
@@ -112,6 +120,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents",0));
             myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder",0));
             myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem", 0));
+            myView.exportSongList.setVisibility(View.GONE);
         }
     }
 

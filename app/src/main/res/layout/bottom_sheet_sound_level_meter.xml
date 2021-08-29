@@ -180,7 +180,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
-                    style="@style/TextBackgroundButton"
                     android:text="@string/reset" />
 
                     <com.garethevans.church.opensongtablet.customviews.MaterialSlider

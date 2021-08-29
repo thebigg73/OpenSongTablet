@@ -34,7 +34,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/showUpdates"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -58,7 +57,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/playServicesInfo"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -83,7 +81,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/backupNow_Button"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"

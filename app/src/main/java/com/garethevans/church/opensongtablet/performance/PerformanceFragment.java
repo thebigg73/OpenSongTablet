@@ -295,6 +295,13 @@ public class PerformanceFragment extends Fragment {
         });
         myView.songView.startAnimation(animSlideIn);
         myView.songSheetTitle.startAnimation(animSlideIn);
+
+        // Set the previous/next if we want to
+        mainActivityInterface.getDisplayPrevNext().setPrevNext();
+
+        // Start the pad (if the pads are activated and the pad is valid)
+        mainActivityInterface.getPad().autoStartPad(requireContext());
+
     }
     private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().

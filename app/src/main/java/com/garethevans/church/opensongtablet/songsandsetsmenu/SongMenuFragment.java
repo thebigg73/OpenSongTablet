@@ -417,6 +417,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
     }
 
+    public int getPositionInSongMenu(Song song) {
+        return songListAdapter.getPositionOfSong(song);
+    }
+
     public ArrayList<Song> getSongsFound() {
         return songsFound;
     }

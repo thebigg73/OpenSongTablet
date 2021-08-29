@@ -1,8 +1,7 @@
 package com.garethevans.church.opensongtablet.metronome;
 
-// TODO NOT IMPLEMENTED YET
 public class TimeTools {
-    String timeFormatFixer(int secstime) {
+    public String timeFormatFixer(int secstime) {
         // IV - Fixed to prevent returning 0:0-1 for -1
         // IV - Using 20 mins as the limit (possibly the original intention)
         if (secstime > 1200 || secstime<0) {

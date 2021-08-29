@@ -44,6 +44,8 @@
         <!-- Override widgets throughout the app -->
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
         <item name="sliderStyle">@style/Slider</item>
+        <item name="switchStyle">@style/Switch</item>
+        <item name="materialButtonStyle">@style/TextBackgroundButton</item>
 
         <!-- New MaterialComponents attributes. -->
         <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -60,7 +62,6 @@
         <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
     </style>
-
 
     <!-- Override styles for custom views -->
     <!-- Exposed Drop Down (actually an AutoCompleteTextView inside a TextInputLayout) -->
@@ -90,6 +91,18 @@
         <!-- The text cursor -->
         <!-- Style the text cursor and highlight colours -->
         <item name="materialThemeOverlay">@style/TextInputOverlay</item>
+    </style>
+
+    <!-- The material switch -->
+    <style name="Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/SwitchOverlay</item>
+        <item name="switchMinWidth">32dp</item>
+    </style>
+    <style name="SwitchOverlay" parent="">
+        <item name="colorSurface">@color/colorSecondary</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorOnSurface">@color/colorAltSecondary</item>
+
     </style>
 
 
@@ -303,12 +316,6 @@
         <item name="iconTint">@color/white</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:padding">16dp</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
-    <style name="TextOnlyButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/colorSecondary</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:padding">8dp</item>
         <item name="android:layout_gravity">center</item>
     </style>
     <style name="TextBackgroundButton" parent="Widget.MaterialComponents.Button.OutlinedButton">

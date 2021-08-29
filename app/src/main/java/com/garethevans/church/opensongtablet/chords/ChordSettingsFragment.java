@@ -44,7 +44,7 @@ public class ChordSettingsFragment extends DialogFragment {
             ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
             chordFingeringBottomSheet.show(requireActivity().getSupportFragmentManager(),"ChordFingeringBottomSheet");
         });
-        //myView.chordsCustom.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.customChordsFragment));
+        myView.chordsCustom.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.customChordsFragment));
         myView.chordsFormat.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.chordFormatFragment));
         myView.chordsTranspose.setOnClickListener(v -> {
             TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet();

@@ -26,7 +26,7 @@
             android:id="@+id/testPane"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"/>
+            android:visibility="invisible"/>
 
     <!-- The main content inside a zoom layout -->
     <com.garethevans.church.opensongtablet.customviews.MyZoomLayout
@@ -114,6 +114,15 @@
                         android:clipToPadding="false"
                         android:contentDescription="@string/image"
                         android:visibility="visible" />
+
+                    <!-- This is the song info for capo, pads, metronome, etc -->
+                    <include
+                        android:id="@+id/onScreenInfo"
+                        layout="@layout/view_on_screen_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"/>
 
                 </RelativeLayout>
 

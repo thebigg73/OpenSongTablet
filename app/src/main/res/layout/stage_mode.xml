@@ -147,14 +147,6 @@
                 android:padding="0dp"
                 android:visibility="gone" />
 
-            <include
-                android:id="@+id/onScreenInfo"
-                layout="@layout/song_on_screen_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/mytoolbar"
-                android:layout_alignParentEnd="true" />
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/scrollUpButton"
                 android:layout_width="wrap_content"

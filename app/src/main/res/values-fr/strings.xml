@@ -24,7 +24,7 @@
     <string name="autoshow_highlight">"Autoshow points surligneur"</string>
     <string name="autostart_autoscroll">Demarrage automatique du défilement</string>
     <string name="autostartmetronome">"Métronome Autostart"</string>
-    <string name="autostartpad">"Bloc de démarrage automatique"</string>
+    <string name="pad_cross_fade">"Bloc de démarrage automatique"</string>
     <string name="average">"Moyen"</string>
     <string name="back">"Precedent"</string>
     <string name="backing_track">"Choisissez la musique"</string>
@@ -318,7 +318,7 @@
     <string name="start_stop_pad">"Commencer / arrêter la musique de fond"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"S\'il vous plaît sélectionnez la tonalité de cette chanson"</string>
-    <string name="pad_error">"La tonalité de cette chanson n\'a pas été réglée"</string>
+    <string name="pad_key_error">"La tonalité de cette chanson n\'a pas été réglée"</string>
     <string name="pad_onoroff">"Utiliser une musique de fond avec cette chanson"</string>
     <string name="page_background">"Fond de page"</string>
     <string name="pagebutton_custom_group">"Boutons personnalisés du groupe"</string>

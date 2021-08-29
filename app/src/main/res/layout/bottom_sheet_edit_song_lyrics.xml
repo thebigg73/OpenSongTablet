@@ -83,7 +83,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/textSizeDown"
-                style="@style/TextBackgroundButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -93,7 +92,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/textSizeUp"
-                style="@style/TextBackgroundButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -121,7 +119,6 @@
             android:paddingBottom="8dp">
 
             <com.google.android.material.button.MaterialButton
-                style="@style/TextBackgroundButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -130,7 +127,6 @@
                 android:text="@string/minus_1" />
 
             <com.google.android.material.button.MaterialButton
-                style="@style/TextBackgroundButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

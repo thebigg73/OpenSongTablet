@@ -5,7 +5,6 @@ package com.garethevans.church.opensongtablet.controls;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
@@ -13,12 +12,14 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songsandsetsmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.tools.SoundLevelBottomSheet;
@@ -38,6 +39,7 @@ public class PageButtons {
     private ArrayList<Integer> drawableIds;
     private int pageButtonColor;
     private float pageButtonAlpha;
+    private int pageButtonIconColor;
 
     // My buttons in the main activity
     private FloatingActionButton actionButton;
@@ -64,24 +66,37 @@ public class PageButtons {
         setPreferences(c,preferences);
     }
 
-    public void setMainFABS(FloatingActionButton actionButton, FloatingActionButton custom1,
+    public void setMainFABS(MainActivityInterface mainActivityInterface,
+                            FloatingActionButton actionButton, FloatingActionButton custom1,
                        FloatingActionButton custom2, FloatingActionButton custom3,
                        FloatingActionButton custom4, FloatingActionButton custom5,
-                       FloatingActionButton custom6, LinearLayout pageButtonsLayout,
-                            int pageButtonColor) {
+                       FloatingActionButton custom6, LinearLayout pageButtonsLayout) {
         this.actionButton = actionButton;
         fabs = new ArrayList<>();
+        updateColors(mainActivityInterface);
+        custom1.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        custom2.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        custom3.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        custom4.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        custom5.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        custom6.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        Drawable drawable1 = custom1.getDrawable();
+        DrawableCompat.setTint(drawable1, pageButtonIconColor);
+        custom1.setImageDrawable(drawable1);
         fabs.add(custom1);
         fabs.add(custom2);
         fabs.add(custom3);
         fabs.add(custom4);
         fabs.add(custom5);
         fabs.add(custom6);
-        // The page button colour will include alpha.  Strip this out
-        getAlphaAndColorFromInt(pageButtonColor);
-
-        this.pageButtonsLayout = pageButtonsLayout;
         pageButtonsLayout.setAlpha(pageButtonAlpha);
+        this.pageButtonsLayout = pageButtonsLayout;
+    }
+
+    public void updateColors(MainActivityInterface mainActivityInterface) {
+        pageButtonColor = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
+        pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
+        pageButtonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
     }
 
     public FloatingActionButton getFAB(int x) {
@@ -99,6 +114,8 @@ public class PageButtons {
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
+        Log.d(TAG,"pageButtonAlpha="+pageButtonAlpha);
+        actionButton.setAlpha(pageButtonAlpha);
         for (int x=0; x<6; x++) {
             if (pageButtonVisibility.get(x)) {
                 getFAB(x).setVisibility(View.VISIBLE);
@@ -367,27 +384,20 @@ public class PageButtons {
         }
     }
 
-    private void getAlphaAndColorFromInt(int color) {
-        // The colour will include alpha.  Strip this out
-        int alpha = Math.round(Color.alpha(color));
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        pageButtonColor = Color.argb(255, red, green, blue);
-        pageButtonAlpha = alpha / 255.0f;
-    }
     // This will redesign the button for the page
-    public void setPageButton(Context c, FloatingActionButton fab, int color, int buttonNum, boolean editing) {
+    public void setPageButton(Context c, FloatingActionButton fab, int buttonNum, boolean editing) {
         // The alpha is set on the linear layout, not the individual buttons
-        // This bit changes the colour and the icon
-
-        // Separate the color and the alpha
-        getAlphaAndColorFromInt(color);
         pageButtonsLayout.setAlpha(pageButtonAlpha);
         fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
+        Drawable drawable = fab.getDrawable();
+        DrawableCompat.setTint(drawable, pageButtonIconColor);
+        fab.setImageDrawable(drawable);
 
         if (buttonNum>=0 && buttonNum<=pageButtonNum) {
-            fab.setImageDrawable(pageButtonDrawable.get(buttonNum));
+            Drawable buttonDrawable = pageButtonDrawable.get(buttonNum);
+            buttonDrawable.mutate();
+            DrawableCompat.setTint(buttonDrawable, pageButtonIconColor);
+            fab.setImageDrawable(buttonDrawable);
             fab.setTag(pageButtonAction.get(buttonNum));
             if (pageButtonVisibility.get(buttonNum)) {
                 fab.setVisibility(View.VISIBLE);
@@ -437,9 +447,6 @@ public class PageButtons {
     public ArrayList<String> getPageButtonAvailableText() {
         return text;
     }
-    public float getAlpha() {
-        return pageButtonAlpha;
-    }
 
     public void setPageButtonAction(int button, int pos) {
         pageButtonAction.set(button,actions.get(pos));
@@ -479,9 +486,9 @@ public class PageButtons {
             case "pad":
                 //TODO
                 if (isLongPress) {
-
+                    // TODO open pad bottom sheet
                 } else {
-
+                    actionInterface.playPad();
                 }
                 break;
             case "metronome":

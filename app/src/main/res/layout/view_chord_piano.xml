@@ -125,6 +125,30 @@
             app:backgroundTint="@color/white"
             android:contentDescription="@string/piano"/>
 
+        <ImageView
+            android:id="@+id/c2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/d2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
+        <ImageView
+            android:id="@+id/e2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_white"
+            app:backgroundTint="@color/white"
+            android:contentDescription="@string/piano"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -218,6 +242,24 @@
 
         <ImageView
             android:id="@+id/asharp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_half"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/csharp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/piano_note_black"
+            android:layout_marginStart="@dimen/piano_black_space_two"
+            android:layout_marginTop="1dp"
+            android:contentDescription="@string/piano" />
+
+        <ImageView
+            android:id="@+id/dsharp2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/piano_note_black"

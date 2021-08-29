@@ -257,7 +257,11 @@ public class ChooseColorFragment extends Fragment {
 
         // If we changed the page button color...
         if (which.equals("pageButtonsColor")) {
-            mainActivityInterface.updatePageButtonLayout();
+            mainActivityInterface.getMyThemeColors().setPageButtonsColor(newColorInt);
+            mainActivityInterface.getMyThemeColors().splitPageButtonsColorAndAlpha(mainActivityInterface);
+        } else if (which.equals("extraInfoTextColor")) {
+            mainActivityInterface.getMyThemeColors().setExtraInfoTextColor(newColorInt);
+            mainActivityInterface.getMyThemeColors().splitPageButtonsColorAndAlpha(mainActivityInterface);
         }
 
         // Navigate back

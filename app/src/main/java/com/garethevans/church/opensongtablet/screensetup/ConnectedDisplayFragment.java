@@ -47,7 +47,6 @@ public class ConnectedDisplayFragment extends Fragment {
         return myView.getRoot();
     }
 
-
     private void updateViews() {
         String img1 = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "backgroundImage1", "ost_bg.png");

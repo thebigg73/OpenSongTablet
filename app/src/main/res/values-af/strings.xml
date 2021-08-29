@@ -24,7 +24,7 @@
     <string name="autoshow_highlight">"Outo-skerm-aantekeninge"</string>
     <string name="autostart_autoscroll">Autostart autoscroll</string>
     <string name="autostartmetronome">"Autostart metronoom"</string>
-    <string name="autostartpad">"Autostart pad"</string>
+    <string name="pad_cross_fade">"Autostart pad"</string>
     <string name="average">"Gemiddeld"</string>
     <string name="back">"Terug"</string>
     <string name="backing_track">"Kies backing track"</string>
@@ -318,7 +318,7 @@
     <string name="start_stop_pad">"Begin / stop agtergrond musiek"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Kies die sleutel van hierdie lied"</string>
-    <string name="pad_error">"Die sleutel van hierdie lied is nog nie vasgestel"</string>
+    <string name="pad_key_error">"Die sleutel van hierdie lied is nog nie vasgestel"</string>
     <string name="pad_onoroff">"Gebruik 'n pad met hierdie lied"</string>
     <string name="page_background">"Page agtergrond"</string>
     <string name="pagebutton_custom_group">"Groep persoonlike knoppies"</string>

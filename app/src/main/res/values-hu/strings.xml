@@ -25,7 +25,7 @@
     <string name="autoshow_highlight">"Autoshow kiemelő jegyzetek"</string>
     <string name="autostart_autoscroll">Autostart autoscroll</string>
     <string name="autostartmetronome">"Autostart metronóm"</string>
-    <string name="autostartpad">"Autostart pad"</string>
+    <string name="pad_cross_fade">"Autostart pad"</string>
     <string name="average">"Átlagos"</string>
     <string name="back">"Vissza"</string>
     <string name="backing_track">"Válasszon háttér pályán"</string>
@@ -319,7 +319,7 @@
     <string name="start_stop_pad">"Kezdeni / megállni pad"</string>
     <string name="pad_auto">"Kocsi"</string>
     <string name="pad_choose_key">"Kérjük, válassza ki a kulcsot, ezt a dalt"</string>
-    <string name="pad_error">"A kulcs ennek a dalnak nincs beállítva"</string>
+    <string name="pad_key_error">"A kulcs ennek a dalnak nincs beállítva"</string>
     <string name="pad_onoroff">"Használja a pad ezzel a dallal"</string>
     <string name="page_background">"Oldal háttér"</string>
     <string name="pagebutton_custom_group">"Csoport egyedi gombok"</string>

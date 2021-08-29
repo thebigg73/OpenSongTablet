@@ -25,7 +25,7 @@
     <string name="autoshow_highlight">"Автопоказ заметок маркером"</string>
     <string name="autostart_autoscroll">Автозапуск автопрокрутки</string>
     <string name="autostartmetronome">"Автозапуск метронома"</string>
-    <string name="autostartpad">"Автозапуск подложки"</string>
+    <string name="pad_cross_fade">"Автозапуск подложки"</string>
     <string name="average">"В среднем"</string>
     <string name="back">"Назад"</string>
     <string name="backing_track">"Выберите бэк-трек"</string>
@@ -319,7 +319,7 @@
     <string name="start_stop_pad">"Старт / Стоп подложки"</string>
     <string name="pad_auto">"Авто"</string>
     <string name="pad_choose_key">"Пожалуйста, выберите тональность этой песни"</string>
-    <string name="pad_error">"Ошибка  песни не было установлено"</string>
+    <string name="pad_key_error">"Ошибка  песни не было установлено"</string>
     <string name="pad_onoroff">"Используйте подложку с этой песней"</string>
     <string name="page_background">"Фон"</string>
     <string name="pagebutton_custom_group">"Групповые пользовательские кнопки"</string>

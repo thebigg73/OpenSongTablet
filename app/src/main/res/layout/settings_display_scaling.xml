@@ -20,13 +20,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/autoscale" />
             <!--Autoscroll on/off-->
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/useAutoscale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="@string/autoscale" />
+                android:text="@string/autoscale"/>
 
             <!--Manual font size-->
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/scaleWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                     android:layout_marginBottom="16dp"
                     android:text="@string/scale_width" />
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/scaleColumns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/override_scale_explanation" />
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/overrideFull"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                     android:layout_marginBottom="16dp"
                     android:text="@string/override_fullautoscale" />
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/overrideWidth_Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

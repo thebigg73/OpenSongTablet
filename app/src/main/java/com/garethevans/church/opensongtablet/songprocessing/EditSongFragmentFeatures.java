@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,10 @@ import java.util.ArrayList;
 
 public class EditSongFragmentFeatures extends Fragment {
 
-    EditSongFeaturesBinding myView;
-    MainActivityInterface mainActivityInterface;
+    private EditSongFeaturesBinding myView;
+    private MainActivityInterface mainActivityInterface;
     private String whichLink = "audio";
-
+    private final String TAG = "EditSongFeatures";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -79,8 +80,8 @@ public class EditSongFragmentFeatures extends Fragment {
         // The pad file
         ArrayList<String> padfiles = new ArrayList<>();
         padfiles.add(getString(R.string.pad_auto));
-        padfiles.add(getString(R.string.custom));
         padfiles.add(getString(R.string.link_audio));
+        padfiles.add(getString(R.string.off));
         ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
                 myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
         myView.pad.setAdapter(padArrayAdapter);
@@ -296,8 +297,9 @@ public class EditSongFragmentFeatures extends Fragment {
     }
 
     private String shortText(String niceText) {
-        if (niceText.equals(getString(R.string.custom))) {
-            return "custom";
+        Log.d(TAG,"niceText="+niceText);
+        if (niceText.equals(getString(R.string.off))) {
+            return "off";
         } else if (niceText.equals(getString(R.string.link))) {
             return "link";
         } else if (niceText.equals(getString(R.string.pad_auto))) {

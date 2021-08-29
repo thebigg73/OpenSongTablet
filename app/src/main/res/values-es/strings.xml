@@ -25,7 +25,7 @@
     <string name="autoshow_highlight">"Notas del resaltador de autoshow"</string>
     <string name="autostart_autoscroll">Autostart autoscroll</string>
     <string name="autostartmetronome">"Metrónomo de inicio automático"</string>
-    <string name="autostartpad">"Pad de inicio automático"</string>
+    <string name="pad_cross_fade">"Pad de inicio automático"</string>
     <string name="average">"Promedio"</string>
     <string name="back">"Atrás"</string>
     <string name="backing_track">"Elige pista de acompañamiento"</string>
@@ -319,7 +319,7 @@
     <string name="start_stop_pad">"Comencar / detener música de fondo"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Por favor seleccione la clave de esta canción"</string>
-    <string name="pad_error">"La clave de esta canción no se ha establecido"</string>
+    <string name="pad_key_error">"La clave de esta canción no se ha establecido"</string>
     <string name="pad_onoroff">"Use una almohadilla con esta canción"</string>
     <string name="page_background">"Fondo Página"</string>
     <string name="pagebutton_custom_group">"Grupo de botones personalizados"</string>

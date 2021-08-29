@@ -1,11 +1,15 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ThemeColors {
+
+    private final String TAG = "ThemeColors";
 
     // This object holds the user theme colours
     private String themeName;
@@ -28,6 +32,8 @@ public class ThemeColors {
     private int presoShadowColor;
     private int metronomeColor;
     private int pageButtonsColor;
+    private float pageButtonsSplitAlpha;
+    private int pageButtonsSplitColor;
     private int stickyTextColor;
     private int stickyBackgroundColor;
     private int extraInfoBgColor;
@@ -161,6 +167,12 @@ public class ThemeColors {
     public int getPageButtonsColor() {
         return pageButtonsColor;
     }
+    public float getPageButtonsSplitAlpha() {
+        return pageButtonsSplitAlpha;
+    }
+    public int getPageButtonsSplitColor() {
+        return pageButtonsSplitColor;
+    }
     public int getMetronomeColor() {
         return metronomeColor;
     }
@@ -200,6 +212,7 @@ public class ThemeColors {
                 setThemeCustom2(c, mainActivityInterface);
                 break;
         }
+        splitPageButtonsColorAndAlpha(mainActivityInterface);
     }
 
     private void setThemeDark(Context c, MainActivityInterface mainActivityInterface) {
@@ -449,5 +462,22 @@ public class ThemeColors {
                 break;
         }
         return color;
+    }
+
+    public void splitPageButtonsColorAndAlpha(MainActivityInterface mainActivityInterface) {
+        // The colour will include alpha.  Strip this out
+        int alpha = Math.round(Color.alpha(pageButtonsColor));
+        Log.d(TAG,"alpha="+alpha);
+        int red = Color.red(pageButtonsColor);
+        int green = Color.green(pageButtonsColor);
+        int blue = Color.blue(pageButtonsColor);
+        Log.d(TAG,"R:"+red+" G:"+green+" B:"+blue);
+        pageButtonsSplitColor = Color.argb(255, red, green, blue);
+        pageButtonsSplitAlpha = alpha / 255.0f;
+        Log.d(TAG,"pageButtonsAlpha="+pageButtonsSplitAlpha);
+        // Update page buttons and extra info
+        mainActivityInterface.getPageButtons().updateColors(mainActivityInterface);
+        mainActivityInterface.getPad().updateColor();
+        mainActivityInterface.getDisplayPrevNext().updateColors();
     }
 }

@@ -28,7 +28,8 @@
         android:id="@+id/saveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save" />
+        android:text="@string/save"
+        android:layout_marginTop="8dp" />
 
     <TableRow style="@style/DividerLine" />
 
@@ -48,7 +49,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/settings" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/autoShowSticky"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +73,6 @@
                 android:valueTo="100"
                 android:value="0"/>
 
-            <TableRow style="@style/DividerLine" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

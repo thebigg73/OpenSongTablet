@@ -25,7 +25,7 @@
     <string name="autoshow_highlight">"Autoshow Highlighter Notizen"</string>
     <string name="autostart_autoscroll">Automatisch starten ein / aus</string>
     <string name="autostartmetronome">"Autostart Metronom"</string>
-    <string name="autostartpad">"Autostart Pad"</string>
+    <string name="pad_cross_fade">"Autostart Pad"</string>
     <string name="average">"Durchschnittlich"</string>
     <string name="back">"Zurück"</string>
     <string name="backing_track">"Hintergrundmusik wählen"</string>
@@ -319,7 +319,7 @@
     <string name="start_stop_pad">"Hintergrundmusik start/stop"</string>
     <string name="pad_auto">"Auto"</string>
     <string name="pad_choose_key">"Bitte Tonart des Songs wählen"</string>
-    <string name="pad_error">"Es wurde keine Tonart für diesen Song festgelegt"</string>
+    <string name="pad_key_error">"Es wurde keine Tonart für diesen Song festgelegt"</string>
     <string name="pad_onoroff">"Hintergrundmusik bei diesem Song abspielen"</string>
     <string name="page_background">"Hintergrund Seite"</string>
     <string name="pagebutton_custom_group">"Benutzerdefinierte Schaltflächen gruppieren"</string>

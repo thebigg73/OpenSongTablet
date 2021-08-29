@@ -95,11 +95,13 @@ import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
+import com.garethevans.church.opensongtablet.metronome.TimeTools;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
-import com.garethevans.church.opensongtablet.pads.PadFunctions;
+import com.garethevans.church.opensongtablet.pads.Pad;
+import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
@@ -215,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     private AutoscrollActions autoscrollActions;
     private DoVibrate doVibrate;
     private SaveSong saveSong;
-    private PadFunctions padFunctions;
+    private Pad pad;
     private Metronome metronome;
     private CustomAnimation customAnimation;
     private PDFSong pdfSong;
@@ -229,6 +231,8 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     private ProfileActions profileActions;
     private CheckInternet checkInternet;
     private SongSheetHeaders songSheetHeaders;
+    private TimeTools timeTools;
+    private DisplayPrevNext displayPrevNext;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -301,7 +305,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
     private String whichMode;
 
-    // Pads
 
 
     @Override
@@ -323,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
         // Hide the page button to begin with
         activityMainBinding.pageButtonRight.actionFAB.setVisibility(View.GONE);
+        activityMainBinding.onScreenInfo.info.setVisibility(View.GONE);
 
         // Prepare the actionbar
         setupActionbar();
@@ -428,17 +432,20 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         // Displaying info to the user
         showCase = new ShowCase();
         showToast = new ShowToast();
+        displayPrevNext = new DisplayPrevNext(this, mainActivityInterface, activityMainBinding.nextPrevInfo.nextPrevInfoLayout,
+                activityMainBinding.nextPrevInfo.prevButton, activityMainBinding.nextPrevInfo.nextButton);
 
         // Song actions/features
         pageButtons = new PageButtons(this,preferences);
         midi = new Midi();
         pedalActions = new PedalActions();
-        padFunctions = new PadFunctions();
+        pad = new Pad(mainActivityInterface, activityMainBinding.onScreenInfo.padPlayback);
         autoscrollActions = new AutoscrollActions();
         metronome = new Metronome();
         gestures = new Gestures(this,mainActivityInterface);
         gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
         swipes = new Swipes(this,mainActivityInterface);
+        timeTools = new TimeTools();
 
         // Other file actions
         ccliLog = new CCLILog();
@@ -453,11 +460,11 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 activityMainBinding.toolBar.songcapoAb,activityMainBinding.toolBar.batteryimage,
                 activityMainBinding.toolBar.batterycharge,activityMainBinding.toolBar.digitalclock,
                 preferences.getMyPreferenceBoolean(this,"hideActionBar",false));
-        pageButtons.setMainFABS(activityMainBinding.pageButtonRight.actionFAB, activityMainBinding.pageButtonRight.custom1Button,
+        pageButtons.setMainFABS(mainActivityInterface,
+                activityMainBinding.pageButtonRight.actionFAB, activityMainBinding.pageButtonRight.custom1Button,
                 activityMainBinding.pageButtonRight.custom2Button,activityMainBinding.pageButtonRight.custom3Button,
                 activityMainBinding.pageButtonRight.custom4Button,activityMainBinding.pageButtonRight.custom5Button,
-                activityMainBinding.pageButtonRight.custom6Button,activityMainBinding.pageButtonRight.bottomButtons,
-                themeColors.getPageButtonsColor());
+                activityMainBinding.pageButtonRight.custom6Button,activityMainBinding.pageButtonRight.bottomButtons);
         pageButtons.animatePageButton(this,false);
     }
 
@@ -536,10 +543,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         // Set the locale
         fixLocale.setLocale(this,mainActivityInterface);
         locale = fixLocale.getLocale();
-
-        // MediaPlayer
-        mediaPlayer1 = new MediaPlayer();
-        mediaPlayer2 = new MediaPlayer();
 
         // ThemeColors
         themeColors.getDefaultColors(this,mainActivityInterface);
@@ -687,11 +690,10 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         if (activityMainBinding.pageButtonRight.actionFAB.getRotation()!=0) {
             pageButtons.animatePageButton(this,false);
         }
-
-        pageButtons.setPageButton(this, activityMainBinding.pageButtonRight.actionFAB, themeColors.getPageButtonsColor(), -1, false);
-        //activityMainBinding.pageButtonRight.actionFAB.setBackgroundTintList(ColorStateList.valueOf(themeColors.getPageButtonsColor()));
+        pageButtons.updateColors(mainActivityInterface);
+        pageButtons.setPageButton(this, activityMainBinding.pageButtonRight.actionFAB, -1, false);
         for (int x=0; x<6; x++) {
-            pageButtons.setPageButton(this,pageButtons.getFAB(x), themeColors.getPageButtonsColor(), x, false);
+            pageButtons.setPageButton(this, pageButtons.getFAB(x), x, false);
         }
     }
 
@@ -842,11 +844,11 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
         // Save a static variable that we have rotated the screen.
         // The media player will look for this.  If found, it won't restart when the song loads
-        padFunctions.setOrientationChanged(padFunctions.getCurrentOrientation()!=newConfig.orientation);
+        pad.setOrientationChanged(pad.getCurrentOrientation()!=newConfig.orientation);
         // If orientation has changed, we need to reload the song to get it resized.
-        if (padFunctions.getOrientationChanged()) {
+        if (pad.getOrientationChanged()) {
             // Set the current orientation
-            padFunctions.setCurrentOrientation(newConfig.orientation);
+            pad.setCurrentOrientation(newConfig.orientation);
             closeDrawer(true);
             doSongLoad(song.getFolder(),song.getFilename());
         }
@@ -1170,6 +1172,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         String setFolder = currentSet.getFolder(position);
         String setFilename = currentSet.getFilename(position);
         String songKey;
+        // Update the index in the set
+        currentSet.setIndexSongInSet(position);
+
         // Get the song key (from the database)
         if (storageAccess.isSpecificFileExtension("imageorpdf",currentSet.getFilename(position))) {
             songKey = nonOpenSongSQLiteHelper.getKey(this,mainActivityInterface,setFolder,setFilename);
@@ -1330,16 +1335,39 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     public void hideActionButton(boolean hide) {
         if (activityMainBinding != null) {
             if (hide) {
-                if (activityMainBinding.pageButtonRight.actionFAB.getRotation() != 0) {
+                /*if (activityMainBinding.pageButtonRight.actionFAB.getRotation() != 0) {
                     activityMainBinding.pageButtonRight.actionFAB.performClick();
-                }
-                activityMainBinding.pageButtonRight.actionFAB.hide();
+                }*/
+                /*activityMainBinding.pageButtonRight.actionFAB.hide();
+                activityMainBinding.pageButtonRight.custom1Button.hide();
+                activityMainBinding.pageButtonRight.custom2Button.hide();
+                activityMainBinding.pageButtonRight.custom3Button.hide();
+                activityMainBinding.pageButtonRight.custom4Button.hide();
+                activityMainBinding.pageButtonRight.custom5Button.hide();
+                activityMainBinding.pageButtonRight.custom6Button.hide();*/
+                activityMainBinding.pageButtonRight.actionFAB.setVisibility(View.GONE);
                 activityMainBinding.pageButtonRight.bottomButtons.setVisibility(View.GONE);
+                activityMainBinding.onScreenInfo.info.setVisibility(View.GONE);
+                activityMainBinding.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
+
             } else {
-                activityMainBinding.pageButtonRight.actionFAB.show();
+                /*activityMainBinding.pageButtonRight.actionFAB.show();
+                activityMainBinding.pageButtonRight.custom1Button.show();
+                activityMainBinding.pageButtonRight.custom2Button.show();
+                activityMainBinding.pageButtonRight.custom3Button.show();
+                activityMainBinding.pageButtonRight.custom4Button.show();
+                activityMainBinding.pageButtonRight.custom5Button.show();
+                activityMainBinding.pageButtonRight.custom6Button.show();*/
+
+                //activityMainBinding.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
+                activityMainBinding.pageButtonRight.actionFAB.setVisibility(View.VISIBLE);
                 activityMainBinding.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
+                activityMainBinding.onScreenInfo.info.setVisibility(View.VISIBLE);
+                if (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext()) {
+                    activityMainBinding.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
+                }
                 // Do this with a delay
-                customAnimation.fadeActionButton(activityMainBinding.pageButtonRight.actionFAB, pageButtons.getAlpha());
+                customAnimation.fadeActionButton(activityMainBinding.pageButtonRight.actionFAB, themeColors.getPageButtonsSplitAlpha());
             }
         }
     }
@@ -1598,8 +1626,19 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         Log.d(TAG,"fadeoutPad()");
     }
     @Override
-    public void playPad() {
-        Log.d(TAG,"playPad()");
+    public boolean playPad() {
+        // If the pad is playing, stop else start
+        if (pad.isPadPlaying()) {
+            Log.d(TAG, "stopPad()");
+            pad.stopPad(this);
+            return false;
+        } else {
+            Log.d(TAG, "playPad()");
+            pad.startPad(this);
+            // Showcase if required
+            mainActivityInterface.getShowCase().singleShowCase(this,activityMainBinding.onScreenInfo.padPlayback,getString(R.string.ok),getString(R.string.pad_playback_info),true,"padPlayback");
+            return true;
+        }
     }
     @Override
     public void fixOptionsMenu() {invalidateOptionsMenu();}
@@ -1630,15 +1669,6 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     @Override
     public Activity getActivity() {
         return this;
-    }
-    @Override
-    public MediaPlayer getMediaPlayer(int i) {
-        // Keeping mediaPlayers in the MainActivity so they persist across fragments
-        if (i==1) {
-            return mediaPlayer1;
-        } else {
-            return mediaPlayer2;
-        }
     }
     @Override
     public SetTypeFace getMyFonts() {
@@ -1823,12 +1853,16 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         return saveSong;
     }
     @Override
-    public PadFunctions getPadFunctions() {
-        return padFunctions;
+    public Pad getPad() {
+        return pad;
     }
     @Override
     public Metronome getMetronome() {
         return metronome;
+    }
+    @Override
+    public DisplayPrevNext getDisplayPrevNext() {
+        return displayPrevNext;
     }
     @Override
     public SongListBuildIndex getSongListBuildIndex() {
@@ -1906,6 +1940,34 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     @Override
     public CheckInternet getCheckInternet() {
         return checkInternet;
+    }
+    @Override
+    public TimeTools getTimeTools() {
+        return timeTools;
+    }
+    @Override
+    public int getPositionOfSongInMenu() {
+        if (songMenuFragment!=null) {
+            return songMenuFragment.getPositionInSongMenu(song);
+        } else {
+            return 0;
+        }
+    }
+    @Override
+    public Song getSongInMenu(int position) {
+        if (songMenuFragment!=null) {
+            return songMenuFragment.getSongsFound().get(position);
+        } else {
+            return new Song();
+        }
+    }
+    @Override
+    public ArrayList<Song> getSongsInMenu() {
+        if (songMenuFragment!=null) {
+            return songMenuFragment.getSongsFound();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 

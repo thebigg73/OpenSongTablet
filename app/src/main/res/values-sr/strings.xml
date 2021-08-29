@@ -104,7 +104,7 @@
     <string name="import_onsong_error">"Nije pronađena OnSong rezervna kopija u /documents/OpenSong/"</string>
     <string name="onsong_import">"Uvezi OnSong rezervnu kopiju"</string>
     <string name="pad_choose_key">"Odaberite tonalitet za ovu pesmu"</string>
-    <string name="pad_error">"Tonalitet ove pesme nije odabran"</string>
+    <string name="pad_key_error">"Tonalitet ove pesme nije odabran"</string>
     <string name="backing_track">"Odaberite matricu"</string>
     <string name="pad_onoroff">"Koristiti pad sa ovom pesmom"</string>
     <string name="pad_auto">"Auto"</string>
@@ -429,7 +429,7 @@
     <string name="action">"Radnja"</string>
     <string name="activated">"Aktivirano / radi"</string>
     <string name="autostartmetronome">"Auto pokretanje metronoma"</string>
-    <string name="autostartpad">"Auto pokretanje pada"</string>
+    <string name="pad_cross_fade">"Auto pokretanje pada"</string>
     <string name="ccli_automatic">"Auto snimanje statistike korišćenja CCLI"</string>
     <string name="ccli_church">"Ime crkve"</string>
     <string name="ccli_licence">"Broj CCLI licence"</string>

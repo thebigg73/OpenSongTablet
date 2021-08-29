@@ -38,7 +38,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/lyricsButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/lyrics"
@@ -48,7 +47,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/chordsButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/chords"
@@ -58,7 +56,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/capoButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/capo_chords"
@@ -68,7 +65,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/pageButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/background"
@@ -96,7 +92,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/verseButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/verse"
@@ -106,7 +101,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/chorusButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/chorus"
@@ -116,7 +110,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/prechorusButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/prechorus"
@@ -126,7 +119,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/bridgeButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/bridge"
@@ -136,7 +128,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/tagButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tag"
@@ -146,7 +137,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/commentButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/comment"
@@ -156,7 +146,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/customButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/custom"
@@ -166,7 +155,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/titleHighlighting"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title"
@@ -176,7 +164,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/chordHighlighting"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/chords"
@@ -204,7 +191,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/presoButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text"
@@ -214,7 +200,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/presoInfoButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/info_text"
@@ -224,7 +209,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/presoAlertButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/alert"
@@ -234,7 +218,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/presoShadowButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/block_text_shadow"
@@ -262,7 +245,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/metronomeButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/metronome"
@@ -272,7 +254,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/pagebuttonButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/page_buttons"
@@ -300,7 +281,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/stickytextButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text"
@@ -310,7 +290,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/stickybackgroundButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/background"
@@ -338,7 +317,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/extratextButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/text"
@@ -348,7 +326,6 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/extrabackgroundButton"
-                    style="@style/TextBackgroundButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/background"

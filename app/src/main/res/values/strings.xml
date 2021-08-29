@@ -566,7 +566,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="autoshow_highlight">Autoshow highlighter notes</string>
     <string name="autostart_autoscroll">Keep on autoscroll</string>
     <string name="autostartmetronome">Keep on metronome</string>
-    <string name="autostartpad">Cross-fade pads</string>
+    <string name="pad_cross_fade">Cross-fade pads</string>
     <string name="average">Average</string>
     <string name="back">Back</string>
     <string name="backing_track">Choose backing track</string>
@@ -777,7 +777,9 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="overwrite">Overwrite existing item</string>
     <string name="pad_auto">Auto</string>
     <string name="pad_choose_key">Please select the key of this song</string>
-    <string name="pad_error">The key of this song has not been set</string>
+    <string name="pad_key_error">The key of this song has not been set</string>
+    <string name="pad_file_error">There is a problem with the link audio file</string>
+    <string name="pad_custom_pad_error">There is a problem with the custom auto pad set for this key</string>
     <string name="pad_onoroff">Use a pad with this song</string>
     <string name="pagebutton_custom_group">Group custom buttons</string>
     <string name="pagebutton_extrainfo_group">Group extra information buttons</string>
@@ -951,4 +953,12 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="transpose_info">Change the chords in the current song</string>
     <string name="both">Both</string>
     <string name="chord_capo_display">If a song has capo chords, which chords should be shown?</string>
+    <string name="chords_found">All chords found in the song lyrics</string>
+    <string name="custom_chords_needed">Chords not found in database</string>
+    <string name="custom_chords_use_instrument">Click on the instrument to generate the code</string>
+    <string name="pad_custom_info">Set custom pads to use as backing tracks matching song keys.  These files must be saved in the OpenSong/Pads folder.  Songs that have the pad set as \'Auto\' and have a key set will use the file noted here.</string>
+    <string name="pad_settings_info">Default pad settings</string>
+    <string name="pad_custom_short">Choose built in or custom pads to match each key</string>
+    <string name="pad_off">Pads are switched off for this song</string>
+    <string name="pad_playback_info">Pad progress is shown here.  Tap to pause, press and hold to stop.</string>
 </resources>

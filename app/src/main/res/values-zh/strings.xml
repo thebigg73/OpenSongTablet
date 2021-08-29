@@ -24,7 +24,7 @@
     <string name="autoshow_highlight">"自动显示荧光笔记"</string>
     <string name="autostart_autoscroll">Autostart autoscroll</string>
     <string name="autostartmetronome">"自动启动节拍器"</string>
-    <string name="autostartpad">"自动启动板"</string>
+    <string name="pad_cross_fade">"自动启动板"</string>
     <string name="average">"平均"</string>
     <string name="back">"后面返回"</string>
     <string name="backing_track">"选择依托轨道"</string>
@@ -318,7 +318,7 @@
     <string name="start_stop_pad">"启动/停止背景音乐"</string>
     <string name="pad_auto">"汽车"</string>
     <string name="pad_choose_key">"请选择这首歌的关键"</string>
-    <string name="pad_error">"这首歌的密钥尚未设置"</string>
+    <string name="pad_key_error">"这首歌的密钥尚未设置"</string>
     <string name="pad_onoroff">"使用垫，用这首歌"</string>
     <string name="page_background">"页面背景"</string>
     <string name="pagebutton_custom_group">"组自定义按钮"</string>

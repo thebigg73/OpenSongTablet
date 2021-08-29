@@ -23,17 +23,18 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/info_text" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/songSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/songsheet" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/nextInSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/shownextinset" />
+                android:text="@string/shownextinset"
+                android:checked="true"/>
 
             <TableRow style="@style/DividerLine" />
 
@@ -45,13 +46,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/song_display" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/boldChordsHeadings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/bold_chords_headings" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/hideLyricsBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,19 +68,19 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/song_sections" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/trimSections"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/trim_sections" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/addSectionSpace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/section_space" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/trimLineSpacing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/filter_info" />
 
-            <androidx.appcompat.widget.SwitchCompat
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/filterSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,7 +143,7 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/filter_mode_info" />
 
-                <androidx.appcompat.widget.SwitchCompat
+                <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/filterShow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

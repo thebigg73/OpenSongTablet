@@ -141,8 +141,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/button1Header"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/tap" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -150,6 +150,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shortButton1Text"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/long_press" />
 
             </RelativeLayout>
@@ -208,8 +210,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/button2Header"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/tap" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -217,8 +219,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shortButton2Text"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/long_press" />
 
             </RelativeLayout>
@@ -277,8 +279,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/button3Header"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/tap" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -286,8 +288,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shortButton3Text"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/long_press" />
 
             </RelativeLayout>
@@ -346,8 +348,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/button4Header"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/tap" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -355,8 +357,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shortButton4Text"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/long_press" />
 
             </RelativeLayout>
@@ -415,8 +417,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/button5Header"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/tap" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -424,8 +426,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shortButton5Text"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/long_press" />
 
             </RelativeLayout>
@@ -484,8 +486,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/button6Header"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/tap" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -493,8 +495,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shortButton6Text"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/long_press" />
 
             </RelativeLayout>
@@ -553,6 +555,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/button7Header"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/tap" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -560,6 +564,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shortButton7Text"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/long_press" />
 
             </RelativeLayout>
@@ -618,8 +624,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/button8Header"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/tap" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
@@ -627,8 +633,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shortButton8Text"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/long_press" />
 
             </RelativeLayout>

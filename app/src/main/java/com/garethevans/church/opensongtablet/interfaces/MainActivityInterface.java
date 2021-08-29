@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.interfaces;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.Display;
 import android.view.View;
@@ -36,9 +35,11 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.importsongs.OCR;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
+import com.garethevans.church.opensongtablet.metronome.TimeTools;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
-import com.garethevans.church.opensongtablet.pads.PadFunctions;
+import com.garethevans.church.opensongtablet.pads.Pad;
+import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
@@ -100,7 +101,7 @@ public interface MainActivityInterface {
     void stopAutoscroll();
     void startAutoscroll();
     void fadeoutPad();
-    void playPad();
+    boolean playPad();
     void updateConnectionsLog();
     boolean requestNearbyPermissions();
     boolean requestCoarseLocationPermissions();
@@ -120,7 +121,6 @@ public interface MainActivityInterface {
     Midi getMidi();
     DrawerLayout getDrawer();
     ActionBar getAb();
-    MediaPlayer getMediaPlayer(int i);
     SetTypeFace getMyFonts();
     ThemeColors getMyThemeColors();
     StorageAccess getStorageAccess();
@@ -162,7 +162,7 @@ public interface MainActivityInterface {
     void setWhattodo(String whattodo);
     PageButtons getPageButtons();
     AutoscrollActions getAutoscrollActions();
-    PadFunctions getPadFunctions();
+    Pad getPad();
     Metronome getMetronome();
     SongListBuildIndex getSongListBuildIndex();
     CustomAnimation getCustomAnimation();
@@ -207,4 +207,9 @@ public interface MainActivityInterface {
     void setSongSheetTitleLayoutSize(ArrayList<Integer> sizes);
     void enableSwipe(boolean canSwipe);
     ArrayList<Song> getSongsFound(String whichMenu);
+    TimeTools getTimeTools();
+    DisplayPrevNext getDisplayPrevNext();
+    int getPositionOfSongInMenu();
+    Song getSongInMenu(int position);
+    ArrayList<Song> getSongsInMenu();
 }

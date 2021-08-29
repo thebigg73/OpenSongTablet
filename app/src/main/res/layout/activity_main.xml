@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,7 +19,7 @@
                 layout="@layout/view_toolbar" />
 
             <!--The main fragments get loaded up here-->
-            <FrameLayout
+            <RelativeLayout
                 android:id="@+id/fragmentView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -35,18 +35,43 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:navGraph="@navigation/navigation" />
 
+                <include
+                    android:id="@+id/onScreenInfo"
+                    layout="@layout/view_on_screen_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"/>
+
                 <!-- The page buttons -->
                 <include
                     android:id="@+id/pageButtonRight"
-                    layout="@layout/fabs_performance"
+                    layout="@layout/view_page_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/onScreenInfo"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
                     android:clipChildren="true"
                     android:clipToPadding="true" />
 
-            </FrameLayout>
+                <!-- The previous and next info -->
+                <include
+                    android:id="@+id/nextPrevInfo"
+                    layout="@layout/view_prev_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_toStartOf="@+id/pageButtonRight"/>
+
+            </RelativeLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-    </FrameLayout>
+
+
+    </RelativeLayout>
 
     <!--The left song and set menu-->
     <LinearLayout

@@ -25,7 +25,7 @@
     <string name="autoshow_highlight">"オートショーハイライターノート"</string>
     <string name="autostart_autoscroll">Autostart autoscroll</string>
     <string name="autostartmetronome">"自動スタートメトロノーム"</string>
-    <string name="autostartpad">"自動スタートパッド"</string>
+    <string name="pad_cross_fade">"自動スタートパッド"</string>
     <string name="average">"平均"</string>
     <string name="back">"戻る"</string>
     <string name="backing_track">"バッキングトラックを選択してください"</string>
@@ -319,7 +319,7 @@
     <string name="start_stop_pad">"スタート/ストップ·バックグラウンドミュージック"</string>
     <string name="pad_auto">"オート"</string>
     <string name="pad_choose_key">"この曲のキーを選択してください"</string>
-    <string name="pad_error">"この曲のキーが設定されていません"</string>
+    <string name="pad_key_error">"この曲のキーが設定されていません"</string>
     <string name="pad_onoroff">"この歌でパッドを使用してください"</string>
     <string name="page_background">"ページの背景"</string>
     <string name="pagebutton_custom_group">"グループのカスタムボタンをグループ化する"</string>

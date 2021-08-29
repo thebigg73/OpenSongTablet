@@ -78,7 +78,7 @@
                 android:drawableLeft="@drawable/ic_play_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_play_white_36dp"
-                android:text="@string/autostartpad"
+                android:text="@string/pad_cross_fade"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:theme="@style/MySwitch"

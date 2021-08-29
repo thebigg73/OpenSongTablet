@@ -75,6 +75,15 @@
                 android:text="@string/delete"
                 custom:mydrawable="@drawable/ic_delete_white_36dp" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/exportSongList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/text"
+                android:padding="16dp"
+                android:text="@string/exportsongdirectory"
+                custom:mydrawable="@drawable/ic_format_list_bulleted_white_36dp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

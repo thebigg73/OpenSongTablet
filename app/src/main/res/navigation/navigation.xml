@@ -524,6 +524,9 @@
                 <action
                     android:id="@+id/action_songActionsMenuFragment_to_chords_graph"
                     app:destination="@id/chords_graph" />
+                <action
+                    android:id="@+id/action_songActionsMenuFragment_to_pads_graph"
+                    app:destination="@id/pads_graph" />
             </fragment>
             <fragment
                 android:id="@+id/highlighterFragment"
@@ -606,13 +609,50 @@
                     <action
                         android:id="@+id/action_chordSettingsFragment_to_chordFormatFragment"
                         app:destination="@id/chordFormatFragment" />
+                    <action
+                        android:id="@+id/action_chordSettingsFragment_to_customChordsFragment"
+                        app:destination="@id/customChordsFragment" />
                 </fragment>
                 <fragment
                     android:id="@+id/chordFormatFragment"
                     android:name="com.garethevans.church.opensongtablet.chords.ChordFormatFragment"
                     android:label="ChordFormatFragment"
                     tools:layout="@layout/settings_chords_format"/>
+                <fragment
+                    android:id="@+id/customChordsFragment"
+                    android:name="com.garethevans.church.opensongtablet.chords.CustomChordsFragment"
+                    android:label="CustomChordsFragment"
+                    tools:layout="@layout/settings_chords_custom">
+                    <deepLink
+                        android:id="@+id/deepLink26"
+                        app:uri="opensongapp://settings/chords/custom" />
+                </fragment>
 
+            </navigation>
+            <navigation android:id="@+id/pads_graph"
+                app:startDestination="@id/padSettingsFragment">
+                <fragment
+                    android:id="@+id/padSettingsFragment"
+                    android:name="com.garethevans.church.opensongtablet.pads.PadSettingsFragment"
+                    android:label="PadSettingsFragment"
+                    tools:layout="@layout/settings_pads">
+                    <action
+                        android:id="@+id/action_padSettingsFragment_to_customPadsFragment"
+                        app:destination="@id/customPadsFragment" />
+                    <action
+                        android:id="@+id/action_padSettingsFragment_to_padDefaultsFragment"
+                        app:destination="@id/padDefaultsFragment" />
+                </fragment>
+                <fragment
+                    android:id="@+id/customPadsFragment"
+                    android:name="com.garethevans.church.opensongtablet.pads.CustomPadsFragment"
+                    android:label="CustomPadsFragment"
+                    tools:layout="@layout/settings_pads_custom"/>
+                <fragment
+                    android:id="@+id/padDefaultsFragment"
+                    android:name="com.garethevans.church.opensongtablet.pads.PadDefaultsFragment"
+                    android:label="PadDefaultsFragment"
+                    tools:layout="@layout/settings_pads_defaults"/>
             </navigation>
         </navigation>
         <fragment

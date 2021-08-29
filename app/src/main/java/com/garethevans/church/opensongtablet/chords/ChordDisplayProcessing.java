@@ -27,18 +27,76 @@ import java.util.Locale;
 
 public class ChordDisplayProcessing {
 
-    private ArrayList<String> chordsInSong, fingerings, pianoNotesArray;
+    private ArrayList<String> instruments, chordsInSong, fingerings, pianoNotesArray;
     private ArrayList<Integer> pianoKeysArray;
     private final String TAG = "ChordDisplayProcessing";
 
-    public void initialiseArrays() {
+    ChordDisplayProcessing(Context c) {
+        initialiseArrays(c);
+    }
+    public void initialiseArrays(Context c) {
         chordsInSong = new ArrayList<>();
         fingerings   = new ArrayList<>();
         pianoKeysArray = new ArrayList<>();
         pianoNotesArray = new ArrayList<>();
+        instruments = new ArrayList<>();
         addPianoKeys();
+        setupInstruments(c);
     }
 
+    public void setupInstruments(Context c) {
+        instruments = new ArrayList<>();
+        instruments.add(c.getString(R.string.guitar));
+        instruments.add(c.getString(R.string.ukulele));
+        instruments.add(c.getString(R.string.mandolin));
+        instruments.add(c.getString(R.string.banjo4));
+        instruments.add(c.getString(R.string.banjo5));
+        instruments.add(c.getString(R.string.cavaquinho));
+        instruments.add(c.getString(R.string.piano));
+    }
+    public ArrayList<String> getInstruments() {
+        return instruments;
+    }
+    public String getPrefFromInstrument(String instrument) {
+        String pref;
+        if (instrument.equals(instruments.get(0))) {
+            pref = "g";
+        } else if (instrument.equals(instruments.get(1))) {
+            pref = "u";
+        } else if (instrument.equals(instruments.get(2))) {
+            pref = "m";
+        } else if (instrument.equals(instruments.get(3))) {
+            pref = "b";
+        } else if (instrument.equals(instruments.get(4))) {
+            pref = "B";
+        } else if (instrument.equals(instruments.get(5))) {
+            pref = "c";
+        } else if (instrument.equals(instruments.get(6))) {
+            pref = "p";
+        } else {
+            pref = "g";
+        }
+        return pref;
+    }
+    public String getInstrumentFromPref(String pref) {
+        switch (pref) {
+            case "g":
+            default:
+                return instruments.get(0);
+            case "u":
+                return instruments.get(1);
+            case "m":
+                return instruments.get(2);
+            case "b":
+                return instruments.get(3);
+            case "B":
+                return instruments.get(4);
+            case "c":
+                return instruments.get(5);
+            case "p":
+                return instruments.get(6);
+        }
+    }
     public ArrayList<String> getChordsInSong() {
         return chordsInSong;
     }
@@ -70,6 +128,11 @@ public class ChordDisplayProcessing {
         pianoKeysArray.add(R.id.a1);
         pianoKeysArray.add(R.id.asharp1);
         pianoKeysArray.add(R.id.b1);
+        pianoKeysArray.add(R.id.c2);
+        pianoKeysArray.add(R.id.csharp2);
+        pianoKeysArray.add(R.id.d2);
+        pianoKeysArray.add(R.id.dsharp2);
+        pianoKeysArray.add(R.id.e2);
 
         pianoNotesArray.add("C");
         pianoNotesArray.add("C#");
@@ -95,6 +158,11 @@ public class ChordDisplayProcessing {
         pianoNotesArray.add("A");
         pianoNotesArray.add("A#");
         pianoNotesArray.add("B");
+        pianoNotesArray.add("C");
+        pianoNotesArray.add("C#");
+        pianoNotesArray.add("D");
+        pianoNotesArray.add("D#");
+        pianoNotesArray.add("E");
     }
 
     public void getChordsInSong(MainActivityInterface mainActivityInterface) {
@@ -199,7 +267,7 @@ public class ChordDisplayProcessing {
         // Make sure it is the preferred format though (e.g. Eb/D#)
         // If it isn't a valid chord, it will be null, in which case, ignore
         TextView chordNameTextView = getChordName(c, mainActivityInterface, chordName);
-        if (chordNameTextView!=null) {
+        if (chordNameTextView!=null && chordString!=null) {
             chordLayout.addView(chordNameTextView);
 
             // Get chord table layout
@@ -290,12 +358,12 @@ public class ChordDisplayProcessing {
             }
             chordLayout.addView(chordTable);
             Log.d(TAG, "chordBits[0]="+chordBits[0]);
-            if (chordBits[0].isEmpty()) {
+            if (chordBits[0].isEmpty() || chordBits[0].equals("xxxxxx") || chordBits[0].equals("xxxxx") || chordBits[0].equals("xxxx")) {
                 // Allow clicking on this view to open a custom chord designer
                 chordLayout.setOnClickListener(view -> {
                     mainActivityInterface.setWhattodo("customChord_"+chordName);
                     Log.d(TAG, "open custom chord: customChord_"+chordName);
-                    //mainActivityInterface.navigateToFragment("opensongapp://settings/chords/custom",0);
+                    mainActivityInterface.navigateToFragment("opensongapp://settings/chords/custom",0);
                 });
             }
             return chordLayout;
@@ -391,7 +459,7 @@ public class ChordDisplayProcessing {
         // Make sure it is the preferred format though (e.g. Eb/D#)
         // If it isn't a valid chord, it will be null, in which case, ignore
         TextView chordNameTextView = getChordName(c, mainActivityInterface, chordName);
-        if (chordNameTextView!=null) {
+        if (chordNameTextView!=null && chordString!=null) {
             chordLayout.addView(chordNameTextView);
 
             // The piano notes will be in the format of A,C#,E_p

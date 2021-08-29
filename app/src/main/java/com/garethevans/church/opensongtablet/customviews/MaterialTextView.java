@@ -94,6 +94,14 @@ public class MaterialTextView extends LinearLayout {
     public boolean isChecked() {
         return checkBox.isChecked();
     }
+
+    public CharSequence getText() {
+        return textView.getText();
+    }
+
+    public CharSequence getHint() {
+        return hintView.getText();
+    }
 }
 
 //

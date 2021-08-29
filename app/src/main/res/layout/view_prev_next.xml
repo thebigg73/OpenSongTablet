@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nextPrevInfoLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/prevButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:ellipsize="start"
+            android:minWidth="0dp"
+            android:textAlignment="textStart"
+            android:textSize="14sp"
+            android:text="@string/previous"
+            app:icon="@drawable/ic_arrow_left_white_36dp"
+            app:iconGravity="start"
+            app:iconPadding="0dp"
+            android:inputType="text"
+            android:paddingStart="0dp"
+            android:paddingEnd="8dp"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/nextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:ellipsize="start"
+            android:text="@string/next"
+            android:textAlignment="textEnd"
+            android:textSize="14sp"
+            android:minWidth="0dp"
+            app:iconPadding="0dp"
+            android:paddingEnd="0dp"
+            android:paddingStart="8dp"
+            android:inputType="text"
+            app:icon="@drawable/ic_arrow_right_white_36dp"
+            app:iconGravity="end" />
+
+    </FrameLayout>
+</LinearLayout>

@@ -306,4 +306,13 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         // Now update the song as normal with the link location and save it
         updateSong();
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mediaPlayer!=null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 }

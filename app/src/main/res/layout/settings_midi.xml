@@ -35,9 +35,10 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/searchDevices"
-                    style="@style/TextOnlyButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_gravity="center_horizontal"
                     android:text="@string/search" />
 
                 <RelativeLayout
@@ -102,7 +103,6 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/testMidiDevice"
-                        style="@style/TextOnlyButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
@@ -111,7 +111,6 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/disconnectMidiDevice"
-                        style="@style/TextOnlyButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
@@ -219,18 +218,18 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/midiTest"
-                        style="@style/TextOnlyButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
+                        android:layout_gravity="center_horizontal"
                         android:text="@string/midi_test" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/midiAdd"
-                        style="@style/TextOnlyButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="8dp"
+                        android:layout_gravity="center_horizontal"
                         android:text="@string/midi_add" />
 
                 </LinearLayout>

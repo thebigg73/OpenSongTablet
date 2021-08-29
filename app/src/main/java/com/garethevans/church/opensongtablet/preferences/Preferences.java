@@ -26,7 +26,11 @@ public class Preferences extends Activity {
         // Return an int from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-            return sharedPref.getInt(prefname, fallback);
+            try {
+                return sharedPref.getInt(prefname, fallback);
+            } catch (Exception e) {
+                return (int)sharedPref.getFloat(prefname, fallback);
+            }
         } else {
             return fallback;
         }
@@ -318,9 +322,9 @@ public class Preferences extends Activity {
     midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically (def:false)
     multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact (def:false)
     nearbyHostMenuOnly              boolean     Should the host only listen for clients when the nearby menu is open (def:false)
-    nextInSet                       boolean     Should the next song in the set be shown (moveable popup) (def:true)
+    nextInSet                       boolean     Should the next song in the set be shown (def:true)
     padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time) (def:false)
-    padCrossFadeTime                int         The time in ms used to fade out a pad.  Set in the PopUpCrossFade fragment (def::8000)
+    padCrossFadeTime                int         The time in ms used to fade out a pad.  Set in the PopUpCrossFade fragment (def:8000)
     padLargeFontInfoBar             boolean     The text size of the floating pad info bar (def:true is 20.0f false is 14.0f)
     padPan                          String      The panning of the pad (L, C or R) (def:C)
     PadVol                          float       The volume of the pad (def:1.0f)
@@ -391,6 +395,7 @@ public class Preferences extends Activity {
     presoTransitionTime             int         The time for transitions between items in presenter mode (ms) (def:800)
     presoXMargin                    int         The margin for the X axis on the presentation window (def:20)
     presoYMargin                    int         The margin for the Y axis on the presentation window (def:10)
+    prevInSet                       boolean     Should the previous song in the set be shown (def:false)
     profileName                     String      The last loaded or saved profile name (def:"")
     runswithoutbackup               int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
     scaleChords                     float       The scale factor for chords relative to the lyrics (def:0.8f)

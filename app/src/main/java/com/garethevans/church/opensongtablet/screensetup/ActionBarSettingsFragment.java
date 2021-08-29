@@ -6,21 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsActionbarBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 public class ActionBarSettingsFragment extends Fragment {
 
-    SettingsActionbarBinding myView;
-    MainActivityInterface mainActivityInterface;
+    private SettingsActionbarBinding myView;
+    private MainActivityInterface mainActivityInterface;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -43,43 +43,58 @@ public class ActionBarSettingsFragment extends Fragment {
 
     private void setupPreferences() {
         // The song title and author
-        myView.songTitle.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f));
-        myView.songAuthor.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f));
+        myView.titleTextSize.setHintTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f));
+        myView.authorTextSize.setHintTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f));
 
-        // The seekbars
-        myView.titleTextSize.setProgress(prefToSeekBarProgress("songTitleSize",6,13,true));
-        myView.authorTextSize.setProgress(prefToSeekBarProgress("songAuthorSize",6,11,true));
-        myView.batteyDialSize.setProgress(prefToSeekBarProgress("batteryDialThickness",1,4,false));
-        myView.batteryTextSize.setProgress(prefToSeekBarProgress("batteryTextSize",6,9,true));
-        myView.timeTextSize.setProgress(prefToSeekBarProgress("clockTextSize",6,9,true));
+        // The sliders
+        float titleTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songTitleSize", 13),6);
+        float authorTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songAuthorSize", 11),6);
+        float batteryTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"batteryTextSize", 9),6);
+        float timeTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"clockTextSize", 9),6);
+        int batteryDialSize = (int)checkMin(mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"batteryDialThickness", 4),1);
+
+        myView.titleTextSize.setValue(titleTextSize);
+        myView.titleTextSize.setHint(timeTextSize+"px");
+        myView.titleTextSize.setHintTextSize(titleTextSize);
+        myView.authorTextSize.setValue(authorTextSize);
+        myView.authorTextSize.setHint(authorTextSize+"px");
+        myView.authorTextSize.setHintTextSize(authorTextSize);
+        myView.batteryDialSize.setValue((int)batteryDialSize);
+        myView.batteryTextSize.setValue(batteryTextSize);
 
         // The switches
         myView.autohideActionBar.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
         showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"batteryDialOn",true),
-                true,myView.batteryDialOnOff,myView.batteryImageLayout);
+                true,myView.batteryDialOnOff,myView.batteryDialSize);
         showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"batteryTextOn",true),
-                true,myView.batteryTextOnOff,myView.batteryTextLayout);
+                true,myView.batteryTextOnOff,myView.batteryDialSize);
         showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"clockOn",true),
                 true,myView.clockTextOnOff,myView.timeLayout);
         myView.clock24hrOnOff.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"clock24hFormat",true));
         
         // The listeners
-        myView.titleTextSize.setOnSeekBarChangeListener(new MySeekBar("songTitleSize",true,6));
-        myView.authorTextSize.setOnSeekBarChangeListener(new MySeekBar("songAuthorSize",true,6));
-        myView.batteyDialSize.setOnSeekBarChangeListener(new MySeekBar("batteryDialThickness",false,1));
-        myView.batteryTextSize.setOnSeekBarChangeListener(new MySeekBar("batteryTextSize",true,6));
-        myView.timeTextSize.setOnSeekBarChangeListener(new MySeekBar("clockTextSize",true,6));
+        myView.titleTextSize.addOnChangeListener(new MyOnChangeListener("songTitleSize",true));
+        myView.authorTextSize.addOnChangeListener(new MyOnChangeListener("songAuthorSize",true));
+        myView.batteryDialSize.addOnChangeListener(new MyOnChangeListener("batteryDialThickness",true));
+        myView.batteryTextSize.addOnChangeListener(new MyOnChangeListener("batteryTextSize",true));
+        myView.timeTextSize.addOnChangeListener(new MyOnChangeListener("clockTextSize",true));
+        myView.titleTextSize.addOnSliderTouchListener(new MyOnSliderTouch("songTitleSize",true));
+        myView.authorTextSize.addOnSliderTouchListener(new MyOnSliderTouch("songAuthorSize",true));
+        myView.batteryDialSize.addOnSliderTouchListener(new MyOnSliderTouch("batteryDialThickness",true));
+        myView.batteryTextSize.addOnSliderTouchListener(new MyOnSliderTouch("batteryTextSize",true));
+        myView.timeTextSize.addOnSliderTouchListener(new MyOnSliderTouch("clockTextSize",true));
+
         myView.autohideActionBar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateActionBar("hideActionBar",-1,0.0f,!isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"hideActionBar",isChecked);
         });
         myView.batteryDialOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            showOrHideView(isChecked,false ,myView.batteryDialOnOff, myView.batteryImageLayout);
+            showOrHideView(isChecked,false ,myView.batteryDialOnOff, myView.batteryDialSize);
             updateActionBar("batteryDialOn",-1,0.0f,isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"batteryDialOn",isChecked);
         });
         myView.batteryTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            showOrHideView(isChecked,false ,myView.batteryTextOnOff, myView.batteryTextLayout);
+            showOrHideView(isChecked,false ,myView.batteryTextOnOff, myView.batteryTextSize);
             updateActionBar("batteryTextOn",-1,0.0f,isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"batteryTextOn",isChecked);
         });
@@ -94,71 +109,72 @@ public class ActionBarSettingsFragment extends Fragment {
         });
     }
 
-    private void showOrHideView(boolean show, boolean setSwitch, SwitchCompat switchCompat, LinearLayout linearLayout) {
+    private void showOrHideView(boolean show, boolean setSwitch, SwitchMaterial switchMaterial, LinearLayout linearLayout) {
         if (show) {
             linearLayout.setVisibility(View.VISIBLE);
         } else {
             linearLayout.setVisibility(View.GONE);
         }
         if (setSwitch) {
-            switchCompat.setChecked(show);
+            switchMaterial.setChecked(show);
         }
     }
 
-    private int prefToSeekBarProgress(String prefName, int min, int def, boolean isfloat) {
-        // Min size is what value 0 on the seekbar actually means (it gets added on later)
-        if (isfloat) {
-            return (int) mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(), prefName, (float) def) - min;
-        } else {
-            return mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), prefName, def) - min;
-        }
-    }
-    
-    private int progressToInt(int progress, int min) {
-        // Add this min value back on the the progress
-        return progress + min;
+    private float checkMin (float value, float min) {
+        return Math.max(value,min);
     }
 
-    private class MySeekBar implements SeekBar.OnSeekBarChangeListener {
+    private class MyOnChangeListener implements Slider.OnChangeListener {
+
+        private final boolean isfloat;
+        private final String prefName;
+
+        MyOnChangeListener(String prefName, boolean isfloat) {
+            this.prefName = prefName;
+            this.isfloat = isfloat;
+        }
+
+        @Override
+        public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+            if (isfloat) {
+                if (prefName.equals("songTitleSize")) {
+                    myView.titleTextSize.setHint(value + "px");
+                    myView.titleTextSize.setHintTextSize(value);
+                } else if (prefName.equals("songAuthorSize")) {
+                    myView.authorTextSize.setHint(value + "px");
+                    myView.authorTextSize.setHintTextSize(value);
+                } else {
+                    updateActionBar(prefName, -1, value, false);
+                }
+            } else {
+                updateActionBar(prefName, (int)value, 0.0f, false);
+            }
+        }
+    }
+    private class MyOnSliderTouch implements Slider.OnSliderTouchListener {
 
         private final String prefName;
         private final boolean isfloat;
-        private final int min;
 
-        MySeekBar (String prefName, boolean isfloat, int min) {
+        MyOnSliderTouch(String prefName, boolean isfloat) {
             this.prefName = prefName;
             this.isfloat = isfloat;
-            this.min = min;
         }
 
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (isfloat) {
-                float val = (float) progressToInt(progress, min);
-                if (prefName.equals("songTitleSize")) {
-                    myView.songTitle.setTextSize(val);
-                } else if (prefName.equals("songAuthorSize")) {
-                    myView.songAuthor.setTextSize(val);
-                } else {
-                    updateActionBar(prefName, -1, val, false);
-                }
-            } else {
-                updateActionBar(prefName, progressToInt(progress, min), 0.0f, false);
-            }
-        }
+        public void onStartTrackingTouch(@NonNull Slider slider) { }
 
         @Override
-        public void onStartTrackingTouch(SeekBar seekBar) {}
-
-        @Override
-        public void onStopTrackingTouch(SeekBar seekBar) {
+        public void onStopTrackingTouch(@NonNull Slider slider) {
+            // Save the preference
             if (isfloat) {
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName,(float) progressToInt(seekBar.getProgress(), min));
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName, slider.getValue());
             } else {
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),prefName, progressToInt(seekBar.getProgress(), min));
+                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),prefName, (int)slider.getValue());
             }
         }
     }
+
     private void updateActionBar(String prefName, int intval, float floatval, boolean isvisible) {
         mainActivityInterface.updateActionBarSettings(prefName, intval, floatval, isvisible);
     }
