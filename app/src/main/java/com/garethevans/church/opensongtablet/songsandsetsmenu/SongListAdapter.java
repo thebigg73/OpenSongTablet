@@ -44,8 +44,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     }
 
     public interface AdapterCallback {
-        void onItemClicked(int position, String folder, String filename);
-        void onItemLongClicked(int position, String folder, String filename);
+        void onItemClicked(int position, String folder, String filename, String key);
+        void onItemLongClicked(int position, String folder, String filename, String key);
     }
 
     public SongListAdapter(Context c, MainActivityInterface mainActivityInterface, List<Song> songList,
@@ -143,12 +143,16 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         // Set the listeners
         final String itemFilename = filename;
         final String itemFolder = folder;
+        final String itemKey = key;
         songItemViewHolder.itemCard.setOnClickListener(v -> {
             song.setFilename(itemFilename);
             song.setFolder(itemFolder);
-            mainActivityInterface.getSetActions().getSongForSetWork(c, song);
+            song.setKey(itemKey);
+            //mainActivityInterface.getSetActions().getSongForSetWork(c, song);
+            // Since we clicked on a song in the song list, check for it in the set
+            mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getSetActions().indexSongInSet(c,mainActivityInterface,song));
             if (callback != null) {
-                callback.onItemClicked(i, itemFolder, itemFilename);
+                callback.onItemClicked(i, itemFolder, itemFilename, itemKey);
             }
         });
 
@@ -157,9 +161,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             songItemViewHolder.itemCard.setOnContextClickListener(v -> {
                 song.setFilename(itemFilename);
                 song.setFolder(itemFolder);
-                mainActivityInterface.getSetActions().getSongForSetWork(c, song);
+                //mainActivityInterface.getSetActions().getSongForSetWork(c, song);
+                // Since we clicked on a song in the song list, check for it in the set
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getSetActions().indexSongInSet(c,mainActivityInterface,song));
                 if (callback != null) {
-                    callback.onItemLongClicked(i, itemFolder, itemFilename);
+                    callback.onItemLongClicked(i, itemFolder, itemFilename, itemKey);
                 }
                 return true;
             });
@@ -168,9 +174,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         songItemViewHolder.itemCard.setOnLongClickListener(v -> {
             song.setFilename(itemFilename);
             song.setFolder(itemFolder);
-            mainActivityInterface.getSetActions().getSongForSetWork(c, song);
+            //mainActivityInterface.getSetActions().getSongForSetWork(c, song);
             if (callback != null) {
-                callback.onItemLongClicked(i, itemFolder, itemFilename);
+                callback.onItemLongClicked(i, itemFolder, itemFilename, itemKey);
             }
             return true;
         });

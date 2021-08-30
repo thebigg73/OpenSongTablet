@@ -402,7 +402,7 @@
     <string name="show_capo">"accords Afficher capo"</string>
     <string name="show_chords">"Afficher les accords"</string>
     <string name="show_lyrics">"Voir les paroles"</string>
-    <string name="shownextinset">Montrer la chanson suivante de la liste</string>
+    <string name="show_next_in_set">Montrer la chanson suivante de la liste</string>
     <string name="simple_note">"Note simple  / espace réservé"</string>
     <string name="size">"Taille"</string>
     <string name="size_mini">"Mini"</string>

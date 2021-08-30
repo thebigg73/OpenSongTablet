@@ -176,15 +176,11 @@ public class SetActions {
         return itemStart + folder + "/" + filename + keyStart + key + keyEnd + itemEnd;
     }
 
-    public int indexSongInSet(MainActivityInterface mainActivityInterface, Song thisSong) {
-        // TODO decide if we should find the first or last entry
-        int positionFilename = mainActivityInterface.getCurrentSet().getSetFilenames().indexOf(thisSong.getFilename());
-        int positionFolder = mainActivityInterface.getCurrentSet().getSetFolders().indexOf(thisSong.getFolder());
-        if (positionFilename>-1 && positionFilename==positionFolder) {
-            return positionFilename;
-        } else {
-            return -1;
-        }
+    public int indexSongInSet(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+        String searchText = getSongForSetWork(c,thisSong);
+        int position = mainActivityInterface.getCurrentSet().getSetItems().indexOf(searchText);
+        Log.d(TAG,"searchText="+searchText+ "  position="+position);
+        return position;
     }
 
     public void shuffleSet(Context c, MainActivityInterface mainActivityInterface) {

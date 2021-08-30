@@ -63,7 +63,7 @@
     <string name="customchords_fret">"Oznaka za prvi prag"</string>
     <string name="customchords_noinstrument">"Instrument nije odabran"</string>
     <string name="customchords_nochordname">"Ime akorda nije određeno"</string>
-    <string name="shownextinset">"Prikaži sledeću pesmu u set listi"</string>
+    <string name="show_next_in_set">"Prikaži sledeću pesmu u set listi"</string>
     <string name="top">"Vrh"</string>
     <string name="bottom">"Dno"</string>
     <string name="next">"Sledeće"</string>

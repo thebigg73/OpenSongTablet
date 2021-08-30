@@ -402,7 +402,7 @@
     <string name="show_capo">"Show Capo akordy"</string>
     <string name="show_chords">"Zobrazit akordy"</string>
     <string name="show_lyrics">"zobrazit texty"</string>
-    <string name="shownextinset">Zobrazit další skladbu v sadě</string>
+    <string name="show_next_in_set">Zobrazit další skladbu v sadě</string>
     <string name="simple_note">"Simple note / zástupný"</string>
     <string name="size">"Velikost"</string>
     <string name="size_mini">"Mini"</string>

@@ -403,7 +403,7 @@
     <string name="show_capo">"Visa capo ackord"</string>
     <string name="show_chords">"Visa ackord"</string>
     <string name="show_lyrics">"Visa texter"</string>
-    <string name="shownextinset">"Visa nästa låt i uppsättningen"</string>
+    <string name="show_next_in_set">"Visa nästa låt i uppsättningen"</string>
     <string name="simple_note">"Enkel anteckning / platshållare"</string>
     <string name="size">"Storlek"</string>
     <string name="size_mini">"Mini"</string>

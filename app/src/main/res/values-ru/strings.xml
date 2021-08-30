@@ -403,7 +403,7 @@
     <string name="show_capo">"Показ аккордов с каподастром"</string>
     <string name="show_chords">"Показ аккордов"</string>
     <string name="show_lyrics">"Показ текста"</string>
-    <string name="shownextinset">Показать следующую песню в списке</string>
+    <string name="show_next_in_set">Показать следующую песню в списке</string>
     <string name="simple_note">"Простое примечание / заполнение"</string>
     <string name="size">"Размер"</string>
     <string name="size_mini">"Минимальный"</string>

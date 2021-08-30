@@ -835,7 +835,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="setxmargins">Horizontal margin size</string>
     <string name="setymargins">Vertical margin size</string>
     <string name="show_general_advanced">Toggle general/advanced fields</string>
-    <string name="shownextinset">Show next song in set</string>
+    <string name="show_next_in_set">Show next song in set</string>
     <string name="simple_note">Simple note / placeholder</string>
     <string name="size_mini">Mini</string>
     <string name="size_normal">Normal</string>
@@ -961,4 +961,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="pad_custom_short">Choose built in or custom pads to match each key</string>
     <string name="pad_off">Pads are switched off for this song</string>
     <string name="pad_playback_info">Pad progress is shown here.  Tap to pause, press and hold to stop.</string>
+    <string name="show_prev_song">Show previous song in set</string>
+    <string name="show_next_prev_in_song_menu">Also show previous/next for songs not in a set (using song menu)</string>
 </resources>

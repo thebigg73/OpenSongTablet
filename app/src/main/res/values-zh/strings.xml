@@ -402,7 +402,7 @@
     <string name="show_capo">"投诉警察课显示和弦"</string>
     <string name="show_chords">"显示和弦"</string>
     <string name="show_lyrics">"显示歌词"</string>
-    <string name="shownextinset">在显示设置下一首歌曲</string>
+    <string name="show_next_in_set">在显示设置下一首歌曲</string>
     <string name="simple_note">"简单的音符/占位"</string>
     <string name="size">"尺寸"</string>
     <string name="size_mini">"微型"</string>

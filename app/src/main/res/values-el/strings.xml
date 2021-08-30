@@ -403,7 +403,7 @@
     <string name="show_capo">"συγχορδίες Εμφάνιση capo"</string>
     <string name="show_chords">"Εμφάνιση χορδές"</string>
     <string name="show_lyrics">"Εμφάνιση στίχων"</string>
-    <string name="shownextinset">"Εμφάνιση επόμενου τραγουδιού στην σειρά"</string>
+    <string name="show_next_in_set">"Εμφάνιση επόμενου τραγουδιού στην σειρά"</string>
     <string name="simple_note">"Simple note / placeholder"</string>
     <string name="size">"Size"</string>
     <string name="size_mini">"Μίνι"</string>

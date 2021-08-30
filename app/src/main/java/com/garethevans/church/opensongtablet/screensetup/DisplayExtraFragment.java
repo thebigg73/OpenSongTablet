@@ -45,6 +45,8 @@ public class DisplayExtraFragment extends Fragment {
         // Set the checkboxes
         myView.songSheet.setChecked(getChecked("songSheet",false));
         myView.nextInSet.setChecked(getChecked("nextInSet",true));
+        myView.prevInSet.setChecked(getChecked("prevInSet",false));
+        myView.prevNextSongMenu.setChecked(getChecked("prevNextSongMenu",false));
         myView.boldChordsHeadings.setChecked(getChecked("displayBoldChordsHeadings",false));
         myView.hideLyricsBox.setChecked(getChecked("hideLyricsBox",true));
         myView.trimSections.setChecked(getChecked("trimSections",true));
@@ -77,7 +79,18 @@ public class DisplayExtraFragment extends Fragment {
     private void setListeners() {
         // The switches
         myView.songSheet.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songSheet",isChecked,null));
-        myView.nextInSet.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("nextInSet",isChecked,null));
+        myView.prevInSet.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("prevInSet",isChecked,null);
+            mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
+        });
+        myView.nextInSet.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("nextInSet",isChecked,null);
+            mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
+        });
+        myView.prevNextSongMenu.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("prevNextSongMenu", isChecked, null);
+            mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
+        });
         myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("displayBoldChordsHeadings",isChecked,null));
         myView.hideLyricsBox.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("hideLyricsBox",isChecked,null));
         myView.trimSections.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("trimSections",isChecked,null));

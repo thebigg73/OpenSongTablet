@@ -403,7 +403,7 @@
     <string name="show_capo">"Mutatása capo akkordok"</string>
     <string name="show_chords">"mutatása akkordok"</string>
     <string name="show_lyrics">"mutatása dalszöveg"</string>
-    <string name="shownextinset">Mutasd következő számot set</string>
+    <string name="show_next_in_set">Mutasd következő számot set</string>
     <string name="simple_note">"Egyszerű jegyzet / helykitöltő"</string>
     <string name="size">"Méret"</string>
     <string name="size_mini">"Mini"</string>

@@ -30,11 +30,25 @@
                 android:text="@string/songsheet" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/prevInSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_prev_song"
+                android:checked="false"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/nextInSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/shownextinset"
+                android:text="@string/show_next_in_set"
                 android:checked="true"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/prevNextSongMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_next_prev_in_song_menu"
+                android:checked="false"/>
 
             <TableRow style="@style/DividerLine" />
 

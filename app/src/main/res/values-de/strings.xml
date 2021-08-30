@@ -403,7 +403,7 @@
     <string name="show_capo">"Capo-Akkorde anzeigen"</string>
     <string name="show_chords">"Akkorde anzeigen"</string>
     <string name="show_lyrics">"Texte anzeigen"</string>
-    <string name="shownextinset">Nächsten Song im Set anzeigen</string>
+    <string name="show_next_in_set">Nächsten Song im Set anzeigen</string>
     <string name="simple_note">"Einfache Notiz / Platzhalter"</string>
     <string name="size">"Größe"</string>
     <string name="size_mini">"Mini"</string>

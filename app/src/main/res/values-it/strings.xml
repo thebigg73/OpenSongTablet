@@ -403,7 +403,7 @@
     <string name="show_capo">"accordi Visualizza Capo"</string>
     <string name="show_chords">"Mostra corde"</string>
     <string name="show_lyrics">"Mostra Lyrics"</string>
-    <string name="shownextinset">Mostra brano successivo nel set</string>
+    <string name="show_next_in_set">Mostra brano successivo nel set</string>
     <string name="simple_note">"Semplice nota / segnaposto"</string>
     <string name="size">"Dimensione"</string>
     <string name="size_mini">"Mini"</string>

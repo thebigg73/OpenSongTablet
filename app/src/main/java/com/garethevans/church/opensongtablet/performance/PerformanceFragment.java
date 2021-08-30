@@ -98,7 +98,7 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
         // Set listeners for the scroll/scale/gestures
-        //setGestureListeners();
+        setGestureListeners();
 
         // Show the actionBar and hide it after a time if that's the user's preference
         mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"hideActionBar",false);
@@ -357,6 +357,13 @@ public class PerformanceFragment extends Fragment {
     //private GestureDetector detector;
     @SuppressLint("ClickableViewAccessibility")
     private void setGestureListeners(){
+        // Any interaction with the screen should trigger the display prev/next (if required)
+        myView.zoomLayout.setOnTouchListener((view, motionEvent) -> {
+            mainActivityInterface.getDisplayPrevNext().showAndHide();
+            // Just a passing listener, so return false so we don't consume the touch event
+            return false;
+        });
+
         /*detector = new GestureDetector(getActivity(), new GestureListener(myView.songscrollview,
                 myView.horizontalscrollview,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity,
                 oktoRegisterGesture(),preferences.getMyPreferenceInt(getContext(),"doubleTapGesture",2),

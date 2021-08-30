@@ -403,7 +403,7 @@
     <string name="show_capo">"akordy Pokaż capo"</string>
     <string name="show_chords">"Pokaż akordy"</string>
     <string name="show_lyrics">"Pokaż teksty"</string>
-    <string name="shownextinset">Pokaż następny utwór w zestawie</string>
+    <string name="show_next_in_set">Pokaż następny utwór w zestawie</string>
     <string name="simple_note">"Proste nuty / zastępczy"</string>
     <string name="size">"Rozmiar"</string>
     <string name="size_mini">"Mini"</string>

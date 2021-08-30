@@ -402,7 +402,7 @@
     <string name="show_capo">"Wys Capo akkoorde"</string>
     <string name="show_chords">"Wys akkoorde"</string>
     <string name="show_lyrics">"Wys lyrics"</string>
-    <string name="shownextinset">Wys volgende liedjie in stel</string>
+    <string name="show_next_in_set">Wys volgende liedjie in stel</string>
     <string name="simple_note">"Eenvoudige noot / plekhouer"</string>
     <string name="size">"Grootte"</string>
     <string name="size_mini">"mini"</string>

@@ -403,7 +403,7 @@
     <string name="show_capo">"表示カポ和音"</string>
     <string name="show_chords">"ショー和音"</string>
     <string name="show_lyrics">"表示する歌詞"</string>
-    <string name="shownextinset">セット内の次の曲を表示します</string>
+    <string name="show_next_in_set">セット内の次の曲を表示します</string>
     <string name="simple_note">"シンプルなノート/プレースホルダ"</string>
     <string name="size">"サイズ"</string>
     <string name="size_mini">"ミニ"</string>
