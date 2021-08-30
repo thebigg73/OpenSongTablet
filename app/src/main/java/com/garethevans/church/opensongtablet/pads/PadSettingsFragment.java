@@ -44,7 +44,8 @@ public class PadSettingsFragment extends Fragment {
         myView.padCurrent.setOnClickListener(v -> {
             // Nav home then open the pad bottom sheet
             mainActivityInterface.navHome();
-
+            PadsBottomSheet padsBottomSheet = new PadsBottomSheet();
+            padsBottomSheet.show(requireActivity().getSupportFragmentManager(),"padsBottomSheet");
         });
         myView.padCustom.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.customPadsFragment));
         myView.padSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.padDefaultsFragment));

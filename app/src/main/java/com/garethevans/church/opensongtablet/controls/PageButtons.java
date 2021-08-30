@@ -20,6 +20,7 @@ import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songsandsetsmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.tools.SoundLevelBottomSheet;
@@ -484,9 +485,9 @@ public class PageButtons {
                 transposeBottomSheet.show(actionInterface.getMyFragmentManager(),"TransposeBottomSheet");
                 break;
             case "pad":
-                //TODO
                 if (isLongPress) {
-                    // TODO open pad bottom sheet
+                    PadsBottomSheet padsBottomSheet = new PadsBottomSheet();
+                    padsBottomSheet.show(actionInterface.getMyFragmentManager(),"padsBottomSheet");
                 } else {
                     actionInterface.playPad();
                 }
