@@ -139,16 +139,19 @@ public class Pad {
             } else {
                 mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_key_error));
             }
-        } else if ((padFile.equals("link") || padFile.equals(c.getString(R.string.link_audio))) && !linkAudio.isEmpty()) {
-            padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c, mainActivityInterface, linkAudio);
-            padValid = mainActivityInterface.getStorageAccess().uriExists(c, padUri);
-            if (!padValid) {
-                mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_file_error));
+        } else if ((padFile.equals("link") || padFile.equals(c.getString(R.string.link_audio)))) {
+            if (!linkAudio.isEmpty()) {
+                padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c, mainActivityInterface, linkAudio);
+                padValid = mainActivityInterface.getStorageAccess().uriExists(c, padUri);
+                if (!padValid) {
+                    mainActivityInterface.getShowToast().doIt(c, c.getString(R.string.pad_file_error));
+                }
+            } else {
+                mainActivityInterface.getShowToast().doIt(c, c.getString(R.string.pad_file_error));
             }
         } else if (padFile.equals("off") || padFile.equals(c.getString(R.string.off))) {
             mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_off));
         }
-        Log.d(TAG,"padValid="+padValid+"  padNum="+padNum);
         if (padValid) {
             switch (padNum) {
                 case 1:
@@ -540,6 +543,15 @@ public class Pad {
                 }
                 break;
         }
+    }
+
+    public void panicStop() {
+        // Emergency stop all pads - no fade
+        stopAndReset(1);
+        stopAndReset(2);
+        endTimer(1);
+        endTimer(2);
+        padsActivated = false;
     }
 
     // Orientation changes

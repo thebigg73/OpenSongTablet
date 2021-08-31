@@ -642,6 +642,9 @@
                     <action
                         android:id="@+id/action_padSettingsFragment_to_padDefaultsFragment"
                         app:destination="@id/padDefaultsFragment" />
+                    <deepLink
+                        android:id="@+id/deepLink27"
+                        app:uri="opensongapp://settings/pads" />
                 </fragment>
                 <fragment
                     android:id="@+id/customPadsFragment"

@@ -963,4 +963,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="pad_playback_info">Pad progress is shown here.  Tap to pause, press and hold to stop.</string>
     <string name="show_prev_song">Show previous song in set</string>
     <string name="show_next_prev_in_song_menu">Also show previous/next for songs not in a set (using song menu)</string>
+    <string name="panic">Panic</string>
+    <string name="panic_stop">All output stopped</string>
 </resources>

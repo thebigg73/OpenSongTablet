@@ -22,55 +22,78 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/startStopPad"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_play_white_36dp"
-                android:text="@string/start"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"/>
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/startStopPad"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/start"
+                        app:icon="@drawable/ic_play_white_36dp" />
+                </FrameLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/padPanic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    app:backgroundTint="@color/red"
+                    android:contentDescription="@string/panic"
+                    android:src="@drawable/ic_information_outline_white_36dp"
+                    app:fabSize="mini" />
+            </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/padKey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/key"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:hint="@string/key" />
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                 android:id="@+id/padType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/pad_onoroff"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:hint="@string/pad_onoroff" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                 android:id="@+id/padLinkAudio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/link_audio"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:inputType="none"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:hint="@string/link_audio"
+                android:inputType="none" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/padLoop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/loop"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:text="@string/loop" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/padSettings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/settings" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
