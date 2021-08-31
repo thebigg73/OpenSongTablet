@@ -315,12 +315,15 @@ public class LoadXML extends Activity {
             loc = StaticVariables.whichSongFolder;
         }
 
-        if (loc.contains("../Images")) {
-            FullscreenActivity.isImageSlide = true;
-        } else if (loc.contains("../Scripture")) {
-            FullscreenActivity.isScripture = true;
-        } else if (loc.contains("../Slides")) {
-            FullscreenActivity.isSlide = true;
+        // IV - Presentation handles various special content. These are handled as song with content for other modes.
+        if (StaticVariables.whichMode.equals("Presentation")) {
+            if (loc.contains("../Images")) {
+                FullscreenActivity.isImageSlide = true;
+            } else if (loc.contains("../Scripture")) {
+                FullscreenActivity.isScripture = true;
+            } else if (loc.contains("../Slides")) {
+                FullscreenActivity.isSlide = true;
+            }
         } else if (loc.contains("../Variations")) {
             FullscreenActivity.isSong = true;
         }

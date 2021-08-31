@@ -262,32 +262,37 @@ public class ProcessSong extends Activity {
         // Split the lyrics into a line by line array so we can fix individual lines
         String[] lineLyrics = myLyrics.split("\n");
         StringBuilder myLyricsBuilder = new StringBuilder();
+        String bit;
         for (int l = 0; l < lineLyrics.length; l++) {
 
-            if (lineLyrics[l].contains("_")) {
-                if (l > 0 && !lineLyrics[l].contains("[" + c.getResources().getString(R.string.image) + "_") &&
+            bit = lineLyrics[l];
+
+            // IV - Handle underscores but not if a media line where they can be part of file path
+            if (bit.contains("_") && !(bit.toLowerCase(Locale.ROOT).endsWith(".png") || bit.toLowerCase(Locale.ROOT).endsWith(".jpg") || bit.toLowerCase(Locale.ROOT).endsWith(".gif") ||
+                    bit.toLowerCase(Locale.ROOT).contains("content://") || bit.toLowerCase(Locale.ROOT).contains("file://"))) {
+                if (l > 0 && !bit.contains("[" + c.getResources().getString(R.string.image) + "_") &&
                         !lineLyrics[l - 1].contains("[" + c.getResources().getString(R.string.image) + "_")) {
                     if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-                        lineLyrics[l] = lineLyrics[l].replace("_", "");
+                        bit = bit.replace("_", "");
                     } else if ((StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Performance")) &&
                             !preferences.getMyPreferenceBoolean(c, "displayChords", true)) {
-                        lineLyrics[l] = lineLyrics[l].replace("_", "");
+                        bit = bit.replace("_", "");
                     } else {
-                        lineLyrics[l] = lineLyrics[l].replace("_", " ");
+                        bit = bit.replace("_", " ");
                     }
-                } else if (l == 0 && !lineLyrics[l].contains("[" + c.getResources().getString(R.string.image) + "_")) {
+                } else if (l == 0 && !bit.contains("[" + c.getResources().getString(R.string.image) + "_")) {
 
                     if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-                        lineLyrics[l] = lineLyrics[l].replace("_", "");
+                        bit = bit.replace("_", "");
                     } else if ((StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Performance")) &&
                             !preferences.getMyPreferenceBoolean(c, "displayChords", true)) {
-                        lineLyrics[l] = lineLyrics[l].replace("_", "");
+                        bit = bit.replace("_", "");
                     } else {
-                        lineLyrics[l] = lineLyrics[l].replace("_", " ");
+                        bit = bit.replace("_", " ");
                     }
                 }
             }
-            myLyricsBuilder.append(lineLyrics[l]).append("\n");
+            myLyricsBuilder.append(bit).append("\n");
         }
         myLyrics = myLyricsBuilder.toString();
         return myLyrics;
@@ -1316,7 +1321,12 @@ public class ProcessSong extends Activity {
 
                 int maxwidth = 320;
                 if (FullscreenActivity.myWidthAvail > 0) {
-                    maxwidth = (int) (0.25f * (float) FullscreenActivity.myWidthAvail);
+                    // IV - Bigger for presentation view
+                    if (presentation) {
+                        maxwidth = (int) (0.75f * (float) FullscreenActivity.myWidthAvail);
+                    } else {
+                        maxwidth = (int) (0.25f * (float) FullscreenActivity.myWidthAvail);
+                    }
                 }
 
                 img.setMaxWidth(maxwidth);
@@ -3016,7 +3026,7 @@ public class ProcessSong extends Activity {
                 songInformation.append(";© ").append(multiLine(StaticVariables.mCopyright, longestLine).replaceAll("\n", "\n;")).append("  \n");
             }
 
-            // IV - Try to generate a copo/key/tempo/time line
+            // IV - Try to generate a capo/key/tempo/time line
             String sprefix = ";";
 
             if (preferences.getMyPreferenceBoolean(c, "displayCapoChords", true)) {
