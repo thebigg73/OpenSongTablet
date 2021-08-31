@@ -3023,10 +3023,8 @@ public class StageMode extends AppCompatActivity implements
                             }).start();
                             if (!fromautoshow) {
                                 // If user manually wanted to show, otherwise song load animates it in
-                                // IV - A fade out may have occurred so set Alpha to 1
                                 highlightNotes.setVisibility(View.VISIBLE);
                             } else if (FullscreenActivity.isSong) {
-                                // IV - A fade out may have occurred so set Alpha to 1
                                 highlightNotes.setVisibility(View.VISIBLE);
                                 if (FullscreenActivity.whichDirection.equals("L2R")) {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
@@ -7824,10 +7822,10 @@ public class StageMode extends AppCompatActivity implements
             // IV - HighlightNotes are not (yet) correctly scaling/positioning on scale so remove!
             highlightNotes.setVisibility(View.GONE);
             FullscreenActivity.highlightOn = false;
-            //highlightNotes.setPivotX(glideimage.getLeft());
-            //highlightNotes.setPivotY(glideimage.getTop());
-            //highlightNotes.setScaleX(1.0f);
-            //highlightNotes.setScaleY(1.0f);
+            highlightNotes.setPivotX(glideimage.getLeft());
+            highlightNotes.setPivotY(glideimage.getTop());
+            highlightNotes.setScaleX(1.0f);
+            highlightNotes.setScaleY(1.0f);
 
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                 glideimage.getLayoutParams().width = songwidth;
