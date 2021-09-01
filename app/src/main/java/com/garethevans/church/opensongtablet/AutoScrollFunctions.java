@@ -216,6 +216,7 @@ class AutoScrollFunctions {
                     tv.setTextColor(0xffffffff);
                 }
                 tv.setText(text);
+                tvt.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
             }
         }
     }

@@ -1321,8 +1321,8 @@ public class ProcessSong extends Activity {
 
                 int maxwidth = 320;
                 if (FullscreenActivity.myWidthAvail > 0) {
-                    // IV - Bigger for presentation view
-                    if (presentation) {
+                    // IV - Bigger for Stage mode presentation view
+                    if (StaticVariables.whichMode.equals("Stage") && presentation) {
                         maxwidth = (int) (0.75f * (float) FullscreenActivity.myWidthAvail);
                     } else {
                         maxwidth = (int) (0.25f * (float) FullscreenActivity.myWidthAvail);
