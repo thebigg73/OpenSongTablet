@@ -1598,6 +1598,25 @@ public class StorageAccess {
             }
         }
     }
+    public boolean renameFileFromUri(Context c, Uri oldUri, Uri newUri, String newName) {
+        if (lollipopOrLater()) {
+            return renameFileFromUri_SAF(c, oldUri, newName);
+        } else {
+            return renameFileFromUri_File(oldUri, newUri);
+        }
+    }
+    private boolean renameFileFromUri_File(Uri oldUri, Uri newUri) {
+        File file = new File(oldUri.getPath());
+        return file.renameTo(new File(newUri.getPath()));
+    }
+    private boolean renameFileFromUri_SAF(Context c, Uri oldUri, String newName) {
+        DocumentFile documentFile = DocumentFile.fromTreeUri(c,oldUri);
+        if (documentFile!=null) {
+            return documentFile.renameTo(newName);
+        } else {
+            return false;
+        }
+    }
 
 
     // Actions for folders (create, delete, rename, clear)

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.RandomSongBottomSheet;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -12,6 +14,7 @@ import java.util.TimerTask;
 
 public class PedalActions {
 
+    private final MainActivityInterface mainActivityInterface;
     private ArrayList<String> actions, actionCodes;
     private final int[] pedalCode = new int[9]; // 8 buttons, but ignore item 0
     private final String[] pedalMidi = new String[9];
@@ -31,6 +34,11 @@ public class PedalActions {
             airTurnPaused = false;
         }
     };
+
+    public PedalActions(MainActivityInterface mainActivityInterface) {
+        this.mainActivityInterface = mainActivityInterface;
+    }
+
     public void setUpPedalActions(Context c, MainActivityInterface mainActivityInterface) {
         setActions(c);
         setPrefs(c,mainActivityInterface);
@@ -138,11 +146,11 @@ public class PedalActions {
         Log.d("PedalActions","pedal="+pedal+"  desiredAction="+desiredAction);
         switch (desiredAction) {
             case "prev":
-                // TODO prev
+                mainActivityInterface.getDisplayPrevNext().moveToPrev();
                 break;
 
             case "next":
-                // TODO next
+                mainActivityInterface.getDisplayPrevNext().moveToNext();
                 break;
 
             case "down":
@@ -154,7 +162,7 @@ public class PedalActions {
                 break;
 
             case "pad":
-                // TODO pad
+                mainActivityInterface.playPad();
                 break;
 
             case "autoscroll":
@@ -162,35 +170,44 @@ public class PedalActions {
                 break;
 
             case "metronome":
-                // TODO metronome
+                mainActivityInterface.toggleMetronome();
                 break;
 
             case "pad_autoscroll":
+                mainActivityInterface.playPad();
                 // TODO pad_autoscroll
                 break;
 
             case "pad_metronome":
+                mainActivityInterface.playPad();
+                mainActivityInterface.toggleMetronome();
                 // TODO pad_metronome
                 break;
 
             case "autoscroll_metronome":
+                mainActivityInterface.toggleMetronome();
                 // TODO autoscroll_metronome
                 break;
 
             case "pad_autoscroll_metronome":
+                mainActivityInterface.playPad();
+                mainActivityInterface.toggleMetronome();
                 // TODO pad_autoscroll_metronome
                 break;
 
             case "editsong":
-                // TODO editsong
+                mainActivityInterface.navigateToFragment("opensongapp;//settings/song/edit",0);
                 break;
 
             case "randomsong":
-                // TODO randomsong
+                // TODO decide if we are in song or set menu.  For now assume song
+                RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet("song");
+                randomSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"randomSongBottomSheet");
                 break;
 
             case "transpose":
-                // TODO transpose
+                TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet(false);
+                transposeBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"transposeBottomSheet");
                 break;
 
             case "showchords":

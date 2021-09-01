@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
@@ -212,4 +213,6 @@ public interface MainActivityInterface {
     int getPositionOfSongInMenu();
     Song getSongInMenu(int position);
     ArrayList<Song> getSongsInMenu();
+    void toggleMetronome();
+    FragmentManager getMyFragmentManager();
 }

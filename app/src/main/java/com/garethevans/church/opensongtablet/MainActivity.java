@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         // Song actions/features
         pageButtons = new PageButtons(this,preferences);
         midi = new Midi();
-        pedalActions = new PedalActions();
+        pedalActions = new PedalActions(mainActivityInterface);
         pad = new Pad(mainActivityInterface, activityMainBinding.onScreenInfo.padPlayback);
         autoscrollActions = new AutoscrollActions();
         metronome = new Metronome();
@@ -1638,6 +1638,14 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
             // Showcase if required
             mainActivityInterface.getShowCase().singleShowCase(this,activityMainBinding.onScreenInfo.padPlayback,getString(R.string.ok),getString(R.string.pad_playback_info),true,"padPlayback");
             return true;
+        }
+    }
+    @Override
+    public void toggleMetronome() {
+        if (metronome.getIsRunning()) {
+            metronome.stopMetronome(mainActivityInterface);
+        } else {
+            metronome.startMetronome(this,this,mainActivityInterface);
         }
     }
     @Override

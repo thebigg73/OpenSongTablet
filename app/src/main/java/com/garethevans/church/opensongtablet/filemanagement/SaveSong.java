@@ -25,6 +25,10 @@ public class SaveSong {
             String oldFilename = mainActivityInterface.getSong().getFilename();
             boolean folderChange = !newSong.getFolder().equals(oldFolder);
             boolean filenameChange = !newSong.getFilename().equals(oldFilename);
+            String oldHighlighterFile_p = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),true);
+            String oldHighlighterFile_l = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(),false);
+            String newHighlighterFile_p = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,true);
+            String newHighlighterFile_l = mainActivityInterface.getProcessSong().getHighlighterFilename(newSong,false);
 
             // The folder may not be in 'Songs'.  If this is the case, it starts with ../
             // This is most common if a user wants to save a received song (set/nearby)
@@ -50,6 +54,19 @@ public class SaveSong {
                     mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(c, mainActivityInterface,
                             newSong.getFolder(), newSong.getFilename());
                 }
+
+                // Now try to rename the highlighter files if they exist
+                Uri portraitOld = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Highlighter","", oldHighlighterFile_p);
+                Uri landscapeOld = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Highlighter","", oldHighlighterFile_l);
+                if (mainActivityInterface.getStorageAccess().uriExists(c,portraitOld)) {
+                    Uri portraitNew = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", newHighlighterFile_p);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(c,portraitOld,portraitNew,newHighlighterFile_p);
+                }
+                if (mainActivityInterface.getStorageAccess().uriExists(c,landscapeOld)) {
+                    Uri landscapeNew = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", newHighlighterFile_l);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(c,landscapeOld,landscapeNew,newHighlighterFile_l);
+                }
+
             }
 
             // Now save the new song
@@ -71,6 +88,8 @@ public class SaveSong {
                     Log.d(TAG, "oldUri: " + oldUri);
                 }
             }
+
+
 
             return saveSuccessful;
 

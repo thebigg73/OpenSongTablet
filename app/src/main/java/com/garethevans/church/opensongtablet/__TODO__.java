@@ -10,6 +10,8 @@ public class __TODO__ {
 
     The following menus still need completed
 
+    Duplicate song - add to song actions menu?
+
     Set management
 
     Song menu action button - show song actions
