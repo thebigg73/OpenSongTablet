@@ -710,11 +710,13 @@ class PresentationCommon {
                         if (StaticVariables.infoBarChangeRequired) {
                             StaticVariables.infoBarChangeRequired = false;
                             // IV - Make sure song info is seen for at least 10s
-                            infoBarUntilTime = System.currentTimeMillis() + 10000;
-                            presentermode_alert.setVisibility(View.GONE);
-                            // IV - Force consideration of alert state after the Until period
-                            infoBarAlertState = "";
-                            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                            if (new StringBuilder().append(finalNew_title).append(finalNew_author).append(finalNew_copyright).append(finalNew_ccli).toString().trim() != "") {
+                                infoBarUntilTime = System.currentTimeMillis() + 10000;
+                                presentermode_alert.setVisibility(View.GONE);
+                                // IV - Force consideration of alert state after the Until period
+                                infoBarAlertState = "";
+                                CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                            }
                         } else {
                             if (infoBarAlertState.equals("Y")) {
                                 // IV - Align alert text the same as lyrics
