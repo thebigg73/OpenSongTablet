@@ -6506,6 +6506,7 @@ public class StageMode extends AppCompatActivity implements
                     if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
                         StaticVariables.scrollpageHeight = glideimage_ScrollView.getChildAt(0).getMeasuredHeight() -
                                 glideimage_ScrollView.getHeight();
+                        viewdrawn = true;
 
                     } else {
                         if (songscrollview.getChildAt(0) != null) {
@@ -6576,12 +6577,12 @@ public class StageMode extends AppCompatActivity implements
                     // IV - update the scroll buttons as we go
                     FullscreenActivity.time_passed = System.currentTimeMillis();
                     delaycheckscroll.post(checkScrollPosition);
-                    boolean doscroll = ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000) >= StaticVariables.autoScrollDelay;
+                    boolean doscroll = ((((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000) >= StaticVariables.autoScrollDelay) || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0));
                     if (doscroll) {
                         publishProgress(1);
                         // We set a runnable to end scroll after 4s - renewed if we are not at the end of the page.
                         // IV - Helps manual drag during autoscroll - a user can drag temporarily to the end and back up without an immediate autoscroll stop
-                        if (FullscreenActivity.newPosFloat < StaticVariables.scrollpageHeight) {
+                        if ((FullscreenActivity.newPosFloat < StaticVariables.scrollpageHeight) || !currentTime_TextView.getText().equals(totalTime_TextView.getText())) {
                             endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
                         }
                         endAutoScrollHandler.postDelayed(endAutoScrollRunnable, 4000);
@@ -6650,7 +6651,7 @@ public class StageMode extends AppCompatActivity implements
                     doCancelAsyncTask(mtask_autoscroll_music);
                     if (FullscreenActivity.isPDF && (FullscreenActivity.pdfPageCurrent+1)<FullscreenActivity.pdfPageCount) {
                         pdfCanContinueScrolling = true;
-                        goToNextItem();
+                        doScrollDown();
                     } else {
                         pdfCanContinueScrolling = false;
                         playbackProgress.setVisibility(View.GONE);

@@ -203,7 +203,7 @@ class AutoScrollFunctions {
                     tvs.setTextSize(StaticVariables.infoBarSmallTextSize);
                 }
 
-                if (currtimesecs < StaticVariables.autoScrollDelay) {
+                if ((currtimesecs < StaticVariables.autoScrollDelay) && (!(FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0))) {
                     // Set the time as a backwards count down
                     currtimesecs = StaticVariables.autoScrollDelay - currtimesecs;
                     text = TimeTools.timeFormatFixer(currtimesecs);
