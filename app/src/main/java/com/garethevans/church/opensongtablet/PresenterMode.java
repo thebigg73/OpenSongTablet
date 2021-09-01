@@ -2128,7 +2128,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             }
 
-            String bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
+            String bit = "";
+
+            try {
+                bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // If this is an image, hide the text, show the image, otherwise show the text in the slide window
             if (FullscreenActivity.isPDF) {
