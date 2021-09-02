@@ -500,10 +500,6 @@ class PresentationCommon {
             showLogoActive = false;
             CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
-
-        if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
-        }
         // IV - Song infobar fade and screen sizing processing are handled elsewhere
         // IV - If we are not already doing a lyric fade
         if ((lyricAfterTime - 5) < System.currentTimeMillis()) {
@@ -630,8 +626,10 @@ class PresentationCommon {
     }
     private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
                                        TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert, LinearLayout bottom_infobar) {
-        if (!(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF)) {
-
+        if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+            // IV - Force consideration of alert state after the Until period
+            infoBarAlertState = "";
+        } else {
             // IV - Overrides for when not hiding song info
             if (!preferences.getMyPreferenceBoolean(c,"presoInfoBarHide",true) && PresenterMode.alert_on.equals("N")) {
                 // IV - If we are ending Alert display then force song info display else keep song info by extending the until time
@@ -710,11 +708,12 @@ class PresentationCommon {
                         if (StaticVariables.infoBarChangeRequired) {
                             StaticVariables.infoBarChangeRequired = false;
                             // IV - Make sure song info is seen for at least 10s
+                            infoBarUntilTime = System.currentTimeMillis() + 10000;
+                            presentermode_alert.setVisibility(View.GONE);
+                            // IV - Force consideration of alert state after the Until period
+                            infoBarAlertState = "";
+                            // IV - Fade in only if something to show
                             if (new StringBuilder().append(finalNew_title).append(finalNew_author).append(finalNew_copyright).append(finalNew_ccli).toString().trim() != "") {
-                                infoBarUntilTime = System.currentTimeMillis() + 10000;
-                                presentermode_alert.setVisibility(View.GONE);
-                                // IV - Force consideration of alert state after the Until period
-                                infoBarAlertState = "";
                                 CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                             }
                         } else {
@@ -722,7 +721,9 @@ class PresentationCommon {
                                 // IV - Align alert text the same as lyrics
                                 presentermode_alert.setGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.END));
                                 presentermode_alert.setVisibility(View.VISIBLE);
-                                CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                                h.postDelayed(() -> {
+                                    CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                                }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
                             } else {
                                 presentermode_alert.setVisibility(View.GONE);
                             }
