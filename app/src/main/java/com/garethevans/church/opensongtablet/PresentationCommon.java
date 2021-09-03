@@ -500,6 +500,10 @@ class PresentationCommon {
             showLogoActive = false;
             CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
+
+        if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+        }
         // IV - Song infobar fade and screen sizing processing are handled elsewhere
         // IV - If we are not already doing a lyric fade
         if ((lyricAfterTime - 5) < System.currentTimeMillis()) {
@@ -627,7 +631,7 @@ class PresentationCommon {
     private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
                                        TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert, LinearLayout bottom_infobar) {
         if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-            // IV - Force consideration of alert state after the Until period
+            // IV - Force consideration of alert state when text after the Until period
             infoBarAlertState = "";
         } else {
             // IV - Overrides for when not hiding song info
