@@ -2194,7 +2194,6 @@ public class StageMode extends AppCompatActivity implements
 
     private void doScrollDown() {
         // Temporarily pause any running autoscroll
-        Log.d(TAG,"doScrollDown()");
         pauseAutoscroll();
 
         // IV - PDF page scroll logic moved here
@@ -2212,22 +2211,22 @@ public class StageMode extends AppCompatActivity implements
 
         if (!dealtwithaspdf) {
             if (StaticVariables.whichMode.equals("Stage") && FullscreenActivity.isSong) {
-                if (StaticVariables.currentSection == StaticVariables.songSections.length) {
-                    // We are at the end of the song, so allow next
+                if (StaticVariables.currentSection == StaticVariables.songSections.length - 1) {
+                    // We are at the end of the song
                     Log.d("d", "End of the song");
-                }
-                try {
-                    StaticVariables.currentSection += 1;
-                    selectSection(StaticVariables.currentSection);
-                } catch (Exception e) {
-                    StaticVariables.currentSection -= 1;
+                } else {
+                    try {
+                        StaticVariables.currentSection += 1;
+                        selectSection(StaticVariables.currentSection);
+                    } catch (Exception e) {
+                        StaticVariables.currentSection -= 1;
+                    }
                 }
                 // Make sure all dynamic (scroll and set) buttons display
                 onScrollAction ();
             } else {
                 DisplayMetrics metrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
 
                 ObjectAnimator animator;
 
@@ -6738,7 +6737,7 @@ public class StageMode extends AppCompatActivity implements
         if (FullscreenActivity.isSong) {
             if (StaticVariables.whichMode!=null && StaticVariables.whichMode.equals("Stage") &&
                 StaticVariables.songSections != null && StaticVariables.currentSection > -1) {
-                showscrollup = StaticVariables.currentSection > 1;
+                showscrollup = StaticVariables.currentSection > 0;
             } else {
                 if (songscrollview != null) {
                     if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
