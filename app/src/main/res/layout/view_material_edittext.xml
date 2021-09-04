@@ -9,6 +9,8 @@
     android:labelFor="@+id/editText"
     app:hintTextColor="@color/vlightgrey"
     android:textColorHint="@color/vlightgrey"
+    android:gravity="start"
+    android:layout_gravity="start"
     tools:hint="Hint">
 
     <com.google.android.material.textfield.TextInputEditText
@@ -19,5 +21,7 @@
         android:layout_margin="0dp"
         android:scrollHorizontally="true"
         android:padding="16dp"
+        android:gravity="start"
+        android:layout_gravity="start"
         tools:text="The text" />
 </com.google.android.material.textfield.TextInputLayout>

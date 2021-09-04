@@ -41,6 +41,11 @@ public class Bible {
     public void buildBibleFiles(Context c, MainActivityInterface mainActivityInterface) {
         bibleFiles = new ArrayList<>();
         bibleFiles = mainActivityInterface.getStorageAccess().listFilesInFolder(c,mainActivityInterface,"OpenSong Scripture","");
+        String myBiblePref = mainActivityInterface.getPreferences().getMyPreferenceString(c,"bibleCurrentFile","");
+        if (!myBiblePref.isEmpty() && bibleFiles.contains(myBiblePref)) {
+            bibleFile = myBiblePref;
+        }
+
     }
     public ArrayList<String> getBibleFiles() {
         return bibleFiles;
@@ -50,6 +55,7 @@ public class Bible {
     }
     public void setBibleFile(Context c, MainActivityInterface mainActivityInterface, String bibleFile) {
         this.bibleFile = bibleFile;
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"bibleCurrentFile",bibleFile);
         decideOnBibleFileFormat(c,mainActivityInterface);
     }
     public void decideOnBibleFileFormat(Context c, MainActivityInterface mainActivityInterface) {
@@ -396,7 +402,12 @@ public class Bible {
                     e.printStackTrace();
                 }
             }
-            return stringBuilder.toString();
+            // Trim and fix new sentence double spaces
+            String string = stringBuilder.toString().trim();
+            string = string.replace(".", ". ");
+            string = string.replace(".  ", ". ");
+            string = string.replace(". ", ".  ");
+            return string;
         } else {
             return "";
         }

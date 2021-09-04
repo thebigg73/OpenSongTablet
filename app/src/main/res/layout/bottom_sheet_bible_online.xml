@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search_biblegateway" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/addToSet"
+        android:layout_below="@+id/dialogHeader"
+        android:padding="16dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/searchOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                        android:id="@+id/searchPhrase"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/bible_search"
+                        android:text=""
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/downloadWiFiOnly"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/downloadWiFiOnly" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/doSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/search_biblegateway"/>
+                </LinearLayout>
+
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/searchWeb"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <WebView
+                        android:id="@+id/webView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/extract"
+                        app:icon="@drawable/ic_download_white_36dp"
+                        app:layout_anchor="@+id/webView"
+                        app:layout_anchorGravity="end|bottom"
+                        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/back"
+                        android:src="@drawable/ic_arrow_left_white_36dp"
+                        app:layout_anchor="@+id/webView"
+                        app:layout_anchorGravity="end|top"
+                        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                <LinearLayout
+                    android:id="@+id/searchResults"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:hint="@string/bible_verse" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                        android:id="@+id/translation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:hint="@string/bible_translation" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                        android:id="@+id/content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:hint="@string/text"
+                        android:inputType="textMultiLine"
+                        android:minLines="4" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/addToSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp"
+        android:text="@string/set_add"
+        app:icon="@drawable/ic_plus_white_36dp" />
+
+</RelativeLayout>

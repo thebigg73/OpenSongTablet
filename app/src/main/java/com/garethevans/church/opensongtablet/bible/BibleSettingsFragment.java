@@ -46,6 +46,10 @@ public class BibleSettingsFragment extends Fragment {
             bibleOfflineBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"bibleOffLineBottomSheet");
             mainActivityInterface.navHome();
         });
-        //myView.bibleGateway.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.bibleGatewayFragment));
+        myView.bibleGateway.setOnClickListener(v -> {
+            BibleGatewayBottomSheet bibleGatewayBottomSheet = new BibleGatewayBottomSheet();
+            bibleGatewayBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"bibleGatewayBottomSheet");
+            mainActivityInterface.navHome();
+        });
     }
 }

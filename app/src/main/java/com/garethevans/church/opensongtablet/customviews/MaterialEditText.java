@@ -76,6 +76,10 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         editText.setId(View.generateViewId());
         textInputLayout.setId(View.generateViewId());
 
+        // Left align
+        editText.setGravity(Gravity.START);
+        textInputLayout.setGravity(Gravity.START);
+
         // Set the text
         if (text != null) {
             editText.setText(text);
