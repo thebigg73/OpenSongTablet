@@ -982,4 +982,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="optional">Optional</string>
     <string name="line_length">Line length</string>
     <string name="lines_per_slide">Lines per slide</string>
+    <string name="text_extract">Extract text from file (OCR)</string>
 </resources>

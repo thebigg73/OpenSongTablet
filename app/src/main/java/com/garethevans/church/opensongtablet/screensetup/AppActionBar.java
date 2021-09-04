@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 
 public class AppActionBar {
 
@@ -90,6 +91,9 @@ public class AppActionBar {
             } else {
                 hideView(key, true);
             }
+            title.setOnClickListener(v -> openDetails(mainActivityInterface));
+            author.setOnClickListener(v -> openDetails(mainActivityInterface));
+            key.setOnClickListener(v -> openDetails(mainActivityInterface));
         } else {
             // We are in a different fragment, so don't hide the song info stuff
             actionBar.show();
@@ -101,6 +105,12 @@ public class AppActionBar {
             }
         }
     }
+
+    private void openDetails(MainActivityInterface mainActivityInterface) {
+        SongDetailsBottomSheet songDetailsBottomSheet = new SongDetailsBottomSheet();
+        songDetailsBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"songDetailsBottomSheet");
+    }
+
     public void setActionBarCapo(TextView capo, String string) {
         capo.setText(string);
     }
