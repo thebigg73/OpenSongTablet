@@ -643,141 +643,15 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
-    private void initialiseTheSpinners(final boolean bibles, final boolean books, final boolean chapters) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (bibles) {
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            bibleFileSpinner.setAdapter(blank_array);
-                            bibleFileSpinner.setOnItemSelectedListener(null);
-                            bibleFileSpinner.setEnabled(false);
-                        }
-                    });
-                }
-                if (books) {
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            bibleBookSpinner.setAdapter(blank_array);
-                            bibleBookSpinner.setOnItemSelectedListener(null);
-                            bibleBookSpinner.setEnabled(false);
-                        }
-                    });
-                }
-                if (chapters) {
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            bibleChapterSpinner.setAdapter(blank_array);
-                            bibleChapterSpinner.setOnItemSelectedListener(null);
-                            bibleChapterSpinner.setEnabled(false);
-                        }
-                    });
-                }
-                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        bibleVerseFromSpinner.setAdapter(blank_array);
-                        bibleVerseToSpinner.setAdapter(blank_array);
-                        bibleVerseFromSpinner.setOnItemSelectedListener(null);
-                        bibleVerseToSpinner.setOnItemSelectedListener(null);
-                        bibleVerseFromSpinner.setEnabled(false);
-                        bibleVerseToSpinner.setEnabled(false);
-                    }
-                });
-            }
-        }).start();
-    }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private void initialiseTheWebView() {
-        webViewBibleDownload.setWebViewClient(new MyClient());
-        webViewBibleDownload.setWebChromeClient(new GoogleClient());
-        WebSettings webSettings = webViewBibleDownload.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webViewBibleDownload.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        webViewBibleDownload.clearCache(true);
-        webViewBibleDownload.clearHistory();
-        webViewBibleDownload.setDownloadListener(new DownloadListener() {
-            @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
 
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setMimeType(mimetype);
-                String cookies = CookieManager.getInstance().getCookie(url);
-                request.addRequestHeader("cookie", cookies);
-                request.addRequestHeader("User-Agent", userAgent);
-                request.setDescription("Downloading file...");
-                String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
-                request.setTitle(filename);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
-                downloadedFile = Uri.fromFile(file);
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                DownloadManager dm = (DownloadManager) Objects.requireNonNull(getActivity()).getSystemService(DOWNLOAD_SERVICE);
-                if (dm != null) {
-                    dm.enqueue(request);
-                }
-            }
-        });
-        // Hide the webview to begin with
-        hideViewsIfNeeded(false);
-        webViewCloseFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideViewsIfNeeded(false);
-            }
-        });
-    }
 
-    private void hideViewsIfNeeded(boolean showWebView) {
-        if (showWebView) {
-            xmlscrollview.setVisibility(View.GONE);
-            webViewBibleDownload.setVisibility(View.VISIBLE);
-            webViewBibleDownload.loadUrl("https://sourceforge.net/projects/zefania-sharp/files/Bibles/");
-            webViewCloseFAB.show();
-        } else {
-            xmlscrollview.setVisibility(View.VISIBLE);
-            webViewBibleDownload.setVisibility(View.GONE);
-            webViewCloseFAB.hide();
-        }
-    }
 
-    private void dealWithDownloadFile() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                extractTheZipFile(downloadedFile);
-                deleteTheZipFile(downloadedFile);
-                // Update the list of bible files available
-                updateBibleFiles();
-            }
-        }).start();
-    }
 
-    private void extractTheZipFile(Uri newuri) {
-        // Unzip the file
-        StorageAccess storageAccess = new StorageAccess();
-        storageAccess.extractBibleZipFile(getActivity(), preferences, newuri);
-    }
 
-    private void deleteTheZipFile(Uri newuri) {
-            StorageAccess storageAccess = new StorageAccess();
-            storageAccess.deleteFile(getActivity(), newuri);
-    }
 
-    private final BroadcastReceiver onComplete = new BroadcastReceiver() {
-        public void onReceive(Context ctxt, Intent intent) {
-            hideViewsIfNeeded(false);
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.wait);
-            _ShowToast.showToast(getActivity());
 
-            // Copy the zip file
-            dealWithDownloadFile();
-        }
-    };
+
+
+
 }*/

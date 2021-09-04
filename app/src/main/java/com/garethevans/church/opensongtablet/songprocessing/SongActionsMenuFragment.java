@@ -39,6 +39,7 @@ public class SongActionsMenuFragment extends Fragment {
 
     private void setListeners() {
         // TODO add pages for the settings
+        myView.importButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
         myView.edit.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.editsong_graph));
         //myView.delete.setOnClickListener(v -> );
         myView.share.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.exportFragment));

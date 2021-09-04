@@ -20,12 +20,14 @@ import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
+import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.chords.Transpose;
 import com.garethevans.church.opensongtablet.controls.Gestures;
 import com.garethevans.church.opensongtablet.controls.PageButtons;
 import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.Swipes;
+import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.export.MakePDF;
@@ -215,4 +217,6 @@ public interface MainActivityInterface {
     ArrayList<Song> getSongsInMenu();
     void toggleMetronome();
     FragmentManager getMyFragmentManager();
+    Bible getBible();
+    CustomSlide getCustomSlide();
 }

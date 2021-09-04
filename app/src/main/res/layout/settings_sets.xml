@@ -44,6 +44,24 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/bibleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bible"
+                android:hint="@string/bible_browse" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/slideButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/custom_slide"
+                android:hint="@string/add_custom_slide" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/exportSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

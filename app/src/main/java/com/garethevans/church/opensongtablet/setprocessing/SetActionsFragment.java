@@ -40,6 +40,8 @@ public class SetActionsFragment extends Fragment {
             mainActivityInterface.setWhattodo("saveset");
             mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
         });
+        myView.bibleButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.bible_graph));
+
         return myView.getRoot();
     }
 }

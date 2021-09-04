@@ -11,7 +11,7 @@ public class CurrentSet {
 
     private String initialSetString;
     private String currentSetString;
-    private ArrayList<String> setItems;      // The set item $$_folder/filename_**key**__$$
+    private ArrayList<String> setItems;      // The set item $**_folder/filename_***key***_**$ or $**_**{customsfolder}/filename_******_**$
     private ArrayList<String> setFolders;    // The folder only
     private ArrayList<String> setFilenames;  // The filename only
     private ArrayList<String> setKeys;       // The key only

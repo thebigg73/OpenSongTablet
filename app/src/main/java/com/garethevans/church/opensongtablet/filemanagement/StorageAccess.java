@@ -37,7 +37,6 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -55,8 +54,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 public class StorageAccess {
 
@@ -1982,53 +1979,6 @@ public class StorageAccess {
             e.printStackTrace();
         }
         return count;
-    }
-
-
-    // TODO MOVE TO A BIBLE FILE
-    // This is used to extract downloaded bible XML files from the zip
-    void extractBibleZipFile(Context c, MainActivityInterface mainActivityInterface, Uri zipUri) {
-        String folder = "OpenSong Scripture";
-        String subfolder = "";
-
-        // This bit could be slow, so it will likely be called in an async task
-        ZipInputStream zis = null;
-        try {
-            InputStream inputStream = getInputStream(c, zipUri);
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            zis = new ZipInputStream(bufferedInputStream);
-            ZipEntry ze;
-            int count;
-            byte[] buffer = new byte[8192];
-            while ((ze = zis.getNextEntry()) != null) {
-
-                createFile(c, mainActivityInterface, null, folder, subfolder, ze.getName());
-                Uri newUri = getUriForItem(c, mainActivityInterface, folder, subfolder, ze.getName());
-                OutputStream outputStream = getOutputStream(c, newUri);
-
-                try {
-                    while ((count = zis.read(buffer)) != -1)
-                        outputStream.write(buffer, 0, count);
-                } finally {
-                    try {
-                        outputStream.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                zis.closeEntry();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (zis != null) {
-                try {
-                    zis.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
 }

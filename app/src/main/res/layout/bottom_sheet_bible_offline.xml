@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/scripture" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/addToSet"
+        android:layout_below="@+id/dialogHeader"
+        android:padding="16dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/bible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/file_chooser" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/book"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.6"
+                        android:hint="@string/book" />
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/chapter"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="0.4"
+                        android:hint="@string/chapter" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/verseFrom"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:hint="@string/verse_from" />
+
+                    <TableRow
+                        style="@style/DividerLine"
+                        android:layout_width="16dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="8dp"
+                        app:backgroundTint="@color/white" />
+
+                    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                        android:id="@+id/verseTo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:hint="@string/verse_to" />
+
+                </LinearLayout>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/verseNumbers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bible_verse_numbers" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/scriptureHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/scripture" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/scripture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/addToSet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:padding="16dp"
+        android:text="@string/set_add"
+        app:icon="@drawable/ic_plus_white_36dp" />
+
+</RelativeLayout>

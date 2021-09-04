@@ -13,6 +13,10 @@
         <domain includeSubdomains="true">twitter.com</domain>
         <domain includeSubdomains="true">paypal.com</domain>
         <domain includeSubdomains="true">google.com</domain>
+        <!-- Bible downloads -->
+        <domain includeSubdomains="true">opensong.org</domain>
+        <domain includeSubdomains="true">emp1.net</domain>
+        <domain includeSubdomains="true">dropbox.com</domain>
         <!-- Had to include ads from some of the chord websites-->
         <domain includeSubdomains="true">amazon-adsystem.com</domain>
     </domain-config>

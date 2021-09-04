@@ -105,7 +105,6 @@ public class SettingsCategories extends Fragment {
                 mainActivityInterface.navigateToFragment(null, R.id.nearbyConnectionsFragment);
             }
         });
-        myView.importButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
         myView.modeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.modeFragment));
         myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.midiFragment));
         myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.profileFragment));

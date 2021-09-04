@@ -60,6 +60,7 @@ import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
+import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
 import com.garethevans.church.opensongtablet.chords.Transpose;
@@ -69,6 +70,7 @@ import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.PedalsFragment;
 import com.garethevans.church.opensongtablet.controls.SwipeFragment;
 import com.garethevans.church.opensongtablet.controls.Swipes;
+import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
@@ -233,6 +235,8 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     private SongSheetHeaders songSheetHeaders;
     private TimeTools timeTools;
     private DisplayPrevNext displayPrevNext;
+    private Bible bible;
+    private CustomSlide customSlide;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -451,6 +455,8 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         ccliLog = new CCLILog();
         exportFiles = new ExportFiles();
         exportActions = new ExportActions();
+        bible = new Bible();
+        customSlide = new CustomSlide();
     }
     private void initialiseHelpers3() {
         windowFlags = new WindowFlags(this.getWindow());
@@ -1977,7 +1983,13 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
             return new ArrayList<>();
         }
     }
-
+    @Override
+    public Bible getBible() {
+        return bible;
+    }
+    public CustomSlide getCustomSlide() {
+        return customSlide;
+    }
 
     // The song views
     @Override

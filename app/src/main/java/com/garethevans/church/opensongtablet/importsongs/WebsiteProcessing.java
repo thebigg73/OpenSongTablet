@@ -1,5 +1,7 @@
+/*
 package com.garethevans.church.opensongtablet.importsongs;
 
+*/
 /*
 This is used to process incoming content from the online web searches
 Ultimate Guitar
@@ -10,7 +12,8 @@ UkuTabs
 HolyChords
 
 It returns a song object
-*/
+*//*
+
 
 
 public class WebsiteProcessing {
@@ -21,6 +24,7 @@ public class WebsiteProcessing {
 
 
 
+*/
 /*
     private void fixUkutabsContent(String resultposted) {
         // From UkuTabs.com
@@ -195,9 +199,11 @@ public class WebsiteProcessing {
             filename = FullscreenActivity.phrasetosearchfor;
         }
     }
-*/
+*//*
 
-  /*  private void fixHolyChordsContent(String resultposted) {
+
+  */
+/*  private void fixHolyChordsContent(String resultposted) {
         // from holychords.com
         grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
 
@@ -264,10 +270,12 @@ public class WebsiteProcessing {
             filename = FullscreenActivity.phrasetosearchfor;
         }
     }
-*/
+*//*
+
 
     // Song Select Code
- /*   private String extractSongSelectChordPro(String s, String temptitle) {
+ */
+/*   private String extractSongSelectChordPro(String s, String temptitle) {
         // Get the title
         String title = getTitleSongSelectChordPro(s, temptitle);
 
@@ -296,8 +304,10 @@ public class WebsiteProcessing {
         } else {
             return title + author + copyright + ccli + key + tempo + timesig + "\n" + lyrics;
         }
-    }*/
-    /*private String getTitleSongSelectChordPro(String s, String temptitle) {
+    }*//*
+
+    */
+/*private String getTitleSongSelectChordPro(String s, String temptitle) {
         // Extract the title
         int start = s.indexOf("<span class=\"cproTitle\">");
         int end = s.indexOf("</span>",start);
@@ -313,8 +323,10 @@ public class WebsiteProcessing {
         } else {
             return temptitle;
         }
-    }*/
-    /*private String getKeySongSelectChordPro(String s) {
+    }*//*
+
+    */
+/*private String getKeySongSelectChordPro(String s) {
 
         String[] lines = s.split("\n");
         for (String l:lines) {
@@ -332,8 +344,10 @@ public class WebsiteProcessing {
         } else {
             return "";
         }
-    }*/
-    /*private String getAuthorSongSelectChordPro(String s) {
+    }*//*
+
+    */
+/*private String getAuthorSongSelectChordPro(String s) {
         int start = s.indexOf("<span class=\"cproAuthors\">");
         int end = s.indexOf("</span>",start);
         if (start>-1 && end>-1 && end>start) {
@@ -347,8 +361,10 @@ public class WebsiteProcessing {
         } else {
             return "";
         }
-    }*/
-    /*private String getCCLISongSelectChordPro(String s) {
+    }*//*
+
+    */
+/*private String getCCLISongSelectChordPro(String s) {
         int start = s.indexOf("CCLI Song #");
         int end = s.indexOf("</p>",start);
         if (start>-1 && end>-1 && end>start) {
@@ -356,8 +372,10 @@ public class WebsiteProcessing {
         } else {
             return "";
         }
-    }*/
-    /*private String getCopyrightSongSelectChordPro(String s) {
+    }*//*
+
+    */
+/*private String getCopyrightSongSelectChordPro(String s) {
         int start = s.indexOf("<ul class=\"copyright\">");
         start = s.indexOf("<li>",start);
         int end = s.indexOf("</li>",start);
@@ -366,8 +384,10 @@ public class WebsiteProcessing {
         } else {
             return "";
         }
-    }*/
-    /*private String getTempoSongSelectChordPro(String s) {
+    }*//*
+
+    */
+/*private String getTempoSongSelectChordPro(String s) {
         int start = s.indexOf("<span class=\"cproTempoTimeWrapper\">");
         int end = s.indexOf("</span>",start);
         if (start>-1 && end>-1 && end>start) {
@@ -386,8 +406,10 @@ public class WebsiteProcessing {
             }
         }
         return "";
-    }*/
-    /*private String getTimeSigSongSelectChordPro(String s) {
+    }*//*
+
+    */
+/*private String getTimeSigSongSelectChordPro(String s) {
         int start = s.indexOf("<span class=\"cproTempoTimeWrapper\">");
         int end = s.indexOf("</span>",start);
         if (start>-1 && end>-1 && end>start) {
@@ -403,8 +425,10 @@ public class WebsiteProcessing {
             }
         }
         return "";
-    }*/
-    /*private String getLyricsSongSelectChordPro(String s) {
+    }*//*
+
+    */
+/*private String getLyricsSongSelectChordPro(String s) {
         int start = s.indexOf("<pre class=\"cproSongBody\">");
         int end = s.indexOf("</pre>",start);
         if (start>-1 && end>-1 && end>start) {
@@ -442,9 +466,11 @@ public class WebsiteProcessing {
             return getRidOfRogueCode(lyrics);
         }
         return "";
-    }*/
+    }*//*
 
-    /*private String extractSongSelectUsr(String s, String temptitle) {
+
+    */
+/*private String extractSongSelectUsr(String s, String temptitle) {
         String title = temptitle;
         String author = "";
         String copyright = "";
@@ -508,9 +534,11 @@ public class WebsiteProcessing {
         } else {
             return title + author + copyright + ccli + "\n" + lyrics;
         }
-    }*/
+    }*//*
 
-    /*private String getRidOfRogueCode(String lyrics) {
+
+    */
+/*private String getRidOfRogueCode(String lyrics) {
         // Get rid of lyric indications
         lyrics = lyrics.replace("<span class=\"chordLyrics\">","");
 
@@ -533,13 +561,17 @@ public class WebsiteProcessing {
 
         // Finally, trim the lyrics
         return lyrics.trim();
-    }*/
+    }*//*
 
 
 
- /*
-*/
- /*   private Song fixWTContent(String resultposted) {
+
+ */
+/*
+*//*
+
+ */
+/*   private Song fixWTContent(String resultposted) {
         // From Worship Together
 
         grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
@@ -695,12 +727,16 @@ public class WebsiteProcessing {
             filecontents = null;
         }
     }
+*//*
+
 */
 /*
 
-*/
+*//*
 
- /*   private String getRidOfExtraCodeWT(String s) {
+
+ */
+/*   private String getRidOfExtraCodeWT(String s) {
         s = s.replace("<strong>","");
         s = s.replace("</strong>","");
         s = s.replace("<p>","");
@@ -724,5 +760,7 @@ public class WebsiteProcessing {
         s = s.replace("\n","");
         s = s.trim();
         return s;
-    }*/
+    }*//*
+
 }
+*/

@@ -67,7 +67,6 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         boolean songs = mainActivityInterface.getCurrentSet().getSetFilenames().size()>0;
 
         if (!songs) {
-            myView.createSet.setVisibility(View.GONE);
             myView.variation.setVisibility(View.GONE);
             myView.shuffleSet.setVisibility(View.GONE);
             myView.randomSong.setVisibility(View.GONE);
@@ -82,6 +81,10 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         myView.shuffleSet.setOnClickListener(v -> {
             mainActivityInterface.getSetActions().shuffleSet(requireContext(),mainActivityInterface);
             mainActivityInterface.updateFragment("set_updateView",null,null);
+            dismiss();
+        });
+        myView.addScripture.setOnClickListener(v -> {
+            mainActivityInterface.navigateToFragment("opensongapp://settings/bible",0);
             dismiss();
         });
         myView.randomSong.setOnClickListener(v -> {

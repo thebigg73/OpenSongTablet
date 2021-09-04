@@ -53,6 +53,15 @@
                     android:text="@string/variation" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/addScripture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/bible_verse"
+                    custom:mydrawable="@drawable/ic_bible_white_36dp"
+                    android:padding="16dp"
+                    android:text="@string/scripture" />
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/addCustom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

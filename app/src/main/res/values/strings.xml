@@ -965,4 +965,18 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="show_next_prev_in_song_menu">Also show previous/next for songs not in a set (using song menu)</string>
     <string name="panic">Panic</string>
     <string name="panic_stop">All output stopped</string>
+    <string name="bible_download_info">Bible translation not available above?  Try manually downloading another language/translation from one of the two sites listed below.</string>
+    <string name="download">Download</string>
+    <string name="requires_internet">This feature requires internet access</string>
+    <string name="zefania">Zefania</string>
+    <string name="bible_download_for_offline">Download a bible translation for offline use</string>
+    <string name="bible_browse">Browse/search bible</string>
+    <string name="bible_browse_offline">Use offline/downloaded bible</string>
+    <string name="bible">Bible</string>
+    <string name="downloadWiFiOnly">Download over WiFi only</string>
+    <string name="bible_download_info_more">You should extract the zip file into your OpenSong/OpenSong Scripture/ folder.  The file extracted should be an xml or xmm file.</string>
+    <string name="bible_verse_numbers">Include verse numbers</string>
+    <string name="verse_from">Verse from:</string>
+    <string name="verse_to">Verse to:</string>
+    <string name="set_add">Add to set</string>
 </resources>
