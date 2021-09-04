@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,11 +13,55 @@
         android:layout_height="wrap_content"
         android:text="@string/search_biblegateway" />
 
+    <LinearLayout
+        android:id="@+id/webControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialogHeader"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/webBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_arrow_left_white_36dp"
+            android:layout_gravity="center"
+            app:fabSize="mini"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/webGrabText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/extract"
+            app:icon="@drawable/ic_download_white_36dp"
+            android:padding="16dp"
+            android:layout_gravity="center" />
+        </FrameLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/webClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_close_white_36dp"
+            app:backgroundTint="@color/red"
+            android:layout_gravity="center"
+            app:fabSize="mini"/>
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/addToSet"
-        android:layout_below="@+id/dialogHeader"
+        android:layout_below="@+id/webControls"
         android:padding="16dp">
 
         <androidx.core.widget.NestedScrollView
@@ -26,23 +71,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="visible">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/searchOptions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                         android:id="@+id/searchPhrase"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:hint="@string/bible_search"
-                        android:text=""
-                        android:layout_marginBottom="8dp"/>
+                        android:text="" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                        android:id="@+id/versionCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:hint="@string/bible_translation"
+                        app:helperText="@string/optional" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/downloadWiFiOnly"
@@ -55,46 +108,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:text="@string/search_biblegateway"/>
+                        android:text="@string/search_biblegateway"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
                 </LinearLayout>
 
-                <androidx.coordinatorlayout.widget.CoordinatorLayout
-                    android:id="@+id/searchWeb"
+                <WebView
+                    android:id="@+id/webView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:visibility="gone">
-
-                    <WebView
-                        android:id="@+id/webView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/extract"
-                        app:icon="@drawable/ic_download_white_36dp"
-                        app:layout_anchor="@+id/webView"
-                        app:layout_anchorGravity="end|bottom"
-                        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/back"
-                        android:src="@drawable/ic_arrow_left_white_36dp"
-                        app:layout_anchor="@+id/webView"
-                        app:layout_anchorGravity="end|top"
-                        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
-                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/searchResults"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                         android:id="@+id/title"
@@ -112,6 +141,36 @@
                         android:layout_marginBottom="8dp"
                         android:hint="@string/bible_translation" />
 
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/verseNumbers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bible_verse_numbers" />
+
+                    <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                        android:id="@+id/lineLength"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/line_length"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:valueFrom="20"
+                        android:valueTo="100"
+                        android:value="60"
+                        app:stepSize="5"/>
+
+                    <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                        android:id="@+id/linesPerSlide"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lines_per_slide"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:valueFrom="2"
+                        android:valueTo="16"
+                        android:value="8"
+                        app:stepSize="1"/>
+
                     <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                         android:id="@+id/content"
                         android:layout_width="match_parent"
@@ -120,7 +179,7 @@
                         android:layout_marginBottom="8dp"
                         android:hint="@string/text"
                         android:inputType="textMultiLine"
-                        android:minLines="4" />
+                        app:useMonospace="true" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -141,6 +200,7 @@
         android:layout_alignParentBottom="true"
         android:padding="16dp"
         android:text="@string/set_add"
-        app:icon="@drawable/ic_plus_white_36dp" />
+        app:icon="@drawable/ic_plus_white_36dp"
+        android:visibility="gone"/>
 
 </RelativeLayout>

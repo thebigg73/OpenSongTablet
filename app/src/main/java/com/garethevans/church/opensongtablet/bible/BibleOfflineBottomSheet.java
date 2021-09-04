@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.bible;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -29,8 +28,8 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
     private BottomSheetBibleOfflineBinding myView;
-    private final String TAG = "BibleOfflineBottomSheet";
     private Bible bible;
+    private String bibleText = "";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,6 +56,12 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         myView = BottomSheetBibleOfflineBinding.inflate(inflater, container, false);
         myView.dialogHeader.setClose(this);
 
+        // Set up helpers()
+        setupHelpers();
+
+        // Set up the views
+        setupViews();
+
         // Set the listeners
         setupListeners();
 
@@ -65,10 +70,21 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         // Most heavy lifting is done by the bible class
         initialiseBible();
 
-        // Set up preference
-        setupPreference();
-
         return myView.getRoot();
+    }
+
+    private void setupHelpers() {
+        bible = mainActivityInterface.getBible();
+    }
+
+    private void setupViews() {
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.content);
+        myView.lineLength.setValue(bible.getLineLength());
+        myView.lineLength.setHint(bible.getLineLength() +"");
+        myView.linesPerSlide.setValue(bible.getLinesPerSlide());
+        myView.linesPerSlide.setHint(bible.getLinesPerSlide() + "");
+        myView.verseNumbers.setOnCheckedChangeListener((compoundButton, b) -> bible.setShowVerseNumbers(b));
+
     }
 
     private void setupListeners() {
@@ -77,16 +93,25 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         myView.chapter.addTextChangedListener(new MyTextWatcher("chapter"));
         myView.verseFrom.addTextChangedListener(new MyTextWatcher("verseFrom"));
         myView.verseTo.addTextChangedListener(new MyTextWatcher("verseTo"));
-
         myView.verseNumbers.setOnCheckedChangeListener((compoundButton, b) -> {
-            myView.scripture.setText(bible.getBibleText(requireContext(), mainActivityInterface, myView.verseNumbers.isChecked()));
-            if (myView.scripture.getText()==null || myView.scripture.getText().toString().isEmpty()) {
+            bible.setShowVerseNumbers(b);
+            stretchText();
+            if (myView.content.getText()==null || myView.content.getText().toString().isEmpty()) {
                 myView.addToSet.setVisibility(View.GONE);
             } else {
                 myView.addToSet.setVisibility(View.VISIBLE);
             }
         });
-
+        myView.lineLength.addOnChangeListener((slider, value, fromUser) -> {
+            bible.setLineLength((int)value);
+            myView.lineLength.setHint((int)value+"");
+            stretchText();
+        });
+        myView.linesPerSlide.addOnChangeListener((slider, value, fromUser) -> {
+            bible.setLinesPerSlide((int)value);
+            myView.linesPerSlide.setHint((int)value+"");
+            stretchText();
+        });
         myView.addToSet.setOnClickListener(v -> {
             // Build an array list to add to a custom slide
             ArrayList<String> scripture = new ArrayList<>();
@@ -101,18 +126,22 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
             }
             scripture.add(bible.getBibleBook() + " " + bible.getBibleChapter() + ":" + verse);
             // Now the text
-            scripture.add(bible.getBibleText(requireContext(),mainActivityInterface,myView.verseNumbers.isChecked()));
+            scripture.add(myView.content.getText().toString());
             // Now the translation
             scripture.add(bible.getTranslation());
 
             // Add to the set
             mainActivityInterface.getCustomSlide().buildCustomSlide(requireContext(),mainActivityInterface,scripture);
             mainActivityInterface.getCustomSlide().addItemToSet(requireContext(),mainActivityInterface,false);
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.scripture)+" "+getString(R.string.addedtoset));
+            if (!mainActivityInterface.getMode().equals("Presentation")) {
+                mainActivityInterface.navHome();
+            }
+            dismiss();
         });
     }
 
     private void initialiseBible() {
-        bible = mainActivityInterface.getBible();
         new Thread(() -> {
             bible.buildDefaultBibleBooks();
             requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.VISIBLE));
@@ -122,10 +151,6 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                 myView.progressBar.setVisibility(View.GONE);
             });
         }).start();
-    }
-
-    private void setupPreference() {
-        myView.scriptureHeading.setPaintFlags(myView.scriptureHeading.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -205,8 +230,9 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                                 if (myView.verseTo.getText()!=null && (myView.verseTo.getText().toString().isEmpty() || rangeIsIncorrect(myView.verseFrom, chosen, false))) {
                                     myView.verseTo.setText(chosen);
                                 }
-                                myView.scripture.setText(bible.getBibleText(requireContext(), mainActivityInterface, myView.verseNumbers.isChecked()));
-                                if (myView.scripture.getText()==null || myView.scripture.getText().toString().isEmpty()) {
+                                bibleText = bible.getBibleText(requireContext(), mainActivityInterface);
+                                stretchText();
+                                if (myView.content.getText()==null || myView.content.getText().toString().isEmpty()) {
                                     myView.addToSet.setVisibility(View.GONE);
                                 } else {
                                     myView.addToSet.setVisibility(View.VISIBLE);
@@ -227,8 +253,9 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                                 if (myView.verseFrom.getText()!=null && (myView.verseFrom.getText().toString().isEmpty() || rangeIsIncorrect(myView.verseFrom, chosen, true))) {
                                     myView.verseFrom.setText(chosen);
                                 }
-                                myView.scripture.setText(bible.getBibleText(requireContext(), mainActivityInterface, myView.verseNumbers.isChecked()));
-                                if (myView.scripture.getText()==null || myView.scripture.getText().toString().isEmpty()) {
+                                bibleText = bible.getBibleText(requireContext(), mainActivityInterface);
+                                stretchText();
+                                if (myView.content.getText()==null || myView.content.getText().toString().isEmpty()) {
                                     myView.addToSet.setVisibility(View.GONE);
                                 } else {
                                     myView.addToSet.setVisibility(View.VISIBLE);
@@ -290,5 +317,9 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         } else {
             return 1;
         }
+    }
+
+    private void stretchText() {
+        mainActivityInterface.getProcessSong().splitTextByMaxChars(myView.content,bibleText,bible.getLineLength(),bible.getLinesPerSlide(), bible.getShowVerseNumbers());
     }
 }

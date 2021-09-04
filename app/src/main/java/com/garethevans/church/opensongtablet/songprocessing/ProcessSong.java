@@ -885,7 +885,7 @@ public class ProcessSong {
             }
         }
 
-        String linetype = "";
+        String linetype;
         String lastlinetype = "";
 
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
@@ -2225,6 +2225,60 @@ public class ProcessSong {
             editText.setMinLines(minLines);
             editText.setLines(minLines);
         }
+    }
+    public void splitTextByMaxChars(MaterialEditText editText, String text, int maxChars,
+                                    int maxLines, boolean showVerseNumbers) {
+
+        boolean keepGoing = true;
+        if (!showVerseNumbers) {
+            while (text.contains("{") && text.contains("}") && keepGoing) {
+                int startPos = text.indexOf("{");
+                if (startPos > -1) {
+                    int endPos = text.indexOf("}", startPos);
+                    if (endPos > -1) {
+                        String replaceText = text.substring(startPos, endPos) + "}";
+                        text = text.replace(replaceText, "");
+                    } else {
+                        keepGoing = false;
+                    }
+                } else {
+                    keepGoing = false;
+                }
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder currentLine;
+        int numLines = 0;
+        // Current line breaks are still valid
+        String[] lines = text.split("\n");
+        for (String line:lines) {
+            if (numLines>maxLines) {
+                stringBuilder.append("\n---\n");
+                numLines = 1;
+            }
+            numLines ++;
+            currentLine = new StringBuilder();
+            String[] words = line.split(" ");
+            for (String word:words) {
+                if ((currentLine.length() + word.length() + 1) > maxChars) {
+                    // Start a new line
+                    if (numLines>maxLines) {
+                        stringBuilder.append("---\n");
+                        numLines = 1;
+                    }
+                    stringBuilder.append(currentLine.toString().trim()).append("\n");
+                    currentLine = new StringBuilder();
+                    currentLine.append(word);
+                    numLines++;
+
+                } else {
+                    currentLine.append(" ").append(word);
+                }
+            }
+            stringBuilder.append(currentLine.toString().trim()).append("\n");
+        }
+        editText.setText(stringBuilder.toString());
+        stretchEditBoxToLines(editText,4);
     }
 
 

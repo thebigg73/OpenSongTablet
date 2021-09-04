@@ -37,6 +37,8 @@ public class CustomSlide {
                     author = customSlide.get(3);
                     folder = "Scripture";
                     type = c.getString(R.string.scripture);
+                    // Add the translation to the filename
+                    file = file+" "+mainActivityInterface.getStorageAccess().safeFilename(author);
                     break;
                 case "note":
                     folder = "Notes";
@@ -89,16 +91,16 @@ public class CustomSlide {
 
             xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
             xml += "<song>\n";
-            xml += "  <title>" + title + "</title>\n";
-            xml += "  <author>" + author + "</author>\n";
-            xml += "  <key>" + key + "</key>\n";
-            xml += "  <user1>" + user1 + "</user1>\n";
-            xml += "  <user2>" + user2 + "</user2>\n";
-            xml += "  <user3>" + user3 + "</user3>\n";
-            xml += "  <aka>" + aka + "</aka>\n";
-            xml += "  <key_line>" + key_line + "</key_line>\n";
-            xml += "  <hymn_number>" + hymn_num + "</hymn_number>\n";
-            xml += "  <lyrics>" + lyrics + "</lyrics>\n";
+            xml += "  <title>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(title) + "</title>\n";
+            xml += "  <author>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(author) + "</author>\n";
+            xml += "  <key>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(key) + "</key>\n";
+            xml += "  <user1>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(user1) + "</user1>\n";
+            xml += "  <user2>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(user2) + "</user2>\n";
+            xml += "  <user3>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(user3) + "</user3>\n";
+            xml += "  <aka>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(aka) + "</aka>\n";
+            xml += "  <key_line>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(key_line) + "</key_line>\n";
+            xml += "  <hymn_number>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(hymn_num) + "</hymn_number>\n";
+            xml += "  <lyrics>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(lyrics) + "</lyrics>\n";
             xml += "</song>";
 
             // Make sure any & are encoded properly - first reset any currently encoded, then put back
@@ -115,12 +117,13 @@ public class CustomSlide {
             }
 
             // Add to set $**_**{customsfolder}/filename_***key***_**$
-            String songforsetwork = "$**_**" + type + "/" + file + "_***" + key + "***_$";
+            String songforsetwork = "$**_**" + type + "/" + file + "_***" + key + "***__**$";
             mainActivityInterface.getCurrentSet().addSetItem(songforsetwork);
             mainActivityInterface.getCurrentSet().addSetValues("**" + folder, file, key);
 
             // Update the set menu
-            mainActivityInterface.updateSetList();
+            //mainActivityInterface.updateSetList();
+            mainActivityInterface.refreshSetList();
 
 
         } else {

@@ -96,18 +96,37 @@
                     android:layout_height="wrap_content"
                     android:text="@string/bible_verse_numbers" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/scriptureHeading"
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/lineLength"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/line_length"
                     android:layout_marginTop="8dp"
-                    android:text="@string/scripture" />
+                    android:layout_marginBottom="8dp"
+                    android:valueFrom="20"
+                    android:valueTo="100"
+                    android:value="60"
+                    app:stepSize="5"/>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/scripture"
+                <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                    android:id="@+id/linesPerSlide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="200dp" />
+                    android:text="@string/lines_per_slide"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:valueFrom="2"
+                    android:valueTo="16"
+                    android:value="8"
+                    app:stepSize="1"/>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/text"
+                    android:inputType="textMultiLine"
+                    app:useMonospace="true"/>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

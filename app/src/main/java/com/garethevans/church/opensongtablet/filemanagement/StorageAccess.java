@@ -521,7 +521,7 @@ public class StorageAccess {
     }
     public String safeFilename(String filename) {
         // Remove bad characters from filenames
-        filename = filename.replaceAll("[*?/<>&!#$+\"'{}:@\\\\]", ""); // Removes bad characters
+        filename = filename.replaceAll("[*?/<>&!#$+\"'{}:@\\\\]", " "); // Removes bad characters
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
         return filename.trim();  // Returns the trimmed value
     }

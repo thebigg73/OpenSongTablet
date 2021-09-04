@@ -18,7 +18,6 @@ public class BibleSettingsFragment extends Fragment {
 
     private BibleSettingsBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String TAG = "BibleSettingsFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {

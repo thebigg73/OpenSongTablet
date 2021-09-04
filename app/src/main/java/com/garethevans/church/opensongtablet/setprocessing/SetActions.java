@@ -423,7 +423,7 @@ public class SetActions {
         } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf",filename)) {
             valueToDecideFrom = "PDF";
         } else if (folder.contains(customLocStart)) {
-            valueToDecideFrom = folder = folder.replace(customLocStart,"");
+            valueToDecideFrom = folder.replace(customLocStart,"");
         } else {
             valueToDecideFrom = c.getString(R.string.song);
         }

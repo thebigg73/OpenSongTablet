@@ -11,16 +11,12 @@ public class CurrentSet {
 
     private String initialSetString;
     private String currentSetString;
-    private ArrayList<String> setItems;      // The set item $**_folder/filename_***key***_**$ or $**_**{customsfolder}/filename_******_**$
+    private ArrayList<String> setItems;      // The set item $**_folder/filename_***key***__**$ or $**_**{customsfolder}/filename_******__**$
     private ArrayList<String> setFolders;    // The folder only
     private ArrayList<String> setFilenames;  // The filename only
     private ArrayList<String> setKeys;       // The key only
     private int indexSongInSet;
-    private String previousSongInSet;
-    private String nextSongInSet;
     private String setName;
-    private String setFile;
-    private String currentSetXML;
 
     // The current set is a combination of array lists
     // They are built on app start by parsing the set string from preferences
@@ -34,7 +30,6 @@ public class CurrentSet {
         currentSetString = "";
         initialSetString = "";
         setName = "";
-        setFile = "";
         initialiseTheSpecifics();
     }
     public void initialiseTheSpecifics() {
@@ -157,18 +152,9 @@ public class CurrentSet {
         setItems.set(position,item);
     }
 
-    // TODO MIGHT REMOVE THE STUFF BELOW
-    // The getters
-
 
     public int getIndexSongInSet() {
         return indexSongInSet;
-    }
-    public String getPreviousSongInSet() {
-        return previousSongInSet;
-    }
-    public String getNextSongInSet() {
-        return nextSongInSet;
     }
     public ArrayList<String> getSetFolders() {
         return setFolders;
@@ -182,14 +168,6 @@ public class CurrentSet {
     public String getSetName() {
         return setName;
     }
-    public String getCurrentSetXML() {
-        return currentSetXML;
-    }
-    public String getSetFile() {
-        return setFile;
-    }
-
-
 
     public void addToCurrentSetString(String item) {
         currentSetString = currentSetString + item;
@@ -221,12 +199,6 @@ public class CurrentSet {
     public void setIndexSongInSet(int indexSongInSet) {
         this.indexSongInSet = indexSongInSet;
     }
-    public void setNextSongInSet(String nextSongInSet) {
-        this.nextSongInSet = nextSongInSet;
-    }
-    public void setPreviousSongInSet(String previousSongInSet) {
-        this.previousSongInSet = previousSongInSet;
-    }
     public void setSetName(String setName) {
         this.setName = setName;
     }
@@ -234,10 +206,4 @@ public class CurrentSet {
         this.setKeys = setKeys;
     }
 
-    public void setCurrentSetXML(String currentSetXML) {
-        this.currentSetXML = currentSetXML;
-    }
-    public void setSetFle(String setFile) {
-        this.setFile = setFile;
-    }
 }

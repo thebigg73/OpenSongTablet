@@ -30,6 +30,9 @@ public class Bible {
     private String attributetosearch_book = "";
     private String attributetosearch_chapter = "";
     private String attributetosearch_verse = "";
+    private int lineLength = 50;
+    private int linesPerSlide = 8;
+    private boolean showVerseNumbers = true;
     private Document document;
     private Element documentElement;
     private XPath xpath;
@@ -374,7 +377,7 @@ public class Bible {
 
 
     // Get the bible texts
-    public String getBibleText(Context c, MainActivityInterface mainActivityInterface, boolean includeVerseNumbers) {
+    public String getBibleText(Context c, MainActivityInterface mainActivityInterface) {
         if (bibleFileSafe(c, mainActivityInterface)) {
             // Get from and to
             int from = Integer.parseInt(bibleVerseFrom);
@@ -388,13 +391,11 @@ public class Bible {
             }
             StringBuilder stringBuilder = new StringBuilder();
             for (int i=(from-1); i<=(to-1); i++) {
-                if (includeVerseNumbers) {
-                    // Array is 0-...  Verse numbers are from 1 though!  Add 1
-                    try {
-                        stringBuilder.append("{").append(i + 1).append("}");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                // Array is 0-...  Verse numbers are from 1 though!  Add 1
+                try {
+                    stringBuilder.append("{").append(i + 1).append("}");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 try {
                     stringBuilder.append(bibleTexts.get(i));
@@ -415,82 +416,26 @@ public class Bible {
     public String getTranslation() {
         return bibleTranslation;
     }
+
+    // The line split value
+    public int getLineLength() {
+        return lineLength;
+    }
+    public void setLineLength(int lineLength) {
+        this.lineLength = lineLength;
+    }
+    public int getLinesPerSlide() {
+        return linesPerSlide;
+    }
+    public void setLinesPerSlide(int linesPerSlide) {
+        this.linesPerSlide = linesPerSlide;
+    }
+
+    // Decide on showing verse numbers
+    public boolean getShowVerseNumbers() {
+        return showVerseNumbers;
+    }
+    public void setShowVerseNumbers(boolean showVerseNumbers) {
+        this.showVerseNumbers = showVerseNumbers;
+    }
 }
-
-/*
-
-
-class Bible {
-
-
-    boolean isYouVersionScripture(String importtext) {
-        */
-/* A simple way to check if this is a scripture file from Bible
-         is to look for the last line starting with http://bible.com
-
-         Split the string into separate lines
-         If it is a scripture, the last line indicates so
-         The second last line is the Scripture reference *//*
-
-        String[] importtextparts = importtext.split("\n");
-        int lines = importtextparts.length;
-        String identifying_line = "http://bible.com";
-        if (lines>2 && importtextparts[lines-1].contains(identifying_line)) {
-            // Ok it is a scripture
-            if (importtextparts[1]!=null) {
-                FullscreenActivity.scripture_title = importtextparts[1];
-            } else {
-                FullscreenActivity.scripture_title = "";
-            }
-            if (importtextparts[0]!=null) {
-                FullscreenActivity.mScripture = importtextparts[0];
-            } else {
-                FullscreenActivity.mScripture = "";
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    String shortenTheLines(String originaltext, int charsperline, int linesbeforenewslide) {
-        StringBuilder scripture = new StringBuilder();
-        // Split the current string into a separate words array
-        originaltext = originaltext.replace("\n", "_nl_");
-        String[] scripturewords = originaltext.split(" ");
-        StringBuilder currentline= new StringBuilder();
-        ArrayList<String> newimprovedscripture = new ArrayList<>();
-        for (String words:scripturewords) {
-            if (currentline.length()<charsperline) {
-                currentline.append(" ").append(words);
-            } else {
-                String lines = currentline.toString().trim();
-                lines = lines.replace("_nl_","\n");
-                newimprovedscripture.add(lines);
-                if (words.startsWith(";") || words.startsWith("|") || words.startsWith("[") || words.startsWith("]")) {
-                    words = " " + words;
-                }
-                currentline = new StringBuilder(words);
-            }
-        }
-        String lines = currentline.toString();
-        lines = lines.replace("_nl_","\n");
-        newimprovedscripture.add(lines);
-
-        int newslideneeded = 0;
-        for (int z=0;z<newimprovedscripture.size();z++) {
-            scripture.append("\n").append(newimprovedscripture.get(z));
-            newslideneeded ++;
-            // Every linesbeforenewslide lines, start a new slide
-            if (newslideneeded >= linesbeforenewslide) {
-                scripture.append("\n---");
-                newslideneeded = 0;
-            }
-        }
-
-        return scripture.toString().trim();
-    }
-
-
-}*/
