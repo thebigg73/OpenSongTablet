@@ -371,8 +371,8 @@ public class StageMode extends AppCompatActivity implements
     // Handler for stop of autoscroll
     private final Handler endAutoScrollHandler = new Handler();
     private final Runnable endAutoScrollRunnable = () -> {
-        // If we are still at the end of the page stop
-        if (StaticVariables.isautoscrolling && FullscreenActivity.newPosFloat >= StaticVariables.scrollpageHeight) {
+        // If we have not needed to scroll or are still at the end of the page then stop
+        if (StaticVariables.isautoscrolling && (StaticVariables.scrollpageHeight <= 0.0f || FullscreenActivity.newPosFloat >= StaticVariables.scrollpageHeight)) {
             StaticVariables.autoscrollispaused = false;
             StaticVariables.isautoscrolling = false;
         }
@@ -6505,20 +6505,18 @@ public class StageMode extends AppCompatActivity implements
                     if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
                         StaticVariables.scrollpageHeight = glideimage_ScrollView.getChildAt(0).getMeasuredHeight() -
                                 glideimage_ScrollView.getHeight();
-                        viewdrawn = true;
-
                     } else {
                         if (songscrollview.getChildAt(0) != null) {
                             StaticVariables.scrollpageHeight = songscrollview.getChildAt(0).getMeasuredHeight() -
                                     songscrollview.getHeight();
                         }
-
                     }
                     if (StaticVariables.scrollpageHeight > 0) {
-                        viewdrawn = true;
                         ready = true;
                         cancelled = true;
                     }
+                    // IV - We show progress for all cases
+                    viewdrawn = true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -6572,6 +6570,9 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(String... args) {
             try {
+                // IV - Ensure a 'panic' end should there be no scroll
+                endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
+                endAutoScrollHandler.postDelayed(endAutoScrollRunnable, ((StaticVariables.autoScrollDelay * 1000) + 4000));
                 while (StaticVariables.isautoscrolling) {
                     // IV - update the scroll buttons as we go
                     FullscreenActivity.time_passed = System.currentTimeMillis();
@@ -6583,8 +6584,8 @@ public class StageMode extends AppCompatActivity implements
                         // IV - Helps manual drag during autoscroll - a user can drag temporarily to the end and back up without an immediate autoscroll stop
                         if ((FullscreenActivity.newPosFloat < StaticVariables.scrollpageHeight) || !currentTime_TextView.getText().equals(totalTime_TextView.getText())) {
                             endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
+                            endAutoScrollHandler.postDelayed(endAutoScrollRunnable, 4000);
                         }
-                        endAutoScrollHandler.postDelayed(endAutoScrollRunnable, 4000);
                     }
                     // don't scroll first time
                     if (!StaticVariables.pauseautoscroll) {
