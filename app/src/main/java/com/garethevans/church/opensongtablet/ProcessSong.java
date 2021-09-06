@@ -1017,9 +1017,9 @@ public class ProcessSong extends Activity {
         return chordpos;
     }
 
-    String[] getChordSections(String string, String[] pos_string) {
-        // Go through the chord positions and extract the substrings
-        ArrayList<String> chordsections = new ArrayList<>();
+    String[] getSections(String string, String[] pos_string) {
+        // Go through the line identifying sections
+        ArrayList<String> workingsections = new ArrayList<>();
         int startpos = 0;
         int endpos = -1;
 
@@ -1032,92 +1032,38 @@ public class ProcessSong extends Activity {
 
         for (int x = 0; x < pos_string.length; x++) {
             if (pos_string[x].equals("0")) {
-                // First chord is at the start of the line
+                // First section is at the start of the line
                 startpos = 0;
             } else if (x == pos_string.length - 1) {
-                // Last chord, so end position is end of the line
+                // Last section, so end position is end of the line
                 // First get the second last section
                 endpos = Integer.parseInt(pos_string[x]);
                 if (startpos < endpos) {
-                    chordsections.add(string.substring(startpos, endpos));
+                    workingsections.add(string.substring(startpos, endpos));
                 }
 
                 // Now get the last one
                 startpos = Integer.parseInt(pos_string[x]);
                 endpos = string.length();
                 if (startpos < endpos) {
-                    chordsections.add(string.substring(startpos, endpos));
+                    workingsections.add(string.substring(startpos, endpos));
                 }
             } else {
-                // We are at the start of a chord somewhere other than the start or end
-                // Get the bit of text in the previous section;
+                // We are at the start of a section somewhere other than the start or end
+                // Add the text of the previous section;
                 endpos = Integer.parseInt(pos_string[x]);
                 if (startpos < endpos) {
-                    chordsections.add(string.substring(startpos, endpos));
+                    workingsections.add(string.substring(startpos, endpos));
                 }
                 startpos = endpos;
             }
         }
         if (startpos == 0 && endpos == -1) {
-            // This is just a chord line, so add the whole line
-            chordsections.add(string);
+            // This is just a line, so add the whole line
+            workingsections.add(string);
         }
-        String[] sections = new String[chordsections.size()];
-        sections = chordsections.toArray(sections);
-
-        return sections;
-    }
-
-    String[] getLyricSections(String string, String[] pos_string) {
-        // Go through the chord positions and extract the substrings
-        ArrayList<String> lyricsections = new ArrayList<>();
-        int startpos = 0;
-        int endpos = -1;
-
-        if (string == null) {
-            string = "";
-        }
-        if (pos_string == null) {
-            pos_string = new String[0];
-        }
-
-        for (int x = 0; x < pos_string.length; x++) {
-            if (pos_string[x].equals("0")) {
-                // First chord is at the start of the line
-                startpos = 0;
-            } else if (x == pos_string.length - 1) {
-                // Last chord, so end position is end of the line
-                // First get the second last section
-                endpos = Integer.parseInt(pos_string[x]);
-                if (startpos < endpos) {
-                    lyricsections.add(string.substring(startpos, endpos));
-                }
-
-                // Now get the last one
-                startpos = Integer.parseInt(pos_string[x]);
-                endpos = string.length();
-                if (startpos < endpos) {
-                    lyricsections.add(string.substring(startpos, endpos));
-                }
-
-            } else {
-                // We are at the start of a chord somewhere other than the start or end
-                // Get the bit of text in the previous section;
-                endpos = Integer.parseInt(pos_string[x]);
-                if (startpos < endpos) {
-                    lyricsections.add(string.substring(startpos, endpos));
-                }
-                startpos = endpos;
-            }
-        }
-
-        if (startpos == 0 && endpos < 0) {
-            // Just add the line
-            lyricsections.add(string);
-        }
-
-        String[] sections = new String[lyricsections.size()];
-        sections = lyricsections.toArray(sections);
+        String[] sections = new String[workingsections.size()];
+        sections = workingsections.toArray(sections);
 
         return sections;
     }
@@ -2182,8 +2128,8 @@ public class ProcessSong extends Activity {
 
                     // IV - Chord positioning now uses the lyric line
                     positions_returned = getChordPositions(thisLine, nextLine);
-                    chords_returned = getChordSections(thisLine, positions_returned);
-                    lyrics_returned = getLyricSections(nextLine, positions_returned);
+                    chords_returned = getSections(thisLine, positions_returned);
+                    lyrics_returned = getSections(nextLine, positions_returned);
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
                         if (w < chords_returned.length) {
@@ -2200,8 +2146,8 @@ public class ProcessSong extends Activity {
                     String tempString = fixLineLength("", thisLine.length());
                     // IV - Chord positioning now uses the lyric line
                     positions_returned = getChordPositions(thisLine, tempString);
-                    chords_returned = getChordSections(thisLine, positions_returned);
-                    lyrics_returned = getLyricSections(tempString, positions_returned);
+                    chords_returned = getSections(thisLine, positions_returned);
+                    lyrics_returned = getSections(tempString, positions_returned);
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
                         if (w < chords_returned.length) {
@@ -2358,7 +2304,7 @@ public class ProcessSong extends Activity {
                         }
                         // IV - Chord positioning now uses the lyric line
                         positions_returned = getChordPositions(thisLine, nextLine);
-                        chords_returned = getChordSections(thisLine, positions_returned);
+                        chords_returned = getSections(thisLine, positions_returned);
                         if (docapochords) {
                             tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
                         }
@@ -2367,7 +2313,7 @@ public class ProcessSong extends Activity {
                         }
                         if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
                             // IV - Lyric processing moved here to be done only when required
-                            lyrics_returned = getLyricSections(nextLine, positions_returned);
+                            lyrics_returned = getSections(nextLine, positions_returned);
                             tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
                                     lyrics_returned, fontsize, storageAccess, preferences, false));
                         }
@@ -2605,7 +2551,7 @@ public class ProcessSong extends Activity {
                     }
                     // IV - Chord positioning now uses the lyric line
                     positions_returned = getChordPositions(thisLine, nextLine);
-                    chords_returned = getChordSections(thisLine, positions_returned);
+                    chords_returned = getSections(thisLine, positions_returned);
                     if (docapochords) {
                         tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
                     }
@@ -2614,7 +2560,7 @@ public class ProcessSong extends Activity {
                     }
                     if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
                         // IV - Lyric processing moved here to be done when required
-                        lyrics_returned = getLyricSections(nextLine, positions_returned);
+                        lyrics_returned = getSections(nextLine, positions_returned);
                         // IV - For stage lyrics only mode, ignore the lyric line if it is commented out
                         // IV - Some songs have alternatives for lines, they can be commented out
                         if (!(stagelyricsonly && (nextlinetype.equals("comment")))) {

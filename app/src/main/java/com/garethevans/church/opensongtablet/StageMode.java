@@ -3393,9 +3393,9 @@ public class StageMode extends AppCompatActivity implements
 
         if (StaticVariables.clickedOnPadStart) {
             // Decide which player and get time
-            if ((PadFunctions.getPad1Status() && !StaticVariables.pad1Fading) || FullscreenActivity.mPlayer1Paused) {
+            if (PadFunctions.getPad1Status() && !StaticVariables.pad1Fading) {
                 text = TimeTools.timeFormatFixer((int) (FullscreenActivity.mPlayer1.getCurrentPosition() / 1000.0f));
-            } else if ((PadFunctions.getPad2Status() && !StaticVariables.pad2Fading) || FullscreenActivity.mPlayer2Paused) {
+            } else if (PadFunctions.getPad2Status() && !StaticVariables.pad2Fading) {
                 text = TimeTools.timeFormatFixer((int) (FullscreenActivity.mPlayer2.getCurrentPosition() / 1000.0f));
             }
         }
@@ -3414,7 +3414,7 @@ public class StageMode extends AppCompatActivity implements
                     padcurrentTime_TextView.setText(text);
                 }
             }
-            // IV - If we have no active, just fading, pads - Indicate fade with just the pad icon
+            // IV - If we have only fading, pads - Indicate fade with just the pad icon
             if (!StaticVariables.clickedOnPadStart) {
                     padtotalTime_TextView.setText("");
                     padTimeSeparator_TextView.setText("");
@@ -6249,7 +6249,7 @@ public class StageMode extends AppCompatActivity implements
         // If we need to display pad time do runnables otherwise stop display
         PadFunctions.getPad1Status();
         PadFunctions.getPad2Status();
-        if (StaticVariables.pad1Playing || StaticVariables.pad2Playing || FullscreenActivity.mPlayer1Paused || FullscreenActivity.mPlayer2Paused) {
+        if (StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
             dopadProgressTime.post(padprogressTimeRunnable);
             dopadProgressTime.postDelayed(onEverySecond, 1000);
         } else {
@@ -7105,8 +7105,7 @@ public class StageMode extends AppCompatActivity implements
                     // If we want info on the next song in the set, add it as a comment line
                     processSong.addExtraInfo(StageMode.this, storageAccess, preferences);
 
-                    // Decide if the pad, metronome and autoscroll are good to go
-                    //StaticVariables.padok = PadFunctions.isPadValid(StageMode.this, preferences);
+                    // Decide if the metronome and autoscroll are good to go
                     StaticVariables.metronomeok = Metronome.isMetronomeValid();
                     StaticVariables.autoscrollok = processSong.isAutoScrollValid(StageMode.this,preferences);
 
@@ -7461,10 +7460,12 @@ public class StageMode extends AppCompatActivity implements
                 songsInFolder = sqLiteHelper.getSongsInFolder(StageMode.this, StaticVariables.whichSongFolder);
                 // Remove any that aren't there (due to updating something) - permanently fixed on reboot
                 for (SQLite s:songsInFolder) {
-                    if (s!=null && s.getFolder()!=null && s.getFilename()!=null) {
-                        Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", s.getFolder(), s.getFilename());
+                    if (s!=null && s.getFolder()==null && s.getFilename()!=null) {
+                        Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", StaticVariables.whichSongFolder, s.getFilename());
                         if (!storageAccess.uriExists(StageMode.this, u)) {
                             songsInFolder.remove(s);
+                            // IV - We have a DB entry for a missing song - so delete it
+                            sqLiteHelper.deleteSong(StageMode.this, StaticVariables.whichSongFolder + "/" + s.getFilename());
                         }
                     }
                 }
@@ -7619,15 +7620,7 @@ public class StageMode extends AppCompatActivity implements
                     checkCanGoTo();
                     // If in a set and able to move
                     if (StaticVariables.canGoToPrevious) {
-                        if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
-                            // For Stage mode only do for the top section
-                            if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == 0)) {
-                                pedalPreviousAndNextConfirm();
-                            }
-                        } else {
-                            // For Performance mode
-                            pedalPreviousAndNextConfirm();
-                        }
+                        pedalPreviousAndNextConfirm();
                     }
                 } else {
                     // If in a folder and able to move
@@ -7701,15 +7694,7 @@ public class StageMode extends AppCompatActivity implements
                     checkCanGoTo();
                     // If in a set and able to move
                     if (StaticVariables.canGoToNext) {
-                        if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
-                            // For Stage mode only do for the bottom section
-                            if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == StaticVariables.songSections.length - 1)) {
-                                pedalPreviousAndNextConfirm();
-                            }
-                        } else {
-                            // For Performance mode
-                            pedalPreviousAndNextConfirm();
-                        }
+                        pedalPreviousAndNextConfirm();
                     }
                 } else {
                     // If in a folder and able to move

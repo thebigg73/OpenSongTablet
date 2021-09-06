@@ -486,6 +486,7 @@ public class NearbyConnections implements NearbyInterface {
 
             Log.d("NearbyConnections", "isHost=" + StaticVariables.isHost + "   isConnected=" + StaticVariables.isConnected + "  usingNearby=" + StaticVariables.usingNearby);
             Log.d("NearbyConnections", "receiveHostFiles=" + StaticVariables.receiveHostFiles + "   keepHostFiles=" + StaticVariables.keepHostFiles + "  songReceived=" + songReceived);
+            Log.d("NearbyConnections", "Received: " + receivedBits.get(0) + "/" + receivedBits.get(1));
 
             if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived && StaticVariables.receiveHostFiles) {
                 // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
@@ -524,13 +525,11 @@ public class NearbyConnections implements NearbyInterface {
                     nearbyReturnActionsInterface.prepareSongMenu();
                     nearbyReturnActionsInterface.loadSong();
                 }
-
             } else if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived) {
                 // We just want to trigger loading the song on our device (if we have it).
                 // If not, we get notified it doesn't exits
                 StaticVariables.whichSongFolder = receivedBits.get(0);
                 StaticVariables.songfilename = receivedBits.get(1);
-                Log.d("NearbyConnections", "received: " + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename);
                 FullscreenActivity.whichDirection = receivedBits.get(2);
 
                 // Now load the song

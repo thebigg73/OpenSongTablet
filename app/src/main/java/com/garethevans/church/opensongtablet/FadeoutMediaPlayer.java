@@ -62,11 +62,21 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
                     if (which == 1) {
                         StaticVariables.pad1Fading = true;
                         StaticVariables.pad1FadeVolume = level1;
-                        FullscreenActivity.mPlayer1.setVolume(leftVol1, rightVol1);
+                        // IV - If paused, perform a short 'fade'
+                        if (FullscreenActivity.mPlayer1Paused) {
+                            fadetime = 1000;
+                        } else {
+                            FullscreenActivity.mPlayer1.setVolume(leftVol1, rightVol1);
+                        }
                     } else {
                         StaticVariables.pad2Fading = true;
                         StaticVariables.pad2FadeVolume = level1;
-                        FullscreenActivity.mPlayer2.setVolume(leftVol1, rightVol1);
+                        // IV - If paused, perform a short 'fade'
+                        if (FullscreenActivity.mPlayer2Paused) {
+                            fadetime = 1000;
+                        } else {
+                            FullscreenActivity.mPlayer2.setVolume(leftVol1, rightVol1);
+                        }
                     }
                 } catch (Exception e) {
                         // Problem!
@@ -88,11 +98,13 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
                     FullscreenActivity.mPlayer1.reset();
                     StaticVariables.pad1Fading = false;
                     StaticVariables.pad1Playing = false;
+                    FullscreenActivity.mPlayer1Paused = false;
                 } else {
                     FullscreenActivity.mPlayer2.stop();
                     FullscreenActivity.mPlayer2.reset();
                     StaticVariables.pad2Fading = false;
                     StaticVariables.pad2Playing = false;
+                    FullscreenActivity.mPlayer2Paused = false;
                 }
              } catch (Exception e) {
                 e.printStackTrace();
