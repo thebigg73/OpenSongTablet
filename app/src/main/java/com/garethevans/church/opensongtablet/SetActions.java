@@ -700,28 +700,76 @@ class SetActions {
 
         boolean custom_finished = false;
         while (!custom_finished) {
-            switch (xpp.getName()) {
-                case "title":
-                    custom_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    break;
-                case "notes":
-                    custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    break;
-                case "body":
-                    custom_text.append("\n---\n").append(LoadXML.parseFromHTMLEntities(xpp.nextText()));
-                    break;
-                case "subtitle":
-                    custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    break;
-            }
+            if (xpp.getEventType()==XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                switch (xpp.getName()) {
+                    case "title":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        }
+                        break;
+                    case "notes":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        }
+                        break;
+                    case "body":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            try {
+                                custom_text.append("\n---\n").append(LoadXML.parseFromHTMLEntities(xpp.nextText()));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        break;
+                    case "subtitle":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        }
+                        break;
+                    case "tabs":
+                    case "song_subtitle":
+                    default:
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            Log.d("SetActions", xpp.getName());
+                        }
+                        break;
 
-            xpp.nextTag();
-
-            if (xpp.getEventType()==XmlPullParser.END_TAG) {
-                if (xpp.getName().equals("slides")) {
-                    custom_finished = true;
                 }
             }
+
+
+            /*int eventType = xpp.getEventType();
+        ​while (eventType != XmlPullParser.END_DOCUMENT) {
+         ​if(eventType == XmlPullParser.START_DOCUMENT) {
+             ​System.out.println("Start document");
+         ​} else if(eventType == XmlPullParser.END_DOCUMENT) {
+             ​System.out.println("End document");
+         ​} else if(eventType == XmlPullParser.START_TAG) {
+             ​System.out.println("Start tag "+xpp.getName());
+         ​} else if(eventType == XmlPullParser.END_TAG) {
+             ​System.out.println("End tag "+xpp.getName());
+         ​} else if(eventType == XmlPullParser.TEXT) {
+             ​System.out.println("Text "+xpp.getText());
+         ​}
+         ​eventType = xpp.next();
+        ​}*/
+            try {
+                if (xpp.getEventType() == XmlPullParser.END_TAG) {
+                    if (xpp.getName().equals("slides")) {
+                        custom_finished = true;
+                    }
+                    xpp.nextTag();
+                } else if (xpp.getEventType() == XmlPullParser.TEXT) {
+                    xpp.nextTag();
+                } else {
+                    xpp.next();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
         }
 
         // Remove first ---
