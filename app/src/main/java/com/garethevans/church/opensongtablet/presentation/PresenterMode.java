@@ -2111,6 +2111,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             }
 
+            String bit = "";
+            try {
+                bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // If this is an image, hide the text, show the image, otherwise show the text in the slide window
             if (FullscreenActivity.isPDF) {
@@ -2128,6 +2134,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     StaticVariables.uriToLoad = storageAccess.fixLocalisedUri(PresenterMode.this,preferences,loc);
                     loadImagePreview();
                 }
+                // IV - Handle a song section with content as Image Slide
+            } else if (((bit.toLowerCase(Locale.ROOT).endsWith(".png") || bit.toLowerCase(Locale.ROOT).endsWith(".jpg") || bit.toLowerCase(Locale.ROOT).endsWith(".gif")) ||
+                    (bit.toLowerCase(Locale.ROOT).contains("content://") || bit.toLowerCase(Locale.ROOT).contains("file://")))) {
+                StaticVariables.uriToLoad = storageAccess.fixLocalisedUri(PresenterMode.this, preferences, bit);
+                FullscreenActivity.isImage = true;
+                loadImagePreview();
+                FullscreenActivity.isImage = false;
             } else {
                 loadSongPreview();
             }

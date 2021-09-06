@@ -231,8 +231,8 @@ public class StageMode extends AppCompatActivity implements
     // Handler for stop of autoscroll
     private final Handler endAutoScrollHandler = new Handler();
     private final Runnable endAutoScrollRunnable = () -> {
-        // If we are still at the end of the page stop
-        if (StaticVariables.isautoscrolling && FullscreenActivity.newPosFloat >= StaticVariables.scrollpageHeight) {
+        // If we have not needed to scroll or are still at the end of the page then stop
+        if (StaticVariables.isautoscrolling && (StaticVariables.scrollpageHeight <= 0.0f || FullscreenActivity.newPosFloat >= StaticVariables.scrollpageHeight)) {
             StaticVariables.autoscrollispaused = false;
             StaticVariables.isautoscrolling = false;
         }
@@ -368,6 +368,13 @@ public class StageMode extends AppCompatActivity implements
 
         // Check if we need to remind the user to backup their songs
         checkBackupState();
+
+        // IV - Setup handling of scroll and set dynamic buttons once
+        scrollButtons();
+
+        // IV -  One time actions will have been completed
+        FullscreenActivity.doonetimeactions = false;
+
     }
 
 
@@ -1069,37 +1076,21 @@ public class StageMode extends AppCompatActivity implements
             if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
                 FullscreenActivity.newPosFloat = songscrollview.getScrollY();
             }
-            if (!(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true))) {
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true)) {
+                // IV - Added handling for multi-page PDF
+                // Use checkCanScroll results
+                showFAB(scrollDownButton, checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)));
+                showFAB(scrollUpButton, checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0));
+            } else {
                 showFAB(scrollDownButton, false);
                 showFAB(scrollUpButton, false);
-            } else {
-                // Use checkCanScroll results
-                showFAB(scrollDownButton, checkCanScrollDown());
-                showFAB(scrollUpButton, checkCanScrollUp());
             }
 
-            // Use checkCanGoTo results
-            // IV Added to the condition - do if setView
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true) && StaticVariables.setView ) {
-                // If we are in Stage mode and mid song add Set Move buttons to support section moves
-                if ((StaticVariables.whichMode != null) && StaticVariables.whichMode.equals("Stage") && (StaticVariables.songSections != null)) {
-                    if (StaticVariables.currentSection == 0) {
-                        showFAB(setBackButton, StaticVariables.canGoToPrevious);
-                        showFAB(setForwardButton, true);
-                    } else {
-                        if (StaticVariables.currentSection == StaticVariables.songSections.length - 1) {
-                            showFAB(setBackButton, true);
-                            showFAB(setForwardButton, StaticVariables.canGoToNext);
-                        } else {
-                            showFAB(setBackButton, true);
-                            showFAB(setForwardButton, true);
-                        }
-                    }
-                    // Otherwise use checkCanGoTo results as-is
-                } else {
-                    showFAB(setBackButton, StaticVariables.canGoToPrevious);
-                    showFAB(setForwardButton, StaticVariables.canGoToNext);
-                }
+                // IV - Code removed - No longer support Set Move buttons making section moves in Stage mode here or in mext and previous item code
+                // Use checkCanGoTo results
+                showFAB(setBackButton, StaticVariables.canGoToPrevious);
+                showFAB(setForwardButton, StaticVariables.canGoToNext);
             } else {
                 showFAB(setBackButton, false);
                 showFAB(setForwardButton, false);
@@ -1409,7 +1400,6 @@ public class StageMode extends AppCompatActivity implements
     public void onScrollAction() {
         // Display the scroll and set dynamic buttons as needed
         checkCanGoTo();
-        scrollButtons();
         delaycheckscroll.post(checkScrollPosition);
     }
 
@@ -1417,51 +1407,60 @@ public class StageMode extends AppCompatActivity implements
         // Temporarily pause any running autoscroll
         pauseAutoscroll();
 
-        // Scroll the screen up
-        if (StaticVariables.whichMode.equals("Stage")) {
-            try {
-                StaticVariables.currentSection -= 1;
-                selectSection(StaticVariables.currentSection);
-            } catch (Exception e) {
-                StaticVariables.currentSection += 1;
-                e.printStackTrace();
-            }
-            // Make sure all dynamic (scroll and set) buttons display
-            onScrollAction();
-        } else {
-            // IV - Do not stop autoscroll.  User may reposition and continue autoscroll
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        // IV - PDF page scroll logic moved here
+        dealtwithaspdf = false;
 
-            int barheight = 0;
-            if (ab != null) {
-                if (ab.isShowing()) {
-                    barheight = ab.getHeight();
-                }
+        if (!FullscreenActivity.alreadyloading) {
+            if (FullscreenActivity.isPDF && !checkCanScrollUp() && (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
+                FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
+                // GE Added this to stop the pad reloading between PDF pages
+                StaticVariables.reloadOfSong = false;
+                loadSong();
+                dealtwithaspdf = true;
             }
+            }
+            // Scroll the screen up
+        if (!dealtwithaspdf) {
+            if (StaticVariables.whichMode.equals("Stage") && FullscreenActivity.isSong) {
+                try {
+                    StaticVariables.currentSection -= 1;
+                    selectSection(StaticVariables.currentSection);
+                } catch (Exception e) {
+                    StaticVariables.currentSection += 1;
+                    e.printStackTrace();
+                }
+
+                // Make sure all dynamic (scroll and set) buttons display
+                onScrollAction();
+            } else {
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
 
             ObjectAnimator animator;
 
             if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY() -
-                        (int) (preferences.getMyPreferenceFloat(StageMode.this,"scrollDistance", 0.7f) * (
-                                metrics.heightPixels - barheight));
-                animator = ObjectAnimator.ofInt(glideimage_ScrollView, "scrollY", glideimage_ScrollView.getScrollY(), (int) FullscreenActivity.newPosFloat);
-            } else {
-                FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY() -
-                        (int) (preferences.getMyPreferenceFloat(StageMode.this,"scrollDistance", 0.7f) *
-                                (metrics.heightPixels - barheight));
-                animator = ObjectAnimator.ofInt(songscrollview, "scrollY", songscrollview.getScrollY(), (int) FullscreenActivity.newPosFloat);
-            }
+                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY() -
+                            (int) (preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f) * (
+                                    metrics.heightPixels - barheight));
+                    animator = ObjectAnimator.ofInt(glideimage_ScrollView, "scrollY", glideimage_ScrollView.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                } else {
+                    FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY() -
+                            (int) (preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f) *
+                                    (metrics.heightPixels - barheight));
+                    animator = ObjectAnimator.ofInt(songscrollview, "scrollY", songscrollview.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                }
+
 
             Interpolator customInterpolator = PathInterpolatorCompat.create(0.445f, 0.050f, 0.550f, 0.950f);
-            animator.setInterpolator(customInterpolator);
-            animator.setDuration(preferences.getMyPreferenceInt(StageMode.this,"scrollSpeed",1500));
-            animator.start();
+                animator.setInterpolator(customInterpolator);
+                animator.setDuration(preferences.getMyPreferenceInt(StageMode.this, "scrollSpeed", 1500));
+                animator.start();
 
-            // Set a runnable to check the scroll position after 1 second
-            delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
-            hideActionBar();
+                // Set a runnable to check the scroll position after 1 second
+                delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
+                hideActionBar();
+            }
         }
     }
 
@@ -1469,21 +1468,36 @@ public class StageMode extends AppCompatActivity implements
         // Temporarily pause any running autoscroll
         pauseAutoscroll();
 
-        if (StaticVariables.whichMode.equals("Stage")) {
-            try {
-                StaticVariables.currentSection += 1;
-                selectSection(StaticVariables.currentSection);
-            } catch (Exception e) {
-                StaticVariables.currentSection -= 1;
+        // IV - PDF page scroll logic moved here
+        dealtwithaspdf = false;
+
+        if (!FullscreenActivity.alreadyloading) {
+            if (FullscreenActivity.isPDF && !checkCanScrollDown() && (FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
+                FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
+                // GE Added this to stop the pad reloading between PDF pages
+                StaticVariables.reloadOfSong = false;
+                loadSong();
+                dealtwithaspdf = true;
             }
-            // Make sure all dynamic (scroll and set) buttons display
-            onScrollAction();
-        } else {
-            // IV - Do not stop autoscroll.  User may reposition and continue autoscroll
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            if (!dealtwithaspdf) {
 
-
+            if (StaticVariables.whichMode.equals("Stage") && FullscreenActivity.isSong) {
+                if (StaticVariables.currentSection == StaticVariables.songSections.length - 1) {
+                    // We are at the end of the song
+                    Log.d("d", "End of the song");
+                } else {
+                    try {
+                        StaticVariables.currentSection += 1;
+                        selectSection(StaticVariables.currentSection);
+                    } catch (Exception e) {
+                        StaticVariables.currentSection -= 1;
+                    }
+                }
+                // Make sure all dynamic (scroll and set) buttons display
+                onScrollAction ();
+            } else {
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
             ObjectAnimator animator;
 
             int barheight = 0;
@@ -5484,9 +5498,11 @@ public class StageMode extends AppCompatActivity implements
                     storageAccess.determineFileTypeByExtension();
 
                     if (FullscreenActivity.isPDF) {
+                    mypage.setBackgroundColor(StaticVariables.white);
                         loadPDF();
 
                     } else if (FullscreenActivity.isImage) {
+                    mypage.setBackgroundColor(StaticVariables.white);
                         loadImage();
 
                     } else if (FullscreenActivity.isSong) {

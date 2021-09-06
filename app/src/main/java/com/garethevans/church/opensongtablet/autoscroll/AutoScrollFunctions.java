@@ -206,8 +206,7 @@ class AutoScrollFunctions {
                     tvs.setTextSize(StaticVariables.infoBarSmallTextSize);
                 }
 
-                if (currtimesecs < StaticVariables.autoScrollDelay) {
-                    // Set the time as a backwards count down
+                if ((currtimesecs < StaticVariables.autoScrollDelay) && (!(FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0))) {    // Set the time as a backwards count down
                     currtimesecs = StaticVariables.autoScrollDelay - currtimesecs;
                     text = TimeTools.timeFormatFixer(currtimesecs);
                     tv.setTextColor(0xffff0000);
@@ -216,6 +215,7 @@ class AutoScrollFunctions {
                     text = TimeTools.timeFormatFixer(currtimesecs);
                     tv.setTextColor(0xffffffff);
                     tv.setText(text);
+                    tvt.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
                 }
             }
         }

@@ -1395,9 +1395,11 @@ public class PresentationCommon {
                                         TextView presentermode_ccli,
                                         TextView presentermode_alert,
                                         LinearLayout bottom_infobar) {
-        if (!(mainActivityInterface.getSong().getIsImage() ||
-                mainActivityInterface.getSong().getIsImageSlide() ||
-                mainActivityInterface.getSong().getIsPDF())) {
+
+        if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+            // IV - Force consideration of alert state when text after the Until period
+            infoBarAlertState = "";
+        } else {
 
             // IV - Overrides for when not hiding song info
             if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"presoInfoBarHide",true) &&
@@ -1482,13 +1484,17 @@ public class PresentationCommon {
                             presentermode_alert.setVisibility(View.GONE);
                             // IV - Force consideration of alert state after the Until period
                             infoBarAlertState = false;
-                            mainActivityInterface.getCustomAnimation().faderAnimation(bottom_infobar, mainActivityInterface.getPreferences().getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-                        } else {
+                        // IV - Fade in only if something to show
+                            if (new StringBuilder().append(finalNew_title).append(finalNew_author).append(finalNew_copyright).append(finalNew_ccli).toString().trim() != "") {
+                                CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                            } else {
                             if (infoBarAlertState) {
                                 // IV - Align alert text the same as lyrics
                                 presentermode_alert.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "presoLyricsAlign", Gravity.END));
                                 presentermode_alert.setVisibility(View.VISIBLE);
-                                mainActivityInterface.getCustomAnimation().faderAnimation(bottom_infobar, mainActivityInterface.getPreferences().getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                            h.postDelayed(() -> {
+                                    CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                                }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
                             } else {
                                 presentermode_alert.setVisibility(View.GONE);
                             }
