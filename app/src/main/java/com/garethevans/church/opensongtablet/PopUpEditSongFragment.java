@@ -555,8 +555,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         availabletags = V.findViewById(R.id.availabletags);
         String newtags = getString(R.string.edit_song_availabletags) + "\n" + getString(R.string.filter_structure);
         availabletags.setText(newtags);
-
-        hideIfPDF(availabletags);
         edit_song_title = V.findViewById(R.id.edit_song_title);
         edit_song_author = V.findViewById(R.id.edit_song_author);
         edit_song_copyright = V.findViewById(R.id.edit_song_copyright);
@@ -569,7 +567,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_timesig = V.findViewById(R.id.edit_song_timesig);
         edit_song_capo = V.findViewById(R.id.edit_song_capo);
         edit_song_capo_print = V.findViewById(R.id.edit_song_capo_print);
-        hideIfPDF(edit_song_capo_print);
         edit_song_presentation = V.findViewById(R.id.edit_song_presentation);
         edit_song_presentation.setFocusable(false);
         edit_song_presentation.setOnClickListener(v -> {
@@ -581,8 +578,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             forceHideKeyboard();
             dismiss();
         });
-        hideIfPDF(V.findViewById(R.id.myPresentation));
-        hideIfPDF(edit_song_presentation);
+
         edit_song_notes = V.findViewById(R.id.edit_song_notes);
         addBrackets = V.findViewById(R.id.addBrackets);
         addBrackets.hide();
@@ -707,8 +703,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_CCLI = V.findViewById(R.id.edit_song_ccli);
         edit_song_aka = V.findViewById(R.id.edit_song_aka);
         edit_song_key_line = V.findViewById(R.id.edit_song_keyline);
-        hideIfPDF(V.findViewById(R.id.myKeyLine));
-        hideIfPDF(edit_song_key_line);
         edit_song_hymn = V.findViewById(R.id.edit_song_hymn);
         edit_song_user1 = V.findViewById(R.id.edit_song_user1);
         edit_song_user2 = V.findViewById(R.id.edit_song_user2);
@@ -716,19 +710,71 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_pad_file = V.findViewById(R.id.edit_pad_file);
         edit_song_midi = V.findViewById(R.id.edit_song_midi);
         edit_song_midi_index = V.findViewById(R.id.edit_song_midi_index);
-        hideIfPDF(V.findViewById(R.id.myMidiIndex)); // Not using this
-        hideIfPDF(edit_song_midi_index);
         edit_song_restrictions = V.findViewById(R.id.edit_song_restrictions);
-        hideIfPDF(V.findViewById(R.id.myRestrictions));
-        hideIfPDF(edit_song_restrictions);
         edit_song_books = V.findViewById(R.id.edit_song_books);
-        hideIfPDF(V.findViewById(R.id.myBooks));
-        hideIfPDF(edit_song_books);
         edit_song_pitch = V.findViewById(R.id.edit_song_pitch);
-        hideIfPDF(V.findViewById(R.id.myPitch));
-        hideIfPDF(edit_song_pitch);
         customTheme = V.findViewById(R.id.customTheme);
         advancedSettings = V.findViewById(R.id.advanced_settings);
+
+        // IV - For PDF and Image songs make Title fixed and hide items not used by these songs
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            edit_song_title.setEnabled(false);
+            edit_song_title.setFocusable(false);
+            edit_song_title.setTextColor(StaticVariables.white);
+            edit_song_title.setBackgroundColor(StaticVariables.transparent);
+
+            hideIfPDF(V.findViewById(R.id.myAuthor));
+            hideIfPDF(edit_song_author);
+
+            hideIfPDF(V.findViewById(R.id.myCopyright));
+            hideIfPDF(edit_song_copyright);
+
+            hideIfPDF(V.findViewById(R.id.myPresentation));
+            hideIfPDF(edit_song_presentation);
+
+            hideIfPDF(V.findViewById(R.id.myLyrics));
+
+            hideIfPDF(V.findViewById(R.id.editAsChordPro));
+
+            hideIfPDF(V.findViewById(R.id.edit_song_lyrics));
+
+            hideIfPDF(V.findViewById(R.id.fix_lyrics));
+
+            hideIfPDF(availabletags);
+
+            hideIfPDF(V.findViewById(R.id.myAka));
+            hideIfPDF(edit_song_aka);
+
+            hideIfPDF(V.findViewById(R.id.myKeyLine));
+            hideIfPDF(edit_song_key_line);
+
+            hideIfPDF(V.findViewById(R.id.myHymnNumber));
+            hideIfPDF(edit_song_hymn);
+
+            hideIfPDF(V.findViewById(R.id.myUser1));
+            hideIfPDF(edit_song_user1);
+
+            hideIfPDF(V.findViewById(R.id.myUser2));
+            hideIfPDF(edit_song_user2);
+
+            hideIfPDF(V.findViewById(R.id.myUser3));
+            hideIfPDF(edit_song_user3);
+
+            hideIfPDF(V.findViewById(R.id.myMidiIndex));
+            hideIfPDF(edit_song_midi_index);
+
+            hideIfPDF(V.findViewById(R.id.myRestrictions));
+            hideIfPDF(edit_song_restrictions);
+
+            hideIfPDF(V.findViewById(R.id.myBooks));
+            hideIfPDF(edit_song_books);
+
+            hideIfPDF(V.findViewById(R.id.myPitch));
+            hideIfPDF(edit_song_pitch);
+
+            hideIfPDF(V.findViewById(R.id.myTheme));
+            hideIfPDF(customTheme);
+        }
 
         // Listeners for the buttons
         toggleGeneralAdvanced.setOnClickListener(v -> {

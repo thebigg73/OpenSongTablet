@@ -371,8 +371,8 @@ public class StageMode extends AppCompatActivity implements
     // Handler for stop of autoscroll
     private final Handler endAutoScrollHandler = new Handler();
     private final Runnable endAutoScrollRunnable = () -> {
-        // If we are still at the end of the page stop
-        if (StaticVariables.isautoscrolling && FullscreenActivity.newPosFloat >= StaticVariables.scrollpageHeight) {
+        // If we have not needed to scroll or are still at the end of the page then stop
+        if (StaticVariables.isautoscrolling && (StaticVariables.scrollpageHeight <= 0.0f || FullscreenActivity.newPosFloat >= StaticVariables.scrollpageHeight)) {
             StaticVariables.autoscrollispaused = false;
             StaticVariables.isautoscrolling = false;
         }
@@ -589,6 +589,9 @@ public class StageMode extends AppCompatActivity implements
             checkBackupState();
         }
 
+        // IV - Setup handling of scroll and set dynamic buttons once
+        scrollButtons();
+
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
     }
@@ -797,13 +800,8 @@ public class StageMode extends AppCompatActivity implements
 
         // Enable the song and author section to link to edit song
         songandauthor.setOnClickListener(v -> {
-            if (FullscreenActivity.isPDF) {
-                StaticVariables.myToastMessage = getString(R.string.pdf_functionnotavailable);
-                ShowToast.showToast(StageMode.this);
-            } else if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "songdetails";
-                openFragment();
-            }
+            FullscreenActivity.whattodo = "songdetails";
+            openFragment();
         });
         batteryholder.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "actionbarinfo";
@@ -1702,37 +1700,21 @@ public class StageMode extends AppCompatActivity implements
             if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
                 FullscreenActivity.newPosFloat = songscrollview.getScrollY();
             }
-            if (!(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true))) {
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true)) {
+                // IV - Added handling for multi-page PDF
+                // Use checkCanScroll results
+                showFAB(scrollDownButton, checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)));
+                showFAB(scrollUpButton, checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0));
+            } else {
                 showFAB(scrollDownButton, false);
                 showFAB(scrollUpButton, false);
-            } else {
-                // Use checkCanScroll results
-                showFAB(scrollDownButton, checkCanScrollDown());
-                showFAB(scrollUpButton, checkCanScrollUp());
             }
 
-            // Use checkCanGoTo results
-            // IV Added to the condition - do if setView
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true) && StaticVariables.setView ) {
-                // If we are in Stage mode and mid song add Set Move buttons to support section moves
-                if ((StaticVariables.whichMode != null) && StaticVariables.whichMode.equals("Stage") && (StaticVariables.songSections != null)) {
-                    if (StaticVariables.currentSection == 0) {
-                        showFAB(setBackButton, StaticVariables.canGoToPrevious);
-                        showFAB(setForwardButton, true);
-                    } else {
-                        if (StaticVariables.currentSection == StaticVariables.songSections.length - 1) {
-                            showFAB(setBackButton, true);
-                            showFAB(setForwardButton, StaticVariables.canGoToNext);
-                        } else {
-                            showFAB(setBackButton, true);
-                            showFAB(setForwardButton, true);
-                        }
-                    }
-                    // Otherwise use checkCanGoTo results as-is
-                } else {
-                    showFAB(setBackButton, StaticVariables.canGoToPrevious);
-                    showFAB(setForwardButton, StaticVariables.canGoToNext);
-                }
+                // IV - Code removed - No longer support Set Move buttons making section moves in Stage mode here or in mext and previous item code
+                // Use checkCanGoTo results
+                showFAB(setBackButton, StaticVariables.canGoToPrevious);
+                showFAB(setForwardButton, StaticVariables.canGoToNext);
             } else {
                 showFAB(setBackButton, false);
                 showFAB(setForwardButton, false);
@@ -2141,7 +2123,6 @@ public class StageMode extends AppCompatActivity implements
     public void onScrollAction() {
         // Display the scroll and set dynamic buttons as needed
         checkCanGoTo();
-        scrollButtons();
         delaycheckscroll.post(checkScrollPosition);
     }
 
@@ -2149,107 +2130,134 @@ public class StageMode extends AppCompatActivity implements
         // Temporarily pause any running autoscroll
         pauseAutoscroll();
 
+        // IV - PDF page scroll logic moved here
+        dealtwithaspdf = false;
+
+        if (!FullscreenActivity.alreadyloading) {
+            if (FullscreenActivity.isPDF && !checkCanScrollUp() && (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
+                FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
+                // GE Added this to stop the pad reloading between PDF pages
+                StaticVariables.reloadOfSong = false;
+                loadSong();
+                dealtwithaspdf = true;
+            }
+        }
+
         // Scroll the screen up
-        if (StaticVariables.whichMode.equals("Stage")) {
-            try {
-                StaticVariables.currentSection -= 1;
-                selectSection(StaticVariables.currentSection);
-            } catch (Exception e) {
-                StaticVariables.currentSection += 1;
-                e.printStackTrace();
-            }
-            // Make sure all dynamic (scroll and set) buttons display
-            onScrollAction();
-        } else {
-            // IV - Do not stop autoscroll.  User may reposition and continue autoscroll
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-            int barheight = 0;
-            if (ab != null) {
-                if (ab.isShowing()) {
-                    barheight = ab.getHeight();
+        if (!dealtwithaspdf) {
+            if (StaticVariables.whichMode.equals("Stage") && FullscreenActivity.isSong) {
+                try {
+                    StaticVariables.currentSection -= 1;
+                    selectSection(StaticVariables.currentSection);
+                } catch (Exception e) {
+                    StaticVariables.currentSection += 1;
+                    e.printStackTrace();
                 }
-            }
-
-            ObjectAnimator animator;
-
-            if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY() -
-                        (int) (preferences.getMyPreferenceFloat(StageMode.this,"scrollDistance", 0.7f) * (
-                                metrics.heightPixels - barheight));
-                animator = ObjectAnimator.ofInt(glideimage_ScrollView, "scrollY", glideimage_ScrollView.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                // Make sure all dynamic (scroll and set) buttons display
+                onScrollAction();
             } else {
-                FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY() -
-                        (int) (preferences.getMyPreferenceFloat(StageMode.this,"scrollDistance", 0.7f) *
-                                (metrics.heightPixels - barheight));
-                animator = ObjectAnimator.ofInt(songscrollview, "scrollY", songscrollview.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+                int barheight = 0;
+                if (ab != null) {
+                    if (ab.isShowing()) {
+                        barheight = ab.getHeight();
+                    }
+                }
+
+                ObjectAnimator animator;
+
+                if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY() -
+                            (int) (preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f) * (
+                                    metrics.heightPixels - barheight));
+                    animator = ObjectAnimator.ofInt(glideimage_ScrollView, "scrollY", glideimage_ScrollView.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                } else {
+                    FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY() -
+                            (int) (preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f) *
+                                    (metrics.heightPixels - barheight));
+                    animator = ObjectAnimator.ofInt(songscrollview, "scrollY", songscrollview.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                }
+
+                Interpolator customInterpolator = PathInterpolatorCompat.create(0.445f, 0.050f, 0.550f, 0.950f);
+                animator.setInterpolator(customInterpolator);
+                animator.setDuration(preferences.getMyPreferenceInt(StageMode.this, "scrollSpeed", 1500));
+                animator.start();
+
+                // Set a runnable to check the scroll position after 1 second
+                delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
+                hideActionBar();
             }
-
-            Interpolator customInterpolator = PathInterpolatorCompat.create(0.445f, 0.050f, 0.550f, 0.950f);
-            animator.setInterpolator(customInterpolator);
-            animator.setDuration(preferences.getMyPreferenceInt(StageMode.this,"scrollSpeed",1500));
-            animator.start();
-
-            // Set a runnable to check the scroll position after 1 second
-            delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
-            hideActionBar();
         }
     }
 
     private void doScrollDown() {
         // Temporarily pause any running autoscroll
-        Log.d(TAG,"doScrollDown()");
         pauseAutoscroll();
 
-        if (StaticVariables.whichMode.equals("Stage")) {
-            if (StaticVariables.currentSection==StaticVariables.songSections.length) {
-                // We are at the end of the song, so allow next
-                Log.d("d","End of the song");
+        // IV - PDF page scroll logic moved here
+        dealtwithaspdf = false;
+
+        if (!FullscreenActivity.alreadyloading) {
+            if (FullscreenActivity.isPDF && !checkCanScrollDown() && (FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
+                FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
+                // GE Added this to stop the pad reloading between PDF pages
+                StaticVariables.reloadOfSong = false;
+                loadSong();
+                dealtwithaspdf = true;
             }
-            try {
-                StaticVariables.currentSection += 1;
-                selectSection(StaticVariables.currentSection);
-            } catch (Exception e) {
-                StaticVariables.currentSection -= 1;
-            }
-            // Make sure all dynamic (scroll and set) buttons display
-            onScrollAction();
-        } else {
-            // IV - Do not stop autoscroll.  User may reposition and continue autoscroll
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        }
 
-
-            ObjectAnimator animator;
-
-            int barheight = 0;
-            if (ab != null) {
-                if (ab.isShowing()) {
-                    barheight = ab.getHeight();
+        if (!dealtwithaspdf) {
+            if (StaticVariables.whichMode.equals("Stage") && FullscreenActivity.isSong) {
+                if (StaticVariables.currentSection == StaticVariables.songSections.length - 1) {
+                    // We are at the end of the song
+                    Log.d("d", "End of the song");
+                } else {
+                    try {
+                        StaticVariables.currentSection += 1;
+                        selectSection(StaticVariables.currentSection);
+                    } catch (Exception e) {
+                        StaticVariables.currentSection -= 1;
+                    }
                 }
-            }
-
-            if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY() +
-                        (int) (preferences.getMyPreferenceFloat(StageMode.this,"scrollDistance", 0.7f) *
-                                (metrics.heightPixels - barheight));
-                animator = ObjectAnimator.ofInt(glideimage_ScrollView, "scrollY", glideimage_ScrollView.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                // Make sure all dynamic (scroll and set) buttons display
+                onScrollAction ();
             } else {
-                FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY() +
-                        (int) (preferences.getMyPreferenceFloat(StageMode.this,"scrollDistance", 0.7f) *
-                                (metrics.heightPixels - barheight));
-                animator = ObjectAnimator.ofInt(songscrollview, "scrollY", songscrollview.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+                ObjectAnimator animator;
+
+                int barheight = 0;
+                if (ab != null) {
+                    if (ab.isShowing()) {
+                        barheight = ab.getHeight();
+                    }
+                }
+
+                if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY() +
+                            (int) (preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f) *
+                                    (metrics.heightPixels - barheight));
+                    animator = ObjectAnimator.ofInt(glideimage_ScrollView, "scrollY", glideimage_ScrollView.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                } else {
+                    FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY() +
+                            (int) (preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f) *
+                                    (metrics.heightPixels - barheight));
+                    animator = ObjectAnimator.ofInt(songscrollview, "scrollY", songscrollview.getScrollY(), (int) FullscreenActivity.newPosFloat);
+                }
+
+                Interpolator customInterpolator = PathInterpolatorCompat.create(0.445f, 0.050f, 0.550f, 0.950f);
+                animator.setInterpolator(customInterpolator);
+                animator.setDuration(preferences.getMyPreferenceInt(StageMode.this, "scrollSpeed", 1500));
+                animator.start();
+
+                // Set a runnable to check the scroll position after 1 second
+                delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
+                hideActionBar();
             }
-
-            Interpolator customInterpolator = PathInterpolatorCompat.create(0.445f, 0.050f, 0.550f, 0.950f);
-            animator.setInterpolator(customInterpolator);
-            animator.setDuration(preferences.getMyPreferenceInt(StageMode.this,"scrollSpeed",1500));
-            animator.start();
-
-            // Set a runnable to check the scroll position after 1 second
-            delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
-            hideActionBar();
         }
     }
 
@@ -2651,15 +2659,8 @@ public class StageMode extends AppCompatActivity implements
             case "abcnotation":
             case "abcnotation_editsong":
             case "showmidicommands":
-                if (s.equals("editsong") && !justSong(StageMode.this) && !FullscreenActivity.isPDF) {
-                    ShowToast.showToast(StageMode.this);
-                } else {
-                    if (FullscreenActivity.isPDF && s.equals("editsong")) {
-                        s = "extractPDF";
-                    }
-                    FullscreenActivity.whattodo = s;
-                    openFragment();
-                }
+                FullscreenActivity.whattodo = s;
+                openFragment();
                 break;
 
             case "showchords":
@@ -2755,15 +2756,8 @@ public class StageMode extends AppCompatActivity implements
             case "inc_autoscroll_speed":
             case "dec_autoscroll_speed":
             case "toggle_autoscroll_pause":
-                if (s.equals("editsong") && !justSong(StageMode.this) && !FullscreenActivity.isPDF) {
-                    ShowToast.showToast(StageMode.this);
-                } else {
-                    if (FullscreenActivity.isPDF && s.equals("editsong")) {
-                        s = "extractPDF";
-                    }
-                    FullscreenActivity.whattodo = s;
-                    openFragment();
-                }
+                FullscreenActivity.whattodo = s;
+                openFragment();
                 break;
 
             case "autoscale":
@@ -2839,13 +2833,8 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void doEdit() {
-        if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
-            openFragment();
-        } else if (FullscreenActivity.isSong){
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
-        }
+        FullscreenActivity.whattodo = "editsong";
+        openFragment();
     }
 
     @Override
@@ -2948,56 +2937,57 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void displayHighlight(boolean fromautoshow) {
-
+        highlightNotes.setVisibility(View.GONE);
+        // IV - A fade out may have occurred so set Alpha to 1
+        highlightNotes.setAlpha(1.0f);
         if (!StaticVariables.whichMode.equals("Performance")) {
             FullscreenActivity.highlightOn = false;
-            highlightNotes.setVisibility(View.GONE);
             if (!fromautoshow) {
                 // Don't show the warning just because the app tries to autoshow it
                 StaticVariables.myToastMessage = getString(R.string.switchtoperformmode);
                 ShowToast.showToast(StageMode.this);
             }
         } else {
-            // If we are trying to show notes, but they are already open, close them
-            // This is only if a manual click on the hightlight button happened
-            // Are the notes visible?
             if (StaticVariables.thisSongScale==null) {
                 StaticVariables.thisSongScale = preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W");
             }
 
-            if (highlightNotes.getVisibility() == View.VISIBLE && !fromautoshow) {
-                // Hide it
-                FullscreenActivity.highlightOn = false;
-                highlightNotes.setVisibility(View.GONE);
+            // TODO - Fix scaling and positioning of highlightNotes when song is scaled
+            if ((!FullscreenActivity.highlightOn && !fromautoshow) ) {
+                // IV - If a manual click of highlight button to hide the highlight then hide - do nothing as already done
             } else if (StaticVariables.thisSongScale.equals("Y")) {
-                String hname = processSong.getHighlighterName(StageMode.this);
-                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Highlighter", "", hname);
-                if (storageAccess.uriExists(StageMode.this, uri)) {
-                    // Load the image in if it exists and then show it
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    try {
-                        InputStream inputStream = storageAccess.getInputStream(StageMode.this, uri);
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
-                        if (bitmap != null) {
-                            Bitmap canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-                            bitmap.recycle();
-                            RelativeLayout.LayoutParams rlp;
+                // IV - If the song has been scaled then reload to display without scale
+                if (highlightNotes.getScaleX() != 1.0f) {
+                    // Flag for a reload
+                    StaticVariables.reloadOfSong = true;
+                    loadSong();
+                } else {
+                    String hname = processSong.getHighlighterName(StageMode.this);
+                    Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Highlighter", "", hname);
+                    if (storageAccess.uriExists(StageMode.this, uri)) {
+                        // Load the image in if it exists and then show it
+                        try {
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                            InputStream inputStream = storageAccess.getInputStream(StageMode.this, uri);
+                            highlightNotes.setImageBitmap(BitmapFactory.decodeStream(inputStream, null, options).copy(Bitmap.Config.ARGB_8888, true));
                             final int firstguesswidth;
                             final int firstguessheight;
-                            if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                                firstguesswidth = glideimage_ScrollView.getMeasuredWidth();
-                                firstguessheight = glideimage_ScrollView.getMeasuredHeight();
-                            } else {
+                            if (FullscreenActivity.isSong) {
                                 firstguesswidth = songscrollview.getMeasuredWidth();
                                 firstguessheight = songscrollview.getMeasuredHeight();
+                            } else {
+                                firstguesswidth = glideimage_ScrollView.getMeasuredWidth();
+                                firstguessheight = glideimage_ScrollView.getMeasuredHeight();
                             }
-                            rlp = new RelativeLayout.LayoutParams(firstguesswidth, firstguessheight);
-                            if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
+                            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(firstguesswidth, firstguessheight);
+                            if (preferences.getMyPreferenceBoolean(StageMode.this, "hideActionBar", false)) {
                                 rlp.addRule(RelativeLayout.BELOW, 0);
                             } else {
                                 rlp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
                             }
+                            highlightNotes.setLayoutParams(rlp);
+                            highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                             // Set a runnable to check the height/width after a couple of seconds to redraw the image position
                             // Only if it has changed though
@@ -3007,18 +2997,17 @@ public class StageMode extends AppCompatActivity implements
                                     runOnUiThread(() -> {
                                         int secondguessheight;
                                         int secondguesswidth;
-                                        if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                                            secondguesswidth = glideimage_ScrollView.getMeasuredWidth();
-                                            secondguessheight = glideimage_ScrollView.getMeasuredHeight();
-                                        } else {
+                                        if (FullscreenActivity.isSong) {
                                             secondguesswidth = songscrollview.getMeasuredWidth();
                                             secondguessheight = songscrollview.getMeasuredHeight();
+                                        } else {
+                                            secondguesswidth = glideimage_ScrollView.getMeasuredWidth();
+                                            secondguessheight = glideimage_ScrollView.getMeasuredHeight();
                                         }
                                         if (secondguessheight != firstguessheight || secondguesswidth != firstguesswidth) {
                                             // Set the parameters again
-                                            RelativeLayout.LayoutParams rlp2 =
-                                                    new RelativeLayout.LayoutParams(secondguesswidth, secondguessheight);
-                                            if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
+                                            RelativeLayout.LayoutParams rlp2 = new RelativeLayout.LayoutParams(secondguesswidth, secondguessheight);
+                                            if (preferences.getMyPreferenceBoolean(StageMode.this, "hideActionBar", false)) {
                                                 rlp2.addRule(RelativeLayout.BELOW, 0);
                                             } else {
                                                 rlp2.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
@@ -3030,41 +3019,42 @@ public class StageMode extends AppCompatActivity implements
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-
                             }).start();
-                            highlightNotes.setImageBitmap(canvasBitmap);
-                            highlightNotes.setLayoutParams(rlp);
-                            highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
                             if (!fromautoshow) {
                                 // If user manually wanted to show, otherwise song load animates it in
                                 highlightNotes.setVisibility(View.VISIBLE);
-                            } else {
+                            } else if (FullscreenActivity.isSong) {
                                 highlightNotes.setVisibility(View.VISIBLE);
                                 if (FullscreenActivity.whichDirection.equals("L2R")) {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
                                 } else {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
                                 }
+                            } else {
+                                // IV - Fade in for PDF and Image songs
+                                highlightNotes.setAlpha(0.0f);
+                                // IV - Might have been scrolled
+                                highlightNotes.setX(0.0f);
+                                CustomAnimations.faderAnimation(highlightNotes, 300, true);
+                            }
+                        } catch (OutOfMemoryError | Exception e) {
+                            e.printStackTrace();
+                            Log.d(TAG, "Oops - error, ran out of memory for an image!");
+                        }
+                        FullscreenActivity.highlightOn = true;
+                    } else {
+                        if (!fromautoshow) {
+                            // If the user has clicked the icon and no drawing exists, create one
+                            takeScreenShot();
+                            if (FullscreenActivity.bmScreen != null) {
+                                FullscreenActivity.whattodo = "drawnotes";
+                                openFragment();
+                            } else {
+                                Log.d(TAG, "screenshot is null");
                             }
                         }
-
-                    } catch (OutOfMemoryError | Exception e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "Oops - error, likely too big an image!");
+                        FullscreenActivity.highlightOn = false;
                     }
-                    FullscreenActivity.highlightOn = true;
-                } else {
-                    if (!fromautoshow) {
-                        // If the user has clicked the icon and no drawing exists, create one
-                        takeScreenShot();
-                        if (FullscreenActivity.bmScreen != null) {
-                            FullscreenActivity.whattodo = "drawnotes";
-                            openFragment();
-                        } else {
-                            Log.d(TAG, "screenshot is null");
-                        }
-                    }
-                    FullscreenActivity.highlightOn = false;
                 }
             } else {
                 if (!fromautoshow) {
@@ -3195,6 +3185,17 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void loadImage() {
+        // Set the ab title to include the song info if available
+        if (StaticVariables.mTitle.equals("")) {
+            StaticVariables.mTitle = StaticVariables.songfilename.replaceAll("\\.[^.]*$", "");
+        }
+        songtitle_ab.setText(StaticVariables.mTitle);
+        if (StaticVariables.mKey.isEmpty()) {
+            songkey_ab.setText("");
+        } else {
+            String s = " ("+StaticVariables.mKey+")";
+            songkey_ab.setText(s);
+        }
         // Process the image location into an URI
         Uri imageUri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
                 StaticVariables.whichSongFolder, StaticVariables.songfilename);
@@ -3262,12 +3263,12 @@ public class StageMode extends AppCompatActivity implements
         glideimage_ScrollView.setVisibility(View.VISIBLE);
         glideimage_HorizontalScrollView.setVisibility(View.VISIBLE);
 
-        // Set the ab title to include the page info if available
+        // Set the ab title to include the song info if available
         songtitle_ab.setText(StaticVariables.mTitle);
         if (StaticVariables.mKey.isEmpty()) {
             songkey_ab.setText("");
         } else {
-            String s = "("+StaticVariables.mKey+")";
+            String s = " ("+StaticVariables.mKey+")";
             songkey_ab.setText(s);
         }
         if (bmp != null) {
@@ -3425,40 +3426,20 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void goToNextItem() {
-        dealtwithaspdf = false;
-
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.whichDirection = "R2L";
             StaticVariables.showstartofpdf = true;
-
-            // If this is a PDF, check we can't move pages
-            if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
-                FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
-
-            // GE Added this to stop the pad reloading between PDF pages
-            StaticVariables.reloadOfSong = false;
-
-            // Load the next pdf page
-            dealtwithaspdf = true;
-            loadSong();
-
-            } else {
-                FullscreenActivity.pdfPageCurrent = 0;
-            }
-
-            // If this hasn't been dealt with
-            if (!dealtwithaspdf && StaticVariables.setView) {
+            FullscreenActivity.pdfPageCurrent = 0;
+            // IV - PDF page move handling moved to doscrollDown
+            if (StaticVariables.setView) {
                 // Is there another song in the set?  If so move, if not, do nothing
-                // IV - Song section aware for Stage mode
-                if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                        (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection < StaticVariables.songSections.length - 1)) {
-                    //FullscreenActivity.indexSongInSet += 1;
+                if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1)) {
                     StaticVariables.setMoveDirection = "forward";
                     doMoveInSet();
                 } else {
                     showToastMessage(getResources().getString(R.string.lastsong));
                 }
-            } else if (!dealtwithaspdf) {
+            } else {
                 // Try to move to the next song alphabetically
                 // However, only do this if the previous item isn't a subfolder!
                 boolean isfolder = false;
@@ -3601,6 +3582,8 @@ public class StageMode extends AppCompatActivity implements
 
                 }
                 if (vis) {
+                    // IV - A fade may have occurred so set Alpha to 1
+                    highlightNotes.setAlpha(1.0f);
                     highlightNotes.setVisibility(View.VISIBLE);
                 }
             }
@@ -3798,15 +3781,12 @@ public class StageMode extends AppCompatActivity implements
         if (preferences.getMyPreferenceBoolean(StageMode.this,"drawingAutoDisplay",true)) {
             showHighlight();
         }
-        // Now scroll in the song via an animation
+        // Now display the song via an animation
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
             songscrollview.setVisibility(View.GONE);
-            glideimage_ScrollView.setVisibility(View.VISIBLE);
-            if (FullscreenActivity.whichDirection.equals("L2R")) {
-                glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
-            } else {
-                glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
-            }
+            glideimage_ScrollView.setAlpha(0.0f);
+            // IV - Fade in for PDF and Image songs
+            CustomAnimations.faderAnimation(glideimage_ScrollView, 300, true);
         } else {
             glideimage_ScrollView.setVisibility(View.GONE);
             glideimage_HorizontalScrollView.setVisibility(View.GONE);
@@ -3840,9 +3820,6 @@ public class StageMode extends AppCompatActivity implements
                 dualScreenWork();
             }
         }
-
-        // Make sure all dynamic (scroll and set) buttons display
-        onScrollAction();
 
         // Keep a note of the content size in case we pinch zoom
 
@@ -3970,35 +3947,18 @@ public class StageMode extends AppCompatActivity implements
         // IV - Stops errors on rapid song changes
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.whichDirection = "L2R";
-            dealtwithaspdf = false;
-
-            // If this is a PDF, check we can't move pages
-            if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
-                FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
-                dealtwithaspdf = true;
-
-                // GE Added this to stop the pad reloading between PDF pages
-                StaticVariables.reloadOfSong = false;
-
-                loadSong();
-            } else {
-                FullscreenActivity.pdfPageCurrent = 0;
-            }
-
-            // If this hasn't been dealt with
-            if (!dealtwithaspdf && StaticVariables.setView) {
-                StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
-                // IV - Song section aware for Stage mode
+            // IV - PDF page move handling moved to doscrollUp
+            if (StaticVariables.setView) {
+                // IV - (?) Disabled so behaviour is to move to the top of PDF (similar to moving to top of onSong song)
+                //StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
                 // Is there another song in the set?  If so move, if not, do nothing
-                if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0) ||
-                        (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection > 0)) {
-                    //FullscreenActivity.indexSongInSet -= 1;
+                if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0)) {
                     StaticVariables.setMoveDirection = "back";
                     doMoveInSet();
                 } else {
                     showToastMessage(getResources().getString(R.string.firstsong));
                 }
-            } else if (!dealtwithaspdf) {
+            } else {
                 // Try to move to the previous song alphabetically
                 // However, only do this if the previous item isn't a subfolder!
                 boolean isfolder = false;
@@ -6545,19 +6505,18 @@ public class StageMode extends AppCompatActivity implements
                     if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
                         StaticVariables.scrollpageHeight = glideimage_ScrollView.getChildAt(0).getMeasuredHeight() -
                                 glideimage_ScrollView.getHeight();
-
                     } else {
                         if (songscrollview.getChildAt(0) != null) {
                             StaticVariables.scrollpageHeight = songscrollview.getChildAt(0).getMeasuredHeight() -
                                     songscrollview.getHeight();
                         }
-
                     }
                     if (StaticVariables.scrollpageHeight > 0) {
-                        viewdrawn = true;
                         ready = true;
                         cancelled = true;
                     }
+                    // IV - We show progress for all cases
+                    viewdrawn = true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -6611,19 +6570,22 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(String... args) {
             try {
+                // IV - Ensure a 'panic' end should there be no scroll
+                endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
+                endAutoScrollHandler.postDelayed(endAutoScrollRunnable, ((StaticVariables.autoScrollDelay * 1000) + 4000));
                 while (StaticVariables.isautoscrolling) {
                     // IV - update the scroll buttons as we go
                     FullscreenActivity.time_passed = System.currentTimeMillis();
                     delaycheckscroll.post(checkScrollPosition);
-                    boolean doscroll = ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000) >= StaticVariables.autoScrollDelay;
+                    boolean doscroll = ((((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000) >= StaticVariables.autoScrollDelay) || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0));
                     if (doscroll) {
                         publishProgress(1);
                         // We set a runnable to end scroll after 4s - renewed if we are not at the end of the page.
                         // IV - Helps manual drag during autoscroll - a user can drag temporarily to the end and back up without an immediate autoscroll stop
-                        if (FullscreenActivity.newPosFloat < StaticVariables.scrollpageHeight) {
+                        if ((FullscreenActivity.newPosFloat < StaticVariables.scrollpageHeight) || !currentTime_TextView.getText().equals(totalTime_TextView.getText())) {
                             endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
+                            endAutoScrollHandler.postDelayed(endAutoScrollRunnable, 4000);
                         }
-                        endAutoScrollHandler.postDelayed(endAutoScrollRunnable, 4000);
                     }
                     // don't scroll first time
                     if (!StaticVariables.pauseautoscroll) {
@@ -6689,7 +6651,7 @@ public class StageMode extends AppCompatActivity implements
                     doCancelAsyncTask(mtask_autoscroll_music);
                     if (FullscreenActivity.isPDF && (FullscreenActivity.pdfPageCurrent+1)<FullscreenActivity.pdfPageCount) {
                         pdfCanContinueScrolling = true;
-                        goToNextItem();
+                        doScrollDown();
                     } else {
                         pdfCanContinueScrolling = false;
                         playbackProgress.setVisibility(View.GONE);
@@ -6735,24 +6697,12 @@ public class StageMode extends AppCompatActivity implements
     }
     private boolean checkCanScrollDown() {
         boolean showscrolldown = false;
-        if (StaticVariables.whichMode!=null && StaticVariables.whichMode.equals("Stage")) {
-            if (StaticVariables.currentSection>-1 && StaticVariables.songSections!=null) {
-                showscrolldown = StaticVariables.currentSection < StaticVariables.songSections.length - 1;
-            }
-        } else {
-            int height;
-            if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                try {
-                    height = glideimage_ScrollView.getChildAt(0).getMeasuredHeight() - glideimage_ScrollView.getHeight();
-                } catch (Exception e) {
-                    height = 0;
-                }
-                if (glideimage_ScrollView!=null) {
-                    if (!StaticVariables.isautoscrolling) {  // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
-                        FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
-                    }
-                    showscrolldown = height > glideimage_ScrollView.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
-                }
+        // IV - Handling by song type
+        int height;
+        if (FullscreenActivity.isSong) {
+            if (StaticVariables.whichMode!=null && StaticVariables.whichMode.equals("Stage") &&
+                StaticVariables.songSections != null && StaticVariables.currentSection > -1) {
+                    showscrolldown = StaticVariables.currentSection < StaticVariables.songSections.length - 1;
             } else {
                 try {
                     height = songscrollview.getChildAt(0).getMeasuredHeight() - songscrollview.getHeight();
@@ -6766,22 +6716,29 @@ public class StageMode extends AppCompatActivity implements
                     showscrolldown = height > songscrollview.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             }
+        } else { // PDF and Image
+            try {
+                height = glideimage_ScrollView.getChildAt(0).getMeasuredHeight() - glideimage_ScrollView.getHeight();
+            } catch (Exception e) {
+                height = 0;
+            }
+            if (glideimage_ScrollView!=null) {
+                if (!StaticVariables.isautoscrolling) {  // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                }
+                showscrolldown = height > glideimage_ScrollView.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
+            }
         }
         return showscrolldown;
     }
 
     private boolean checkCanScrollUp() {
+        // IV - Handling by song type
         boolean showscrollup = false;
-        if (StaticVariables.whichMode!=null && StaticVariables.whichMode.equals("Stage")) {
-            showscrollup = StaticVariables.currentSection > 0;
-        } else {
-            if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                if (glideimage_ScrollView!=null) {
-                    if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
-                        FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
-                    }
-                    showscrollup = glideimage_ScrollView.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
-                }
+        if (FullscreenActivity.isSong) {
+            if (StaticVariables.whichMode!=null && StaticVariables.whichMode.equals("Stage") &&
+                StaticVariables.songSections != null && StaticVariables.currentSection > -1) {
+                showscrollup = StaticVariables.currentSection > 0;
             } else {
                 if (songscrollview != null) {
                     if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
@@ -6789,6 +6746,13 @@ public class StageMode extends AppCompatActivity implements
                     }
                     showscrollup = songscrollview.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
+            }
+        } else { // PDF and Image
+            if (glideimage_ScrollView!=null) {
+                if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                }
+                showscrollup = glideimage_ScrollView.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
             }
         }
         return showscrollup;
@@ -6957,27 +6921,29 @@ public class StageMode extends AppCompatActivity implements
                 } else {
                     newsongloaded = true;
 
-                    // Animate out the current song
-                    if (FullscreenActivity.whichDirection.equals("L2R")) {
-                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                            glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                        } else if (songscrollview != null) {
-                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                    // IV - Animate out only when isSong
+                    if (FullscreenActivity.isSong) {
+                        // Animate out the current song
+                        if (FullscreenActivity.whichDirection.equals("L2R")) {
+                            if (songscrollview != null) {
+                                songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                            }
+                        } else {
+                            if (songscrollview != null) {
+                                songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                            }
+                        }
+                        // If there were highlight notes showing, move them away
+                        if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
+                            if (FullscreenActivity.whichDirection.equals("L2R")) {
+                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                            } else if (highlightNotes != null) {
+                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                            }
                         }
                     } else {
-                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                            glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                        } else if (songscrollview != null) {
-                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                        }
-                    }
-                    // If there were highlight notes showing, move them away
-                    if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
-                        if (FullscreenActivity.whichDirection.equals("L2R")) {
-                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                        } else if (highlightNotes != null) {
-                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                        }
+                        // If there were highlight notes showing, remove them
+                        CustomAnimations.faderAnimation(highlightNotes, 300, false);
                     }
 
                     // Remove any capokey
@@ -7000,6 +6966,8 @@ public class StageMode extends AppCompatActivity implements
                             glideimage_ScrollView.setVisibility(View.GONE);
                             songscrollview.setVisibility(View.GONE);
                             highlightNotes.setVisibility(View.GONE);
+                            highlightNotes.setScaleX(1.0f);
+                            highlightNotes.setScaleY(1.0f);
                             FullscreenActivity.highlightOn = false;
                             glideimage_ScrollView.scrollTo(0, 0);
                             songscrollview.scrollTo(0, 0);
@@ -7034,8 +7002,6 @@ public class StageMode extends AppCompatActivity implements
                             e.printStackTrace();
                         }
                     }, 300);
-                    // Make sure all dynamic (scroll and set) buttons display
-                    onScrollAction();
                 }
             }
         } catch (Exception e) {
@@ -7248,13 +7214,17 @@ public class StageMode extends AppCompatActivity implements
                     //Determine file type
                     storageAccess.determineFileTypeByExtension();
 
+                    // IV - Background colour set to white for PDF and Image
                     if (FullscreenActivity.isPDF) {
+                        mypage.setBackgroundColor(StaticVariables.white);
                         loadPDF();
 
                     } else if (FullscreenActivity.isImage) {
+                        mypage.setBackgroundColor(StaticVariables.white);
                         loadImage();
 
                     } else if (FullscreenActivity.isSong) {
+                        mypage.setBackgroundColor(lyricsBackgroundColor);
                         //Prepare the song views
                         prepareView();
                     }
@@ -7279,10 +7249,6 @@ public class StageMode extends AppCompatActivity implements
                             }
                         }
                     }
-
-
-                    // Make sure all dynamic (scroll and set) buttons display
-                    onScrollAction();
 
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
                     // open the find new songs menu
@@ -7333,6 +7299,8 @@ public class StageMode extends AppCompatActivity implements
                             sqLiteHelper.updateSong(StageMode.this,sqLite);
                         }
                     }
+                    // Make sure all dynamic (scroll and set) buttons display
+                    onScrollAction();
                 }
 
             } catch (Exception e) {
@@ -7592,7 +7560,8 @@ public class StageMode extends AppCompatActivity implements
                 // Scroll the song menu up
                 scrollMenu("up");
             } else {
-                if (!drawerOrFragmentActive && checkCanScrollUp()) {
+                // IV - Added handling for PDF pages
+                if (!drawerOrFragmentActive && (checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0))) {
                     if (scrollUpButton != null && scrollUpButton.getVisibility() == View.VISIBLE) {
                         CustomAnimations.animateFAB(scrollUpButton, StageMode.this);
                     }
@@ -7615,7 +7584,7 @@ public class StageMode extends AppCompatActivity implements
         if (goToItemRequired) {
             // Consider a song change warning
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
-                // IV - We warn only if we can sucessfully move
+                // IV - We warn only if we can successfully move
                 if (StaticVariables.setView) {
                     checkCanGoTo();
                     // If in a set and able to move
@@ -7666,7 +7635,8 @@ public class StageMode extends AppCompatActivity implements
                 // Scroll the song menu down
                 scrollMenu("down");
             } else {
-                if (!drawerOrFragmentActive && checkCanScrollDown()) {
+                // IV - Added handling for PDF pages
+                if (!drawerOrFragmentActive && (checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)))) {
                     if (scrollDownButton != null && scrollDownButton.getVisibility() == View.VISIBLE) {
                         CustomAnimations.animateFAB(scrollDownButton, StageMode.this);
                     }
@@ -7689,7 +7659,7 @@ public class StageMode extends AppCompatActivity implements
         if (goToItemRequired) {
             // Consider a song change warning
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
-                // IV - We warn only if we can sucessfully move
+                // IV - We warn only if we can successfully move
                 if (StaticVariables.setView) {
                     checkCanGoTo();
                     // If in a set and able to move
@@ -7737,15 +7707,18 @@ public class StageMode extends AppCompatActivity implements
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             // Scroll the song menu up
             scrollMenu("up");
-        } else if (StaticVariables.whichMode.equals("Stage") &&
-                StaticVariables.currentSection==0 &&
-                preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove", true)) {
-            pedalPrevious();
-        } else if (!drawerOrFragmentActive && checkCanScrollUp()) {
-            CustomAnimations.animateFAB(scrollUpButton, StageMode.this);
-            doScrollUp();
-            if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
-                PedalNeedsConfirmTrueAfterDelay();
+        } else {
+            if (!drawerOrFragmentActive) {
+                if (StaticVariables.whichMode.equals("Stage") && preferences.getMyPreferenceBoolean(StageMode.this, "pedalScrollBeforeMove", true) && !checkCanScrollUp()) {
+                    pedalPrevious();
+                // IV - Added handling for PDF pages
+                } else if (checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
+                    CustomAnimations.animateFAB(scrollUpButton, StageMode.this);
+                    doScrollUp();
+                }
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                    PedalNeedsConfirmTrueAfterDelay();
+                }
             }
         }
     }
@@ -7753,15 +7726,18 @@ public class StageMode extends AppCompatActivity implements
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             // Scroll the song menu down
             scrollMenu("down");
-        } else if (StaticVariables.whichMode.equals("Stage") &&
-                    StaticVariables.currentSection==(StaticVariables.songSections.length-1) &&
-                    preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove", true)) {
-                pedalNext();
-        } else if (!drawerOrFragmentActive && checkCanScrollDown()) {
-            CustomAnimations.animateFAB(scrollDownButton, StageMode.this);
-            doScrollDown();
-            if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
-                PedalNeedsConfirmTrueAfterDelay();
+        } else {
+            if (!drawerOrFragmentActive) {
+                if (StaticVariables.whichMode.equals("Stage") && preferences.getMyPreferenceBoolean(StageMode.this, "pedalScrollBeforeMove", true) && !checkCanScrollDown()) {
+                    pedalNext();
+                // IV - Added handling for PDF pages
+                } else if (checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
+                    CustomAnimations.animateFAB(scrollDownButton, StageMode.this);
+                    doScrollDown();
+                }
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                    PedalNeedsConfirmTrueAfterDelay();
+                }
             }
         }
     }
@@ -7844,6 +7820,9 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+            // IV - HighlightNotes are not (yet) correctly scaling/positioning on scale so remove!
+            highlightNotes.setVisibility(View.GONE);
+            FullscreenActivity.highlightOn = false;
             highlightNotes.setPivotX(glideimage.getLeft());
             highlightNotes.setPivotY(glideimage.getTop());
             highlightNotes.setScaleX(1.0f);
@@ -8051,16 +8030,9 @@ public class StageMode extends AppCompatActivity implements
 
     // Edit song
     private void gesture2() {
-        if (FullscreenActivity.whattodo!=null && FullscreenActivity.whattodo.equals("editsongpdf")) {
-            openFragment();
-        } else if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
-            openFragment();
-        } else if (justSong(StageMode.this)) {
-            // Edit the song
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
-        }
+        // Edit the song
+        FullscreenActivity.whattodo = "editsong";
+        openFragment();
     }
 
     // Add to set
@@ -8088,6 +8060,8 @@ public class StageMode extends AppCompatActivity implements
 
     // Redraw the lyrics page
     private void gesture4() {
+        // IV - Reset PDF page just in case song is a PDF
+        FullscreenActivity.pdfPageCurrent = 0;
         loadSong();
     }
 
@@ -8144,12 +8118,7 @@ public class StageMode extends AppCompatActivity implements
                             gesture1();  // Open/close the drawers
                             break;
                         case 2:
-                            if (FullscreenActivity.isSong) {
-                                gesture2();
-                            } else {
-                                FullscreenActivity.whattodo = "extractPDF";
-                                openFragment();
-                            }
+                            gesture2();  // Edit the song
                             break;
                         case 3:
                             gesture3();  // Add the song to the set
@@ -8273,56 +8242,51 @@ public class StageMode extends AppCompatActivity implements
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                float velocityY) {
+            if (FullscreenActivity.tempswipeSet.equals("disable")  || !preferences.getMyPreferenceBoolean(StageMode.this, "swipeForSongs", true)) {
+                return false; // Currently disabled swiping to let screen finish drawing or not required
+            }
+
+            // We accept a fling if it is a certain velocity (swipeMinimumVelocity)
+            // and essentially in the Y or X axis for the direction of swipe (swipeMaxDistanceYError)
+            // and exceeds a certain distance (swipeMinimumDistance)
+            // and does not start on the relevant mypage edges
+
             try {
-                // Check movement along the Y-axis. If it exceeds
-                // SWIPE_MAX_OFF_PATH, then dismiss the swipe.
-                int screenwidth = mypage.getWidth();
-                int leftmargin = 40;
-                int rightmargin = screenwidth - 40;
-                if (Math.abs(e1.getY() - e2.getY()) > preferences.getMyPreferenceInt(StageMode.this,"swipeMaxDistanceYError",200)) {
-                    return false;
-                }
+                // Check for an acceptable Y-axis fling
+                if (Math.abs(velocityX) > preferences.getMyPreferenceInt(StageMode.this, "swipeMinimumVelocity", 600) &&
+                        Math.abs(e1.getY() - e2.getY()) < preferences.getMyPreferenceInt(StageMode.this,"swipeMaxDistanceYError",200) &&
+                        Math.abs(e1.getX() - e2.getX()) > preferences.getMyPreferenceInt(StageMode.this, "swipeMinimumDistance", 250) &&
+                        e1.getX() > 40 &&
+                        e1.getX() < (mypage.getWidth() - 40)) {
 
-                if (FullscreenActivity.tempswipeSet.equals("disable")) {
-                    return false; // Currently disabled swiping to let screen finish drawing.
-                }
+                    // IV - Flag this as a swipe
+                    StaticVariables.setMoveDirection = "swipe";
 
-                // Swipe from right to left.
-                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-                if (e1.getX() - e2.getX() > preferences.getMyPreferenceInt(StageMode.this,"swipeMinimumDistance",250)
-                        && e1.getX() < rightmargin
-                        && Math.abs(velocityX) > preferences.getMyPreferenceInt(StageMode.this,"swipeMinimumVelocity",600)
-                        && preferences.getMyPreferenceBoolean(StageMode.this,"swipeForSongs",true)) {
-
-                    // Trying to move to the next item
-                    try {
-                        // IV - Flag this as a swipe
-                        StaticVariables.setMoveDirection = "swipe";
+                    if (e1.getX() > e2.getX()) {
                         setForwardButton.performClick();
-                        //goToNextItem();
-                    } catch (Exception e) {
-                        // No song after
+                    } else {
+                        setBackButton.performClick();
                     }
                     return true;
                 }
 
-                // Swipe from left to right.
-                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-                if (e2.getX() - e1.getX() > preferences.getMyPreferenceInt(StageMode.this,"swipeMinimumDistance",250)
-                        && e1.getX() > leftmargin
-                        && Math.abs(velocityX) > preferences.getMyPreferenceInt(StageMode.this,"swipeMinimumVelocity",600)
-                        && preferences.getMyPreferenceBoolean(StageMode.this,"swipeForSongs",true)) {
+                 // For PDF page scroll - check for an acceptable Y-axis fling
+                if (FullscreenActivity.isPDF &&
+                        Math.abs(velocityY) > preferences.getMyPreferenceInt(StageMode.this, "swipeMinimumVelocity", 600) &&
+                        Math.abs(e1.getX() - e2.getX()) < preferences.getMyPreferenceInt(StageMode.this, "swipeMaxDistanceYError", 200) &&
+                        Math.abs(e1.getY() - e2.getY()) > preferences.getMyPreferenceInt(StageMode.this, "swipeMinimumDistance", 250) &&
+                        e1.getY() > 40 &&
+                        e1.getY() < (mypage.getHeight() - 40)) {
 
-                    // Go to previous item
-                    try {
-                        // IV - Flag this as a swipe
-                        StaticVariables.setMoveDirection = "swipe";
-                        setBackButton.performClick();
-                        //goToPreviousItem();
-                    } catch (Exception e) {
-                        // No song before
+                    // IV - Only act if not able to scroll within a page
+                    if (e1.getY() > e2.getY()) {
+                        if (!checkCanScrollDown()) {
+                            scrollDownButton.performClick();
+                        }
+                    } else {
+                        if (!checkCanScrollUp()) {
+                            scrollUpButton.performClick();
+                        }
                     }
                     return true;
                 }
