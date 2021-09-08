@@ -112,6 +112,10 @@ class AutoScrollFunctions {
         if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCount > 0) {
             try {
                 StaticVariables.autoScrollDuration = (int) ((float) Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", "")) / (float) FullscreenActivity.pdfPageCount);
+                // IV - Make sure delay is not bigger than calculated duration
+                if (StaticVariables.autoScrollDelay > StaticVariables.autoScrollDuration) {
+                    StaticVariables.autoScrollDelay = StaticVariables.autoScrollDuration;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 StaticVariables.autoScrollDuration = -1;

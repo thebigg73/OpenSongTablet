@@ -1823,6 +1823,8 @@ public class StageMode extends AppCompatActivity implements
         });
         padButtonLayout.setOnLongClickListener(view -> padButton.performLongClick());
         padButton.setOnLongClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
             CustomAnimations.animateFABLong(padButton,StageMode.this);
             // IV - Indicate a fade with just the pad icon to give immediate feedback
             if (backingtrackProgress.getVisibility() == View.VISIBLE) {
@@ -1841,6 +1843,8 @@ public class StageMode extends AppCompatActivity implements
         });
         autoscrollButtonLayout.setOnLongClickListener(view -> autoscrollButton.performLongClick());
         autoscrollButton.setOnLongClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
             CustomAnimations.animateFABLong(autoscrollButton,StageMode.this);
             gesture5();
             return true;
@@ -1853,6 +1857,8 @@ public class StageMode extends AppCompatActivity implements
         });
         metronomeButtonLayout.setOnLongClickListener(view -> metronomeButton.performLongClick());
         metronomeButton.setOnLongClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
             CustomAnimations.animateFABLong(metronomeButton,StageMode.this);
             gesture7();
             return true;
@@ -2136,8 +2142,8 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             if (FullscreenActivity.isPDF && !checkCanScrollUp() && (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
-                // GE Added this to stop the pad reloading between PDF pages
-                StaticVariables.reloadOfSong = false;
+                // IV - Indicate reload which does not impact running pad etc.
+                StaticVariables.reloadOfSong = true;
                 loadSong();
                 dealtwithaspdf = true;
             }
@@ -2202,8 +2208,8 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             if (FullscreenActivity.isPDF && !checkCanScrollDown() && (FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
-                // GE Added this to stop the pad reloading between PDF pages
-                StaticVariables.reloadOfSong = false;
+                // IV - Indicate reload which does not impact running pad etc.
+                StaticVariables.reloadOfSong = true;
                 loadSong();
                 dealtwithaspdf = true;
             }
@@ -3434,6 +3440,8 @@ public class StageMode extends AppCompatActivity implements
             if (StaticVariables.setView) {
                 // Is there another song in the set?  If so move, if not, do nothing
                 if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1)) {
+                    // Stop the metronome task now as it is high drain and breaks async starts!
+                    Metronome.stopMetronomeTask();
                     StaticVariables.setMoveDirection = "forward";
                     doMoveInSet();
                 } else {
@@ -3798,16 +3806,16 @@ public class StageMode extends AppCompatActivity implements
             }
         }
 
-        // Set the overrides back
-
-        // Do not touch on a reload
-        if (!StaticVariables.reloadOfSong && StaticVariables.clickedOnMetronomeStart) {
-            // GE - metronome was stopped before loading the song and StaticVariables.clickedOnMetronomeStart was reset manually to true afterwards
-            // Metronome was playing before loading the song - if requested autostart start the metronome for the new song
-            if (preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false) &&
-                    FullscreenActivity.isSong) {
+        // IV - If StaticVariables.metronomeonoff == "on" this is a reload with the Metronome left running
+        // For all other case loadSong has stopped any running Metronome task == "off"
+        if (StaticVariables.metronomeonoff == "off") {
+            // If we were running and need to autostart the metronome for the new song...
+            if ((StaticVariables.clickedOnMetronomeStart) &&
+                    preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false)) {
                 // Start it
-                gesture7();
+                // gesture7();
+            } else {
+                StaticVariables.clickedOnMetronomeStart = false;
             }
         }
 
@@ -3953,6 +3961,8 @@ public class StageMode extends AppCompatActivity implements
                 //StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
                 // Is there another song in the set?  If so move, if not, do nothing
                 if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0)) {
+                    // Stop the metronome task now as it is high drain and breaks async starts!
+                    Metronome.stopMetronomeTask();
                     StaticVariables.setMoveDirection = "back";
                     doMoveInSet();
                 } else {
@@ -5001,11 +5011,9 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.pad2Playing = PadFunctions.getPad2Status();
         // IV - If playing pads then fade to stop
         if ((StaticVariables.pad1Playing && !StaticVariables.pad1Fading)  || (StaticVariables.pad2Playing && !StaticVariables.pad2Fading)) {
-            DoVibrate.vibrate(StageMode.this, 50);
             fadeoutPad();
         } else {
             if (PadFunctions.isPadValid(StageMode.this, preferences)) {
-                DoVibrate.vibrate(StageMode.this, 50);
                 playPad();
             } else {
                 // We inform the user - 'Not set' which can be valid
@@ -6572,7 +6580,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // IV - Ensure a 'panic' end should there be no scroll
                 endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
-                endAutoScrollHandler.postDelayed(endAutoScrollRunnable, ((StaticVariables.autoScrollDelay * 1000) + 4000));
+                endAutoScrollHandler.postDelayed(endAutoScrollRunnable, ((StaticVariables.autoScrollDelay * 1000L) + 4000));
                 while (StaticVariables.isautoscrolling) {
                     // IV - update the scroll buttons as we go
                     FullscreenActivity.time_passed = System.currentTimeMillis();
@@ -6877,6 +6885,11 @@ public class StageMode extends AppCompatActivity implements
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
 
+                // Stop the metronome now as it is high drain and breaks async starts!
+                if (!StaticVariables.reloadOfSong) {
+                    Metronome.stopMetronomeTask();
+                }
+
                 // Clear any queued 'after song display' activity - we are moving to a new song
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
                 startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
@@ -6979,20 +6992,9 @@ public class StageMode extends AppCompatActivity implements
                         } catch (Exception e) {
                             Log.d(TAG, "error updating the views");
                         }
+
                         // Load the song
                         doCancelAsyncTask(loadsong_async);
-
-                        // Stop the metronome if loading a new song.  Trying afterwards stops the async starting!
-                        // Do not touch on a reload
-                        if (!StaticVariables.reloadOfSong) {
-                            // Stop it - clickedOnMetronomeStart is the indicator that it was playing
-                            if (StaticVariables.clickedOnMetronomeStart) {
-                                gesture7();  // This also sets StaticVariables.clickedOnMetronomeStart to false;
-                                // Set this variable back as we want the metronome to restart after song load.
-                                StaticVariables.clickedOnMetronomeStart = true;
-                            }
-                        }
-
                         doCancelAsyncTask(resizestage_async);
                         doCancelAsyncTask(resizeperformance_async);
                         loadsong_async = new LoadSongAsync();
@@ -7232,8 +7234,7 @@ public class StageMode extends AppCompatActivity implements
                     // Do the pad fade and play here after display. This ensures a good cross-fade once the song is displayed
                     if (StaticVariables.clickedOnPadStart) {
                         // Do not touch on a reload
-                        // GE Added in extra check to stop pads crossfading between pdf page changes
-                        if (!StaticVariables.reloadOfSong && !(FullscreenActivity.isPDF && dealtwithaspdf)) {
+                        if (!StaticVariables.reloadOfSong) {
                             // If pads were already playing (previous song), start them up again if wanted
                             // Don't redo this if the orientation has changed (causing a reload)
                             // Stop restarting the pads if changing portrait/landscape
@@ -7241,7 +7242,6 @@ public class StageMode extends AppCompatActivity implements
                             // Or moving between the pages of a PDF
 
                             if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
-                                    FullscreenActivity.isSong &&
                                     !orientationChanged) {
                                 playPad();
                             } else {
@@ -8061,6 +8061,7 @@ public class StageMode extends AppCompatActivity implements
     // Redraw the lyrics page
     private void gesture4() {
         // IV - Reset PDF page just in case song is a PDF
+        StaticVariables.reloadOfSong = true;
         FullscreenActivity.pdfPageCurrent = 0;
         loadSong();
     }
@@ -8068,7 +8069,6 @@ public class StageMode extends AppCompatActivity implements
     @Override
     // Stop or start autoscroll
     public void gesture5() {
-        DoVibrate.vibrate(StageMode.this, 50);
         if (StaticVariables.isautoscrolling) {
             stopAutoScroll();
             StaticVariables.clickedOnAutoScrollStart = false;
@@ -8302,7 +8302,6 @@ public class StageMode extends AppCompatActivity implements
     // Start or stop the metronome
     @Override
     public void gesture7() {
-        DoVibrate.vibrate(StageMode.this, 50);
         StaticVariables.metronomeok = Metronome.isMetronomeValid();
         if (StaticVariables.metronomeok || StaticVariables.clickedOnMetronomeStart) {
             // IV - clickedOnMetronomeStart is set elsewhere (Metronome class)

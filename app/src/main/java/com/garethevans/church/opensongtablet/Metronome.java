@@ -233,13 +233,17 @@ class Metronome {
             }
             startstopVisualMetronome(showvisual,metronomeColor);
         } else if (StaticVariables.metronomeonoff.equals("on")) {
-            // Stop the metronome
-            StaticVariables.metronomeonoff = "off";
             // This a state indicator set in this function only
             StaticVariables.clickedOnMetronomeStart = false;
-            if (metroTask!=null) {
-                metroTask.stop();
-            }
+            stopMetronomeTask();
+        }
+    }
+
+    static void stopMetronomeTask() {
+        // Stop the metronome
+        StaticVariables.metronomeonoff = "off";
+        if (metroTask!=null) {
+            metroTask.stop();
         }
     }
 
