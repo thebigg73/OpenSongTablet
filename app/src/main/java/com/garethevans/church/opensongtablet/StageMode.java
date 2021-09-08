@@ -3813,7 +3813,7 @@ public class StageMode extends AppCompatActivity implements
             if ((StaticVariables.clickedOnMetronomeStart) &&
                     preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false)) {
                 // Start it
-                // gesture7();
+                gesture7();
             } else {
                 StaticVariables.clickedOnMetronomeStart = false;
             }
