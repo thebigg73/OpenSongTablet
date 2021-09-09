@@ -16,6 +16,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.autoscroll.AutoscrollBottomSheet;
 import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
@@ -500,7 +501,16 @@ public class PageButtons {
                 }
                 break;
             case "autoscroll":
-                //TODO
+                if (isLongPress) {
+                    AutoscrollBottomSheet autoscrollBottomSheet = new AutoscrollBottomSheet();
+                    autoscrollBottomSheet.show(actionInterface.getMyFragmentManager(),"AutoscrollBottomSheet");
+                } else {
+                    if (actionInterface.getAutoscroll().getIsAutoscrolling()) {
+                        actionInterface.getAutoscroll().stopAutoscroll();
+                    } else {
+                        actionInterface.getAutoscroll().startAutoscroll();
+                    }
+                }
                 break;
             case "link":
                 actionInterface.navigateToFragment("opensongapp://settings/actions/links",0);
@@ -576,13 +586,13 @@ public class PageButtons {
                 //TODO
                 break;
             case "inc_autoscroll_speed":
-                //TODO
+                actionInterface.getAutoscroll().speedUpAutoscroll();
                 break;
             case "dec_autoscroll_speed":
-                //TODO
+                actionInterface.getAutoscroll().slowDownAutoscroll();
                 break;
             case "toggle_autoscroll_pause":
-                //TODO
+                actionInterface.getAutoscroll().pauseAutoscroll();
                 break;
             case "midi":
                 actionInterface.navigateToFragment("opensongapp://settings/midi",0);

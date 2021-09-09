@@ -78,6 +78,10 @@ public class PerformanceFragment extends Fragment {
         Log.d(TAG,"binding");
         initialiseHelpers();
 
+        // Pass view references to the Autoscroll class
+        mainActivityInterface.getAutoscroll().initialiseAutoscroll(mainActivityInterface,
+                myView.zoomLayout, myView.onScreenInfo.autoscroll);
+
         mainActivityInterface.lockDrawer(false);
         //mainActivityInterface.hideActionBar(false);
         mainActivityInterface.hideActionButton(false);
@@ -284,6 +288,9 @@ public class PerformanceFragment extends Fragment {
 
                     // Load up the sticky notes if the user wants them
                     dealWithStickyNotes(false,false);
+
+                    // Send the autoscroll information (if required)
+                    mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h,screenHeight);
 
                     // Now take a screenshot (only runs is w!=0 and h!=0)
                     myView.songView.postDelayed(() -> requireActivity().runOnUiThread(() -> getScreenshot(w,h)), 2000);

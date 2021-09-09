@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.collection.SimpleArrayMap;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
+import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
@@ -455,11 +455,11 @@ public class NearbyConnections implements NearbyInterface {
         }
     }
 
-    private void payloadAutoscroll(AutoscrollActions autoScrollActions, String incoming) {
+    private void payloadAutoscroll(Autoscroll autoScroll, String incoming) {
         // It sends autoscroll startstops as autoscroll_start or autoscroll_stop
         if (mainActivityInterface.getMode().equals("Performance")) {
             // Adjust only when not already in the correct state
-            if (nearbyReturnActionsInterface != null && !(autoScrollActions.getIsAutoscrolling() == incoming.equals("autoscroll_start"))) {
+            if (nearbyReturnActionsInterface != null && !(autoScroll.getIsAutoscrolling() == incoming.equals("autoscroll_start"))) {
                 nearbyReturnActionsInterface.gesture5();
             }
         }
@@ -669,7 +669,7 @@ public class NearbyConnections implements NearbyInterface {
                             fileNewLocation.put(Long.parseLong(id), foldernamepair);
 
                         } else if (incoming != null && incoming.contains("autoscroll_")) {
-                            payloadAutoscroll(mainActivityInterface.getAutoscrollActions(), incoming);
+                            payloadAutoscroll(mainActivityInterface.getAutoscroll(), incoming);
                         } else if (incoming != null && incoming.contains("___section___")) {
                             payloadSection(incoming);
                         } else if (incoming != null && incoming.contains("_ep__ep_")) {

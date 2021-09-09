@@ -59,7 +59,7 @@ import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
-import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
+import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     private Gestures gestures;
     private ExportActions exportActions;
     private WebDownload webDownload;
-    private AutoscrollActions autoscrollActions;
+    private Autoscroll autoscroll;
     private DoVibrate doVibrate;
     private SaveSong saveSong;
     private Pad pad;
@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         midi = new Midi();
         pedalActions = new PedalActions(mainActivityInterface);
         pad = new Pad(mainActivityInterface, activityMainBinding.onScreenInfo.padPlayback);
-        autoscrollActions = new AutoscrollActions();
+        autoscroll = new Autoscroll();
         metronome = new Metronome();
         gestures = new Gestures(this,mainActivityInterface);
         gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
@@ -1835,8 +1835,8 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         this.nearbyOpen = nearbyOpen;
     }
     @Override
-    public AutoscrollActions getAutoscrollActions() {
-        return autoscrollActions;
+    public Autoscroll getAutoscroll() {
+        return autoscroll;
     }
     @Override
     public WebDownload getWebDownload() {

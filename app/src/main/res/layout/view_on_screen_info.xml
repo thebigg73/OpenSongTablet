@@ -5,7 +5,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="false"
-    android:background="@color/colorSecondary"
     android:orientation="vertical">
 
     <TextView
@@ -13,30 +12,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_margin="4dp"
         android:gravity="center_vertical"
         android:padding="4dp"
-        android:layout_margin="4dp"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_capo_white_36dp" />
 
-    <TextView
-        android:id="@+id/learnAutoScroll"
+    <!-- Autoscroll -->
+    <LinearLayout
+        android:id="@+id/autoscroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:padding="4dp"
+        android:orientation="horizontal"
         android:layout_margin="4dp"
-        android:visibility="gone"
-        app:drawableStartCompat="@drawable/ic_rotate_right_white_36dp" />
+        android:padding="4dp"
+        android:visibility="gone">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/autoscrollTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:text="@string/time_zero"
+            app:drawableStartCompat="@drawable/ic_rotate_right_white_36dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/autoscrollTotalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:clickable="true"
+            android:text="@string/time_zero"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/padPlayback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:gravity="center_vertical"
         android:padding="4dp"
-        android:layout_margin="4dp"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_amplifier_white_36dp" />
 

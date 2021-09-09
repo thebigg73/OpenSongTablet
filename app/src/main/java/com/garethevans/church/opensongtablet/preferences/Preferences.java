@@ -119,7 +119,7 @@ public class Preferences extends Activity {
     autoscrollDefaultSongPreDelay   int         The default length of the predelay to use with autoscroll (default:20)
     autoscrollDefaultMaxPreDelay    int         The default max of the autoscroll predelay slider (default:30)
     autoscrollLargeFontInfoBar      boolean     The text size of the floating autoscroll info bar (default:true = 20.0f.  false = 14.0f)
-    autoscrollUseDefaultTime        boolean     If not time has been set for the song, should we use the default when starting (def:false)
+    autoscrollUseDefaultTime        boolean     If not time has been set for the song, should we use the default when starting (def:true)
     backgroundImage1                String      The uri of the background image 1 for presentations (def: ost_bg.png)
     backgroundImage2                String      The uri of the background image 2 for presentations (def: ost_bg.png)
     backgroundVideo1                String      The uri of the background video 1 for presentations (def:"")

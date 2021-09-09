@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.interfaces;
 
 import androidx.fragment.app.FragmentManager;
 
+import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -15,4 +16,5 @@ public interface ActionInterface {
     CurrentSet getCurrentSet();
     Song getSong();
     boolean playPad();
+    Autoscroll getAutoscroll();
 }

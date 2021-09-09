@@ -983,4 +983,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="line_length">Line length</string>
     <string name="lines_per_slide">Lines per slide</string>
     <string name="text_extract">Extract text from file (OCR)</string>
+    <string name="autoscroll_autostart">Keep autoscroll activated when changing songs</string>
+    <string name="autoscroll_link_audio">Use duration of link audio file</string>
 </resources>

@@ -19,7 +19,7 @@ import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
-import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
+import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.chords.Transpose;
@@ -164,7 +164,7 @@ public interface MainActivityInterface {
     String getWhattodo();
     void setWhattodo(String whattodo);
     PageButtons getPageButtons();
-    AutoscrollActions getAutoscrollActions();
+    Autoscroll getAutoscroll();
     Pad getPad();
     Metronome getMetronome();
     SongListBuildIndex getSongListBuildIndex();

@@ -30,7 +30,7 @@ public class PerformanceGestures {
     // Open/close the drawers
     void gesture1() {
         mainActivityInterface.closeDrawer(drawerLayout.isDrawerOpen(GravityCompat.START));
-        mainActivityInterface.getAutoscrollActions().setWasScrolling(false);
+        mainActivityInterface.getAutoscroll().setWasScrolling(false);
         try {
             //appActionBar.removeCallBacks();
             //appActionBar.showActionBar(true);
@@ -72,11 +72,11 @@ public class PerformanceGestures {
     // Stop or start autoscroll
     public boolean gesture5(Context c, MainActivityInterface mainActivityInterface) {
         mainActivityInterface.getDoVibrate().vibrate(c, 50);
-        if (mainActivityInterface.getAutoscrollActions().getIsAutoscrolling()) {
+        if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
             mainActivityInterface.stopAutoscroll();
             return false;  // value for clickedOnAutoScrollStart
         } else {
-            if (mainActivityInterface.getAutoscrollActions().getAutoscrollOK() || mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", true)) {
+            if (mainActivityInterface.getAutoscroll().getAutoscrollOK() || mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", true)) {
                 mainActivityInterface.startAutoscroll();
                 return true;  // value for clickedOnAutoScrollStart
             } else {
