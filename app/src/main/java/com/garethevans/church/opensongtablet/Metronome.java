@@ -290,6 +290,7 @@ class Metronome {
 	    VisualMetronomeAsyncTask(boolean showvis, int metronomeColor) {
 	        this.metronomeColor = metronomeColor;
 	        this.showvisual = showvis;
+	        this.nexttime = startTime;
         }
 
         // IV - Visual is an on & off for each each beat so use half a beat

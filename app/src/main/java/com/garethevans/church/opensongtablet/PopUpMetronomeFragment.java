@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -45,6 +44,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
     public interface MyInterface {
         void pageButtonAlpha(String s);
         void openFragment();
+        void gesture7();
     }
 
     public static MyInterface mListener;
@@ -225,22 +225,10 @@ public class PopUpMetronomeFragment extends DialogFragment {
             // IV - doSave moved to dismiss
             if (StaticVariables.metronomeonoff.equals("off") && StaticVariables.metronomeok) {
                 popupmetronome_startstopbutton.setText(getString(R.string.stop));
-                StaticVariables.metronomeonoff = "on";
-                StaticVariables.clickedOnMetronomeStart = true;
                 doStartStopCheck.removeCallbacks(onEverySecond);
                 doStartStopCheck.postDelayed(onEverySecond, 1000);
-                StaticVariables.whichbeat = "b";
-                Metronome.metroTask = new Metronome.MetronomeAsyncTask(preferences.getMyPreferenceString(getContext(),"metronomePan","C"),
-                        preferences.getMyPreferenceFloat(getContext(),"metronomeVol",0.5f),
-                        preferences.getMyPreferenceInt(getContext(),"metronomeLength",0));
-                try {
-                    Metronome.metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                } catch (Exception e) {
-                    Log.d ("d","Error starting metronmone");
-                }
-                Metronome.startstopVisualMetronome(preferences.getMyPreferenceBoolean(getContext(),"metronomeShowVisual",false),
-                        metronomecolor);
-
+                // Start it
+                mListener.gesture7();
             } else if (StaticVariables.metronomeonoff.equals("on")) {
                 Runtime.getRuntime().gc();
                 popupmetronome_startstopbutton.setText(getString(R.string.start));
