@@ -226,7 +226,6 @@ class SetActions {
 
                 if (!alreadythere) {
                     for (int x = 0; x < StaticVariables.setSize; x++) {
-//		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
                         if (StaticVariables.mSet[x].contains(StaticVariables.whatsongforsetwork) ||
                                 StaticVariables.mSet[x].contains("**" + StaticVariables.whatsongforsetwork)) {
                             StaticVariables.indexSongInSet = x;
@@ -245,22 +244,6 @@ class SetActions {
                 StaticVariables.previousSongInSet = "";
                 StaticVariables.nextSongInSet = "";
             }
-            /*// Initialise variables if they are null
-            if (StaticVariables.mSetList == null) {
-                StaticVariables.mSetList = new String[1];
-                StaticVariables.mSetList[0] = "";
-            }
-
-            if (StaticVariables.mSet == null) {
-                StaticVariables.mSet = new String[1];
-                StaticVariables.mSet[0] = "";
-            }
-
-            if (StaticVariables.whatsongforsetwork == null) {
-                StaticVariables.whatsongforsetwork = "";
-            }
-            // See if we are already there!*/
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -507,15 +490,13 @@ class SetActions {
         my_NEW_XML += "  <lyrics>" + PopUpEditSongFragment.parseToHTMLEntities(lyrics) + "</lyrics>\n";
         my_NEW_XML += "</song>";
 
-        if (where.equals(c.getResources().getString(R.string.variation))) {
+        if (where.equals(c.getString(R.string.variation))) {
             // Create a full song instead
             byte[] data = Base64.decode(custom_notes, Base64.DEFAULT);
             my_NEW_XML = new String(data, StandardCharsets.UTF_8);
         }
 
         storageAccess.writeFileFromString(my_NEW_XML,outputStream);
-        //String val = preferences.getMyPreferenceString(c,"setCurrent","") + set_item;
-        //preferences.setMyPreferenceString(c,"setCurrent",val);
         currentSet = currentSet + set_item;
     }
 
@@ -635,38 +616,6 @@ class SetActions {
             }
         }
 
-
-        /*// Ok go back through the array and add the non-empty lines back up
-        for (String anAdd_text : add_text) {
-            if (anAdd_text != null && !anAdd_text.equals("")) {
-                if (anAdd_text.contains("[]")) {
-                    scripture_text = scripture_text + "\n" + anAdd_text;
-                } else {
-                    scripture_text = scripture_text + "\n " + anAdd_text;
-                }
-            }
-        }*/
-
-/*        for (String aTemp_text : temp_text) {
-            if (add_text[array_line] == null) {
-                add_text[array_line] = "";
-            }
-
-            int check;
-            check = add_text[array_line].length();
-            if (check > 40 || aTemp_text.contains("[]")) {
-                array_line++;
-                if (aTemp_text.contains("[]")) {
-                    add_text[array_line] = "[]\n ";
-                } else {
-                    add_text[array_line] = " " + aTemp_text;
-                }
-            } else {
-                add_text[array_line] = add_text[array_line] + " " + aTemp_text;
-            }
-        }*/
-
-
         while (scripture_text.toString().contains("\\n\\n")) {
             scripture_text = new StringBuilder(scripture_text.toString().replace("\\n\\n", "\\n"));
         }
@@ -681,7 +630,7 @@ class SetActions {
         key_line = "";
         hymn_number = "";
 
-        writeTempSlide(c.getResources().getString(R.string.scripture), scripture_title, c, preferences, storageAccess);
+        writeTempSlide(c.getString(R.string.scripture), scripture_title, c, preferences, storageAccess);
 
         xpp.nextTag();
      }
@@ -700,28 +649,76 @@ class SetActions {
 
         boolean custom_finished = false;
         while (!custom_finished) {
-            switch (xpp.getName()) {
-                case "title":
-                    custom_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    break;
-                case "notes":
-                    custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    break;
-                case "body":
-                    custom_text.append("\n---\n").append(LoadXML.parseFromHTMLEntities(xpp.nextText()));
-                    break;
-                case "subtitle":
-                    custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    break;
-            }
+            if (xpp.getEventType()==XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                switch (xpp.getName()) {
+                    case "title":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        }
+                        break;
+                    case "notes":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        }
+                        break;
+                    case "body":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            try {
+                                custom_text.append("\n---\n").append(LoadXML.parseFromHTMLEntities(xpp.nextText()));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        break;
+                    case "subtitle":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        }
+                        break;
+                    case "tabs":
+                    case "song_subtitle":
+                    default:
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            Log.d("SetActions", xpp.getName());
+                        }
+                        break;
 
-            xpp.nextTag();
-
-            if (xpp.getEventType()==XmlPullParser.END_TAG) {
-                if (xpp.getName().equals("slides")) {
-                    custom_finished = true;
                 }
             }
+
+
+            /*int eventType = xpp.getEventType();
+        ​while (eventType != XmlPullParser.END_DOCUMENT) {
+         ​if(eventType == XmlPullParser.START_DOCUMENT) {
+             ​System.out.println("Start document");
+         ​} else if(eventType == XmlPullParser.END_DOCUMENT) {
+             ​System.out.println("End document");
+         ​} else if(eventType == XmlPullParser.START_TAG) {
+             ​System.out.println("Start tag "+xpp.getName());
+         ​} else if(eventType == XmlPullParser.END_TAG) {
+             ​System.out.println("End tag "+xpp.getName());
+         ​} else if(eventType == XmlPullParser.TEXT) {
+             ​System.out.println("Text "+xpp.getText());
+         ​}
+         ​eventType = xpp.next();
+        ​}*/
+            try {
+                if (xpp.getEventType() == XmlPullParser.END_TAG) {
+                    if (xpp.getName().equals("slides")) {
+                        custom_finished = true;
+                    }
+                    xpp.nextTag();
+                } else if (xpp.getEventType() == XmlPullParser.TEXT) {
+                    xpp.nextTag();
+                } else {
+                    xpp.next();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
         }
 
         // Remove first ---
@@ -1065,8 +1062,6 @@ class SetActions {
             StaticVariables.setMoveDirection = "";
             mListener.loadSong();
         }
-
-    //}
 
     String fixIsInSetSearch(String s) {
         if (s.contains("**_Variations/")) {

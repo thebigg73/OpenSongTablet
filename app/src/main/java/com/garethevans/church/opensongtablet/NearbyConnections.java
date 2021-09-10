@@ -477,16 +477,11 @@ public class NearbyConnections implements NearbyInterface {
 
         if (incomingChange) {
             incomingPrevious = incoming;
-            Log.d("NearbyConnections", "payloadOpenSong");
             OutputStream outputStream;
 
             // Only songs sent via bytes payload trigger this.
             // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
             boolean songReceived = (receivedBits.size() >= 4);
-
-            Log.d("NearbyConnections", "isHost=" + StaticVariables.isHost + "   isConnected=" + StaticVariables.isConnected + "  usingNearby=" + StaticVariables.usingNearby);
-            Log.d("NearbyConnections", "receiveHostFiles=" + StaticVariables.receiveHostFiles + "   keepHostFiles=" + StaticVariables.keepHostFiles + "  songReceived=" + songReceived);
-            Log.d("NearbyConnections", "Received: " + receivedBits.get(0) + "/" + receivedBits.get(1));
 
             if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived && StaticVariables.receiveHostFiles) {
                 // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
