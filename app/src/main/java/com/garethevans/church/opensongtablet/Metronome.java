@@ -85,7 +85,7 @@ class Metronome {
 		}
 	}
 
-	private void play(String pan, float vol) {
+	private void play(String pan, float vol,boolean showvisual, int metronomeColor) {
 	    calcSilence();
         // IV - We align sounds to beat using the clock.  Calculate based on a 6th of a beat and scale up.
         long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 1000)) / 6;
@@ -96,6 +96,7 @@ class Metronome {
             time_in_millisecs = time_in_millisecs * 6;
         }
 
+        long startTime;
 		// IV - We have a short first beat to compensate for loop start delay
         long nexttime = System.currentTimeMillis() - 200;
 		do {
@@ -107,6 +108,11 @@ class Metronome {
                     audioGenerator.writeSound(pan, vol, soundSilenceArray);
                 }
                 if (currentBeat == 1) {
+                    // IV - Start the visual metronome with the first beat
+                    if (runningBeatCount == 0 && showvisual) {
+                        startTime = System.currentTimeMillis();
+                        startstopVisualMetronome(showvisual, metronomeColor, startTime);
+                    }
                     audioGenerator.writeSound(pan, vol, soundTockArray);
                 } else {
                     audioGenerator.writeSound(pan, vol, soundTickArray);
@@ -230,13 +236,12 @@ class Metronome {
             StaticVariables.whichbeat = "b";
             // This is a state indicator set in this function only
             StaticVariables.clickedOnMetronomeStart = true;
-            metroTask = new MetronomeAsyncTask(pan,vol,barlength);
+            metroTask = new MetronomeAsyncTask(pan,vol,barlength,showvisual,metronomeColor);
             try {
                 metroTask.executeOnExecutor(METRONOME_THREAD_POOL_EXECUTOR);
             } catch (Exception e) {
                 Log.d("d","Error starting the metronome");
             }
-            startstopVisualMetronome(showvisual,metronomeColor);
         } else if (StaticVariables.metronomeonoff.equals("on")) {
             // This a state indicator set in this function only
             StaticVariables.clickedOnMetronomeStart = false;
@@ -277,8 +282,8 @@ class Metronome {
         return validMetro;
     }
 
-    static void startstopVisualMetronome(boolean showvisual, int metronomeColor) {
-        visualMetronome = new VisualMetronomeAsyncTask(showvisual, metronomeColor);
+    static void startstopVisualMetronome(boolean showvisual, int metronomeColor, long startTime) {
+        visualMetronome = new VisualMetronomeAsyncTask(showvisual, metronomeColor, startTime);
         try {
             visualMetronome.executeOnExecutor(METRONOME_THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -287,7 +292,7 @@ class Metronome {
     }
     private static class VisualMetronomeAsyncTask extends AsyncTask<Void, Integer, String> {
 
-	    VisualMetronomeAsyncTask(boolean showvis, int metronomeColor) {
+        VisualMetronomeAsyncTask(boolean showvis, int metronomeColor, long startTime) {
 	        this.metronomeColor = metronomeColor;
 	        this.showvisual = showvis;
 	        this.nexttime = startTime;
@@ -298,8 +303,8 @@ class Metronome {
         long sixth_time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 1000)) / 6 ;
         long time_in_millisecs = sixth_time_in_millisecs * 3;
 
-        long oldtime = System.currentTimeMillis();
-        long nexttime = oldtime + time_in_millisecs;
+        long oldtime;
+        long nexttime; // IV = SetTime - see above
         final boolean showvisual;
         final int metronomeColor;
 
@@ -310,8 +315,9 @@ class Metronome {
             if ((beats == 12) && (FullscreenActivity.noteValue == 8)) {
                 beats = 4;
             }
-            int beatsCount = 1;
+            int beatsCount = beats;
             int metronomeColorDarker = ColorUtils.blendARGB(metronomeColor, Color.BLACK, 0.3f);
+            StaticVariables.whichbeat = "a";
             publishProgress(metronomeColor);
             while (StaticVariables.metronomeonoff.equals("on")) {
                 // Post this activity based on the bpm
@@ -332,17 +338,13 @@ class Metronome {
 
         @Override
         protected void onProgressUpdate(Integer... integers) {
-            if (showvisual) {
+            if (StageMode.ab != null) {
                 if (StaticVariables.whichbeat.equals("a")) {
                     StaticVariables.whichbeat = "b";
-                    if (StageMode.ab != null) {
-                        StageMode.ab.setBackgroundDrawable(new ColorDrawable(0xff232333));
-                    }
+                    StageMode.ab.setBackgroundDrawable(new ColorDrawable(0xff232333));
                 } else {
                     StaticVariables.whichbeat = "a";
-                    if (StageMode.ab != null) {
-                        StageMode.ab.setBackgroundDrawable(new ColorDrawable(integers[0]));
-                    }
+                    StageMode.ab.setBackgroundDrawable(new ColorDrawable(integers[0]));
                 }
             }
         }
@@ -361,6 +363,8 @@ class Metronome {
         final String pan;
         final float vol;
         int barsrequired;
+        final boolean showvisual;
+        final int metronomeColor;
 
         @Override
         protected void onPreExecute() {
@@ -368,11 +372,13 @@ class Metronome {
             maxBeatCount = FullscreenActivity.beats * barsrequired;
         }
 
-        MetronomeAsyncTask(String pan, float vol, int barlength) {
+        MetronomeAsyncTask(String pan, float vol, int barlength, boolean showvisual, int metronomeColor) {
             metronome = new Metronome(pan,vol);
             this.pan = pan;
             this.vol = vol;
             barsrequired = barlength;
+            this.showvisual = showvisual;
+            this.metronomeColor = metronomeColor;
         }
 
         void setNoteValue(short noteVal) {
@@ -456,7 +462,7 @@ class Metronome {
             setSound(FullscreenActivity.sound);
             setVolume(vol);
             setCurrentBeat(1);
-            play(pan, vol);
+            play(pan, vol, showvisual, metronomeColor);
             return null;
         }
 
@@ -467,9 +473,9 @@ class Metronome {
             }
         }
 
-        void play(String pan, float vol) {
+        void play(String pan, float vol, boolean showvisual, int metronomeColor) {
             if (metronome != null) {
-                metronome.play(pan,vol);
+                metronome.play(pan,vol,showvisual,metronomeColor);
                 metronome = null;
             }
         }
