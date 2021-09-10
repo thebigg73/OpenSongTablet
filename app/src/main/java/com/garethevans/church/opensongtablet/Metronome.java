@@ -7,9 +7,14 @@ import android.util.Log;
 import android.graphics.Color;
 import androidx.core.graphics.ColorUtils;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+
 class Metronome {
 
-	private double bpm;
+    private static Executor METRONOME_THREAD_POOL_EXECUTOR = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+    private double bpm;
 	private short beat, noteValue;
 	private int duration;
 	private float metrovol;
@@ -227,7 +232,7 @@ class Metronome {
             StaticVariables.clickedOnMetronomeStart = true;
             metroTask = new MetronomeAsyncTask(pan,vol,barlength);
             try {
-                metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                metroTask.executeOnExecutor(METRONOME_THREAD_POOL_EXECUTOR);
             } catch (Exception e) {
                 Log.d("d","Error starting the metronome");
             }
@@ -275,7 +280,7 @@ class Metronome {
     static void startstopVisualMetronome(boolean showvisual, int metronomeColor) {
         visualMetronome = new VisualMetronomeAsyncTask(showvisual, metronomeColor);
         try {
-            visualMetronome.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            visualMetronome.executeOnExecutor(METRONOME_THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
             Log.d("d","Error starting visual metronome");
         }
