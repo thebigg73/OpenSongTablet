@@ -6450,25 +6450,27 @@ public class StageMode extends AppCompatActivity implements
         // IV - clickedOnAutoScrollStart is being used to indicate being active (autoscroll may be active but not running)
         // IV - it is set elsewhere
         updateExtraInfoColorsAndSizes("autoscroll");
-        currentTime_TextView.setText(R.string.time_zero);
-        AutoScrollFunctions.getMultiPagePDFValues();  // This splits the time for multiple pages
-        // Display the '/' as now active
-        timeSeparator_TextView.setText("/");
-        totalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
-        playbackProgress.setVisibility(View.VISIBLE);
         doCancelAsyncTask(mtask_autoscroll_music);
         doCancelAsyncTask(get_scrollheight);
         endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
-        StaticVariables.isautoscrolling = true;
-        StaticVariables.pauseautoscroll = true;
-        FullscreenActivity.isManualDragging = false;
-        FullscreenActivity.wasscrolling = false;
-        get_scrollheight = new GetScrollHeight();
-        //FullscreenActivity.refWatcher.watch(get_scrollheight);
-        try {
-            get_scrollheight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
+        AutoScrollFunctions.getAutoScrollActiveTimes(StageMode.this, preferences);
+        if (StaticVariables.autoScrollDuration > -1) {
+            currentTime_TextView.setText(R.string.time_zero);
+            // Display the '/' as now active
+            timeSeparator_TextView.setText("/");
+            totalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
+            playbackProgress.setVisibility(View.VISIBLE);
+            StaticVariables.isautoscrolling = true;
+            StaticVariables.pauseautoscroll = true;
+            FullscreenActivity.isManualDragging = false;
+            FullscreenActivity.wasscrolling = false;
+            get_scrollheight = new GetScrollHeight();
+            //FullscreenActivity.refWatcher.watch(get_scrollheight);
+            try {
+                get_scrollheight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     @SuppressLint("StaticFieldLeak")
