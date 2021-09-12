@@ -3278,43 +3278,46 @@ public class StageMode extends AppCompatActivity implements
             songkey_ab.setText(s);
         }
         if (bmp != null) {
-            int widthavail = getAvailableWidth();
-            int heightavail = getAvailableHeight();
+            if (FullscreenActivity.pdfPageCount > 0) {
+                int widthavail = getAvailableWidth();
+                int heightavail = getAvailableHeight();
 
-            glideimage.setScaleX(1.0f);
-            glideimage.setScaleY(1.0f);
-            highlightNotes.setScaleX(1.0f);
-            highlightNotes.setScaleY(1.0f);
-            glideimage.setBackgroundColor(StaticVariables.transparent);
-            songwidth = widthavail;
-            songheight = heightavail;
+                glideimage.setScaleX(1.0f);
+                glideimage.setScaleY(1.0f);
+                highlightNotes.setScaleX(1.0f);
+                highlightNotes.setScaleY(1.0f);
+                glideimage.setBackgroundColor(StaticVariables.transparent);
+                songwidth = widthavail;
+                songheight = heightavail;
 
-            // Reset the imageview
-            resetImageViewSizes();
+                // Reset the imageview
+                resetImageViewSizes();
 
-            String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
+                String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
 
-            songauthor_ab.setText(text);
+                songauthor_ab.setText(text);
 
-            glideimage.setBackgroundColor(0xffffffff);
+                glideimage.setBackgroundColor(0xffffffff);
 
-            // Decide on the image size to use
-            if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y")) {
-                // Glide sorts the width vs height (keeps the image in the space available using fitCenter
-                RequestOptions myOptions = new RequestOptions()
-                        .fitCenter()
-                        .override(widthavail, heightavail);
-                GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
+                // Decide on the image size to use
+                if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y")) {
+                    // Glide sorts the width vs height (keeps the image in the space available using fitCenter
+                    RequestOptions myOptions = new RequestOptions()
+                            .fitCenter()
+                            .override(widthavail, heightavail);
+                    GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
+                } else {
+                    // Now decide on the scaling required....
+                    float xscale = (float) widthavail / (float) bmp.getWidth();
+                    int glideheight = (int) ((float) bmp.getHeight() * xscale);
+                    RequestOptions myOptions = new RequestOptions()
+                            .override(widthavail, glideheight);
+                    GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
+
+                }
             } else {
-                // Now decide on the scaling required....
-                float xscale = (float) widthavail / (float) bmp.getWidth();
-                int glideheight = (int) ((float) bmp.getHeight() * xscale);
-                RequestOptions myOptions = new RequestOptions()
-                        .override(widthavail, glideheight);
-                GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
-
+                songauthor_ab.setText(getResources().getString(R.string.songdoesntexist));
             }
-
         } else {
             songauthor_ab.setText(getResources().getString(R.string.nothighenoughapi));
 
@@ -7312,6 +7315,11 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // IV - Store song details
+            preferences.setMyPreferenceString(StageMode.this, "songfilename",StaticVariables.songfilename);
+            preferences.setMyPreferenceString(StageMode.this,"whichSongFolder",StaticVariables.whichSongFolder);
+
             // IV - True if a reload, this sets loadsong back to standard mode
             StaticVariables.reloadOfSong = false;
             FullscreenActivity.alreadyloading = false;

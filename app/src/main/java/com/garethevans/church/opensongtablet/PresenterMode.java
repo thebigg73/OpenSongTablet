@@ -1363,8 +1363,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 // Call the script to get the song location.
                 setActions.getSongFileAndFolder(PresenterMode.this);
-                preferences.setMyPreferenceString(PresenterMode.this,"whichSongFolder",StaticVariables.whichSongFolder);
-                preferences.setMyPreferenceString(PresenterMode.this, "songfilename",StaticVariables.songfilename);
                 findSongInFolders();
                 prepareSongMenu();
 
