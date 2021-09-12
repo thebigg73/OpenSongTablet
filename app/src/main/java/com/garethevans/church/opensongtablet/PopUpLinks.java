@@ -152,12 +152,12 @@ public class PopUpLinks extends DialogFragment {
         });
         linkAudio_ImageButton.setOnClickListener(v -> {
             String mytext = linkAudio_EditText.getText().toString();
-            uri = storageAccess.fixLocalisedUri(getContext(), preferences, mytext);
-            Log.d("PopUpLinks", "uri=" + uri);
             if (!mytext.equals("")) {
                 MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                String mimeType = myMime.getMimeTypeFromExtension(mytext);
                 Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                uri = storageAccess.fixLocalisedUri(getContext(), preferences, mytext);
+                Log.d("PopUpLinks", "uri=" + uri);
+                String mimeType = myMime.getMimeTypeFromExtension(mytext);
 
                 if (mimeType == null) {
                     // If using a proper content uri, it will be null!

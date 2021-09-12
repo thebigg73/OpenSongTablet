@@ -5528,7 +5528,6 @@ public class StageMode extends AppCompatActivity implements
         Handler resetBlockActionOnKeyUp = new Handler();
         resetBlockActionOnKeyUp.postDelayed(() -> blockActionOnKeyUp = false, 300);
 
-
         // Load the whichSongFolder in case we were browsing elsewhere
         StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this,"whichSongFolder",getString(R.string.mainfoldername));
 
@@ -6890,6 +6889,11 @@ public class StageMode extends AppCompatActivity implements
                 // Stop the metronome now as it is high drain and breaks async starts!
                 if (!StaticVariables.reloadOfSong) {
                     Metronome.stopMetronomeTask();
+                }
+
+                // IV - For a reload, load the stored whichSongFolder in case we were browsing elsewhere
+                if (StaticVariables.reloadOfSong) {
+                    StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this,"whichSongFolder", getString(R.string.mainfoldername));
                 }
 
                 // Clear any queued 'after song display' activity - we are moving to a new song

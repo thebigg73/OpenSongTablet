@@ -363,7 +363,7 @@ public class PopUpPadFragment extends DialogFragment {
                 if (StaticVariables.mLinkAudio != null && StaticVariables.mLinkAudio.isEmpty()) {
                     StaticVariables.mPadFile = getString(R.string.link_audio);
                     //popupPad_file.setSelection(0);
-                    StaticVariables.myToastMessage = getString(R.string.notset);
+                    StaticVariables.myToastMessage = getString(R.string.link_audio) + " - " + getString(R.string.notset);
                     ShowToast.showToast(getContext());
                 } else {
                     StaticVariables.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
