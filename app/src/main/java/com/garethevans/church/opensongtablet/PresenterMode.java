@@ -1617,28 +1617,19 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         tryClickPreviousSection();
     }
     private void tryClickNextSection() {
-        // IV - Next and Previous rely on section, The 'fix' for types without valid sections is to not allow!
-        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            showToastMessage(getResources().getString(R.string.not_allowed));
-        } else {
-            if (StaticVariables.currentSection < StaticVariables.songSections.length - 1) {
-                StaticVariables.currentSection += 1;
-                autoproject = true;
-                preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
-                selectSectionButtonInSong(StaticVariables.currentSection);
-            }
+        if (StaticVariables.currentSection < presenter_song_buttonsListView.getChildCount() - 1) {
+            StaticVariables.currentSection += 1;
+            autoproject = true;
+            preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
+            selectSectionButtonInSong(StaticVariables.currentSection);
         }
     }
     private void tryClickPreviousSection() {
-            if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            showToastMessage(getResources().getString(R.string.not_allowed));
-        } else {
-            if (StaticVariables.currentSection > 0) {
-                StaticVariables.currentSection -= 1;
-                autoproject = true;
-                preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
-                selectSectionButtonInSong(StaticVariables.currentSection);
-            }
+        if (StaticVariables.currentSection > 0) {
+            StaticVariables.currentSection -= 1;
+            autoproject = true;
+            preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
+            selectSectionButtonInSong(StaticVariables.currentSection);
         }
     }
     private void tryClickNextSongInSet() {
@@ -2131,14 +2122,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             }
 
-            String bit = "";
-
-            try {
-                bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
             // If this is an image, hide the text, show the image, otherwise show the text in the slide window
             if (FullscreenActivity.isPDF) {
                 FullscreenActivity.pdfPageCurrent = which;
@@ -2156,14 +2139,22 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     loadImagePreview();
                 }
             // IV - Handle a song section with content as Image Slide
-            } else if (((bit.toLowerCase(Locale.ROOT).endsWith(".png") || bit.toLowerCase(Locale.ROOT).endsWith(".jpg") || bit.toLowerCase(Locale.ROOT).endsWith(".gif")) ||
-                    (bit.toLowerCase(Locale.ROOT).contains("content://") || bit.toLowerCase(Locale.ROOT).contains("file://")))) {
-                StaticVariables.uriToLoad = storageAccess.fixLocalisedUri(PresenterMode.this, preferences, bit);
-                FullscreenActivity.isImage = true;
-                loadImagePreview();
-                FullscreenActivity.isImage = false;
             } else {
-                loadSongPreview();
+                String bit = "";
+                try {
+                    bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (((bit.toLowerCase(Locale.ROOT).endsWith(".png") || bit.toLowerCase(Locale.ROOT).endsWith(".jpg") || bit.toLowerCase(Locale.ROOT).endsWith(".gif")) ||
+                        (bit.toLowerCase(Locale.ROOT).contains("content://") || bit.toLowerCase(Locale.ROOT).contains("file://")))) {
+                    StaticVariables.uriToLoad = storageAccess.fixLocalisedUri(PresenterMode.this, preferences, bit);
+                    FullscreenActivity.isImage = true;
+                    loadImagePreview();
+                    FullscreenActivity.isImage = false;
+                } else {
+                    loadSongPreview();
+                }
             }
 
             projectButton_isSelected = false;
