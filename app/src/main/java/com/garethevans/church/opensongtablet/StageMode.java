@@ -3214,40 +3214,45 @@ public class StageMode extends AppCompatActivity implements
 
         //Returns null, sizes are in the options variable
         InputStream inputStream = storageAccess.getInputStream(StageMode.this, imageUri);
-        BitmapFactory.decodeStream(inputStream, null, options);
 
-        int imgwidth = options.outWidth;
-        int imgheight = options.outHeight;
+        if (inputStream != null) {
+            BitmapFactory.decodeStream(inputStream, null, options);
 
-        int widthavail = getAvailableWidth();
-        int heightavail = getAvailableHeight();
+            int imgwidth = options.outWidth;
+            int imgheight = options.outHeight;
 
-        glideimage.setScaleX(1.0f);
-        glideimage.setScaleY(1.0f);
-        highlightNotes.setScaleX(1.0f);
-        highlightNotes.setScaleY(1.0f);
-        glideimage.setBackgroundColor(StaticVariables.transparent);
-        songwidth = widthavail;
-        songheight = heightavail;
+            int widthavail = getAvailableWidth();
+            int heightavail = getAvailableHeight();
 
-        // Reset the imageview
-        resetImageViewSizes();
+            glideimage.setScaleX(1.0f);
+            glideimage.setScaleY(1.0f);
+            highlightNotes.setScaleX(1.0f);
+            highlightNotes.setScaleY(1.0f);
+            glideimage.setBackgroundColor(StaticVariables.transparent);
+            songwidth = widthavail;
+            songheight = heightavail;
 
-        // Decide on the image size to use
-        if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y")) {
-            // Glide sorts the width vs height (keeps the image in the space available using fitCenter
-            RequestOptions myOptions = new RequestOptions()
-                    .fitCenter()
-                    .override(widthavail, heightavail);
-            GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            // Reset the imageview
+            resetImageViewSizes();
+
+            // Decide on the image size to use
+            if (preferences.getMyPreferenceString(StageMode.this, "songAutoScale", "W").equals("Y")) {
+                // Glide sorts the width vs height (keeps the image in the space available using fitCenter
+                RequestOptions myOptions = new RequestOptions()
+                        .fitCenter()
+                        .override(widthavail, heightavail);
+                GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            } else {
+                // Now decide on the scaling required....
+                float xscale = (float) widthavail / (float) imgwidth;
+                int glideheight = (int) ((float) imgheight * xscale);
+                RequestOptions myOptions = new RequestOptions()
+                        .override(widthavail, glideheight);
+                GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            }
         } else {
-            // Now decide on the scaling required....
-            float xscale = (float) widthavail / (float) imgwidth;
-            int glideheight = (int) ((float) imgheight * xscale);
-            RequestOptions myOptions = new RequestOptions()
-                    .override(widthavail, glideheight);
-            GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
-
+            // IV - Handle when image does not exist
+            songauthor_ab.setText(getResources().getString(R.string.songdoesntexist));
         }
 
         songscrollview.removeAllViews();
