@@ -101,8 +101,6 @@ class ExportPreparer {
             storageAccess.copyFile(inputStream,outputStream);
         }
 
-
-
         // Add the uris for each file requested
         ArrayList<Uri> uris = new ArrayList<>();
         if (texturi!=null) {
@@ -140,7 +138,7 @@ class ExportPreparer {
                 if (!storageAccess.lollipopOrLater() || storageAccess.uriExists(c, songtoload)) {
 
                     // We want to add a .ost file (OpenSongApp song)
-                    if (preferences.getMyPreferenceBoolean(c,"exportOpenSongApp",true) && !isImgOrPDF(s)) {
+                    if (!isImgOrPDF(s)) {
                         InputStream inputStream = storageAccess.getInputStream(c, songtoload);
                         if (inputStream != null) {
                             Uri ostsongcopy = storageAccess.getFileProviderUri(c, preferences, "Notes", "_cache",
@@ -151,6 +149,14 @@ class ExportPreparer {
                             storageAccess.copyFile(inputStream, outputStream);
                             uris.add(ostsongcopy);
                         }
+                    } else {
+                        // IV - Add export of PDF and Img files when not done by "exportDesktop"
+                        if (!preferences.getMyPreferenceBoolean(c,"exportDesktop",false)) {
+                            Uri imgorpdfuri = storageAccess.getFileProviderUri(c, preferences, "Songs", "", FullscreenActivity.exportsetfilenames.get(q));
+                            if (storageAccess.uriExists(c, imgorpdfuri)) {
+                                uris.add(imgorpdfuri);
+                            }
+                        }
                     }
                 }
             }
@@ -158,12 +164,11 @@ class ExportPreparer {
 
         // Add the standard song file (desktop version) - if it exists
         if (preferences.getMyPreferenceBoolean(c,"exportDesktop",false)) {
+            // IV - All files are exported which includes PDF and Img files
             for (int q = 0; q < FullscreenActivity.exportsetfilenames.size(); q++) {
-                if (!isImgOrPDF(FullscreenActivity.exportsetfilenames.get(q))) {
-                    Uri uri = storageAccess.getFileProviderUri(c, preferences, "Songs", "", FullscreenActivity.exportsetfilenames.get(q));
-                    if (storageAccess.uriExists(c, uri)) {
-                        uris.add(uri);
-                    }
+                Uri uri = storageAccess.getFileProviderUri(c, preferences, "Songs", "", FullscreenActivity.exportsetfilenames.get(q));
+                if (storageAccess.uriExists(c, uri)) {
+                    uris.add(uri);
                 }
             }
         }
@@ -185,11 +190,8 @@ class ExportPreparer {
                     }
                     Log.d("ExportPreparer","s="+s);
                     SQLite thisSong = sqLiteHelper.getSong(c,s);
-                    Uri pdfuri = makePDF.createPDF(c,preferences,storageAccess,processSong,thisSong);
-                    uris.add(pdfuri);
-                } else if (isPDF(s)) {
-                    Uri pdfuri = storageAccess.getFileProviderUri(c, preferences, "Songs", "", FullscreenActivity.exportsetfilenames.get(q));
-                    if (storageAccess.uriExists(c, pdfuri)) {
+                    if (thisSong != null) {
+                        Uri pdfuri = makePDF.createPDF(c, preferences, storageAccess, processSong, thisSong);
                         uris.add(pdfuri);
                     }
                 }
@@ -295,12 +297,14 @@ class ExportPreparer {
                 songid = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
             }
 
-            // GE This won't wor for variations, notes, custom slides, etc.
+            // GE This won't work for variations, notes, custom slides, etc.
             // That's because the aren't and shouldn't be in the database
             // These items are temporary files that are created when importing sets
             // They will be dealt with in the new material app as this deals with each song as an object
             SQLite thisSong = sqLiteHelper.getSong(c,songid);
-            pdf = makePDF.createPDF(c,preferences,storageAccess,processSong,thisSong);
+            if (thisSong!=null && !isImgOrPDF(songid)) {
+                pdf = makePDF.createPDF(c,preferences,storageAccess,processSong,thisSong);
+            }
         }
 
         if (StaticVariables.whichMode.equals("Performance") &&
