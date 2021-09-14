@@ -2142,6 +2142,11 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             if (FullscreenActivity.isPDF && !checkCanScrollUp() && (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
+                // Send page number as 'section' to other devices
+                if (StaticVariables.isHost && StaticVariables.isConnected) {
+                    StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
+                    sendSongSectionToConnected();
+                }
                 // IV - Indicate reload which does not impact running pad etc.
                 StaticVariables.reloadOfSong = true;
                 loadSong();
@@ -2208,6 +2213,11 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             if (FullscreenActivity.isPDF && !checkCanScrollDown() && (FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
+                // Send page number as 'section' to other devices
+                if (StaticVariables.isHost && StaticVariables.isConnected) {
+                    StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
+                    sendSongSectionToConnected();
+                }
                 // IV - Indicate reload which does not impact running pad etc.
                 StaticVariables.reloadOfSong = true;
                 loadSong();
@@ -4065,54 +4075,77 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void selectSection(int whichone) {
-        // IV - A connected host may request an invalid section, if it does show section 0
-        if (whichone >= FullscreenActivity.sectionviews.length) {
-            whichone = 0;
-        }
-
-        if (whichone < 0) {
-            whichone = 0;
-        }
-
-        StaticVariables.currentSection = whichone;
-
-        // Send section to other devices (checks we are in stage or presentation mode in called method
-        if (StaticVariables.isHost && StaticVariables.isConnected && FullscreenActivity.isSong) {
-            sendSongSectionToConnected();
-        }
-
-        // Set this sections alpha to 1.0f;
-        try {
-            FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
-        } catch (Exception e) {
-            Log.d(TAG, "Section not found");
-        }
-
-        // Smooth scroll to show this view at the top of the page unless we are autoscrolling
-        try {
-            if (!StaticVariables.isautoscrolling) {
-                songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
+        if (FullscreenActivity.isPDF) {
+            // IV - 'Section' moves for PDF will arrive from presenter mode and Stage mode PDF page moves
+            // IV - A connected host may request an invalid section, if it does show section 0
+            if (whichone >= FullscreenActivity.pdfPageCount) {
+                whichone = 0;
             }
-        } catch (Exception e) {
-            Log.d(TAG, "Section not found");
-        }
 
-        try {
-            // Go through each of the views and set the alpha of the others to 0.5f;
-            for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
-                if (x != whichone) {
-                    FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+            if (whichone < 0) {
+                whichone = 0;
+            }
+
+            FullscreenActivity.pdfPageCurrent = whichone;
+
+            // Send section to other devices
+            if (StaticVariables.isHost && StaticVariables.isConnected) {
+                sendSongSectionToConnected();
+            }
+
+            // Indicate reload which does not impact running pad etc.
+            StaticVariables.reloadOfSong = true;
+            loadSong();
+        } else {
+            // IV - A connected host may request an invalid section, if it does show section 0
+            if (whichone >= FullscreenActivity.sectionviews.length) {
+                whichone = 0;
+            }
+
+            if (whichone < 0) {
+                whichone = 0;
+            }
+
+            StaticVariables.currentSection = whichone;
+
+            // Send section to other devices
+            if (StaticVariables.isHost && StaticVariables.isConnected && FullscreenActivity.isSong) {
+                sendSongSectionToConnected();
+            }
+
+            // Set this sections alpha to 1.0f;
+            try {
+                FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
+            } catch (Exception e) {
+                Log.d(TAG, "Section not found");
+            }
+
+            // Smooth scroll to show this view at the top of the page unless we are autoscrolling
+            try {
+                if (!StaticVariables.isautoscrolling) {
+                    songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
                 }
+            } catch (Exception e) {
+                Log.d(TAG, "Section not found");
             }
-            FullscreenActivity.tempswipeSet = "enable";
-            StaticVariables.setMoveDirection = "";
 
-            dualScreenWork();
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                // Go through each of the views and set the alpha of the others to 0.5f;
+                for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
+                    if (x != whichone) {
+                        FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+                    }
+                }
+                FullscreenActivity.tempswipeSet = "enable";
+                StaticVariables.setMoveDirection = "";
+
+                dualScreenWork();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Make sure all dynamic (scroll and set) buttons display
+            onScrollAction();
         }
-        // Make sure all dynamic (scroll and set) buttons display
-        onScrollAction();
     }
 
     private void resizeStageView() {
@@ -7042,16 +7075,18 @@ public class StageMode extends AppCompatActivity implements
                     Log.d(TAG, "Error loading song:" + StaticVariables.songfilename);
                 }
 
-                // Send Nearby song intent
-                if (StaticVariables.isConnected && StaticVariables.isHost && !FullscreenActivity.orientationchanged) {
-                    // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
-                    // sendSongDelay will be 0 for the first song
-                    // IV - Always empty then add to queue (known state)
-                    sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
-                    sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
-                    // IV - Always empty then add to queue (known state)
-                    resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
-                    resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
+                if (!StaticVariables.reloadOfSong) {
+                    // Send Nearby song intent
+                    if (StaticVariables.isConnected && StaticVariables.isHost && !FullscreenActivity.orientationchanged) {
+                        // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
+                        // sendSongDelay will be 0 for the first song
+                        // IV - Always empty then add to queue (known state)
+                        sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+                        sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
+                        // IV - Always empty then add to queue (known state)
+                        resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
+                        resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
+                    }
                 }
 
                 // If we are in a set, try to get the appropriate indexes

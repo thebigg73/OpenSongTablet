@@ -885,13 +885,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     private void loadPDFPagePreview() {
-        Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageAccess, 800, 800, "Y");
-
-        presenter_lyrics_image.setVisibility(View.VISIBLE);
         presenter_lyrics.setVisibility(View.GONE);
         // IV - Make sure it starts clear
         presenter_lyrics_image.setImageBitmap(null);
 
+        Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageAccess, 800, 800, "Y");
         if (bmp != null) {
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(bmp.getWidth(), bmp.getHeight());
             presenter_lyrics_image.setLayoutParams(llp);
@@ -911,6 +909,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             callIntent("openpdf", target);
         }
+
+        presenter_lyrics_image.setVisibility(View.VISIBLE);
+
         if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true)) {
             autoproject = false;
             presenter_project_group.performClick();
@@ -1753,11 +1754,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-
-
     private void loadImagePreview() {
         // Make the appropriate bits visible
-        presenter_lyrics_image.setVisibility(View.VISIBLE);
         presenter_lyrics.setVisibility(View.GONE);
         // IV - Make sure it starts clear
         presenter_lyrics_image.setImageBitmap(null);
@@ -1789,12 +1787,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             Glide.with(PresenterMode.this).load(StaticVariables.uriToLoad).apply(myOptions).into(presenter_lyrics_image);
         }
 
+        presenter_lyrics_image.setVisibility(View.VISIBLE);
+
         if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true)) {
             autoproject = false;
             presenter_project_group.performClick();
         }
     }
-
 
     private void sendSongSectionToConnected() {
         // IV - Do not send section 0 payload when loading a song
@@ -3380,9 +3379,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     e.printStackTrace();
                 }
 
-                // Send Nearby song intent
-                if (StaticVariables.isHost && StaticVariables.isConnected && !FullscreenActivity.orientationchanged) {
-                    nearbyConnections.sendSongPayload();
+                if (!StaticVariables.reloadOfSong) {
+                    // Send Nearby song intent
+                    if (StaticVariables.isHost && StaticVariables.isConnected && !FullscreenActivity.orientationchanged) {
+                        nearbyConnections.sendSongPayload();
+                    }
                 }
 
                 // Clear the old headings (presention order looks for these)

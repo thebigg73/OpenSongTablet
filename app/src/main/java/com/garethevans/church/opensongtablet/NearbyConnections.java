@@ -588,7 +588,11 @@ public class NearbyConnections implements NearbyInterface {
                 }
             }
             Log.d("NearbyConnections", "originalUri=" + originalUri);
-            storageAccess.deleteFile(context, originalUri);
+            try {
+                storageAccess.deleteFile(context, originalUri);
+            } catch (Exception e) {
+                Log.d("NearbyConnections", "Error trying to delete originalUri");
+            }
         } else {
             if (nearbyReturnActionsInterface != null) {
                 nearbyReturnActionsInterface.loadSong();
@@ -663,7 +667,8 @@ public class NearbyConnections implements NearbyInterface {
                         }
                         incomingFilePayloads.remove(payloadTransferUpdate.getPayloadId());
                         fileNewLocation.remove(payloadTransferUpdate.getPayloadId());
-
+                        // IV - The detection of song change needs reset
+                        incomingPrevious = "";
                         payloadFile(payload, foldernamepair);
                     }
                 }
