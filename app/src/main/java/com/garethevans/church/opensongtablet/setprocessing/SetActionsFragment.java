@@ -41,7 +41,7 @@ public class SetActionsFragment extends Fragment {
             mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
         });
         myView.bibleButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.bible_graph));
-
+        myView.slideButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.customSlideFragment));
         return myView.getRoot();
     }
 }

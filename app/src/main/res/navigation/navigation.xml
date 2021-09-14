@@ -698,6 +698,9 @@
                 <action
                     android:id="@+id/action_setActionsFragment_to_bible_graph"
                     app:destination="@id/bible_graph" />
+                <action
+                    android:id="@+id/action_setActionsFragment_to_customSlideFragment"
+                    app:destination="@id/customSlideFragment" />
             </fragment>
             <fragment
                 android:id="@+id/setManageFragment"
@@ -729,6 +732,15 @@
                     android:label="BibleDownloadFragment"
                     tools:layout="@layout/bible_download"/>
             </navigation>
+            <fragment
+                android:id="@+id/customSlideFragment"
+                android:name="com.garethevans.church.opensongtablet.customslides.CustomSlideFragment"
+                android:label="CustomSlideFragment"
+                tools:layout="@layout/settings_custom_slide">
+                <deepLink
+                    android:id="@+id/deepLink30"
+                    app:uri="opensongapp://settings/sets/customslide" />
+            </fragment>
         </navigation>
 
 
