@@ -111,18 +111,10 @@ public class ChordDirectory {
         chordtoworkon = chordtoworkon.replace("+", "aug");
 
         // Since we are only using chords, we can ignore slash chords (bass notes)
-        chordtoworkon = chordtoworkon.replace("/A#", "");
-        chordtoworkon = chordtoworkon.replace("/C#", "");
-        chordtoworkon = chordtoworkon.replace("/D#", "");
-        chordtoworkon = chordtoworkon.replace("/F#", "");
-        chordtoworkon = chordtoworkon.replace("/G#", "");
-        chordtoworkon = chordtoworkon.replace("/A", "");
-        chordtoworkon = chordtoworkon.replace("/B", "");
-        chordtoworkon = chordtoworkon.replace("/C", "");
-        chordtoworkon = chordtoworkon.replace("/D", "");
-        chordtoworkon = chordtoworkon.replace("/E", "");
-        chordtoworkon = chordtoworkon.replace("/F", "");
-        chordtoworkon = chordtoworkon.replace("/G", "");
+        if (chordtoworkon.contains("/") && !chordtoworkon.startsWith("/")) {
+            chordtoworkon = chordtoworkon.substring(0,chordtoworkon.lastIndexOf("/"));
+            chordtoworkon = chordtoworkon.replace("/","");
+        }
 
         // Now we can remove the $ sign
         chordtoworkon = chordtoworkon.replace("$", "");

@@ -38,7 +38,7 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.importsongs.OCR;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
-import com.garethevans.church.opensongtablet.metronome.TimeTools;
+import com.garethevans.church.opensongtablet.tools.TimeTools;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.pads.Pad;
@@ -101,8 +101,7 @@ public interface MainActivityInterface {
     void updateSongMenu(Song song);
     boolean songChanged();
     void updateSetList();
-    void stopAutoscroll();
-    void startAutoscroll();
+    void toggleAutoscroll();
     void fadeoutPad();
     boolean playPad();
     void updateConnectionsLog();
@@ -219,4 +218,5 @@ public interface MainActivityInterface {
     FragmentManager getMyFragmentManager();
     Bible getBible();
     CustomSlide getCustomSlide();
+    void chooseMenu(boolean showSetMenu);
 }

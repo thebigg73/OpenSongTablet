@@ -9,10 +9,10 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Locale;
 import java.util.Timer;
@@ -31,8 +31,9 @@ public class Pad {
     private final Handler pad1PlayTimerHandler = new Handler();
     private final Handler pad2PlayTimerHandler = new Handler();
     private boolean pad1Pause, pad2Pause;
-    private final TextView padPlayback;
-    private String padLengthText;
+    private final LinearLayout pad;
+    private final MaterialTextView padTime;
+    private final MaterialTextView padTotalTime;
     private int padLength;
     private int pad1CurrentTime = 0, pad2CurrentTime = 0;
     private final String TAG = "Pad";
@@ -41,18 +42,21 @@ public class Pad {
     private final MainActivityInterface mainActivityInterface;
     private boolean padsActivated = false;
 
-    public Pad(MainActivityInterface mainActivityInterface, TextView padPlayback) {
+    public Pad(MainActivityInterface mainActivityInterface, LinearLayout pad) {
         this.mainActivityInterface = mainActivityInterface;
-        this.padPlayback = padPlayback;
+        this.pad = pad;
+        padTime = pad.findViewById(R.id.padTime);
+        padTotalTime = pad.findViewById(R.id.padTotalTime);
         updateColor();
     }
     
     public void updateColor() {
         // Get the color and alpha
         Log.d(TAG,"alpha="+mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
-        ((LinearLayout)padPlayback.getParent()).setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
-        ((LinearLayout)padPlayback.getParent()).setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
-        padPlayback.setTextColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());
+        pad.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
+        pad.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
+        padTime.setTextColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());
+        padTotalTime.setTextColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());
     }
 
     public void startPad(Context c) {
@@ -299,8 +303,9 @@ public class Pad {
         return c.getResources().openRawResourceFd(path);
     }
     private void endTimer(int padNum) {
-        padPlayback.setText("");
-        padPlayback.setVisibility(View.GONE);
+        padTime.setText("");
+        padTotalTime.setText("");
+        pad.setVisibility(View.GONE);
         switch (padNum) {
             case 1:
                 if (pad1PlayTimerTask!=null) {
@@ -388,45 +393,44 @@ public class Pad {
         Log.d(TAG,"doPlay: padNum="+padNum);
         switch (padNum) {
             case 1:
-                padLength = pad1.getDuration();
+                padLength = (int)(pad1.getDuration()/1000f);
                 pad1Fading = false;
                 pad1Pause = false;
                 pad1.start();
                 break;
             case 2:
-                padLength = pad2.getDuration();
+                padLength = (int)(pad2.getDuration()/1000f);
                 pad2Fading = false;
                 pad2Pause = false;
                 pad2.start();
                 break;
         }
-        padLengthText = " / " + mainActivityInterface.getTimeTools().timeFormatFixer(padLength);
-        String display = mainActivityInterface.getTimeTools().timeFormatFixer(0) + padLengthText;
-        padPlayback.setText(display);
-        padPlayback.setVisibility(View.VISIBLE);
+        Log.d(TAG,"padLength:"+padLength);
+        String padLengthText = " / " + mainActivityInterface.getTimeTools().timeFormatFixer(padLength);
+        String display = mainActivityInterface.getTimeTools().timeFormatFixer(0);
+        padTime.setText(display);
+        padTotalTime.setText(padLengthText);
+        pad.setVisibility(View.VISIBLE);
 
         switch (padNum) {
             case 1:
                 pad1CurrentTime = 0;
-                padPlayback.setOnClickListener(v -> playStopOrPause(1));
-                padPlayback.setOnLongClickListener(v -> {
-                    stopAndReset(1);
-                    endTimer(1);
-                    return true;
-                });
+                pad.setOnClickListener(v -> playStopOrPause(1));
+                pad.setOnLongClickListener(v -> longClick(1));
                 pad1PlayTimerTask = new TimerTask() {
                     @Override
                     public void run() {
                         pad1PlayTimerHandler.post(() -> {
                             if (!pad1Pause) {
-                                pad1CurrentTime++;
-                                String display = mainActivityInterface.getTimeTools().timeFormatFixer(pad1CurrentTime) + padLengthText;
-                                padPlayback.setText(display);
+                                pad1CurrentTime = (int)(pad1.getCurrentPosition()/1000f);
+                                //pad1CurrentTime++;
+                                String display = mainActivityInterface.getTimeTools().timeFormatFixer(pad1CurrentTime);
+                                padTime.setText(display);
                             } else {
-                                if (padPlayback.getCurrentTextColor()==Color.TRANSPARENT) {
-                                    padPlayback.setTextColor(Color.WHITE);
+                                if (padTime.getCurrentTextColor()==Color.TRANSPARENT) {
+                                    padTime.setTextColor(Color.WHITE);
                                 } else {
-                                    padPlayback.setTextColor(Color.TRANSPARENT);
+                                    padTime.setTextColor(Color.TRANSPARENT);
                                 }
                             }
                         });
@@ -437,32 +441,28 @@ public class Pad {
                 break;
             case 2:
                 pad2CurrentTime = 0;
-                padPlayback.setOnClickListener(v -> playStopOrPause(2));
-                padPlayback.setOnLongClickListener(v -> {
-                    stopAndReset(2);
-                    endTimer(2);
-                    return true;
-                });
+                pad.setOnClickListener(v -> playStopOrPause(2));
+                pad.setOnLongClickListener(v -> longClick(2));
                 pad2PlayTimerTask = new TimerTask() {
                     @Override
                     public void run() {
                         pad2PlayTimerHandler.post(() -> {
                             if (!pad2Pause) {
-                                pad2CurrentTime++;
-                                String display = mainActivityInterface.getTimeTools().timeFormatFixer(pad2CurrentTime) + padLengthText;
-                                padPlayback.setText(display);
+                                pad2CurrentTime = (int)(pad2.getCurrentPosition()/1000f);
+                                String display = mainActivityInterface.getTimeTools().timeFormatFixer(pad2CurrentTime);
+                                padTime.setText(display);
                             } else {
-                                if (padPlayback.getCurrentTextColor()==Color.TRANSPARENT) {
-                                    padPlayback.setTextColor(Color.WHITE);
+                                if (padTime.getCurrentTextColor()==Color.TRANSPARENT) {
+                                    padTime.setTextColor(Color.WHITE);
                                 } else {
-                                    padPlayback.setTextColor(Color.TRANSPARENT);
+                                    padTime.setTextColor(Color.TRANSPARENT);
                                 }
                             }
                         });
                     }
                 };
                 pad2PlayTimer = new Timer();
-                pad2PlayTimer.scheduleAtFixedRate(pad2PlayTimerTask,1000,1000);
+                pad2PlayTimer.scheduleAtFixedRate(pad2PlayTimerTask,500,500);
                 break;
         }
     }
@@ -516,11 +516,11 @@ public class Pad {
                     padsActivated = false;
                 } else if (pad1!=null && pad1.isPlaying() && !pad1Fading) {
                     // Pause the pad
-                    padPlayback.setTextColor(Color.TRANSPARENT);
+                    padTime.setTextColor(Color.TRANSPARENT);
                     pad1.pause();
                     pad1Pause = true;
                 } else if (pad1!=null && !pad1Fading) {
-                    padPlayback.setTextColor(Color.WHITE);
+                    padTime.setTextColor(Color.WHITE);
                     pad1.start();
                     pad1Pause = false;
                 }
@@ -533,11 +533,11 @@ public class Pad {
                     padsActivated = false;
                 } else if (pad2!=null && pad2.isPlaying() && !pad2Fading) {
                     // Pause the pad
-                    padPlayback.setTextColor(Color.TRANSPARENT);
+                    padTime.setTextColor(Color.TRANSPARENT);
                     pad2.pause();
                     pad2Pause = true;
                 } else if (pad2!=null && !pad2Fading) {
-                    padPlayback.setTextColor(Color.WHITE);
+                    padTime.setTextColor(Color.WHITE);
                     pad2.start();
                     pad2Pause = false;
                 }
@@ -568,4 +568,9 @@ public class Pad {
         return currentOrientation;
     }
 
+    private boolean longClick(int padNum) {
+        stopAndReset(padNum);
+        endTimer(padNum);
+        return true;
+    }
 }

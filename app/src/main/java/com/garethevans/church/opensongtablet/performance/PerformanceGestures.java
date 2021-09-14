@@ -70,21 +70,9 @@ public class PerformanceGestures {
     }
 
     // Stop or start autoscroll
-    public boolean gesture5(Context c, MainActivityInterface mainActivityInterface) {
+    public void gesture5(Context c, MainActivityInterface mainActivityInterface) {
         mainActivityInterface.getDoVibrate().vibrate(c, 50);
-        if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
-            mainActivityInterface.stopAutoscroll();
-            return false;  // value for clickedOnAutoScrollStart
-        } else {
-            if (mainActivityInterface.getAutoscroll().getAutoscrollOK() || mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", true)) {
-                mainActivityInterface.startAutoscroll();
-                return true;  // value for clickedOnAutoScrollStart
-            } else {
-                mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.autoscroll) + " - " +
-                        c.getString(R.string.not_set));
-                return false;  // value for clickedOnAutoScrollStart
-            }
-        }
+        mainActivityInterface.toggleAutoscroll();
     }
 
     // Stop or start pads

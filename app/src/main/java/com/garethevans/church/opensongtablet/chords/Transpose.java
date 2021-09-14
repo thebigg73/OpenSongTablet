@@ -7,8 +7,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-import java.util.ArrayList;
-
 public class Transpose {
 
     //  A  A#/Bb  B/Cb  C/B#  C#/Db    D    D#/Eb   E/Fb   E#/F   F#/Gb   G     G#/Ab
@@ -73,13 +71,17 @@ public class Transpose {
     private final String[] naturalchords4     = {"La",      "Si",      "Do",      "Ré",      "Mi",      "Fa",      "Sol"};
 
     private String originalkey;
-    private String transposedLyrics, transposedChords;
+    //private String transposedLyrics;
+    //private String transposedChords;
     private int oldchordformat;
-    private boolean usesflats, capousesflats;
+    private boolean usesflats;
+    //private boolean capousesflats;
 
     // The song is sent in and the song is sent back after processing (key and lyrics get changed)
     public Song doTranspose(Context c, MainActivityInterface mainActivityInterface, Song thisSong,
                      String transposeDirection, int transposeTimes, boolean ignoreChordFormat) {
+
+        originalkey = thisSong.getKey();
 
         try {
             // Go through each line and change each chord to $..$
@@ -1300,7 +1302,7 @@ public class Transpose {
         return line;
     }
 
-    private String transposeDownOne(String string) {
+    /*private String transposeDownOne(String string) {
         string = string.replace("$.01.$", "$.0.$");
         string = string.replace("$.02.$", "$.01.$");
         string = string.replace("$.03.$", "$.02.$");
@@ -1436,7 +1438,7 @@ public class Transpose {
         }
         return al;
     }
-
+*/
     public Song checkChordFormat(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         String[] splitLyrics = thisSong.getLyrics().split("\n");
         thisSong.setDetectedChordFormat(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "chordFormat", 1));
@@ -1530,7 +1532,7 @@ public class Transpose {
             line = line.substring(0, line.indexOf("»")) + line.substring(line.indexOf("»") + 1).replaceFirst(" ", "  ");
         }
         while (line.contains("«")) {
-            line = line.substring(0, line.indexOf("«")) + line.substring(line.indexOf("«") + 1).replaceFirst("  ", " ");
+            line = line.substring(0, line.indexOf("«")) + line.substring(line.indexOf("«") + 1).replaceFirst("/\\s\\s/", " ");
         }
         return line;
     }
@@ -1571,7 +1573,6 @@ public class Transpose {
 
 
 /*
-
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;

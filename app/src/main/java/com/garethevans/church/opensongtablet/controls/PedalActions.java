@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songsandsetsmenu.RandomSongBottomSheet;
@@ -166,7 +167,7 @@ public class PedalActions {
                 break;
 
             case "autoscroll":
-                // TODO autoscroll
+                mainActivityInterface.toggleAutoscroll();
                 break;
 
             case "metronome":
@@ -175,24 +176,23 @@ public class PedalActions {
 
             case "pad_autoscroll":
                 mainActivityInterface.playPad();
-                // TODO pad_autoscroll
+                mainActivityInterface.toggleAutoscroll();
                 break;
 
             case "pad_metronome":
                 mainActivityInterface.playPad();
                 mainActivityInterface.toggleMetronome();
-                // TODO pad_metronome
                 break;
 
             case "autoscroll_metronome":
                 mainActivityInterface.toggleMetronome();
-                // TODO autoscroll_metronome
+                mainActivityInterface.toggleAutoscroll();
                 break;
 
             case "pad_autoscroll_metronome":
                 mainActivityInterface.playPad();
                 mainActivityInterface.toggleMetronome();
-                // TODO pad_autoscroll_metronome
+                mainActivityInterface.toggleAutoscroll();
                 break;
 
             case "editsong":
@@ -211,7 +211,8 @@ public class PedalActions {
                 break;
 
             case "showchords":
-                // TODO showchords
+                ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
+                chordFingeringBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "chordFingeringBottomSheet");
                 break;
 
             case "showcapo":
@@ -235,23 +236,23 @@ public class PedalActions {
                 break;
 
             case "speedup":
-                // TODO speedup
+                mainActivityInterface.getAutoscroll().speedUpAutoscroll();
                 break;
 
             case "slowdown":
-                // TODO slowdown
+                mainActivityInterface.getAutoscroll().slowDownAutoscroll();
                 break;
 
             case "pause":
-                // TODO pause
+                mainActivityInterface.getAutoscroll().pauseAutoscroll();
                 break;
 
             case "songmenu":
-                // TODO songmenu
+                mainActivityInterface.chooseMenu(false);
                 break;
 
             case "set":
-                // TODO set
+                mainActivityInterface.chooseMenu(true);
                 break;
 
             case "refreshsong":

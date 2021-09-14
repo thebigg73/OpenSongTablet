@@ -16,6 +16,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.abcnotation.MusicScoreBottomSheet;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollBottomSheet;
 import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
@@ -505,19 +506,19 @@ public class PageButtons {
                     AutoscrollBottomSheet autoscrollBottomSheet = new AutoscrollBottomSheet();
                     autoscrollBottomSheet.show(actionInterface.getMyFragmentManager(),"AutoscrollBottomSheet");
                 } else {
-                    if (actionInterface.getAutoscroll().getIsAutoscrolling()) {
-                        actionInterface.getAutoscroll().stopAutoscroll();
-                    } else {
-                        actionInterface.getAutoscroll().startAutoscroll();
-                    }
+                    actionInterface.toggleAutoscroll();
                 }
                 break;
             case "link":
                 actionInterface.navigateToFragment("opensongapp://settings/actions/links",0);
                 break;
             case "chordfingerings":
-                ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
-                chordFingeringBottomSheet.show(actionInterface.getMyFragmentManager(),"ChordFingeringBottomSheet");
+                if (isLongPress) {
+                   actionInterface.navigateToFragment("opensongapp://settings/actions/chords",0);
+                } else {
+                    ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
+                    chordFingeringBottomSheet.show(actionInterface.getMyFragmentManager(), "ChordFingeringBottomSheet");
+                }
                 break;
             case "stickynotes":
                 Log.d(TAG,"Stickynotes");
@@ -583,7 +584,12 @@ public class PageButtons {
                 randomSongBottomSheet.show(actionInterface.getMyFragmentManager(),"RandomSongBottomSheet");
                 break;
             case "abc":
-                //TODO
+                if (isLongPress) {
+                    actionInterface.navigateToFragment("opensongapp://settings/actions/abcnotation",0);
+                } else {
+                    MusicScoreBottomSheet musicScoreBottomSheet = new MusicScoreBottomSheet();
+                    musicScoreBottomSheet.show(actionInterface.getMyFragmentManager(), "musicScoreBottomSheet");
+                }
                 break;
             case "inc_autoscroll_speed":
                 actionInterface.getAutoscroll().speedUpAutoscroll();
@@ -598,7 +604,7 @@ public class PageButtons {
                 actionInterface.navigateToFragment("opensongapp://settings/midi",0);
                 break;
             case "bible":
-                //TODO
+                actionInterface.navigateToFragment("opensongapp://settings/bible",0);
                 break;
             case "soundlevel":
                 SoundLevelBottomSheet soundLevelBottomSheet = new SoundLevelBottomSheet();

@@ -153,6 +153,7 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
             myView.chordsGridLayout.setColumnCount(3);
         }
 
+
         for (int i=0; i<chordDisplayProcessing.getChordsInSong().size(); i++) {
             LinearLayout chordLayout;
             if (myView.instrument.getText().toString().equals(chordDisplayProcessing.getInstruments().get(6))) {
@@ -165,6 +166,28 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
 
             if (chordLayout!=null) {
                 myView.chordsGridLayout.addView(chordLayout);
+            }
+        }
+
+        // Add the custom chords
+        String[] customChords = mainActivityInterface.getSong().getCustomchords().split(" ");
+        for (String chordCode:customChords) {
+            String customChordName = getString(R.string.custom);
+            if (chordCode.contains("_")) {
+                customChordName = chordCode.substring(chordCode.lastIndexOf("_"));
+                customChordName = customChordName.replace("_","");
+            }
+            LinearLayout customChordLayout = null;
+            if (chordDisplayProcessing.codeMatchesInstrument(chordCode,myView.instrument.getText().toString()) &&
+                    myView.instrument.getText().toString().equals(chordDisplayProcessing.getInstruments().get(6))) {
+                customChordLayout = chordDisplayProcessing.getChordDiagramPiano(requireContext(), mainActivityInterface, getLayoutInflater(),
+                        customChordName, chordCode);
+            } else if (chordDisplayProcessing.codeMatchesInstrument(chordCode,myView.instrument.getText().toString())) {
+                customChordLayout = chordDisplayProcessing.getChordDiagram(requireContext(), mainActivityInterface, getLayoutInflater(),
+                        customChordName, chordCode);
+            }
+            if (customChordLayout!=null) {
+                myView.chordsGridLayout.addView(customChordLayout);
             }
         }
     }

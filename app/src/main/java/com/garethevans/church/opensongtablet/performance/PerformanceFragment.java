@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
+import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
@@ -79,8 +80,7 @@ public class PerformanceFragment extends Fragment {
         initialiseHelpers();
 
         // Pass view references to the Autoscroll class
-        mainActivityInterface.getAutoscroll().initialiseAutoscroll(mainActivityInterface,
-                myView.zoomLayout, myView.onScreenInfo.autoscroll);
+        mainActivityInterface.getAutoscroll().initialiseAutoscroll(myView.zoomLayout);
 
         mainActivityInterface.lockDrawer(false);
         //mainActivityInterface.hideActionBar(false);
@@ -354,8 +354,7 @@ public class PerformanceFragment extends Fragment {
                 // This is called from the MainActivity when we clicked on the page button
 
                 stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);
-            }
-        }
+            } }
     }
 
     // The scale and gesture bits of the code
@@ -437,4 +436,9 @@ public class PerformanceFragment extends Fragment {
             }
         }
     }
+
+    public MyZoomLayout getZoomLayout() {
+        return myView.zoomLayout;
+    }
+
 }

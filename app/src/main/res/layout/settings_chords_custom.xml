@@ -26,14 +26,6 @@
                 android:text="@string/chords_found" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/customChords"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/custom_chords_info" />
-
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/chordsMissing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,6 +39,7 @@
                 android:id="@+id/instrument"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 android:hint="@string/instrument" />
 
@@ -65,41 +58,38 @@
                     android:hint="@string/customchords_name" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/newChord"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/new_something"
-                    android:src="@drawable/ic_plus_white_36dp"
-                    app:fabSize="mini" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:clipChildren="false"
-                android:orientation="horizontal">
-
-                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                    android:id="@+id/customCode"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/customchords_code"
-                    android:inputType="none" />
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/deleteChord"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_delete_white_36dp"
                     android:text="@string/delete"
-                    app:fabSize="mini" />
+                    app:fabSize="normal"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="@string/delete" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/newChord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/new_something"
+                    android:src="@drawable/ic_plus_white_36dp"
+                    android:layout_marginStart="8dp"
+                    app:fabSize="normal" />
             </LinearLayout>
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/customCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/customchords_code"
+                    android:hint=""
+                    style="@style/largeText"
+                    android:inputType="none" />
 
             <TableLayout
                 android:id="@+id/guitarChordLayout"
@@ -108,10 +98,13 @@
                 android:layout_gravity="center_horizontal"
                 android:clipChildren="false" />
 
-            <FrameLayout
-                android:id="@+id/pianoChordLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+
+                <include android:id="@+id/pianoChordLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    layout="@layout/view_chord_piano"/>
+
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -122,6 +115,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         app:icon="@drawable/ic_content_save_white_36dp"
-        android:text="save"/>
+        android:text="@string/save"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

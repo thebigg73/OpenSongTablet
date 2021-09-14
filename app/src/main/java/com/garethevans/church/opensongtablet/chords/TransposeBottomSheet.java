@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.chords;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +19,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-
-import java.io.OutputStream;
 
 public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
@@ -165,6 +162,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         myView.chordFormat4Radio.setOnCheckedChangeListener(new ChangeFormat(4));
         myView.chordFormat5Radio.setOnCheckedChangeListener(new ChangeFormat(5));
         myView.chordFormat6Radio.setOnCheckedChangeListener(new ChangeFormat(6));
+
+        myView.doTransposeButton.setOnClickListener(v -> doTranspose());
     }
 
     private void usePreferredChordFormat(boolean trueorfalse) {
@@ -224,39 +223,38 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         new Thread(() -> {
             requireActivity().runOnUiThread(this::getValues);
 
-            // Do the transpose
-            // If we are editing the song, don't write this, just get the returned values as an array
-            try {
-                //TODO
-               /* song = mainActivityInterface.getTranspose().doTranspose(getActivity(), mainActivityInterface, transposeDirection,
-                        transposeTimes,false, false);
-*/
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            // If we are just editing, update the edit fragment and dismiss, otherwise save the new values
-            if (editSong) {
-                //requireActivity().runOnUiThread(() -> mainActivityInterface.updateKeyAndLyrics(mainActivityInterface.getSong()));
-
+            String transposeDirection;
+            if (myView.transposeSlider.getValue()>=0) {
+                transposeDirection = "+1";
             } else {
-                // Write the new improved XML file
-                String newXML = mainActivityInterface.getProcessSong().getXML(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
-
-                if (mainActivityInterface.getSong().getFiletype().equals("PDF")||mainActivityInterface.getSong().getFiletype().equals("XML")) {
-                    mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),mainActivityInterface, mainActivityInterface.getSong());
-                    mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
-
-                } else {
-                    mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
-                    // Now write the file
-                    Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Songs",
-                            mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),uri);
-                    mainActivityInterface.getStorageAccess().writeFileFromString(newXML,outputStream);
-                }
-                requireActivity().runOnUiThread(() -> mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename()));
+                transposeDirection = "-1";
             }
+
+            int transposeTimes = Math.abs((int)myView.transposeSlider.getValue());
+            boolean ignoreChordFormat = myView.assumePreferred.isChecked();
+
+            // Do the transpose
+            mainActivityInterface.getTranspose().doTranspose(requireContext(),mainActivityInterface,
+                    mainActivityInterface.getSong(),transposeDirection,transposeTimes,ignoreChordFormat);
+
+            // Change the song key if set
+            if (!mainActivityInterface.getSong().getKey().isEmpty()) {
+                String keyNum = mainActivityInterface.getTranspose().keyToNumber(mainActivityInterface.getSong().getKey());
+                String newKey = mainActivityInterface.getTranspose().numberToKey(requireContext(),
+                        mainActivityInterface,mainActivityInterface.getTranspose().transposeKey(keyNum,transposeDirection,transposeTimes));
+                mainActivityInterface.getSong().setKey(newKey);
+            }
+
+            // Now save the changes
+            mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface);
+
+            // Update the song menu
+            mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
+
+            // Load the song again
+            mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
+                    mainActivityInterface.getSong().getFilename());
+
             dismiss();
         }).start();
     }

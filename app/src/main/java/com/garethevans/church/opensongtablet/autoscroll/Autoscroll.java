@@ -1,12 +1,12 @@
 package com.garethevans.church.opensongtablet.autoscroll;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -20,7 +20,7 @@ public class Autoscroll {
 
     private boolean isAutoscrolling, wasScrolling, autoscrollOK, isPaused = false, showOn = true,
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime;
-    private MainActivityInterface mainActivityInterface;
+    private final MainActivityInterface mainActivityInterface;
     private int songDelay;
     private int songDuration;
     private int displayHeight;
@@ -31,16 +31,22 @@ public class Autoscroll {
     private int autoscrollDefaultSongLength;
     private int autoscrollDefaultSongPreDelay;
     private int colorOn;
-    private int colorOff;
     private final int updateTime = 60;
     private float scrollIncrement, scrollPosition, scrollCount;
-    private LinearLayout autoscrollView;
+    private final LinearLayout autoscrollView;
     private MyZoomLayout myZoomLayout;
-    private MaterialTextView autoscrollTimeText, autoscrollTotalTimeText;
-    Timer timer;
-    TimerTask timerTask;
+    private final MaterialTextView autoscrollTimeText, autoscrollTotalTimeText;
+    private Timer timer;
+    private TimerTask timerTask;
     private String currentTimeString, totalTimeString;
 
+    public Autoscroll(MainActivityInterface mainActivityInterface, MaterialTextView autoscrollTimeText,
+                      MaterialTextView autoscrollTotalTimeText, LinearLayout autoscrollView) {
+        this.mainActivityInterface = mainActivityInterface;
+        this.autoscrollView = autoscrollView;
+        this.autoscrollTimeText = autoscrollTimeText;
+        this.autoscrollTotalTimeText = autoscrollTotalTimeText;
+    }
     // The setters
     public void setIsAutoscrolling(boolean isAutoscrolling) {
         this.isAutoscrolling = isAutoscrolling;
@@ -52,13 +58,9 @@ public class Autoscroll {
         this.autoscrollOK = autoscrollOK;
     }
 
-    public void initialiseAutoscroll(MainActivityInterface mainActivityInterface,
-                                     MyZoomLayout myZoomLayout, LinearLayout autoscrollView) {
-        this.mainActivityInterface = mainActivityInterface;
+    public void initialiseAutoscroll(MyZoomLayout myZoomLayout) {
+        colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         this.myZoomLayout = myZoomLayout;
-        this.autoscrollView = autoscrollView;
-        autoscrollTimeText = autoscrollView.findViewById(R.id.autoscrollTime);
-        autoscrollTotalTimeText = autoscrollView.findViewById(R.id.autoscrollTotalTime);
     }
 
     public void initialiseSongAutoscroll(Context c, int songHeight, int displayHeight) {
@@ -72,17 +74,18 @@ public class Autoscroll {
                 "autoscrollDefaultSongPreDelay", 20);
         autoscrollDefaultSongLength = mainActivityInterface.getPreferences().getMyPreferenceInt(c,
                 "autoscrollDefaultSongLength", 180);
-        autoscrollTotalTimeText.setOnClickListener(view -> isPaused = !isPaused);
-        autoscrollTimeText.setOnClickListener(view -> isPaused = !isPaused);
-        float alpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
-        int color = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
-        autoscrollView.setBackgroundColor(color);
-        autoscrollView.setAlpha(alpha);
+        autoscrollView.setOnClickListener(view -> isPaused = !isPaused);
+        autoscrollView.setOnLongClickListener(view -> {
+            stopAutoscroll();
+            return true;
+        });
+        autoscrollView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
         autoscrollView.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
-        colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
-        colorOff = mainActivityInterface.getMyThemeColors().getPageButtonsColor();
     }
 
+    public boolean getIsPaused() {
+        return isPaused;
+    }
     public void pauseAutoscroll() {
         isPaused = !isPaused;
     }
@@ -216,7 +219,7 @@ public class Autoscroll {
                         if (showOn) {
                             autoscrollTimeText.setTextColor(colorOn);
                         } else {
-                            autoscrollTimeText.setTextColor(colorOff);
+                            autoscrollTimeText.setTextColor(Color.TRANSPARENT);
                         }
                     });
 

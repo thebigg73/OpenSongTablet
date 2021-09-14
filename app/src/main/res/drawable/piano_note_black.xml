@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
 <shape android:shape="rectangle"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <stroke android:color="@color/white" android:width="1dp"/>
     <solid android:color="@color/black"/>
     <size android:width="@dimen/piano_black_width"
         android:height="@dimen/piano_black_height"/>
     <padding android:top="1dp"/>
-</shape>
+</shape>-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/keyRectangle">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/black"/>
+            <size android:width="@dimen/piano_black_width"
+                android:height="@dimen/piano_black_height"/>
+        </shape>
+    </item>
+    <item android:id="@+id/keyBorder" android:top="0dp" android:right="0dp" android:left="0dp" android:bottom="0dp">
+        <shape>
+            <solid android:color="@android:color/transparent"/>
+            <stroke
+                android:width="1dp"
+                android:color="@color/white" >
+            </stroke>
+        </shape>
+    </item>
+</layer-list>

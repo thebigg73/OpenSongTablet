@@ -11,9 +11,9 @@
         android:id="@+id/capoInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="4dp"
-        android:gravity="center_vertical"
+        android:layout_gravity="end"
+        android:layout_margin="2dp"
+        android:gravity="center"
         android:padding="4dp"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_capo_white_36dp" />
@@ -24,8 +24,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="4dp"
+        android:layout_margin="2dp"
         android:padding="4dp"
+        android:layout_gravity="end"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
         android:visibility="gone">
 
         <com.google.android.material.textview.MaterialTextView
@@ -34,11 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
-            android:text="@string/time_zero"
-            app:drawableStartCompat="@drawable/ic_rotate_right_white_36dp" />
+            app:drawableStartCompat="@drawable/ic_rotate_right_white_36dp"
+            android:clickable="false"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/autoscrollTotalTime"
@@ -46,21 +47,41 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
-            android:text="@string/time_zero"/>
+            android:clickable="false"/>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/padPlayback"
+    <!-- Pad -->
+    <LinearLayout
+        android:id="@+id/pad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_margin="2dp"
         android:padding="4dp"
-        android:visibility="gone"
-        app:drawableStartCompat="@drawable/ic_amplifier_white_36dp" />
+        android:layout_gravity="end"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/padTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            app:drawableStartCompat="@drawable/ic_amplifier_white_36dp"
+            android:clickable="false"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/padTotalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:clickable="false"/>
+
+    </LinearLayout>
 
 </LinearLayout>

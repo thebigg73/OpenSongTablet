@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.chords;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,7 +16,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -164,6 +162,12 @@ public class ChordDisplayProcessing {
         pianoNotesArray.add("D#");
         pianoNotesArray.add("E");
     }
+    public ArrayList<Integer> getPianoKeysArray() {
+        return pianoKeysArray;
+    }
+    public ArrayList<String> getPianoNotesArray() {
+        return pianoNotesArray;
+    }
 
     public void getChordsInSong(MainActivityInterface mainActivityInterface) {
         // First up, parse the lyrics for the chord lines and add them together
@@ -175,7 +179,10 @@ public class ChordDisplayProcessing {
             }
         }
         String everyChord = chordsOnly.toString().replace(".", " ");
-
+        // Replace characters with spaces (but not slashes)
+        everyChord = everyChord.replace("("," ");
+        everyChord = everyChord.replace(")"," ");
+        everyChord = everyChord.replace("|"," ");
         // Now split the chords individually and add unique ones to an array
         // Encode them for fixing later $..$
         chordsInSong = new ArrayList<>();
@@ -254,7 +261,6 @@ public class ChordDisplayProcessing {
             return capoPosition;
         }
     }
-
 
     // The display for stringed instruments
     @SuppressLint("InflateParams")
@@ -472,13 +478,14 @@ public class ChordDisplayProcessing {
             // Go through each note and colour tint the view
             // Get the starting position for the first note in the array
             int start = pianoNotesArray.indexOf(notes[0]);
-            int noteToFind = 0;
-            for (int x = start; x < pianoNotesArray.size(); x++) {
-
-                // Look for the remaining positions in the notesArray
-                if (noteToFind < notes.length && pianoNotesArray.get(x).equals(notes[noteToFind])) {
-                    tintDrawable(c, pianoChord.findViewById(pianoKeysArray.get(x)), notes[noteToFind]);
-                    noteToFind++;  // Once we've found them all, this won't get called again
+            if (start!=-1) {
+                int noteToFind = 0;
+                for (int x = start; x < pianoNotesArray.size(); x++) {
+                    // Look for the remaining positions in the notesArray
+                    if (noteToFind < notes.length && pianoNotesArray.get(x).equals(notes[noteToFind])) {
+                        tintDrawable(c, pianoChord.findViewById(pianoKeysArray.get(x)), notes[noteToFind], true);
+                        noteToFind++;  // Once we've found them all, this won't get called again
+                    }
                 }
             }
             return chordLayout;
@@ -487,25 +494,26 @@ public class ChordDisplayProcessing {
         }
     }
 
-    private void tintDrawable(Context c, ImageView imageView, String note) {
+    public void tintDrawable(Context c, ImageView imageView, String note, boolean on) {
         Drawable drawable;
-        Log.d(TAG,"note="+note);
-        if (note.contains("#")) {
-            drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black);
-            Log.d(TAG,"sharp");
-        } else {
-            drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white);
-            Log.d(TAG,"flat");
-        }
-        if (drawable!=null) {
-            // Make this a new drawable, otherwise it affects all of them in subsequent passes
-            drawable.mutate();
-            Drawable drawableWrapperd = DrawableCompat.wrap(drawable);
-            DrawableCompat.setTint(drawableWrapperd, Color.RED);
+        if (imageView!=null) {
+            if (on && note.contains("#")) {
+                drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black_on);
+            } else if (!on && note.contains("#")) {
+                drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_black);
+            } else if (on && !note.contains("#")) {
+                drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white_on);
+            } else {
+                drawable = ContextCompat.getDrawable(c, R.drawable.piano_note_white);
+            }
             imageView.setImageDrawable(drawable);
         }
-//        ((ImageView) pianoChord.findViewById(pianoKeysArray.get(start))).setColorFilter(ContextCompat.getColor(c, R.color.red), android.graphics.PorterDuff.Mode.MULTIPLY);
     }
 
     // TODO custom chords before directory chords?
+
+    public boolean codeMatchesInstrument(String code, String instrument) {
+        String instrumentLetter = getPrefFromInstrument(instrument);
+        return code.contains("_"+instrumentLetter+"_");
+    }
 }

@@ -63,6 +63,7 @@ import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
+import com.garethevans.church.opensongtablet.chords.CustomChordsFragment;
 import com.garethevans.church.opensongtablet.chords.Transpose;
 import com.garethevans.church.opensongtablet.controls.Gestures;
 import com.garethevans.church.opensongtablet.controls.PageButtons;
@@ -97,7 +98,7 @@ import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
-import com.garethevans.church.opensongtablet.metronome.TimeTools;
+import com.garethevans.church.opensongtablet.tools.TimeTools;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
@@ -443,8 +444,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         pageButtons = new PageButtons(this,preferences);
         midi = new Midi();
         pedalActions = new PedalActions(mainActivityInterface);
-        pad = new Pad(mainActivityInterface, activityMainBinding.onScreenInfo.padPlayback);
-        autoscroll = new Autoscroll();
+        pad = new Pad(mainActivityInterface, activityMainBinding.onScreenInfo.pad);
+        autoscroll = new Autoscroll(mainActivityInterface,activityMainBinding.onScreenInfo.autoscrollTime,
+                activityMainBinding.onScreenInfo.autoscrollTotalTime,activityMainBinding.onScreenInfo.autoscroll);
         metronome = new Metronome();
         gestures = new Gestures(this,mainActivityInterface);
         gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
@@ -1620,12 +1622,15 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         Log.d(TAG,"Update set list");
     }
     @Override
-    public void startAutoscroll (){
-        Log.d(TAG,"Start auto scroll");
-    }
-    @Override
-    public void stopAutoscroll (){
-        Log.d(TAG,"Stop auto scroll");
+    public void toggleAutoscroll (){
+        if (autoscroll.getIsPaused()) {
+            // This sets to the opposite, so un-paused
+            autoscroll.pauseAutoscroll();
+        } else if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
+            autoscroll.stopAutoscroll();
+        } else {
+            autoscroll.startAutoscroll();
+        }
     }
     @Override
     public void fadeoutPad() {
@@ -1642,7 +1647,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
             Log.d(TAG, "playPad()");
             pad.startPad(this);
             // Showcase if required
-            mainActivityInterface.getShowCase().singleShowCase(this,activityMainBinding.onScreenInfo.padPlayback,getString(R.string.ok),getString(R.string.pad_playback_info),true,"padPlayback");
+            mainActivityInterface.getShowCase().singleShowCase(this,activityMainBinding.onScreenInfo.pad,getString(R.string.ok),getString(R.string.pad_playback_info),true,"padPlayback");
             return true;
         }
     }
@@ -1771,6 +1776,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                         break;
                     case "EditSongFragmentMain":
                         ((EditSongFragmentMain) fragment).updateValue(value);
+                        break;
+                    case "CustomChordsFragment":
+                        ((CustomChordsFragment) fragment).updateValue(value);
                         break;
                 }
             } catch (Exception e) {

@@ -29,7 +29,7 @@ public class __TODO__ {
 
     Song actions - Pad
     Song actions - Autoscroll
-    Song actions - Chords
+    Song actions - Chords, do I need chord for H?
     Song actions - ABC notation
     Song actions - MIDI
 

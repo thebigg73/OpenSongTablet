@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@style/FullscreenBottomSheet">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_page"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/pages_notavailable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/not_available" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/pageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:stepSize="1"
+                android:valueFrom="1"
+                android:valueTo="10"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/previousPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useCompatPadding="true"
+                    android:src="@drawable/ic_arrow_left_white_36dp"
+                    android:contentDescription="@string/back" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/pageNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="16dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/nextPage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:useCompatPadding="true"
+                    android:src="@drawable/ic_arrow_right_white_36dp"
+                    android:contentDescription="@string/next" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
+</LinearLayout>

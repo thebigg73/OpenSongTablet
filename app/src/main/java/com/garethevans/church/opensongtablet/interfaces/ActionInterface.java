@@ -17,4 +17,5 @@ public interface ActionInterface {
     Song getSong();
     boolean playPad();
     Autoscroll getAutoscroll();
+    void toggleAutoscroll();
 }
