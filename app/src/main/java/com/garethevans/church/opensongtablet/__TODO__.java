@@ -28,7 +28,7 @@ public class __TODO__ {
     Display - Menu settings - doesn't do anything get
 
     Song actions - Pad
-    Song actions - Autoscroll
+    Song actions - Autoscroll predelay
     Song actions - Chords, do I need chord for H?
     Song actions - ABC notation
     Song actions - MIDI
