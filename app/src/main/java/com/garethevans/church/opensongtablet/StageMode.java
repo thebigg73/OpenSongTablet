@@ -2143,7 +2143,7 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.isPDF && !checkCanScrollUp() && (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
                 // Send page number as 'section' to other devices
-                if (StaticVariables.isHost && StaticVariables.isConnected) {
+                if (StaticVariables.whichMode.equals("Stage") && StaticVariables.isHost && StaticVariables.isConnected) {
                     StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
                     sendSongSectionToConnected();
                 }
@@ -2214,7 +2214,7 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.isPDF && !checkCanScrollDown() && (FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
                 // Send page number as 'section' to other devices
-                if (StaticVariables.isHost && StaticVariables.isConnected) {
+                if (StaticVariables.whichMode.equals("Stage") && StaticVariables.isHost && StaticVariables.isConnected) {
                     StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
                     sendSongSectionToConnected();
                 }
