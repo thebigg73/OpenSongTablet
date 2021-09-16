@@ -592,6 +592,9 @@ public class StageMode extends AppCompatActivity implements
         // IV - Setup handling of scroll and set dynamic buttons once
         scrollButtons();
 
+        // Establish a known state for Nearby
+        nearbyConnections.turnOffNearby();
+
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
     }
@@ -1433,7 +1436,14 @@ public class StageMode extends AppCompatActivity implements
 
     // Needed to support send activty from within runnable
     private void sendSongToConnected () {
-        nearbyConnections.sendSongPayload();
+        // The send is always called by the 'if' and will return false if a large file is being sent
+        if (!nearbyConnections.sendSongPayload()) {
+            StaticVariables.myToastMessage = (getString(R.string.nearby_large_file));
+            Handler h = new Handler();
+            h.post(() -> {
+                ShowToast.showToast(StageMode.this);
+            });
+        }
     }
 
     private void sendSongSectionToConnected() {

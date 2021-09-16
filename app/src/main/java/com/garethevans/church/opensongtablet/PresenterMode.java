@@ -439,6 +439,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         setDummyFocus();
 
+        // Establish a known state for Nearby
+        nearbyConnections.turnOffNearby();
+
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
     }
@@ -3382,7 +3385,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 if (!StaticVariables.reloadOfSong) {
                     // Send Nearby song intent
                     if (StaticVariables.isHost && StaticVariables.isConnected && !FullscreenActivity.orientationchanged) {
-                        nearbyConnections.sendSongPayload();
+                        // The send is always called by the 'if' and will return false if a large file is being sent
+                        if (!nearbyConnections.sendSongPayload()) {
+                            StaticVariables.myToastMessage = (getString(R.string.nearby_large_file));
+                            Handler h = new Handler();
+                            h.post(() -> {
+                                ShowToast.showToast(PresenterMode.this);
+                            });
+                        }
                     }
                 }
 

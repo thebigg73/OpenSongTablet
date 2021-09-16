@@ -59,6 +59,9 @@ public class NearbyConnections implements NearbyInterface {
     private final Handler stopDiscoveryHandler = new Handler();
     private final Runnable stopDiscoveryRunnable = this::stopDiscovery;
 
+    private Boolean payLoadTransferOutCancel = false;
+    private String payLoadTransferOutIds = "";
+
     NearbyConnections(Context context, Preferences preferences, StorageAccess storageAccess,
                       ProcessSong processSong, OptionMenuListeners optionMenuListeners,
                       SQLiteHelper sqLiteHelper) {
@@ -391,53 +394,66 @@ public class NearbyConnections implements NearbyInterface {
         }
         return connectedEndPointsNames.contains(discoveredEndpointInfo.getEndpointName());
     }
-    public void sendSongPayload() {
+    public boolean sendSongPayload() {
         String infoPayload = null;
-        String infoFilePayload = null;
         Payload payloadFile = null;
+        Boolean payLoadSizeOK = true;
 
-        if (FullscreenActivity.isSong) {
-            // By default, this should be smaller than 32kb, so probably going to send as bytes
-            // We'll measure the actual size to check though
-            infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
-                    "_xx____xx_" + FullscreenActivity.whichDirection + "_xx____xx_" +
-                    FullscreenActivity.myXML;
-            // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
-            byte[] mybytes = infoPayload.getBytes();
-            if (mybytes.length > 30000) {
-                infoPayload = null;
-            }
+        Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+
+        // IV - A previous file transfer may be running - stop it on next onPayloadTransferUpdate
+        if (!payLoadTransferOutIds.equals("")) {
+            payLoadTransferOutCancel = true;
         }
 
-        if (infoPayload == null) {
-            // We will send as a file
-            try {
-                Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
-                ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
-                if (parcelFileDescriptor != null) {
-                    payloadFile = Payload.fromFile(parcelFileDescriptor);
-                    infoFilePayload = "FILE:" + payloadFile.getId() + ":" +
-                            StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
-                            "_xx____xx_" + FullscreenActivity.whichDirection;
+        // IV - Need unique ParcelFileDescriptor for each file sent
+        for (String endpointId : connectedEndPoints) {
+            infoPayload = null;
+            if (FullscreenActivity.isSong) {
+                // By default, this should be smaller than 32kb, so probably going to send as bytes
+                // We'll measure the actual size to check though
+                infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
+                        "_xx____xx_" + FullscreenActivity.whichDirection + "_xx____xx_" +
+                        FullscreenActivity.myXML;
+                // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
+                byte[] mybytes = infoPayload.getBytes();
+                if (mybytes.length > 30000) {
+                    infoPayload = null;
                 }
-            } catch (Exception e) {
-                Log.d("NearbyConnections", "Error trying to send file: " + e);
-                payloadFile = null;
-            }
-        }
-
-        if (StaticVariables.isHost) {
-            for (String endpointId : connectedEndPoints) {
-                if (payloadFile != null) {
-                    // Send the file descriptor as bytes, then the file
-                    Nearby.getConnectionsClient(context).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
-                    Nearby.getConnectionsClient(context).sendPayload(endpointId, payloadFile);
-                } else if (infoPayload != null) {
+                if (infoPayload != null) {
                     // Just send the bytes
                     Nearby.getConnectionsClient(context).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
                 }
             }
+
+            if (infoPayload == null) {
+                payloadFile = null;
+                // We will send as a file
+                try {
+                    ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
+                    if (parcelFileDescriptor != null) {
+                        payloadFile = Payload.fromFile(parcelFileDescriptor);
+                        infoPayload = "FILE:" + payloadFile.getId() + ":" +
+                                StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
+                                "_xx____xx_" + FullscreenActivity.whichDirection;
+                        // IV - Check the size.  If it is large then indicate to inform user
+                        if (payloadFile.asFile().getSize() > 30000) {
+                            payLoadSizeOK = false;
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.d("NearbyConnections", "Error trying to send file: " + e);
+                    payloadFile = null;
+                }
+                if (payloadFile != null) {
+                    // Send the file descriptor as bytes, then the file
+                    Nearby.getConnectionsClient(context).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
+                    Nearby.getConnectionsClient(context).sendPayload(endpointId, payloadFile);
+                }
+            }
         }
+
+        return payLoadSizeOK;
     }
     @Override
     public void doSendPayloadBytes(String infoPayload) {
@@ -656,10 +672,10 @@ public class NearbyConnections implements NearbyInterface {
 
             @Override
             public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-                if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
-                    // For bytes this is sent automatically, but it's the file we are interested in here
-                    Payload payload;
-                    if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
+                // For bytes this is sent automatically, but it's the file we are interested in here
+                Payload payload;
+                if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
+                    if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
                         payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
                         String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());
                         if (foldernamepair == null) {
@@ -670,6 +686,24 @@ public class NearbyConnections implements NearbyInterface {
                         // IV - The detection of song change needs reset
                         incomingPrevious = "";
                         payloadFile(payload, foldernamepair);
+                    }
+                } else {
+                    // IV - Respond to a request to cancel running transfers on a song change
+                    if (payLoadTransferOutCancel) {
+                        payLoadTransferOutCancel = false;
+                        if (!payLoadTransferOutIds.equals("")) {
+                            String[] Ids = payLoadTransferOutIds.split(" ");
+                            payLoadTransferOutIds = "";
+                            for (String Id : Ids) {
+                                // IV - Cancel all Ids to catch any still running
+                                Nearby.getConnectionsClient(context).cancelPayload(Long.parseLong(Id.trim()));
+                            }
+                        }
+                    } else {
+                        // IV - Keep a record of outgoing Id
+                        if (!(payLoadTransferOutIds.contains(payloadTransferUpdate.getPayloadId() + " "))) {
+                            payLoadTransferOutIds = payLoadTransferOutIds + payloadTransferUpdate.getPayloadId() + " ";
+                        }
                     }
                 }
             }

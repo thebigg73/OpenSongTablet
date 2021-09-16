@@ -531,4 +531,5 @@
     <string name="information_bar_opacity">Neprůhlednost informační lišty</string>
     <string name="autorepeat_time">Čas automatického opakování (z nastavení pedálu)</string>
     <string name="presoShowBackground">Pozadí</string>
+    <string name="nearby_large_file">Tento velký soubor písní je sdílen</string>
 </resources>
