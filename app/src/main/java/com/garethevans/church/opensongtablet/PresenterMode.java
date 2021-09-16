@@ -3400,9 +3400,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
 
                 // Don't process images or image slide details here.  No need.  Only do this for songs
-                if (FullscreenActivity.isPDF) {
-                    LoadXML.getPDFPageCount(PresenterMode.this, preferences, storageAccess);
-                } else if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {
+                if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {
 
                     // 1. Sort multiline verse/chord formats
                     FullscreenActivity.myLyrics = processSong.fixMultiLineFormat(PresenterMode.this, preferences,FullscreenActivity.myLyrics);
@@ -3522,6 +3520,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         unhighlightAllSetButtons();
                     }
                     showCorrectViews();
+                    if (FullscreenActivity.isPDF) {
+                        LoadXML.getPDFPageCount(PresenterMode.this, preferences, storageAccess);
+                    }
                     setupSongButtons();
                     findSongInFolders();
 
