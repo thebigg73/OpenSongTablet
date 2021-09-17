@@ -1456,15 +1456,12 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void shareSong() {
-        if (justSong(StageMode.this)) {
-        // Export - Take a screenshot as a bitmap
-            doCancelAsyncTask(sharesong_async);
-            sharesong_async = new ShareSong();
-            try {
-                sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        doCancelAsyncTask(sharesong_async);
+        sharesong_async = new ShareSong();
+        try {
+            sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -5094,35 +5091,37 @@ public class StageMode extends AppCompatActivity implements
     private class ShareSong extends AsyncTask<Object, Void, String> {
         @Override
         protected void onPreExecute() {
-            try {
-                // If the song height is bigger than the screen height (scrollable), scale it down for memory
-                int childheight = songscrollview.getChildAt(0).getHeight();
-                int scrollheight = songscrollview.getHeight();
-                float scale = 1.0f;
-                if (childheight>scrollheight) {
-                    scale = (float)scrollheight/(float)childheight;
-                }
-                FullscreenActivity.bmScreen = null;
-                FullscreenActivity.bmScreen = Bitmap.createBitmap((int)(songscrollview.getChildAt(0).getWidth()*scale),
-                        (int)(songscrollview.getChildAt(0).getHeight()*scale), Bitmap.Config.ARGB_8888);
-
-                Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
-                canvas.scale(scale,scale);
-                songscrollview.getChildAt(0).draw(canvas);
-                songscrollview.destroyDrawingCache();
-                songscrollview.setDrawingCacheEnabled(true);
-                songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                songscrollview.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
+            if (FullscreenActivity.isSong) {
                 try {
-                    FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
-                } catch (Exception e) {
-                    Log.d(TAG, "ShareSong error getting the screenshot!");
-                } catch (OutOfMemoryError o) {
-                    Log.d(TAG, "ShareSong Out of memory");
-                }
+                    // If the song height is bigger than the screen height (scrollable), scale it down for memory
+                    int childheight = songscrollview.getChildAt(0).getHeight();
+                    int scrollheight = songscrollview.getHeight();
+                    float scale = 1.0f;
+                    if (childheight > scrollheight) {
+                        scale = (float) scrollheight / (float) childheight;
+                    }
+                    FullscreenActivity.bmScreen = null;
+                    FullscreenActivity.bmScreen = Bitmap.createBitmap((int) (songscrollview.getChildAt(0).getWidth() * scale),
+                            (int) (songscrollview.getChildAt(0).getHeight() * scale), Bitmap.Config.ARGB_8888);
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                    Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
+                    canvas.scale(scale, scale);
+                    songscrollview.getChildAt(0).draw(canvas);
+                    songscrollview.destroyDrawingCache();
+                    songscrollview.setDrawingCacheEnabled(true);
+                    songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                    songscrollview.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
+                    try {
+                        FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                    } catch (Exception e) {
+                        Log.d(TAG, "ShareSong error getting the screenshot!");
+                    } catch (OutOfMemoryError o) {
+                        Log.d(TAG, "ShareSong Out of memory");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -6911,15 +6910,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    private boolean justSong(Context c) {
-        boolean isallowed = true;
-        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            showToastMessage(c.getResources().getString(R.string.not_allowed));
-            isallowed = false;
-        }
-        return isallowed;
     }
 
     @Override

@@ -2361,14 +2361,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         FullscreenActivity.whattodo = "editsong";
         openFragment();
     }
-    private boolean justSong(Context c) {
-        boolean isallowed = true;
-        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            showToastMessage(c.getResources().getString(R.string.not_allowed));
-            isallowed = false;
-        }
-        return isallowed;
-    }
     @Override
     public void openFragment() {
         // Load the whichSongFolder in case we were browsing elsewhere
@@ -2396,15 +2388,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void shareSong() {
-        if (justSong(PresenterMode.this)) {
-            // Export - Take a screenshot as a bitmap
-            doCancelAsyncTask(sharesong_async);
-            sharesong_async = new ShareSong();
-            try {
-                sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        doCancelAsyncTask(sharesong_async);
+        sharesong_async = new ShareSong();
+        try {
+            sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

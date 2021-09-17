@@ -219,37 +219,9 @@ class ExportPreparer {
                 StaticVariables.songfilename);
         InputStream inputStream;
 
-        // Prepare a txt version of the song.
-        String exportText_String = prepareTextFile(c,preferences, processSong);
-
-        emailcontent += exportText_String;
-        if (preferences.getMyPreferenceBoolean(c,"exportText",true)) {
-            text = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".txt");
-
-            // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, text, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".txt");
-
-            OutputStream outputStream = storageAccess.getOutputStream(c,text);
-            storageAccess.writeFileFromString(exportText_String,outputStream);
-        }
-
-        if (preferences.getMyPreferenceBoolean(c,"exportOpenSongApp",true)) {
-            // Prepare an ost version of the song.
-            ost = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".ost");
-
-            // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, ost, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".ost");
-
-            inputStream = storageAccess.getInputStream(c, uriinput);
-            OutputStream outputStream = storageAccess.getOutputStream(c,ost);
-
-            storageAccess.copyFile(inputStream,outputStream);
-        }
-
         if (preferences.getMyPreferenceBoolean(c,"exportDesktop",false)) {
-            // Prepare a desktop version of the song.
+            // Prepare a desktop version of the song
+            // IV - The only option for PDF and Image
             desktop = storageAccess.getUriForItem(c, preferences, "Export", "",
                     storageAccess.safeFilename(StaticVariables.songfilename));
 
@@ -261,63 +233,94 @@ class ExportPreparer {
             storageAccess.copyFile(inputStream,outputStream);
         }
 
-        if (preferences.getMyPreferenceBoolean(c,"exportChordPro",false)) {
-            // Prepare a chordpro version of the song.
-            String exportChordPro_String = prepareChordProFile(c,processSong);
-            chopro = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".chopro");
+        if (FullscreenActivity.isSong) {
+            // Prepare a txt version of the song.
+            String exportText_String = prepareTextFile(c, preferences, processSong);
 
-            // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, chopro, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".chopro");
+            emailcontent += exportText_String;
+            if (preferences.getMyPreferenceBoolean(c, "exportText", true)) {
+                text = storageAccess.getUriForItem(c, preferences, "Export", "",
+                        storageAccess.safeFilename(StaticVariables.songfilename) + ".txt");
 
-            OutputStream outputStream = storageAccess.getOutputStream(c,chopro);
-            storageAccess.writeFileFromString(exportChordPro_String,outputStream);
-        }
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(c, preferences, text, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".txt");
 
-        if (preferences.getMyPreferenceBoolean(c,"exportOnSong",false)) {
-            // Prepare an onsong version of the song.
-            String exportOnSong_String = prepareOnSongFile(c, processSong);
-            onsong = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".onsong");
-
-            // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, onsong, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".onsong");
-
-            OutputStream outputStream = storageAccess.getOutputStream(c,onsong);
-            storageAccess.writeFileFromString(exportOnSong_String,outputStream);
-        }
-
-        // GE Improved PDF method (text based)
-        // Uses SQLite, so song doesn't need to be displayed on the screen
-        if (preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
-            String songid;
-            if (StaticVariables.whichSongFolder.equals("")) {
-                songid = c.getResources().getString(R.string.mainfoldername) + "/" + StaticVariables.songfilename;
-            } else {
-                songid = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+                OutputStream outputStream = storageAccess.getOutputStream(c, text);
+                storageAccess.writeFileFromString(exportText_String, outputStream);
             }
 
-            // GE This won't work for variations, notes, custom slides, etc.
-            // That's because the aren't and shouldn't be in the database
-            // These items are temporary files that are created when importing sets
-            // They will be dealt with in the new material app as this deals with each song as an object
-            SQLite thisSong = sqLiteHelper.getSong(c,songid);
-            if (thisSong!=null && !isImgOrPDF(songid)) {
-                pdf = makePDF.createPDF(c,preferences,storageAccess,processSong,thisSong);
+            if (preferences.getMyPreferenceBoolean(c, "exportOpenSongApp", true)) {
+                // Prepare an ost version of the song.
+                ost = storageAccess.getUriForItem(c, preferences, "Export", "",
+                        storageAccess.safeFilename(StaticVariables.songfilename) + ".ost");
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(c, preferences, ost, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".ost");
+
+                inputStream = storageAccess.getInputStream(c, uriinput);
+                OutputStream outputStream = storageAccess.getOutputStream(c, ost);
+
+                storageAccess.copyFile(inputStream, outputStream);
             }
-        }
 
-        if (StaticVariables.whichMode.equals("Performance") &&
-                preferences.getMyPreferenceBoolean(c,"exportImage",false)) {
-            // Prepare an image/png version of the song.
-            image = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".png");
+            if (preferences.getMyPreferenceBoolean(c, "exportChordPro", false)) {
+                // Prepare a chordpro version of the song.
+                String exportChordPro_String = prepareChordProFile(c, processSong);
+                chopro = storageAccess.getUriForItem(c, preferences, "Export", "",
+                        storageAccess.safeFilename(StaticVariables.songfilename) + ".chopro");
 
-            // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, image, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".png");
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(c, preferences, chopro, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".chopro");
 
-            OutputStream outputStream = storageAccess.getOutputStream(c,image);
-            storageAccess.writeImage(outputStream, bmp);
+                OutputStream outputStream = storageAccess.getOutputStream(c, chopro);
+                storageAccess.writeFileFromString(exportChordPro_String, outputStream);
+            }
+
+            if (preferences.getMyPreferenceBoolean(c, "exportOnSong", false)) {
+                // Prepare an onsong version of the song.
+                String exportOnSong_String = prepareOnSongFile(c, processSong);
+                onsong = storageAccess.getUriForItem(c, preferences, "Export", "",
+                        storageAccess.safeFilename(StaticVariables.songfilename) + ".onsong");
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(c, preferences, onsong, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".onsong");
+
+                OutputStream outputStream = storageAccess.getOutputStream(c, onsong);
+                storageAccess.writeFileFromString(exportOnSong_String, outputStream);
+            }
+
+            // GE Improved PDF method (text based)
+            // Uses SQLite, so song doesn't need to be displayed on the screen
+            if (preferences.getMyPreferenceBoolean(c, "exportPDF", false)) {
+                String songid;
+                if (StaticVariables.whichSongFolder.equals("")) {
+                    songid = c.getResources().getString(R.string.mainfoldername) + "/" + StaticVariables.songfilename;
+                } else {
+                    songid = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+                }
+
+                // GE This won't work for variations, notes, custom slides, etc.
+                // That's because they aren't and shouldn't be in the database
+                // These items are temporary files that are created when importing sets
+                // They will be dealt with in the new material app as this deals with each song as an object
+                SQLite thisSong = sqLiteHelper.getSong(c, songid);
+                if (thisSong != null && !isImgOrPDF(songid)) {
+                    pdf = makePDF.createPDF(c, preferences, storageAccess, processSong, thisSong);
+                }
+            }
+
+            if (StaticVariables.whichMode.equals("Performance") &&
+                    preferences.getMyPreferenceBoolean(c, "exportImage", false)) {
+                // Prepare an image/png version of the song.
+                image = storageAccess.getUriForItem(c, preferences, "Export", "",
+                        storageAccess.safeFilename(StaticVariables.songfilename) + ".png");
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(c, preferences, image, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".png");
+
+                OutputStream outputStream = storageAccess.getOutputStream(c, image);
+                storageAccess.writeImage(outputStream, bmp);
+            }
         }
 
         Intent emailIntent = setEmailIntent(StaticVariables.songfilename, StaticVariables.songfilename,

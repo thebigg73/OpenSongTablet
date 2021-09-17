@@ -105,6 +105,19 @@ public class PopUpExportFragment extends DialogFragment {
             exportImageCheckBox.setVisibility(View.GONE);
         }
 
+        // IV - Show just 'Desktop' for PDF and Image
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            exportOpenSongAppSetCheckBox.setVisibility(View.GONE);
+            exportOpenSongAppCheckBox.setVisibility(View.GONE);
+            exportTextCheckBox.setVisibility(View.GONE);
+            exportChordProCheckBox.setVisibility(View.GONE);
+            exportOnSongCheckBox.setVisibility(View.GONE);
+            exportImageCheckBox.setVisibility(View.GONE);
+            exportPDFCheckBox.setVisibility(View.GONE);
+            // IV - Bodge that removes the 'no extension' comment
+            exportDesktopCheckBox.setText(exportDesktopCheckBox.getText().toString().replaceAll("\\(.*?\\)","").trim());
+        }
+
         // Set the checkboxes to their last set value
         exportOpenSongAppSetCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportOpenSongAppSet",true));
         exportOpenSongAppCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportOpenSongApp",true));
