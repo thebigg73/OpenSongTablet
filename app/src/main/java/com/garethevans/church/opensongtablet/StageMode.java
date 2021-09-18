@@ -1436,13 +1436,11 @@ public class StageMode extends AppCompatActivity implements
 
     // Needed to support send activty from within runnable
     private void sendSongToConnected () {
-        // The send is always called by the 'if' and will return false if a large file is being sent
-        if (!nearbyConnections.sendSongPayload()) {
+        // IV - The send is always called by the 'if' and will return true if a large file has been sent
+        if (nearbyConnections.sendSongPayload()) {
             StaticVariables.myToastMessage = (getString(R.string.nearby_large_file));
             Handler h = new Handler();
-            h.post(() -> {
-                ShowToast.showToast(StageMode.this);
-            });
+            h.post(() -> ShowToast.showToast(StageMode.this));
         }
     }
 

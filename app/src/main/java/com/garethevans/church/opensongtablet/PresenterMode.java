@@ -3374,13 +3374,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 if (!StaticVariables.reloadOfSong) {
                     // Send Nearby song intent
                     if (StaticVariables.isHost && StaticVariables.isConnected && !FullscreenActivity.orientationchanged) {
-                        // The send is always called by the 'if' and will return false if a large file is being sent
-                        if (!nearbyConnections.sendSongPayload()) {
+                        // IV - The send is always called by the 'if' and will return true if a large file has been sent
+                        if (nearbyConnections.sendSongPayload()) {
                             StaticVariables.myToastMessage = (getString(R.string.nearby_large_file));
                             Handler h = new Handler();
-                            h.post(() -> {
-                                ShowToast.showToast(PresenterMode.this);
-                            });
+                            h.post(() -> ShowToast.showToast(PresenterMode.this));
                         }
                     }
                 }
