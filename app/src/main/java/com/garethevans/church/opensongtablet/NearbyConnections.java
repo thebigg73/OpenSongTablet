@@ -496,8 +496,8 @@ public class NearbyConnections implements NearbyInterface {
             incomingPrevious = incoming;
             OutputStream outputStream;
 
-            // Only songs sent via bytes payload trigger this.
-            // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
+            // If 'Receiving host songs' then only BYTES songs with xml arrive here - we use the  4th <?xml> bit
+            // If not 'Receiving host songs' then all songs arrive here including FILES: which have a dummy 4th <?xml> bit - we do not use xml
             boolean songReceived = (receivedBits.size() >= 4);
 
             if (songReceived) {
@@ -632,8 +632,8 @@ public class NearbyConnections implements NearbyInterface {
             Collections.addAll(connectedEndPoints, incomingEPs);
         }
     }
-    private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
-    private final SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
+    private SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
+    private SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
     private PayloadCallback payloadCallback() {
         return new PayloadCallback() {
             @Override
@@ -641,9 +641,9 @@ public class NearbyConnections implements NearbyInterface {
                 if (!StaticVariables.isHost) {
                     // We can deal with the incoming payload!
                     if (payload.getType() == Payload.Type.FILE) {
+                        Log.d("NearbyConnections","FILE NOTED " + payload.getId());
                         // Make a note of it.  Nothing happens until complete
                         incomingFilePayloads.put(payload.getId(), payload);
-                        Log.d("NearbyConnections","FILE for " + payload.getId());
                     } else if (payload.getType() == Payload.Type.BYTES) {
                         // We're dealing with bytes
                         String incoming = null;
@@ -655,15 +655,21 @@ public class NearbyConnections implements NearbyInterface {
                         }
                         if (incoming != null) {
                             if (incoming.startsWith("FILE:")) {
+                                Log.d("NearbyConnections","BYTES for FILE " + payload.getId());
                                 // Add the file location to the arraymap
                                 incoming = incoming.replaceFirst("FILE:", "");
                                 String id = incoming.substring(0, incoming.indexOf(":"));
                                 id = id.replace(":", "");
                                 String foldernamepair = incoming.substring(incoming.indexOf(":"));
                                 foldernamepair = foldernamepair.replace(":", "");
-                                fileNewLocation.put(Long.parseLong(id), foldernamepair);
+                                if (StaticVariables.receiveHostFiles) {
+                                    fileNewLocation.put(Long.parseLong(id), foldernamepair);
+                                } else {
+                                    // IV - CLIENT: Proceed as if BYTES (with unused dummy 4th bit) as we are not receiving FILES
+                                    Log.d("NearbyConnections", "USED AS BYTES as FILE is not needed");
+                                    payloadOpenSong(foldernamepair + "_xx____xx_<?xml>");
+                                }
                                 latestfoldernamepair = foldernamepair;
-
                             } else if (incoming.contains("autoscroll_")) {
                                 payloadAutoscroll(incoming);
                             } else if (incoming.contains("___section___")) {
@@ -671,6 +677,7 @@ public class NearbyConnections implements NearbyInterface {
                             } else if (incoming.contains("_ep__ep_")) {
                                 payloadEndpoints(incoming);
                             } else if (incoming.contains("_xx____xx_")) {
+                                Log.d("NearbyConnections","BYTES for " + payload.getId());
                                 latestfoldernamepair = incoming.substring(0,incoming.indexOf("_xx____xx_<"));
                                 payloadOpenSong(incoming);
                             }
@@ -684,30 +691,36 @@ public class NearbyConnections implements NearbyInterface {
 
             @Override
             public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-                if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
-                    // For bytes this is sent automatically, but it's the file we are interested in here
-                    Payload payload;
-                    if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
-                        payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
-                        String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());
-                        if (foldernamepair == null) {
-                            foldernamepair = "../Received_xx____xx_ReceivedSong";
-                        }
-                        incomingFilePayloads.remove(payloadTransferUpdate.getPayloadId());
-                        fileNewLocation.remove(payloadTransferUpdate.getPayloadId());
-                        Log.d("NearbyConnections","FILE for " + foldernamepair);
-                        // IV - A file payload needs to match with the latest foldernamepair received to be used
-                        if (foldernamepair.equals(latestfoldernamepair)) {
-                            // IV - The detection of song change needs reset
-                            incomingPrevious = "";
-                            payloadFile(payload, foldernamepair);
+                // IV - If we are a client and not 'receiving host files' then cancel these uneeded FILE transfers
+                if (!StaticVariables.isHost && !StaticVariables.receiveHostFiles) {
+                    Log.d("NearbyConnections", "Cancelled Id " + payloadTransferUpdate.getPayloadId());
+                    Nearby.getConnectionsClient(context).cancelPayload(payloadTransferUpdate.getPayloadId());
+                } else {
+                    if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                        // For bytes this is sent automatically, but it's the file we are interested in here
+                        Payload payload;
+                        if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
+                            payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
+                            String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());
+                            if (foldernamepair == null) {
+                                foldernamepair = "../Received_xx____xx_ReceivedSong";
+                            }
+                            incomingFilePayloads.remove(payloadTransferUpdate.getPayloadId());
+                            fileNewLocation.remove(payloadTransferUpdate.getPayloadId());
+                            Log.d("NearbyConnections","FILE for " + payloadTransferUpdate.getPayloadId() + " " + foldernamepair);
+                            // IV - A file payload needs to match with the latest foldernamepair received to be used
+                            if (foldernamepair.equals(latestfoldernamepair)) {
+                                // IV - The detection of song change needs reset
+                                incomingPrevious = "";
+                                payloadFile(payload,foldernamepair);
+                            }
                         }
                     }
-                }
-                // IV - Keep a record of Ids
-                if (!(payLoadTransferIds.contains(payloadTransferUpdate.getPayloadId() + " "))) {
-                    payLoadTransferIds = payLoadTransferIds + payloadTransferUpdate.getPayloadId() + " ";
-                    Log.d("NearbyConnections","Id History " + payLoadTransferIds);
+                    // IV - Keep a record of Ids
+                    if (!(payLoadTransferIds.contains(payloadTransferUpdate.getPayloadId() + " "))) {
+                        payLoadTransferIds = payLoadTransferIds + payloadTransferUpdate.getPayloadId() + " ";
+                        Log.d("NearbyConnections","Id History " + payLoadTransferIds);
+                    }
                 }
             }
         };
@@ -728,14 +741,15 @@ public class NearbyConnections implements NearbyInterface {
     }
     public void cancelTransferIds() {
         // IV - Used to cancel earlier transfer Ids
+        Log.d("NearbyConnections", "Cancel Ids " + payLoadTransferIds);
         if (!payLoadTransferIds.equals("")) {
-            Log.d("NearbyConnections", "Cancel Ids " + payLoadTransferIds);
             String [] Ids = payLoadTransferIds.trim().split(" ");
             payLoadTransferIds = "";
             for (String Id : Ids) {
                 Nearby.getConnectionsClient(context).cancelPayload(Long.parseLong((Id.trim())));
-                Nearby.getConnectionsClient(context).cancelPayload(Long.parseLong((Id.trim())));
             }
+            incomingFilePayloads = new SimpleArrayMap<>();
+            fileNewLocation = new SimpleArrayMap<>();
         }
     }
 }
