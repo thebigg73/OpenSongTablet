@@ -121,30 +121,33 @@ public class NearbyConnections implements NearbyInterface {
     }
     @Override
     public void startDiscovery() {
-        Log.d("NearbyConnections", "startDiscovery()");
-        if (!isDiscovering) {
-            Nearby.getConnectionsClient(context)
-                    .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
-                    .addOnSuccessListener(
-                            (Void unused) -> {
-                                // We're discovering!
-                                updateConnectionLog(context.getResources().getString(R.string.connections_discover));
-                                isDiscovering = true;
-                                Log.d("NearbyConnections", "startDiscovery() - success");
-                            })
-                    .addOnFailureListener(
-                            (Exception e) -> {
-                                // We're unable to start discovering.
-                                stopDiscovery();
-                                Log.d("NearbyConnections", "startDiscovery() - failure: " + e);
-                            });
-        } else {
-            Log.d("NearbyConnections", "startDiscovery() - already discovering");
-        }
-        // IV - Stop 30s after this (latest) call
-        if (isDiscovering) {
-            stopDiscoveryHandler.removeCallbacks(stopDiscoveryRunnable);
-            stopDiscoveryHandler.postDelayed(stopDiscoveryRunnable, 30000);
+        // IV - Only if still in use
+        if (StaticVariables.usingNearby) {
+            Log.d("NearbyConnections", "startDiscovery()");
+            if (!isDiscovering) {
+                Nearby.getConnectionsClient(context)
+                        .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
+                        .addOnSuccessListener(
+                                (Void unused) -> {
+                                    // We're discovering!
+                                    updateConnectionLog(context.getResources().getString(R.string.connections_discover));
+                                    isDiscovering = true;
+                                    Log.d("NearbyConnections", "startDiscovery() - success");
+                                })
+                        .addOnFailureListener(
+                                (Exception e) -> {
+                                    // We're unable to start discovering.
+                                    stopDiscovery();
+                                    Log.d("NearbyConnections", "startDiscovery() - failure: " + e);
+                                });
+            } else {
+                Log.d("NearbyConnections", "startDiscovery() - already discovering");
+            }
+            // IV - Stop 30s after this (latest) call
+            if (isDiscovering) {
+                stopDiscoveryHandler.removeCallbacks(stopDiscoveryRunnable);
+                stopDiscoveryHandler.postDelayed(stopDiscoveryRunnable, 30000);
+            }
         }
     }
     @Override
@@ -304,7 +307,10 @@ public class NearbyConnections implements NearbyInterface {
                 connectedEndPoints.remove(endpointId);
                 String deviceName = getDeviceNameFromId(endpointId);
                 connectedEndPointsNames.remove(endpointId + "__" + deviceName);
-                updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + deviceName);
+                // IV - Only if still in use
+                if (StaticVariables.usingNearby) {
+                    updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + deviceName);
+                }
 
                 if (StaticVariables.isHost) {
                     // Check if we have valid connections

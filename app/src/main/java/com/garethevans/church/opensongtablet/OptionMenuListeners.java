@@ -1803,8 +1803,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 StaticVariables.usingNearby = false;
                 hostOptions.setVisibility(View.GONE);
                 clientOptions.setVisibility(View.GONE);
-                nearbyInterface.stopDiscovery();
-                nearbyInterface.stopAdvertising();
                 nearbyInterface.turnOffNearby();
             }
         });
