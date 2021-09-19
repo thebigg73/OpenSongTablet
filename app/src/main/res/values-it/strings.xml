@@ -531,4 +531,5 @@
     <string name="information_bar_opacity">Opacità della barra delle informazioni</string>
     <string name="autorepeat_time">Tempo di ripetizione automatica (dalle impostazioni del pedale)</string>
     <string name="presoShowBackground">Sfon</string>
+    <string name="nearby_large_file">Questo file di grandi dimensioni è stato condiviso</string>
 </resources>

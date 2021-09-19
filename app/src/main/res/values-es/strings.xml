@@ -531,4 +531,5 @@
     <string name="information_bar_opacity">Opacidad de la barra de información</string>
     <string name="autorepeat_time">Autorepeat time (desde los ajustes del pedal)</string>
     <string name="presoShowBackground">Fondo</string>
+    <string name="nearby_large_file">Este archivo de canción grande se está compartiendo</string>
 </resources>

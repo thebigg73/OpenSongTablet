@@ -531,4 +531,5 @@
     <string name="autorepeat_time">Время автоповтора (из настроек педали)</string>
     <string name="information_bar_opacity">Непрозрачность информационной панели</string>
     <string name="presoShowBackground">Фона</string>
+    <string name="nearby_large_file">К этому большому файлу с песней открыт доступ</string>
 </resources>

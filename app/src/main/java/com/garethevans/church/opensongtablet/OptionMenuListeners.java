@@ -978,15 +978,10 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         songExportButton.setOnClickListener(view -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "customise_exportsong";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
-            } else {
-                StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                ShowToast.showToast(c);
+            FullscreenActivity.whattodo = "customise_exportsong";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 

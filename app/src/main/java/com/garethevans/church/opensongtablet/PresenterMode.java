@@ -439,6 +439,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         setDummyFocus();
 
+        // Establish a known state for Nearby
+        nearbyConnections.turnOffNearby();
+
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
     }
@@ -885,11 +888,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     private void loadPDFPagePreview() {
-        Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageAccess, 800, 800, "Y");
-
-        presenter_lyrics_image.setVisibility(View.VISIBLE);
         presenter_lyrics.setVisibility(View.GONE);
+        // IV - Make sure it starts clear
+        presenter_lyrics_image.setImageBitmap(null);
 
+        Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageAccess, 800, 800, "Y");
         if (bmp != null) {
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(bmp.getWidth(), bmp.getHeight());
             presenter_lyrics_image.setLayoutParams(llp);
@@ -909,6 +912,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             callIntent("openpdf", target);
         }
+
+        presenter_lyrics_image.setVisibility(View.VISIBLE);
+
         if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true)) {
             autoproject = false;
             presenter_project_group.performClick();
@@ -1363,8 +1369,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 // Call the script to get the song location.
                 setActions.getSongFileAndFolder(PresenterMode.this);
-                preferences.setMyPreferenceString(PresenterMode.this,"whichSongFolder",StaticVariables.whichSongFolder);
-                preferences.setMyPreferenceString(PresenterMode.this, "songfilename",StaticVariables.songfilename);
                 findSongInFolders();
                 prepareSongMenu();
 
@@ -1419,19 +1423,19 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     presenter_song_buttonsListView.addView(newSongSectionGroup);
                 }
             }
-
-
         } else if (FullscreenActivity.isImage) {
-            String sectionText = getResources().getString(R.string.image);
-            String buttonText = StaticVariables.songfilename;
-            newSongSectionGroup = processSong.makePresenterSongButtonLayout(PresenterMode.this);
-            newSongSectionText = processSong.makePresenterSongButtonSection(PresenterMode.this, sectionText);
-            newSongButton = processSong.makePresenterSongButtonContent(PresenterMode.this, buttonText);
-            newSongButton.setOnClickListener(new SectionButtonClickListener(0));
-            newSongSectionGroup.addView(newSongSectionText);
-            newSongSectionGroup.addView(newSongButton);
-            presenter_song_buttonsListView.addView(newSongSectionGroup);
-
+            StaticVariables.uriToLoad = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+            if (storageAccess.uriExists(PresenterMode.this,StaticVariables.uriToLoad)) {
+                String sectionText = getResources().getString(R.string.image);
+                String buttonText = StaticVariables.songfilename;
+                newSongSectionGroup = processSong.makePresenterSongButtonLayout(PresenterMode.this);
+                newSongSectionText = processSong.makePresenterSongButtonSection(PresenterMode.this, sectionText);
+                newSongButton = processSong.makePresenterSongButtonContent(PresenterMode.this, buttonText);
+                newSongButton.setOnClickListener(new SectionButtonClickListener(0));
+                newSongSectionGroup.addView(newSongSectionText);
+                newSongSectionGroup.addView(newSongButton);
+                presenter_song_buttonsListView.addView(newSongSectionGroup);
+            }
         } else {
             if (StaticVariables.whichSongFolder.contains("../Images")) {
                 // Custom images so split the mUser3 field by newline.  Each value is image location
@@ -1529,7 +1533,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         try {
             StaticVariables.currentSection = which;
-            if (StaticVariables.songSections != null && StaticVariables.songSections.length > 0) {
+            // IV - Changed to move through displayed buttons without reference to songSections which do not exists for PDF and Img
+            if (presenter_song_buttonsListView.getChildCount() > 0) {
                 // if which=-1 then we want to pick the first section of the previous song in set
                 // Otherwise, move to the next one.
                 // If we are at the end, move to the nextsonginset
@@ -1537,10 +1542,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 if (StaticVariables.currentSection < 0 && !isplayingautoslideshow) {
                     StaticVariables.currentSection = 0;
                     tryClickPreviousSongInSet();
-                } else if (StaticVariables.currentSection >= StaticVariables.songSections.length && !isplayingautoslideshow) {
+                } else if (StaticVariables.currentSection >= presenter_song_buttonsListView.getChildCount() && !isplayingautoslideshow) {
                     StaticVariables.currentSection = 0;
                     tryClickNextSongInSet();
-                } else if (StaticVariables.currentSection < 0 || StaticVariables.currentSection >= StaticVariables.songSections.length) {
+                } else if (StaticVariables.currentSection < 0 || StaticVariables.currentSection >= presenter_song_buttonsListView.getChildCount()) {
                     StaticVariables.currentSection = 0;
                 }
 
@@ -1616,28 +1621,19 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         tryClickPreviousSection();
     }
     private void tryClickNextSection() {
-        // IV - Next and Previous rely on section, The 'fix' for types without valid sections is to not allow!
-        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            showToastMessage(getResources().getString(R.string.not_allowed));
-        } else {
-            if (StaticVariables.currentSection < StaticVariables.songSections.length - 1) {
-                StaticVariables.currentSection += 1;
-                autoproject = true;
-                preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
-                selectSectionButtonInSong(StaticVariables.currentSection);
-            }
+        if (StaticVariables.currentSection < presenter_song_buttonsListView.getChildCount() - 1) {
+            StaticVariables.currentSection += 1;
+            autoproject = true;
+            preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
+            selectSectionButtonInSong(StaticVariables.currentSection);
         }
     }
     private void tryClickPreviousSection() {
-            if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            showToastMessage(getResources().getString(R.string.not_allowed));
-        } else {
-            if (StaticVariables.currentSection > 0) {
-                StaticVariables.currentSection -= 1;
-                autoproject = true;
-                preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
-                selectSectionButtonInSong(StaticVariables.currentSection);
-            }
+        if (StaticVariables.currentSection > 0) {
+            StaticVariables.currentSection -= 1;
+            autoproject = true;
+            preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
+            selectSectionButtonInSong(StaticVariables.currentSection);
         }
     }
     private void tryClickNextSongInSet() {
@@ -1761,12 +1757,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-
-
     private void loadImagePreview() {
         // Make the appropriate bits visible
-        presenter_lyrics_image.setVisibility(View.VISIBLE);
         presenter_lyrics.setVisibility(View.GONE);
+        // IV - Make sure it starts clear
+        presenter_lyrics_image.setImageBitmap(null);
 
         // Process the image location into an URI, then get the sizes
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -1793,14 +1788,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             RequestOptions myOptions = new RequestOptions()
                     .override(glidewidth, glideheight);
             Glide.with(PresenterMode.this).load(StaticVariables.uriToLoad).apply(myOptions).into(presenter_lyrics_image);
+        }
 
-            if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true)) {
-                autoproject = false;
-                presenter_project_group.performClick();
-            }
+        presenter_lyrics_image.setVisibility(View.VISIBLE);
+
+        if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true)) {
+            autoproject = false;
+            presenter_project_group.performClick();
         }
     }
-
 
     private void sendSongSectionToConnected() {
         // IV - Do not send section 0 payload when loading a song
@@ -2128,14 +2124,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             }
 
-            String bit = "";
-
-            try {
-                bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
             // If this is an image, hide the text, show the image, otherwise show the text in the slide window
             if (FullscreenActivity.isPDF) {
                 FullscreenActivity.pdfPageCurrent = which;
@@ -2153,14 +2141,22 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     loadImagePreview();
                 }
             // IV - Handle a song section with content as Image Slide
-            } else if (((bit.toLowerCase(Locale.ROOT).endsWith(".png") || bit.toLowerCase(Locale.ROOT).endsWith(".jpg") || bit.toLowerCase(Locale.ROOT).endsWith(".gif")) ||
-                    (bit.toLowerCase(Locale.ROOT).contains("content://") || bit.toLowerCase(Locale.ROOT).contains("file://")))) {
-                StaticVariables.uriToLoad = storageAccess.fixLocalisedUri(PresenterMode.this, preferences, bit);
-                FullscreenActivity.isImage = true;
-                loadImagePreview();
-                FullscreenActivity.isImage = false;
             } else {
-                loadSongPreview();
+                String bit = "";
+                try {
+                    bit = String.valueOf(StaticVariables.sectionContents[StaticVariables.currentSection][0]);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (((bit.toLowerCase(Locale.ROOT).endsWith(".png") || bit.toLowerCase(Locale.ROOT).endsWith(".jpg") || bit.toLowerCase(Locale.ROOT).endsWith(".gif")) ||
+                        (bit.toLowerCase(Locale.ROOT).contains("content://") || bit.toLowerCase(Locale.ROOT).contains("file://")))) {
+                    StaticVariables.uriToLoad = storageAccess.fixLocalisedUri(PresenterMode.this, preferences, bit);
+                    FullscreenActivity.isImage = true;
+                    loadImagePreview();
+                    FullscreenActivity.isImage = false;
+                } else {
+                    loadSongPreview();
+                }
             }
 
             projectButton_isSelected = false;
@@ -2365,14 +2361,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         FullscreenActivity.whattodo = "editsong";
         openFragment();
     }
-    private boolean justSong(Context c) {
-        boolean isallowed = true;
-        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            showToastMessage(c.getResources().getString(R.string.not_allowed));
-            isallowed = false;
-        }
-        return isallowed;
-    }
     @Override
     public void openFragment() {
         // Load the whichSongFolder in case we were browsing elsewhere
@@ -2400,15 +2388,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void shareSong() {
-        if (justSong(PresenterMode.this)) {
-            // Export - Take a screenshot as a bitmap
-            doCancelAsyncTask(sharesong_async);
-            sharesong_async = new ShareSong();
-            try {
-                sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        doCancelAsyncTask(sharesong_async);
+        sharesong_async = new ShareSong();
+        try {
+            sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -3386,18 +3371,23 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     e.printStackTrace();
                 }
 
-                // Send Nearby song intent
-                if (StaticVariables.isHost && StaticVariables.isConnected && !FullscreenActivity.orientationchanged) {
-                    nearbyConnections.sendSongPayload();
+                if (!StaticVariables.reloadOfSong) {
+                    // Send Nearby song intent
+                    if (StaticVariables.isHost && StaticVariables.isConnected && !FullscreenActivity.orientationchanged) {
+                        // IV - The send is always called by the 'if' and will return true if a large file has been sent
+                        if (nearbyConnections.sendSongPayload()) {
+                            StaticVariables.myToastMessage = (getString(R.string.nearby_large_file));
+                            Handler h = new Handler();
+                            h.post(() -> ShowToast.showToast(PresenterMode.this));
+                        }
+                    }
                 }
 
                 // Clear the old headings (presention order looks for these)
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
 
                 // Don't process images or image slide details here.  No need.  Only do this for songs
-                if (FullscreenActivity.isPDF) {
-                    LoadXML.getPDFPageCount(PresenterMode.this, preferences, storageAccess);
-                } else if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {
+                if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {
 
                     // 1. Sort multiline verse/chord formats
                     FullscreenActivity.myLyrics = processSong.fixMultiLineFormat(PresenterMode.this, preferences,FullscreenActivity.myLyrics);
@@ -3517,6 +3507,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         unhighlightAllSetButtons();
                     }
                     showCorrectViews();
+                    if (FullscreenActivity.isPDF) {
+                        LoadXML.getPDFPageCount(PresenterMode.this, preferences, storageAccess);
+                    }
                     setupSongButtons();
                     findSongInFolders();
 
@@ -3550,16 +3543,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Get the SQLite stuff if the song exists.  Otherwise throws an exception (which is ok)
                     if (!StaticVariables.whichSongFolder.startsWith("..")) {
                         String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
-                        sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
 
                         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                             nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(PresenterMode.this,storageAccess,preferences,songId);
-                        }
-
-                        // If this song isn't indexed, set its details
-                        if (sqLite.getLyrics()==null || sqLite.getLyrics().equals("")) {
-                            sqLite = sqLiteHelper.setSong(sqLite);
-                            sqLiteHelper.updateSong(PresenterMode.this,sqLite);
+                        } else {
+                            // If this song isn't indexed, set its details
+                            sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
+                            if (sqLite.getLyrics()==null || sqLite.getLyrics().equals("")) {
+                                sqLite = sqLiteHelper.setSong(sqLite);
+                                sqLiteHelper.updateSong(PresenterMode.this,sqLite);
+                            }
                         }
                     } else {
                         // Not a song in the database (likley a variation, slide, etc.)

@@ -750,13 +750,19 @@ class PresentationCommon {
         projected_ImageView.setVisibility(View.GONE);
         projected_ImageView.setAlpha(0.0f);
         projected_ImageView.setBackgroundColor(StaticVariables.white);
-        projected_ImageView.setImageBitmap(bmp);
+        // IV - Make sure it starts clear
+        projected_ImageView.setImageBitmap(null);
+        if (bmp != null) {
+            projected_ImageView.setImageBitmap(bmp);
+        }
         animateIn(c,preferences,projected_ImageView,projected_LinearLayout);
     }
     private void doImagePage(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         projected_ImageView.setVisibility(View.GONE);
         projected_ImageView.setAlpha(0.0f);
         projected_ImageView.setBackgroundColor(StaticVariables.white);
+        // IV - Make sure it starts clear
+        projected_ImageView.setImageBitmap(null);
         // Process the image location into an URI
         Uri imageUri;
         if (StaticVariables.uriToLoad==null) {
@@ -764,9 +770,12 @@ class PresentationCommon {
         } else {
             imageUri = StaticVariables.uriToLoad;
         }
-        RequestOptions myOptions = new RequestOptions()
-                .fitCenter().override(projected_LinearLayout.getMeasuredWidth(),projected_LinearLayout.getMeasuredHeight());
-        GlideApp.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
+
+        if (imageUri != null &&  storageAccess.uriExists(c, imageUri)) {
+            RequestOptions myOptions = new RequestOptions()
+                    .fitCenter().override(projected_LinearLayout.getMeasuredWidth(), projected_LinearLayout.getMeasuredHeight());
+            GlideApp.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
+        }
         animateIn(c, preferences,projected_ImageView,projected_LinearLayout);
     }
     private void wipeAllViews(LinearLayout projected_LinearLayout, ImageView projected_ImageView) {

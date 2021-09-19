@@ -531,4 +531,5 @@
     <string name="autorepeat_time">Czas autopowtarzania (z ustawień pedału)</string>
     <string name="information_bar_opacity">Nieprzezroczystość paska informacyjnego</string>
     <string name="presoShowBackground">Tło</string>
+    <string name="nearby_large_file">Udostępniam ten duży plik utworu</string>
 </resources>

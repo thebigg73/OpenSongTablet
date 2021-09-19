@@ -531,4 +531,5 @@
     <string name="information_bar_opacity">Az információs sáv átlátszatlansága</string>
     <string name="autorepeat_time">Automatikus ismétlési idő (a pedál beállításaiból)</string>
     <string name="presoShowBackground">Háttér</string>
+    <string name="nearby_large_file">Ezt a nagy dalfájlt megosztják</string>
 </resources>

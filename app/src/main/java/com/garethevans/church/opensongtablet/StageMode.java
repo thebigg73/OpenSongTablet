@@ -592,6 +592,9 @@ public class StageMode extends AppCompatActivity implements
         // IV - Setup handling of scroll and set dynamic buttons once
         scrollButtons();
 
+        // Establish a known state for Nearby
+        nearbyConnections.turnOffNearby();
+
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
     }
@@ -1433,7 +1436,12 @@ public class StageMode extends AppCompatActivity implements
 
     // Needed to support send activty from within runnable
     private void sendSongToConnected () {
-        nearbyConnections.sendSongPayload();
+        // IV - The send is always called by the 'if' and will return true if a large file has been sent
+        if (nearbyConnections.sendSongPayload()) {
+            StaticVariables.myToastMessage = (getString(R.string.nearby_large_file));
+            Handler h = new Handler();
+            h.post(() -> ShowToast.showToast(StageMode.this));
+        }
     }
 
     private void sendSongSectionToConnected() {
@@ -1446,15 +1454,12 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void shareSong() {
-        if (justSong(StageMode.this)) {
-        // Export - Take a screenshot as a bitmap
-            doCancelAsyncTask(sharesong_async);
-            sharesong_async = new ShareSong();
-            try {
-                sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        doCancelAsyncTask(sharesong_async);
+        sharesong_async = new ShareSong();
+        try {
+            sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1823,6 +1828,8 @@ public class StageMode extends AppCompatActivity implements
         });
         padButtonLayout.setOnLongClickListener(view -> padButton.performLongClick());
         padButton.setOnLongClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
             CustomAnimations.animateFABLong(padButton,StageMode.this);
             // IV - Indicate a fade with just the pad icon to give immediate feedback
             if (backingtrackProgress.getVisibility() == View.VISIBLE) {
@@ -1841,6 +1848,8 @@ public class StageMode extends AppCompatActivity implements
         });
         autoscrollButtonLayout.setOnLongClickListener(view -> autoscrollButton.performLongClick());
         autoscrollButton.setOnLongClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
             CustomAnimations.animateFABLong(autoscrollButton,StageMode.this);
             gesture5();
             return true;
@@ -1853,6 +1862,8 @@ public class StageMode extends AppCompatActivity implements
         });
         metronomeButtonLayout.setOnLongClickListener(view -> metronomeButton.performLongClick());
         metronomeButton.setOnLongClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
             CustomAnimations.animateFABLong(metronomeButton,StageMode.this);
             gesture7();
             return true;
@@ -2136,8 +2147,13 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             if (FullscreenActivity.isPDF && !checkCanScrollUp() && (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
-                // GE Added this to stop the pad reloading between PDF pages
-                StaticVariables.reloadOfSong = false;
+                // Send page number as 'section' to other devices
+                if (StaticVariables.whichMode.equals("Stage") && StaticVariables.isHost && StaticVariables.isConnected) {
+                    StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
+                    sendSongSectionToConnected();
+                }
+                // IV - Indicate reload which does not impact running pad etc.
+                StaticVariables.reloadOfSong = true;
                 loadSong();
                 dealtwithaspdf = true;
             }
@@ -2202,8 +2218,13 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             if (FullscreenActivity.isPDF && !checkCanScrollDown() && (FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
-                // GE Added this to stop the pad reloading between PDF pages
-                StaticVariables.reloadOfSong = false;
+                // Send page number as 'section' to other devices
+                if (StaticVariables.whichMode.equals("Stage") && StaticVariables.isHost && StaticVariables.isConnected) {
+                    StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
+                    sendSongSectionToConnected();
+                }
+                // IV - Indicate reload which does not impact running pad etc.
+                StaticVariables.reloadOfSong = true;
                 loadSong();
                 dealtwithaspdf = true;
             }
@@ -3208,40 +3229,45 @@ public class StageMode extends AppCompatActivity implements
 
         //Returns null, sizes are in the options variable
         InputStream inputStream = storageAccess.getInputStream(StageMode.this, imageUri);
-        BitmapFactory.decodeStream(inputStream, null, options);
 
-        int imgwidth = options.outWidth;
-        int imgheight = options.outHeight;
+        if (inputStream != null) {
+            BitmapFactory.decodeStream(inputStream, null, options);
 
-        int widthavail = getAvailableWidth();
-        int heightavail = getAvailableHeight();
+            int imgwidth = options.outWidth;
+            int imgheight = options.outHeight;
 
-        glideimage.setScaleX(1.0f);
-        glideimage.setScaleY(1.0f);
-        highlightNotes.setScaleX(1.0f);
-        highlightNotes.setScaleY(1.0f);
-        glideimage.setBackgroundColor(StaticVariables.transparent);
-        songwidth = widthavail;
-        songheight = heightavail;
+            int widthavail = getAvailableWidth();
+            int heightavail = getAvailableHeight();
 
-        // Reset the imageview
-        resetImageViewSizes();
+            glideimage.setScaleX(1.0f);
+            glideimage.setScaleY(1.0f);
+            highlightNotes.setScaleX(1.0f);
+            highlightNotes.setScaleY(1.0f);
+            glideimage.setBackgroundColor(StaticVariables.transparent);
+            songwidth = widthavail;
+            songheight = heightavail;
 
-        // Decide on the image size to use
-        if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y")) {
-            // Glide sorts the width vs height (keeps the image in the space available using fitCenter
-            RequestOptions myOptions = new RequestOptions()
-                    .fitCenter()
-                    .override(widthavail, heightavail);
-            GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            // Reset the imageview
+            resetImageViewSizes();
+
+            // Decide on the image size to use
+            if (preferences.getMyPreferenceString(StageMode.this, "songAutoScale", "W").equals("Y")) {
+                // Glide sorts the width vs height (keeps the image in the space available using fitCenter
+                RequestOptions myOptions = new RequestOptions()
+                        .fitCenter()
+                        .override(widthavail, heightavail);
+                GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            } else {
+                // Now decide on the scaling required....
+                float xscale = (float) widthavail / (float) imgwidth;
+                int glideheight = (int) ((float) imgheight * xscale);
+                RequestOptions myOptions = new RequestOptions()
+                        .override(widthavail, glideheight);
+                GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            }
         } else {
-            // Now decide on the scaling required....
-            float xscale = (float) widthavail / (float) imgwidth;
-            int glideheight = (int) ((float) imgheight * xscale);
-            RequestOptions myOptions = new RequestOptions()
-                    .override(widthavail, glideheight);
-            GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
-
+            // IV - Handle when image does not exist
+            songauthor_ab.setText(getResources().getString(R.string.songdoesntexist));
         }
 
         songscrollview.removeAllViews();
@@ -3272,43 +3298,46 @@ public class StageMode extends AppCompatActivity implements
             songkey_ab.setText(s);
         }
         if (bmp != null) {
-            int widthavail = getAvailableWidth();
-            int heightavail = getAvailableHeight();
+            if (FullscreenActivity.pdfPageCount > 0) {
+                int widthavail = getAvailableWidth();
+                int heightavail = getAvailableHeight();
 
-            glideimage.setScaleX(1.0f);
-            glideimage.setScaleY(1.0f);
-            highlightNotes.setScaleX(1.0f);
-            highlightNotes.setScaleY(1.0f);
-            glideimage.setBackgroundColor(StaticVariables.transparent);
-            songwidth = widthavail;
-            songheight = heightavail;
+                glideimage.setScaleX(1.0f);
+                glideimage.setScaleY(1.0f);
+                highlightNotes.setScaleX(1.0f);
+                highlightNotes.setScaleY(1.0f);
+                glideimage.setBackgroundColor(StaticVariables.transparent);
+                songwidth = widthavail;
+                songheight = heightavail;
 
-            // Reset the imageview
-            resetImageViewSizes();
+                // Reset the imageview
+                resetImageViewSizes();
 
-            String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
+                String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
 
-            songauthor_ab.setText(text);
+                songauthor_ab.setText(text);
 
-            glideimage.setBackgroundColor(0xffffffff);
+                glideimage.setBackgroundColor(0xffffffff);
 
-            // Decide on the image size to use
-            if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y")) {
-                // Glide sorts the width vs height (keeps the image in the space available using fitCenter
-                RequestOptions myOptions = new RequestOptions()
-                        .fitCenter()
-                        .override(widthavail, heightavail);
-                GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
+                // Decide on the image size to use
+                if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y")) {
+                    // Glide sorts the width vs height (keeps the image in the space available using fitCenter
+                    RequestOptions myOptions = new RequestOptions()
+                            .fitCenter()
+                            .override(widthavail, heightavail);
+                    GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
+                } else {
+                    // Now decide on the scaling required....
+                    float xscale = (float) widthavail / (float) bmp.getWidth();
+                    int glideheight = (int) ((float) bmp.getHeight() * xscale);
+                    RequestOptions myOptions = new RequestOptions()
+                            .override(widthavail, glideheight);
+                    GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
+
+                }
             } else {
-                // Now decide on the scaling required....
-                float xscale = (float) widthavail / (float) bmp.getWidth();
-                int glideheight = (int) ((float) bmp.getHeight() * xscale);
-                RequestOptions myOptions = new RequestOptions()
-                        .override(widthavail, glideheight);
-                GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
-
+                songauthor_ab.setText(getResources().getString(R.string.songdoesntexist));
             }
-
         } else {
             songauthor_ab.setText(getResources().getString(R.string.nothighenoughapi));
 
@@ -3434,6 +3463,8 @@ public class StageMode extends AppCompatActivity implements
             if (StaticVariables.setView) {
                 // Is there another song in the set?  If so move, if not, do nothing
                 if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1)) {
+                    // Stop the metronome task now as it is high drain and breaks async starts!
+                    Metronome.stopMetronomeTask();
                     StaticVariables.setMoveDirection = "forward";
                     doMoveInSet();
                 } else {
@@ -3798,16 +3829,16 @@ public class StageMode extends AppCompatActivity implements
             }
         }
 
-        // Set the overrides back
-
-        // Do not touch on a reload
-        if (!StaticVariables.reloadOfSong && StaticVariables.clickedOnMetronomeStart) {
-            // GE - metronome was stopped before loading the song and StaticVariables.clickedOnMetronomeStart was reset manually to true afterwards
-            // Metronome was playing before loading the song - if requested autostart start the metronome for the new song
-            if (preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false) &&
-                    FullscreenActivity.isSong) {
+        // IV - If StaticVariables.metronomeonoff == "on" this is a reload with the Metronome left running
+        // For all other case loadSong has stopped any running Metronome task == "off"
+        if (StaticVariables.metronomeonoff == "off") {
+            // If we were running and need to autostart the metronome for the new song...
+            if ((StaticVariables.clickedOnMetronomeStart) &&
+                    preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false)) {
                 // Start it
                 gesture7();
+            } else {
+                StaticVariables.clickedOnMetronomeStart = false;
             }
         }
 
@@ -3953,6 +3984,8 @@ public class StageMode extends AppCompatActivity implements
                 //StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
                 // Is there another song in the set?  If so move, if not, do nothing
                 if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0)) {
+                    // Stop the metronome task now as it is high drain and breaks async starts!
+                    Metronome.stopMetronomeTask();
                     StaticVariables.setMoveDirection = "back";
                     doMoveInSet();
                 } else {
@@ -4047,54 +4080,77 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void selectSection(int whichone) {
-        // IV - A connected host may request an invalid section, if it does show section 0
-        if (whichone >= FullscreenActivity.sectionviews.length) {
-            whichone = 0;
-        }
-
-        if (whichone < 0) {
-            whichone = 0;
-        }
-
-        StaticVariables.currentSection = whichone;
-
-        // Send section to other devices (checks we are in stage or presentation mode in called method
-        if (StaticVariables.isHost && StaticVariables.isConnected && FullscreenActivity.isSong) {
-            sendSongSectionToConnected();
-        }
-
-        // Set this sections alpha to 1.0f;
-        try {
-            FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
-        } catch (Exception e) {
-            Log.d(TAG, "Section not found");
-        }
-
-        // Smooth scroll to show this view at the top of the page unless we are autoscrolling
-        try {
-            if (!StaticVariables.isautoscrolling) {
-                songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
+        if (FullscreenActivity.isPDF) {
+            // IV - 'Section' moves for PDF will arrive from presenter mode and Stage mode PDF page moves
+            // IV - A connected host may request an invalid section, if it does show section 0
+            if (whichone >= FullscreenActivity.pdfPageCount) {
+                whichone = 0;
             }
-        } catch (Exception e) {
-            Log.d(TAG, "Section not found");
-        }
 
-        try {
-            // Go through each of the views and set the alpha of the others to 0.5f;
-            for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
-                if (x != whichone) {
-                    FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+            if (whichone < 0) {
+                whichone = 0;
+            }
+
+            FullscreenActivity.pdfPageCurrent = whichone;
+
+            // Send section to other devices
+            if (StaticVariables.isHost && StaticVariables.isConnected) {
+                sendSongSectionToConnected();
+            }
+
+            // Indicate reload which does not impact running pad etc.
+            StaticVariables.reloadOfSong = true;
+            loadSong();
+        } else {
+            // IV - A connected host may request an invalid section, if it does show section 0
+            if (whichone >= FullscreenActivity.sectionviews.length) {
+                whichone = 0;
+            }
+
+            if (whichone < 0) {
+                whichone = 0;
+            }
+
+            StaticVariables.currentSection = whichone;
+
+            // Send section to other devices
+            if (StaticVariables.isHost && StaticVariables.isConnected && FullscreenActivity.isSong) {
+                sendSongSectionToConnected();
+            }
+
+            // Set this sections alpha to 1.0f;
+            try {
+                FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
+            } catch (Exception e) {
+                Log.d(TAG, "Section not found");
+            }
+
+            // Smooth scroll to show this view at the top of the page unless we are autoscrolling
+            try {
+                if (!StaticVariables.isautoscrolling) {
+                    songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
                 }
+            } catch (Exception e) {
+                Log.d(TAG, "Section not found");
             }
-            FullscreenActivity.tempswipeSet = "enable";
-            StaticVariables.setMoveDirection = "";
 
-            dualScreenWork();
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                // Go through each of the views and set the alpha of the others to 0.5f;
+                for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
+                    if (x != whichone) {
+                        FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+                    }
+                }
+                FullscreenActivity.tempswipeSet = "enable";
+                StaticVariables.setMoveDirection = "";
+
+                dualScreenWork();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // Make sure all dynamic (scroll and set) buttons display
+            onScrollAction();
         }
-        // Make sure all dynamic (scroll and set) buttons display
-        onScrollAction();
     }
 
     private void resizeStageView() {
@@ -5001,11 +5057,9 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.pad2Playing = PadFunctions.getPad2Status();
         // IV - If playing pads then fade to stop
         if ((StaticVariables.pad1Playing && !StaticVariables.pad1Fading)  || (StaticVariables.pad2Playing && !StaticVariables.pad2Fading)) {
-            DoVibrate.vibrate(StageMode.this, 50);
             fadeoutPad();
         } else {
             if (PadFunctions.isPadValid(StageMode.this, preferences)) {
-                DoVibrate.vibrate(StageMode.this, 50);
                 playPad();
             } else {
                 // We inform the user - 'Not set' which can be valid
@@ -5035,35 +5089,37 @@ public class StageMode extends AppCompatActivity implements
     private class ShareSong extends AsyncTask<Object, Void, String> {
         @Override
         protected void onPreExecute() {
-            try {
-                // If the song height is bigger than the screen height (scrollable), scale it down for memory
-                int childheight = songscrollview.getChildAt(0).getHeight();
-                int scrollheight = songscrollview.getHeight();
-                float scale = 1.0f;
-                if (childheight>scrollheight) {
-                    scale = (float)scrollheight/(float)childheight;
-                }
-                FullscreenActivity.bmScreen = null;
-                FullscreenActivity.bmScreen = Bitmap.createBitmap((int)(songscrollview.getChildAt(0).getWidth()*scale),
-                        (int)(songscrollview.getChildAt(0).getHeight()*scale), Bitmap.Config.ARGB_8888);
-
-                Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
-                canvas.scale(scale,scale);
-                songscrollview.getChildAt(0).draw(canvas);
-                songscrollview.destroyDrawingCache();
-                songscrollview.setDrawingCacheEnabled(true);
-                songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                songscrollview.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
+            if (FullscreenActivity.isSong) {
                 try {
-                    FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
-                } catch (Exception e) {
-                    Log.d(TAG, "ShareSong error getting the screenshot!");
-                } catch (OutOfMemoryError o) {
-                    Log.d(TAG, "ShareSong Out of memory");
-                }
+                    // If the song height is bigger than the screen height (scrollable), scale it down for memory
+                    int childheight = songscrollview.getChildAt(0).getHeight();
+                    int scrollheight = songscrollview.getHeight();
+                    float scale = 1.0f;
+                    if (childheight > scrollheight) {
+                        scale = (float) scrollheight / (float) childheight;
+                    }
+                    FullscreenActivity.bmScreen = null;
+                    FullscreenActivity.bmScreen = Bitmap.createBitmap((int) (songscrollview.getChildAt(0).getWidth() * scale),
+                            (int) (songscrollview.getChildAt(0).getHeight() * scale), Bitmap.Config.ARGB_8888);
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                    Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
+                    canvas.scale(scale, scale);
+                    songscrollview.getChildAt(0).draw(canvas);
+                    songscrollview.destroyDrawingCache();
+                    songscrollview.setDrawingCacheEnabled(true);
+                    songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                    songscrollview.setDrawingCacheBackgroundColor(lyricsBackgroundColor);
+                    try {
+                        FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                    } catch (Exception e) {
+                        Log.d(TAG, "ShareSong error getting the screenshot!");
+                    } catch (OutOfMemoryError o) {
+                        Log.d(TAG, "ShareSong Out of memory");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -5519,7 +5575,6 @@ public class StageMode extends AppCompatActivity implements
         blockActionOnKeyUp = true;
         Handler resetBlockActionOnKeyUp = new Handler();
         resetBlockActionOnKeyUp.postDelayed(() -> blockActionOnKeyUp = false, 300);
-
 
         // Load the whichSongFolder in case we were browsing elsewhere
         StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this,"whichSongFolder",getString(R.string.mainfoldername));
@@ -6442,25 +6497,27 @@ public class StageMode extends AppCompatActivity implements
         // IV - clickedOnAutoScrollStart is being used to indicate being active (autoscroll may be active but not running)
         // IV - it is set elsewhere
         updateExtraInfoColorsAndSizes("autoscroll");
-        currentTime_TextView.setText(R.string.time_zero);
-        AutoScrollFunctions.getMultiPagePDFValues();  // This splits the time for multiple pages
-        // Display the '/' as now active
-        timeSeparator_TextView.setText("/");
-        totalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
-        playbackProgress.setVisibility(View.VISIBLE);
         doCancelAsyncTask(mtask_autoscroll_music);
         doCancelAsyncTask(get_scrollheight);
         endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
-        StaticVariables.isautoscrolling = true;
-        StaticVariables.pauseautoscroll = true;
-        FullscreenActivity.isManualDragging = false;
-        FullscreenActivity.wasscrolling = false;
-        get_scrollheight = new GetScrollHeight();
-        //FullscreenActivity.refWatcher.watch(get_scrollheight);
-        try {
-            get_scrollheight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
+        AutoScrollFunctions.getAutoScrollActiveTimes(StageMode.this, preferences);
+        if (StaticVariables.autoScrollDuration > -1) {
+            currentTime_TextView.setText(R.string.time_zero);
+            // Display the '/' as now active
+            timeSeparator_TextView.setText("/");
+            totalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
+            playbackProgress.setVisibility(View.VISIBLE);
+            StaticVariables.isautoscrolling = true;
+            StaticVariables.pauseautoscroll = true;
+            FullscreenActivity.isManualDragging = false;
+            FullscreenActivity.wasscrolling = false;
+            get_scrollheight = new GetScrollHeight();
+            //FullscreenActivity.refWatcher.watch(get_scrollheight);
+            try {
+                get_scrollheight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     @SuppressLint("StaticFieldLeak")
@@ -6572,7 +6629,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // IV - Ensure a 'panic' end should there be no scroll
                 endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
-                endAutoScrollHandler.postDelayed(endAutoScrollRunnable, ((StaticVariables.autoScrollDelay * 1000) + 4000));
+                endAutoScrollHandler.postDelayed(endAutoScrollRunnable, ((StaticVariables.autoScrollDelay * 1000L) + 4000));
                 while (StaticVariables.isautoscrolling) {
                     // IV - update the scroll buttons as we go
                     FullscreenActivity.time_passed = System.currentTimeMillis();
@@ -6853,15 +6910,6 @@ public class StageMode extends AppCompatActivity implements
         return super.onKeyDown(keyCode, event);
     }
 
-    private boolean justSong(Context c) {
-        boolean isallowed = true;
-        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            showToastMessage(c.getResources().getString(R.string.not_allowed));
-            isallowed = false;
-        }
-        return isallowed;
-    }
-
     @Override
     public void changePDFPage(int page, String direction) {
         FullscreenActivity.whichDirection = direction;
@@ -6876,6 +6924,16 @@ public class StageMode extends AppCompatActivity implements
             if (!FullscreenActivity.alreadyloading) {
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
+
+                // Stop the metronome now as it is high drain and breaks async starts!
+                if (!StaticVariables.reloadOfSong) {
+                    Metronome.stopMetronomeTask();
+                }
+
+                // IV - For a reload, load the stored whichSongFolder in case we were browsing elsewhere
+                if (StaticVariables.reloadOfSong) {
+                    StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this,"whichSongFolder", getString(R.string.mainfoldername));
+                }
 
                 // Clear any queued 'after song display' activity - we are moving to a new song
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
@@ -6979,20 +7037,9 @@ public class StageMode extends AppCompatActivity implements
                         } catch (Exception e) {
                             Log.d(TAG, "error updating the views");
                         }
+
                         // Load the song
                         doCancelAsyncTask(loadsong_async);
-
-                        // Stop the metronome if loading a new song.  Trying afterwards stops the async starting!
-                        // Do not touch on a reload
-                        if (!StaticVariables.reloadOfSong) {
-                            // Stop it - clickedOnMetronomeStart is the indicator that it was playing
-                            if (StaticVariables.clickedOnMetronomeStart) {
-                                gesture7();  // This also sets StaticVariables.clickedOnMetronomeStart to false;
-                                // Set this variable back as we want the metronome to restart after song load.
-                                StaticVariables.clickedOnMetronomeStart = true;
-                            }
-                        }
-
                         doCancelAsyncTask(resizestage_async);
                         doCancelAsyncTask(resizeperformance_async);
                         loadsong_async = new LoadSongAsync();
@@ -7026,16 +7073,18 @@ public class StageMode extends AppCompatActivity implements
                     Log.d(TAG, "Error loading song:" + StaticVariables.songfilename);
                 }
 
-                // Send Nearby song intent
-                if (StaticVariables.isConnected && StaticVariables.isHost && !FullscreenActivity.orientationchanged) {
-                    // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
-                    // sendSongDelay will be 0 for the first song
-                    // IV - Always empty then add to queue (known state)
-                    sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
-                    sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
-                    // IV - Always empty then add to queue (known state)
-                    resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
-                    resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
+                if (!StaticVariables.reloadOfSong) {
+                    // Send Nearby song intent
+                    if (StaticVariables.isConnected && StaticVariables.isHost && !FullscreenActivity.orientationchanged) {
+                        // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
+                        // sendSongDelay will be 0 for the first song
+                        // IV - Always empty then add to queue (known state)
+                        sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+                        sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
+                        // IV - Always empty then add to queue (known state)
+                        resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
+                        resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
+                    }
                 }
 
                 // If we are in a set, try to get the appropriate indexes
@@ -7232,8 +7281,7 @@ public class StageMode extends AppCompatActivity implements
                     // Do the pad fade and play here after display. This ensures a good cross-fade once the song is displayed
                     if (StaticVariables.clickedOnPadStart) {
                         // Do not touch on a reload
-                        // GE Added in extra check to stop pads crossfading between pdf page changes
-                        if (!StaticVariables.reloadOfSong && !(FullscreenActivity.isPDF && dealtwithaspdf)) {
+                        if (!StaticVariables.reloadOfSong) {
                             // If pads were already playing (previous song), start them up again if wanted
                             // Don't redo this if the orientation has changed (causing a reload)
                             // Stop restarting the pads if changing portrait/landscape
@@ -7241,7 +7289,6 @@ public class StageMode extends AppCompatActivity implements
                             // Or moving between the pages of a PDF
 
                             if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
-                                    FullscreenActivity.isSong &&
                                     !orientationChanged) {
                                 playPad();
                             } else {
@@ -7306,6 +7353,11 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // IV - Store song details
+            preferences.setMyPreferenceString(StageMode.this, "songfilename",StaticVariables.songfilename);
+            preferences.setMyPreferenceString(StageMode.this,"whichSongFolder",StaticVariables.whichSongFolder);
+
             // IV - True if a reload, this sets loadsong back to standard mode
             StaticVariables.reloadOfSong = false;
             FullscreenActivity.alreadyloading = false;
@@ -8061,6 +8113,7 @@ public class StageMode extends AppCompatActivity implements
     // Redraw the lyrics page
     private void gesture4() {
         // IV - Reset PDF page just in case song is a PDF
+        StaticVariables.reloadOfSong = true;
         FullscreenActivity.pdfPageCurrent = 0;
         loadSong();
     }
@@ -8068,7 +8121,6 @@ public class StageMode extends AppCompatActivity implements
     @Override
     // Stop or start autoscroll
     public void gesture5() {
-        DoVibrate.vibrate(StageMode.this, 50);
         if (StaticVariables.isautoscrolling) {
             stopAutoScroll();
             StaticVariables.clickedOnAutoScrollStart = false;
@@ -8302,7 +8354,6 @@ public class StageMode extends AppCompatActivity implements
     // Start or stop the metronome
     @Override
     public void gesture7() {
-        DoVibrate.vibrate(StageMode.this, 50);
         StaticVariables.metronomeok = Metronome.isMetronomeValid();
         if (StaticVariables.metronomeok || StaticVariables.clickedOnMetronomeStart) {
             // IV - clickedOnMetronomeStart is set elsewhere (Metronome class)

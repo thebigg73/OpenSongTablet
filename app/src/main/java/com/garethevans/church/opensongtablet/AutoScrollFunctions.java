@@ -41,48 +41,13 @@ class AutoScrollFunctions {
     }
 
     static void getAutoScrollValues(Context c, Preferences preferences, ScrollView scrollpage, View main_page, View toolbar) {
-        // Get the autoScrollDuration;
-        if (StaticVariables.mDuration.isEmpty() &&
-                preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
-            StaticVariables.autoScrollDuration = preferences.getMyPreferenceInt(c, "autoscrollDefaultSongLength", 180);
-        } else if (StaticVariables.mDuration.isEmpty() &&
-                !preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
-            StaticVariables.autoScrollDuration = -1;
-        } else {
-            try {
-                StaticVariables.autoScrollDuration = Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", ""));
-            } catch (Exception e) {
-                StaticVariables.autoScrollDuration = 0;
-            }
-        }
 
-        // Get the autoScrollDelay;
-        if (StaticVariables.mPreDelay.isEmpty() &&
-                preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
-            StaticVariables.autoScrollDelay = preferences.getMyPreferenceInt(c, "autoscrollDefaultSongPreDelay", 10);
-        } else if (StaticVariables.mDuration.isEmpty() &&
-                !preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
-            StaticVariables.autoScrollDelay = -1;
-        } else {
-            try {
-                StaticVariables.autoScrollDelay = Integer.parseInt(StaticVariables.mPreDelay.replaceAll("[\\D]", ""));
-            } catch (Exception e) {
-                StaticVariables.autoScrollDelay = 0;
-            }
-        }
+        getAutoScrollActiveTimes(c, preferences);
 
         if (StaticVariables.autoScrollDuration > -1 && StaticVariables.autoScrollDelay > -1) {
 
-            getMultiPagePDFValues();
-
-            // If it duration is less than the predelay, stop!
-            if (StaticVariables.autoScrollDuration < StaticVariables.autoScrollDelay) {
-                StaticVariables.isautoscrolling = false;
-                return;
-            } else {
-                // Remove the autoScrollDelay
-                StaticVariables.autoScrollDuration = StaticVariables.autoScrollDuration - StaticVariables.autoScrollDelay;
-            }
+           // Remove the autoScrollDelay
+           StaticVariables.autoScrollDuration = StaticVariables.autoScrollDuration - StaticVariables.autoScrollDelay;
 
 
             // Ok figure out the size of amount of scrolling needed
@@ -106,6 +71,49 @@ class AutoScrollFunctions {
             StaticVariables.autoScrollDuration = StaticVariables.autoScrollDuration + StaticVariables.autoScrollDelay;
         }
     }
+
+    static void getAutoScrollActiveTimes(Context c, Preferences preferences) {
+        // Get the autoScrollDuration;
+        if (StaticVariables.mDuration.isEmpty()) {
+            if (preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
+                StaticVariables.autoScrollDuration = preferences.getMyPreferenceInt(c, "autoscrollDefaultSongLength", 180);
+            } else {
+                StaticVariables.autoScrollDuration = -1;
+            }
+        } else {
+            try {
+                StaticVariables.autoScrollDuration = Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", ""));
+            } catch (Exception e) {
+                StaticVariables.autoScrollDuration = 0;
+            }
+        }
+
+        // Get the autoScrollDelay;
+        if (StaticVariables.mPreDelay.isEmpty()) {
+            if (preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", false)) {
+                StaticVariables.autoScrollDelay = preferences.getMyPreferenceInt(c, "autoscrollDefaultSongPreDelay", 10);
+            } else {
+                StaticVariables.autoScrollDelay = -1;
+            }
+        } else {
+            try {
+                StaticVariables.autoScrollDelay = Integer.parseInt(StaticVariables.mPreDelay.replaceAll("[\\D]", ""));
+            } catch (Exception e) {
+                StaticVariables.autoScrollDelay = 0;
+            }
+        }
+
+        if (StaticVariables.autoScrollDuration > -1 && StaticVariables.autoScrollDelay > -1) {
+
+            getMultiPagePDFValues();
+
+            // IV - Make sure delay is not bigger than (possibly calculated foR PDF) duration
+            if (StaticVariables.autoScrollDelay > StaticVariables.autoScrollDuration) {
+                StaticVariables.autoScrollDelay = StaticVariables.autoScrollDuration;
+            }
+        }
+    }
+
 
     static void getMultiPagePDFValues() {
         // If we have a multiple page pdf, then each page duration is a fraction of the total

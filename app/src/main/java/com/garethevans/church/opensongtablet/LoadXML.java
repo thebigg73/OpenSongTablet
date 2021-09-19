@@ -117,13 +117,11 @@ public class LoadXML extends Activity {
             if (isxml && !FullscreenActivity.myLyrics.isEmpty() && !FullscreenActivity.myLyrics.equals("ERROR!")) {
                 // Song was loaded correctly and was xml format
                 preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
-                preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
                 if (iscustom) {
                     StaticVariables.whichSongFolder = origfolder;
                 } else {
                     StaticVariables.whichSongFolder = folder;
                 }
-                preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
             } else {
                 Log.d("LoadXML", "Song wasn't loaded");
             }
@@ -157,9 +155,6 @@ public class LoadXML extends Activity {
                     if (FullscreenActivity.myXML!=null && !FullscreenActivity.myXML.isEmpty()) {
                         preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
                     }
-                    preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
-                    preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
-
                 } catch (java.io.FileNotFoundException e) {
                     e.printStackTrace();
                     preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
@@ -866,8 +861,6 @@ public class LoadXML extends Activity {
                     mPdfRenderer = new PdfRenderer(mFileDescriptor);
                     FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
                     preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
-                    preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
-                    preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

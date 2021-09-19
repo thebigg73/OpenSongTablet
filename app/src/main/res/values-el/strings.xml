@@ -531,4 +531,5 @@
     <string name="autorepeat_time">Χρόνος αυτόματης επανάληψης (από ρυθμίσεις πεντάλ)</string>
     <string name="information_bar_opacity">Αδιαφάνεια στη γραμμή πληροφοριών</string>
     <string name="presoShowBackground">φόντου</string>
+    <string name="nearby_large_file">Αυτό το μεγάλο αρχείο τραγουδιού κοινοποιείται</string>
 </resources>

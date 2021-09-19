@@ -743,4 +743,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="information_bar_opacity">Information bar opacity</string>
     <string name="autorepeat_time">Autorepeat time (from pedal settings)</string>
     <string name="presoShowBackground">Background</string>
+    <string name="nearby_large_file">This large song file is being shared</string>
 </resources>

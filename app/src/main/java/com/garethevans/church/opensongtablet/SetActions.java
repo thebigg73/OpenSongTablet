@@ -910,8 +910,6 @@ class SetActions {
 
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
-            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
-            preferences.setMyPreferenceString(c, "songfilename",StaticVariables.songfilename);
 
             // Get the index of the song in the current set
             indexSongInSet();
@@ -1056,8 +1054,6 @@ class SetActions {
 
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
-            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
-            preferences.setMyPreferenceString(c, "songfilename",StaticVariables.songfilename);
 
             StaticVariables.setMoveDirection = "";
             mListener.loadSong();
