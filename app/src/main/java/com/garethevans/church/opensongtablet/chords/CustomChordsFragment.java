@@ -297,7 +297,7 @@ public class CustomChordsFragment extends Fragment {
         myView.newChord.setOnClickListener(v -> {
             // Open the bottom sheet dialog and get the text back from the MainActivity
             TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
-                    "CustomChordsFragment",getString(R.string.custom_chords),getString(R.string.customchords_name),null,null,true);
+                    "CustomChordsFragment",getString(R.string.custom_chords),getString(R.string.customchords_name),null,null,null,true);
             textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
         });
     }
