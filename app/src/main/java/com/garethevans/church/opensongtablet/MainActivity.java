@@ -75,7 +75,7 @@ import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
-import com.garethevans.church.opensongtablet.export.MakePDF;
+import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureBottomSheet;
 import com.garethevans.church.opensongtablet.filemanagement.ExportFiles;
@@ -85,7 +85,7 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment;
 import com.garethevans.church.opensongtablet.highlighter.HighlighterEditFragment;
 import com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment;
-import com.garethevans.church.opensongtablet.importsongs.OCR;
+import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
@@ -98,6 +98,7 @@ import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
 import com.garethevans.church.opensongtablet.interfaces.SwipeDrawingInterface;
 import com.garethevans.church.opensongtablet.links.LinksFragment;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
+import com.garethevans.church.opensongtablet.setprocessing.SetActionsFragment;
 import com.garethevans.church.opensongtablet.tools.TimeTools;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
@@ -131,7 +132,7 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragment;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentMain;
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentTags;
-import com.garethevans.church.opensongtablet.songprocessing.PDFSong;
+import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
@@ -1779,6 +1780,9 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                         break;
                     case "CustomChordsFragment":
                         ((CustomChordsFragment) fragment).updateValue(value);
+                        break;
+                    case "SetActionsFragment":
+                        ((SetActionsFragment) fragment).updateValue(value);
                         break;
                 }
             } catch (Exception e) {

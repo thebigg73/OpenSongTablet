@@ -10,15 +10,23 @@ import java.util.ArrayList;
 
 public class ExportActions {
 
-    public Intent setShareIntent(String subject, String title, String content, String type, Uri uri) {
+    public Intent setShareIntent(String content, String type, Uri uri, ArrayList<Uri> uris) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         if (content!=null) {
             intent.putExtra(Intent.EXTRA_TEXT, content);
         }
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        if (uri!=null) {
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+        }
+        if (uris!=null && uris.size()>0) {
+            for (Uri extraUri:uris) {
+                intent.putExtra(Intent.EXTRA_STREAM, extraUri);
+            }
+        }
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-        intent.setType(type);
+        if (type!=null) {
+            intent.setType(type);
+        }
         return intent;
 
     }

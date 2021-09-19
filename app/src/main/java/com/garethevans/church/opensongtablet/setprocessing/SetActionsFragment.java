@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+
+import java.util.ArrayList;
 
 public class SetActionsFragment extends Fragment {
 
@@ -42,6 +45,26 @@ public class SetActionsFragment extends Fragment {
         });
         myView.bibleButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.bible_graph));
         myView.slideButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.customSlideFragment));
+        myView.exportSet.setOnClickListener(v -> exportSet());
         return myView.getRoot();
+    }
+
+    private void exportSet() {
+        // First up, get an arraylist of sets in the sets folder
+        ArrayList<String> sets = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(),
+                mainActivityInterface,"Sets","");
+        // Initiate the bottom sheet selector which then return to the updateValue function
+        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
+                "SetActionsFragment",getString(R.string.export),getString(R.string.set),
+                getString(R.string.set_saved_not_current),null,null,sets);
+        textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"TextInputBottomSheet");
+    }
+
+    public void updateValue(String setName) {
+        if (setName!=null && !setName.isEmpty()) {
+            // Set the "whattodo" to let the export fragment know we are exporting a set
+            mainActivityInterface.setWhattodo("exportset:"+setName);
+            mainActivityInterface.navigateToFragment("opensongapp://settings/actions/export",0);
+        }
     }
 }

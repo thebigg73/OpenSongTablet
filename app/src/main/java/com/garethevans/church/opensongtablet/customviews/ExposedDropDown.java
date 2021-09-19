@@ -65,11 +65,19 @@ public class ExposedDropDown extends TextInputLayout {
         }
         return autoCompleteTextView.getText();
     }
+    public CharSequence getHint() {
+        if (textInputLayout.getHint()==null) {
+            textInputLayout.setHint("");
+        }
+        return textInputLayout.getHint();
+    }
 
     public void setText(String text) {
         autoCompleteTextView.setText(text);
     }
-
+    public void setHint(String hint) {
+        textInputLayout.setHint(hint);
+    }
     public void setAdapter(ExposedDropDownArrayAdapter arrayAdapter) {
         autoCompleteTextView.setAdapter(arrayAdapter);
     }

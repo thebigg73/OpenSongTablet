@@ -106,6 +106,8 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         if (inputType==InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
+        } else if (inputType==InputType.TYPE_CLASS_NUMBER){
+            editText.setInputType(inputType);
         } else {
             editText.setInputType(inputType);
             editText.setImeOptions(imeOptions);

@@ -118,7 +118,7 @@ public class SetManageFragment extends Fragment {
             // Open up the Bottomsheet dialog fragment and get the name
             TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
                     "SetManageFragment", getString(R.string.new_category),
-                    getString(R.string.new_category),null,null,true);
+                    getString(R.string.new_category),null,null,null,true);
             textInputBottomSheet.show(requireActivity().getSupportFragmentManager(),"TextInputBottomSheet");
 
 

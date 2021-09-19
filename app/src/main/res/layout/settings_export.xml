@@ -5,116 +5,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/hiddenHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/hiddenSections"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:visibility="invisible" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/hiddenHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="invisible" />
-
-            <LinearLayout
-                android:id="@+id/hiddenSections"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="invisible" />
-
-            <androidx.core.widget.NestedScrollView
-                style="@style/DefaultView"
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/includeSongs"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <RadioGroup
-                    android:id="@+id/exportFormat"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:checkedButton="@+id/pdf">
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/pdf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/pdf"
-                        android:visibility="gone" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/image"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/image"
-                        android:visibility="gone" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/openSongApp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/export_ost"
-                        android:visibility="gone" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/openSong"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/export_desktop"
-                        android:visibility="gone" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/onSong"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/export_onsong"
-                        android:visibility="gone" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/chordPro"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/export_chordpro"
-                        android:visibility="gone" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/export_text"
-                        android:visibility="gone" />
-
-                </RadioGroup>
-
-            </androidx.core.widget.NestedScrollView>
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:text="@string/export_include_set_songs"
                 android:visibility="gone" />
 
+            <RadioGroup
+                android:id="@+id/exportFormat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checkedButton="@+id/pdf">
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/pdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pdf"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/image"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/openSongApp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_ost"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/openSongAppSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_set"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/openSong"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_desktop"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/onSong"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_onsong"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/chordPro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_chordpro"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_text"
+                    android:visibility="gone" />
+
+            </RadioGroup>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/shareButton"

@@ -53,11 +53,11 @@ public class SettingsCCLI extends Fragment {
 
     private void setListeners() {
         myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputBottomSheet(this,
-                "SettingsCCLI", getString(R.string.ccli_church), getString(R.string.ccli_church),
+                "SettingsCCLI", getString(R.string.ccli_church), getString(R.string.ccli_church),null,
                 "ccliChurchName", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliChurchName", ""),true)));
         myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputBottomSheet(this,
-                "SettingsCCLI", getString(R.string.ccli_licence), getString(R.string.ccli_licence),
+                "SettingsCCLI", getString(R.string.ccli_licence), getString(R.string.ccli_licence),null,
                 "ccliLicence", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "ccliLicence", ""),true)));
         myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),

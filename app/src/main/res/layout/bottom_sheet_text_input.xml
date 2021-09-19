@@ -22,30 +22,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/infoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/prefEditText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/text"
-                    android:padding="16dp"
-                    android:text="@string/text" />
+                    android:layout_height="wrap_content" />
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/textValues"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/text"
-                    android:padding="16dp" />
+                    android:layout_height="wrap_content" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/okButton"
-                    style="@style/TextButtonNoOutline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_margin="16dp"
+                    android:layout_marginTop="16dp"
                     android:text="@android:string/ok" />
 
             </LinearLayout>

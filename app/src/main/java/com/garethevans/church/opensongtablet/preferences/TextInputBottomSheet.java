@@ -37,6 +37,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
     private final String hint;
     private final String prefName;
     private String prefVal;
+    private final String extra;
     private ArrayList<String> prefChoices;
     private final boolean simpleEditText, singleLine;
 
@@ -45,7 +46,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
 
     public TextInputBottomSheet(Fragment fragment, String fragname, String title, String hint,
-                                String prefName, String prefVal, boolean singleLine) {
+                                String extra, String prefName, String prefVal, boolean singleLine) {
         this.fragment = fragment;
         this.fragname = fragname;
         this.title = title;
@@ -53,12 +54,12 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         this.prefName = prefName;
         this.prefVal = prefVal;
         this.singleLine = singleLine;
+        this.extra = extra;
         simpleEditText = true;
     }
 
-    public TextInputBottomSheet(Fragment fragment, String fragname,
-                                String title, String hint, String prefName, String prefVal,
-                                ArrayList<String> prefChoices) {
+    public TextInputBottomSheet(Fragment fragment, String fragname, String title, String hint,
+                                String extra, String prefName, String prefVal, ArrayList<String> prefChoices) {
         this.fragment = fragment;
         this.fragname = fragname;
         this.title = title;
@@ -66,6 +67,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         this.prefName = prefName;
         this.prefVal = prefVal;
         this.prefChoices = prefChoices;
+        this.extra = extra;
         simpleEditText = false;
         singleLine = false;
     }
@@ -120,6 +122,11 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
 
     private void setViews() {
 
+        if (extra!=null && !extra.isEmpty()) {
+            myView.infoText.setText(extra);
+            myView.infoText.setVisibility(View.VISIBLE);
+        }
+
         if (simpleEditText) {
             // Hide the unwanted views
             myView.textValues.setVisibility(View.GONE);
@@ -141,10 +148,17 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
             myView.prefEditText.requestFocus();
 
         } else {
-            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.view_exposed_dropdown_item,prefChoices);
+            // Hide the unwanted views
+            myView.prefEditText.setVisibility(View.GONE);
+            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.textValues,R.layout.view_exposed_dropdown_item,prefChoices);
             myView.textValues.setAdapter(arrayAdapter);
+            if (prefVal==null) {
+                prefVal = "";
+            }
             myView.textValues.setText(prefVal);
             myView.textValues.setHint(hint);
+            Log.d(TAG,"hint:"+hint);
+            Log.d(TAG,"text:"+prefVal);
         }
     }
 

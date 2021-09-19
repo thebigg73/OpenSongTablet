@@ -41,7 +41,7 @@ public class ExportFragment extends Fragment {
     private ArrayList<Integer> sectionViewWidthsPDF, sectionViewHeightsPDF;
     private LinearLayout headerLayoutPDF;
     private int headerLayoutWidth, headerLayoutHeight;
-
+    private String setToExport = null;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,6 +57,7 @@ public class ExportFragment extends Fragment {
         mainActivityInterface.updateToolbar(getString(R.string.export));
 
         // Some options are hidden by default and only visible if we have a proper OpenSong song
+        // If exporting a set, some options aren't allowed
         showUsable();
 
         myView.shareButton.setOnClickListener(v -> prepareExport());
@@ -64,26 +65,42 @@ public class ExportFragment extends Fragment {
         return myView.getRoot();
     }
 
-
     private void showUsable() {
+
         // By default everything is hidden.  Only make the correct ones visible
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-            myView.pdf.setVisibility(View.VISIBLE);
-            myView.pdf.setChecked(true);
 
-        } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
-            myView.image.setVisibility(View.VISIBLE);
-            myView.image.setChecked(true);
+        // Check if we are exporting a set
+        if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
+            // For now we will only export the set file, not the songs
+            // TODO can show include songs switch
+            // myView.includeSongs.setVisibility(View.VISIBLE);
 
-        } else if (mainActivityInterface.getSong().getFiletype().equals("XML")){
-            // Must be a song!
-            myView.pdf.setVisibility(View.VISIBLE);
+            // Set the default
+            myView.openSongAppSet.setChecked(true);
+
+            setToExport = mainActivityInterface.getWhattodo().replace("exportset:","");
             myView.openSong.setVisibility(View.VISIBLE);
-            myView.openSongApp.setVisibility(View.VISIBLE);
-            myView.onSong.setVisibility(View.VISIBLE);
-            myView.chordPro.setVisibility(View.VISIBLE);
-            myView.text.setVisibility(View.VISIBLE);
-            myView.pdf.setChecked(true);
+            myView.openSongAppSet.setVisibility(View.VISIBLE);
+
+        } else {
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                myView.pdf.setVisibility(View.VISIBLE);
+                myView.pdf.setChecked(true);
+
+            } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                myView.image.setVisibility(View.VISIBLE);
+                myView.image.setChecked(true);
+
+            } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
+                // Must be a song!
+                myView.pdf.setVisibility(View.VISIBLE);
+                myView.openSong.setVisibility(View.VISIBLE);
+                myView.openSongApp.setVisibility(View.VISIBLE);
+                myView.onSong.setVisibility(View.VISIBLE);
+                myView.chordPro.setVisibility(View.VISIBLE);
+                myView.text.setVisibility(View.VISIBLE);
+                myView.openSongApp.setChecked(true);
+            }
         }
 
         // Make sure the progress bar is hidden
@@ -95,8 +112,27 @@ public class ExportFragment extends Fragment {
         myView.progressBar.setVisibility(View.VISIBLE);
         myView.shareButton.setEnabled(false);
 
-        if (mainActivityInterface.getWhattodo().equals("exportset")) {
-            uris.add(null);
+        if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
+            uris = new ArrayList<>();
+            if (myView.openSongAppSet.isChecked()) {
+                // Copy the set to an .osts file extensions
+                uri = mainActivityInterface.getStorageAccess().copyFromTo(requireContext(),
+                        mainActivityInterface,"Sets","", setToExport,
+                        "Export","",setToExport+".osts");
+            } else {
+                // Just add the actual set file (no extension)
+                uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                        mainActivityInterface,"Sets","",setToExport);
+            }
+            if (myView.includeSongs.isChecked()) {
+                // TODO iterate through the songs and add the uris
+
+            }
+            Intent intent = mainActivityInterface.getExportActions().setShareIntent(setToExport,"text/xml",uri,uris);
+            startActivity(Intent.createChooser(intent,getString(R.string.export_current_song)));
+            myView.progressBar.setVisibility(View.GONE);
+            myView.shareButton.setEnabled(true);
+
 
         } else {
             if (myView.pdf.isChecked()) {
@@ -199,7 +235,7 @@ public class ExportFragment extends Fragment {
 
         Log.d(TAG,"exportFilename="+exportFilename);
 
-        Intent intent = mainActivityInterface.getExportActions().setShareIntent(exportFilename,exportFilename,content,type,uri);
+        Intent intent = mainActivityInterface.getExportActions().setShareIntent(content,type,uri,uris);
         startActivity(Intent.createChooser(intent,getString(R.string.export_current_song)));
         myView.progressBar.setVisibility(View.GONE);
         myView.shareButton.setEnabled(true);

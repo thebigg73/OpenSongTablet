@@ -897,7 +897,6 @@ public class StorageAccess {
             song.setFiletype("IMG");
             isImgOrPDF = true;
         }
-
         return isImgOrPDF;
     }
     public boolean isSpecificFileExtension(String whichType, String filename) {
@@ -1150,6 +1149,20 @@ public class StorageAccess {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+    public Uri copyFromTo(Context c, MainActivityInterface mainActivityInterface, String fromFolder, String fromSubfolder, String fromName, String toFolder, String toSubfolder, String toName) {
+        Uri fromUri = getUriForItem(c,mainActivityInterface, fromFolder, fromSubfolder, fromName);
+        Uri toUri = getUriForItem(c, mainActivityInterface, toFolder, toSubfolder, toName);
+        // Make sure the newUri is valid and exists
+        lollipopCreateFileForOutputStream(c,mainActivityInterface,toUri,null,toFolder,toSubfolder,toName);
+        // Get the input and output streams
+        InputStream inputStream = getInputStream(c, fromUri);
+        OutputStream outputStream = getOutputStream(c, toUri);
+        if (copyFile(inputStream, outputStream)) {
+            return toUri;
+        } else {
+            return null;
         }
     }
     public boolean copyFile(InputStream in, OutputStream out) {
