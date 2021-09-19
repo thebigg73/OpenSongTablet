@@ -822,7 +822,12 @@ public class StageMode extends AppCompatActivity implements
 
     // Needed to support send activty from within runnable
     private void sendSongToConnected () {
-        nearbyConnections.sendSongPayload();
+        // IV - The send is always called by the 'if' and will return true if a large file has been sent
+        if (nearbyConnections.sendSongPayload()) {
+            StaticVariables.myToastMessage = (getString(R.string.nearby_large_file));
+            Handler h = new Handler();
+            h.post(() -> ShowToast.showToast(StageMode.this));
+        }
     }
 
     private void sendSongSectionToConnected() {
@@ -832,15 +837,12 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void shareSong() {
-        if (justSong(StageMode.this)) {
-            // Export - Take a screenshot as a bitmap
-            doCancelAsyncTask(sharesong_async);
-            sharesong_async = new ShareSong();
-            try {
-                sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        doCancelAsyncTask(sharesong_async);
+        sharesong_async = new ShareSong();
+        try {
+            sharesong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1164,6 +1166,8 @@ public class StageMode extends AppCompatActivity implements
             return true;
         });
         padButton.setOnClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
             CustomAnimations.animateFAB(padButton,StageMode.this);
             FullscreenActivity.whattodo = "page_pad";
             openFragment();
@@ -1179,6 +1183,8 @@ public class StageMode extends AppCompatActivity implements
             openFragment();
         });
         autoscrollButton.setOnLongClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
             CustomAnimations.animateFABLong(autoscrollButton,StageMode.this);
             gesture5();
             return true;

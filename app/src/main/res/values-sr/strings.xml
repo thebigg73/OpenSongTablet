@@ -566,4 +566,5 @@
     <string name="client">Klijent</string>
     <string name="connections_actasclient">Понашајте се као клијент</string>
     <string name="respect_copyright">Poštujte autorska prava - uvek ih koristite legalno</string>
+    <string name="nearby_large_file">"Ova velika datoteka pesme se deli"</string>
 </resources>

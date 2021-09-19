@@ -546,4 +546,5 @@
     <string name="host">Πλήθος</string>
     <string name="connections_actasclient">Ενεργήστε ως πελάτης</string>
     <string name="respect_copyright">Σεβασμός των πνευματικών δικαιωμάτων - να χρησιμοποιείτε πάντα νόμιμα</string>
+    <string name="nearby_large_file">Αυτό το μεγάλο αρχείο τραγουδιού κοινοποιείται</string>
 </resources>

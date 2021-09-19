@@ -180,7 +180,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
     private void textInputDialog() {
         TextInputBottomSheet dialogFragment = new TextInputBottomSheet(this,
-                "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),
+                "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),null,
                 "deviceId", mainActivityInterface.getNearbyConnections().deviceId,true);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");
     }

@@ -376,6 +376,13 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         // Set up the Nearby connection service
         nearbyConnections.getUserNickname(this, mainActivityInterface);
 
+        // Establish a known state for Nearby
+        nearbyConnections.turnOffNearby(this);
+
+        // IV -  One time actions will have been completed
+        // TODO check if I need to implement this
+        //FullscreenActivity.doonetimeactions = false;
+
         // Initialise the CastContext
         setUpCast();
     }

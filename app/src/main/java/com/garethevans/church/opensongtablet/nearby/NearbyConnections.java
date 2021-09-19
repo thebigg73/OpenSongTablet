@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Objects;
 
 public class NearbyConnections implements NearbyInterface {
@@ -48,8 +49,8 @@ public class NearbyConnections implements NearbyInterface {
     // Handler for stop of discovery
     private final Handler stopDiscoveryHandler = new Handler();
     private final Runnable stopDiscoveryRunnable;
-    private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
-    private final SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
+    private SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
+    private SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
     public String deviceId, connectionLog, incomingPrevious, connectionId, connectionEndPointName;
     public boolean isConnected, isHost, receiveHostFiles, keepHostFiles, usingNearby,
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly;
@@ -60,6 +61,9 @@ public class NearbyConnections implements NearbyInterface {
     String serviceId = "com.garethevans.church.opensongtablet";
     private String receivedSongFilename;
     private MainActivityInterface mainActivityInterface;
+
+    private String payLoadTransferIds = "";
+    private String latestfoldernamepair = "";
 
     public NearbyConnections(Context c, MainActivityInterface mainActivityInterface) {
         connectedEndPoints = new ArrayList<>();
@@ -78,7 +82,6 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     private void updateConnectionLog(String newMessage) {
-        Log.d(TAG, "message=" + newMessage + "   mainActivityInterface=" + mainActivityInterface);
         if (newMessage != null && mainActivityInterface != null) {
             connectionLog += newMessage + "\n";
             try {
@@ -88,6 +91,7 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
     }
+
 
     public void setMainActivityInterface(MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
@@ -392,58 +396,69 @@ public class NearbyConnections implements NearbyInterface {
         };
     }
 
-    public void sendSongPayload(Context c, MainActivityInterface mainActivityInterface) {
-        String infoPayload = null;
-        Payload payloadFile = null;
-        String infoFilePayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" + mainActivityInterface.getSong().getFilename() +
-                "_xx____xx_" + mainActivityInterface.getSong().getNextDirection();
+    public boolean sendSongPayload(Context c, MainActivityInterface mainActivityInterface) {
+        // IV - HOST: Cancel previous song transfers - a new song is being sent
+        cancelTransferIds(c);
 
-        if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
-            // By default, this should be smaller than 32kb, so probably going to send as bytes
-            // We'll measure the actual size later to check though
-            infoPayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" +
-                    mainActivityInterface.getSong().getFilename() + "_xx____xx_" +
-                    mainActivityInterface.getSong().getNextDirection() + "_xx____xx_" +
-                    mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface, mainActivityInterface.getSong());
-        }
+        String infoPayload;
+        String infoFilePayload = null;
+        Payload payloadFile;
+        boolean largePayLoad = false;
 
-        if (infoPayload != null) {
-            // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
-            byte[] mybytes = infoPayload.getBytes();
-            if (mybytes.length > 30000) {
-                infoPayload = null;
-            }
-        }
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
+                "Songs", mainActivityInterface.getSong().getFolder(),
+                mainActivityInterface.getSong().getFilename());
 
-        if (infoPayload == null) {
-            // We will send as a file
-            try {
-                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
-                ParcelFileDescriptor parcelFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
-                if (parcelFileDescriptor != null) {
-                    payloadFile = Payload.fromFile(parcelFileDescriptor);
-                    infoFilePayload = "FILE:" + payloadFile.getId() + ":" +
-                            mainActivityInterface.getSong().getFolder() + "_xx____xx_" + mainActivityInterface.getSong().getFilename() +
-                            "_xx____xx_" + mainActivityInterface.getSong().getNextDirection();
-                }
-            } catch (Exception e) {
-                Log.d(TAG, "Error trying to send file: " + e);
-                payloadFile = null;
-            }
-        }
+        // IV - Process each end point - we need a unique ParcelFileDescriptor if a file is sent
+        for (String endpointId : connectedEndPoints) {
+            infoPayload = null;
+            if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
+                // By default, this should be smaller than 32kb, so probably going to send as bytes
+                // We'll measure the actual size to check though
+                infoPayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" +
+                        mainActivityInterface.getSong().getFilename() + "_xx____xx_" +
+                        mainActivityInterface.getSong().getNextDirection() + "_xx____xx_" +
+                        mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface,
+                                mainActivityInterface.getSong());
 
-        if (isHost) {
-            for (String endpointId : connectedEndPoints) {
-                if (payloadFile != null) {
-                    // Send the file descriptor as bytes, then the file
-                    Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
-                    Nearby.getConnectionsClient(c).sendPayload(endpointId, payloadFile);
-                } else if (infoPayload != null) {
+                // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
+                byte[] mybytes = infoPayload.getBytes();
+                if (mybytes.length > 30000) {
+                    infoPayload = null;
+                } else {
                     // Just send the bytes
                     Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
                 }
             }
+
+            if (infoPayload == null) {
+                payloadFile = null;
+                // We will send as a file
+                try {
+                    ParcelFileDescriptor parcelFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
+                    if (parcelFileDescriptor != null) {
+                        payloadFile = Payload.fromFile(parcelFileDescriptor);
+                        infoFilePayload = "FILE:" + payloadFile.getId() + ":" +
+                                mainActivityInterface.getSong().getFolder() + "_xx____xx_" +
+                                mainActivityInterface.getSong().getFilename() + "_xx____xx_" +
+                                mainActivityInterface.getSong().getNextDirection();
+                    }
+                } catch (Exception e) {
+                    Log.d("NearbyConnections", "Error trying to send file: " + e);
+                    payloadFile = null;
+                }
+                if (payloadFile != null) {
+                    // Send the file descriptor as bytes, then the file
+                    Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
+                    Nearby.getConnectionsClient(c).sendPayload(endpointId, payloadFile);
+                    // IV - Check the size.  If it is large then indicate to inform user
+                    if (Objects.requireNonNull(payloadFile.asFile()).getSize() > 30000) {
+                        largePayLoad = true;
+                    }
+                }
+            }
         }
+        return largePayLoad;
     }
 
     @Override
@@ -479,6 +494,9 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     private void payloadOpenSong(Context c, MainActivityInterface mainActivityInterface, String incoming) {
+        // IV - CLIENT: Cancel previous song transfers - a new song has arrived
+        cancelTransferIds(c);
+
         // New method sends OpenSong songs in the format of
         //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
 
@@ -487,72 +505,69 @@ public class NearbyConnections implements NearbyInterface {
 
         if (incomingChange) {
             incomingPrevious = incoming;
-            Log.d(TAG, "payloadOpenSong");
             OutputStream outputStream;
 
-            // Only songs sent via bytes payload trigger this.
-            // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
+            // If 'Receiving host songs' then only BYTES songs with xml arrive here - we use the  4th <?xml> bit
+            // If not 'Receiving host songs' then all songs arrive here including FILES: which have a dummy 4th <?xml> bit - we do not use xml
             boolean songReceived = (receivedBits.size() >= 4);
 
-            Log.d(TAG, "isHost=" + isHost + "   isConnected=" + isConnected + "  usingNearby=" + usingNearby);
-            Log.d(TAG, "receiveHostFiles=" + receiveHostFiles + "   keepHostFiles=" + keepHostFiles + "  songReceived=" + songReceived);
+            if (songReceived) {
+                Log.d("NearbyConnections", "foldernamepair " + receivedBits.get(0) + "_xx____xx_" + receivedBits.get(1));
 
-            if (!isHost && isConnected && songReceived && receiveHostFiles) {
-                // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
-                mainActivityInterface.getSong().setNextDirection(receivedBits.get(2));
+                if (!isHost && isConnected && receiveHostFiles) {
+                    // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
+                    mainActivityInterface.getSong().setNextDirection(receivedBits.get(2));
 
-                // If the user wants to keep the host file, we will save it to our storage.
-                // If we already have it, it will overwrite it, if not, we add it
-                Uri newLocation;
-                if (keepHostFiles) {
-                    // Prepare the output stream in the client Songs folder
-                    // Check the folder exists, if not, create it
-                    mainActivityInterface.getStorageAccess().createFile(c, mainActivityInterface, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
-                    newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", receivedBits.get(0), receivedBits.get(1));
+                    // If the user wants to keep the host file, we will save it to our storage.
+                    // If we already have it, it will overwrite it, if not, we add it
+                    Uri newLocation;
+                    if (keepHostFiles) {
+                        // Prepare the output stream in the client Songs folder
+                        // Check the folder exists, if not, create it
+                        mainActivityInterface.getStorageAccess().createFile(c, mainActivityInterface, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
+                        newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", receivedBits.get(0), receivedBits.get(1));
+                        // Create the file if it doesn't exist
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
+                        outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
+                        mainActivityInterface.getSong().setFolder(receivedBits.get(0));
+                        mainActivityInterface.getSong().setFilename(receivedBits.get(1));
+                        // Add to the sqldatabase
+                        mainActivityInterface.getSQLiteHelper().createSong(c, mainActivityInterface, mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
 
-                    // Create the file if it doesn't exist
-                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
-                    outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
+                    } else {
+                        newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Received", "", "ReceivedSong");
+                        // Prepare the output stream in the Received folder - just keep a temporary version
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Received", "", "ReceivedSong");
+                        outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
+                        mainActivityInterface.getSong().setFolder("../Received");
+                        mainActivityInterface.getSong().setFilename("ReceivedSong");
+                        // IV - Store the received song filename in case the user wants to duplicate the received song
+                        receivedSongFilename = receivedBits.get(1);
+                    }
+
+                    // Write the file to the desired output stream and load
+                    if (nearbyReturnActionsInterface != null) {
+                        mainActivityInterface.getStorageAccess().writeFileFromString(receivedBits.get(3), outputStream);
+                        nearbyReturnActionsInterface.prepareSongMenu();
+                        nearbyReturnActionsInterface.loadSong();
+                    }
+                } else if (!isHost && isConnected) {
+                    // We just want to trigger loading the song on our device (if we have it).
+                    // If not, we get notified it doesn't exits
                     mainActivityInterface.getSong().setFolder(receivedBits.get(0));
                     mainActivityInterface.getSong().setFilename(receivedBits.get(1));
-                    // Add to the sqldatabase
-                    mainActivityInterface.getSQLiteHelper().createSong(c, mainActivityInterface, mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
+                    Log.d(TAG, "received: " + mainActivityInterface.getSong().getFolder() + "/" + mainActivityInterface.getSong().getFilename());
+                    mainActivityInterface.getSong().setNextDirection(receivedBits.get(2));
 
-                } else {
-                    // Prepare the output stream in the Received folder - just keep a temporary version
-                    newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Received", "", "ReceivedSong");
-                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Received", "", "ReceivedSong");
-                    outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
-                    mainActivityInterface.getSong().setFolder("../Received");
-                    mainActivityInterface.getSong().setFilename("ReceivedSong");
-                }
-
-                // Write the file to the desired output stream and load
-                if (nearbyReturnActionsInterface != null) {
-                    mainActivityInterface.getStorageAccess().writeFileFromString(receivedBits.get(3), outputStream);
-                    nearbyReturnActionsInterface.prepareSongMenu();
-                    nearbyReturnActionsInterface.loadSong();
-                }
-
-
-            } else if (!isHost && isConnected && songReceived) {
-                // We just want to trigger loading the song on our device (if we have it).
-                // If not, we get notified it doesn't exits
-                mainActivityInterface.getSong().setFolder(receivedBits.get(0));
-                mainActivityInterface.getSong().setFilename(receivedBits.get(1));
-                Log.d(TAG, "received: " + mainActivityInterface.getSong().getFolder() + "/" + mainActivityInterface.getSong().getFilename());
-                mainActivityInterface.getSong().setNextDirection(receivedBits.get(2));
-                // Now load the song
-                if (nearbyReturnActionsInterface != null) {
-                    nearbyReturnActionsInterface.loadSong();
+                    // Now load the song
+                    if (nearbyReturnActionsInterface != null) {
+                        nearbyReturnActionsInterface.loadSong();
+                    }
                 }
             }
 
-            // IV - Store the received song filename in case the user wants to duplicate the received song
-            receivedSongFilename = receivedBits.get(1);
-
         } else {
-            Log.d(TAG, "payloadOpenSong - no change as unchanged payload");
+            Log.d("NearbyConnections", "payloadOpenSong - no change as unchanged payload");
         }
     }
 
@@ -560,19 +575,22 @@ public class NearbyConnections implements NearbyInterface {
         return getReceivedSongFilename();
     }
     private void payloadFile(Context c, MainActivityInterface mainActivityInterface, Payload payload, String foldernamepair) {
+        // IV - CLIENT: Cancel previous song transfers - a new song has arrived
+        cancelTransferIds(c);
+
         // If songs are too big, then we receive them as a file rather than bytes
-        Log.d(TAG, "foldernamepair=" + foldernamepair);
+        Log.d("NearbyConnections", "foldernamepair " + foldernamepair);
         String[] bits = foldernamepair.split("_xx____xx_");
         String folder = bits[0];
         String filename = bits[1];
         mainActivityInterface.getSong().setNextDirection(bits[2]);
         boolean movepage = false;
         if ((folder.equals(mainActivityInterface.getSong().getFolder()) || mainActivityInterface.getSong().getFolder().equals("../Received"))
-                && filename.equals(mainActivityInterface.getSong().getFilename()) && filename.toLowerCase(mainActivityInterface.getLocale()).endsWith(".pdf")) {
+                && filename.equals(mainActivityInterface.getSong().getFilename()) && filename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // We are likely trying to move page to an already received file
             movepage = true;
         } else {
-            mainActivityInterface.getSong().setPdfPageCurrent(0);
+            mainActivityInterface.getPDFSong().setPdfPageCurrent(0);
         }
         Uri newLocation = null;
         if (!isHost && isConnected && receiveHostFiles && keepHostFiles) {
@@ -587,7 +605,7 @@ public class NearbyConnections implements NearbyInterface {
         }
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);
-        Log.d(TAG, "newLocation=" + newLocation);
+        Log.d("NearbyConnections", "newLocation=" + newLocation);
         if (movepage) {
             if (mainActivityInterface.getSong().getNextDirection().equals("L2R")) {
                 // Go back
@@ -609,8 +627,14 @@ public class NearbyConnections implements NearbyInterface {
                     nearbyReturnActionsInterface.loadSong();
                 }
             }
-            Log.d(TAG, "originalUri=" + originalUri);
-            mainActivityInterface.getStorageAccess().deleteFile(c, originalUri);
+            Log.d("NearbyConnections", "originalUri=" + originalUri);
+            try {
+                if (mainActivityInterface.getStorageAccess().uriExists(c, originalUri)) {
+                    mainActivityInterface.getStorageAccess().deleteFile(c, originalUri);
+                }
+            } catch (Exception e) {
+                Log.d("NearbyConnections", "Error trying to delete originalUri");
+            }
         } else {
             if (nearbyReturnActionsInterface != null) {
                 nearbyReturnActionsInterface.loadSong();
@@ -704,7 +728,6 @@ public class NearbyConnections implements NearbyInterface {
         };
     }
 
-
     @Override
     public void turnOffNearby(Context c) {
         try {
@@ -722,5 +745,19 @@ public class NearbyConnections implements NearbyInterface {
         isConnected = false;
         usingNearby = false;
         incomingPrevious = "";
+    }
+
+    public void cancelTransferIds(Context c) {
+        // IV - Used to cancel earlier transfer Ids
+        Log.d("NearbyConnections", "Cancel Ids " + payLoadTransferIds);
+        if (!payLoadTransferIds.equals("")) {
+            String [] Ids = payLoadTransferIds.trim().split(" ");
+            payLoadTransferIds = "";
+            for (String Id : Ids) {
+                Nearby.getConnectionsClient(c).cancelPayload(Long.parseLong((Id.trim())));
+            }
+            incomingFilePayloads = new SimpleArrayMap<>();
+            fileNewLocation = new SimpleArrayMap<>();
+        }
     }
 }

@@ -563,4 +563,5 @@
     <string name="client">Kliënt</string>
     <string name="connections_actasclient">Tree op as kliënt</string>
     <string name="respect_copyright">Respekteer kopiereg - gebruik dit altyd wettig</string>
+    <string name="nearby_large_file">" Hierdie groot liedlêer word gedeel"</string>
 </resources>

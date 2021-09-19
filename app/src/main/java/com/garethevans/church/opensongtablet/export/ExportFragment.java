@@ -76,7 +76,11 @@ public class ExportFragment extends Fragment {
             // myView.includeSongs.setVisibility(View.VISIBLE);
 
             // Set the default
-            myView.openSongAppSet.setChecked(true);
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"exportOpenSongAppSet",true)) {
+                myView.openSongAppSet.setChecked(true);
+            } else {
+                myView.openSongApp.setChecked(true);
+            }
 
             setToExport = mainActivityInterface.getWhattodo().replace("exportset:","");
             myView.openSong.setVisibility(View.VISIBLE);
@@ -99,7 +103,12 @@ public class ExportFragment extends Fragment {
                 myView.onSong.setVisibility(View.VISIBLE);
                 myView.chordPro.setVisibility(View.VISIBLE);
                 myView.text.setVisibility(View.VISIBLE);
-                myView.openSongApp.setChecked(true);
+                // Set the default
+                if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"exportOpenSongApp",true)) {
+                    myView.openSongApp.setChecked(true);
+                } else {
+                    myView.openSong.setChecked(true);
+                }myView.openSongApp.setChecked(true);
             }
         }
 
@@ -115,11 +124,13 @@ public class ExportFragment extends Fragment {
         if (mainActivityInterface.getWhattodo().startsWith("exportset:")) {
             uris = new ArrayList<>();
             if (myView.openSongAppSet.isChecked()) {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"exportOpenSongAppSet",true);
                 // Copy the set to an .osts file extensions
                 uri = mainActivityInterface.getStorageAccess().copyFromTo(requireContext(),
                         mainActivityInterface,"Sets","", setToExport,
                         "Export","",setToExport+".osts");
             } else {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"exportOpenSongAppSet",false);
                 // Just add the actual set file (no extension)
                 uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
                         mainActivityInterface,"Sets","",setToExport);
@@ -157,6 +168,7 @@ public class ExportFragment extends Fragment {
                 initiateShare("text/plain");
 
             } else if (myView.openSong.isChecked() || myView.openSongApp.isChecked()) {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"exportOpenSongApp",myView.openSongApp.isChecked());
                 initiateShare("text/xml");
 
             } else if (myView.image.isChecked()) {

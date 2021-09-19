@@ -566,4 +566,5 @@
     <string name="client">Klient</string>
     <string name="connections_actasclient">Fungera som klient</string>
     <string name="respect_copyright">Respektera upphovsrätten - använd alltid lagligt</string>
+    <string name="nearby_large_file">Denna stora låtfil delas</string>
 </resources>

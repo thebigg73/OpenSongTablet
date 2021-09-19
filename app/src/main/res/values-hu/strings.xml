@@ -546,5 +546,5 @@
     <string name="client">Ügyfél</string>
     <string name="connections_actasclient">Ügyfélként jár el</string>
     <string name="respect_copyright">Tisztelet a szerzői jogoknak - mindig legálisan használja</string>
-
+    <string name="nearby_large_file">Ezt a nagy dalfájlt megosztják</string>
 </resources>

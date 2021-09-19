@@ -547,4 +547,5 @@
     <string name="client">クライアント</string>
     <string name="connections_actasclient">クライアントとして行動する</string>
     <string name="respect_copyright">著作権を尊重する-常に合法的に使用する</string>
+    <string name="nearby_large_file">この大きな曲ファイルは共有されています</string>
 </resources>

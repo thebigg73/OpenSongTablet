@@ -566,4 +566,5 @@
     <string name="client">Cliente</string>
     <string name="connections_actasclient">Actuar como cliente</string>
     <string name="respect_copyright">Respete los derechos de autor: utilice siempre legalmente</string>
+    <string name="nearby_large_file">Este archivo de canción grande se está compartiendo</string>
 </resources>

@@ -286,7 +286,7 @@
     <string name="midi_value">"Значение"</string>
     <string name="midi_velocity">"Скорость"</string>
     <string name="minfontsize">"Предпочтительный минимальный размер шрифта при автомасштабировании"</string>
-    <string name="music_score">"Рейтинг"</string>
+    <string name="music_score">"Ноты"</string>
     <string name="my_band">"Импорт песен из файла группы"</string>
     <string name="my_church">"Импорт песен из файла церкви"</string>
     <string name="quick_navigate">"Быстрый переход"</string>
@@ -546,4 +546,5 @@
     <string name="host">Хозяин</string>
     <string name="connections_actasclient">Действовать как клиент</string>
     <string name="respect_copyright">Уважайте авторские права - всегда используйте легально</string>
+    <string name="nearby_large_file">К этому большому файлу с песней открыт доступ</string>
 </resources>

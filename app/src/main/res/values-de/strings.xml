@@ -546,4 +546,5 @@
     <string name="host">Gastgeber</string>
     <string name="connections_actasclient">Als Kunde auftreten</string>
     <string name="respect_copyright">Respektieren Sie das Urheberrecht - verwenden Sie es immer legal</string>
+    <string name="nearby_large_file">Diese große Songdatei wird geteilt</string>
 </resources>

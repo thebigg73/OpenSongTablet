@@ -564,4 +564,5 @@
     <string name="client">客户</string>
     <string name="connections_actasclient">担任客户</string>
     <string name="respect_copyright">尊重版权-始终合法使用</string>
+    <string name="nearby_large_file">"正在共享此大歌曲文件"</string>
 </resources>
