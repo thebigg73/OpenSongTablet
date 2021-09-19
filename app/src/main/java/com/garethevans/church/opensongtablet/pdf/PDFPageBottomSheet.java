@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songprocessing;
+package com.garethevans.church.opensongtablet.pdf;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -63,17 +63,24 @@ public class PDFPageBottomSheet extends BottomSheetDialogFragment {
     private void setupListeners() {
         myView.previousPage.setOnClickListener(v -> {
             if (mainActivityInterface.getPDFSong().getPdfPageCurrent()>1) {
+                mainActivityInterface.getPDFSong().setDirection("L2R");
                 mainActivityInterface.getPDFSong().setPdfPageCurrent(mainActivityInterface.getPDFSong().getPdfPageCurrent()-1);
             }
             checkButtonEnable(true);
         });
         myView.nextPage.setOnClickListener(v -> {
             if (mainActivityInterface.getPDFSong().getPdfPageCurrent()<mainActivityInterface.getPDFSong().getPdfPageCount()) {
+                mainActivityInterface.getPDFSong().setDirection("R2L");
                 mainActivityInterface.getPDFSong().setPdfPageCurrent(mainActivityInterface.getPDFSong().getPdfPageCurrent()+1);
             }
             checkButtonEnable(true);
         });
         myView.pageSlider.addOnChangeListener((slider, value, fromUser) -> {
+            if (mainActivityInterface.getPDFSong().getPdfPageCurrent()>value) {
+                mainActivityInterface.getPDFSong().setDirection("L2R");
+            } else {
+                mainActivityInterface.getPDFSong().setDirection("R2L");
+            }
             mainActivityInterface.getPDFSong().setPdfPageCurrent((int)value);
             checkButtonEnable(true);
         });

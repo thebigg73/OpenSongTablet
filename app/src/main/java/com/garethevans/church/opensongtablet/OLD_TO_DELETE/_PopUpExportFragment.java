@@ -1,64 +1,8 @@
 /*
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.CheckBox;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpExportFragment extends DialogFragment {
-
-    static PopUpExportFragment newInstance() {
-        PopUpExportFragment frag;
-        frag = new PopUpExportFragment();
-        return frag;
-    }
-
-    public interface MyInterface {
-        void doExport();
-    }
-
-    private MyInterface mListener;
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        mListener = null;
-        super.onDetach();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            this.dismiss();
-        }
-    }
-
-    private CheckBox exportImageCheckBox;
-    private CheckBox exportPDFCheckBox;
-
-    private _Preferences preferences;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,15 +31,6 @@ public class PopUpExportFragment extends DialogFragment {
 
         preferences = new _Preferences();
 
-        // Initialise the views
-        CheckBox exportOpenSongAppSetCheckBox = V.findViewById(R.id.exportOpenSongAppSetCheckBox);
-        CheckBox exportOpenSongAppCheckBox = V.findViewById(R.id.exportOpenSongAppCheckBox);
-        CheckBox exportDesktopCheckBox = V.findViewById(R.id.exportDesktopCheckBox);
-        CheckBox exportTextCheckBox = V.findViewById(R.id.exportTextCheckBox);
-        CheckBox exportChordProCheckBox = V.findViewById(R.id.exportChordProCheckBox);
-        CheckBox exportOnSongCheckBox = V.findViewById(R.id.exportOnSongCheckBox);
-        exportImageCheckBox = V.findViewById(R.id.exportImageCheckBox);
-        exportPDFCheckBox = V.findViewById(R.id.exportPDFCheckBox);
 
         // Hide the ones we don't need
         if (StaticVariables.whattodo.equals("customise_exportsong")) {
@@ -168,9 +103,5 @@ public class PopUpExportFragment extends DialogFragment {
         }
     }
 
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        this.dismiss();
-    }
 
 }*/
