@@ -11,19 +11,28 @@ public class CustomSlide {
 
     // This object holds and deals with any custom slide objects
 
-    private String xml;                 // Saved as a fake song
-    private String type;                // The type of file (translation version) as a location
-    private String folder;              // The folder for saving based on type
-    private String file;                // A file safe version of the title
-    private String title, lyrics, key;  // Hopefully obvious as the title, content and key
-    private String author;              // For scripture:  The translation
-    private String user1;               // For slideshow: The duration of the slide
-    private String user2;               // For slideshow: A boolean if slides loop
-    private String user3;               // For slideshow: Links to background images
-    private String aka;                 //
-    private String hymn_num;            //
-    private String key_line;            //
+    // Firstly the variables used when on the create slide page
+    private String createType = "note";     // Type of custom slide being created
+    private boolean createLoop = false;     // Should slide have loop
+    private String createTitle = "";        // The slide title
+    private String createTime = "";         // The time for slides in secs
+    private boolean createReusable = false; // Create this as a reusable file (not just in the _cache folder)
+    private String createContent = "";      // The slide content
+    private String createImages = "";       // Images used with the slides
 
+    // Now the variables used when storing as a fake song
+    private String xml;                     // Saved as a fake song
+    private String type;                    // The type of file (translation version) as a location
+    private String folder;                  // The folder for saving based on type
+    private String file;                    // A file safe version of the title
+    private String title, lyrics, key;      // Hopefully obvious as the title, content and key
+    private String author;                  // For scripture:  The translation
+    private String user1;                   // For slideshow: The duration of the slide
+    private String user2;                   // For slideshow: A boolean if slides loop
+    private String user3;                   // For slideshow: Links to background images
+    private String aka;                     //
+    private String hymn_num;                //
+    private String key_line;                //
 
     public void buildCustomSlide(Context c, MainActivityInterface mainActivityInterface, ArrayList<String> customSlide) {
         resetCustomSlide();
@@ -47,7 +56,6 @@ public class CustomSlide {
                 case "slide":
                     user1 = customSlide.get(3);
                     user2 = customSlide.get(4);
-                    user3 = customSlide.get(5);
                     folder = "Slides";
                     type = c.getResources().getString(R.string.slide);
                     break;
@@ -125,10 +133,59 @@ public class CustomSlide {
             //mainActivityInterface.updateSetList();
             mainActivityInterface.refreshSetList();
 
+            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.success));
 
         } else {
             // Incorrect folder/filename
             mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.error));
         }
+    }
+
+    // The getters
+    public String getCreateType() {
+        return createType;
+    }
+    public boolean getCreateLoop() {
+        return createLoop;
+    }
+    public String getCreateTitle() {
+        return createTitle;
+    }
+    public String getCreateTime() {
+        return createTime;
+    }
+    public boolean getCreateReusable() {
+        return createReusable;
+    }
+    public String getCreateContent() {
+        return createContent;
+    }
+    public String getCreateImages() {
+        return createImages;
+    }
+
+    // The setters
+    public void setCreateType(String createType) {
+        this.createType = createType;
+    }
+    public void setCreateLoop(boolean createLoop) {
+        this.createLoop = createLoop;
+    }
+    public void setCreateTitle(String createTitle) {
+        this.createTitle = createTitle;
+    }
+    public void setCreateTime(String createTime) {
+        // Only keep numbers
+        createTime = createTime.replaceAll("[\\D]", "");
+        this.createTime = createTime;
+    }
+    public void setCreateReusable(boolean createReusable) {
+        this.createReusable = createReusable;
+    }
+    public void setCreateContent(String createContent) {
+        this.createContent = createContent;
+    }
+    public void setCreateImages(String createImages) {
+        this.createImages = createImages;
     }
 }

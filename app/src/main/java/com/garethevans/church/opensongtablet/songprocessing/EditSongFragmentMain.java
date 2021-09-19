@@ -83,7 +83,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);
         myView.folder.setAdapter(arrayAdapter);
         myView.folder.setText(mainActivityInterface.getTempSong().getFolder());
-        textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",getString(R.string.new_folder),getString(R.string.new_folder_name),"","",true);
+        textInputBottomSheet = new TextInputBottomSheet(this,"EditSongFragmentMain",getString(R.string.new_folder),getString(R.string.new_folder_name),null,"","",true);
     }
 
     // Sor the view visibility, listeners, etc.
