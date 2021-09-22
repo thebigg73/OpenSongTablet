@@ -8152,6 +8152,10 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.reloadOfSong = true;
         FullscreenActivity.pdfPageCurrent = 0;
         StaticVariables.currentSection = 0;
+        // Send section to other devices
+        if (StaticVariables.isHost && StaticVariables.isConnected) {
+            sendSongSectionToConnected();
+        }
         loadSong();
     }
 
