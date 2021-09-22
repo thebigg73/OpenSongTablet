@@ -326,7 +326,7 @@ public class LoadXML extends Activity {
         StaticVariables.thisSongScale = preferences.getMyPreferenceString(c,"songAutoScale","W");
 
         // IV - When an error force use of section 0
-        if (FullscreenActivity.myLyrics == c.getString(R.string.user_guide_lyrics)) {
+        if (FullscreenActivity.isSong && FullscreenActivity.myLyrics == c.getString(R.string.user_guide_lyrics)) {
             StaticVariables.currentSection = 0;
             FullscreenActivity.pdfPageCurrent = 0;
         }
