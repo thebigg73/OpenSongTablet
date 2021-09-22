@@ -2723,6 +2723,8 @@ public class ProcessSong extends Activity {
                 mCurrentPage = mPdfRenderer.openPage(FullscreenActivity.pdfPageCurrent);
             }
 
+            StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
+
             // Get pdf size from page
             int pdfwidth;
             int pdfheight;
