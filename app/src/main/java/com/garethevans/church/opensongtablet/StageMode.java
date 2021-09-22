@@ -6936,6 +6936,7 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.whichDirection = direction;
         FullscreenActivity.pdfPageCurrent = page;
         StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
+        StaticVariables.reloadOfSong = true;
         loadSong();
     }
 
