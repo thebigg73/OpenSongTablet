@@ -609,60 +609,73 @@
     <string name="user_guide">User guide</string>
     <string name="user_guide_lyrics" translatable="false">"[Intro]
  Welcome to OpenSongApp!
- This is a test page to show you some of the features of the app.
- The app contains 3 modes -
-• Performance Mode - use your Android device as a song book on stage
-• Stage Mode - control stage display monitors or hook up to a projector
-• Presentation Mode - hook up to a projector and displaying lyrics\n
+ This is an information page to show you some of the features of the app.
+ OpenSongApp has many more features across three modes:
+     • Performance Mode - use your Android device as a song book on stage
+     • Stage Mode - control stage display monitors or hook up to a projector
+     • Presentation Mode - hook up to a projector and display lyrics
+
 [Menus]
- The left hand slide out menu - lists all folders and songs.
- The right hand slide out menu - all options/settings.
- The taskbar menu - access different modes, menus or features.
- The page icons let you access special song features:
-;Backing track, auto scroll, metronome, chords, notes, links, etc.\n
+ The left hand slide out song menu - lists all folders and songs.
+ The right hand slide out options menu - all options/settings.
+ The taskbar menu - access different modes, menus or features.
+ The page buttons let you access special song features:
+ backing track, auto scroll, metronome, chords, notes, links, and more!
+
 [Get help with all of the cool features…]
  To find out all of the app features and how to use them,
  please check out the online help pages.
- Use the link in the options menu under the \'Other\' category -
- http://www.opensongapp.com
- You can also click on the link icon page button.\n
+ Use \'Help (Online)\' in the options menu under the \'Other\' category to
+ visit http://www.opensongapp.com
+
 [Adding songs]
- You can manually enter/create any song you like
+ You can manually enter/create any song you like.
  The app only comes with this \'song\' by default due to copyright.
- You can also import songs from other services:
-• Desktop OpenSong - I highly recommend syncing using Dropbox
-• ChordPro files
-• Ultimate Guitar website (using the import feature)
-• Chordie website (using the import feature)
-• SongSelect .usr files
-• some iOS app song files
- Songs are stored in OpenSong format (XML files without the .xml etension)\n
- Songs are stored on your device in the /OpenSong/Songs folder.
- This location is found at the storage location you chose
- when you first ran the app.  Check out the \'Storage\' category
- of the options menu to see where this is.\n
+ You can start a song by import from other services:
+     • Desktop OpenSong - I highly recommend syncing using Dropbox
+     • ChordPro files
+     • Ultimate Guitar website (using the import feature)
+     • Chordie website (using the import feature)
+     • SongSelect .usr files
+     • some iOS app song files
+ and then edit it to get your OpenSong version.
+ Use \'Find new songs\' in the options menu.
+
+ Songs are stored on your device in OpenSong format
+ (XML files without the .xml etension) in the /OpenSong/Songs folder.
+ This folder is the storage location you chose when you first ran the app.
+ Check out the \'Storage\' category of the options menu to see where this is.
+
 [Edit the song]
  Click on the song title in the menu bar to see a song preview.
- This also allows you to quickly edit the song\n
+ This also allows you to quickly edit the song.
+
 [Chords at work]
  This song has been set as having a key of G.
- You can also set capo display options easily
 .G     D      Em           C      G         G7
  Chord lines (above) start with a full stop/period (.)
-.C       Em            D      G
- You can transpose the chords easily.
- This is done from the chords category in the options menu
- Nashville, European and Do Ré Mi chords are understood\n
+ You can set capo display and transpose the chords easily,
+ this is done from the \'Chords\' category in the options menu.
+ Nashville, European and Do Ré Mi chords are understood.
+
 [Scaling]
  By default OpenSongApp scales a song to fit the page.
- You can change the auto scale options in the right hand menu\n
+ You can change the \'Display\' \'Autoscale\' options
+ in the options menu.
+
 [Sets]
- Add songs to sets by long pressing on them in the song menu\n
+ Add songs to sets by long pressing on them in the song menu.
+
 [Customising]
  You can customise colours, themes, fonts, gestures, pedal actions, etc.
  These customisations can be saved as user profiles.
- Check out the categories in the right hand options menu.\n\n
- HERE IS AN EXAMPLE OF HOW A SONG WOULD LOOK\n\n
+ Check out the categories in the right hand options menu.
+;
+ HERE IS AN EXAMPLE OF A SONG
+ Edit this song and look at /'Lyrics/' to see how it was done!
+
+[Intro]
+.||: G  | D/F#  | Em7  | D  :||
 [V1]
 .G2                D/F#
  Love everlasting, love without measure,
@@ -692,7 +705,10 @@
 .Em7                      D
  Loving each other, since Christ first loved us;
 .C          G/B             Am7        C/D      D
-Sharing my Saviour\'s love, showing my Father\'s heart."</string>
+Sharing my Saviour\'s love, showing my Father\'s heart.
+[Outro]
+;(Slow to end)
+.| G  |"</string>
     <string name="user_guide_text">Please take the time to read the user guide before using the app.</string>
     <string name="variation">Variation</string>
     <string name="variation_edit">This item can be edited.  The original will be unaffected.</string>

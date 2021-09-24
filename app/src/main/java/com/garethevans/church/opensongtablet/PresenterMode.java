@@ -1281,6 +1281,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         });
     }
     private void showCorrectViews() {
+        // IV - Make sure it starts clear
+        presenter_lyrics_image.setImageBitmap(null);
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
             // Image and PDF files replace the slide text with an image preview
             presenter_lyrics_image.setVisibility(View.VISIBLE);
@@ -1759,8 +1761,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void loadImagePreview() {
         // Make the appropriate bits visible
         presenter_lyrics.setVisibility(View.GONE);
-        // IV - Make sure it starts clear
-        presenter_lyrics_image.setImageBitmap(null);
 
         // Process the image location into an URI, then get the sizes
         BitmapFactory.Options options = new BitmapFactory.Options();
