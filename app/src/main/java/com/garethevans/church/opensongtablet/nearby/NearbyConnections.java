@@ -64,6 +64,8 @@ public class NearbyConnections implements NearbyInterface {
 
     private String payLoadTransferIds = "";
     private String latestfoldernamepair = "";
+    private int pendingCurrentSection = 0;
+
 
     public NearbyConnections(Context c, MainActivityInterface mainActivityInterface) {
         connectedEndPoints = new ArrayList<>();
@@ -128,29 +130,33 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void startDiscovery(Context c, MainActivityInterface mainActivityInterface) {
         Log.d(TAG, "startDiscovery()");
-        if (!isDiscovering) {
-            Nearby.getConnectionsClient(c)
-                    .startDiscovery(serviceId, endpointDiscoveryCallback(c, mainActivityInterface), discoveryOptions)
-                    .addOnSuccessListener(
-                            (Void unused) -> {
-                                // We're discovering!
-                                updateConnectionLog(c.getString(R.string.connections_discover));
-                                isDiscovering = true;
-                                Log.d(TAG, "startDiscovery() - success");
-                            })
-                    .addOnFailureListener(
-                            (Exception e) -> {
-                                // We're unable to start discovering.
-                                stopDiscovery(c);
-                                Log.d(TAG, "startDiscovery() - failure: " + e);
-                            });
-        } else {
-            Log.d(TAG, "startDiscovery() - already discovering");
-        }
-        // IV - Stop 30s after this (latest) call
-        if (isDiscovering) {
-            stopDiscoveryHandler.removeCallbacks(stopDiscoveryRunnable);
-            stopDiscoveryHandler.postDelayed(stopDiscoveryRunnable, 30000);
+        // IV - Only if still in use
+        if (usingNearby) {
+            Log.d("NearbyConnections", "startDiscovery()");
+            if (!isDiscovering) {
+                Nearby.getConnectionsClient(c)
+                        .startDiscovery(serviceId, endpointDiscoveryCallback(c, mainActivityInterface), discoveryOptions)
+                        .addOnSuccessListener(
+                                (Void unused) -> {
+                                    // We're discovering!
+                                    updateConnectionLog(c.getResources().getString(R.string.connections_discover));
+                                    isDiscovering = true;
+                                    Log.d("NearbyConnections", "startDiscovery() - success");
+                                })
+                        .addOnFailureListener(
+                                (Exception e) -> {
+                                    // We're unable to start discovering.
+                                    stopDiscovery(c);
+                                    Log.d("NearbyConnections", "startDiscovery() - failure: " + e);
+                                });
+            } else {
+                Log.d("NearbyConnections", "startDiscovery() - already discovering");
+            }
+            // IV - Stop 30s after this (latest) call
+            if (isDiscovering) {
+                stopDiscoveryHandler.removeCallbacks(stopDiscoveryRunnable);
+                stopDiscoveryHandler.postDelayed(stopDiscoveryRunnable, 30000);
+            }
         }
     }
 
@@ -311,7 +317,10 @@ public class NearbyConnections implements NearbyInterface {
                 connectedEndPoints.remove(endpointId);
                 String deviceName = getDeviceNameFromId(endpointId);
                 connectedEndPointsNames.remove(endpointId + "__" + deviceName);
-                updateConnectionLog(c.getString(R.string.connections_disconnect) + " " + deviceName);
+                // IV - Only if still in use
+                if (usingNearby) {
+                    updateConnectionLog(c.getResources().getString(R.string.connections_disconnect) + " " + deviceName);
+                }
 
                 if (isHost) {
                     // Check if we have valid connections
@@ -409,6 +418,10 @@ public class NearbyConnections implements NearbyInterface {
 
         // IV - Process each end point - we need a unique ParcelFileDescriptor if a file is sent
         for (String endpointId : connectedEndPoints) {
+            // IV - Send current section as a pending section change (-ve offset by 1) for use by CLIENT song load
+            infoPayload = "___section___-" + (1 + mainActivityInterface.getSong().getCurrentSection());
+            Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
+
             infoPayload = null;
             if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
                 // By default, this should be smaller than 32kb, so probably going to send as bytes
@@ -480,14 +493,29 @@ public class NearbyConnections implements NearbyInterface {
 
     private void payloadSection(String incoming) {
         if (!mainActivityInterface.getMode().equals("Performance")) {
+            //Log.d("NearbyConnections", "pendingCurrentSection In " + pendingCurrentSection);
             int mysection = mainActivityInterface.getProcessSong().getNearbySection(incoming);
+            //Log.d("NearbyConnections", "mysection " + mysection);
             if (mysection >= 0) {
-                if (nearbyReturnActionsInterface != null) {
-                    // Look for a section being sent
-                    mainActivityInterface.getSong().setCurrentSection(mysection);
-                    nearbyReturnActionsInterface.selectSection(mysection);
+                if (pendingCurrentSection < 0) {
+                    // IV - A song load is pending - 'Store' the section change (-ve offset by 1) for use by song load
+                    pendingCurrentSection = -(1 + mysection);
+                } else {
+                    if (mainActivityInterface.getSong().getCurrentSection() != mysection &&
+                            nearbyReturnActionsInterface != null) {
+                        // IV - Do the section change
+                        mainActivityInterface.getSong().setCurrentSection(mysection);
+                        // TODO - figure this out from IV changes
+                        if (!mainActivityInterface.getSong().getAlreadyLoading()) {
+                            nearbyReturnActionsInterface.selectSection(mysection);
+                        }
+                    }
                 }
+            } else {
+                // IV - A Host has passed a section directly into pending state ready for a following song load
+                pendingCurrentSection = mysection;
             }
+            //Log.d("NearbyConnections", "pendingCurrentSection Out " + pendingCurrentSection);
         }
     }
 
@@ -547,6 +575,7 @@ public class NearbyConnections implements NearbyInterface {
                     if (nearbyReturnActionsInterface != null) {
                         mainActivityInterface.getStorageAccess().writeFileFromString(receivedBits.get(3), outputStream);
                         nearbyReturnActionsInterface.prepareSongMenu();
+                        mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
                         nearbyReturnActionsInterface.loadSong();
                     }
                 } else if (!isHost && isConnected) {
@@ -559,6 +588,7 @@ public class NearbyConnections implements NearbyInterface {
 
                     // Now load the song
                     if (nearbyReturnActionsInterface != null) {
+                        mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
                         nearbyReturnActionsInterface.loadSong();
                     }
                 }
@@ -567,6 +597,8 @@ public class NearbyConnections implements NearbyInterface {
         } else {
             Log.d("NearbyConnections", "payloadOpenSong - no change as unchanged payload");
         }
+        // IV - 0 is no pending
+        pendingCurrentSection = 0;
     }
 
     public String getReceivedSongFilename() {
@@ -622,7 +654,10 @@ public class NearbyConnections implements NearbyInterface {
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
             if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
                 if (nearbyReturnActionsInterface != null) {
+                    mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
                     nearbyReturnActionsInterface.loadSong();
+                    // IV - End pending
+                    pendingCurrentSection = 0;
                 }
             }
             Log.d("NearbyConnections", "originalUri=" + originalUri);
@@ -635,7 +670,10 @@ public class NearbyConnections implements NearbyInterface {
             }
         } else {
             if (nearbyReturnActionsInterface != null) {
+                mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
                 nearbyReturnActionsInterface.loadSong();
+                // IV - End pending
+                pendingCurrentSection = 0;
             }
         }
     }
@@ -693,6 +731,7 @@ public class NearbyConnections implements NearbyInterface {
                         } else if (incoming != null && incoming.contains("autoscroll_")) {
                             payloadAutoscroll(mainActivityInterface.getAutoscroll(), incoming);
                         } else if (incoming != null && incoming.contains("___section___")) {
+                            //Log.d("NearbyConnections", "Section " + incoming);
                             payloadSection(incoming);
                         } else if (incoming != null && incoming.contains("_ep__ep_")) {
                             payloadEndpoints(incoming);
@@ -707,23 +746,37 @@ public class NearbyConnections implements NearbyInterface {
 
             @Override
             public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-                if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
-                    // For bytes this is sent automatically, but it's the file we are interested in here
-                    Payload payload;
+                // IV - If we are a client and not 'receiving host files' then cancel these uneeded FILE transfers
+                if (!isHost && !receiveHostFiles) {
                     if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
-                        payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
-                        String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());
-                        if (foldernamepair == null) {
-                            foldernamepair = "../Received_xx____xx_ReceivedSong";
-                        }
-                        incomingFilePayloads.remove(payloadTransferUpdate.getPayloadId());
-                        fileNewLocation.remove(payloadTransferUpdate.getPayloadId());
+                        Log.d("NearbyConnections", "Cancelled Id " + payloadTransferUpdate.getPayloadId());
+                        Nearby.getConnectionsClient(c).cancelPayload(payloadTransferUpdate.getPayloadId());
+                    }
+                } else {
+                    if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                        // For bytes this is sent automatically, but it's the file we are interested in here
+                        Payload payload;
+                        if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
+                            payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
+                            String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());
+                            if (foldernamepair == null) {
+                                foldernamepair = "../Received_xx____xx_ReceivedSong";
+                            }
+                            incomingFilePayloads.remove(payloadTransferUpdate.getPayloadId());
+                            fileNewLocation.remove(payloadTransferUpdate.getPayloadId());
 
-                        payloadFile(c, mainActivityInterface, payload, foldernamepair);
+                            payloadFile(c, mainActivityInterface, payload, foldernamepair);
+                        }
                     }
                 }
             }
         };
+    }
+
+    private void sendSongSectionForPendingToConnected(Context c, MainActivityInterface mainActivityInterface) {
+        // IV - Send a pending section change to the client (-ve offset by 1)
+        String infoPayload = "___section___-" + (1 + mainActivityInterface.getSong().getCurrentSection());
+        doSendPayloadBytes(c,infoPayload);
     }
 
     @Override

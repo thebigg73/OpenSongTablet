@@ -452,50 +452,76 @@
     <string name="user_guide">User guide</string>
     <string name="user_guide_lyrics" translatable="false">"[Intro]
  Welcome to OpenSongApp!
- This is a test song to show you some app features.
- The app contains 3 modes -
-• Performance - use your device as a songbook
-• Stage - hook up to a stage display monitor
-• Presentation - hook up to a projector\n
+ This is an information page to show you some of the features of the app.
+ OpenSongApp has many more features across three modes:
+     • Performance Mode - use your Android device as a song book on stage
+     • Stage Mode - control stage display monitors or hook up to a projector
+     • Presentation Mode - hook up to a projector and display lyrics
 [Menus]
- The slide out menu - songs and sets.
- The taskbar menu - app settings.
- Page buttons let you access song features:
-;Backing track, autoscroll, metronome, etc.\n
+ The left hand slide out song and set menu:
+        •  Show all songs and folders on the device
+        • Allows searching and filtering of songs
+        • Show the current editable set
+
+ The settings menu: all options/settings.
+ The page buttons let you access special song features:
+ backing track, auto scroll, metronome, chords, notes, links, and more!
+
 [Get help with all of the cool features…]
  To find out all of the app features,
  please check out the online help pages
- Check out 'About' in the settings menu or
- https://www.opensongapp.com\n
+ Use \'Help (Online)\' in the options menu under the \'Other\' category to
+ visit http://www.opensongapp.com
+
 [Adding songs]
- You can manually create any song you like
- You can also import songs from other services:
-• Desktop OpenSong - Ideally sync using Dropbox
-• iOS/OnSong files
-• ChordPro files
-• Online sources (UltimateGuitar, SongSelect, etc)
- Songs are stored in OpenSong format\n
- Songs are stored in the /OpenSong/Songs folder.\n
+ You can manually create any song you like.
+ The app only comes with this \'song\' by default due to copyright.
+        You can start a song by import from other services:
+     • Desktop OpenSong - I highly recommend syncing using Dropbox
+     • ChordPro files
+     • Ultimate Guitar website (using the import feature)
+     • Chordie website (using the import feature)
+     • SongSelect .usr files
+     • some iOS app song files
+ and then edit it to get your OpenSong version.
+ Use \'Find new songs\' in the options menu.
+
+ Songs are stored on your device in OpenSong format
+ (XML files without the .xml etension) in the /OpenSong/Songs folder.
+ This folder is the storage location you chose when you first ran the app.
+ Check out the \'Storage\' category of the options menu to see where this is.
+
+
 [Edit the song]
  Click on the song title in the menu to preview it.
- This also allows you to quickly edit the song.\n
+ This also allows you to quickly edit the song.
+
 [Chords at work]
  This song has been set as having a key of G.
- You can also set capo display options easily
 .G     D      Em           C      G         G7
  Chord lines (above) start with a full stop/period (.)
-.C       Em            D      G
- You can transpose the chords easily.
- Various chord formats are understood\n
+ You can set capo display and transpose the chords easily,
+ this is done from the \'Chords\' category in the options menu.
+ Nashville, European and Do Ré Mi chords are understood.
+
 [Scaling]
  By default OpenSongApp scales to song width.
- You can change this in the settings\n
+ You can change the \'Display\' \'Autoscale\' options
+ in the options menu.
+
 [Sets]
- Add songs to sets using the song/sets menu\n
+ Add songs to sets using the song/sets menu.
+
 [Customising]
  You can customise themes, fonts, pedals, etc.
  These customisations can be saved as profiles.\n\n
- HERE IS HOW A SONG WOULD LOOK\n\n
+Check out the categories in the right hand options menu.
+;
+ HERE IS AN EXAMPLE OF A SONG
+ Edit this song and look at \'Lyrics\' to see how it was done!
+
+[Intro]
+.||: G  | D/F#  | Em7  | D  :||
 [V1]
 .G2                D/F#
  Love everlasting, love without measure,
@@ -525,7 +551,10 @@
 .Em7                      D
  Loving each other, since Christ first loved us;
 .C          G/B             Am7        C/D      D
-Sharing my Saviour\'s love, showing my Father\'s heart."</string>
+Sharing my Saviour\'s love, showing my Father\'s heart.
+[Outro]
+;(Slow to end)
+.| G  |"</string>
     <string name="variation">Variation</string>
     <string name="variation_edit">This item can be edited.  The original will be unaffected.</string>
     <string name="variation_make">Make a set item variation</string>

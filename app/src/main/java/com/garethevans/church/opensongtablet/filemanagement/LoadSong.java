@@ -87,73 +87,80 @@ public class LoadSong {
         // Determine the filetype by extension - the best songs are xml (OpenSong formatted).
         thisSong.setFiletype(getFileTypeByExtension(thisSong.getFilename()));
 
-        // Get the uri for the song - we know it exists as we found it!
         uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
                 where, thisSong.getFolder(), thisSong.getFilename());
 
-        // If this is an image or a PDF (or DOC), we don't load a song object from the file
-        // Instead we use the databse, but the user will have to wait!
-        if (!thisSong.getFiletype().equals("PDF") && !thisSong.getFiletype().equals("IMG") &&
-                !thisSong.getFiletype().equals("DOC")) {
+        // Get the uri for the song - we know it exists as we found it!
+        if (mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
 
-            String utf;
-            // Go through our options one at a time
-            if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
-                // 1. We are using the default song
-                thisSong = thisSong.showWelcomeSong(c, thisSong);
-                // Don't update the songLoadSuccess as this isn't what the user really wants
+            // If this is an image or a PDF (or DOC), we don't load a song object from the file
+            // Instead we use the databse, but the user will have to wait!
+            if (!thisSong.getFiletype().equals("PDF") && !thisSong.getFiletype().equals("IMG") &&
+                    !thisSong.getFiletype().equals("DOC")) {
 
-            } else if (thisSong.getFiletype().equals("XML")) {
-                // 2. We have an XML file (likely)
-                utf = getUTF(c, mainActivityInterface, thisSong.getFolder(),
-                        thisSong.getFilename(), thisSong.getFiletype());
-                thisSong = readFileAsXML(c, mainActivityInterface, thisSong, where, uri, utf);
-            }
+                String utf;
+                // Go through our options one at a time
+                if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
+                    // 1. We are using the default song
+                    thisSong = thisSong.showWelcomeSong(c, thisSong);
+                    // Don't update the songLoadSuccess as this isn't what the user really wants
+
+                } else if (thisSong.getFiletype().equals("XML")) {
+                    // 2. We have an XML file (likely)
+                    utf = getUTF(c, mainActivityInterface, thisSong.getFolder(),
+                            thisSong.getFilename(), thisSong.getFiletype());
+                    thisSong = readFileAsXML(c, mainActivityInterface, thisSong, where, uri, utf);
+                }
 
 
-            // If the file wasn't read as an xml file and might be text based, we need to deal with it in another way
-            // This isn't added as an else statement to the above as one of those methods might have been tried
-            // If they find an issue, they send the song back with a better guessed filetype
-            if (!thisSong.getFiletype().equals("XML")) {
-                // This will try to import text, chordpro or onsong and update the lyrics field
-                thisSong.setLyrics(getSongAsText(c, mainActivityInterface, where, thisSong.getFolder(), thisSong.getFilename()));
-                thisSong.setTitle(thisSong.getFilename());
-                if (thisSong.getLyrics() != null && !thisSong.getLyrics().isEmpty()) {
-                    // Success (although we'll maybe process it below)
-                    mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
+                // If the file wasn't read as an xml file and might be text based, we need to deal with it in another way
+                // This isn't added as an else statement to the above as one of those methods might have been tried
+                // If they find an issue, they send the song back with a better guessed filetype
+                if (!thisSong.getFiletype().equals("XML")) {
+                    // This will try to import text, chordpro or onsong and update the lyrics field
+                    thisSong.setLyrics(getSongAsText(c, mainActivityInterface, where, thisSong.getFolder(), thisSong.getFilename()));
+                    thisSong.setTitle(thisSong.getFilename());
+                    if (thisSong.getLyrics() != null && !thisSong.getLyrics().isEmpty()) {
+                        // Success (although we'll maybe process it below)
+                        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
+                    }
+                }
+
+                if (thisSong.getFiletype().equals("iOS")) {
+                    // 3.  Run the OnSongConvert script (which converts then resaves)
+                    mainActivityInterface.getConvertOnSong().convertTextToTags(c, mainActivityInterface, uri, thisSong);
+
+                    // Now read in the proper OpenSong xml file
+                    try {
+                        readFileAsXML(c, mainActivityInterface, thisSong, where, uri, "UTF-8");
+                    } catch (Exception e) {
+                        Log.d(TAG, "Error performing grabOpenSongXML()");
+                    }
+                } else if (thisSong.getFiletype().equals("CHO") || lyricsHaveChoProTags(thisSong.getLyrics())) {
+                    // 4.  Run the ChordProConvert script (which converts then resaves)
+                    thisSong = mainActivityInterface.getConvertChoPro().convertTextToTags(c, mainActivityInterface, uri, thisSong);
+
+                    // Now read in the proper OpenSong xml file
+                    try {
+                        readFileAsXML(c, mainActivityInterface, thisSong, where, uri, "UTF-8");
+                    } catch (Exception e) {
+                        Log.d(TAG, "Error performing grabOpenSongXML()");
+                    }
+                }
+
+                // Fix all the rogue code
+                thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(c, mainActivityInterface.getLocale(), thisSong));
+
+                // Update the songLoadSuccess and references to the working file if it did work if we aren't indexing
+                if (!indexing) {
+                    sortLoadingSuccessful(c, mainActivityInterface, thisSong);
                 }
             }
-
-            if (thisSong.getFiletype().equals("iOS")) {
-                // 3.  Run the OnSongConvert script (which converts then resaves)
-                mainActivityInterface.getConvertOnSong().convertTextToTags(c, mainActivityInterface, uri, thisSong);
-
-                // Now read in the proper OpenSong xml file
-                try {
-                    readFileAsXML(c, mainActivityInterface, thisSong, where, uri, "UTF-8");
-                } catch (Exception e) {
-                    Log.d(TAG, "Error performing grabOpenSongXML()");
-                }
-            } else if (thisSong.getFiletype().equals("CHO") || lyricsHaveChoProTags(thisSong.getLyrics())) {
-                // 4.  Run the ChordProConvert script (which converts then resaves)
-                thisSong = mainActivityInterface.getConvertChoPro().convertTextToTags(c, mainActivityInterface, uri, thisSong);
-
-                // Now read in the proper OpenSong xml file
-                try {
-                    readFileAsXML(c, mainActivityInterface, thisSong, where, uri, "UTF-8");
-                } catch (Exception e) {
-                    Log.d(TAG, "Error performing grabOpenSongXML()");
-                }
-            }
-
-            // Fix all the rogue code
-            thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(c, mainActivityInterface.getLocale(), thisSong));
-
-            // Update the songLoadSuccess and references to the working file if it did work if we aren't indexing
-            if (!indexing) {
-                sortLoadingSuccessful(c,mainActivityInterface,thisSong);
-            }
+        } else {
+            // Not found.  This will get the default 'not found' from the database query
+            thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c,mainActivityInterface,thisSong.getFolder(),thisSong.getFilename());
         }
+
         // Send the song back with all of its children populated!
         return thisSong;
     }

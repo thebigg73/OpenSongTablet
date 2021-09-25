@@ -2044,16 +2044,21 @@ public class ProcessSong {
     }
 
     public int getCurrentPage(MainActivityInterface mainActivityInterface, int page) {
+        // TODO use Song or PDFSong?
         if (!mainActivityInterface.getPDFSong().getShowstartofpdf()) {
             // This is to deal with swiping backwards through songs, show the last page first!
             page = mainActivityInterface.getPDFSong().getPdfPageCount() - 1;
             mainActivityInterface.getPDFSong().setShowstartofpdf(true);
+            mainActivityInterface.getSong().setCurrentSection(mainActivityInterface.getPDFSong().getPdfPageCount()-1);
         }
         if (page >= mainActivityInterface.getPDFSong().getPdfPageCount()) {
-            mainActivityInterface.getPDFSong().setPdfPageCurrent(0);
+            mainActivityInterface.getSong().setPdfPageCurrent(0);
+            mainActivityInterface.getSong().setCurrentSection(0);
             page = 0;
         } else {
             mainActivityInterface.getPDFSong().setPdfPageCurrent(page);
+            mainActivityInterface.getSong().setPdfPageCurrent(page);
+            mainActivityInterface.getSong().setCurrentSection(page);
         }
         return page;
     }

@@ -327,7 +327,7 @@ public class CommonSQL {
         return key;
     }
 
-    Song getSpecificSong(SQLiteDatabase db, String folder, String filename) {
+    public Song getSpecificSong(Context c, SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
         String[] selectionArgs = new String[]{songId};
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";
@@ -336,46 +336,56 @@ public class CommonSQL {
         Cursor cursor = db.rawQuery(sql, selectionArgs);
 
         // Get the first item (the matching songID)
-        if (cursor.moveToFirst()) {
-            thisSong.setId(cursor.getInt(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ID)));
-            thisSong.setSongid(songId);
-            thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
-            thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
-            thisSong.setTitle(getValue(cursor, SQLite.COLUMN_TITLE));
-            thisSong.setAuthor(getValue(cursor, SQLite.COLUMN_AUTHOR));
-            thisSong.setCopyright(getValue(cursor, SQLite.COLUMN_COPYRIGHT));
-            thisSong.setLyrics(getValue(cursor, SQLite.COLUMN_LYRICS));
-            thisSong.setHymnnum(getValue(cursor, SQLite.COLUMN_HYMNNUM));
-            thisSong.setCcli(getValue(cursor, SQLite.COLUMN_CCLI));
-            thisSong.setTheme(getValue(cursor, SQLite.COLUMN_THEME));
-            thisSong.setAlttheme(getValue(cursor, SQLite.COLUMN_ALTTHEME));
-            thisSong.setUser1(getValue(cursor, SQLite.COLUMN_USER1));
-            thisSong.setUser2(getValue(cursor, SQLite.COLUMN_USER2));
-            thisSong.setUser3(getValue(cursor, SQLite.COLUMN_USER3));
-            thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
-            thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));
-            thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
-            thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));
-            thisSong.setAutoscrolllength(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_LENGTH));
-            thisSong.setTempo(getValue(cursor, SQLite.COLUMN_TEMPO));
-            thisSong.setPadfile(getValue(cursor, SQLite.COLUMN_PAD_FILE));
-            thisSong.setPadloop(getValue(cursor, SQLite.COLUMN_PAD_LOOP));
-            thisSong.setMidi(getValue(cursor, SQLite.COLUMN_MIDI));
-            thisSong.setMidiindex(getValue(cursor, SQLite.COLUMN_MIDI_INDEX));
-            thisSong.setCapo(getValue(cursor, SQLite.COLUMN_CAPO));
-            thisSong.setCapoprint(getValue(cursor, SQLite.COLUMN_CAPO_PRINT));
-            thisSong.setCustomChords((getValue(cursor, SQLite.COLUMN_CUSTOM_CHORDS)));
-            thisSong.setNotes(getValue(cursor, SQLite.COLUMN_NOTES));
-            thisSong.setAbc(getValue(cursor, SQLite.COLUMN_ABC));
-            thisSong.setLinkyoutube(getValue(cursor, SQLite.COLUMN_LINK_YOUTUBE));
-            thisSong.setLinkweb(getValue(cursor, SQLite.COLUMN_LINK_WEB));
-            thisSong.setLinkaudio(getValue(cursor, SQLite.COLUMN_LINK_AUDIO));
-            thisSong.setLinkother(getValue(cursor, SQLite.COLUMN_LINK_OTHER));
-            thisSong.setPresentationorder(getValue(cursor, SQLite.COLUMN_PRESENTATIONORDER));
-            thisSong.setFiletype(getValue(cursor, SQLite.COLUMN_FILETYPE));
-        }
+        try {
+            if (cursor.moveToFirst()) {
+                thisSong.setId(cursor.getInt(cursor.getColumnIndexOrThrow(SQLite.COLUMN_ID)));
+                thisSong.setSongid(songId);
+                thisSong.setFilename(getValue(cursor, SQLite.COLUMN_FILENAME));
+                thisSong.setFolder(getValue(cursor, SQLite.COLUMN_FOLDER));
+                thisSong.setTitle(getValue(cursor, SQLite.COLUMN_TITLE));
+                thisSong.setAuthor(getValue(cursor, SQLite.COLUMN_AUTHOR));
+                thisSong.setCopyright(getValue(cursor, SQLite.COLUMN_COPYRIGHT));
+                thisSong.setLyrics(getValue(cursor, SQLite.COLUMN_LYRICS));
+                thisSong.setHymnnum(getValue(cursor, SQLite.COLUMN_HYMNNUM));
+                thisSong.setCcli(getValue(cursor, SQLite.COLUMN_CCLI));
+                thisSong.setTheme(getValue(cursor, SQLite.COLUMN_THEME));
+                thisSong.setAlttheme(getValue(cursor, SQLite.COLUMN_ALTTHEME));
+                thisSong.setUser1(getValue(cursor, SQLite.COLUMN_USER1));
+                thisSong.setUser2(getValue(cursor, SQLite.COLUMN_USER2));
+                thisSong.setUser3(getValue(cursor, SQLite.COLUMN_USER3));
+                thisSong.setKey(getValue(cursor, SQLite.COLUMN_KEY));
+                thisSong.setTimesig(getValue(cursor, SQLite.COLUMN_TIMESIG));
+                thisSong.setAka(getValue(cursor, SQLite.COLUMN_AKA));
+                thisSong.setAutoscrolldelay(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_DELAY));
+                thisSong.setAutoscrolllength(getValue(cursor, SQLite.COLUMN_AUTOSCROLL_LENGTH));
+                thisSong.setTempo(getValue(cursor, SQLite.COLUMN_TEMPO));
+                thisSong.setPadfile(getValue(cursor, SQLite.COLUMN_PAD_FILE));
+                thisSong.setPadloop(getValue(cursor, SQLite.COLUMN_PAD_LOOP));
+                thisSong.setMidi(getValue(cursor, SQLite.COLUMN_MIDI));
+                thisSong.setMidiindex(getValue(cursor, SQLite.COLUMN_MIDI_INDEX));
+                thisSong.setCapo(getValue(cursor, SQLite.COLUMN_CAPO));
+                thisSong.setCapoprint(getValue(cursor, SQLite.COLUMN_CAPO_PRINT));
+                thisSong.setCustomChords((getValue(cursor, SQLite.COLUMN_CUSTOM_CHORDS)));
+                thisSong.setNotes(getValue(cursor, SQLite.COLUMN_NOTES));
+                thisSong.setAbc(getValue(cursor, SQLite.COLUMN_ABC));
+                thisSong.setLinkyoutube(getValue(cursor, SQLite.COLUMN_LINK_YOUTUBE));
+                thisSong.setLinkweb(getValue(cursor, SQLite.COLUMN_LINK_WEB));
+                thisSong.setLinkaudio(getValue(cursor, SQLite.COLUMN_LINK_AUDIO));
+                thisSong.setLinkother(getValue(cursor, SQLite.COLUMN_LINK_OTHER));
+                thisSong.setPresentationorder(getValue(cursor, SQLite.COLUMN_PRESENTATIONORDER));
+                thisSong.setFiletype(getValue(cursor, SQLite.COLUMN_FILETYPE));
+            } else {
+                // Song not found
+                thisSong.setTitle(filename);
+                thisSong.setFilename(filename);
+                thisSong.setFolder(folder);
+                thisSong.setLyrics("[" + folder + "/" + filename + "]\n" + c.getString(R.string.songdoesntexist));
+            }
 
-        closeCursor(cursor);
+            closeCursor(cursor);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return thisSong;
     }

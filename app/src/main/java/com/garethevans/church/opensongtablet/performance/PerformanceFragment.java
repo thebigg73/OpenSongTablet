@@ -303,6 +303,11 @@ public class PerformanceFragment extends Fragment {
         myView.songView.startAnimation(animSlideIn);
         myView.songSheetTitle.startAnimation(animSlideIn);
 
+        // IV - Consume any later pending client section change received from Host (-ve value)
+        if (mainActivityInterface.getSong().getCurrentSection() < 0) {
+            mainActivityInterface.getSong().setCurrentSection(-(1 + mainActivityInterface.getSong().getCurrentSection()));
+        }
+
         // Set the previous/next if we want to
         mainActivityInterface.getDisplayPrevNext().setPrevNext();
 

@@ -54,15 +54,16 @@ public class Song {
     private ArrayList<String> songSections;
     private ArrayList<String> songSectionHeadings;
     private ArrayList<String> songSectionTypes;
-    private int currentSection;
+    private int currentSection =0;
     private boolean isImageSlide;
     private String nextDirection = "R2L";
-    private int pdfPageCurrent;
+    private int pdfPageCurrent = 0;
     private String songXML;
     private int halfSplit;
     private int thirdSplit;
     private int twoThirdSplit;
     private boolean scalingFiguredOut = false;
+    private boolean alreadyLoading = false;  // TODO From IV changes - need to check purpose!
 
     // The getters
     public int getId() {
@@ -186,6 +187,9 @@ public class Song {
     public boolean getScalingFiguredOut() {
         return scalingFiguredOut;
     }
+    public boolean getAlreadyLoading() {
+        return alreadyLoading;
+    }
 
     // The setters
     public void setId(int id) {
@@ -297,6 +301,9 @@ public class Song {
     public void setScalingFiguredOut(boolean scalingFiguredOut) {
         this.scalingFiguredOut = scalingFiguredOut;
     }
+    public void setAlreadyLoading(boolean alreadyLoading) {
+        this.alreadyLoading = alreadyLoading;
+    }
 
 
     // The constructor to create a new song object
@@ -360,6 +367,7 @@ public class Song {
         this.thirdSplit = toCopy.thirdSplit;
         this.twoThirdSplit = toCopy.twoThirdSplit;
         this.scalingFiguredOut = toCopy.scalingFiguredOut;
+        this.alreadyLoading = toCopy.alreadyLoading;
     }
 
     // This is used when comparing song objects for changes (when editing a song)

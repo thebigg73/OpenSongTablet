@@ -41,7 +41,7 @@ public class ProfileActions {
                     String key = "";
                     String value = "";
                     if (type.equals("boolean") || type.equals("string") || type.equals("int") || type.equals("float")) {
-                        // This is an new preferece file which has entries like <int name="key" value="1" />
+                        // This is an new preference file which has entries like <int name="key" value="1" />
                         if (xpp.getAttributeCount()>0) {
                             key = xpp.getAttributeValue(0);
                         }

@@ -133,7 +133,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
     public Song getSpecificSong(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
         try (SQLiteDatabase db = getDB(c)) {
-            return mainActivityInterface.getCommonSQL().getSpecificSong(db,folder,filename);
+            return mainActivityInterface.getCommonSQL().getSpecificSong(c,db,folder,filename);
         } catch (OutOfMemoryError | Exception e) {
             Song thisSong = new Song();
             thisSong.setFolder(folder);
