@@ -92,12 +92,8 @@ public class CCLILog {
         // Delete the old file
         mainActivityInterface.getStorageAccess().deleteFile(c,uri);
 
-        // Get the new file ready
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null, "Settings", "", "ActivityLog.xml");
-
         // Write the new file
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
-        return mainActivityInterface.getStorageAccess().writeFileFromString(blankXML, outputStream);
+        return mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Settings","","ActivityLog.xml",blankXML);
     }
 
     @SuppressLint("SimpleDateFormat")

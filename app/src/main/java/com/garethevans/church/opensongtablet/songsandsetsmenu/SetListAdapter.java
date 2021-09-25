@@ -55,14 +55,14 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         }
 
         setitemViewHolder.vItem.setText(si.songitem);
-        String newfoldername = si.songfolder;
+        String newfoldername = si.songfoldernice;
         if (newfoldername.startsWith("**")) {
             newfoldername = newfoldername.replace("**","");
         }
         setitemViewHolder.vSongTitle.setText(titlesongname);
         setitemViewHolder.vSongFolder.setText(newfoldername);
         boolean issong = false;
-        int icon = mainActivityInterface.getSetActions().getItemIcon(c,si.songicon);
+        int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
 
         setitemViewHolder.vItem.setCompoundDrawablesWithIntrinsicBounds(icon,0,0,0);
 

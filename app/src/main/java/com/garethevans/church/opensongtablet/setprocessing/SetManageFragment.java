@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -170,11 +169,8 @@ public class SetManageFragment extends Fragment {
         String bitToRemove = myView.setCategory.getText().toString() + "__";
 
         for (String setName: availableSets) {
-            Log.d(TAG,"bitToRemove"+bitToRemove);
-            Log.d(TAG, "setName before: "+setName);
             @SuppressLint("InflateParams") CheckBox checkBox = (CheckBox) LayoutInflater.from(requireContext()).inflate(R.layout.view_checkbox_list_item,null);
             setName = setName.replace(bitToRemove,"");
-            Log.d(TAG, "setName after: "+setName);
             checkBox.setText(setName);
             if (mainActivityInterface.getWhattodo().equals("saveset")) {
                 checkBox.setEnabled(false);
@@ -195,7 +191,6 @@ public class SetManageFragment extends Fragment {
                 } else if (!b) {
                     chosenSets = chosenSets.replace("%_%" + finalSetName + "%_%", "");
                 }
-                Log.d(TAG,"chosenSets: "+chosenSets);
             });
             myView.setLists.addView(checkBox);
         }
@@ -212,9 +207,7 @@ public class SetManageFragment extends Fragment {
 
         // Get the set name
         String setName = myView.setName.getText().toString();
-        if (setName.isEmpty()) {
-            Log.d("SetManageFragment","Bad filename");
-        } else {
+        if (!setName.isEmpty()) {
             // Get a nice name
             setName = mainActivityInterface.getStorageAccess().safeFilename(setName);
             myView.setName.setText(setName);
@@ -251,11 +244,12 @@ public class SetManageFragment extends Fragment {
                             getString(R.string.error));
                 }
             }
-
         }
     }
 
     private void loadSet() {
+        // Show the progressBar
+        myView.progressBar.setVisibility(View.VISIBLE);
         // Initialise the current set
         mainActivityInterface.getCurrentSet().initialiseTheSet();
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "setCurrent", "");
@@ -272,7 +266,6 @@ public class SetManageFragment extends Fragment {
                         mainActivityInterface,"Sets","",setBit);
                 setUris.add(uri);
                 setNameBuilder.append(setBit).append("_");
-                Log.d(TAG,setBit+": "+uri);
             }
         }
 
@@ -281,12 +274,15 @@ public class SetManageFragment extends Fragment {
                 "setCurrent",setName);
         mainActivityInterface.getCurrentSet().setSetName(setName);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Empty the cache directories as new sets can have custom items
-                mainActivityInterface.getSetActions().loadSets(requireContext(), mainActivityInterface, setUris);
-            }
+        new Thread(() -> {
+            // Empty the cache directories as new sets can have custom items
+            mainActivityInterface.getSetActions().loadSets(requireContext(), mainActivityInterface, setUris);
+            // Import ended
+            requireActivity().runOnUiThread(() -> {
+                myView.progressBar.setVisibility(View.GONE);
+                mainActivityInterface.navHome();
+                mainActivityInterface.chooseMenu(true);
+            });
         }).start();
     }
 
@@ -294,7 +290,6 @@ public class SetManageFragment extends Fragment {
     // This comes back from the activity after it gets the text from the TextInputBottomSheet dialog
     // This brings in a new category name
     public void updateValue(String which, String value) {
-        Log.d(TAG, "value="+value);
         // We will temporarily add this category
         if (!categories.contains(value)) {
             categories.add(value);
@@ -306,5 +301,4 @@ public class SetManageFragment extends Fragment {
         }
         myView.setCategory.setText(value);
     }
-
 }

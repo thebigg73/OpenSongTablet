@@ -52,7 +52,6 @@ public class Pad {
     
     public void updateColor() {
         // Get the color and alpha
-        Log.d(TAG,"alpha="+mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
         pad.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
         pad.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
         padTime.setTextColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());

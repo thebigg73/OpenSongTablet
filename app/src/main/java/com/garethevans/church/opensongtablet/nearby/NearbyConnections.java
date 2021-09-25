@@ -105,8 +105,6 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void startAdvertising(Context c, MainActivityInterface mainActivityInterface) {
         if (!isAdvertising) {
-            Log.d(TAG, "Nearby.getConnectionsClient(context)=" + Nearby.getConnectionsClient(c));
-            Log.d(TAG, "startAdvertising()");
             Nearby.getConnectionsClient(c)
                     .startAdvertising(getUserNickname(c, mainActivityInterface), serviceId, connectionLifecycleCallback(c, mainActivityInterface), advertisingOptions)
                     .addOnSuccessListener(

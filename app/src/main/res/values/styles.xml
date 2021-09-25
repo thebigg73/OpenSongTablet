@@ -271,6 +271,12 @@
         <item name="behavior_peekHeight">0dp</item> // yep, that helped to skip collapsed state at initial
         <item name="behavior_hideable">true</item>
     </style>
+
+    <style name="progressBarOnPrimary">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:alpha">0.8</item>
+    </style>
+
     <style name="RoundedBox" parent="FullscreenBottomSheet">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">16dp</item>

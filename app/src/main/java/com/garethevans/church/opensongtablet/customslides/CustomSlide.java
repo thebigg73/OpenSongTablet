@@ -30,8 +30,8 @@ public class CustomSlide {
     private String user1;                   // For slideshow: The duration of the slide
     private String user2;                   // For slideshow: A boolean if slides loop
     private String user3;                   // For slideshow: Links to background images
-    private String aka;                     //
-    private String hymn_num;                //
+    private String aka;                     // Any image saved as a background
+    private String hymn_num;                // Notes saved with the slide
     private String key_line;                //
 
     public void buildCustomSlide(Context c, MainActivityInterface mainActivityInterface, ArrayList<String> customSlide) {

@@ -432,12 +432,19 @@ public class LoadSong {
                         mainActivityInterface,"Songs",thisSong.getFolder(),thisSong.getFilename());
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, thisSongUri);
                 String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
-                if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
-                    content = content.substring(0, content.indexOf("</song>")) + "</song>";
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, thisSongUri);
-                    mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
-                    InputStream inputStream2 = mainActivityInterface.getStorageAccess().getInputStream(c, thisSongUri);
+                try {
+                    inputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
+                    Log.d(TAG,"before:"+content);
+                    content = content.substring(0, content.indexOf("</song>")) + "</song>";
+                    Log.d(TAG,"after:"+content);
+                    Log.d(TAG,"success = "+ mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,
+                            "Songs", thisSong.getFolder(), thisSong.getFilename(), content));
+                }
+
             }
         }
         resetSongsToFix();

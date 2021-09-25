@@ -465,11 +465,11 @@ public class StorageAccess {
         if (subfolder.startsWith("**")) {
             // This is used when custom slides are created as part of a set, making the folder look more obvious
             subfolder = subfolder.replace("**", "../");
-            subfolder = subfolder.replace(c.getResources().getString(R.string.image), "Images/_cache");
-            subfolder = subfolder.replace(c.getResources().getString(R.string.slide), "Slides/_cache");
-            subfolder = subfolder.replace(c.getResources().getString(R.string.scripture), "Scripture/_cache");
-            subfolder = subfolder.replace(c.getResources().getString(R.string.variation), "Variations");
-            subfolder = subfolder.replace(c.getResources().getString(R.string.note), "Notes/_cache");
+            subfolder = subfolder.replace("Images", "Images/_cache");
+            subfolder = subfolder.replace("Slides", "Slides/_cache");
+            subfolder = subfolder.replace("Scripture", "Scripture/_cache");
+            subfolder = subfolder.replace("Variations", "Variations");
+            subfolder = subfolder.replace("Notes", "Notes/_cache");
         }
         if (subfolder.contains("../")) {
             // Custom set item or a received file
@@ -521,7 +521,7 @@ public class StorageAccess {
     }
     public String safeFilename(String filename) {
         // Remove bad characters from filenames
-        filename = filename.replaceAll("[*?/<>&!#$+\"'{}:@\\\\]", " "); // Removes bad characters
+        filename = filename.replaceAll("[*?/<>&!#$+\"':{}@\\\\]", " "); // Removes bad characters
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
         return filename.trim();  // Returns the trimmed value
     }
@@ -547,36 +547,6 @@ public class StorageAccess {
             // Now get the actual uri
             return Uri.parse(uriString);
         }
-
-        /*if (uriString.startsWith("../OpenSong/Media/")) {
-            // Remove this and get the proper location
-            uriString = uriString.replace("../OpenSong/Media/", "");
-            uriString = uriString.replace("%20", " ");
-            uriString = uriString.replace("%2F", "/");
-            // Now get the actual uri
-            return getUriForItem(c, mainActivityInterface, "Media", "", uriString);
-        } else if (uriString.startsWith("../OpenSong/Pads/")) {
-            uriString = uriString.replace("../OpenSong/Pads/", "");
-            uriString = uriString.replace("%20", " ");
-            uriString = uriString.replace("%2F", "/");
-            // Now get the actual uri
-            return getUriForItem(c, mainActivityInterface, "Pads", "", uriString);
-        } else if (uriString.startsWith("../OpenSong/Backgrounds/")) {
-            uriString = uriString.replace("../OpenSong/Backgrounds/", "");
-            uriString = uriString.replace("%20", " ");
-            uriString = uriString.replace("%2F", "/");
-            // Now get the actual uri
-            return getUriForItem(c, mainActivityInterface, "Backgrounds", "", uriString);
-        } else if (uriString.startsWith("../OpenSong/Songs/")) {
-            uriString = uriString.replace("../OpenSong/Songs/", "");
-            uriString = uriString.replace("%20", " ");
-            uriString = uriString.replace("%2F", "/");
-            // Now get the actual uri
-            return getUriForItem(c, mainActivityInterface, "Songs", "", uriString);
-        } else {
-            // Now get the actual uri
-            return Uri.parse(uriString);
-        }*/
     }
     public String fixUriToLocal(Uri uri) {
         // If a file is in the OpenSong/ folder, let's localise it (important for sync)
@@ -934,7 +904,7 @@ public class StorageAccess {
 
     // Get references to the files and folders
     public Uri getUriForItem(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
-        String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
+            String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
         if (lollipopOrLater()) {
             return getUriForItem_SAF(c, mainActivityInterface, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         } else {
@@ -1098,6 +1068,7 @@ public class StorageAccess {
 
     // Basic file actions (read, create, copy, delete, write)
     public boolean saveSongFile(Context c, MainActivityInterface mainActivityInterface) {
+        Log.w(TAG,"saveSongFile() called");
         // This is called from the SaveSong class and uses the current Song object in MainActivity
         // First get the song uri
         // Because it may not be in the songs folder, lets check!
@@ -1186,9 +1157,16 @@ public class StorageAccess {
         }
     }
     public boolean doStringWriteToFile(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename, String string) {
+        Log.w(TAG,"doStringWriteToFile() called");
         try {
             Uri uri = getUriForItem(c, mainActivityInterface, folder, subfolder, filename);
+            Log.d(TAG,"uri="+uri);
+            // If the file exists, delete it, otherwise it doesn't work
+            if (uriExists(c,uri)) {
+                deleteFile(c, uri);
+            }
             lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null, folder, subfolder, filename);
+            Log.d(TAG,"uri="+uri);
             OutputStream outputStream = getOutputStream(c, uri);
             return writeFileFromString(string, outputStream);
         } catch (Exception e) {
@@ -1197,33 +1175,18 @@ public class StorageAccess {
         }
     }
     public boolean writeFileFromString(String s, OutputStream outputStream) {
-        /*try {
-            outputStream.write(s.getBytes(StandardCharsets.UTF_8));
-            outputStream.flush();
-            outputStream.close();
-            return true;
-        } catch (OutOfMemoryError | Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            outputStream.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;*/
         BufferedOutputStream bufferedOutputStream = null;
         try {
             bufferedOutputStream = new BufferedOutputStream(outputStream);
-            bufferedOutputStream.write(s.getBytes(StandardCharsets.UTF_8));
-            bufferedOutputStream.flush();
-            bufferedOutputStream.close();
-            // All good (this also closes the output stream).  Return true
-            return true;
+            if (outputStream!=null) {
+                bufferedOutputStream.write(s.getBytes(StandardCharsets.UTF_8));
+                bufferedOutputStream.flush();
+                bufferedOutputStream.close();
+                // All good (this also closes the output stream).  Return true
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             // Oops.  We need to try closing the streams again

@@ -53,6 +53,9 @@ public class ModeFragment extends Fragment {
                 myView.stageMode.showCheckMark(true);
                 break;
         }
+        // TODO disable to non-available modes for now...
+        myView.presentationMode.setEnabled(false);
+        myView.stageMode.setEnabled(false);
     }
 
     private void setListeners() {

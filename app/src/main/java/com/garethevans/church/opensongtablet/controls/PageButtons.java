@@ -117,7 +117,6 @@ public class PageButtons {
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
-        Log.d(TAG,"pageButtonAlpha="+pageButtonAlpha);
         actionButton.setAlpha(pageButtonAlpha);
         for (int x=0; x<6; x++) {
             if (pageButtonVisibility.get(x)) {
@@ -367,7 +366,6 @@ public class PageButtons {
                 fallback = "metronome";
             }
             String action = preferences.getMyPreferenceString(c,"pageButton"+(x+1),fallback);
-            Log.d(TAG, "x: "+x+"  action:"+action);
             pageButtonAction.add(action);
             int pos = getButtonInArray(action);
             if (pos>=0) {
@@ -472,14 +470,12 @@ public class PageButtons {
 
     // This deals with the actions from the page buttons
     public void sendPageAction(int x, boolean isLongPress) {
-        Log.d(TAG,"x="+x+"  isLongPress="+isLongPress);
         // Get the action we are trying to run
         switch(actions.get(x)) {
             case "":
                 actionInterface.navigateToFragment("opensongapp://settings/controls/pagebuttons",0);
                 break;
             case "set":
-                Log.d(TAG, "Show set");
                 actionInterface.chooseMenu(true);
                 break;
             case "transpose":
@@ -521,7 +517,6 @@ public class PageButtons {
                 }
                 break;
             case "stickynotes":
-                Log.d(TAG,"Stickynotes");
                 if (isLongPress) {
                     actionInterface.navigateToFragment("opensongapp://settings/actions/stickynotes",0);
                 } else {

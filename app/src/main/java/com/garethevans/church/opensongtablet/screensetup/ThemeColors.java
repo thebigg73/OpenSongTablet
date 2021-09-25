@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -467,14 +466,11 @@ public class ThemeColors {
     public void splitPageButtonsColorAndAlpha(MainActivityInterface mainActivityInterface) {
         // The colour will include alpha.  Strip this out
         int alpha = Math.round(Color.alpha(pageButtonsColor));
-        Log.d(TAG,"alpha="+alpha);
         int red = Color.red(pageButtonsColor);
         int green = Color.green(pageButtonsColor);
         int blue = Color.blue(pageButtonsColor);
-        Log.d(TAG,"R:"+red+" G:"+green+" B:"+blue);
         pageButtonsSplitColor = Color.argb(255, red, green, blue);
         pageButtonsSplitAlpha = alpha / 255.0f;
-        Log.d(TAG,"pageButtonsAlpha="+pageButtonsSplitAlpha);
         // Update page buttons and extra info
         mainActivityInterface.getPageButtons().updateColors(mainActivityInterface);
         mainActivityInterface.getPad().updateColor();

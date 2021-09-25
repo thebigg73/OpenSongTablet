@@ -11,20 +11,15 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 
-class SetListItemTouchHelper extends ItemTouchHelper.Callback {
+public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
 
-    private final SetListAdapter setListAdapter;
-    private final MainActivityInterface mainActivityInterface;
     private final SetItemTouchInterface setItemTouchInterface;
     private final String TAG = "SetListItemTouchHelper";
 
-    public SetListItemTouchHelper(MainActivityInterface mainActivityInterface, SetListAdapter setListAdapter) {
-        this.mainActivityInterface = mainActivityInterface;
+    public SetListItemTouchHelper(SetListAdapter setListAdapter) {
         this.setItemTouchInterface = setListAdapter;
-        this.setListAdapter = setListAdapter;
     }
 
     @Override
@@ -74,7 +69,6 @@ class SetListItemTouchHelper extends ItemTouchHelper.Callback {
         int toPosition = target.getAbsoluteAdapterPosition();
         Log.d("SetListItem","fromPosition="+fromPosition+"  toPosition="+toPosition);
         setItemTouchInterface.onItemMoved(fromPosition,toPosition);
-        //mAdapter.swap(mainActivityInterface.getCurrentSet(),oldPosition, newPosition);
         return true;
     }
 

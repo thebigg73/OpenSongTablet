@@ -241,6 +241,7 @@ public class SetActions {
         // Not to be confused with exporting/saving the set as a file
         mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",
                 getSetAsPreferenceString(mainActivityInterface));
+        mainActivityInterface.updateSetList();
     }
 
     public String currentSetNameForMenu(Context c, MainActivityInterface mainActivityInterface) {
@@ -392,40 +393,49 @@ public class SetActions {
         mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
     }
 
-    public int getItemIcon(Context c, String valueToDecideFrom) {
+    public int getItemIcon(String valueToDecideFrom) {
         int icon;
+        Log.d(TAG,"valueToDecideFrom: "+valueToDecideFrom);
         // Get rid of ** and ../
         valueToDecideFrom = valueToDecideFrom.replace("../","");
         valueToDecideFrom = valueToDecideFrom.replace(customLocStart,"");
 
-        if (valueToDecideFrom.equals(c.getResources().getString(R.string.slide))) {
-            icon = R.drawable.ic_projector_screen_white_36dp;
-        } else if (valueToDecideFrom.equals(c.getResources().getString(R.string.note))) {
-            icon = R.drawable.ic_note_text_white_36dp;
-        } else if (valueToDecideFrom.equals(c.getResources().getString(R.string.scripture))) {
-            icon = R.drawable.ic_book_white_36dp;
-        } else if (valueToDecideFrom.equals(c.getResources().getString(R.string.image))) {
-            icon = R.drawable.ic_image_white_36dp;
-        } else if (valueToDecideFrom.equals(c.getResources().getString(R.string.variation))) {
-            icon = R.drawable.ic_file_xml_white_36dp;
-        } else if (valueToDecideFrom.equals("PDF")) {
-            icon = R.drawable.ic_file_pdf_white_36dp;
-        } else {
-            icon = R.drawable.ic_music_note_white_36dp;
+        switch (valueToDecideFrom) {
+            case "Slides":
+                icon = R.drawable.ic_projector_screen_white_36dp;
+                break;
+            case "Notes":
+                icon = R.drawable.ic_note_text_white_36dp;
+                break;
+            case "Scripture":
+                icon = R.drawable.ic_book_white_36dp;
+                break;
+            case "Images":
+                icon = R.drawable.ic_image_white_36dp;
+                break;
+            case "Variations":
+                icon = R.drawable.ic_file_xml_white_36dp;
+                break;
+            case "PDF":
+                icon = R.drawable.ic_file_pdf_white_36dp;
+                break;
+            default:
+                icon = R.drawable.ic_music_note_white_36dp;
+                break;
         }
         return icon;
     }
-    public String getIconIdentifier(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+    public String getIconIdentifier(MainActivityInterface mainActivityInterface, String folder, String filename) {
         // If the filename is an image, we use that
         String valueToDecideFrom;
         if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",filename)) {
-            valueToDecideFrom = c.getString(R.string.image);
+            valueToDecideFrom = "Images";
         } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf",filename)) {
             valueToDecideFrom = "PDF";
         } else if (folder.contains(customLocStart)) {
             valueToDecideFrom = folder.replace(customLocStart,"");
         } else {
-            valueToDecideFrom = c.getString(R.string.song);
+            valueToDecideFrom = "Songs";
         }
         return valueToDecideFrom;
     }
@@ -733,24 +743,21 @@ public class SetActions {
     public void loadSets(Context c, MainActivityInterface mainActivityInterface, ArrayList<Uri> setsToLoad) {
         // This is called via a new thread in the manage sets fragment
         // We can append multiple sets together
-        // If the set loaded has a key specified with it, we compare with our key
+        // If the set loaded has a song has a key specified with it, we compare with our key
         // If it is different, the app creates a variation of our song then transposes it
         // Any variations bundled in the set are extracted as variations here too
 
         // First up, clear out our _cache folders after we remove any entries from the database
-        removeCacheItemsFromDB(c, mainActivityInterface, folderScripture, cache);
-        removeCacheItemsFromDB(c, mainActivityInterface, folderSlides, cache);
-        removeCacheItemsFromDB(c, mainActivityInterface, folderNotes, cache);
-        removeCacheItemsFromDB(c, mainActivityInterface, folderImages, cache);
-        removeCacheItemsFromDB(c, mainActivityInterface, folderVariations, cache);
+        removeCacheItemsFromDB(c, mainActivityInterface, folderScripture);
+        removeCacheItemsFromDB(c, mainActivityInterface, folderSlides);
+        removeCacheItemsFromDB(c, mainActivityInterface, folderNotes);
+        removeCacheItemsFromDB(c, mainActivityInterface, folderImages);
+        removeCacheItemsFromDB(c, mainActivityInterface, folderVariations);
 
         // Create the cache directories again as we likely deleted them in SAF
         mainActivityInterface.getStorageAccess().createOrCheckRootFolders(c,null,mainActivityInterface);
 
         // Now users can load multiple sets and merge them, we need to load each one it turn
-        // We then add the items to a temp string 'allsongsinset'
-        // Once we have loaded them all, we replace the mySet field.
-
         // Initialise the arrays that will hold the loaded information
         mainActivityInterface.getCurrentSet().initialiseTheSet();
 
@@ -779,13 +786,14 @@ public class SetActions {
                 xpp.setInput(inputStream, utf);
                 int eventType;
                 eventType = xpp.getEventType();
+
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().equals("slide_group")) {
-                            // Is this a song?
+                            // Look for the type attribute and see what type of slide it is
                             switch (xpp.getAttributeValue(null, "type")) {
                                 case "song":
-                                    // Get song
+                                    // Get Song
                                     try {
                                         getSong(mainActivityInterface, xpp);
                                     } catch (Exception e) {
@@ -793,7 +801,6 @@ public class SetActions {
                                         e.printStackTrace();
                                     }
                                     break;
-
                                 case "scripture":
                                     // Get Scripture
                                     try {
@@ -805,29 +812,31 @@ public class SetActions {
                                     break;
                                 case "custom":
                                     // Get Custom (Note or slide or variation)
-                                    getCustom(c, mainActivityInterface, xpp);
+                                    try {
+                                        getCustom(c, mainActivityInterface, xpp);
+                                    } catch (Exception e) {
+                                        Log.d(TAG, "Couldn't get custom from set");
+                                        e.printStackTrace();
+                                    }
                                     break;
                                 case "image":
                                     // Get the Image(s)
-                                    getImage(c, mainActivityInterface, xpp);
+                                    try {
+                                        getImage(c, mainActivityInterface, xpp);
+                                    } catch (Exception e) {
+                                        Log.d(TAG, "Couldn't get image from set");
+                                        e.printStackTrace();
+                                    }
                                     break;
                             }
                         }
                     }
-                    try {
-                        eventType = xpp.next();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "End of XML file");
-                    }
+                    eventType = xpp.next();
                 }
             }
-
-            } catch(Exception e){
-                // Error setting up the XML utility
-                e.printStackTrace();
-            }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private String stripSlashes(String string) {
@@ -867,21 +876,21 @@ public class SetActions {
         String scripture_title = "";
         String scripture_translation = "";
         StringBuilder scripture_text = new StringBuilder();
-        String scripture_seconds = xpp.getAttributeValue(null, "seconds");
-        String scripture_loop = xpp.getAttributeValue(null, "loop");
+        String scripture_seconds = xpp.getAttributeValue("", "seconds");
+        String scripture_loop = xpp.getAttributeValue("", "loop");
         boolean scripture_finished = false;
 
         while (!scripture_finished) {
             switch (xpp.getName()) {
                 case "title":
-                    scripture_title = xpp.nextText();
+                    scripture_title = safeNextText(xpp);
                     break;
                 case "body":
                     scripture_text.append("\n[]\n").append(mainActivityInterface.getProcessSong().
-                            parseHTML(xpp.nextText()));
+                            parseHTML(safeNextText(xpp).trim()));
                     break;
                 case "subtitle":
-                    scripture_translation = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
+                    scripture_translation = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
                     break;
             }
 
@@ -904,9 +913,6 @@ public class SetActions {
         scripture_text = new StringBuilder(scripture_text.toString().replace("---", "[]"));
         //Split the verses up into an array by new lines - array of words
         String[] temp_text = scripture_text.toString().split("\n");
-
-        //String[] add_text = new String[800];
-        //int array_line = 0;
 
         // Add all the array back together and make sure no line goes above 50 characters
         // This means it won't appear tiny as the app tries to scale the lyrics
@@ -944,10 +950,11 @@ public class SetActions {
             scripture_text = new StringBuilder(scripture_text.toString().replace("\\n\\n", "\\n"));
         }
 
+        // Make sure to safe encode the filename as it will likely have : in it
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,
-                customLocStart+folderScripture, scripture_title);
+                customLocStart+folderScripture, Uri.encode(scripture_title));
         tempSong.setTitle(scripture_title);
-        tempSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(customLocStart+folderScripture, scripture_title));
+        tempSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(customLocStart+folderScripture, Uri.encode(scripture_title)));
         tempSong.setAuthor(scripture_translation);
         tempSong.setUser1(scripture_seconds);
         tempSong.setUser2(scripture_loop);
@@ -960,14 +967,23 @@ public class SetActions {
                 tempSong.getFilename(),"");
 
         // Now create the file in the Scripture/_cache folder
+        Log.d(TAG,"title:"+tempSong.getTitle());
+        Log.d(TAG,"songid:"+tempSong.getSongid());
+        Log.d(TAG,"folder:"+tempSong.getFolder());
+        Log.d(TAG,"filename:"+tempSong.getFilename());
+        Log.d(TAG,"author:"+tempSong.getAuthor());
+        Log.d(TAG,"user1:"+tempSong.getUser1());
+        Log.d(TAG,"user2:"+tempSong.getUser2());
+        Log.d(TAG,"lyrics:"+tempSong.getLyrics());
+
         writeTempSlide(c,mainActivityInterface,folderScripture,cache,tempSong);
 
+        Log.d(TAG,"Scripture extracted: "+scripture_title);
         xpp.nextTag();
-
     }
 
     private void getCustom(Context c, MainActivityInterface mainActivityInterface,
-                           XmlPullParser xpp) throws IOException, XmlPullParserException {
+                           XmlPullParser xpp) throws XmlPullParserException {
         // Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
@@ -977,43 +993,83 @@ public class SetActions {
         String custom_title = "";
         String custom_subtitle = "";
         String custom_notes = "";
+        String custom_background = "";
         StringBuilder custom_text = new StringBuilder();
         String tempcache = cache;
 
         boolean custom_finished = false;
         while (!custom_finished) {
-            switch (xpp.getName()) {
-                case "title":
-                    custom_title = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
-                    break;
-                case "notes":
-                    custom_notes = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
-                    break;
-                case "body":
-                    custom_text.append("\n---\n").append(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
-                    break;
-                case "subtitle":
-                    custom_subtitle = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
-                    break;
-            }
-
-            xpp.nextTag();
-
-            if (xpp.getEventType()==XmlPullParser.END_TAG) {
-                if (xpp.getName().equals("slides")) {
-                    custom_finished = true;
+            if (xpp.getEventType()==XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                switch (xpp.getName()) {
+                    case "title":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_title = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
+                        }
+                        break;
+                    case "notes":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_notes = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
+                        }
+                        break;
+                    case "body":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            try {
+                                custom_text.append("\n---\n").append(mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp)));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        break;
+                    case "subtitle":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_subtitle = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
+                        }
+                        break;
+                    case "background":
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            custom_background = safeNextText(xpp);
+                        }
+                        break;
+                    case "tabs":
+                    case "song_subtitle":
+                    default:
+                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                            Log.d("SetActions", xpp.getName());
+                        }
+                        break;
                 }
             }
+
+            try {
+                if (xpp.getEventType() == XmlPullParser.END_TAG) {
+                    if (xpp.getName().equals("slides")) {
+                        custom_finished = true;
+                    }
+                    xpp.nextTag();
+                } else if (xpp.getEventType() == XmlPullParser.TEXT) {
+                    xpp.nextTag();
+                } else {
+                    xpp.next();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
         // Remove first ---
         if (custom_text.indexOf("\n---\n") == 0) {
             custom_text = new StringBuilder(custom_text.toString().replaceFirst("\n---\n", ""));
         }
+        if (custom_notes.startsWith("\n---\n")) {
+            custom_notes = custom_notes.replaceFirst("\n---\n","");
+        }
 
         // Get a new tempSong ready for the info
+        // Make sure to safe encode the filename as it might have unsafe characters
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,
-                customLocStart+folderSlides, custom_title);
+                customLocStart+folderSlides, Uri.encode(custom_title));
 
         if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
             // Prepare for a note
@@ -1027,12 +1083,15 @@ public class SetActions {
             tempcache = "";
         }
 
-        tempSong.setFilename(custom_name);
+        // Make sure to safe encode the filename as it might have unsafe characters
+        tempSong.setFilename(Uri.encode(custom_name));
         tempSong.setTitle(custom_name);
-        tempSong.setLyrics(custom_notes);
+        tempSong.setLyrics(custom_text.toString());
         tempSong.setUser1(custom_seconds);
         tempSong.setUser2(custom_loop);
         tempSong.setUser3(custom_subtitle);
+        tempSong.setAka(custom_background);
+        tempSong.setHymnnum(custom_notes);
 
         // Add the slide to the set
         mainActivityInterface.getCurrentSet().addToCurrentSet(getSongForSetWork(
@@ -1043,6 +1102,7 @@ public class SetActions {
         // Now create the file in the appropriate location /_cache folder
         writeTempSlide(c,mainActivityInterface,
                 tempSong.getFolder().replace(customLocStart,""),tempcache,tempSong);
+
     }
 
     private void getImage(Context c, MainActivityInterface mainActivityInterface,
@@ -1058,7 +1118,6 @@ public class SetActions {
         String image_notes = "";
         String image_filename;
         StringBuilder hymn_number_imagecode = new StringBuilder();
-        String key_line = "";
         int imagenums = 0;
         boolean encodedimage = false;
 
@@ -1076,17 +1135,16 @@ public class SetActions {
             if (eventType == XmlPullParser.START_TAG) {
                 switch (xpp.getName()) {
                     case "title":
-                        image_title = new StringBuilder(mainActivityInterface.getProcessSong().parseHTML(xpp.nextText()));
+                        image_title = new StringBuilder(mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp)));
                         break;
-
                     case "subtitle":
-                        image_subtitle = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
+                        image_subtitle = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
                         break;
                     case "notes":
-                        image_notes = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
+                        image_notes = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
                         break;
                     case "filename":
-                        image_filename = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
+                        image_filename = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
                         if (!image_filename.equals("") && !image_filename.isEmpty()) {
                             slide_images.append(image_filename).append("\n");
                             slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
@@ -1097,12 +1155,12 @@ public class SetActions {
                         }
                         break;
                     case "image":
-                        image_content = xpp.nextText();
+                        image_content = safeNextText(xpp);
                         hymn_number_imagecode.append(image_content.trim()).append("XX_IMAGE_XX");
                         encodedimage = true;
                         break;
                     case "description":
-                        String file_name = mainActivityInterface.getProcessSong().parseHTML(xpp.nextText());
+                        String file_name = mainActivityInterface.getProcessSong().parseHTML(safeNextText(xpp));
                         if (file_name.toLowerCase(Locale.ROOT).contains(".png")) {
                             image_type = ".png";
                         } else if (file_name.toLowerCase(Locale.ROOT).contains(".gif")) {
@@ -1156,8 +1214,9 @@ public class SetActions {
         image_notes = fixNull(image_notes);
 
         // Get a new tempSong ready for the info
+        // Make sure to safe encode the filename as it might have unsafe characters
         Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,
-                customLocStart+folderImages, image_title.toString());
+                customLocStart+folderImages, Uri.encode(image_title.toString()));
 
         tempSong.setTitle(image_title.toString());
         tempSong.setAuthor(image_subtitle);
@@ -1167,6 +1226,10 @@ public class SetActions {
         tempSong.setAka(image_name);
         tempSong.setKey(image_notes);
         tempSong.setLyrics(slide_image_titles.toString().trim());
+
+        // Add the set item
+        mainActivityInterface.getCurrentSet().addSetValues(tempSong.getFolder(),tempSong.getFilename(),null);
+
         writeTempSlide(c,mainActivityInterface,folderImages,cache,tempSong);
     }
 
@@ -1177,29 +1240,39 @@ public class SetActions {
         return s;
     }
 
-    private void removeCacheItemsFromDB(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder) {
-        ArrayList<String> filesInFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(c, mainActivityInterface, folder, subfolder);
+    private void removeCacheItemsFromDB(Context c, MainActivityInterface mainActivityInterface, String folder) {
+        ArrayList<String> filesInFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(c, mainActivityInterface, folder, "_cache");
         for (String filename:filesInFolder) {
             mainActivityInterface.getSQLiteHelper().deleteSong(c, mainActivityInterface, customLocStart+folder, filename);
         }
 
         // Now empty the actual folder
-        mainActivityInterface.getStorageAccess().wipeFolder(c,mainActivityInterface,folder, subfolder);
+        mainActivityInterface.getStorageAccess().wipeFolder(c,mainActivityInterface,folder, "_cache");
 
     }
 
     private void writeTempSlide(Context c, MainActivityInterface mainActivityInterface,
                                 String folder, String subfolder, Song tempSong) {
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
-                folder, subfolder, tempSong.getFilename());
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface,
-                uri, null, folder, subfolder, tempSong.getFilename());
-
         // Get the song as XML
-        String tempSongXML = mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface, tempSong);
-
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
-        mainActivityInterface.getStorageAccess().writeFileFromString(tempSongXML, outputStream);
+        tempSong.setSongXML(mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface, tempSong));
+        Log.d(TAG,"xml="+tempSong.getSongXML());
+        mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,folder,subfolder,tempSong.getFilename(),tempSong.getSongXML());
+        Log.d(TAG,"folder:"+folder+"  subfolder:" + subfolder+"  filename:"+ tempSong.getFilename());
     }
 
+    private String safeNextText(XmlPullParser xpp) {
+        try {
+            if (!xpp.isEmptyElementTag()) {
+                String result = xpp.nextText();
+                if (xpp.getEventType() != XmlPullParser.END_TAG) {
+                    xpp.nextTag();
+                }
+                return result;
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            return "";
+        }
+    }
 }

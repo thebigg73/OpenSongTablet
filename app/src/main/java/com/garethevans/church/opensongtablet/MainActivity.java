@@ -552,10 +552,10 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
 
         // Set
         // TODO remove the temp made up set
-        preferences.setMyPreferenceString(this, "setCurrent",
-                "$**_MAIN/Abba Father_***G***__**$$**_MAIN/All I need_**$$**_Band/500 miles_***E***__**$");
         setActions.preferenceStringToArrays(this,mainActivityInterface);
-
+        /*preferences.setMyPreferenceString(this, "setCurrent",
+                "$**_MAIN/Abba Father_***G***__**$$**_MAIN/All I need_**$$**_Band/500 miles_***E***__**$");
+*/
         // Set the locale
         fixLocale.setLocale(this,mainActivityInterface);
         locale = fixLocale.getLocale();
@@ -1470,7 +1470,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 case "set_updateKeys":
                 case "set_updateView":
                 case "set_updateItem":
-                    // User has the set menu open and wants to shuffle the set
+                    // User has the set menu open and wants to do something
                     if (setMenuFragment!=null) {
                         if (fragName.equals("set_updateView")) {
                             setMenuFragment.updateSet();
@@ -1566,6 +1566,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 case "newSet":
                     // Clear the current set
                     currentSet.initialiseTheSet();
+                    preferences.setMyPreferenceString(this, "setCurrentLastName", "");
                     updateFragment("set_updateView",null,null);
                     result = true;
                     break;
@@ -1627,7 +1628,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
     }
     @Override
     public void updateSetList() {
-        Log.d(TAG,"Update set list");
+        updateFragment("set_updateView",null,null);
     }
     @Override
     public void toggleAutoscroll (){

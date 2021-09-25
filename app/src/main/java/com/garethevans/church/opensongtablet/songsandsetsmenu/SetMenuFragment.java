@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class SetMenuFragment extends Fragment {
 
@@ -132,20 +134,28 @@ public class SetMenuFragment extends Fragment {
     public void prepareCurrentSet() {
         // We have received a call to redraw the set list either on first load or after song indexing
         mainActivityInterface.getSetActions().buildSetArraysFromItems(requireContext(),mainActivityInterface);
-        myView.myRecyclerView.removeAllViews();
-        myView.myRecyclerView.setOnClickListener(null);
-        myView.myRecyclerView.invalidate();
+        myView.myRecyclerView.post(() -> {
+            myView.myRecyclerView.removeAllViews();
+            myView.myRecyclerView.setOnClickListener(null);
+            myView.myRecyclerView.invalidate();
+        });
+
+        String titletext = requireActivity().getResources().getString(R.string.set) + ": " + mainActivityInterface.getSetActions().currentSetNameForMenu(getContext(),mainActivityInterface);
+        myView.setTitle.post(() -> myView.setTitle.setText(titletext));
+
         buildList();
     }
 
     private void buildList() {
         setListAdapter = new SetListAdapter(mainActivityInterface, createList());
-        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(mainActivityInterface,setListAdapter);
+        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         setListAdapter.setTouchHelper(itemTouchHelper);
-        itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
-        myView.myRecyclerView.setAdapter(setListAdapter);
-        myView.myRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        myView.myRecyclerView.post(() -> {
+            itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
+            myView.myRecyclerView.setAdapter(setListAdapter);
+            myView.myRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        });
     }
 
     // Get the set list item objects for the recyclerview
@@ -157,24 +167,33 @@ public class SetMenuFragment extends Fragment {
             SetItemInfo si = new SetItemInfo();
             si.songitem = (i+1) + ".";
             si.songfolder = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
-            si.songtitle = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
+            si.songfoldernice = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
+            si.songtitle = Uri.decode(mainActivityInterface.getCurrentSet().getSetFilenames().get(i));
+            si.songfilename = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
             si.songkey = mainActivityInterface.getCurrentSet().getSetKeys().get(i);
 
+            Log.d(TAG,"si.songFolder: "+si.songfolder);
             // Decide on the icon to use for the set item
-            if (si.songfolder.equals("**" + getString(R.string.slide))) {
-                si.songicon = getString(R.string.slide);
-            } else if (si.songfolder.equals("**" + getString(R.string.note))) {
-                si.songicon = getString(R.string.note);
-            } else if (si.songfolder.equals("**" + getString(R.string.scripture))) {
-                si.songicon = getString(R.string.scripture);
-            } else if (si.songfolder.equals("**" + getString(R.string.image))) {
-                si.songicon = getString(R.string.image);
-            } else if (si.songfolder.equals("**" + getString(R.string.variation))) {
-                si.songicon = getString(R.string.variation);
-            } else if (si.songtitle.contains(".pdf") || si.songtitle.contains(".PDF")) {
+            if (si.songfolder.equals("**Slides")) {
+                si.songicon = "Slides";
+                si.songfoldernice = getString(R.string.slide);
+            } else if (si.songfolder.equals("**Notes")) {
+                si.songicon = "Notes";
+                si.songfoldernice = getString(R.string.note);
+            } else if (si.songfolder.equals("**Scripture")) {
+                si.songicon = "Scripture";
+                si.songfoldernice = getString(R.string.scripture);
+            } else if (si.songfolder.equals("**Images")) {
+                si.songicon = "Images";
+                si.songfoldernice = getString(R.string.image);
+            } else if (si.songfolder.equals("**Variations")) {
+                si.songicon = "Variations";
+                si.songfoldernice = getString(R.string.variation);
+            } else if (si.songtitle.toLowerCase(Locale.ROOT).contains(".pdf")) {
                 si.songicon = ".pdf";
+                si.songfoldernice = getString(R.string.pdf);
             } else {
-                si.songicon = getString(R.string.song);
+                si.songicon = "Songs";
             }
             setItemInfos.add(si);
         }
@@ -187,7 +206,7 @@ public class SetMenuFragment extends Fragment {
         setItemInfos.get(position).songfolder = folder;
         // Check for icon
         setItemInfos.get(position).songicon = mainActivityInterface.getSetActions().
-                getIconIdentifier(requireContext(), mainActivityInterface,folder,filename);
+                getIconIdentifier(mainActivityInterface,folder,filename);
         setListAdapter.notifyItemChanged(position);
     }
 

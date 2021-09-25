@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -83,10 +84,12 @@ public class DisplayPrevNext {
         // If we are showing the buttons, deal with them
         if (showNext || showPrev) {
             // Get the text from either the set or song menu
-            String previousText = getTextForButton(prevIndex);
-            String nextText = getTextForButton(nextIndex);
+            // Decode the text which for non-songs may be Uri encoded for safety
+            String previousText = Uri.decode(getTextForButton(prevIndex));
+            String nextText = Uri.decode(getTextForButton(nextIndex));
 
             // Set the listeners
+            // Use the text as it is for the filename (might be Uri encoded)
             prev.setOnClickListener(v -> doMove(prevIndex));
             next.setOnClickListener(v -> doMove(nextIndex));
 

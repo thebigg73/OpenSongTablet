@@ -30,6 +30,7 @@ public class CurrentSet {
         currentSetString = "";
         initialSetString = "";
         setName = "";
+        indexSongInSet = -1;
         initialiseTheSpecifics();
     }
     public void initialiseTheSpecifics() {
@@ -79,23 +80,25 @@ public class CurrentSet {
     }
     private String getValueAtPosition(String what, int position) {
         String value = "";
-        try {
-            switch (what) {
-                case "item":
-                    value = setItems.get(position);
-                    break;
-                case "folder":
-                    value = setFolders.get(position);
-                    break;
-                case "filename":
-                    value = setFilenames.get(position);
-                    break;
-                case "key":
-                    value = setKeys.get(position);
-                    break;
+        if (position>=0 && position<setItems.size()) {
+            try {
+                switch (what) {
+                    case "item":
+                        value = setItems.get(position);
+                        break;
+                    case "folder":
+                        value = setFolders.get(position);
+                        break;
+                    case "filename":
+                        value = setFilenames.get(position);
+                        break;
+                    case "key":
+                        value = setKeys.get(position);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return value;
     }

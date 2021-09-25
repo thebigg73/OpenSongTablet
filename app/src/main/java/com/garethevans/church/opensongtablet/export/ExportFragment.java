@@ -220,26 +220,29 @@ public class ExportFragment extends Fragment {
                 content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(requireContext(),
                         mainActivityInterface, mainActivityInterface.getSong());
                 uri = getExportUri(".onsong");
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), uri);
-                mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
                 exportFilename = getExportFilename(".onsong");
+                mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(),mainActivityInterface,"Export","",exportFilename,content);
+
 
             } else if (type.equals("text/plain") && myView.chordPro.isChecked()) {
                 // Convert the song to ChordPro format and save it
                 content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(requireContext(),
                         mainActivityInterface, mainActivityInterface.getSong());
                 uri = getExportUri(".cho");
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), uri);
-                mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
+                //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), uri);
+                //mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
                 exportFilename = getExportFilename(".cho");
+                mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(),mainActivityInterface,"Export","",exportFilename,content);
+
 
             } else if (type.equals("text/plain") && myView.text.isChecked()) {
                 // Convert the song to text format and save it
                 content = mainActivityInterface.getPrepareFormats().getSongAsText(mainActivityInterface.getSong());
                 uri = getExportUri(".txt");
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), uri);
-                mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
+                //OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), uri);
+                //mainActivityInterface.getStorageAccess().writeFileFromString(content, outputStream);
                 exportFilename = getExportFilename(".txt");
+                mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(),mainActivityInterface,"Export","",exportFilename,content);
 
             }
 
