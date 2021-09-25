@@ -324,6 +324,12 @@ public class LoadXML extends Activity {
         }
 
         StaticVariables.thisSongScale = preferences.getMyPreferenceString(c,"songAutoScale","W");
+
+        // IV - When an error force use of section 0
+        if (FullscreenActivity.isSong && FullscreenActivity.myLyrics == c.getString(R.string.user_guide_lyrics)) {
+            StaticVariables.currentSection = 0;
+            FullscreenActivity.pdfPageCurrent = 0;
+        }
     }
 
     private static void updateNonOpenSongDetails(NonOpenSongSQLite nonOpenSongSQLite) {
@@ -376,16 +382,17 @@ public class LoadXML extends Activity {
     }
 
     private static void setNotFound(Context c) {
-        FullscreenActivity.myLyrics = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "\n\n" +
+        // IV - Prepared as a single section
+        FullscreenActivity.myLyrics = "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _ \n " +
                 c.getResources().getString(R.string.songdoesntexist) + "\n\n";
-        StaticVariables.mLyrics = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "\n\n" +
+        StaticVariables.mLyrics = "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _ \n " +
                 c.getResources().getString(R.string.songdoesntexist) + "\n\n";
         FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<title>Welcome to OpenSongApp</title>\n" +
                 "<author>Gareth Evans</author>\n<lyrics>"
-                + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "\n\n"
+                + "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _\n "
                 + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
-        StaticVariables.mLyrics = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "\n\n"
+        StaticVariables.mLyrics = "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _\n "
                 + c.getResources().getString(R.string.songdoesntexist) + "\n\n";
         FullscreenActivity.myLyrics = "ERROR!";
     }

@@ -2712,6 +2712,11 @@ public class ProcessSong extends Activity {
                 }
             }
 
+            if (mFileDescriptor == null) {
+                // IV - No file
+                return null;
+            }
+
             // Open page 0
             PdfRenderer.Page mCurrentPage = null;
             if (mPdfRenderer != null) {
@@ -2722,6 +2727,8 @@ public class ProcessSong extends Activity {
                 }
                 mCurrentPage = mPdfRenderer.openPage(FullscreenActivity.pdfPageCurrent);
             }
+
+            StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
 
             // Get pdf size from page
             int pdfwidth;

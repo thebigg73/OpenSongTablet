@@ -1281,6 +1281,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         });
     }
     private void showCorrectViews() {
+        // IV - Make sure it starts clear
+        presenter_lyrics_image.setImageBitmap(null);
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
             // Image and PDF files replace the slide text with an image preview
             presenter_lyrics_image.setVisibility(View.VISIBLE);
@@ -1520,8 +1522,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             }
         }
-        // Select the first button if we can
-        StaticVariables.currentSection = 0;
+        // Select the current button if we can
         selectSectionButtonInSong(StaticVariables.currentSection);
     }
 
@@ -1760,8 +1761,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void loadImagePreview() {
         // Make the appropriate bits visible
         presenter_lyrics.setVisibility(View.GONE);
-        // IV - Make sure it starts clear
-        presenter_lyrics_image.setImageBitmap(null);
 
         // Process the image location into an URI, then get the sizes
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -2127,6 +2126,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // If this is an image, hide the text, show the image, otherwise show the text in the slide window
             if (FullscreenActivity.isPDF) {
                 FullscreenActivity.pdfPageCurrent = which;
+                StaticVariables.currentSection = which;
                 loadPDFPagePreview();
             } else if (FullscreenActivity.isImage) {
                 StaticVariables.uriToLoad = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
@@ -2644,6 +2644,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void changePDFPage(int page, String direction) {
         FullscreenActivity.whichDirection = direction;
         FullscreenActivity.pdfPageCurrent = page;
+        StaticVariables.currentSection = page;
         if (presenter_song_buttonsListView.getChildCount()>page) {
             LinearLayout row = (LinearLayout) presenter_song_buttonsListView.getChildAt(page);
             Button thisbutton = (Button) row.getChildAt(1);
@@ -3381,6 +3382,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             h.post(() -> ShowToast.showToast(PresenterMode.this));
                         }
                     }
+                    // IV - Set current values
+                    if (StaticVariables.currentSection >= 0) {
+                        StaticVariables.currentSection = 0;
+                    } else {
+                        // IV - Consume any pending client section change received from Host (-ve value)
+                        StaticVariables.currentSection = -(1 + StaticVariables.currentSection);
+                    }
+                    FullscreenActivity.pdfPageCurrent = StaticVariables.currentSection;
                 }
 
                 // Clear the old headings (presention order looks for these)
@@ -3507,6 +3516,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         unhighlightAllSetButtons();
                     }
                     showCorrectViews();
+
+                    // IV - Consume any later pending client section change received from Host (-ve value)
+                    if (StaticVariables.currentSection < 0) {
+                        StaticVariables.currentSection = -(1 + StaticVariables.currentSection);
+                    }
+
                     if (FullscreenActivity.isPDF) {
                         LoadXML.getPDFPageCount(PresenterMode.this, preferences, storageAccess);
                     }

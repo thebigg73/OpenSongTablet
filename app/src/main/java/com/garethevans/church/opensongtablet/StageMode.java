@@ -1452,6 +1452,12 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    private void sendSongSectionForPendingToConnected() {
+        // IV - Send a pending section change to the client (-ve offset by 1)
+        String infoPayload = "___section___-" + (1 + StaticVariables.currentSection);
+        nearbyConnections.doSendPayloadBytes(infoPayload);
+    }
+
     @Override
     public void shareSong() {
         doCancelAsyncTask(sharesong_async);
@@ -2147,9 +2153,9 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             if (FullscreenActivity.isPDF && !checkCanScrollUp() && (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
+                StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
                 // Send page number as 'section' to other devices
                 if (StaticVariables.whichMode.equals("Stage") && StaticVariables.isHost && StaticVariables.isConnected) {
-                    StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
                     sendSongSectionToConnected();
                 }
                 // IV - Indicate reload which does not impact running pad etc.
@@ -2218,9 +2224,9 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             if (FullscreenActivity.isPDF && !checkCanScrollDown() && (FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
+                StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
                 // Send page number as 'section' to other devices
                 if (StaticVariables.whichMode.equals("Stage") && StaticVariables.isHost && StaticVariables.isConnected) {
-                    StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
                     sendSongSectionToConnected();
                 }
                 // IV - Indicate reload which does not impact running pad etc.
@@ -3458,7 +3464,6 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.whichDirection = "R2L";
             StaticVariables.showstartofpdf = true;
-            FullscreenActivity.pdfPageCurrent = 0;
             // IV - PDF page move handling moved to doscrollDown
             if (StaticVariables.setView) {
                 // Is there another song in the set?  If so move, if not, do nothing
@@ -3829,6 +3834,11 @@ public class StageMode extends AppCompatActivity implements
             }
         }
 
+        // IV - Consume any later pending client section change received from Host (-ve value)
+        if (StaticVariables.currentSection < 0) {
+            StaticVariables.currentSection = -(1 + StaticVariables.currentSection);
+        }
+
         // IV - If StaticVariables.metronomeonoff == "on" this is a reload with the Metronome left running
         // For all other case loadSong has stopped any running Metronome task == "off"
         if (StaticVariables.metronomeonoff == "off") {
@@ -3871,6 +3881,7 @@ public class StageMode extends AppCompatActivity implements
             glideimage.getViewTreeObserver().addOnGlobalLayoutListener(vto);
 
         } else {
+            final int proposedCurrentSection = StaticVariables.currentSection;
             final LinearLayout songbit = (LinearLayout) songscrollview.getChildAt(0);
             songbit.postDelayed(() -> {
                 songwidth = songbit.getMeasuredWidth();
@@ -3879,10 +3890,19 @@ public class StageMode extends AppCompatActivity implements
                 songbit.setScaleY(1.0f);
                 highlightNotes.setScaleX(1.0f);
                 highlightNotes.setScaleY(1.0f);
+                // Scroll to show this view at the top of the page unless we are autoscrolling
+                try {
+                    FullscreenActivity.sectionviews[StaticVariables.currentSection].setAlpha(1.0f);
+                    if (!StaticVariables.isautoscrolling &&
+                            (proposedCurrentSection == StaticVariables.currentSection)) {
+                        songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[StaticVariables.currentSection].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
+                    }
+                } catch (Exception e) {
+                    Log.d(TAG, "Section not found");
+                }
             }, 1000);
         }
 
-        songscrollview.scrollTo(0,0);
         glideimage_ScrollView.scrollTo(0,0);
         FullscreenActivity.newPosFloat = 0.0f;
         // Automatically start the autoscroll
@@ -4080,6 +4100,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void selectSection(int whichone) {
+        //Log.d("StageMode","selectSection " + whichone);
         if (FullscreenActivity.isPDF) {
             // IV - 'Section' moves for PDF will arrive from presenter mode and Stage mode PDF page moves
             // IV - A connected host may request an invalid section, if it does show section 0
@@ -4091,6 +4112,7 @@ public class StageMode extends AppCompatActivity implements
                 whichone = 0;
             }
 
+            StaticVariables.currentSection = whichone;
             FullscreenActivity.pdfPageCurrent = whichone;
 
             // Send section to other devices
@@ -4111,40 +4133,40 @@ public class StageMode extends AppCompatActivity implements
                 whichone = 0;
             }
 
-            StaticVariables.currentSection = whichone;
-
-            // Send section to other devices
-            if (StaticVariables.isHost && StaticVariables.isConnected && FullscreenActivity.isSong) {
-                sendSongSectionToConnected();
-            }
-
-            // Set this sections alpha to 1.0f;
-            try {
-                FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
-            } catch (Exception e) {
-                Log.d(TAG, "Section not found");
-            }
-
             // Smooth scroll to show this view at the top of the page unless we are autoscrolling
             try {
+                if (FullscreenActivity.sectionviews[whichone] == null) {
+                    Log.d("StageMode","Had to reset section to 0");
+                    whichone = 0;
+                }
                 if (!StaticVariables.isautoscrolling) {
                     songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
                 }
             } catch (Exception e) {
+                whichone = 0;
                 Log.d(TAG, "Section not found");
             }
 
             try {
-                // Go through each of the views and set the alpha of the others to 0.5f;
-                for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
-                    if (x != whichone) {
-                        FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+                if (FullscreenActivity.sectionviews[whichone] != null) {
+                    // Go through each of the views and set the alpha (deliberatly all are set)
+                    for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
+                        if (x == whichone) {
+                            FullscreenActivity.sectionviews[x].setAlpha(1.0f);
+                        } else {
+                            FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+                        }
                     }
+                    FullscreenActivity.tempswipeSet = "enable";
+                    StaticVariables.setMoveDirection = "";
+                    StaticVariables.currentSection = whichone;
+                    FullscreenActivity.pdfPageCurrent = whichone;
+                    // Send section to other devices
+                    if (StaticVariables.isHost && StaticVariables.isConnected && FullscreenActivity.isSong) {
+                        sendSongSectionToConnected();
+                    }
+                    dualScreenWork();
                 }
-                FullscreenActivity.tempswipeSet = "enable";
-                StaticVariables.setMoveDirection = "";
-
-                dualScreenWork();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -5959,7 +5981,6 @@ public class StageMode extends AppCompatActivity implements
                 mypage.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.setBackgroundColor(lyricsBackgroundColor);
                 width_scale = 0f;
-                StaticVariables.currentSection = 0;
                 testpane.removeAllViews();
                 testpane1_2.removeAllViews();
                 testpane2_2.removeAllViews();
@@ -6205,10 +6226,10 @@ public class StageMode extends AppCompatActivity implements
                     songscrollview.removeAllViews();
                     songbit.addView(column1_1);
                     songscrollview.addView(songbit);
-                    if (FullscreenActivity.sectionviews[0] != null) {
+                    if (FullscreenActivity.sectionviews[StaticVariables.currentSection] != null) {
                         // Make the first section active (full alpha)
                         try {
-                            FullscreenActivity.sectionviews[0].setAlpha(1.0f);
+                            FullscreenActivity.sectionviews[StaticVariables.currentSection].setAlpha(1.0f);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -6914,6 +6935,8 @@ public class StageMode extends AppCompatActivity implements
     public void changePDFPage(int page, String direction) {
         FullscreenActivity.whichDirection = direction;
         FullscreenActivity.pdfPageCurrent = page;
+        StaticVariables.currentSection = FullscreenActivity.pdfPageCurrent;
+        StaticVariables.reloadOfSong = true;
         loadSong();
     }
 
@@ -6925,22 +6948,36 @@ public class StageMode extends AppCompatActivity implements
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
 
-                // Stop the metronome now as it is high drain and breaks async starts!
+                // IV - For a load
                 if (!StaticVariables.reloadOfSong) {
+                    // Stop the metronome now as it is high drain and breaks async starts!
                     Metronome.stopMetronomeTask();
-                }
-
-                // IV - For a reload, load the stored whichSongFolder in case we were browsing elsewhere
-                if (StaticVariables.reloadOfSong) {
+                    // IV - Set current section
+                    if (StaticVariables.currentSection >= 0) {
+                        StaticVariables.currentSection = 0;
+                    } else {
+                        // IV - Consume any pending client section change received from Host (-ve value)
+                        StaticVariables.currentSection = -(1 + StaticVariables.currentSection);
+                    }
+                    // IV - Clear sendSong Handlers and send a pending section change for the current section
+                    if (StaticVariables.isHost && StaticVariables.isConnected) {
+                        sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+                        resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
+                        if (StaticVariables.whichMode.equals("Stage")) {
+                            sendSongSectionForPendingToConnected();
+                        }
+                    }
+                } else {
+                    // IV - For a reload, load the stored whichSongFolder in case we were browsing elsewhere
                     StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this,"whichSongFolder", getString(R.string.mainfoldername));
                 }
+
+                FullscreenActivity.pdfPageCurrent = StaticVariables.currentSection;
 
                 // Clear any queued 'after song display' activity - we are moving to a new song
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
                 startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
                 showStickyHandler.removeCallbacks(showStickyRunnable);
-                sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
-                resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
 
                 // If there is a sticky note showing, remove it early
                 if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
@@ -8112,9 +8149,13 @@ public class StageMode extends AppCompatActivity implements
 
     // Redraw the lyrics page
     private void gesture4() {
-        // IV - Reset PDF page just in case song is a PDF
         StaticVariables.reloadOfSong = true;
         FullscreenActivity.pdfPageCurrent = 0;
+        StaticVariables.currentSection = 0;
+        // Send section to other devices
+        if (StaticVariables.isHost && StaticVariables.isConnected) {
+            sendSongSectionToConnected();
+        }
         loadSong();
     }
 

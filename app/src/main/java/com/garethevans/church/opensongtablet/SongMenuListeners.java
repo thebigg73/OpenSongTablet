@@ -31,8 +31,6 @@ public class SongMenuListeners extends Activity {
         final String whichSongFolder = StaticVariables.whichSongFolder;
 
         return v -> {
-            FullscreenActivity.pdfPageCurrent = 0;
-
             try {
                 if (clickedkey.equals(c.getString(R.string.songsinfolder))) {
                     // We clicked on a folder
