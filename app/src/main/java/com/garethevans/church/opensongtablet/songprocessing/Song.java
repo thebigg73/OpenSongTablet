@@ -56,7 +56,6 @@ public class Song {
     private ArrayList<String> songSectionTypes;
     private int currentSection =0;
     private boolean isImageSlide;
-    private String nextDirection = "R2L";
     private int pdfPageCurrent = 0;
     private String songXML;
     private int halfSplit;
@@ -160,7 +159,6 @@ public class Song {
         }
     }
     public boolean getIsImageSlide() {return isImageSlide;}
-    public String getNextDirection() {return nextDirection;}
     public int getPdfPageCurrent() {return pdfPageCurrent;}
     public int getCurrentSection() {return currentSection;}
     public int getDetectedChordFormat() {
@@ -277,7 +275,6 @@ public class Song {
         this.songSectionHeadings = songSectionHeadings;
     }
     public void setIsImageSlide(boolean isImageSlide) {this.isImageSlide = isImageSlide;}
-    public void setNextDirection(String nextDirection) {this.nextDirection = nextDirection;}
     public void setPdfPageCurrent(int pdfPageCurrent) {this.pdfPageCurrent = pdfPageCurrent;}
     public void setCurrentSection(int currentSection) {this.currentSection = currentSection;}
     public void setDetectedChordFormat(int detectedChordFormat) {
@@ -359,7 +356,6 @@ public class Song {
         this.songSectionTypes = toCopy.songSectionTypes;
         this.currentSection = toCopy.currentSection;
         this.isImageSlide = toCopy.isImageSlide;
-        this.nextDirection = toCopy.nextDirection;
         this.pdfPageCurrent = toCopy.pdfPageCurrent;
         this.presentationorder = toCopy.presentationorder;
         this.songXML = toCopy.songXML;

@@ -27,6 +27,7 @@ public class CustomSlide {
     private String file;                    // A file safe version of the title
     private String title, lyrics, key;      // Hopefully obvious as the title, content and key
     private String author;                  // For scripture:  The translation
+    private String copyright;               // For slideshow: The transition
     private String user1;                   // For slideshow: The duration of the slide
     private String user2;                   // For slideshow: A boolean if slides loop
     private String user3;                   // For slideshow: Links to background images
@@ -74,6 +75,7 @@ public class CustomSlide {
         xml = "";
         title = "";
         author = "";
+        copyright = "";
         key = "";
         lyrics = "";
         user1 = "";
@@ -101,6 +103,7 @@ public class CustomSlide {
             xml += "<song>\n";
             xml += "  <title>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(title) + "</title>\n";
             xml += "  <author>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(author) + "</author>\n";
+            xml += "  <copyright>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(copyright) + "</copyright>\n";
             xml += "  <key>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(key) + "</key>\n";
             xml += "  <user1>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(user1) + "</user1>\n";
             xml += "  <user2>" + mainActivityInterface.getProcessSong().parseToHTMLEntities(user2) + "</user2>\n";
@@ -125,7 +128,7 @@ public class CustomSlide {
             }
 
             // Add to set $**_**{customsfolder}/filename_***key***_**$
-            String songforsetwork = "$**_**" + type + "/" + file + "_***" + key + "***__**$";
+            String songforsetwork = "$**_**" + folder + "/" + file + "_***" + key + "***__**$";
             mainActivityInterface.getCurrentSet().addSetItem(songforsetwork);
             mainActivityInterface.getCurrentSet().addSetValues("**" + folder, file, key);
 

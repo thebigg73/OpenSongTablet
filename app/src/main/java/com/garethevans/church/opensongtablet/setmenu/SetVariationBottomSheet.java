@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsetsmenu;
+package com.garethevans.church.opensongtablet.setmenu;
 
 import android.app.Dialog;
 import android.content.Context;

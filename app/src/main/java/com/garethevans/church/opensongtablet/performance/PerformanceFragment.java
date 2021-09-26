@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,12 +40,14 @@ public class PerformanceFragment extends Fragment {
     private boolean trimLines, trimSections, addSectionSpace, songAutoScaleColumnMaximise,
             songAutoScaleOverrideFull, songAutoScaleOverrideWidth, boldChordHeading,
             highlightChords,highlightHeadings;
-    static boolean wasScaling, R2L, loadNextSong, loadPrevSong;
-    private static int screenHeight;
-    public static int songViewWidth, songViewHeight, screenWidth;
+    private int screenHeight;
+    public int songViewWidth, songViewHeight, screenWidth, swipeMinimumDistance,
+            swipeMaxDistanceYError, swipeMinimumVelocity;
     private String autoScale;
     private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
+    private GestureDetector gestureDetector;
+
     // Attaching and destroying
     @Override
     public void onAttach(@NonNull Context context) {
@@ -145,9 +148,9 @@ public class PerformanceFragment extends Fragment {
         fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f);
         songAutoScaleOverrideFull = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true);
         songAutoScaleOverrideWidth = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideWidth",false);
-        int swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumDistance", 250);
-        int swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMaxDistanceYError", 200);
-        int swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumVelocity", 600);
+        swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumDistance", 250);
+        swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMaxDistanceYError", 200);
+        swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumVelocity", 600);
         highlightChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"highlightChords",false);
         highlightHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"highlightHeadings",false);
         fontSizeMax = 90.0f;
@@ -155,9 +158,6 @@ public class PerformanceFragment extends Fragment {
         songAutoScaleOverrideFull = false;
         myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
     }
-
-
-
 
     private void resetTitleSizes() {
         mainActivityInterface.updateActionBarSettings("songTitleSize",-1,
@@ -177,7 +177,7 @@ public class PerformanceFragment extends Fragment {
         new Thread(() -> {
             // Quick fade the current page
             requireActivity().runOnUiThread(() -> {
-                if (R2L) {
+                if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
                     animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_left);
                 } else {
                     animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
@@ -266,7 +266,7 @@ public class PerformanceFragment extends Fragment {
                 songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax);
 
         // Set up the type of animate in
-        if (R2L) {
+        if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
             animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
         } else {
             animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
@@ -363,67 +363,24 @@ public class PerformanceFragment extends Fragment {
     }
 
     // The scale and gesture bits of the code
-    //private ScaleGestureDetector scaleDetector;
     private float scaleFactor = 1.0f;
-    //private GestureDetector detector;
     @SuppressLint("ClickableViewAccessibility")
     private void setGestureListeners(){
+        // get the gesture detector
+        gestureDetector = new GestureDetector(requireContext(), new GestureListener(mainActivityInterface,myView.zoomLayout,
+                swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity));
+
         // Any interaction with the screen should trigger the display prev/next (if required)
         myView.zoomLayout.setOnTouchListener((view, motionEvent) -> {
             mainActivityInterface.getDisplayPrevNext().showAndHide();
-            // Just a passing listener, so return false so we don't consume the touch event
-            return false;
+            return gestureDetector.onTouchEvent(motionEvent);
         });
-
-        /*detector = new GestureDetector(getActivity(), new GestureListener(myView.songscrollview,
-                myView.horizontalscrollview,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity,
-                oktoRegisterGesture(),preferences.getMyPreferenceInt(getContext(),"doubleTapGesture",2),
-                performanceGestures));
-        myView.mypage.setOnTouchListener(new MyTouchListener());
-        myView.songscrollview.setOnTouchListener(new MyTouchListener());
-        myView.horizontalscrollview.setOnTouchListener(new MyTouchListener());
-        scaleDetector = new ScaleGestureDetector(getActivity(), new PinchToZoomGestureListener(myView.pageHolder));*/
-        /*detector = new GestureDetector(getActivity(), new GestureListener(myView.zoomLayout,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity,
-                oktoRegisterGesture(),preferences.getMyPreferenceInt(getContext(),"doubleTapGesture",2),
-                performanceGestures));*/
     }
 
-    private void prepareSongLoad() {
-        // TODO
-        /*ArrayList<Song> songsList = sqLiteHelper.getSongsByFilters(getActivity(), commonSQL,
-                false,false,false,false,false,
-                null,null,null,null,null);
-
-        // Get current index
-        int currentPosition = StaticVariables.songsInList.indexOf(StaticVariables.songfilename);
-        if (loadNextSong) {
-            loadNextSong = false;
-            if (currentPosition<StaticVariables.songsInList.size()-1) {
-                StaticVariables.songfilename = StaticVariables.songsInList.get(currentPosition+1);
-                doSongLoad();
-            } else {
-                showToast.doIt(getActivity(), getString(R.string.lastsong));
-            }
-        } else if (loadPrevSong) {
-            loadPrevSong = false;
-            if (currentPosition>0) {
-                StaticVariables.songfilename = StaticVariables.songsInList.get(currentPosition-1);
-                doSongLoad();
-            } else {
-                showToast.doIt(getActivity(), getString(R.string.firstsong));
-            }
-        }*/
-    }
     public void onBackPressed() {
         Log.d(TAG,"On back press!!!");
     }
 
-    private boolean oktoRegisterGesture() {
-        //TODO
-        return true;
-    }
-
-    View screenGrab;
     private void getScreenshot(int w, int h) {
         if (!mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")
@@ -444,6 +401,15 @@ public class PerformanceFragment extends Fragment {
 
     public MyZoomLayout getZoomLayout() {
         return myView.zoomLayout;
+    }
+
+    public void updateSizes(int width, int height) {
+        if (width<0) {
+            songViewWidth = screenWidth;
+        } else {
+            songViewWidth = width;
+        }
+        songViewHeight = height;
     }
 
 }

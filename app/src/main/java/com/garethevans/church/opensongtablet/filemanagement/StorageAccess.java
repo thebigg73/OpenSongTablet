@@ -982,7 +982,7 @@ public class StorageAccess {
     public OutputStream getOutputStream(Context c, Uri uri) {
         if (uriExists(c, uri) || !lollipopOrLater()) {
             try {
-                return c.getContentResolver().openOutputStream(uri);
+                return c.getContentResolver().openOutputStream(uri,"wt");  // Truncate to 0 to wipe
             } catch (Exception e) {
                 Log.d(TAG, "Error getting outputstream");
                 e.printStackTrace();

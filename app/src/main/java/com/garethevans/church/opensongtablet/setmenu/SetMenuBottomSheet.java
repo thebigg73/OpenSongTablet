@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsetsmenu;
+package com.garethevans.church.opensongtablet.setmenu;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMenuSetBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

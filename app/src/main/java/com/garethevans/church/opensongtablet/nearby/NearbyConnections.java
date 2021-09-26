@@ -428,7 +428,7 @@ public class NearbyConnections implements NearbyInterface {
                 // We'll measure the actual size to check though
                 infoPayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" +
                         mainActivityInterface.getSong().getFilename() + "_xx____xx_" +
-                        mainActivityInterface.getSong().getNextDirection() + "_xx____xx_" +
+                        mainActivityInterface.getDisplayPrevNext().getSwipeDirection() + "_xx____xx_" +
                         mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface,
                                 mainActivityInterface.getSong());
 
@@ -452,7 +452,7 @@ public class NearbyConnections implements NearbyInterface {
                         infoFilePayload = "FILE:" + payloadFile.getId() + ":" +
                                 mainActivityInterface.getSong().getFolder() + "_xx____xx_" +
                                 mainActivityInterface.getSong().getFilename() + "_xx____xx_" +
-                                mainActivityInterface.getSong().getNextDirection();
+                                mainActivityInterface.getDisplayPrevNext().getSwipeDirection();
                     }
                 } catch (Exception e) {
                     Log.d("NearbyConnections", "Error trying to send file: " + e);
@@ -542,7 +542,7 @@ public class NearbyConnections implements NearbyInterface {
 
                 if (!isHost && isConnected && receiveHostFiles) {
                     // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
-                    mainActivityInterface.getSong().setNextDirection(receivedBits.get(2));
+                    mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
 
                     // If the user wants to keep the host file, we will save it to our storage.
                     // If we already have it, it will overwrite it, if not, we add it
@@ -584,7 +584,7 @@ public class NearbyConnections implements NearbyInterface {
                     mainActivityInterface.getSong().setFolder(receivedBits.get(0));
                     mainActivityInterface.getSong().setFilename(receivedBits.get(1));
                     Log.d(TAG, "received: " + mainActivityInterface.getSong().getFolder() + "/" + mainActivityInterface.getSong().getFilename());
-                    mainActivityInterface.getSong().setNextDirection(receivedBits.get(2));
+                    mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
 
                     // Now load the song
                     if (nearbyReturnActionsInterface != null) {
@@ -613,7 +613,7 @@ public class NearbyConnections implements NearbyInterface {
         String[] bits = foldernamepair.split("_xx____xx_");
         String folder = bits[0];
         String filename = bits[1];
-        mainActivityInterface.getSong().setNextDirection(bits[2]);
+        mainActivityInterface.getDisplayPrevNext().setSwipeDirection(bits[2]);
         boolean movepage = false;
         if ((folder.equals(mainActivityInterface.getSong().getFolder()) || mainActivityInterface.getSong().getFolder().equals("../Received"))
                 && filename.equals(mainActivityInterface.getSong().getFilename()) && filename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
@@ -637,7 +637,7 @@ public class NearbyConnections implements NearbyInterface {
         mainActivityInterface.getSong().setFilename(filename);
         Log.d("NearbyConnections", "newLocation=" + newLocation);
         if (movepage) {
-            if (mainActivityInterface.getSong().getNextDirection().equals("L2R")) {
+            if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("L2R")) {
                 // Go back
                 if (nearbyReturnActionsInterface != null) {
                     nearbyReturnActionsInterface.goToPreviousItem();

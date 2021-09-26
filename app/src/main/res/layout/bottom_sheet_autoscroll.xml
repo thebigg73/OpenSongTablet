@@ -68,11 +68,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/autoscroll_link_audio" />
 
+            <!-- TODO Bring this back if I decide it is used enough -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/learnAutoscroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/timer_learn" />
+                android:text="@string/timer_learn"
+                android:visibility="gone"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

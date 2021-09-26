@@ -1,6 +1,6 @@
-package com.garethevans.church.opensongtablet.songsandsetsmenu;
+package com.garethevans.church.opensongtablet.OLD_TO_DELETE;
 
-public class CreateNewSet {
+public class _CreateNewSet {
 
 /*
     boolean doCreation(Context c, MainActivityInterface mainActivityInterface,

@@ -4,10 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.abcnotation.MusicScoreBottomSheet;
 import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
 import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.RandomSongBottomSheet;
+import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -224,7 +225,8 @@ public class PedalActions {
                 break;
 
             case "abcnotation":
-                // TODO abcnotation
+                MusicScoreBottomSheet musicScoreBottomSheet = new MusicScoreBottomSheet();
+                musicScoreBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MusicScoreBottomSheet");
                 break;
 
             case "highlight":

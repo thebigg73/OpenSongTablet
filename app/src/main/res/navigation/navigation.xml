@@ -800,7 +800,7 @@
         app:startDestination="@id/songMenuFragment">
         <fragment
             android:id="@+id/songMenuFragment"
-            android:name="com.garethevans.church.opensongtablet.songsandsetsmenu.SongMenuFragment"
+            android:name="com.garethevans.church.opensongtablet.songmenu.SongMenuFragment"
             android:label="SongMenuFragment"
             tools:layout="@layout/menu_songs">
             <action
@@ -809,7 +809,7 @@
         </fragment>
         <dialog
             android:id="@+id/songMenuBottomSheet"
-            android:name="com.garethevans.church.opensongtablet.songsandsetsmenu.SongMenuBottomSheet"
+            android:name="com.garethevans.church.opensongtablet.songmenu.SongMenuBottomSheet"
             android:label="SongMenuBottomSheet"
             tools:layout="@layout/bottom_sheet_menu_songs"/>
     </navigation>
@@ -817,7 +817,7 @@
         app:startDestination="@id/setMenuFragment">
         <fragment
             android:id="@+id/setMenuFragment"
-            android:name="com.garethevans.church.opensongtablet.songsandsetsmenu.SetMenuFragment"
+            android:name="com.garethevans.church.opensongtablet.setmenu.SetMenuFragment"
             android:label="SetMenuFragment"
             tools:layout="@layout/menu_sets">
             <action
@@ -829,12 +829,12 @@
         </fragment>
         <dialog
             android:id="@+id/setMenuBottomSheet"
-            android:name="com.garethevans.church.opensongtablet.songsandsetsmenu.SetMenuBottomSheet"
+            android:name="com.garethevans.church.opensongtablet.setmenu.SetMenuBottomSheet"
             android:label="SetMenuBottomSheet"
             tools:layout="@layout/bottom_sheet_menu_set"/>
         <dialog
             android:id="@+id/setVariationBottomSheet"
-            android:name="com.garethevans.church.opensongtablet.songsandsetsmenu.SetVariationBottomSheet"
+            android:name="com.garethevans.church.opensongtablet.setmenu.SetVariationBottomSheet"
             android:label="SetVariationBottomSheet"
             tools:layout="@layout/bottom_sheet_variation"/>
     </navigation>

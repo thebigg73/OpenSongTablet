@@ -136,10 +136,10 @@ import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.SetMenuFragment;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.SongMenuFragment;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.ViewPagerAdapter;
+import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
+import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
+import com.garethevans.church.opensongtablet.songmenu.SongMenuFragment;
+import com.garethevans.church.opensongtablet.songmenu.ViewPagerAdapter;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -2048,6 +2048,13 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         sectionWidths.add(width);
         sectionHeights.add(height);
     }
+    @Override
+    public void updateSizes(int width, int height) {
+        if (whichMode.equals("Performance") && performanceFragment!=null ) {
+            performanceFragment.updateSizes(width, height);
+        }
+    }
+
 
 
     // The song sheet title.  Can be displayed in Performance mode and PDF creation

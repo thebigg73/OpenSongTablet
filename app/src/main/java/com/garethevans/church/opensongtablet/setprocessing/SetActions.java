@@ -74,7 +74,7 @@ public class SetActions {
         }
     }
     public void buildSetArraysFromItems(Context c, MainActivityInterface mainActivityInterface) {
-        // Each set item is a stored with the $**_folder/filename_**key**__**$
+        // Each set item is a stored with the $**_folder/filename_***key***__**$
         // We now parse this to get the values separately
 
         // Make sure the specific arrays are empty to start with!
@@ -444,52 +444,62 @@ public class SetActions {
         StringBuilder stringBuilder = new StringBuilder();
 
         // The starting of the xml file
-        stringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n").
+        stringBuilder.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n").
                 append("<set name=\"").
                 append(mainActivityInterface.getProcessSong().parseToHTMLEntities(mainActivityInterface.getCurrentSet().getSetName())).
-                append("\">\n<slide_groups>\n");
+                append("\">\n  <slide_groups>\n");
 
         // Now go through each set entry and build the appropriate xml
         for (int x = 0; x < mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
             String path = mainActivityInterface.getCurrentSet().getFolder(x);
+            String key = mainActivityInterface.getCurrentSet().getKey(x);
             // If the path isn't empty, add a forward slash to the end
             if (!path.isEmpty()) {
                 path = path + "/";
             }
             String name = mainActivityInterface.getCurrentSet().getFilename(x);
-            boolean isImage = name.contains(niceCustomLocationFromFolder(c,folderImages));
-            boolean isVariation = name.contains(niceCustomLocationFromFolder(c,folderVariations));
-            boolean isScripture = name.contains(niceCustomLocationFromFolder(c,folderScripture));
-            boolean isSlide = name.contains(niceCustomLocationFromFolder(c,folderSlides));
-            boolean isNote = name.contains(niceCustomLocationFromFolder(c,folderNotes));
+            boolean isImage = path.contains("**Images");
+            boolean isVariation = path.contains("**Variations");
+            boolean isScripture = path.contains("**Scripture");
+            boolean isSlide = path.contains("**Slides");
+            boolean isNote = path.contains("**Notes");
+
+            Log.d(TAG,"name="+name);
+            Log.d(TAG,"path="+path);
+            Log.d(TAG, "isImage="+isImage);
+            Log.d(TAG, "isVariation="+isVariation);
+            Log.d(TAG, "isScripture="+isScripture);
+            Log.d(TAG, "isSlide="+isSlide);
+            Log.d(TAG, "isNote="+isNote);
 
             if (isImage) {
                 // Adding an image
-                Song tempSong = getTempSong(c,mainActivityInterface,"../" + folderImages + "/_cache", name);
+                Song tempSong = getTempSong(c,mainActivityInterface,"**" + folderImages + "/_cache", name);
                 stringBuilder.append(buildImage(c,mainActivityInterface,tempSong));
 
             } else if (isScripture) {
                 // Adding a scripture
-                Song tempSong = getTempSong(c,mainActivityInterface, "../" + folderScripture + "/_cache", name);
+                Song tempSong = getTempSong(c,mainActivityInterface, "**" + folderScripture + "/_cache", name);
                 stringBuilder.append(buildScripture(mainActivityInterface,tempSong));
 
             } else if (isVariation) {
                 // Adding a variation
-                Song tempSong = getTempSong(c,mainActivityInterface, "../" + folderVariations, name);
+                Song tempSong = getTempSong(c,mainActivityInterface, "**" + folderVariations, name);
                 stringBuilder.append(buildVariation(c,mainActivityInterface,tempSong));
 
             } else if (isSlide) {
                 // Adding a slide
-                Song tempSong = getTempSong(c,mainActivityInterface, "../" + folderSlides + "/_cache", name);
+                Song tempSong = getTempSong(c,mainActivityInterface, "**" + folderSlides + "/_cache", name);
                 stringBuilder.append(buildSlide(mainActivityInterface,tempSong));
 
             } else if (isNote) {
                 // Adding a note
-                Song tempSong = getTempSong(c,mainActivityInterface, "../" + folderNotes + "/_cache", name);
+                Song tempSong = getTempSong(c,mainActivityInterface, "**" + folderNotes + "/_cache", name);
                 stringBuilder.append(buildNote(c,mainActivityInterface,tempSong));
+
             } else {
                 // Adding a song
-                stringBuilder.append(buildSong(mainActivityInterface,path,name));
+                stringBuilder.append(buildSong(c,mainActivityInterface,path,name,key));
             }
         }
         // Now add the final part of the xml
@@ -504,15 +514,26 @@ public class SetActions {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        tempSong.setTitle(Uri.decode(tempSong.getTitle()));
         return tempSong;
     }
-    private StringBuilder buildSong(MainActivityInterface mainActivityInterface, String path, String name) {
+    private StringBuilder buildSong(Context c, MainActivityInterface mainActivityInterface, String path, String name, String key) {
+        // If we have a key set add this as a value.  Desktop will ignore
+        String keyText = "";
+        if (key!=null && !key.isEmpty()) {
+            keyText = " prefKey=\"" + key + "\"";
+        }
         StringBuilder sb = new StringBuilder();
+        String pathText = "";
+        if (path!=null && !path.replace("/","").equals(c.getString(R.string.mainfoldername))) {
+            pathText = " path=\"" + mainActivityInterface.getProcessSong().parseToHTMLEntities(path) + "\"";
+        }
         sb.append("  <slide_group name=\"")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(name))
-                .append("\" type=\"song\" presentation=\"\" path=\"")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(path))
-                .append("\"/>\n");
+                .append("\" type=\"song\"")
+                .append(pathText)
+                .append(keyText)
+                .append("/>\n");
         return sb;
     }
     private StringBuilder buildScripture(MainActivityInterface mainActivityInterface, Song tempSong) {
@@ -526,33 +547,34 @@ public class SetActions {
 
         String[] mySlides = scripture_lyrics.split("_SPLITHERE_");
 
-        String newname = tempSong.getFilename();
-        if (!tempSong.getAuthor().equals("")) {
-            newname = newname+"|"+ tempSong.getAuthor();
-        }
-        sb.append("  <slide_group type=\"scripture\" name=\"")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(newname))
-                .append("\" print=\"true\">\n")
-                .append("    <title>")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getFilename()))
-                .append("</title>\n");
+        sb.append("<slide_group type=\"scripture\" name=\"")
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getTitle()))
+                .append("\">\n")
+                .append("    ")
+                .append(emptyTagCheck(mainActivityInterface,"title",tempSong.getTitle()))
+                .append("\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"subtitle",tempSong.getAuthor()))
+                .append("\n");
 
         sb.append("    <slides>\n");
-
         for (String mySlide : mySlides) {
             if (mySlide != null && mySlide.length() > 0) {
+                String text = mySlide.trim();
+                Log.d(TAG,"mySlide:"+mySlide);
+                text = text.replace(" \n","\n");
+                text = text.replace("\n ","\n");
+                text = text.replace("\n"," ").trim();
+                Log.d(TAG,"text:"+text);
                 sb.append("      <slide>\n")
-                        .append("      <body>")
-                        .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(mySlide.trim()))
-                        .append("</body>\n")
+                        .append("      ")
+                        .append(emptyTagCheck(mainActivityInterface,"body",text))
+                        .append("\n")
                         .append("      </slide>\n");
             }
         }
         sb.append("    </slides>\n")
-                .append("    <subtitle></subtitle>\n")
                 .append( "    <notes />\n")
                 .append("  </slide_group>\n");
-
         return sb;
     }
     private StringBuilder buildVariation(Context c, MainActivityInterface mainActivityInterface, Song tempSong) {
@@ -596,10 +618,9 @@ public class SetActions {
         for (int z=0; z<newslides.size();z++) {
             if (!newslides.get(z).equals("")) {
                 slidetexttowrite.append("      <slide>\n")
-                        .append("        <body>")
-                        .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(newslides.get(z).trim()))
+                        .append("        ")
+                        .append(emptyTagCheck(mainActivityInterface,"body",newslides.get(z).trim()))
                         .append("\n")
-                        .append("        </body>\n")
                         .append("      </slide>\n");
             }
         }
@@ -610,16 +631,13 @@ public class SetActions {
                 .append(tempSong.getFilename())
                 .append("\"")
                 .append(" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
-                .append("    <title>")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getTitle()))
-                .append("</title>\n")
-                .append("    <subtitle>")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getAuthor()))
-                .append("</subtitle>\n")
-                .append("    <notes>")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(slide_lyrics))
-                .append("</notes>\n")
-                .append("    <slides>\n")
+                .append("    ")
+                .append(emptyTagCheck(mainActivityInterface,"title",tempSong.getTitle()))
+                .append("\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"subtitle",tempSong.getAuthor()))
+                .append("\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"notes",slide_lyrics))
+                .append("/n    <slides>\n")
                 .append(slidetexttowrite)
                 .append("    </slides>\n")
                 .append("  </slide_group>\n");
@@ -641,25 +659,23 @@ public class SetActions {
 
         sb.append("  <slide_group name=\"")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getFilename()))
-                .append("\" type=\"custom\" print=\"true\" seconds=\"")
+                .append("\" type=\"custom\" seconds=\"")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser1()))
                 .append("\" loop=\"")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser2()))
                 .append("\" transition=\"")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser3()))
-                .append("\">\n    <title>")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getTitle()))
-                .append("</title>\n    <subtitle>")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getCopyright()))
-                .append("</subtitle>\n    <notes>")
-                .append("")
-                .append("</notes>\n    <slides>\n");
+                .append("\">\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"title",tempSong.getTitle()))
+                .append("\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"subtitle",tempSong.getAuthor()))
+                .append("\n    <notes/>\n    <slides>\n");
 
         for (String mySlide : mySlides) {
             if (mySlide != null && mySlide.length() > 0) {
-                sb.append("      <slide>\n        <body>")
-                        .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(mySlide.trim()))
-                        .append("</body>\n      </slide>\n");
+                sb.append("      <slide>\n        ")
+                        .append(emptyTagCheck(mainActivityInterface,"body",mySlide.trim()))
+                        .append("\n      </slide>\n");
             }
         }
 
@@ -678,11 +694,13 @@ public class SetActions {
                 .append(" # - ")
                 .append(tempSong.getFilename())
                 .append("\" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
-                .append("    <title></title>\n")
-                .append("    <subtitle></subtitle>\n")
-                .append("    <notes>")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(slide_lyrics))
-                .append("</notes>\n")
+                .append("    ")
+                .append(emptyTagCheck(mainActivityInterface,"title",tempSong.getTitle()))
+                .append("\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"subtitle",tempSong.getAuthor()))
+                .append("\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"notes",slide_lyrics))
+                .append("\n")
                 .append("    <slides></slides>\n")
                 .append("  </slide_group>\n");
 
@@ -721,15 +739,13 @@ public class SetActions {
                 .append("\" loop=\"")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser2()))
                 .append("\" transition=\"0\" resize=\"screen\" keep_aspect=\"false\" link=\"false\">\n")
-                .append("    <title>")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getTitle()))
-                .append("</title>\n")
-                .append("    <subtitle>")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getAuthor()))
-                .append("</subtitle>\n")
-                .append("    <notes>")
-                .append("")
-                .append("</notes>\n")
+                .append("    ")
+                .append(emptyTagCheck(mainActivityInterface,"title",tempSong.getTitle()))
+                .append("\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"subtitle",tempSong.getAuthor()))
+                .append("\n    ")
+                .append(emptyTagCheck(mainActivityInterface,"notes",tempSong.getKey()))
+                .append("\n    ")
                 .append("    <slides>\n")
                 .append(slideCode)
                 .append("\n")
@@ -1089,7 +1105,7 @@ public class SetActions {
         tempSong.setLyrics(custom_text.toString());
         tempSong.setUser1(custom_seconds);
         tempSong.setUser2(custom_loop);
-        tempSong.setUser3(custom_subtitle);
+        tempSong.setAuthor(custom_subtitle);
         tempSong.setAka(custom_background);
         tempSong.setHymnnum(custom_notes);
 
@@ -1273,6 +1289,14 @@ public class SetActions {
             }
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    private String emptyTagCheck(MainActivityInterface mainActivityInterface, String tag, String value) {
+        if (value!=null && !value.isEmpty()) {
+            return "<" + tag + ">" + mainActivityInterface.getProcessSong().parseToHTMLEntities(value) + "</" + tag + ">";
+        } else {
+            return "<" + tag + "/>";
         }
     }
 }

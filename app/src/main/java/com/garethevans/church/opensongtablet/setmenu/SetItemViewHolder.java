@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsetsmenu;
+package com.garethevans.church.opensongtablet.setmenu;
 
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -40,7 +40,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
         this.mainActivityInterface = mainActivityInterface;
     }
 
-
     @Override
     public boolean onDown(MotionEvent e) {
         return false;
@@ -75,7 +74,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
     }
-
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {

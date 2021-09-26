@@ -33,7 +33,6 @@ import android.widget.TextView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -1620,15 +1619,15 @@ public class ProcessSong {
                 if (autoScale.equals("N") || thisAutoScale.equals("N")) {
                     scaleSize_1col = fontSize / defFontSize;
                 }
-                setOneColumn(c, mainActivityInterface.getSectionViews(), column1, column2, column3, currentWidth, currentHeight, scaleSize_1col, fontSizeMax);
+                setOneColumn(c, mainActivityInterface, mainActivityInterface.getSectionViews(), column1, column2, column3, currentWidth, currentHeight, scaleSize_1col, fontSizeMax);
                 break;
 
             case 2:
-                setTwoColumns(c, mainActivityInterface.getSectionViews(), column1, column2, column3, mainActivityInterface.getSectionHeights(), scaleSize_2cols, fontSizeMax, (int) ((float) screenWidth / 2.0f - padding));
+                setTwoColumns(c, mainActivityInterface, mainActivityInterface.getSectionViews(), column1, column2, column3, mainActivityInterface.getSectionHeights(), scaleSize_2cols, fontSizeMax, (int) ((float) screenWidth / 2.0f - padding));
                 break;
 
             case 3:
-                setThreeColumns(c, mainActivityInterface.getSectionViews(), column1, column2, column3, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(), scaleSize_3cols, fontSizeMax);
+                setThreeColumns(c, mainActivityInterface, mainActivityInterface.getSectionViews(), column1, column2, column3, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(), scaleSize_3cols, fontSizeMax);
                 break;
         }
         setScaledView(songSheetView, scaleSize_1col, fontSizeMax);
@@ -1647,7 +1646,7 @@ public class ProcessSong {
         return Math.min(x_scale, y_scale);
     }
 
-    private void setOneColumn(Context c, ArrayList<View> sectionViews, LinearLayout column1, LinearLayout column2, LinearLayout column3,
+    private void setOneColumn(Context c, MainActivityInterface mainActivityInterface, ArrayList<View> sectionViews, LinearLayout column1, LinearLayout column2, LinearLayout column3,
                               int currentWidth, int currentHeight, float scaleSize, float maxFontSize) {
         columnVisibility(column1, column2, column3, false, false, false);
         LinearLayout innerCol1 = newLinearLayout(c);
@@ -1672,8 +1671,7 @@ public class ProcessSong {
         column1.setClipToPadding(false);
         column1.addView(innerCol1);
         columnVisibility(column1, column2, column3, true, false, false);
-        PerformanceFragment.songViewWidth = (int) (currentWidth * scaleSize);
-        PerformanceFragment.songViewHeight = (int) (currentHeight * scaleSize);
+        mainActivityInterface.updateSizes((int)(currentWidth * scaleSize),(int) (currentHeight * scaleSize));
     }
 
 
@@ -1746,7 +1744,8 @@ public class ProcessSong {
         return colscale;
     }
 
-    private void setTwoColumns(Context c, ArrayList<View> sectionViews, LinearLayout column1,
+    private void setTwoColumns(Context c, MainActivityInterface mainActivityInterface,
+                               ArrayList<View> sectionViews, LinearLayout column1,
                                LinearLayout column2, LinearLayout column3,
                                ArrayList<Integer> sectionHeights, float[] scaleSize,
                                float maxFontSize, int halfwidth) {
@@ -1788,10 +1787,9 @@ public class ProcessSong {
         column2.addView(innerCol2);
         setMargins(column1, 0, padding);
         setMargins(column2, padding, 0);
-        PerformanceFragment.songViewWidth = PerformanceFragment.screenWidth;
         int col1h = (int) (col1Height * scaleSize[0]);
         int col2h = (int) (col2Height * scaleSize[1]);
-        PerformanceFragment.songViewHeight = Math.max(col1h, col2h);
+        mainActivityInterface.updateSizes(-1,Math.max(col1h, col2h));
     }
 
     // 3 column stuff
@@ -1902,7 +1900,7 @@ public class ProcessSong {
         return colscale;
     }
 
-    private void setThreeColumns(Context c, ArrayList<View> sectionViews, LinearLayout column1,
+    private void setThreeColumns(Context c, MainActivityInterface mainActivityInterface, ArrayList<View> sectionViews, LinearLayout column1,
                                  LinearLayout column2, LinearLayout column3, ArrayList<Integer> sectionWidths,
                                  ArrayList<Integer> sectionHeights, float[] scaleSize,
                                  float maxFontSize) {
@@ -1958,11 +1956,10 @@ public class ProcessSong {
         column1.addView(innerCol1);
         column2.addView(innerCol2);
         column3.addView(innerCol3);
-        PerformanceFragment.songViewWidth = PerformanceFragment.screenWidth;
         int col1h = (int) (col1Height * scaleSize[0]);
         int col2h = (int) (col2Height * scaleSize[1]);
         int col3h = (int) (col3Height * scaleSize[2]);
-        PerformanceFragment.songViewHeight = Math.max(col1h, Math.max(col2h, col3h));
+        mainActivityInterface.updateSizes(-1,Math.max(col1h, Math.max(col2h, col3h)));
     }
 
 

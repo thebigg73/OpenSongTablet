@@ -60,7 +60,7 @@ import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
+import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -219,4 +219,6 @@ public interface MainActivityInterface {
     Bible getBible();
     CustomSlide getCustomSlide();
     void chooseMenu(boolean showSetMenu);
+    void updateSizes(int width, int height);
+
 }

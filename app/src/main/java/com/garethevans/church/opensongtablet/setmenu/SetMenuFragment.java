@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsetsmenu;
+package com.garethevans.church.opensongtablet.setmenu;
 
 import android.content.Context;
 import android.net.Uri;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -91,6 +92,17 @@ public class SetMenuFragment extends Fragment {
             Log.d(TAG, "fragManager: "+requireActivity().getSupportFragmentManager());
             setMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "setMenuBottomSheet");
         });
+        myView.myRecyclerView.setFastScrollListener(new FastScroller.FastScrollListener() {
+            @Override
+            public void onFastScrollStart(@NonNull FastScroller fastScroller) {
+                myView.setMasterFAB.hide();
+            }
+
+            @Override
+            public void onFastScrollStop(@NonNull FastScroller fastScroller) {
+                myView.setMasterFAB.show();
+            }
+        });
 
         myView.myRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -113,7 +125,6 @@ public class SetMenuFragment extends Fragment {
     private void prepareSetListViews() {
         mainActivityInterface.getSetActions().preferenceStringToArrays(getContext(),mainActivityInterface);
         buildList();
-
     }
 
     public void updateKeys() {

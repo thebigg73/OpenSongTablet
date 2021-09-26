@@ -21,6 +21,7 @@ public class DisplayPrevNext {
     private boolean showNext, nextVisible = false;
     private boolean prevNextSongMenu;
     private boolean moveToSongInSet;
+    private String swipeDirection = "R2L";
     private int prevIndex, nextIndex;
     private final Runnable hideNextRunnable = new Runnable() {
         @Override
@@ -244,4 +245,10 @@ public class DisplayPrevNext {
         layout.setAlpha(buttonAlpha);
     }
 
+    public void setSwipeDirection(String swipeDirection) {
+        this.swipeDirection = swipeDirection;
+    }
+    public String getSwipeDirection() {
+        return swipeDirection;
+    }
 }

@@ -21,6 +21,7 @@ public class Autoscroll {
     private boolean isAutoscrolling, wasScrolling, autoscrollOK, isPaused = false, showOn = true,
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime;
     private final MainActivityInterface mainActivityInterface;
+    private final String TAG = "Autoscroll";
     private int songDelay;
     private int songDuration;
     private int displayHeight;
@@ -183,6 +184,12 @@ public class Autoscroll {
                         autoscrollTimeText.post(() -> {
                             autoscrollTimeText.setAlpha(0.6f);
                             autoscrollTimeText.setText(currentTimeString);
+                            // Listen out for scroll changes
+                            if (scrollPosition!= myZoomLayout.getScrollPos() ||
+                                scrollCount!=myZoomLayout.getScrollPos()) {
+                                scrollPosition = myZoomLayout.getScrollPos();
+                                scrollCount = scrollPosition;
+                            }
                         });
                     } else {
                         // Fix the alpha back and set the text
@@ -197,6 +204,7 @@ public class Autoscroll {
                             // Compare the scroll count (float) and scroll position (int).
                             myZoomLayout.post(() -> {
                                 scrollCount = scrollCount + scrollIncrement;
+
                                 if ((Math.max(scrollPosition,myZoomLayout.getScrollPos()) -
                                         Math.min(scrollPosition,myZoomLayout.getScrollPos()))<1) {
                                     // Don't get stuck on float rounding being compounded - use the scroll count
@@ -204,6 +212,7 @@ public class Autoscroll {
                                 } else {
                                     // We've moved (more than 1px), so get the actual start position
                                     scrollPosition = myZoomLayout.getScrollPos() + scrollIncrement;
+                                    scrollCount = scrollPosition;
                                 }
                                 myZoomLayout.smoothScrollTo(0, (int) scrollPosition, updateTime);
                             });
@@ -310,4 +319,4 @@ public class Autoscroll {
     }
 }
 
-// TODO Learn autoscroll
+// TODO Learn autoscroll should we want it back - probably not used very much anyway

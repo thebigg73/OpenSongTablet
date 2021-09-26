@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsetsmenu;
+package com.garethevans.church.opensongtablet.songmenu;
 
 import android.view.View;
 import android.widget.CheckBox;

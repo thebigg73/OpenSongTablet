@@ -1,6 +1,7 @@
-package com.garethevans.church.opensongtablet.songsandsetsmenu;
+package com.garethevans.church.opensongtablet.setmenu;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         }
         setitemViewHolder.vSongTitle.setText(titlesongname);
         setitemViewHolder.vSongFolder.setText(newfoldername);
-        boolean issong = false;
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
 
         setitemViewHolder.vItem.setCompoundDrawablesWithIntrinsicBounds(icon,0,0,0);
@@ -92,11 +92,13 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemSwiped(int fromPosition) {
+        Log.d(TAG, "setList.size()="+setList.size());
+        Log.d(TAG, "fromPosition="+fromPosition);
         try {
             setList.remove(fromPosition);
             notifyItemRemoved(fromPosition);
             // Go through the setList from this position and sort the numbers
-            for (int x = fromPosition; x < setList.size(); x++) {
+            for (int x = 0; x < setList.size(); x++) {
                 setList.get(x).songitem = (x + 1) + ".";
                 notifyItemChanged(x);
             }

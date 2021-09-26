@@ -6,7 +6,6 @@ package com.garethevans.church.opensongtablet.controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
@@ -23,8 +22,9 @@ import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
+import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songsandsetsmenu.RandomSongBottomSheet;
+import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.tools.SoundLevelBottomSheet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -525,14 +525,16 @@ public class PageButtons {
                 }
                 break;
             case "pdfpage":
-                //TODO
+                if (actionInterface.getSong().getFiletype().equals("PDF")) {
+                    PDFPageBottomSheet pdfPageBottomSheet = new PDFPageBottomSheet();
+                    pdfPageBottomSheet.show(actionInterface.getMyFragmentManager(),"PDFPageBottomSheet");
+                }
                 break;
             case "highlight":
-                //TODO
                 if (isLongPress) {
                     actionInterface.navigateToFragment("opensongapp://songactions/highlighter/edit",0);
                 } else {
-
+                    // TODO
                 }
                 break;
             case "editsong":

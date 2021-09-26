@@ -9,14 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.databinding.PresentationBinding;
+import com.garethevans.church.opensongtablet.databinding.ModePresentationBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 
 public class PresentationFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    private PresentationBinding myView;
+    private ModePresentationBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -27,7 +27,7 @@ public class PresentationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        myView = PresentationBinding.inflate(inflater, container, false);
+        myView = ModePresentationBinding.inflate(inflater, container, false);
         //mainActivityInterface.updateToolbar(getString(R.string.presentation_mode));
 
         // Initialise the settings
