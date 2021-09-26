@@ -1018,4 +1018,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart.
     <string name="export_include_set_songs">Include songs in the same format</string>
     <string name="set_saved_not_current">Select a saved set.  Current sets should be saved before exporting.</string>
     <string name="nearby_large_file">This large song file is being shared</string>
+    <string name="action_short_press">Short press/click action</string>
+    <string name="action_long_press">Additional long press action</string>
 </resources>

@@ -78,7 +78,6 @@
                     android:text="@string/zefania" />
 
             </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

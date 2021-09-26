@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/songtitleTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -13,7 +13,7 @@
         android:padding="8dp"
         style="@style/backFragHeading"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/setCheckTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,4 +22,5 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="28dp"
         style="@style/backFragHeading" />
+
 </LinearLayout>

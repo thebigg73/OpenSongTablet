@@ -19,8 +19,8 @@
                 android:id="@+id/setName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/set_name"
-                android:hint="@string/set_name" />
+                android:hint="@string/set_name"
+                android:text="@string/set_name" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/overwrite" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/setLoadInfo1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,14 +83,15 @@
 
     <FrameLayout
         android:id="@+id/progressBar"
+        style="@style/progressBarOnPrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/progressBarOnPrimary"
         android:visibility="gone">
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

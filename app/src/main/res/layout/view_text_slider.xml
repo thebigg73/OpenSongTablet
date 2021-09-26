@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Title"/>
+        tools:text="Title" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-    <TextView
-        android:id="@+id/textLeft"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/slider"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:valueFrom="0"
-        android:valueTo="1"
-        app:stepSize="1"
-        app:trackColor="@color/colorSecondary"
-        app:trackHeight="8dp"
-        app:labelBehavior="gone"
-        app:thumbRadius="8dp"
-        app:thumbColor="@color/colorAltSecondary"
-        android:padding="16dp" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center" />
 
-    <TextView
-        android:id="@+id/textRight"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center" />
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:valueFrom="0"
+            android:valueTo="1"
+            app:labelBehavior="gone"
+            app:stepSize="1"
+            app:thumbColor="@color/colorAltSecondary"
+            app:thumbRadius="8dp"
+            app:trackColor="@color/colorSecondary"
+            app:trackHeight="8dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center" />
 
     </LinearLayout>
-
 </LinearLayout>

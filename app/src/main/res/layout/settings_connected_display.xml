@@ -105,6 +105,7 @@
                         android:layout_weight="0.5"
                         android:gravity="center_horizontal"
                         android:text="@string/choose_video2" />
+
                 </TableRow>
             </TableLayout>
         </LinearLayout>

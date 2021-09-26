@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/infoText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/rootFolder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                     android:contentDescription="@string/scroll_down"
                     android:src="@drawable/ic_arrow_down_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/mainFolder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

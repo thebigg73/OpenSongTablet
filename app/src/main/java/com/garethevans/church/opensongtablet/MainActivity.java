@@ -865,8 +865,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         if (pad.getOrientationChanged()) {
             // Set the current orientation
             pad.setCurrentOrientation(newConfig.orientation);
-            closeDrawer(true);
-            doSongLoad(song.getFolder(),song.getFilename());
+            doSongLoad(song.getFolder(),song.getFilename(),true);
         }
     }
 
@@ -1199,14 +1198,14 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
         }
         Log.d(TAG,"setKey="+setKey+"  songKey="+songKey);
         Log.d(TAG,"loadSongFromSet() called");
-        doSongLoad(setFolder,setFilename);
+        doSongLoad(setFolder,setFilename,true);
     }
     @Override
     public void refreshAll() {
         Log.d(TAG,"refreshAll() called");
     }
     @Override
-    public void doSongLoad(String folder, String filename) {
+    public void doSongLoad(String folder, String filename, boolean closeDrawer) {
         if (whichMode.equals("Presentation")) {
             if (presentationFragment!=null && presentationFragment.isAdded()) {
                 presentationFragment.doSongLoad(folder,filename);
@@ -1220,7 +1219,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                 navigateToFragment(null,R.id.presentationFragment);
             }
         }
-        closeDrawer(true);
+        closeDrawer(closeDrawer);
     }
 
 
@@ -1460,7 +1459,7 @@ public class MainActivity extends AppCompatActivity implements //LoadSongInterfa
                     if (arguments!=null && arguments.size()>1 && arguments.get(0).equals("success")) {
                         // We now need to copy the original file.  It's contents are saved in arguments.get(1)
                         if (storageAccess.doStringWriteToFile(this,mainActivityInterface,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
-                            doSongLoad(song.getFolder(),song.getFilename());
+                            doSongLoad(song.getFolder(),song.getFilename(),false);
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
                         }

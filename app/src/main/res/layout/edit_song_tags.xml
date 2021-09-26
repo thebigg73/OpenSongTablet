@@ -118,7 +118,6 @@
                     android:layout_gravity="bottom"/>
 
             </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -85,7 +85,7 @@ public interface MainActivityInterface {
     void songMenuActionButtonShow(boolean show);
     void lockDrawer(boolean lock);
     void closeDrawer(boolean close);
-    void doSongLoad(String folder, String filename);
+    void doSongLoad(String folder, String filename, boolean closeDrawer);
     void loadSongFromSet(int position);
     void updateKeyAndLyrics(Song song);
     void showSaveAllowed(boolean saveAllowed);

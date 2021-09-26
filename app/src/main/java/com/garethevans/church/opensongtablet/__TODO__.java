@@ -25,7 +25,6 @@ public class __TODO__ {
     Display - connected display (HDMI/Chromecast output) - needs SecondScreen working
     Display - Action bar - auto hide action bar not working yet
 
-    Song actions - Pad
     Song actions - Autoscroll predelay
     Song actions - Chords, do I need chord for H?
     Song actions - ABC notation

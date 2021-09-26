@@ -40,7 +40,7 @@
 
                     <include
                         android:id="@+id/pres_col1"
-                        layout="@layout/presenter_mode_col1"
+                        layout="@layout/_presenter_mode_col1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:clipChildren="false"
@@ -73,7 +73,7 @@
 
                             <include
                                 android:id="@+id/pres_col2"
-                                layout="@layout/presenter_mode_col2"
+                                layout="@layout/_presenter_mode_col2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clipChildren="false"
@@ -91,7 +91,7 @@
 
                             <include
                                 android:id="@+id/pres_col3"
-                                layout="@layout/presenter_mode_col3"
+                                layout="@layout/_presenter_mode_col3"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:clipChildren="false"
@@ -107,7 +107,7 @@
 
                         <include
                             android:id="@+id/pres_nav"
-                            layout="@layout/presenter_mode_quicknav"
+                            layout="@layout/_presenter_mode_quicknav"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clipChildren="false"

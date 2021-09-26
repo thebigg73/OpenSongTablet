@@ -93,7 +93,7 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void doLoad() {
-        mainActivityInterface.doSongLoad(randomSong.getFolder(),randomSong.getFilename());
+        mainActivityInterface.doSongLoad(randomSong.getFolder(),randomSong.getFilename(),true);
         dismiss();
     }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -57,7 +56,7 @@
                     android:id="@+id/button1ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Short press/click action"
+                    android:text="@string/action_short_press"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -66,7 +65,7 @@
                     android:id="@+id/button1LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Additional long press action"
+                    android:text="@string/action_long_press"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -115,7 +114,7 @@
                     android:id="@+id/button2ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Short press/click action"
+                    android:text="@string/action_short_press"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -124,7 +123,7 @@
                     android:id="@+id/button2LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Additional long press action"
+                    android:text="@string/action_long_press"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -174,7 +173,7 @@
                     android:id="@+id/button3ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Short press/click action"
+                    android:text="@string/action_short_press"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -183,7 +182,7 @@
                     android:id="@+id/button3LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Additional long press action"
+                    android:text="@string/action_long_press"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -233,7 +232,7 @@
                     android:id="@+id/button4ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Short press/click action"
+                    android:text="@string/action_short_press"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -242,7 +241,7 @@
                     android:id="@+id/button4LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Additional long press action"
+                    android:text="@string/action_long_press"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -292,7 +291,7 @@
                     android:id="@+id/button5ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Short press/click action"
+                    android:text="@string/action_short_press"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -301,7 +300,7 @@
                     android:id="@+id/button5LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Additional long press action"
+                    android:text="@string/action_long_press"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -351,7 +350,7 @@
                     android:id="@+id/button6ShortPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Short press/click action"
+                    android:text="@string/action_short_press"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -360,7 +359,7 @@
                     android:id="@+id/button6LongPress"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Additional long press action"
+                    android:text="@string/action_long_press"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:hint="" />
@@ -370,6 +369,5 @@
             <TableRow style="@style/DividerLine" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

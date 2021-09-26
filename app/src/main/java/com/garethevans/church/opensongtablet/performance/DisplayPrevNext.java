@@ -210,7 +210,7 @@ public class DisplayPrevNext {
             mainActivityInterface.loadSongFromSet(position);
         } else {
             mainActivityInterface.doSongLoad(mainActivityInterface.getSongInMenu(position).getFolder(),
-                    mainActivityInterface.getSongInMenu(position).getFilename());
+                    mainActivityInterface.getSongInMenu(position).getFilename(),true);
         }
     }
 

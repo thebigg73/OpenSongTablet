@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:id="@+id/cardview_layout">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             app:drawableStartCompat="@drawable/ic_amplifier_white_36dp"
             android:drawablePadding="16dp"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_songtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:paddingEnd="8dp"
             android:paddingBottom="0dp"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_folder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

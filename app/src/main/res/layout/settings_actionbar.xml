@@ -143,6 +143,7 @@
                     android:valueTo="16"
                     app:stepSize="1"
                     android:padding="8dp"/>
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

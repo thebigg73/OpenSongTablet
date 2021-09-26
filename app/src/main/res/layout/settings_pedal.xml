@@ -17,14 +17,14 @@
             android:layout_marginBottom="200dp"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:text="@string/pedal_instructions" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/midiPedal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/autoRepeatRationale" />
@@ -89,8 +89,6 @@
             <TableRow style="@style/DividerLine" />
 
             <!--BUTTON 1-->
-
-
             <RelativeLayout
                 android:id="@+id/button1Header"
                 android:layout_width="match_parent"
@@ -98,7 +96,7 @@
                 android:background="@color/colorSecondary"
                 android:padding="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -108,7 +106,7 @@
                     android:textSize="32sp"
                     tools:ignore="HardcodedText" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button1Code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,7 +115,7 @@
                     android:text="@string/not_set"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button1Midi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -155,7 +153,7 @@
                 android:background="@color/colorSecondary"
                 android:padding="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -165,7 +163,7 @@
                     android:textSize="32sp"
                     tools:ignore="HardcodedText" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button2Code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -174,7 +172,7 @@
                     android:text="@string/not_set"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button2Midi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -214,7 +212,7 @@
                 android:background="@color/colorSecondary"
                 android:padding="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -224,7 +222,7 @@
                     android:textSize="32sp"
                     tools:ignore="HardcodedText" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button3Code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -233,7 +231,7 @@
                     android:text="@string/not_set"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button3Midi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -272,7 +270,7 @@
                 android:background="@color/colorSecondary"
                 android:padding="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -282,7 +280,7 @@
                     android:textSize="32sp"
                     tools:ignore="HardcodedText" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button4Code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -291,7 +289,7 @@
                     android:text="@string/not_set"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button4Midi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -331,7 +329,7 @@
                 android:background="@color/colorSecondary"
                 android:padding="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -341,7 +339,7 @@
                     android:textSize="32sp"
                     tools:ignore="HardcodedText" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button5Code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -350,7 +348,7 @@
                     android:text="@string/not_set"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button5Midi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -389,7 +387,7 @@
                 android:background="@color/colorSecondary"
                 android:padding="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -399,7 +397,7 @@
                     android:textSize="32sp"
                     tools:ignore="HardcodedText" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button6Code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -408,7 +406,7 @@
                     android:text="@string/not_set"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button6Midi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -447,7 +445,7 @@
                 android:background="@color/colorSecondary"
                 android:padding="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -457,7 +455,7 @@
                     android:textSize="32sp"
                     tools:ignore="HardcodedText" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button7Code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -466,7 +464,7 @@
                     android:text="@string/not_set"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button7Midi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -505,7 +503,7 @@
                 android:background="@color/colorSecondary"
                 android:padding="8dp">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -515,7 +513,7 @@
                     android:textSize="32sp"
                     tools:ignore="HardcodedText" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button8Code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -524,7 +522,7 @@
                     android:text="@string/not_set"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/button8Midi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -553,7 +551,6 @@
                 android:hint="@string/long_press" />
 
             <TableRow style="@style/DividerLine" />
-
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

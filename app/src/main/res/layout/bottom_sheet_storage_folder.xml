@@ -85,7 +85,5 @@
                 custom:mydrawable="@drawable/ic_format_list_bulleted_white_36dp" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </LinearLayout>

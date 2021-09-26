@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/tagName"
             style="@style/cardView_Title"
@@ -23,7 +22,7 @@
             android:layout_toStartOf="@+id/tagDelete"
             tools:text="Tag" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/matchingSongs"
             style="@style/cardView_Subtitle"
             android:layout_width="match_parent"
@@ -45,6 +44,6 @@
             app:fabSize="mini"
             android:contentDescription="@string/delete"
             android:src="@drawable/ic_delete_white_36dp" />
-    </RelativeLayout>
 
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

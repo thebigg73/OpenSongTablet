@@ -253,7 +253,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
             // Load the song again
             mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
-                    mainActivityInterface.getSong().getFilename());
+                    mainActivityInterface.getSong().getFilename(),true);
 
             dismiss();
         }).start();

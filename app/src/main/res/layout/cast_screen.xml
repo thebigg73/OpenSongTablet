@@ -83,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="4dp"
+                android:paddingStart="24dp"
                 android:paddingEnd="24dp"
                 android:paddingBottom="8dp"
                 android:visibility="visible">

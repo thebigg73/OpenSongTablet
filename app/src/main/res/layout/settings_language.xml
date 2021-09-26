@@ -21,7 +21,6 @@
                 android:orientation="vertical">
 
             </RadioGroup>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

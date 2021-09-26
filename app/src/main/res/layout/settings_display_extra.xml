@@ -16,7 +16,7 @@
             android:orientation="vertical">
 
             <!--Extra info-->
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 
 
             <!--Bold chords and headings, lyrics box-->
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
             <TableRow style="@style/DividerLine" />
 
             <!--Section trimming and spaces-->
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                     android:max="99"
                     android:padding="16dp" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/trimLineSpacingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,14 +127,14 @@
             <TableRow style="@style/DividerLine" />
 
             <!--Section filtering-->
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/filter_section" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_info" />
@@ -151,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/show" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"

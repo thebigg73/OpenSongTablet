@@ -5,7 +5,7 @@
     android:padding="16dp"
     android:orientation="horizontal">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_weight="1"

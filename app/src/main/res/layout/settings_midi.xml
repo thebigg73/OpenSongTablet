@@ -252,7 +252,7 @@
             </LinearLayout>
 
             <TableRow style="@style/DividerLine" />
-        </LinearLayout>
 
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

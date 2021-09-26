@@ -89,7 +89,6 @@
             <TableRow style="@style/DividerLine" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
     <ProgressBar

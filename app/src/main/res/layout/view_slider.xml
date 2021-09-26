@@ -7,7 +7,7 @@
     android:clipChildren="false"
     android:orientation="vertical">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:value="50"
             style="@style/Slider"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/valueText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

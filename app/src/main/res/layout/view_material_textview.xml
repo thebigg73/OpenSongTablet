@@ -20,7 +20,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
             android:textColor="@color/white"
             tools:text="Main text" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/hintView"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
@@ -66,6 +66,6 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:text="@null" />
-    </FrameLayout>
 
+    </FrameLayout>
 </LinearLayout>

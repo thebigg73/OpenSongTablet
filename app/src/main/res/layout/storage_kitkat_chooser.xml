@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/headerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
 
     <TableRow style="@style/DividerLine" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/locationText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

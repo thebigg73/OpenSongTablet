@@ -44,7 +44,5 @@
                 app:icon="@drawable/ic_web_white_36dp" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </LinearLayout>

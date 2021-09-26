@@ -87,10 +87,8 @@
                     android:text="@string/backup_now" />
 
                 <TableRow style="@style/DividerLine" />
+
             </LinearLayout>
-
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
-
 </LinearLayout>

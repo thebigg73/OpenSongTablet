@@ -19,7 +19,7 @@
                 android:layout_marginBottom="500dp"
                 android:orientation="vertical">
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/importTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                     android:paddingBottom="8dp"
                     android:text="@string/app_name" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/progressText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,4 +97,5 @@
         app:icon="@drawable/ic_content_save_white_36dp"
         android:text="@string/import_basic"
         app:useCompatPadding="true" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

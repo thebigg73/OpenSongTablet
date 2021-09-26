@@ -223,7 +223,6 @@
                     android:hint="@string/midi_value" />
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

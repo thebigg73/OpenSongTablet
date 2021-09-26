@@ -24,4 +24,5 @@
         android:gravity="start"
         android:layout_gravity="start"
         tools:text="The text" />
+
 </com.google.android.material.textfield.TextInputLayout>

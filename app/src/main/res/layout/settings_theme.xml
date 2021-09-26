@@ -334,8 +334,6 @@
                     app:iconSize="32dp" />
 
             </LinearLayout>
-
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -140,40 +140,44 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         });
     }
     private void updateStartStopButton() {
-        // Rather than query the pads each time, use the local boolean padPlaying (set above)
-        // This is because there is often a delay starting the pad and it being registered
-        if (padPlaying) {
-           // The action is to stop
-            Log.d(TAG,"Set stop icon");
-            myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_stop_white_36dp, requireContext().getTheme()));
-            myView.startStopPad.setText(getString(R.string.stop));
-            myView.startStopPad.setOnClickListener(v -> {
-                padPlaying = false;
-                mainActivityInterface.getPad().stopPad(requireContext());
-                // Rerun this script to get the new icon and listener
-                updateStartStopButton();
-                // Check again in 2 seconds just in case the pad had an error
-                myView.startStopPad.postDelayed(() -> {
-                    padPlaying = mainActivityInterface.getPad().isPadPlaying();
+        try {
+            // Rather than query the pads each time, use the local boolean padPlaying (set above)
+            // This is because there is often a delay starting the pad and it being registered
+            if (padPlaying) {
+                // The action is to stop
+                Log.d(TAG, "Set stop icon");
+                myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.ic_stop_white_36dp, requireContext().getTheme()));
+                myView.startStopPad.setText(getString(R.string.stop));
+                myView.startStopPad.setOnClickListener(v -> {
+                    padPlaying = false;
+                    mainActivityInterface.getPad().stopPad(requireContext());
+                    // Rerun this script to get the new icon and listener
                     updateStartStopButton();
-                },2000);
-           });
-        } else {
-            // The action is to play
-            Log.d(TAG,"Set start icon");
-            myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_play_white_36dp, requireContext().getTheme()));
-            myView.startStopPad.setText(getString(R.string.start));
-            myView.startStopPad.setOnClickListener(v -> {
-                padPlaying = true;
-                mainActivityInterface.getPad().startPad(requireContext());
-                // Rerun this script
-                updateStartStopButton();
-                // Check again in 2 seconds just in case the pad had an error
-                myView.startStopPad.postDelayed(() -> {
-                    padPlaying = mainActivityInterface.getPad().isPadPlaying();
+                    // Check again in 2 seconds just in case the pad had an error
+                    myView.startStopPad.postDelayed(() -> {
+                        padPlaying = mainActivityInterface.getPad().isPadPlaying();
+                        updateStartStopButton();
+                    }, 2000);
+                });
+            } else {
+                // The action is to play
+                Log.d(TAG, "Set start icon");
+                myView.startStopPad.setIcon(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.ic_play_white_36dp, requireContext().getTheme()));
+                myView.startStopPad.setText(getString(R.string.start));
+                myView.startStopPad.setOnClickListener(v -> {
+                    padPlaying = true;
+                    mainActivityInterface.getPad().startPad(requireContext());
+                    // Rerun this script
                     updateStartStopButton();
-                },2000);
-            });
+                    // Check again in 2 seconds just in case the pad had an error
+                    myView.startStopPad.postDelayed(() -> {
+                        padPlaying = mainActivityInterface.getPad().isPadPlaying();
+                        updateStartStopButton();
+                    }, 2000);
+                });
+            }
+        } catch (Exception e) {
+            // Catches update made if app has already closed!
         }
     }
 

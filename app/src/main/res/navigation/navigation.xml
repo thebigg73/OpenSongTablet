@@ -57,7 +57,7 @@
         android:id="@+id/presentationFragment"
         android:name="com.garethevans.church.opensongtablet.presentation.PresentationFragment"
         android:label="fragment_presentation"
-        tools:layout="@layout/presentation">
+        tools:layout="@layout/mode_presentation">
         <action
             android:id="@+id/action_presentationFragment_to_preferences_graph"
             app:destination="@id/preferences_graph" />

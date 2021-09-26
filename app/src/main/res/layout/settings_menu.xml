@@ -37,6 +37,5 @@
                 android:valueTo="24.0" />
 
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

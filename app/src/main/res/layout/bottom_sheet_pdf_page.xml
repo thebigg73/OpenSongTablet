@@ -66,12 +66,7 @@
                     android:src="@drawable/ic_arrow_right_white_36dp"
                     android:contentDescription="@string/next" />
 
-
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
-
-
 </LinearLayout>

@@ -105,7 +105,6 @@
                     android:layout_gravity="center"
                     layout="@layout/view_chord_piano"/>
 
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

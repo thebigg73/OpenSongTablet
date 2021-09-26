@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -132,7 +131,7 @@
                 android:hint="@string/midi_commands" />
 
             <TableRow style="@style/DividerLine" />
-        </LinearLayout>
 
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

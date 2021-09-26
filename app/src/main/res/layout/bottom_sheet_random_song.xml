@@ -30,25 +30,29 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp" />
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/findRandom"
-                    style="@style/IconTextButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/random_song"
                     app:icon="@drawable/ic_folder_search_white_36dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="end"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/loadRandom"
-                    style="@style/IconTextButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/load"
                     app:icon="@drawable/ic_content_save_white_36dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="end"/>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

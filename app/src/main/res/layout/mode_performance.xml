@@ -116,7 +116,5 @@
                         android:visibility="visible" />
 
                 </RelativeLayout>
-
     </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>
-
 </RelativeLayout>

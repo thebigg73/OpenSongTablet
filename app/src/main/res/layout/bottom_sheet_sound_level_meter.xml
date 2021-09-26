@@ -194,6 +194,7 @@
                         android:valueFrom="10"
                         android:valueTo="1000"
                         app:stepSize="10"/>
+
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/headerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/firstRun"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                 android:text="@string/find_existing"
                 app:backgroundTint="@color/darkyellow" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/previousStorageTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                 android:text="@string/no_previous_found"
                 android:visibility="gone" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/previousStorageHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
