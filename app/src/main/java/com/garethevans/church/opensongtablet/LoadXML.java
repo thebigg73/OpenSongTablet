@@ -329,6 +329,11 @@ public class LoadXML extends Activity {
         if (FullscreenActivity.isSong && FullscreenActivity.myLyrics == c.getString(R.string.user_guide_lyrics)) {
             StaticVariables.currentSection = 0;
             FullscreenActivity.pdfPageCurrent = 0;
+            // IV - If Presentation then show 'not found'
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                setNotFound(c);
+                FullscreenActivity.myLyrics = StaticVariables.mLyrics;
+            }
         }
     }
 
@@ -383,25 +388,25 @@ public class LoadXML extends Activity {
 
     private static void setNotFound(Context c) {
         // IV - Prepared as a single section
-        FullscreenActivity.myLyrics = "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _ \n " +
-                c.getResources().getString(R.string.songdoesntexist) + "\n\n";
-        StaticVariables.mLyrics = "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _ \n " +
+        StaticVariables.mLyrics = "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _\n " +
                 c.getResources().getString(R.string.songdoesntexist) + "\n\n";
         FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<title>Welcome to OpenSongApp</title>\n" +
-                "<author>Gareth Evans</author>\n<lyrics>"
-                + "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _\n "
-                + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
-        StaticVariables.mLyrics = "[" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "]\n\n _\n "
-                + c.getResources().getString(R.string.songdoesntexist) + "\n\n";
+                "<author>Gareth Evans</author>\n<lyrics>" +
+                StaticVariables.mLyrics + "</lyrics>";
         FullscreenActivity.myLyrics = "ERROR!";
     }
 
     private static void setWelcome(Context c) {
         StaticVariables.thisSongScale = "W";
+        initialiseSongTags(c);
         StaticVariables.mTitle = "Welcome to OpenSongApp";
         StaticVariables.mAuthor = "Gareth Evans";
         StaticVariables.mLinkWeb = "http://www.opensongapp.com";
+        StaticVariables.mCopyright = "1996 NewLife Music Limited";
+        StaticVariables.mTimeSig = "4/4";
+        StaticVariables.mKey = "G";
+        StaticVariables.mTempo = "72";
         StaticVariables.mLyrics = c.getString(R.string.user_guide_lyrics);
         FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
         FullscreenActivity.myXML = "<?xml><song><title>" + StaticVariables.mTitle + "</title>\n" +
@@ -732,11 +737,7 @@ public class LoadXML extends Activity {
             }
 
             if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
-                StaticVariables.mTitle = "Welcome to OpenSongApp";
-                StaticVariables.mAuthor = "Gareth Evans";
-                StaticVariables.mLinkWeb = "http://www.opensongapp.com";
-                FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
-                FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
+                setWelcome(c);
             }
 
             try {
