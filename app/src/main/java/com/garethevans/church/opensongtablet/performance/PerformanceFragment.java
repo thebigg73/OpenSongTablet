@@ -78,6 +78,9 @@ public class PerformanceFragment extends Fragment {
         myView = ModePerformanceBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
 
+        // Register this fragment
+        mainActivityInterface.registerFragment(this,"Performance");
+
         // Initialise the helper classes that do the heavy lifting
         Log.d(TAG,"binding");
         initialiseHelpers();

@@ -106,6 +106,7 @@ import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
+import com.garethevans.church.opensongtablet.screensetup.ActivityGestureDetector;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
@@ -362,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.onScreenInfo.autoscrollTotalTime,myView.onScreenInfo.autoscroll);
         metronome = new Metronome();
         gestures = new Gestures(this);
-        //gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
+        gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
         swipes = new Swipes(this);
         timeTools = new TimeTools();
         displayPrevNext = new DisplayPrevNext(this,myView.nextPrevInfo.nextPrevInfoLayout,
@@ -554,13 +555,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
 
     // Pedal and key listeners
-    /*@Override
+/*
+
+    @Override
     public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
         if (gestureDetector!=null) {
-            gestureDetector.onTouchEvent(ev); // Dealt with in ActivityGestureDetector
+            return gestureDetector.onTouchEvent(ev); // Dealt with in ActivityGestureDetector
         }
         return false;
-    }*/
+    }
+*/
+
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
@@ -817,9 +824,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateConnectionsLog() {
         // Send the command to the Nearby Connections fragment (if it exists!)
         try {
-            if (currentFragment(R.id.nearbyConnectionsFragment) && nearbyOpen) {
+            if (nearbyConnectionsFragment!=null && nearbyOpen) {
                 try {
-                    ((NearbyConnectionsFragment) getFragmentFromId(R.id.nearbyConnectionsFragment)).updateConnectionsLog();
+                    nearbyConnectionsFragment.updateConnectionsLog();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1537,14 +1544,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void doSongLoad(String folder, String filename, boolean closeDrawer) {
         if (whichMode.equals("Presentation")) {
-            if (currentFragment(R.id.presentationFragment)) {
-                ((PresentationFragment) getFragmentFromId(R.id.presentationFragment)).doSongLoad(folder,filename);
+            if (presentationFragment!=null && presentationFragment.isAdded()) {
+                presentationFragment.doSongLoad(folder,filename);
             } else {
                 navigateToFragment(null,R.id.performanceFragment);
             }
         } else {
-            if (currentFragment(R.id.presentationFragment)) {
-                ((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).doSongLoad(folder,filename);
+            if (performanceFragment!=null && performanceFragment.isAdded()) {
+                performanceFragment.doSongLoad(folder,filename);
             } else {
                 navigateToFragment(null,R.id.presentationFragment);
             }
