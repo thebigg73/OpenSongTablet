@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.interfaces;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.view.Display;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -30,18 +29,18 @@ import com.garethevans.church.opensongtablet.controls.Swipes;
 import com.garethevans.church.opensongtablet.customslides.CustomSlide;
 import com.garethevans.church.opensongtablet.customviews.DrawNotes;
 import com.garethevans.church.opensongtablet.export.ExportActions;
-import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.export.PrepareFormats;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
-import com.garethevans.church.opensongtablet.tools.TimeTools;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.pads.Pad;
+import com.garethevans.church.opensongtablet.pdf.MakePDF;
+import com.garethevans.church.opensongtablet.pdf.OCR;
+import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
@@ -49,27 +48,31 @@ import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
-import com.garethevans.church.opensongtablet.secondarydisplay.ExternalDisplay;
 import com.garethevans.church.opensongtablet.secondarydisplay.PresentationCommon;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
+import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
-import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
-import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.tools.TimeTools;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public interface MainActivityInterface {
+
+    // The most common classes
+    StorageAccess getStorageAccess();
+    Preferences getPreferences();
+
     void hideActionButton(boolean hide);
     void hideActionBar(boolean hide);
     void updateToolbar(String what);
@@ -122,11 +125,9 @@ public interface MainActivityInterface {
     Midi getMidi(MainActivityInterface mainActivityInterface);
     Midi getMidi();
     DrawerLayout getDrawer();
-    ActionBar getAb();
+    ActionBar getMyActionBar();
     SetTypeFace getMyFonts();
     ThemeColors getMyThemeColors();
-    StorageAccess getStorageAccess();
-    Preferences getPreferences();
     ExportActions getExportActions();
     ConvertChoPro getConvertChoPro();
     ConvertOnSong getConvertOnSong();
@@ -191,9 +192,9 @@ public interface MainActivityInterface {
     CheckInternet getCheckInternet();
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
     void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri);
-    void setDisplay(Display display);
-    Display getDisplay();
-    ExternalDisplay getExternalDisplay();
+    //void setDisplay(Display display);
+    //Display getDisplay();
+    //ExternalDisplay getExternalDisplay();
     PresentationCommon getPresentationCommon();
     void openDocument(String guideId, String location);
     PrepareFormats getPrepareFormats();
@@ -222,3 +223,4 @@ public interface MainActivityInterface {
     void updateSizes(int width, int height);
 
 }
+

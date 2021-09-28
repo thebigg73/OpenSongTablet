@@ -414,7 +414,11 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     public void moveToSongInMenu(Song song) {
         //scroll to the song in the song menu
         try {
-            new Thread(() -> requireActivity().runOnUiThread(() -> songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song), 0))).start();
+            new Thread(() -> {
+                if (songListLayoutManager!=null) {
+                    requireActivity().runOnUiThread(() -> songListLayoutManager.scrollToPositionWithOffset(songListAdapter.getPositionOfSong(song),0));
+                }
+            }).start();
         } catch (Exception e) {
             e.printStackTrace();
         }

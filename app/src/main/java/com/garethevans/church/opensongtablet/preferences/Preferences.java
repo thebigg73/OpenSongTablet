@@ -97,6 +97,9 @@ public class Preferences extends Activity {
             case "REQUEST_IOS_FILE":
                 value = 5502;
                 break;
+            case "REQUEST_CAMERA_CODE":
+                value = 5503;
+                break;
         }
         return value;
     }

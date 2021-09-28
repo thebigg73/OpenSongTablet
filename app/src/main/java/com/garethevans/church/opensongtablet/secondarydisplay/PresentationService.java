@@ -22,8 +22,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
     @Override
     public void onCreatePresentation(@NonNull Display display) {
-        mainActivityInterface.setDisplay(display);
-        myPresentation = mainActivityInterface.getExternalDisplay();
+        // TODO to fix without using 'display'....
+        //mainActivityInterface.setDisplay(display);
+        //myPresentation = mainActivityInterface.getExternalDisplay();
     }
 
     @Override

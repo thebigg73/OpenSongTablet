@@ -23,7 +23,6 @@ import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
 import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 import com.garethevans.church.opensongtablet.tools.SoundLevelBottomSheet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -55,7 +54,7 @@ public class PageButtons {
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
 
-    public PageButtons(Context c, Preferences preferences) {
+    public PageButtons(Context c) {
         // Set up the return interface for sending instructions back to the main activity
         actionInterface = (ActionInterface) c;
         // Prepare the arrays of available actions with matching short and long text
@@ -66,7 +65,7 @@ public class PageButtons {
         prepareDrawableIds();
 
         // Now get our button preferences
-        setPreferences(c,preferences);
+        setPreferences(c);
     }
 
     public void setMainFABS(MainActivityInterface mainActivityInterface,
@@ -341,7 +340,7 @@ public class PageButtons {
     }
 
     // Build the arrays describing the buttons (action, short description, long description, drawable, etc) based on user preferences
-    private void setPreferences(Context c, Preferences preferences) {
+    private void setPreferences(Context c) {
         // Initialise the arrays
         pageButtonAction = new ArrayList<>();
         pageButtonDrawable = new ArrayList<>();
@@ -365,7 +364,7 @@ public class PageButtons {
             } else if (x==4) {
                 fallback = "metronome";
             }
-            String action = preferences.getMyPreferenceString(c,"pageButton"+(x+1),fallback);
+            String action = actionInterface.getPreferences().getMyPreferenceString(c,"pageButton"+(x+1),fallback);
             pageButtonAction.add(action);
             int pos = getButtonInArray(action);
             if (pos>=0) {
@@ -381,7 +380,7 @@ public class PageButtons {
             }
 
             // Set the visibility
-            pageButtonVisibility.add(preferences.getMyPreferenceBoolean(c,"pageButtonShow"+(x+1),true));
+            pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean(c,"pageButtonShow"+(x+1),true));
         }
     }
 

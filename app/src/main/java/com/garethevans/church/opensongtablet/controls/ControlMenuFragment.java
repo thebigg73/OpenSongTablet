@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.MainActivity;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsControlBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -23,7 +22,7 @@ public class ControlMenuFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mainActivityInterface = (MainActivity) context;
+        mainActivityInterface = (MainActivityInterface) context;
     }
 
     @Nullable

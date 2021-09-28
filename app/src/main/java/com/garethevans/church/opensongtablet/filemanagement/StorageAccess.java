@@ -1825,7 +1825,12 @@ public class StorageAccess {
         StringBuilder stringBuilder = new StringBuilder();
 
         // Sort the array
-        Collator collator = Collator.getInstance(mainActivityInterface.getLocale());
+        Collator collator;
+        if (mainActivityInterface.getLocale()==null) {
+            collator = Collator.getInstance(Locale.getDefault());
+        } else {
+            collator = Collator.getInstance(mainActivityInterface.getLocale());
+        }
         collator.setStrength(Collator.SECONDARY);
         Collections.sort(songIds, collator);
         for (String songId : songIds) {

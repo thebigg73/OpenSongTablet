@@ -14,9 +14,9 @@ public class DisplayPrevNext {
     // This deals with showing the previous and next song buttons and their actions
     // Even if we don't display the buttons, this sets up what to do on next/prev action (swipe, pedal, etc)
 
-    private final MainActivityInterface mainActivityInterface;
-    private final LinearLayout layout;
-    private final ExtendedFloatingActionButton prev, next;
+    private MainActivityInterface mainActivityInterface;
+    private LinearLayout layout;
+    private ExtendedFloatingActionButton prev, next;
     private boolean showPrev, prevVisible = false;
     private boolean showNext, nextVisible = false;
     private boolean prevNextSongMenu;
@@ -38,9 +38,9 @@ public class DisplayPrevNext {
         }
     };
 
-    public DisplayPrevNext(Context c, MainActivityInterface mainActivityInterface, LinearLayout layout,
+    public DisplayPrevNext (Context c, LinearLayout layout,
                            ExtendedFloatingActionButton prev, ExtendedFloatingActionButton next) {
-        this.mainActivityInterface = mainActivityInterface;
+        this.mainActivityInterface = (MainActivityInterface) c;
         this.layout = layout;
         this.prev = prev;
         this.next = next;

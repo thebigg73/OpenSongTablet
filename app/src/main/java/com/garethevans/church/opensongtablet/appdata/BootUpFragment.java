@@ -58,6 +58,7 @@ public class BootUpFragment extends Fragment {
         // Initialise the mainActivityInterface in the MainActivity!
         mainActivityInterface.setMainActivityInterface(mainActivityInterface);
         myView = BootupLogoBinding.inflate(inflater, container, false);
+        mainActivityInterface.registerFragment(this,"BootUpFragment");
 
         // TODO
         // REMOVE BEFORE RELEASE!!!!!
@@ -66,9 +67,7 @@ public class BootUpFragment extends Fragment {
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();
 
-        // Check we have the required storage permission
         startOrSetUp();
-
         return myView.getRoot();
     }
 
@@ -85,7 +84,7 @@ public class BootUpFragment extends Fragment {
     }
 
     // Checks made before starting the app
-    private void startOrSetUp() {
+    public void startOrSetUp() {
         if (storageIsCorrectlySet()) {
             startBootProcess();
         } else {

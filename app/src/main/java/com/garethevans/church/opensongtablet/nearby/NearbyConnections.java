@@ -67,7 +67,7 @@ public class NearbyConnections implements NearbyInterface {
     private int pendingCurrentSection = 0;
 
 
-    public NearbyConnections(Context c, MainActivityInterface mainActivityInterface) {
+    public NearbyConnections(Context c) {
         connectedEndPoints = new ArrayList<>();
         connectedEndPointsNames = new ArrayList<>();
         connectedDeviceIds = new ArrayList<>();

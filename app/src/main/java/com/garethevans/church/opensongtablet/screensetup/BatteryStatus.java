@@ -32,8 +32,10 @@ public class BatteryStatus extends BroadcastReceiver {
         void setUpBatteryMonitor();
     }
 
-    public void setUpBatteryMonitor(Context c, MainActivityInterface mainActivityInterface, TextView digitalclock,
+    public void setUpBatteryMonitor(Context c, TextView digitalclock,
                                     TextView batterycharge, ImageView batteryimage, ActionBar ab) {
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) c;
+
         // Get clock
         try {
             // Get clock
@@ -64,7 +66,7 @@ public class BatteryStatus extends BroadcastReceiver {
 
             // Ask the app to check again in 60s
             Handler batterycheck = new Handler();
-            batterycheck.postDelayed(() -> setUpBatteryMonitor(c,mainActivityInterface,digitalclock,batterycharge,batteryimage,ab), 60000);
+            batterycheck.postDelayed(() -> setUpBatteryMonitor(c,digitalclock,batterycharge,batteryimage,ab), 60000);
         } catch (Exception e) {
             // Ooops
         }

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
@@ -10,6 +11,7 @@ import java.util.Locale;
 public class FixLocale {
 
     private Locale userLocale;
+    private final String TAG = "FixLocale";
 
     public Locale getLocale() {
         return userLocale;
@@ -21,6 +23,7 @@ public class FixLocale {
             // Get the user's preference
             String val = mainActivityInterface.getPreferences().getMyPreferenceString(c,"language",null);
 
+            Log.d(TAG,"val="+val);
             // If this is already set, that' what we will use
             if (val!=null) {
                 userLocale = new Locale(val);

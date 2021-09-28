@@ -316,7 +316,7 @@ public class ImportOSBFragment extends Fragment {
                     myView.progressBar.setVisibility(View.VISIBLE);
                     canoverwrite = myView.overWrite.isChecked();
                     myView.createBackupFAB.setEnabled(false);
-                    mainActivityInterface.getAb().setHomeButtonEnabled(false);
+                    mainActivityInterface.getMyActionBar().setHomeButtonEnabled(false);
                 }
             });
             
@@ -429,7 +429,7 @@ public class ImportOSBFragment extends Fragment {
 
                 if (alive) {
                     requireActivity().runOnUiThread(() -> {
-                        mainActivityInterface.getAb().setHomeButtonEnabled(true);
+                        mainActivityInterface.getMyActionBar().setHomeButtonEnabled(true);
                         myView.progressBar.setVisibility(View.GONE);
                         myView.progressText.setText("");
                         myView.progressText.setVisibility(View.GONE);
@@ -453,7 +453,7 @@ public class ImportOSBFragment extends Fragment {
             } catch (Exception e) {
                 // Likely the user navigated away before the process completed
                 e.printStackTrace();
-                mainActivityInterface.getAb().setHomeButtonEnabled(true);
+                mainActivityInterface.getMyActionBar().setHomeButtonEnabled(true);
                 if (getContext()!=null && alive) {
                     requireActivity().runOnUiThread(() -> {
                         myView.progressText.setText(getString(R.string.error));

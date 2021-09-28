@@ -16,11 +16,11 @@ public class Gestures {
     private String longPress;
 
     // Initialise the class
-    public Gestures(Context c, MainActivityInterface mainActivityInterface) {
+    public Gestures(Context c) {
         // On start, set up the arrays
         setGestures();
         setGestureDescriptions(c);
-        getPreferences(c,mainActivityInterface);
+        getPreferences(c,(MainActivityInterface) c);
     }
     private void setGestures() {
         // Set the gesture names for storing in preferences

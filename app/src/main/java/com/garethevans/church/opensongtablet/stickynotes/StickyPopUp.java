@@ -128,7 +128,7 @@ public class StickyPopUp {
             posX = 0;
         }
         if (posY == -1 || posY > h) {
-            posY = (int) ((float) mainActivityInterface.getAb().getHeight()*1.2f);
+            posY = (int) ((float) mainActivityInterface.getMyActionBar().getHeight()*1.2f);
         }
         if (posY < 0) {
             posY = 0;

@@ -20,8 +20,8 @@ public class Swipes {
     private float swipeHeight;        // User preference for max swipe y axis deviation to ignore (ratio of height:screenwidth)
     private float swipeTime;          // User preference for acceptable swipe time (ratio of time:maxTime);
 
-    public Swipes(Context c, MainActivityInterface mainActivityInterface) {
-        loadPreferences(c,mainActivityInterface);
+    public Swipes(Context c) {
+        loadPreferences(c, (MainActivityInterface) c);
     }
 
     // The setters

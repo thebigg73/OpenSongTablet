@@ -20,7 +20,7 @@
         android:textSize="22sp"
         app:drawableStartCompat="@mipmap/ic_round_launcher" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -98,7 +98,7 @@
                 android:visibility="gone" />
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/startApp"
