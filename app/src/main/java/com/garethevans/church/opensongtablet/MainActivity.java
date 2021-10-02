@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -36,6 +37,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -267,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String whichMode, whattodo, importFilename;
     private Uri importUri;
     private boolean doonetimeactions = true, settingsOpen = false, nearbyOpen = false, showSetMenu,
-            pageButtonActive, fullIndexRequired;
+            pageButtonActive = true, fullIndexRequired;
     private final String TAG = "MainActivity";
     private MenuItem settingsButton;
     private Locale locale;
@@ -277,6 +279,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
         myView = ActivityBinding.inflate(getLayoutInflater());
         setContentView(myView.getRoot());
 
@@ -2489,5 +2493,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void setUpBatteryMonitor() {
 
+    }
+
+    @Override
+    public int[] getDisplayMetrics() {
+        DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+        int[] displayMetrics = new int[2];
+        displayMetrics[1] = metrics.heightPixels;
+        displayMetrics[0] = metrics.widthPixels;
+        displayMetrics[0] = getWindow().getDecorView().getWidth();
+        displayMetrics[1] = getWindow().getDecorView().getHeight();
+        return displayMetrics;
     }
 }

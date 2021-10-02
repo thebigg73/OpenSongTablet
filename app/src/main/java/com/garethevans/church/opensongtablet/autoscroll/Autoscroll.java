@@ -33,7 +33,7 @@ public class Autoscroll {
     private int autoscrollDefaultSongPreDelay;
     private int colorOn;
     private final int updateTime = 60;
-    private float scrollIncrement, scrollPosition, scrollCount;
+    private float initialScrollIncrement, scrollIncrement, scrollPosition, scrollCount, numberScrolls;
     private final LinearLayout autoscrollView;
     private MyZoomLayout myZoomLayout;
     private final MaterialTextView autoscrollTimeText, autoscrollTotalTimeText;
@@ -104,6 +104,8 @@ public class Autoscroll {
 
         if (songDuration>0) {
             // We have valid times, so good to go.  Calculate the autoscroll values
+            numberScrolls = ((songDuration-songDelay)*1000f)/updateTime;
+
             calculateAutoscroll();
             resetTimers();
 
@@ -200,11 +202,13 @@ public class Autoscroll {
 
                         // Do the scroll as long as the user isn't touching the screen
                         if (!myZoomLayout.getIsUserTouching()) {
+
                             // Rather than assume the scroll position (as it could've been manually dragged)
                             // Compare the scroll count (float) and scroll position (int).
                             myZoomLayout.post(() -> {
+                                // Check for scaling changes
+                                calculateAutoscroll();
                                 scrollCount = scrollCount + scrollIncrement;
-
                                 if ((Math.max(scrollPosition,myZoomLayout.getScrollPos()) -
                                         Math.min(scrollPosition,myZoomLayout.getScrollPos()))<1) {
                                     // Don't get stuck on float rounding being compounded - use the scroll count
@@ -214,12 +218,13 @@ public class Autoscroll {
                                     scrollPosition = myZoomLayout.getScrollPos() + scrollIncrement;
                                     scrollCount = scrollPosition;
                                 }
-                                myZoomLayout.smoothScrollTo(0, (int) scrollPosition, updateTime);
+                                //myZoomLayout.smoothScrollTo(0, (int) scrollPosition, updateTime);
+                                myZoomLayout.autoscrollTo(scrollCount);
                             });
                         }
                     }
                     scrollTime = scrollTime + updateTime;
-                    if (Math.ceil(scrollPosition) >= (songHeight - displayHeight)) {
+                    if (Math.ceil(scrollPosition) >= ((songHeight*myZoomLayout.getScaleFactor()) - displayHeight)) {
                         // Scrolling is done as we've reached the end
                         endAutoscroll();
                     }
@@ -252,16 +257,18 @@ public class Autoscroll {
     private void calculateAutoscroll() {
         // The total scroll amount is the height of the view - the screen height.
         // If this is less than 0, no scrolling is required.
-        int scrollHeight = songHeight - displayHeight;
+        int scrollHeight = (int)(songHeight * myZoomLayout.getScaleFactor()) - displayHeight;
 
         if (scrollHeight>0) {
-            // The scroll happens every 1 sec (updateTime).
+            // The scroll happens every 60ms (updateTime).
             // The number of times this will happen is calculated as follows
             float numberScrolls = ((songDuration-songDelay)*1000f)/updateTime;
             // The scroll distance for each scroll is calculated as follows
             scrollIncrement = (float)scrollHeight / numberScrolls;
+            initialScrollIncrement = scrollIncrement;
         } else {
             scrollIncrement = 0;
+            initialScrollIncrement = 0;
         }
 
         flashCount = 0;
@@ -270,10 +277,12 @@ public class Autoscroll {
     public void speedUpAutoscroll() {
         // This increases the increment by 25%
         scrollIncrement = 1.25f * scrollIncrement;
+        initialScrollIncrement = 1.25f * initialScrollIncrement;
     }
     public void slowDownAutoscroll() {
         // This decreases the increment by 25%
         scrollIncrement = 0.75f * scrollIncrement;
+        initialScrollIncrement = 0.75f * initialScrollIncrement;
     }
     private int stringToInt(String string) {
         if (string!=null && !string.isEmpty()) {

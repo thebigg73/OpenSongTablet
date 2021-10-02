@@ -261,6 +261,8 @@ public class PerformanceFragment extends Fragment {
         screenWidth = myView.mypage.getMeasuredWidth();
         screenHeight = myView.mypage.getMeasuredHeight();
 
+        myView.zoomLayout.setPageSize(screenWidth,screenHeight);
+
         scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getContext(),
                 mainActivityInterface,
                 myView.testPane, myView.pageHolder, myView.songView, myView.songSheetTitle,
@@ -282,9 +284,16 @@ public class PerformanceFragment extends Fragment {
             @Override
             public void onGlobalLayout() {
                 if (myView != null) {
-                    // Get the width and height of the view
-                    int w = myView.songView.getMeasuredWidth();
-                    int h = myView.songView.getMeasuredHeight();
+                    float maxWidth = 0;
+                    float totalHeight = 0;
+                    for (int x=0;x<mainActivityInterface.getSectionViews().size();x++) {
+                        maxWidth = Math.max(maxWidth,mainActivityInterface.getSectionWidths().get(x)*scaleFactor);
+                        totalHeight += mainActivityInterface.getSectionHeights().get(x)*scaleFactor;
+                    }
+                    final int w = (int)maxWidth;
+                    final int h = (int)totalHeight;
+
+                    myView.zoomLayout.setSongSize(w,h);
 
                     // Now deal with the highlighter file
                     dealWithHighlighterFile(w,h);
@@ -293,7 +302,7 @@ public class PerformanceFragment extends Fragment {
                     dealWithStickyNotes(false,false);
 
                     // Send the autoscroll information (if required)
-                    mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h,screenHeight);
+                    mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h, screenHeight);
 
                     // Now take a screenshot (only runs is w!=0 and h!=0)
                     myView.songView.postDelayed(() -> requireActivity().runOnUiThread(() -> getScreenshot(w,h)), 2000);

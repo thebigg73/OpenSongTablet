@@ -456,6 +456,9 @@ public class ProcessSong {
     }
 
     public String parseLyrics(Context c, Locale locale, Song song) {
+        if (locale==null) {
+            locale = Locale.getDefault();
+        }
         String myLyrics = song.getLyrics();
         myLyrics = myLyrics.replace("]\n\n", "]\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");

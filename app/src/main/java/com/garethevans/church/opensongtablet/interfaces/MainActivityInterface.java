@@ -221,6 +221,6 @@ public interface MainActivityInterface {
     CustomSlide getCustomSlide();
     void chooseMenu(boolean showSetMenu);
     void updateSizes(int width, int height);
-
+    int[] getDisplayMetrics();
 }
 

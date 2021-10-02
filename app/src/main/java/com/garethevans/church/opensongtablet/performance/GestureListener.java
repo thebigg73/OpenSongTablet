@@ -54,48 +54,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         this.swipeMaxDistanceYError = swipeMaxDistanceYError;
         this.swipeMinimumVelocity = swipeMinimumVelocity;
     }
-    
-    @Override
-    public boolean onDown(MotionEvent e) {
-        Log.d(TAG,"onDown()");
-        /*if (!PerformanceFragment.wasScaling) {
-            //songScrollView.fling(0);
-            //horizontalScrollView.fling(0);
-            //songScrollView.scrollTo((int) e.getX(), (int) e.getY());
-            zoomLayout.scrollTo((int) e.getX(), (int) e.getY());
-        }*/
-        return true;
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        Log.d(TAG,"onSingleTapUp()");
-        /*if (!PerformanceFragment.wasScaling) {
-            Log.e("onSingleTapUp", e.getAction() + "");
-        }*/
-        return super.onSingleTapUp(e);
-    }
-
-    /*
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-        if (!PerformanceFragment.wasScaling) {
-            Log.e("onSingleTapConfirmed", e.getAction() + "");
-            //Do your action on single tap
-        }
-        return super.onSingleTapConfirmed(e);
-    }
-*/
-
-/*
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        if (!PerformanceFragment.wasScaling) {
-            Log.e("onDoubleTap", e.getAction() + "");
-        }
-        return true;
-    }
-*/
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
@@ -134,16 +92,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     }
 
     @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        /*if (!PerformanceFragment.wasScaling) {
-            //songScrollView.scrollBy(0, (int) distanceY);
-            //horizontalScrollView.scrollBy((int) distanceX, 0);
-            zoomLayout.scrollBy((int) distanceX, (int) distanceY);
-        }*/
-        return false;
-    }
-
-    @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                            float velocityY) {
         Log.d(TAG,"onFling()");
@@ -167,7 +115,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
                 justFlingScroll = false;
             }
             if (justFlingScroll) {
-                zoomLayout.fling((int) -velocityY);
                 return true;
             } else {
                 return false;
