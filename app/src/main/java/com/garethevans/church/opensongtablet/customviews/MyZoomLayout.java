@@ -27,6 +27,7 @@ public class MyZoomLayout extends FrameLayout {
     private final OverScroller overScroller;
     private int viewWidth, viewHeight, maxScrollX, maxScrollY, overShootX, overShootY,
             songWidth, songHeight, originalSongWidth, originalSongHeight;
+    private boolean scrolledToTop, scrolledToBottom;
 
     public MyZoomLayout(Context c, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(c, attrs, defStyleAttr);
@@ -60,6 +61,8 @@ public class MyZoomLayout extends FrameLayout {
         super.dispatchDraw(canvas);
         if (overScroller.computeScrollOffset()) {
             scrollTo(overScroller.getCurrX(), overScroller.getCurrY());
+            scrolledToBottom = overScroller.getCurrY()>=maxScrollY;
+            scrolledToTop = overScroller.getCurrY()<=0;
             invalidate();
         }
         if (isUserTouching && isScaling) {
@@ -84,8 +87,8 @@ public class MyZoomLayout extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         viewWidth = View.MeasureSpec.getSize(widthMeasureSpec);
         viewHeight = View.MeasureSpec.getSize(heightMeasureSpec);
-        overShootX = (int) ((float)viewWidth/24f);
-        overShootY = (int) ((float)viewHeight/24f);
+        overShootX = (int) ((float)viewWidth/32f);
+        overShootY = (int) ((float)viewHeight/32f);
         overScroller.notifyHorizontalEdgeReached(0,maxScrollX,overShootX);
         overScroller.notifyVerticalEdgeReached(0,maxScrollY,overShootY);
     }
@@ -218,13 +221,17 @@ public class MyZoomLayout extends FrameLayout {
         }
     }
 
-
-
-    public void fling(int velocityY) {
-        Log.d(TAG, "velocityY=" + velocityY);
+    public void animateScrollBy(float scrollFloat, boolean scrollDown) {
+        float velocityY = (viewHeight*scrollFloat)/0.3f;
+        if (scrollDown) {
+            overScroller.fling(getScrollX(), getScrollY(), 0, (int)velocityY,
+                    0, maxScrollX, 0, maxScrollY,overShootX,overShootY);
+        } else {
+            overScroller.fling(getScrollX(), getScrollY(), 0, (int)-velocityY,
+                    0, maxScrollX, 0, maxScrollY,overShootX,overShootY);
+        }
+        invalidate();
     }
-
-
 
     public void setPageSize(int viewWidth, int viewHeight) {
         this.viewWidth = viewWidth;
@@ -245,5 +252,14 @@ public class MyZoomLayout extends FrameLayout {
         focusY = 0;
         calculateMaxScrolls();
         scrollTo(0,0);
+        scrolledToBottom = getScrollY()==maxScrollY;
+        scrolledToTop = true;
+    }
+
+    public boolean getScrolledToTop() {
+        return scrolledToTop;
+    }
+    public boolean getScrolledToBottom() {
+        return scrolledToBottom;
     }
 }

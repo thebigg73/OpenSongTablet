@@ -7,6 +7,9 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
 
+// This holds the references for gestures
+// The actions are called in GestureListener
+
 public class Gestures {
 
     // This deals with on screen gestures (double tap and long press)
@@ -15,6 +18,7 @@ public class Gestures {
     private String doubleTap;
     private String longPress;
     private boolean swipeEnabled;
+    private float scrollDistance;
 
     // Initialise the class
     public Gestures(Context c) {
@@ -70,6 +74,7 @@ public class Gestures {
         doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString(c,"gestureDoubleTap","editsong");
         longPress = mainActivityInterface.getPreferences().getMyPreferenceString(c,"gestureLongPress","addtoset");
         swipeEnabled = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "swipeForSongs",true);
+        scrollDistance = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scrollDistance", 0.7f);
     }
 
     // The getters and setters called by other classes
@@ -99,16 +104,26 @@ public class Gestures {
     public boolean getSwipeEnabled() {
         return swipeEnabled;
     }
+    public float getScrollDistance() {
+        return scrollDistance;
+    }
     public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, String val) {
         if (which.equals("gestureDoubleTap")) {
             this.doubleTap = val;
         } else {
             this.longPress = val;
         }
+        // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceString(c, which, val);
     }
-    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, boolean swipeEnabled) {
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"swipeForSongs", swipeEnabled);
-        this.swipeEnabled = swipeEnabled;
+    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, boolean bool) {
+        switch (which) {
+            case "swipeForSongs":
+                this.swipeEnabled = bool;
+                break;
+        }
+        // Save the preference
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, which, bool);
     }
+
 }

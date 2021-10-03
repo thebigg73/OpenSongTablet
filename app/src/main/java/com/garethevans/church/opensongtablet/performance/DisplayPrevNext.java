@@ -200,9 +200,11 @@ public class DisplayPrevNext {
     }
 
     public void moveToNext() {
+        swipeDirection = "R2L";
         doMove(nextIndex);
     }
     public void moveToPrev() {
+        swipeDirection = "L2R";
         doMove(prevIndex);
     }
 

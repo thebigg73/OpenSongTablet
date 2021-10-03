@@ -1,10 +1,11 @@
-package com.garethevans.church.opensongtablet.performance;
+package com.garethevans.church.opensongtablet.controls;
 
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
@@ -13,7 +14,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private final MainActivityInterface mainActivityInterface;
     private final PerformanceGestures performanceGestures;
 
-    GestureListener(MainActivityInterface mainActivityInterface, PerformanceGestures performanceGestures,
+    public GestureListener(MainActivityInterface mainActivityInterface, PerformanceGestures performanceGestures,
                     int swipeMinimumDistance, int swipeMaxDistanceYError, int swipeMinimumVelocity) {
         this.mainActivityInterface = mainActivityInterface;
         this.performanceGestures = performanceGestures;

@@ -15,16 +15,8 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.abcnotation.MusicScoreBottomSheet;
-import com.garethevans.church.opensongtablet.autoscroll.AutoscrollBottomSheet;
-import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
-import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
-import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
-import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
-import com.garethevans.church.opensongtablet.tools.SoundLevelBottomSheet;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -468,146 +460,130 @@ public class PageButtons {
     }
 
     // This deals with the actions from the page buttons
+    // They are all sent to the PerformanceGestures class for processing
     public void sendPageAction(int x, boolean isLongPress) {
         // Get the action we are trying to run
         switch(actions.get(x)) {
             case "":
-                actionInterface.navigateToFragment("opensongapp://settings/controls/pagebuttons",0);
+                actionInterface.getPerformanceGestures().editPageButtons();
                 break;
             case "set":
-                actionInterface.chooseMenu(true);
+                actionInterface.getPerformanceGestures().setMenu();
                 break;
             case "transpose":
-                TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet();
-                transposeBottomSheet.show(actionInterface.getMyFragmentManager(),"TransposeBottomSheet");
+                actionInterface.getPerformanceGestures().transpose();
                 break;
             case "pad":
                 if (isLongPress) {
-                    PadsBottomSheet padsBottomSheet = new PadsBottomSheet();
-                    padsBottomSheet.show(actionInterface.getMyFragmentManager(),"padsBottomSheet");
+                    actionInterface.getPerformanceGestures().padSettings();
                 } else {
-                    actionInterface.playPad();
+                    actionInterface.getPerformanceGestures().togglePad();
                 }
                 break;
             case "metronome":
                 if (isLongPress) {
-                    actionInterface.navigateToFragment("opensongapp://settings/actions/metronome",0);
+                    actionInterface.getPerformanceGestures().metronomeSettings();
                 } else {
-                    actionInterface.metronomeToggle();
+                    actionInterface.getPerformanceGestures().toggleMetronome();
                 }
                 break;
             case "autoscroll":
                 if (isLongPress) {
-                    AutoscrollBottomSheet autoscrollBottomSheet = new AutoscrollBottomSheet();
-                    autoscrollBottomSheet.show(actionInterface.getMyFragmentManager(),"AutoscrollBottomSheet");
+                    actionInterface.getPerformanceGestures().autoscrollSettings();
                 } else {
-                    actionInterface.toggleAutoscroll();
+                    actionInterface.getPerformanceGestures().toggleAutoscroll();
                 }
                 break;
             case "link":
-                actionInterface.navigateToFragment("opensongapp://settings/actions/links",0);
+                actionInterface.getPerformanceGestures().openLinks();
                 break;
             case "chordfingerings":
                 if (isLongPress) {
-                   actionInterface.navigateToFragment("opensongapp://settings/actions/chords",0);
+                    actionInterface.getPerformanceGestures().chordSettings();
                 } else {
-                    ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
-                    chordFingeringBottomSheet.show(actionInterface.getMyFragmentManager(), "ChordFingeringBottomSheet");
+                    actionInterface.getPerformanceGestures().showChordFingerings();
                 }
                 break;
             case "stickynotes":
                 if (isLongPress) {
-                    actionInterface.navigateToFragment("opensongapp://settings/actions/stickynotes",0);
+                    actionInterface.getPerformanceGestures().stickySettings();
                 } else {
-                    // Toggle the force show (hide is for moving away from performace/stage mode)
-                    actionInterface.showSticky(true,false);
+                    actionInterface.getPerformanceGestures().showSticky();
                 }
                 break;
             case "pdfpage":
-                if (actionInterface.getSong().getFiletype().equals("PDF")) {
-                    PDFPageBottomSheet pdfPageBottomSheet = new PDFPageBottomSheet();
-                    pdfPageBottomSheet.show(actionInterface.getMyFragmentManager(),"PDFPageBottomSheet");
-                }
+                actionInterface.getPerformanceGestures().pdfPage();
                 break;
             case "highlight":
                 if (isLongPress) {
-                    actionInterface.navigateToFragment("opensongapp://songactions/highlighter/edit",0);
+                    actionInterface.getPerformanceGestures().highlighterEdit();
                 } else {
-                    // TODO
+                    actionInterface.getPerformanceGestures().showHighlight();
                 }
                 break;
             case "editsong":
-                actionInterface.navigateToFragment("opensongapp://settings/edit",0);
+                actionInterface.getPerformanceGestures().editSong();
                 break;
             case "theme":
-                actionInterface.navigateToFragment("opensongapp://settings/display/theme",0);
+                actionInterface.getPerformanceGestures().editTheme();
                 break;
             case "autoscale":
-                //TODO
+                actionInterface.getPerformanceGestures().editAutoscale();
                 break;
             case "fonts":
-                actionInterface.navigateToFragment("opensongapp://settings/display/fonts",0);
+                actionInterface.getPerformanceGestures().editFonts();
                 break;
             case "profiles":
-                actionInterface.navigateToFragment("opensongapp://settings/profiles",0);
+                actionInterface.getPerformanceGestures().editProfiles();
                 break;
             case "gestures":
-                //TODO
+                actionInterface.getPerformanceGestures().editGestures();
                 break;
             case "pedals":
-                actionInterface.navigateToFragment("opensongapp://settings/controls/pedals",0);
+                actionInterface.getPerformanceGestures().editPedals();
                 break;
             case "showchords":
-                //TODO
+                actionInterface.getPerformanceGestures().showChords();
                 break;
             case "showcapo":
-                //TODO
+                actionInterface.getPerformanceGestures().showCapo();
                 break;
             case "showlyrics":
-                //TODO
+                actionInterface.getPerformanceGestures().showLyrics();
                 break;
             case "search":
-                actionInterface.chooseMenu(false);
+                actionInterface.getPerformanceGestures().songMenu();
                 break;
             case "randomsong":
-                String whichMenu;
-                if (actionInterface.getCurrentSet().getInSet(actionInterface.getSong())) {
-                    whichMenu = "set";
-                } else {
-                    whichMenu = "song";
-                }
-                RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet(whichMenu);
-                randomSongBottomSheet.show(actionInterface.getMyFragmentManager(),"RandomSongBottomSheet");
+                actionInterface.getPerformanceGestures().randomSong();
                 break;
             case "abc":
                 if (isLongPress) {
-                    actionInterface.navigateToFragment("opensongapp://settings/actions/abcnotation",0);
+                    actionInterface.getPerformanceGestures().abcEdit();
                 } else {
-                    MusicScoreBottomSheet musicScoreBottomSheet = new MusicScoreBottomSheet();
-                    musicScoreBottomSheet.show(actionInterface.getMyFragmentManager(), "musicScoreBottomSheet");
+                    actionInterface.getPerformanceGestures().showABCNotation();
                 }
                 break;
             case "inc_autoscroll_speed":
-                actionInterface.getAutoscroll().speedUpAutoscroll();
+                actionInterface.getPerformanceGestures().speedUpAutoscroll();
                 break;
             case "dec_autoscroll_speed":
-                actionInterface.getAutoscroll().slowDownAutoscroll();
+                actionInterface.getPerformanceGestures().slowDownAutoscroll();
                 break;
             case "toggle_autoscroll_pause":
-                actionInterface.getAutoscroll().pauseAutoscroll();
+                actionInterface.getPerformanceGestures().pauseAutoscroll();
                 break;
             case "midi":
-                actionInterface.navigateToFragment("opensongapp://settings/midi",0);
+                actionInterface.getPerformanceGestures().editMidi();
                 break;
             case "bible":
-                actionInterface.navigateToFragment("opensongapp://settings/bible",0);
+                actionInterface.getPerformanceGestures().bibleSettings();
                 break;
             case "soundlevel":
-                SoundLevelBottomSheet soundLevelBottomSheet = new SoundLevelBottomSheet();
-                soundLevelBottomSheet.show(actionInterface.getMyFragmentManager(),"SoundLevelBottomSheet");
+                actionInterface.getPerformanceGestures().soundLevel();
                 break;
             case "exit":
-                actionInterface.onBackPressed();
+                actionInterface.getPerformanceGestures().onBackPressed();
                 break;
         }
     }

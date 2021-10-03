@@ -4,11 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.abcnotation.MusicScoreBottomSheet;
-import com.garethevans.church.opensongtablet.chords.ChordFingeringBottomSheet;
-import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -16,6 +12,7 @@ import java.util.TimerTask;
 
 public class PedalActions {
 
+    private final String TAG = "PedalActions";
     private final MainActivityInterface mainActivityInterface;
     private ArrayList<String> actions, actionCodes;
     private final int[] pedalCode = new int[9]; // 8 buttons, but ignore item 0
@@ -29,7 +26,8 @@ public class PedalActions {
     private boolean longpress;
     private int repeatsRecorded;
     private int keyRepeatCount;
-    private boolean airTurnMode, airTurnPaused, pedalScrollBeforeMove, pedalShowWarningBeforeMove;
+    private int keyRepeatTime;
+    private boolean airTurnMode, airTurnPaused, pedalScrollBeforeMove, pedalShowWarningBeforeMove, midiAsPedal;
     private Runnable releaseAirTurn = new Runnable() {
         @Override
         public void run() {
@@ -37,8 +35,9 @@ public class PedalActions {
         }
     };
 
-    public PedalActions(MainActivityInterface mainActivityInterface) {
+    public PedalActions(Context c, MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
+        setUpPedalActions(c,mainActivityInterface);
     }
 
     public void setUpPedalActions(Context c, MainActivityInterface mainActivityInterface) {
@@ -105,6 +104,8 @@ public class PedalActions {
         keyRepeatCount = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"keyRepeatCount",20);
         pedalScrollBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"pedalScrollBeforeMove",true);
         pedalShowWarningBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"pedalShowWarningBeforeMove",false);
+        keyRepeatTime = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "keyRepeatTime", 400);
+        midiAsPedal = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "midiAsPedal", false);
     }
 
     public void commonEventDown(int keyCode, String keyMidi) {
@@ -145,124 +146,120 @@ public class PedalActions {
         if (desiredAction==null) {
             desiredAction = "";
         }
+
         Log.d("PedalActions","pedal="+pedal+"  desiredAction="+desiredAction);
         switch (desiredAction) {
             case "prev":
-                mainActivityInterface.getDisplayPrevNext().moveToPrev();
+                mainActivityInterface.getPerformanceGestures().prevSong();
                 break;
 
             case "next":
-                mainActivityInterface.getDisplayPrevNext().moveToNext();
+                mainActivityInterface.getPerformanceGestures().nextSong();
                 break;
 
             case "down":
-                // TODO down
+                mainActivityInterface.getPerformanceGestures().scroll(true);
                 break;
 
             case "up":
-                // TODO up
+                mainActivityInterface.getPerformanceGestures().scroll(false);
                 break;
 
             case "pad":
-                mainActivityInterface.playPad();
+                mainActivityInterface.getPerformanceGestures().togglePad();
                 break;
 
             case "autoscroll":
-                mainActivityInterface.toggleAutoscroll();
+                mainActivityInterface.getPerformanceGestures().toggleAutoscroll();
                 break;
 
             case "metronome":
-                mainActivityInterface.toggleMetronome();
+                mainActivityInterface.getPerformanceGestures().toggleMetronome();
                 break;
 
             case "pad_autoscroll":
-                mainActivityInterface.playPad();
-                mainActivityInterface.toggleAutoscroll();
+                mainActivityInterface.getPerformanceGestures().togglePad();
+                mainActivityInterface.getPerformanceGestures().toggleAutoscroll();
                 break;
 
             case "pad_metronome":
-                mainActivityInterface.playPad();
-                mainActivityInterface.toggleMetronome();
+                mainActivityInterface.getPerformanceGestures().togglePad();
+                mainActivityInterface.getPerformanceGestures().toggleMetronome();
                 break;
 
             case "autoscroll_metronome":
-                mainActivityInterface.toggleMetronome();
-                mainActivityInterface.toggleAutoscroll();
+                mainActivityInterface.getPerformanceGestures().toggleMetronome();
+                mainActivityInterface.getPerformanceGestures().toggleAutoscroll();
                 break;
 
             case "pad_autoscroll_metronome":
-                mainActivityInterface.playPad();
-                mainActivityInterface.toggleMetronome();
-                mainActivityInterface.toggleAutoscroll();
+                mainActivityInterface.getPerformanceGestures().togglePad();
+                mainActivityInterface.getPerformanceGestures().toggleMetronome();
+                mainActivityInterface.getPerformanceGestures().toggleAutoscroll();
                 break;
 
             case "editsong":
-                mainActivityInterface.navigateToFragment("opensongapp;//settings/song/edit",0);
+                mainActivityInterface.getPerformanceGestures().editSong();
                 break;
 
             case "randomsong":
-                // TODO decide if we are in song or set menu.  For now assume song
-                RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet("song");
-                randomSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"randomSongBottomSheet");
+                mainActivityInterface.getPerformanceGestures().randomSong();
                 break;
 
             case "transpose":
-                TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet(false);
-                transposeBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"transposeBottomSheet");
+                mainActivityInterface.getPerformanceGestures().transpose();
                 break;
 
             case "showchords":
-                ChordFingeringBottomSheet chordFingeringBottomSheet = new ChordFingeringBottomSheet();
-                chordFingeringBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "chordFingeringBottomSheet");
+                mainActivityInterface.getPerformanceGestures().showChords();
                 break;
 
             case "showcapo":
-                // TODO showcapo
+                mainActivityInterface.getPerformanceGestures().showCapo();
                 break;
 
             case "showlyrics":
-                // TODO showlyrics
+                mainActivityInterface.getPerformanceGestures().showLyrics();
                 break;
 
             case "abcnotation":
-                MusicScoreBottomSheet musicScoreBottomSheet = new MusicScoreBottomSheet();
-                musicScoreBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"MusicScoreBottomSheet");
+                mainActivityInterface.getPerformanceGestures().showABCNotation();
                 break;
 
             case "highlight":
-                // TODO highlight
+                mainActivityInterface.getPerformanceGestures().showHighlight();
                 break;
 
             case "sticky":
-                // TODO sticky
+                mainActivityInterface.getPerformanceGestures().showSticky();
                 break;
 
             case "speedup":
-                mainActivityInterface.getAutoscroll().speedUpAutoscroll();
+                mainActivityInterface.getPerformanceGestures().speedUpAutoscroll();
                 break;
 
             case "slowdown":
-                mainActivityInterface.getAutoscroll().slowDownAutoscroll();
+                mainActivityInterface.getPerformanceGestures().slowDownAutoscroll();
                 break;
 
             case "pause":
-                mainActivityInterface.getAutoscroll().pauseAutoscroll();
+                mainActivityInterface.getPerformanceGestures().pauseAutoscroll();
                 break;
 
             case "songmenu":
-                mainActivityInterface.chooseMenu(false);
+                mainActivityInterface.getPerformanceGestures().songMenu();
                 break;
 
             case "set":
-                mainActivityInterface.chooseMenu(true);
+                mainActivityInterface.getPerformanceGestures().setMenu();
                 break;
 
             case "refreshsong":
-                // TODO refreshsong
+                mainActivityInterface.getPerformanceGestures().loadSong();
                 break;
 
             case "addsongtoset":
-                // TODO addsongtoset
+                mainActivityInterface.getPerformanceGestures().addToSet();
                 break;
         }
     }
@@ -277,6 +274,7 @@ public class PedalActions {
             }
         } else {
             for (int w = 1; w <= 8; w++) {
+                Log.d(TAG,"keyCode="+keyCode+"  pedalCode["+w+"]="+pedalCode[w]);
                 if (pedalCode[w]==keyCode) {
                     pedal = w;
                 }
@@ -290,5 +288,90 @@ public class PedalActions {
         } else {
             return pedalLongPressAction[pedal];
         }
+    }
+
+
+    // Getters and setters
+    public boolean getPedalScrollBeforeMove() {
+        return pedalScrollBeforeMove;
+    }
+    public boolean getPedalShowWarningBeforeMove() {
+        return pedalShowWarningBeforeMove;
+    }
+    public boolean getAirTurnMode() {
+        return airTurnMode;
+    }
+    public int getKeyRepeatCount() {
+        return keyRepeatCount;
+    }
+    public int getKeyRepeatTime() {
+        return keyRepeatTime;
+    }
+    public int getPedalCode(int which) {
+        return pedalCode[which];
+    }
+    public String getMidiCode(int which) {
+        return pedalMidi[which];
+    }
+    public boolean getMidiAsPedal() {
+        return midiAsPedal;
+    }
+    public String getPedalShortPressAction(int which) {
+        return pedalShortPressAction[which];
+    }
+    public String getPedalLongPressAction(int which) {
+        return pedalLongPressAction[which];
+    }
+
+    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, boolean bool) {
+        switch (which) {
+            case "pedalScrollBeforeMove":
+                this.pedalScrollBeforeMove = bool;
+                break;
+            case "pedalShowWarningBeforeMove":
+                this.pedalShowWarningBeforeMove = bool;
+                break;
+            case "airTurnMode":
+                this.airTurnMode = bool;
+                break;
+            case "midiAsPedal":
+                this.midiAsPedal = bool;
+                break;
+        }
+        // Save the preference
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, which, bool);
+    }
+    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, int val) {
+        switch (which) {
+            case "keyRepeatCount":
+                this.keyRepeatCount = val;
+                break;
+            case "keyRepeatTime":
+                this.keyRepeatTime = val;
+                break;
+        }
+        // Save the preference
+        mainActivityInterface.getPreferences().setMyPreferenceInt(c, which, val);
+    }
+    public void setPedalCode(Context c, MainActivityInterface mainActivityInterface, int which, int newCode) {
+        pedalCode[which] = newCode;
+        mainActivityInterface.getPreferences().setMyPreferenceInt(c,"pedal"+which+"Code",newCode);
+    }
+    public void setMidiCode(Context c, MainActivityInterface mainActivityInterface, int which, String newCode) {
+        pedalMidi[which] = newCode;
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"pedal"+which+"Midi",newCode);
+    }
+    public void setPedalPreference(Context c, MainActivityInterface mainActivityInterface, int which,
+                                   boolean shortPress, String action) {
+        String pref = "pedal"+which;
+        if (shortPress) {
+            pedalShortPressAction[which] = action;
+            pref = pref + "ShortPressAction";
+        } else {
+            pedalLongPressAction[which] = action;
+            pref = pref + "LongPressAction";
+        }
+        // Save the preference
+        mainActivityInterface.getPreferences().setMyPreferenceString(c, pref, action);
     }
 }

@@ -420,7 +420,7 @@ public class Pad {
                     @Override
                     public void run() {
                         pad1PlayTimerHandler.post(() -> {
-                            if (!pad1Pause) {
+                            if (pad1!=null && !pad1Pause) {
                                 pad1CurrentTime = (int)(pad1.getCurrentPosition()/1000f);
                                 //pad1CurrentTime++;
                                 String display = mainActivityInterface.getTimeTools().timeFormatFixer(pad1CurrentTime);
@@ -446,7 +446,7 @@ public class Pad {
                     @Override
                     public void run() {
                         pad2PlayTimerHandler.post(() -> {
-                            if (!pad2Pause) {
+                            if (pad2!=null && !pad2Pause) {
                                 pad2CurrentTime = (int)(pad2.getCurrentPosition()/1000f);
                                 String display = mainActivityInterface.getTimeTools().timeFormatFixer(pad2CurrentTime);
                                 padTime.setText(display);

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
@@ -129,6 +130,7 @@ public class PerformanceFragment extends Fragment {
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
         stickyPopUp = new StickyPopUp();
+        mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
     }
     private void loadPreferences() {
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);

@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -109,7 +108,6 @@ import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
-import com.garethevans.church.opensongtablet.screensetup.ActivityGestureDetector;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
@@ -231,7 +229,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private NavController navController;
 
     // Other views/listeners/helpers
-    private GestureDetector gestureDetector;
     private WindowFlags windowFlags;
     private BatteryStatus batteryStatus;
     private CastContext castContext;
@@ -364,13 +361,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         performanceGestures = new PerformanceGestures(this,this);
         pageButtons = new PageButtons(this);
         midi = new Midi();
-        pedalActions = new PedalActions(this);
+        pedalActions = new PedalActions(this,this);
         pad = new Pad(this, myView.onScreenInfo.pad);
         autoscroll = new Autoscroll(this,myView.onScreenInfo.autoscrollTime,
                 myView.onScreenInfo.autoscrollTotalTime,myView.onScreenInfo.autoscroll);
         metronome = new Metronome();
         gestures = new Gestures(this);
-        gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
         swipes = new Swipes(this);
         timeTools = new TimeTools();
         displayPrevNext = new DisplayPrevNext(this,myView.nextPrevInfo.nextPrevInfoLayout,
@@ -557,21 +553,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
         }
     }
-
-
-
-
-    // Pedal and key listeners
-/*
-
-    @Override
-    public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
-        if (gestureDetector!=null) {
-            return gestureDetector.onTouchEvent(ev); // Dealt with in ActivityGestureDetector
-        }
-        return false;
-    }
-*/
 
 
 
@@ -1195,6 +1176,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         });
         myView.menuTop.versionCode.setOnClickListener(v -> closeDrawer(true));
     }
+    @Override
+    public boolean getShowSetMenu() {
+        return showSetMenu;
+    }
+
     private boolean setSongMenuFragment() {
         runOnUiThread(() -> {
             if (songMenuFragment!=null) {
@@ -1240,13 +1226,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
         } else {
             Log.d(TAG, "songMenuFragment not available");
-        }
-    }
-    @Override
-    public void songMenuActionButtonShow(boolean show) {
-        if (songMenuFragment!=null) {
-            // TODO Can probably remove?
-            //songMenuFragment.showActionButton(show);
         }
     }
     @Override
@@ -1307,11 +1286,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public Song getSongInMenu(int position) {
-        if (songMenuFragment!=null) {
+        if (position>-1 && songMenuFragment!=null && songMenuFragment.getSongsFound()!=null && songMenuFragment.getSongsFound().size()>position) {
             return songMenuFragment.getSongsFound().get(position);
-        } else {
-            return new Song();
         }
+        return mainActivityInterface.getSong();
     }
     @Override
     public ArrayList<Song> getSongsInMenu() {

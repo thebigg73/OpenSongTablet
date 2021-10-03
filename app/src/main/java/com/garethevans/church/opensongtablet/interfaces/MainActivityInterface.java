@@ -86,7 +86,6 @@ public interface MainActivityInterface {
     void navigateToFragment(String deepLink, int id);
     void popTheBackStack(int id, boolean inclusive);
     void navHome();
-    void songMenuActionButtonShow(boolean show);
     void lockDrawer(boolean lock);
     void closeDrawer(boolean close);
     void doSongLoad(String folder, String filename, boolean closeDrawer);
@@ -224,5 +223,6 @@ public interface MainActivityInterface {
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
     PerformanceGestures getPerformanceGestures();
+    boolean getShowSetMenu();
 }
 

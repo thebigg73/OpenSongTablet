@@ -52,7 +52,6 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
         super.onCancel(dialog);
-        mainActivityInterface.songMenuActionButtonShow(true);
         dismiss();
     }
 

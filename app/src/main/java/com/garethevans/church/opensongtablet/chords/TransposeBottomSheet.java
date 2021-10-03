@@ -135,7 +135,11 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             // Update the text
             String newKey;
             if (originalKey==null || originalKey.isEmpty() || originalKey.equals("0")) {
-                newKey = "" + value;
+                if (value>0) {
+                    newKey = "+" + (int)value;
+                } else {
+                    newKey = "" + (int) value;
+                }
                 myView.keyChangeTextView.setText(newKey);
             } else {
                 // We need to get the transposed key

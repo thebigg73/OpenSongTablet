@@ -66,7 +66,7 @@ public class SwipeFragment extends Fragment {
                 simulateSwipe();
             }
             showOrHide(isChecked);
-            mainActivityInterface.getGestures().setPreferences(requireContext(),mainActivityInterface,isChecked);
+            mainActivityInterface.getGestures().setPreferences(requireContext(),mainActivityInterface,"swipeForSongs", isChecked);
         });
 
         // Set up the drawing area - attach the drawNotes to the desired view

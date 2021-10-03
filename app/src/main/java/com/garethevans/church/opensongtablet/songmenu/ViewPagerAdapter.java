@@ -11,6 +11,7 @@ import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
     public final Fragment[] menuFragments = {new SongMenuFragment(), new SetMenuFragment()};
+    private int openMenu = 1;
 
     public ViewPagerAdapter(@NonNull FragmentManager fragmentManager,Lifecycle lifecycle) {
         super(fragmentManager,lifecycle);
@@ -19,11 +20,16 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        openMenu = 1;
         return menuFragments[position];
     }
 
     @Override
     public int getItemCount() {
         return 2;
+    }
+
+    public boolean isSongMenu() {
+        return openMenu==1;
     }
 }
