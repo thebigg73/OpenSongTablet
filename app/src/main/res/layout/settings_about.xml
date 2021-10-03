@@ -18,7 +18,6 @@
                 android:id="@+id/visitWebsite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="@string/website"
                 android:hint="@string/website_address" />
 

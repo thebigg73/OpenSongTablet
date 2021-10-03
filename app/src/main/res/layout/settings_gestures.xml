@@ -17,7 +17,6 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
                 android:text="@string/doubleTap" />
 
             <com.garethevans.church.opensongtablet.customviews.ExposedDropDown

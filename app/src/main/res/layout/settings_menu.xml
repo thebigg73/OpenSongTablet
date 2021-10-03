@@ -17,14 +17,20 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/songMenuCheckboxes"
-                style="@style/PrefSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/song_menu_checkboxes" />
 
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/songAlphabeticalShow"
-                style="@style/PrefSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/alphabetical" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider

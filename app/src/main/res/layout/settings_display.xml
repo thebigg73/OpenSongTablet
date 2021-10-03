@@ -18,7 +18,6 @@
                 android:id="@+id/themeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="@string/theme_choose"
                 android:hint="@string/theme_dark" />
 

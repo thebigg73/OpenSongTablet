@@ -14,6 +14,7 @@ public class Gestures {
     private ArrayList<String> gestureDescriptions;
     private String doubleTap;
     private String longPress;
+    private boolean swipeEnabled;
 
     // Initialise the class
     public Gestures(Context c) {
@@ -68,6 +69,7 @@ public class Gestures {
     private void getPreferences(Context c, MainActivityInterface mainActivityInterface) {
         doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString(c,"gestureDoubleTap","editsong");
         longPress = mainActivityInterface.getPreferences().getMyPreferenceString(c,"gestureLongPress","addtoset");
+        swipeEnabled = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "swipeForSongs",true);
     }
 
     // The getters and setters called by other classes
@@ -94,12 +96,19 @@ public class Gestures {
     public String getLongPress() {
         return longPress;
     }
+    public boolean getSwipeEnabled() {
+        return swipeEnabled;
+    }
     public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, String val) {
-        if (which.equals("doubleTap")) {
+        if (which.equals("gestureDoubleTap")) {
             this.doubleTap = val;
         } else {
             this.longPress = val;
         }
         mainActivityInterface.getPreferences().setMyPreferenceString(c, which, val);
+    }
+    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, boolean swipeEnabled) {
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"swipeForSongs", swipeEnabled);
+        this.swipeEnabled = swipeEnabled;
     }
 }

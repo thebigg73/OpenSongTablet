@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,35 +19,42 @@
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="@string/info_text" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/songSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/songsheet" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/prevInSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/show_prev_song"
-                android:checked="false"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="false"
+                android:text="@string/show_prev_song" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/nextInSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/show_next_in_set"
-                android:checked="true"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="true"
+                android:text="@string/show_next_in_set" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/prevNextSongMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/show_next_prev_in_song_menu"
-                android:checked="false"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="false"
+                android:text="@string/show_next_prev_in_song_menu" />
 
             <TableRow style="@style/DividerLine" />
 
@@ -58,18 +64,23 @@
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="@string/song_display" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/boldChordsHeadings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/bold_chords_headings" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/hideLyricsBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/hidelyricsbox" />
 
             <TableRow style="@style/DividerLine" />
@@ -86,18 +97,24 @@
                 android:id="@+id/trimSections"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/trim_sections" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/addSectionSpace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/section_space" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/trimLineSpacing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/linespacing" />
 
             <LinearLayout
@@ -137,12 +154,15 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/filter_info" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/filterSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/filter_section" />
 
             <LinearLayout
@@ -161,6 +181,8 @@
                     android:id="@+id/filterShow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/show" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -169,30 +191,15 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/filter_entry" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/EditTextLayoutOutline"
+                <com.garethevans.church.opensongtablet.customviews.MaterialEditText
+                    android:id="@+id/filters"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
-                    android:gravity="top"
                     android:hint="@string/filters"
-                    android:labelFor="@+id/filters"
-                    app:hintEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/filters"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="top"
-                        android:imeOptions="actionNone"
-                        android:inputType="textMultiLine"
-                        android:minHeight="200dp"
-                        android:singleLine="false"
-                        android:textCursorDrawable="@null" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:imeOptions="actionNone"
+                    android:inputType="textMultiLine" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/filterSave"

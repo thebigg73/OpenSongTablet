@@ -20,9 +20,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/section_box"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
@@ -94,12 +92,13 @@
 
             </LinearLayout>
 
+            <TableRow style="@style/DividerLine"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/section_box"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView

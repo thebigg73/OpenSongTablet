@@ -10,17 +10,17 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="@string/song"
-        android:padding="8dp"
-        style="@style/backFragHeading"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/setCheckTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/set"
-        android:padding="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="28dp"
-        style="@style/backFragHeading" />
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
 
 </LinearLayout>

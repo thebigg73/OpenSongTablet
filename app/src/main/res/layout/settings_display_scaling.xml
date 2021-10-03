@@ -24,8 +24,8 @@
                 android:id="@+id/useAutoscale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/autoscale"/>
 
             <!--Manual font size-->
@@ -50,16 +50,16 @@
                     android:id="@+id/scaleWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/scale_width" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/scaleColumns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/maximise_columns" />
 
 
@@ -92,16 +92,16 @@
                     android:id="@+id/overrideFull"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/override_fullautoscale" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/overrideWidth_Switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:text="@string/override_widthautoscale" />
 
             </LinearLayout>

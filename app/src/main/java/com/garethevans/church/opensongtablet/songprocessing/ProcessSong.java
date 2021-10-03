@@ -2196,8 +2196,11 @@ public class ProcessSong {
                 options.outWidth = w;
                 options.outHeight = h;
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, w,
+                        h, true);
+                bitmap.recycle();
                 inputStream.close();
-                return bitmap;
+                return newBitmap;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

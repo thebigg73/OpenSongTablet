@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <ImageView
         android:id="@+id/imageView"
@@ -31,7 +33,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/hintView"
-            style="?android:textAppearanceSmall"
+            android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"

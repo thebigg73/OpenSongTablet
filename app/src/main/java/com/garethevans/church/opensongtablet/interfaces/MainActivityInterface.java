@@ -42,6 +42,7 @@ import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
+import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
@@ -222,5 +223,6 @@ public interface MainActivityInterface {
     void chooseMenu(boolean showSetMenu);
     void updateSizes(int width, int height);
     int[] getDisplayMetrics();
+    PerformanceGestures getPerformanceGestures();
 }
 

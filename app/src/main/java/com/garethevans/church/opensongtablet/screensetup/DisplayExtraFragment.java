@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,8 @@ public class DisplayExtraFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayExtraBinding.inflate(inflater,container,false);
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         mainActivityInterface.updateToolbar(getString(R.string.song_display));
 
         // Set up views
@@ -60,6 +63,8 @@ public class DisplayExtraFragment extends Fragment {
         myView.filterSwitch.setChecked(getChecked("filterSections",false));
         visibilityByBoolean(myView.filterLayout,myView.filterSwitch.isChecked());
         myView.filterShow.setChecked(getChecked("filterShow",false));
+        mainActivityInterface.getProcessSong().editBoxToMultiline(myView.filters);
+        mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.filters,4);
     }
 
     private boolean getChecked(String prefName, boolean fallback) {

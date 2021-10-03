@@ -5,8 +5,6 @@
     style="@style/ExposedDropDown"
     tools:hint="Hint"
     android:labelFor="@+id/textView"
-    android:clipChildren="true"
-    android:clipToPadding="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -16,7 +14,6 @@
         android:layout_height="wrap_content"
         android:dropDownHeight="200dp"
         android:padding="16dp"
-        android:includeFontPadding="false"
         tools:text="Text"/>
 
 </com.google.android.material.textfield.TextInputLayout>

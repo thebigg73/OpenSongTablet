@@ -3,92 +3,74 @@ package com.garethevans.church.opensongtablet.performance;
 // The gestures used in the app
 
 import android.content.Context;
-import android.util.Log;
-
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class PerformanceGestures {
 
-    private final String TAG = "PerformanceGestures";
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
-    private final DrawerLayout drawerLayout;
 
-    PerformanceGestures(Context c, MainActivityInterface mainActivityInterface,
-                        DrawerLayout drawerLayout) {
+    public PerformanceGestures(Context c, MainActivityInterface mainActivityInterface) {
+        this.c = c;
         this.mainActivityInterface = mainActivityInterface;
-        this.drawerLayout = drawerLayout;
         actionInterface = (ActionInterface) c;
     }
 
-    // Open/close the drawers
-    void gesture1() {
-        mainActivityInterface.closeDrawer(drawerLayout.isDrawerOpen(GravityCompat.START));
-        mainActivityInterface.getAutoscroll().setWasScrolling(false);
-        try {
-            //appActionBar.removeCallBacks();
-            //appActionBar.showActionBar(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    // Song menu
+    public void songMenu() {
+        mainActivityInterface.chooseMenu(false);
+    }
+
+    public void setMenu() {
+        mainActivityInterface.chooseMenu(true);
     }
 
     // Edit song
-    private void gesture2() {
-        mainActivityInterface.navigateToFragment(null,R.id.editSongFragment);
+    public void editSong() {
+        mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
     }
 
     // Add to set
-    private void gesture3(Context c, Song song) {
-        String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(song);
+    public void addToSet() {
+        String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(mainActivityInterface.getSong());
 
         // Allow the song to be added, even if it is already there
         String val = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent","") + itemForSet;
         mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",val);
 
         // Tell the user that the song has been added.
-        mainActivityInterface.getShowToast().doIt(c,"\"" + song.getFilename() + "\" " +
+        mainActivityInterface.getShowToast().doIt(c,"\"" + mainActivityInterface.getSong().getFilename() + "\" " +
                 c.getString(R.string.addedtoset));
 
         // Vibrate to let the user know something happened
         mainActivityInterface.getDoVibrate().vibrate(c, 50);
 
-        //TODO Add the song to the set and prepare the new set list
-        //setActions.prepareSetList(c,preferences);
+        mainActivityInterface.getCurrentSet().addToCurrentSet(itemForSet);
         mainActivityInterface.updateSetList();
     }
 
     // Redraw the lyrics page
-    private void gesture4(Song song) {
-        mainActivityInterface.doSongLoad(song.getFolder(),song.getFilename(),true);
+    public void loadSong() {
+        mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename(),true);
     }
 
     // Stop or start autoscroll
-    public void gesture5(Context c, MainActivityInterface mainActivityInterface) {
-        mainActivityInterface.getDoVibrate().vibrate(c, 50);
+    public void toggleAutoscroll() {
         mainActivityInterface.toggleAutoscroll();
     }
 
     // Stop or start pads
-    public void gesture6(MainActivityInterface mainActivityInterface) {
+    public void togglePad() {
         mainActivityInterface.playPad();
     }
 
     // Start or stop the metronome
-    public void gesture7() {
-        Log.d(TAG,"gesture7()");
+    public void toggleMetronome() {
         actionInterface.metronomeToggle();
     }
-
-
-
-
-
 
 }

@@ -105,6 +105,7 @@ import com.garethevans.church.opensongtablet.pdf.OCR;
 import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
+import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
@@ -201,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private PageButtons pageButtons;
     private PDFSong pdfSong;
     private PedalActions pedalActions;
+    private PerformanceGestures performanceGestures;
     private Preferences preferences;
     private PrepareFormats prepareFormats;
     private PresentationCommon presentationCommon;
@@ -359,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setActions = new SetActions();
 
         // Song actions/features
+        performanceGestures = new PerformanceGestures(this,this);
         pageButtons = new PageButtons(this);
         midi = new Midi();
         pedalActions = new PedalActions(this);
@@ -1788,7 +1791,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void installPlayServices() {
-        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.play_services_error,
+        Snackbar.make(myView.drawerLayout, R.string.play_services_error,
                 BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.play_services_how, v -> {
             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
             startActivity(i);
@@ -1885,6 +1888,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public Gestures getGestures() {
         return gestures;
+    }
+
+    @Override
+    public PerformanceGestures getPerformanceGestures() {
+        return performanceGestures;
     }
 
     @Override
@@ -2319,7 +2327,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSong() {
-        // TODO
+        doSongLoad(song.getFolder(),song.getFilename(),true);
     }
 
     @Override
@@ -2397,7 +2405,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Access coarse/fine location, so can open the menu at 'Connect devices'
                     // The following checks we have both before navigating
                     Log.d("d", "LOCATION granted!");
-                    if (whattodo.equals("nearby")) {
+                    if (whattodo!=null && whattodo.equals("nearby")) {
                         openNearbyFragment();
                     }
                     break;

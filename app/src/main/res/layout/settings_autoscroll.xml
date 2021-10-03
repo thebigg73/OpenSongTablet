@@ -20,7 +20,6 @@
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
                 android:text="@string/default_autoscroll" />
 
             <LinearLayout
@@ -82,8 +81,6 @@
                 android:id="@+id/autostartAutoscroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@string/autoscroll_autostart" />
 
             <TableRow style="@style/DividerLine" />

@@ -12,7 +12,9 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/autohideActionBar"
-            style="@style/PrefSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:text="@string/actionbar_autohide" />
 
         <TextView
@@ -69,8 +71,9 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/batteryDialOnOff"
-                style="@style/PrefSwitch"
-                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/image" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -85,9 +88,9 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/batteryTextOnOff"
-                style="@style/PrefSwitch"
-                android:layout_marginTop="16dp"
-                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/text" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -118,8 +121,9 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/clockTextOnOff"
-                style="@style/PrefSwitch"
-                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/text" />
 
             <LinearLayout
@@ -130,8 +134,9 @@
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/clock24hrOnOff"
-                    style="@style/PrefSwitch"
-                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:text="@string/time_format" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider

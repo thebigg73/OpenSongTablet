@@ -8,6 +8,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.OverScroller;
 
@@ -24,14 +25,14 @@ public class MyZoomLayout extends FrameLayout {
     private float minScale;
     private final GestureDetector gestureDetector;
     private final OverScroller overScroller;
-    private int viewWidth, viewHeight, maxScrollX, maxScrollY,
+    private int viewWidth, viewHeight, maxScrollX, maxScrollY, overShootX, overShootY,
             songWidth, songHeight, originalSongWidth, originalSongHeight;
 
     public MyZoomLayout(Context c, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(c, attrs, defStyleAttr);
         scaleDetector = new ScaleGestureDetector(c, new ScaleListener());
         gestureDetector = new GestureDetector(c, new GestureListener());
-        overScroller = new OverScroller(c);
+        overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
     }
@@ -40,7 +41,7 @@ public class MyZoomLayout extends FrameLayout {
         super(c, attrs);
         scaleDetector = new ScaleGestureDetector(c, new ScaleListener());
         gestureDetector = new GestureDetector(c, new GestureListener());
-        overScroller = new OverScroller(c);
+        overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
     }
@@ -49,10 +50,9 @@ public class MyZoomLayout extends FrameLayout {
         super(c);
         scaleDetector = new ScaleGestureDetector(c, new ScaleListener());
         gestureDetector = new GestureDetector(c, new GestureListener());
-        overScroller = new OverScroller(c);
+        overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
-        setFitsSystemWindows(true);
     }
 
     @Override
@@ -60,6 +60,7 @@ public class MyZoomLayout extends FrameLayout {
         super.dispatchDraw(canvas);
         if (overScroller.computeScrollOffset()) {
             scrollTo(overScroller.getCurrX(), overScroller.getCurrY());
+            invalidate();
         }
         if (isUserTouching && isScaling) {
             canvas.save();
@@ -83,6 +84,10 @@ public class MyZoomLayout extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         viewWidth = View.MeasureSpec.getSize(widthMeasureSpec);
         viewHeight = View.MeasureSpec.getSize(heightMeasureSpec);
+        overShootX = (int) ((float)viewWidth/24f);
+        overShootY = (int) ((float)viewHeight/24f);
+        overScroller.notifyHorizontalEdgeReached(0,maxScrollX,overShootX);
+        overScroller.notifyVerticalEdgeReached(0,maxScrollY,overShootY);
     }
 
     private void calculateMaxScrolls() {
@@ -198,8 +203,9 @@ public class MyZoomLayout extends FrameLayout {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            Log.d(TAG, "onFling() called");
-
+            overScroller.fling(getScrollX(), getScrollY(), (int)-velocityX, (int)-velocityY,
+                    0, maxScrollX, 0, maxScrollY,overShootX,overShootY);
+            invalidate();
             return super.onFling(e1, e2, velocityX, velocityY);
         }
 

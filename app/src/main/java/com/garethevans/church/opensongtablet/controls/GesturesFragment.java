@@ -55,8 +55,8 @@ public class GesturesFragment extends Fragment {
         myView.longPress.setText(mainActivityInterface.getGestures().getDescriptionFromGesture(mainActivityInterface.getGestures().getLongPress()));
 
         // Set the listeners
-        myView.doubleTap.addTextChangedListener(new MyTextWatcher("doubleTap"));
-        myView.doubleTap.addTextChangedListener(new MyTextWatcher("longPress"));
+        myView.doubleTap.addTextChangedListener(new MyTextWatcher("gestureDoubleTap"));
+        myView.longPress.addTextChangedListener(new MyTextWatcher("gestureLongPress"));
         }
 
     private class MyTextWatcher implements TextWatcher {
@@ -73,7 +73,7 @@ public class GesturesFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             String mydescription;
-            if (which.equals("doubleTap")) {
+            if (which.equals("gestureDoubleTap")) {
                 mydescription = myView.doubleTap.getText().toString();
             } else {
                 mydescription = myView.longPress.getText().toString();

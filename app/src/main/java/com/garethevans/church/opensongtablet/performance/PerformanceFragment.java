@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
@@ -128,11 +129,6 @@ public class PerformanceFragment extends Fragment {
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
         stickyPopUp = new StickyPopUp();
-/*
-        performanceGestures = new PerformanceGestures(getContext(),preferences,storageAccess,setActions,
-                padFunctions,metronome,this,mainActivityInterface,showToast,doVibrate,
-                mainActivityInterface.getDrawer(),mainActivityInterface.getMediaPlayer(1),
-                mainActivityInterface.getMediaPlayer(2),mainActivityInterface.getAppActionBar(), 0xffff0000);*/
     }
     private void loadPreferences() {
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
@@ -283,7 +279,8 @@ public class PerformanceFragment extends Fragment {
         songViewObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if (myView != null) {
+                if (myView != null && mainActivityInterface!=null &&
+                        mainActivityInterface.getSectionWidths()!=null && mainActivityInterface.getSectionWidths().size()>0) {
                     float maxWidth = 0;
                     float totalHeight = 0;
                     for (int x=0;x<mainActivityInterface.getSectionViews().size();x++) {
@@ -328,30 +325,47 @@ public class PerformanceFragment extends Fragment {
 
     }
     private void dealWithHighlighterFile(int w, int h) {
+        Log.d(TAG,"height requested="+h);
         if (!mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")) {
             // Set the highlighter image view to match
-            ViewGroup.LayoutParams layoutParams = myView.highlighterView.getLayoutParams();
-            layoutParams.width = w;
-            layoutParams.height = h;
-            myView.highlighterView.setLayoutParams(layoutParams);
-            // Load in the bitmap with these dimensions
-            Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                    getHighlighterFile(requireContext(), mainActivityInterface, w, h);
-            if (highlighterBitmap != null &&
-                    mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "drawingAutoDisplay", true)) {
-                myView.highlighterView.setVisibility(View.VISIBLE);
-                GlideApp.with(requireContext()).load(highlighterBitmap).
-                        override(w, h).into(myView.highlighterView);
-                myView.highlighterView.startAnimation(animSlideIn);
-                // Hide after a certain length of time
-                int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
-                if (timetohide != 0) {
-                    new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
+            myView.highlighterView.setVisibility(View.INVISIBLE);
+            // Once the view is ready at the required size, deal with it
+            ViewTreeObserver highlighterVTO = myView.highlighterView.getViewTreeObserver();
+            highlighterVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // Load in the bitmap with these dimensions
+                    Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
+                            getHighlighterFile(requireContext(), mainActivityInterface, w, h);
+                    if (highlighterBitmap != null &&
+                            mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "drawingAutoDisplay", true)) {
+                        Log.d(TAG,"height="+highlighterBitmap.getHeight());
+                        myView.highlighterView.setVisibility(View.VISIBLE);
+                        RequestOptions scaleOption = new RequestOptions().sizeMultiplier(myView.zoomLayout.getScaleFactor());
+                        RequestOptions sizeOption = new RequestOptions().override(w,h);
+                        GlideApp.with(requireContext()).load(highlighterBitmap).override(w,h).
+                                apply(scaleOption).apply(sizeOption).into(myView.highlighterView);
+                        myView.highlighterView.setScaleY(myView.zoomLayout.getScaleFactor());
+                        myView.highlighterView.startAnimation(animSlideIn);
+                        Log.d(TAG,"height of imageView="+myView.highlighterView.getHeight());
+                        // Hide after a certain length of time
+                        int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
+                        if (timetohide != 0) {
+                            new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
+                        }
+                    } else {
+                        myView.highlighterView.setVisibility(View.GONE);
+                    }
+                    myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-            } else {
-                myView.highlighterView.setVisibility(View.GONE);
-            }
+            });
+            myView.pageHolder.getLayoutParams().height = h;
+            myView.highlighterView.getLayoutParams().height = h;
+            myView.highlighterView.getLayoutParams().width = w;
+            myView.highlighterView.requestLayout();
+            myView.highlighterView.invalidate();
+
         } else {
             myView.highlighterView.setVisibility(View.GONE);
         }
@@ -379,8 +393,8 @@ public class PerformanceFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     private void setGestureListeners(){
         // get the gesture detector
-        gestureDetector = new GestureDetector(requireContext(), new GestureListener(mainActivityInterface,myView.zoomLayout,
-                swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity));
+        gestureDetector = new GestureDetector(requireContext(), new GestureListener(mainActivityInterface,
+                mainActivityInterface.getPerformanceGestures(),swipeMinimumDistance, swipeMaxDistanceYError,swipeMinimumVelocity));
 
         // Any interaction with the screen should trigger the display prev/next (if required)
         myView.zoomLayout.setOnTouchListener((view, motionEvent) -> {
@@ -400,7 +414,7 @@ public class PerformanceFragment extends Fragment {
             try {
                 Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
-                if (myView!=null && myView.songView!=null) {
+                if (myView != null) {
                     myView.songView.layout(0, 0, w, h);
                     myView.songView.draw(canvas);
                     mainActivityInterface.setScreenshot(bitmap);

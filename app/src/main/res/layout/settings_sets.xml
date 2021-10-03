@@ -18,7 +18,6 @@
                 android:id="@+id/createSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text="@string/set_new"
                 android:hint="@string/set_new_info" />
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- This is my main dark theme-->
     <!-- Set the main app theme-->
@@ -70,24 +70,22 @@
         <item name="hintTextColor">?attr/colorOnSurface</item>
         <item name="endIconTint">?attr/colorOnSurface</item>
         <item name="android:textColorHint">?attr/colorOnSurface</item>
-
         <!-- The box -->
-        <item name="boxStrokeColor">@color/selector</item>
+        <item name="boxStrokeColor">?attr/colorOnSurface</item>
         <item name="boxStrokeWidth">1dp</item>
     </style>
     <style name="ExposedMaterialOverlay" parent="">
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorSurface">@color/colorSecondary</item>
-        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOnSurface">@color/vlightgrey</item>
         <item name="colorError">@color/red</item>
         <item name="autoCompleteTextViewStyle">@style/ExposedDropDownItem</item>
     </style>
     <style name="ExposedDropDownItem" parent="Widget.AppCompat.AutoCompleteTextView">
         <!-- Disable text entry and background color -->
         <item name="android:inputType">none</item>
-        <item name="background">@null</item>
+        <item name="background">@color/transparent</item>
         <item name="colorSurface">@color/transparent</item>
-
         <!-- The text cursor -->
         <!-- Style the text cursor and highlight colours -->
         <item name="materialThemeOverlay">@style/TextInputOverlay</item>
@@ -97,26 +95,26 @@
     <style name="Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="materialThemeOverlay">@style/SwitchOverlay</item>
         <item name="switchMinWidth">32dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
     </style>
     <style name="SwitchOverlay" parent="">
         <item name="colorSurface">@color/colorSecondary</item>
         <item name="colorControlActivated">@color/white</item>
         <item name="colorOnSurface">@color/colorAltSecondary</item>
-
     </style>
 
-
+    <!-- The MaterialEditText -->
     <style name="EditTextLayoutOutline" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <!-- Hints -->
         <item name="hintEnabled">true</item>
         <item name="hintTextColor">@color/white</item>
-        <item name="android:textColorHint">@color/white</item>
-        <item name="endIconTint">@color/lightgrey</item>
+        <item name="android:textColorHint">@color/vlightgrey</item>
+        <item name="endIconTint">@color/vlightgrey</item>
 
         <!-- The box -->
-        <item name="boxStrokeColor">@color/selector</item>
+        <item name="boxStrokeColor">@color/vlightgrey</item>
         <item name="boxStrokeWidth">1dp</item>
-
     </style>
     <style name="EditTextLayout" parent="">
         <!-- Max lines = 1 and set Enter to complete entry-->
@@ -136,22 +134,16 @@
         <item name="materialThemeOverlay">@style/TextInputOverlay</item>
     </style>
     <style name="TextInputOverlay" parent="">
-        <item name="colorControlActivated">@color/lightgrey</item>
-        <item name="colorOnSurface">@color/lightgrey</item>
+        <item name="colorControlActivated">@color/vlightgrey</item>
+        <item name="colorOnSurface">@color/vlightgrey</item>
     </style>
 
+    <!-- The ActionBar -->
     <style name="AppTheme.ActionBar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="android:background">@color/colorAltPrimary</item>
         <item name="windowActionBarOverlay">true</item>
     </style>
-    <style name="popupStyle">
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">8dp</item>
-        <item name="backgroundColor">@color/colorAltPrimary</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
 
     <!--For the Preferences windows-->
     <style name="DefaultView" parent="AppTheme">
@@ -159,14 +151,7 @@
         <item name="android:layout_margin">0dp</item>
         <item name="android:padding">16dp</item>
     </style>
-    <style name="PrefSwitch" parent="AppTheme">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="trackTint">@color/colorSecondary</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
-    </style>
+
     <style name="DividerLine" parent="AppTheme">
         <item name="android:layout_height">2dp</item>
         <item name="android:background">@color/colorSecondary</item>
@@ -219,30 +204,8 @@
         <item name="singleSelection">true</item>
     </style>
 
-    <style name="helperText">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/vlightgrey</item>
-    </style>
 
-    <!-- General views -->
-    <style name="MySwitch" parent="AppTheme">
-        <item name="android:textColor">@color/white</item>
-    </style>
-    <style name="MySeekBar" parent="AppTheme">
-        <item name="android:thumb">@drawable/thumbcontrol</item>
-        <item name="elevation">80dp</item>
-    </style>
-    <style name="RadioButton" parent="AppTheme">
-        <item name="android:textColor">@color/white</item>
-    </style>
-    <style name="IconTextButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="iconPadding">16dp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="iconGravity">start</item>
-        <item name="android:gravity">start|center_vertical</item>
-        <item name="iconTint">@color/white</item>
-        <item name="android:padding">8dp</item>
-    </style>
+    <!-- Bottom sheets -->
     <style name="BottomSheetDialogTheme" parent="Widget.MaterialComponents.BottomSheet">
         <!-- If this isn't overridden, the navigation bar at the bottom is ugly-->
         <!-- However, we have to manually set the scrim colour and touch cancel in the fragment-->
@@ -260,34 +223,26 @@
         <item name="android:layout_gravity">start</item>
 
     </style>
-
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
     </style>
-
     <style name="FullscreenBottomSheet" parent="BottomSheetDialogTheme">
         <item name="behavior_skipCollapsed">true</item>
         <item name="behavior_fitToContents">true</item>
         <item name="behavior_peekHeight">0dp</item> // yep, that helped to skip collapsed state at initial
         <item name="behavior_hideable">true</item>
     </style>
-
-    <style name="progressBarOnPrimary">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:alpha">0.8</item>
-    </style>
-
     <style name="RoundedBox" parent="FullscreenBottomSheet">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">16dp</item>
         <item name="cornerSizeTopRight">16dp</item>
     </style>
 
+    <!-- Sliders -->
     <style name="Slider" parent="Widget.MaterialComponents.Slider">
         <item name="materialThemeOverlay">@style/SliderOverlay</item>
         <item name="labelStyle">@style/SliderLabel</item>
     </style>
-
     <style name="SliderOverlay" parent="">
         <item name="colorPrimary">@color/colorAltSecondary</item>
         <item name="colorOnPrimary">@color/colorAltSecondary</item>
@@ -301,29 +256,14 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="PeekableBottomSheet" parent="BottomSheetDialogTheme">
 
-    </style>
+    <!-- The two text button styles -->
     <style name="IconOnlyButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
         <item name="iconTint">@color/white</item>
         <item name="strokeColor">@color/colorSecondary</item>
         <item name="android:padding">8dp</item>
-    </style>
-    <style name="IconOnlyButtonNoOutline" parent="Widget.MaterialComponents.Button">
-        <item name="iconPadding">0dp</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconTint">@color/white</item>
-        <item name="android:padding">8dp</item>
-    </style>
-    <style name="DialogButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/white</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="iconTint">@color/white</item>
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:layout_gravity">center</item>
     </style>
     <style name="TextBackgroundButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/colorSecondary</item>
@@ -332,124 +272,6 @@
         <item name="android:padding">16dp</item>
         <item name="android:layout_gravity">center</item>
     </style>
-    <style name="TextButtonNoOutline" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:padding">16dp</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--// Maybe old layouts-->
-
-    <style name="MyEditText" parent="AppTheme">
-        <item name="android:textColor">#000</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:background">#fff</item>
-        <item name="android:textColorHint">#555</item>
-        <item name="android:textCursorDrawable">@null</item>
-    </style>
-
-
-    <style name="MyWhiteHeadingText" parent="AppTheme">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="MySongTitleText" parent="AppTheme">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="MySongAuthorText" parent="AppTheme">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="MyHeadingText" parent="AppTheme">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/yellow</item>
-    </style>
-
-    <style name="MyMenuHeadingText" parent="AppTheme">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/yellow</item>
-    </style>
-
-    <style name="MyVersionText" parent="AppTheme">
-        <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="MyDialogHeadingText" parent="AppTheme">
-        <item name="android:textSize">10sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-
-    <style name="MyInfoText" parent="AppTheme">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/yellow</item>
-    </style>
-
-    <!--STUFF FOR FRAGMENTS-->
-    <style name="backFragHeading" parent="AppTheme">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/vlightgrey</item>
-    </style>
-    <style name="currFragHeading" parent="AppTheme">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <!--SONG LIST-->
-    <style name="songTitle" parent="AppTheme">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="drawableTint">@color/black</item>
-    </style>
-    <style name="songInfo" parent="AppTheme">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="drawableTint">@color/black</item>
-    </style>
-    <style name="songCounter" parent="AppTheme">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:elevation" tools:targetApi="lollipop">16dp</item>
-        <item name="android:layout_margin">6dp</item>
-        <item name="backgroundTint">@color/colorAltPrimary</item>
-        <item name="android:background">@drawable/count_icon</item>
-
-    </style>
-
-    <!--DEFAULT VIEWS-->
-    <style name="pageButton" parent="AppTheme">
-        <item name="backgroundTint">@color/colorSecondary</item>
-        <item name="drawableTint">@color/white</item>
-        <item name="useCompatPadding">true</item>
-        <item name="borderWidth">0dp</item>
-        <item name="fabSize">mini</item>
-        <item name="android:alpha">0.4</item>
-    </style>
 
 
     <style name="largeText" parent="AppTheme">
@@ -457,48 +279,18 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-
-
-
-    <!--NEW DRAWER-->
-    <style name="DrawerLayout" parent="AppTheme">
-        <item name="android:listDivider">@color/colorSecondary</item>
-        <item name="itemBackground">@color/white</item>
-        <item name="itemTextColor">@color/black</item>
-        <item name="itemIconTint">@color/black</item>
-        <item name="backgroundColor">@color/white</item>
-        <item name="background">@color/white</item>
+    <style name="helperText">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/vlightgrey</item>
     </style>
 
-
-
-
-
-
+    <style name="progressBarOnPrimary">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:alpha">0.8</item>
+    </style>
 
     <style name="CustomMediaRouterTheme" parent="AppTheme">
         <item name="android:background">@color/colorAltPrimary</item>
     </style>
-
-
-
-    <!-- To remove -->
-    <style name="MyTextSwitch" parent="AppTheme">
-        <item name="android:textSize">14sp</item>
-        <item name="android:thumb">@drawable/switch_button</item>
-    </style>
-
-    <style name="MySpinner" parent="AppTheme">
-        <item name="android:textColor">#000</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:background">#fff</item>
-        <item name="android:spinnerMode">dialog</item>
-    </style>
-
-
-
-
 
 </resources>

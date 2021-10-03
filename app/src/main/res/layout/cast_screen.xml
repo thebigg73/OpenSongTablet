@@ -61,9 +61,8 @@
             android:orientation="horizontal">
 
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/songinfo_TextView"
-                style="@style/MyWhiteHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
