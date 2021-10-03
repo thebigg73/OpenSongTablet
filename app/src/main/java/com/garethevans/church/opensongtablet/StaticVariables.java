@@ -21,8 +21,9 @@ import java.util.Locale;
 
 class StaticVariables {
 
+    // The nearby fields
     public static boolean isHost = false, isConnected = false, usingNearby = false,
-            receiveHostFiles = false, keepHostFiles=false;
+            receiveHostFiles = false, keepHostFiles=false, receiveHostSongSections=true, receiveHostAutoscroll=true;
     public static String connectionLog, deviceName;
 
     // The song fields
