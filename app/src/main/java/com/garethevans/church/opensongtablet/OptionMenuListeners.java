@@ -1869,6 +1869,11 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;
             keepHostFiles.setEnabled(isChecked);
+            // IV - When off turn keep off - user must make an active choice to 'keep' as it may overwrite local songs
+            if (!isChecked) {
+                keepHostFiles.setChecked(false);
+                StaticVariables.keepHostFiles = false;
+            }
             // IV - Re-connect to apply setting
             Handler h = new Handler();
             h.postDelayed(() -> connectionSearch.performClick(),2000);
@@ -1876,9 +1881,11 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
         keepHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.keepHostFiles = isChecked;
-            // IV - Re-connect to apply setting
-            Handler h = new Handler();
-            h.postDelayed(() -> connectionSearch.performClick(),2000);
+            if (isChecked) {
+                // IV - Re-connect to apply setting
+                Handler h = new Handler();
+                h.postDelayed(() -> connectionSearch.performClick(), 2000);
+            }
         });
 
         receiveHostSongSections.setOnCheckedChangeListener((view,isChecked) -> {
