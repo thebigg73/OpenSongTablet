@@ -1841,6 +1841,16 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 // IV - Short delay to help stability
                 Handler h = new Handler();
                 h.postDelayed(() -> connectionSearch.performClick(),2000);
+            } else {
+                // IV - Reset the client options when leaving client mode
+                StaticVariables.receiveHostFiles = false;
+                StaticVariables.keepHostFiles = false;
+                StaticVariables.receiveHostSongSections = true;
+                StaticVariables.receiveHostAutoscroll = true;
+                receiveHostFiles.setChecked(false);
+                keepHostFiles.setChecked(false);
+                receiveHostSongSections.setChecked(true);
+                receiveHostAutoscroll.setChecked(true);
             }
         });
 
@@ -1866,6 +1876,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked));
+
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;
             keepHostFiles.setEnabled(isChecked);
