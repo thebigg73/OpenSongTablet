@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginEnd="16dp"
-                    android:layout_toStartOf="@+id/pageButtonRight"/>
+                    android:layout_toStartOf="@+id/pageButtonRight" />
 
             </RelativeLayout>
         </com.google.android.material.appbar.AppBarLayout>

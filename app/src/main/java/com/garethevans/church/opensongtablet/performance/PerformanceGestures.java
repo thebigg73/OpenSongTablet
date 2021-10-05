@@ -4,6 +4,8 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.abcnotation.MusicScoreBottomSheet;
 import com.garethevans.church.opensongtablet.autoscroll.AutoscrollBottomSheet;
@@ -23,6 +25,7 @@ public class PerformanceGestures {
     private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
     private MyZoomLayout myZoomLayout;
+    private RecyclerView pdfRecycler;
 
     // Initialise
     public PerformanceGestures(Context c, MainActivityInterface mainActivityInterface) {
@@ -32,6 +35,9 @@ public class PerformanceGestures {
     }
     public void setZoomLayout(MyZoomLayout myZoomLayout) {
         this.myZoomLayout = myZoomLayout;
+    }
+    public void setPDFRecycler(RecyclerView pdfRecycler) {
+        this.pdfRecycler = pdfRecycler;
     }
 
     // The following are called from GestureListener, PedalActions, PageButtons
@@ -124,9 +130,17 @@ public class PerformanceGestures {
 
     // Scroll up/down
     public void scroll(boolean scrollDown) {
-        if (myZoomLayout!=null && mainActivityInterface.getMode().equals("Performance")) {
+        if (myZoomLayout!=null && pdfRecycler!=null && mainActivityInterface.getMode().equals("Performance")) {
             try {
-                myZoomLayout.animateScrollBy(mainActivityInterface.getGestures().getScrollDistance(),scrollDown);
+                if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                    int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*pdfRecycler.getHeight());
+                    if (!scrollDown) {
+                        height = - height;
+                    }
+                    pdfRecycler.smoothScrollBy(0,height);
+                } else {
+                    myZoomLayout.animateScrollBy(mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -220,4 +220,10 @@ public class PageButtonFragment extends Fragment {
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"pageButton"+(x+1),mainActivityInterface.getPageButtons().getPageButtonAction(x));
         mainActivityInterface.updatePageButtonLayout();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mainActivityInterface.updatePageButtonLayout();
+    }
 }

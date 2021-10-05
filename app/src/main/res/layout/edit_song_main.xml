@@ -87,7 +87,7 @@
                 app:autoSizeMinTextSize="8sp"
                 app:autoSizeStepGranularity="1sp"
                 app:autoSizeTextType="uniform"
-                android:layout_marginBottom="60dp"/>
+                android:layout_marginBottom="80dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

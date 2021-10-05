@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class Song {
 
+    private final String TAG = "Song";
+
     // The holders
     private int id;
     private String songid="";
@@ -367,28 +369,35 @@ public class Song {
     }
 
     // This is used when comparing song objects for changes (when editing a song)
-    @Override
+    /*@Override
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {
+            Log.d(TAG,"different objects");
             return false; // Different object types or null
         } else {
             Song song = (Song) obj;
-            return id == song.id && songid.equals(song.songid) && filename.equals(song.filename) &&
-                    folder.equals(song.folder) && title.equals(song.title) && author.equals(song.author) &&
-                    copyright.equals(song.copyright) && lyrics.equals(song.lyrics) && hymnnum.equals(song.hymnnum) &&
-                    ccli.equals(song.ccli) && theme.equals(song.theme) && alttheme.equals(song.alttheme) &&
-                    user1.equals(song.user1) && user2.equals(song.user2) && user3.equals(song.user3) &&
-                    key.equals(song.key) && timesig.equals(song.timesig) && aka.equals(song.aka) &&
-                    autoscrolldelay.equals(song.autoscrolldelay) && autoscrolllength.equals(song.autoscrolllength) &&
-                    tempo.equals(song.tempo) && padfile.equals(song.padfile) &&
-                    padloop.equals(song.padloop) && midi.equals(song.midi) && midiindex.equals(song.midiindex) &&
-                    capo.equals(song.capo) && capoprint.equals(song.capoprint) && customchords.equals(song.customchords) &&
-                    notes.equals(song.notes) && abc.equals(song.abc) && linkyoutube.equals(song.linkyoutube) &&
-                    linkweb.equals(song.linkweb) && linkaudio.equals(song.linkaudio) &&
-                    linkother.equals(song.linkother) && presentationorder.equals(song.presentationorder) &&
-                    filetype.equals(song.filetype);
+            try {
+                return id == song.id && songid.equals(song.songid) && filename.equals(song.filename) &&
+                        folder.equals(song.folder) && title.equals(song.title) && author.equals(song.author) &&
+                        copyright.equals(song.copyright) && lyrics.equals(song.lyrics) && hymnnum.equals(song.hymnnum) &&
+                        ccli.equals(song.ccli) && theme.equals(song.theme) && alttheme.equals(song.alttheme) &&
+                        user1.equals(song.user1) && user2.equals(song.user2) && user3.equals(song.user3) &&
+                        key.equals(song.key) && timesig.equals(song.timesig) && aka.equals(song.aka) &&
+                        autoscrolldelay.equals(song.autoscrolldelay) && autoscrolllength.equals(song.autoscrolllength) &&
+                        tempo.equals(song.tempo) && padfile.equals(song.padfile) &&
+                        padloop.equals(song.padloop) && midi.equals(song.midi) && midiindex.equals(song.midiindex) &&
+                        capo.equals(song.capo) && capoprint.equals(song.capoprint) && customchords.equals(song.customchords) &&
+                        notes.equals(song.notes) && abc.equals(song.abc) && linkyoutube.equals(song.linkyoutube) &&
+                        linkweb.equals(song.linkweb) && linkaudio.equals(song.linkaudio) &&
+                        linkother.equals(song.linkother) && presentationorder.equals(song.presentationorder) &&
+                        filetype.equals(song.filetype);
+            } catch (Exception e) {
+                // Something was null / not set, so we want to be able to save with blanks!
+                e.printStackTrace();
+                return false;
+            }
         }
-    }
+    }*/
 
 
     // The welcome song if there is a problem

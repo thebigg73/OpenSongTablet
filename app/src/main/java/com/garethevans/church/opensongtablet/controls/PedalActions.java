@@ -12,7 +12,6 @@ import java.util.TimerTask;
 
 public class PedalActions {
 
-    private final String TAG = "PedalActions";
     private final MainActivityInterface mainActivityInterface;
     private ArrayList<String> actions, actionCodes;
     private final int[] pedalCode = new int[9]; // 8 buttons, but ignore item 0
@@ -274,7 +273,6 @@ public class PedalActions {
             }
         } else {
             for (int w = 1; w <= 8; w++) {
-                Log.d(TAG,"keyCode="+keyCode+"  pedalCode["+w+"]="+pedalCode[w]);
                 if (pedalCode[w]==keyCode) {
                     pedal = w;
                 }

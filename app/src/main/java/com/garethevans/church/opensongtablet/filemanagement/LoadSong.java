@@ -50,11 +50,13 @@ public class LoadSong {
             return doLoadSongFile(c, mainActivityInterface, thisSong, indexing);
         } else {
             Log.d(TAG, "Loading from the database");
+            Log.d(TAG, "folder="+thisSong.getFolder()+"  filename="+thisSong.getFilename());
             if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
                 return mainActivityInterface.getSong().showWelcomeSong(c, thisSong);
             } else {
                 thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface,
                         thisSong.getFolder(), thisSong.getFilename());
+                Log.d(TAG,"thisSong="+thisSong.getFilename());
                 sortLoadingSuccessful(c,mainActivityInterface,thisSong);
                 return thisSong;
             }
@@ -167,8 +169,16 @@ public class LoadSong {
 
     private void sortLoadingSuccessful(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // Check if the song has been loaded (will now have a lyrics value)
-        if (!thisSong.getFilename().equals("Welcome to OpenSongApp") &&
-                thisSong.getLyrics() != null && !thisSong.getLyrics().isEmpty()) {
+        Log.d(TAG,"Lyrics="+thisSong.getLyrics());
+        Log.d(TAG,"Filetype="+thisSong.getFiletype());
+        if ((thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) &&
+        thisSong.getLyrics()==null) {
+            // A basic PDF/IMG without custom info
+            thisSong.setLyrics("");
+        }
+
+        if (!thisSong.getFilename().toLowerCase(Locale.ROOT).equals("welcome to opensongapp") &&
+                thisSong.getLyrics() != null) {
             // Song was loaded correctly and was xml format
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
             mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", thisSong.getFilename());
@@ -177,6 +187,7 @@ public class LoadSong {
             // Something was wrong, so set the welcome song
             thisSong.setFilename("Welcome to OpenSongApp");
             thisSong.setFolder(c.getString(R.string.mainfoldername));
+            mainActivityInterface.getSong().showWelcomeSong(c,thisSong);
             mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", "Welcome to OpenSongApp");
             mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", c.getString(R.string.mainfoldername));
         }
@@ -413,6 +424,7 @@ public class LoadSong {
                     thisSong = thisSong.showWelcomeSong(c,thisSong);
                 }
 
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -505,6 +517,7 @@ public class LoadSong {
         }
         return extraStuff;
     }
+
 
     private boolean validReadableFile(Context c, MainActivityInterface mainActivityInterface, Uri uri, String filename) {
         boolean isvalid = false;

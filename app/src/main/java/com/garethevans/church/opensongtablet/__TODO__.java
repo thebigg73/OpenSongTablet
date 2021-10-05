@@ -7,7 +7,14 @@ public class __TODO__ {
     // Anything missing has been tested as ok
     /*
 
+Bugs:
+scaling with songsheet header doesnt include this height
+opening a song when in the set menu doesn't scroll to it
+
+
+
     Menus
+
 
 
 
@@ -18,6 +25,7 @@ public class __TODO__ {
 
 
 
+PDF songs -  load as recyclerview?  Could allow scrolling vertically through pages?
 
 
 

@@ -50,6 +50,10 @@ public class MaterialSlider extends LinearLayout {
         titleTextView = findViewById(R.id.titleText);
         valueTextView = findViewById(R.id.valueText);
 
+        slider.setId(View.generateViewId());
+        titleTextView.setId(View.generateViewId());
+        valueTextView.setId(View.generateViewId());
+
         if (text!=null) {
             titleTextView.setText(text);
         } else {

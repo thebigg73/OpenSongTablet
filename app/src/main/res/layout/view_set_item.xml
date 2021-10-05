@@ -18,10 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:drawablePadding="16dp"
+            android:padding="4dp"
             android:text="@string/title"
-            android:padding="8dp"
-            app:drawableStartCompat="@drawable/ic_amplifier_white_36dp"
-            android:drawablePadding="16dp"/>
+            app:drawableStartCompat="@drawable/ic_amplifier_white_36dp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/cardview_songtitle"
@@ -31,7 +31,7 @@
             android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/title"
-            android:paddingTop="8dp"
+            android:paddingTop="4dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:paddingBottom="0dp"/>
@@ -46,9 +46,9 @@
             android:gravity="center_vertical"
             android:text="@string/mainfoldername"
             android:paddingTop="0dp"
-            android:paddingBottom="8dp"
+            android:paddingBottom="4dp"
             android:paddingStart="8dp"
-            android:paddingEnd="8dp"/>
+            android:paddingEnd="4dp"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

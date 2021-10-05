@@ -1968,6 +1968,7 @@ public class ProcessSong {
 
     // Now the stuff to read in pdf files (converts the pages to an image for displaying)
     // This uses Android built in PdfRenderer, so will only work on Lollipop+
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap getBitmapFromPDF(Context c, MainActivityInterface mainActivityInterface,
                                    String folder, String filename, int page, int allowedWidth,
@@ -2149,9 +2150,81 @@ public class ProcessSong {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return bitmap;
+
+        // TODO - use a preference to see if we want to trim whitespace
+        return trimBitmap(bitmap);
     }
 
+    public Bitmap trimBitmap(Bitmap bmp) {
+        int imgHeight = bmp.getHeight();
+        int imgWidth = bmp.getWidth();
+
+        //TRIM WIDTH - LEFT
+        int startWidth = 0;
+        for (int x = 0; x < imgWidth / 2; x++) {
+            if (startWidth == 0) {
+                for (int y = 0; y < imgHeight/2; y++) {
+                    if (bmp.getPixel(x, y) != Color.TRANSPARENT) {
+                        startWidth = x;
+                        break;
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+
+        //TRIM WIDTH - RIGHT
+        int endWidth = 0;
+        for (int x = imgWidth - 1; x >= imgWidth / 2; x--) {
+            if (endWidth == 0) {
+                for (int y = 0; y < imgHeight/2; y++) {
+                    if (bmp.getPixel(x, y) != Color.TRANSPARENT) {
+                        endWidth = x;
+                        break;
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+
+        //TRIM HEIGHT - TOP
+        int startHeight = 0;
+        for(int y = 0; y < imgHeight/2; y++) {
+            if (startHeight == 0) {
+                for (int x = 0; x < imgWidth/2; x++) {
+                    if (bmp.getPixel(x, y) != Color.TRANSPARENT) {
+                        startHeight = y;
+                        break;
+                    }
+                }
+            } else break;
+        }
+
+        //TRIM HEIGHT - BOTTOM
+        int endHeight = 0;
+        for(int y = imgHeight - 1; y >= imgHeight/2; y--) {
+            if (endHeight == 0 ) {
+                for (int x = 0; x < imgWidth/2; x++) {
+                    if (bmp.getPixel(x, y) != Color.TRANSPARENT) {
+                        endHeight = y;
+                        break;
+                    }
+                }
+            } else break;
+        }
+
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bmp,
+                startWidth,
+                startHeight,
+                endWidth - startWidth,
+                endHeight - startHeight
+        );
+        bmp.recycle();
+        return resizedBitmap;
+    }
 
     // These functions deal with nearby navigations
     public int getNearbySection(String incoming) {
@@ -2168,16 +2241,26 @@ public class ProcessSong {
 
     // This stuff deals with the highlighter notes
     public String getHighlighterFilename(Song song, boolean portrait) {
-        // The highlighter song file is encoded as FOLDER_FILENAME_{p or l LANDSCAPE}_.png
+        // The highlighter song file is encoded as FOLDER_FILENAME_{p or l LANDSCAPE}{if pdf _PAGENUMBER_}.png
         String filename = song.getFolder().replace("/", "_") + "_" +
                 song.getFilename();
         if (portrait) {
-            filename += "_p.png";
+            filename += "_p";
         } else {
-            filename += "_l.png";
+            filename += "_l";
         }
+        filename += ".png";
         return filename;
     }
+
+    public Bitmap getPDFHighlighterBitmap(Context c, MainActivityInterface mainActivityInterface,
+                                          Song song, int w, int h, int pageNum) {
+        // The pdf highlighter song file is encoded as FOLDER_FILENAME_PAGENUM.png
+        String filename = song.getFolder().replace("/", "_") + "_" +
+                song.getFilename() + "_" + pageNum;
+        return getHighlighterBitmap(c,mainActivityInterface,filename,w,h);
+    }
+
 
     public Bitmap getHighlighterFile(Context c, MainActivityInterface mainActivityInterface, int w, int h) {
         String filename;
@@ -2187,6 +2270,10 @@ public class ProcessSong {
         } else {
             filename = getHighlighterFilename(mainActivityInterface.getSong(), false);
         }
+        return getHighlighterBitmap(c,mainActivityInterface,filename,w,h);
+    }
+
+    private Bitmap getHighlighterBitmap(Context c, MainActivityInterface mainActivityInterface, String filename, int w, int h) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", filename);
         if (mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
             // Load in the bitmap
@@ -2209,7 +2296,6 @@ public class ProcessSong {
             return null;
         }
     }
-
 
     // This bit deals with the song headings used for PDF prints and song sheet view
 

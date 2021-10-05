@@ -117,10 +117,8 @@ public class Gestures {
         mainActivityInterface.getPreferences().setMyPreferenceString(c, which, val);
     }
     public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, boolean bool) {
-        switch (which) {
-            case "swipeForSongs":
-                this.swipeEnabled = bool;
-                break;
+        if ("swipeForSongs".equals(which)) {
+            this.swipeEnabled = bool;
         }
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, which, bool);

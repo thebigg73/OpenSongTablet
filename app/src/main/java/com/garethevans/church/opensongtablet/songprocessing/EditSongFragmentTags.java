@@ -111,9 +111,7 @@ public class EditSongFragmentTags extends Fragment {
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
-        }
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
         @Override
         public void afterTextChanged(Editable editable) {
@@ -170,7 +168,6 @@ public class EditSongFragmentTags extends Fragment {
         // Updating either the theme or presoorder from bottom sheet callback
         myView.tags.setText(themesSplitByLine());
         myView.presorder.setText(mainActivityInterface.getTempSong().getPresentationorder());
-        mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
     }
 
     public void removeTags(ArrayList<String> tag) {
@@ -220,7 +217,6 @@ public class EditSongFragmentTags extends Fragment {
                 setTheme(removeTagFromTheme(mainActivityInterface.getTempSong().getTheme(),tagToRemove));
         myView.tags.setText(themesSplitByLine());
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.tags,2);
-        mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
     }
 
     private String removeTagFromTheme(String currTheme, String tagToRemove) {

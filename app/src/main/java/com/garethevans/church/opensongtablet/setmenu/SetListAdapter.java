@@ -119,6 +119,10 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public CharSequence getSectionText(int position) {
-        return setList.get(position).songitem;
+        if (setList!=null && setList.size()>position) {
+            return setList.get(position).songitem;
+        } else {
+            return "";
+        }
     }
 }

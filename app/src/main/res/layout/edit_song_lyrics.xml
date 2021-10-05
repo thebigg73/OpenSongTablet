@@ -8,6 +8,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,7 +29,7 @@
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
             app:useMonospace="true"
-            android:layout_marginBottom="60dp"/>
+            android:layout_marginBottom="80dp"/>
 
         <FrameLayout
             android:id="@+id/dimBackground"
@@ -36,6 +40,7 @@
             android:visibility="gone"/>
 
     </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
         android:id="@+id/bottomSheetTab"

@@ -172,9 +172,9 @@
         <item name="android:textSize">12sp</item>
     </style>
     <style name="setItem" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="contentPadding">8dp</item>
+        <item name="contentPadding">4dp</item>
         <item name="cardCornerRadius">16dp</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_margin">4dp</item>
         <item name="elevation">8dp</item>
         <item name="cardBackgroundColor">@color/colorAltPrimary</item>
     </style>
@@ -187,6 +187,16 @@
         <item name="android:layout_marginEnd">4dp</item>
         <item name="elevation">8dp</item>
         <item name="cardBackgroundColor">@color/colorPrimary</item>
+    </style>
+    <style name="pdfPage" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="contentPadding">4dp</item>
+        <item name="cardCornerRadius">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginStart">0dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+        <item name="elevation">8dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
     </style>
     <style name="menuTabs" parent="@style/Widget.MaterialComponents.TabLayout">
         <item name="tabTextColor">@color/white</item>

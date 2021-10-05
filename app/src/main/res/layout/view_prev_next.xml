@@ -32,7 +32,8 @@
             android:paddingStart="0dp"
             android:paddingEnd="8dp"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"
+            android:visibility="gone"/>
     </FrameLayout>
 
     <FrameLayout
@@ -58,7 +59,8 @@
             app:icon="@drawable/ic_arrow_right_white_36dp"
             app:iconGravity="end"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp"/>
+            android:paddingBottom="16dp"
+            android:visibility="gone"/>
 
     </FrameLayout>
 </LinearLayout>

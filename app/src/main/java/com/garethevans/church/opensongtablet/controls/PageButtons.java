@@ -23,8 +23,6 @@ import java.util.ArrayList;
 
 public class PageButtons {
 
-    private final String TAG = "PageButtons";
-
     // For the actions
     private final ActionInterface actionInterface;
 
@@ -46,6 +44,8 @@ public class PageButtons {
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
 
+    private final int translateY;
+
     public PageButtons(Context c) {
         // Set up the return interface for sending instructions back to the main activity
         actionInterface = (ActionInterface) c;
@@ -55,6 +55,8 @@ public class PageButtons {
         prepareShortActionText(c);
         prepareLongActionText(c);
         prepareDrawableIds();
+
+        translateY = c.getResources().getDisplayMetrics().heightPixels;
 
         // Now get our button preferences
         setPreferences(c);
@@ -121,20 +123,16 @@ public class PageButtons {
 
     private void animateView(View view, boolean animateIn) {
         float alpha = 0f;
-        int translationBy = 500;
+        int translationBy = translateY;
         Runnable endRunnable = hideView(view, animateIn);
         Runnable startRunnable = hideView(view, animateIn);
 
         if (animateIn) {
-            translationBy = -500;
+            translationBy = -translateY;
             alpha = pageButtonAlpha;
-            endRunnable = () -> {
-                view.setAlpha(pageButtonAlpha);
-            };
+            endRunnable = () -> view.setAlpha(pageButtonAlpha);
         } else {
-            startRunnable = () -> {
-                view.setAlpha(pageButtonAlpha);
-            };
+            startRunnable = () -> view.setAlpha(pageButtonAlpha);
         }
         ViewCompat.animate(view).alpha(alpha).translationYBy(translationBy).setDuration(500).
                 setInterpolator(interpolator).withStartAction(startRunnable).withEndAction(endRunnable).start();
@@ -219,8 +217,7 @@ public class PageButtons {
         text.add(c.getString(R.string.autoscroll_pause));
         text.add(c.getString(R.string.midi));
         text.add(c.getString(R.string.bible_verse));
-        // TODO string resource
-        text.add("Sound meter");
+        text.add(c.getString(R.string.sound_level_meter));
         text.add(c.getString(R.string.exit));
     }
     private void prepareShortActionText(Context c) {

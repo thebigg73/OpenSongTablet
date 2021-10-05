@@ -34,7 +34,8 @@
                     android:contentDescription="@string/quicklaunch_button1"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/custom2Button"
@@ -43,7 +44,8 @@
                     android:contentDescription="@string/quicklaunch_button2"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/custom3Button"
@@ -52,7 +54,8 @@
                     android:contentDescription="@string/quicklaunch_button3"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/custom4Button"
@@ -61,7 +64,8 @@
                     android:contentDescription="@string/quicklaunch_button4"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/custom5Button"
@@ -70,7 +74,8 @@
                     android:contentDescription="@string/quicklaunch_button5"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/custom6Button"
@@ -79,7 +84,8 @@
                     android:contentDescription="@string/quicklaunch_button6"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
         </ScrollView>
@@ -92,7 +98,8 @@
             android:src="@drawable/ic_plus_white_36dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="0dp"
-            android:layout_gravity="bottom|center_horizontal"/>
+            android:layout_gravity="bottom|center_horizontal"
+            android:visibility="visible"/>
 
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

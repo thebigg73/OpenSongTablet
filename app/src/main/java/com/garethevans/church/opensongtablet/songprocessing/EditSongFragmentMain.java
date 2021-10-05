@@ -126,7 +126,6 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
                 textInputBottomSheet.show(requireActivity().getSupportFragmentManager(),
                         "TextInputBottomSheet");
             } else {
-                mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
                 updateTempSong();
             }
         }

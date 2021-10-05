@@ -34,6 +34,13 @@ public class MaterialTextView extends LinearLayout {
         checkBox = findViewById(R.id.checkBox);
         checkBoxHolder = findViewById(R.id.checkBoxHolder);
 
+        textView.setId(View.generateViewId());
+        hintView.setId(View.generateViewId());
+        imageView.setId(View.generateViewId());
+        checkMark.setId(View.generateViewId());
+        checkBox.setId(View.generateViewId());
+        checkBoxHolder.setId(View.generateViewId());
+
         int[] set = new int[] {android.R.attr.text, android.R.attr.hint};
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
 

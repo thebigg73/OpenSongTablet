@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
@@ -26,7 +27,10 @@ import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
+
+import java.util.Locale;
 
 public class PerformanceFragment extends Fragment {
 
@@ -131,6 +135,7 @@ public class PerformanceFragment extends Fragment {
     private void initialiseHelpers() {
         stickyPopUp = new StickyPopUp();
         mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
+        mainActivityInterface.getPerformanceGestures().setPDFRecycler(myView.pdfView);
     }
     private void loadPreferences() {
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
@@ -160,12 +165,6 @@ public class PerformanceFragment extends Fragment {
         myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
     }
 
-    private void resetTitleSizes() {
-        mainActivityInterface.updateActionBarSettings("songTitleSize",-1,
-                mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f),true);
-        mainActivityInterface.updateActionBarSettings("songAuthorSize",-1,
-                mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f),true);
-    }
     // Displaying the song
     public void doSongLoad(String folder, String filename) {
         // Loading the song is dealt with in this fragment as specific actions are required
@@ -183,11 +182,11 @@ public class PerformanceFragment extends Fragment {
                 } else {
                     animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
                 }
-                myView.songSheetTitle.startAnimation(animSlideOut);
-                myView.songView.startAnimation(animSlideOut);
-                myView.highlighterView.startAnimation(animSlideOut);
-                myView.imageView.startAnimation(animSlideOut);
-                myView.zoomLayout.scrollTo(0,0);
+                if (myView.pdfView.getVisibility()==View.VISIBLE) {
+                    myView.pdfView.startAnimation(animSlideOut);
+                } else {
+                    myView.pageHolder.startAnimation(animSlideOut);
+                }
             });
 
             // Reset the views
@@ -204,29 +203,60 @@ public class PerformanceFragment extends Fragment {
     }
     private void prepareSongViews() {
         // This is called on UI thread above;
+
+        Log.d(TAG,"Preparing view for "+mainActivityInterface.getSong().getFilename());
         // Set the default color
         myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
 
         // Remove old views
         myView.songSheetTitle.removeAllViews();
-        if (mainActivityInterface.getSongSheetTitleLayout()!=null &&
-                mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
+        if (mainActivityInterface.getSongSheetTitleLayout() != null &&
+                mainActivityInterface.getSongSheetTitleLayout().getParent() != null) {
             ((LinearLayout) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
         }
+        myView.pdfView.setVisibility(View.GONE);
+        myView.zoomLayout.setVisibility(View.GONE);
 
         // Get the song sheet headers
         mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
-                mainActivityInterface,mainActivityInterface.getSong(),scaleComments,false));
+                mainActivityInterface, mainActivityInterface.getSong(), scaleComments, false));
         myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
 
-        // Now prepare the song sections views so we can measure them for scaling using a view tree observer
-        mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
-                setSongInLayout(requireContext(),mainActivityInterface, trimSections, addSectionSpace,
-                        trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments,
-                        mainActivityInterface.getSong().getLyrics(),boldChordHeading,false));
+        Log.d(TAG,"filename="+mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT));
+        if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+            // We populate the PDF recycler view with the pages
+            Log.d(TAG,"pdf recognised");
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                int availWidth = getResources().getDisplayMetrics().widthPixels;
+                int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
+                Log.d(TAG,"availWidth="+availWidth+"  availHeight="+availHeight);
+                PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface,
+                        availWidth, availHeight);
+                myView.pdfView.post(() -> {
+                    myView.pdfView.setAdapter(pdfPageAdapter);
+                    myView.pdfView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
+                    myView.pdfView.setVisibility(View.VISIBLE);
+                    // Set up the type of animate in
+                    if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
+                        animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+                    } else {
+                        animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+                    }
+                    myView.pdfView.startAnimation(animSlideIn);
+                    Log.d(TAG,"PDF getting here");
+                });
+            }
+        } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
+            // Now prepare the song sections views so we can measure them for scaling using a view tree observer
+            mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
+                    setSongInLayout(requireContext(), mainActivityInterface, trimSections, addSectionSpace,
+                            trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments,
+                            mainActivityInterface.getSong().getLyrics(), boldChordHeading, false));
 
-        // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
-        setUpTestViewListener();
+            // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
+            setUpTestViewListener();
+
+        }
 
         // Update the toolbar with the song (null)
         mainActivityInterface.updateToolbar(null);
@@ -259,6 +289,7 @@ public class PerformanceFragment extends Fragment {
         screenWidth = myView.mypage.getMeasuredWidth();
         screenHeight = myView.mypage.getMeasuredHeight();
 
+        myView.zoomLayout.setVisibility(View.VISIBLE);
         myView.zoomLayout.setPageSize(screenWidth,screenHeight);
 
         scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getContext(),
@@ -311,8 +342,7 @@ public class PerformanceFragment extends Fragment {
                 }
             }
         });
-        myView.songView.startAnimation(animSlideIn);
-        myView.songSheetTitle.startAnimation(animSlideIn);
+        myView.pageHolder.startAnimation(animSlideIn);
 
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getSong().getCurrentSection() < 0) {
@@ -324,7 +354,6 @@ public class PerformanceFragment extends Fragment {
 
         // Start the pad (if the pads are activated and the pad is valid)
         mainActivityInterface.getPad().autoStartPad(requireContext());
-
     }
     private void dealWithHighlighterFile(int w, int h) {
         Log.d(TAG,"height requested="+h);
@@ -349,7 +378,6 @@ public class PerformanceFragment extends Fragment {
                         GlideApp.with(requireContext()).load(highlighterBitmap).override(w,h).
                                 apply(scaleOption).apply(sizeOption).into(myView.highlighterView);
                         myView.highlighterView.setScaleY(myView.zoomLayout.getScaleFactor());
-                        myView.highlighterView.startAnimation(animSlideIn);
                         Log.d(TAG,"height of imageView="+myView.highlighterView.getHeight());
                         // Hide after a certain length of time
                         int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
@@ -403,10 +431,10 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getDisplayPrevNext().showAndHide();
             return gestureDetector.onTouchEvent(motionEvent);
         });
-    }
-
-    public void onBackPressed() {
-        Log.d(TAG,"On back press!!!");
+        myView.pdfView.setOnTouchListener((view, motionEvent) -> {
+            mainActivityInterface.getDisplayPrevNext().showAndHide();
+            return gestureDetector.onTouchEvent(motionEvent);
+        });
     }
 
     private void getScreenshot(int w, int h) {

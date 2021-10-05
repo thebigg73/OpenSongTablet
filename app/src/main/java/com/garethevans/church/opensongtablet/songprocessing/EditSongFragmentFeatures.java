@@ -186,7 +186,6 @@ public class EditSongFragmentFeatures extends Fragment {
                 mainActivityInterface.getTempSong().setLinkother(value);
                 break;
         }
-        mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
     }
 
     private void checkLines() {

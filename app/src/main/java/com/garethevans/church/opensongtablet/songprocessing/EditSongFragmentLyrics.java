@@ -125,13 +125,11 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     private void setupListeners() {
-        myView.lyrics.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                Log.d(TAG,"b="+b);
-                mainActivityInterface.enableSwipe(!b);
-            }
+        myView.lyrics.setOnFocusChangeListener((view, b) -> {
+            Log.d(TAG,"b="+b);
+            mainActivityInterface.enableSwipe(!b);
         });
+
         myView.lyrics.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -145,7 +143,6 @@ public class EditSongFragmentLyrics extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 mainActivityInterface.getTempSong().setLyrics(editable.toString());
-                mainActivityInterface.showSaveAllowed(mainActivityInterface.songChanged());
             }
         });
         myView.bottomSheetLayout.textSizeDown.setOnClickListener(v -> checkTextSize(-1));

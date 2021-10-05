@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +30,12 @@ public class TextThreeSlider extends LinearLayout {
         textCenter = findViewById(R.id.textCenter);
         slider = findViewById(R.id.slider);
         slider.setStepSize(1);
+
+        label.setId(View.generateViewId());
+        textLeft.setId(View.generateViewId());
+        textRight.setId(View.generateViewId());
+        textCenter.setId(View.generateViewId());
+        slider.setId(View.generateViewId());
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextThreeSlider);
         CharSequence leftText = a.getText(R.styleable.TextThreeSlider_textL);

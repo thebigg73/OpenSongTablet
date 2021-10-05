@@ -99,7 +99,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     // TODO MIGHT REMOVE AS THE CONTENTS OF THIS DATABASE ARE PULLED INTO THE MAIN ONE AT RUNTIME
     // Find specific song
-    /*public Song getSpecificSong(Context c, MainActivityInterface mainActivityInterface,
+    public Song getSpecificSong(Context c, MainActivityInterface mainActivityInterface,
                                 String folder, String filename) {
         // This gets basic info from the normal temporary SQLite database
         // It then also adds in any extra stuff found in the NonOpenSongSQLite database
@@ -107,13 +107,13 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         String songId = mainActivityInterface.getCommonSQL().getAnySongId(folder,filename);
         try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB(c)) {
             // Get the basics - error here returns the basic stuff as an exception
-            thisSong = mainActivityInterface.getCommonSQL().getSpecificSong(db,folder,filename);
+            thisSong = mainActivityInterface.getCommonSQL().getSpecificSong(c,db,folder,filename);
 
             // Now look to see if there is extra information in the saved NonOpenSongDatabase
             try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
                 if (mainActivityInterface.getCommonSQL().songExists(db2,folder,filename)) {
                     // Get the more detailed values for the PDF/Image
-                    thisSong = mainActivityInterface.getCommonSQL().getSpecificSong(db2,folder,filename);
+                    thisSong = mainActivityInterface.getCommonSQL().getSpecificSong(c,db2,folder,filename);
 
                     // Update the values in the temporary main database (used for song menu and features)
                     mainActivityInterface.getCommonSQL().updateSong(db,thisSong);
@@ -131,7 +131,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             thisSong.setSongid(songId);
         }
         return thisSong;
-    }*/
+    }
 
     // TODO Flush entries that aren't in the filesystem, or alert the user to issues (perhaps asking to update the entry?
 

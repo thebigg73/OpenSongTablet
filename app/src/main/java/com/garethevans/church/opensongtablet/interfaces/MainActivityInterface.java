@@ -91,7 +91,7 @@ public interface MainActivityInterface {
     void doSongLoad(String folder, String filename, boolean closeDrawer);
     void loadSongFromSet(int position);
     void updateKeyAndLyrics(Song song);
-    void showSaveAllowed(boolean saveAllowed);
+    //void showSaveAllowed(boolean saveAllowed);
     void registerFragment(Fragment frag, String what);
     void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
     void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
@@ -102,7 +102,7 @@ public interface MainActivityInterface {
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(Song song);
-    boolean songChanged();
+    //boolean songChanged();
     void updateSetList();
     void toggleAutoscroll();
     void fadeoutPad();

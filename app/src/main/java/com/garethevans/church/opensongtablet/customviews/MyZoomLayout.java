@@ -87,8 +87,10 @@ public class MyZoomLayout extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         viewWidth = View.MeasureSpec.getSize(widthMeasureSpec);
         viewHeight = View.MeasureSpec.getSize(heightMeasureSpec);
-        overShootX = (int) ((float)viewWidth/32f);
-        overShootY = (int) ((float)viewHeight/32f);
+        //overShootX = (int) ((float)viewWidth/32f);
+        overShootX = 0;
+        //overShootY = (int) ((float)viewHeight/32f);
+        overShootY = 0;
         overScroller.notifyHorizontalEdgeReached(0,maxScrollX,overShootX);
         overScroller.notifyVerticalEdgeReached(0,maxScrollY,overShootY);
     }

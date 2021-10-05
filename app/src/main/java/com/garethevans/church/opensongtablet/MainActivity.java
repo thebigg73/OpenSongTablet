@@ -572,12 +572,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // If pedalsFragment is open, send the keyCode and event there
         if (currentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
             ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).commonEventUp();
-            return true;
         } else {
             pedalActions.commonEventUp(keyCode,null);
         }
         return super.onKeyUp(keyCode, keyEvent);
     }
+
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
@@ -1571,12 +1571,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         //editSongFragmentMain.updateKeyAndLyrics(song);
     }
 
-    @Override
+    /*@Override
     public void showSaveAllowed(boolean saveAllowed) {
         if (currentFragment(R.id.editSongFragment)) {
             ((EditSongFragment) getFragmentFromId(R.id.editSongFragment)).showSaveAllowed(saveAllowed);
         }
-    }
+    }*/
 
     @Override
     public void registerFragment(Fragment frag, String what) {
@@ -1715,10 +1715,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             e.printStackTrace();
         }
     }
-    @Override
+    /*@Override
     public boolean songChanged() {
         return !song.equals(tempSong);
-    }
+    }*/
 
     @Override
     public void updateSetList() {
@@ -2231,8 +2231,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void enableSwipe(boolean canSwipe) {
-        if (currentFragment(R.id.editSongFragment)) {
-            ((EditSongFragment) getFragmentFromId(R.id.editSongFragment)).enableSwipe(canSwipe);
+        if (editSongFragment!=null) {
+            editSongFragment.enableSwipe(canSwipe);
         }
     }
 
@@ -2290,7 +2290,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void gesture5() {
-        // TODO
+        toggleAutoscroll();
     }
 
     @Override

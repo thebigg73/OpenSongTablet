@@ -1020,4 +1020,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart.
     <string name="nearby_large_file">This large song file is being shared</string>
     <string name="action_short_press">Short press/click action</string>
     <string name="action_long_press">Additional long press action</string>
+    <string name="sound_level_meter">Sound level meter</string>
 </resources>

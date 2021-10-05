@@ -229,6 +229,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             }
         }
         // Not found;
+        Log.d(TAG, "Looking for "+song.getFolder()+" / "+song.getFilename());
         Log.d(TAG, "notfound");
 
         return -1;

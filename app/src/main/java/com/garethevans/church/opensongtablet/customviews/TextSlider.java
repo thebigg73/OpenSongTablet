@@ -32,6 +32,11 @@ public class TextSlider extends LinearLayout {
         slider = findViewById(R.id.slider);
         heading = findViewById(R.id.title);
 
+        textLeft.setId(View.generateViewId());
+        textRight.setId(View.generateViewId());
+        slider.setId(View.generateViewId());
+        heading.setId(View.generateViewId());
+
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextSlider);
         CharSequence leftText = a.getText(R.styleable.TextSlider_textLeft);
         CharSequence rightText = a.getText(R.styleable.TextSlider_textRight);

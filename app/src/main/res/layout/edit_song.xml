@@ -31,6 +31,7 @@
         android:layout_gravity="bottom|end"
         android:contentDescription="@string/save_changes"
         app:icon="@drawable/ic_content_save_white_36dp"
+        android:layout_margin="16dp"
         android:text="@string/save"
         android:visibility="visible"/>
 

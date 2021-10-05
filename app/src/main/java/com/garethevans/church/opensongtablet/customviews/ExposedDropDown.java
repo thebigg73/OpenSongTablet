@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 
@@ -41,14 +42,17 @@ public class ExposedDropDown extends TextInputLayout {
         }
 
         textInputLayout.setPadding(0,0,0,0);
-        ((LinearLayout.LayoutParams)textInputLayout.getLayoutParams()).setMargins(0,0,0,getPxFromDp(context, -21));
-        textInputLayout.setTranslationY(getPxFromDp(context, -21));
+        ((LinearLayout.LayoutParams)textInputLayout.getLayoutParams()).setMargins(0,0,0,getPxFromDp(context, -16));
+        textInputLayout.setTranslationY(getPxFromDp(context, -16));
         a.recycle();
     }
 
     private void identifyViews() {
         autoCompleteTextView = findViewById(R.id.textView);
         textInputLayout = findViewById(R.id.textLayout);
+
+        autoCompleteTextView.setId(View.generateViewId());
+        textInputLayout.setId(View.generateViewId());
     }
 
     private int getPxFromDp(Context c, int dp) {

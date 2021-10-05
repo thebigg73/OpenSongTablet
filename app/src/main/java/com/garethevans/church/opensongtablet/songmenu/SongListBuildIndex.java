@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -23,6 +24,7 @@ public class SongListBuildIndex {
     private boolean indexRequired;
     private boolean indexComplete;
     private boolean currentlyIndexing = false;
+    private final String TAG = "SongListBuildIndex";
 
     public void setIndexRequired(boolean indexRequired) {
         this.indexRequired = indexRequired;
@@ -83,14 +85,33 @@ public class SongListBuildIndex {
                         if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename())) {
                             try {
                                 // All going well all the other details for sqLite are now set!
+                                // Assume XML for now!
+                                mainActivityInterface.getIndexingSong().setFiletype("XML");
+
                                 mainActivityInterface.getLoadSong().readFileAsXML(c, mainActivityInterface,
-                                        mainActivityInterface.getIndexingSong(), "Songs",
-                                        uri, utf);
+                                            mainActivityInterface.getIndexingSong(), "Songs",
+                                            uri, utf);
 
                             } catch (Exception e) {
+                                Log.d(TAG,"filename not xml = "+mainActivityInterface.getIndexingSong().getFilename());
                                 // OK, so this wasn't an XML file.  Try to extract as something else
                                 mainActivityInterface.setIndexingSong(tryToFixSong(c, mainActivityInterface, mainActivityInterface.getIndexingSong(),uri));
                             }
+                        } else {
+                            // Look for data in the nonopensong persistent database import
+                            Log.d(TAG, "non xml so looking elsewhere");
+                            mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(c,mainActivityInterface,mainActivityInterface.getIndexingSong().getFolder(),mainActivityInterface.getIndexingSong().getFilename()));
+                            if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf",mainActivityInterface.getIndexingSong().getFilename())) {
+                                // This is a PDF
+                                mainActivityInterface.getIndexingSong().setFiletype("PDF");
+                            } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",mainActivityInterface.getIndexingSong().getFilename())) {
+                                // This is an Image
+                                mainActivityInterface.getIndexingSong().setFiletype("IMG");
+                            } else {
+                                // Unknown
+                                mainActivityInterface.getIndexingSong().setFiletype("?");
+                            }
+
                         }
 
                         // Update the database entry
@@ -136,7 +157,9 @@ public class SongListBuildIndex {
         f = f.toLowerCase(Locale.ROOT);
         if (f.contains(".")) {
             f = f.substring(f.lastIndexOf("."));
+            Log.d(TAG,"looking for: "+f);
             String badendings = ".pdf.png.jpg.jpeg.gif.jpeg.doc.docx.sqlite.db";
+            Log.d(TAG,"bad ending: "+badendings.contains(f));
             return !badendings.contains(f);
         }
         return true;
