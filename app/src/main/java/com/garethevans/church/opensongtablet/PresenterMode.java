@@ -3395,6 +3395,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Clear the old headings (presention order looks for these)
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
 
+                if (StaticVariables.mLyrics != null) {
+                    FullscreenActivity.myLyrics = StaticVariables.mLyrics;
+                } else {
+                    FullscreenActivity.myLyrics = "";
+                }
+
                 // Don't process images or image slide details here.  No need.  Only do this for songs
                 if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {
 

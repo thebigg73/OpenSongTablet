@@ -107,7 +107,7 @@ class AutoScrollFunctions {
 
             getMultiPagePDFValues();
 
-            // IV - Make sure delay is not bigger than (possibly calculated foR PDF) duration
+            // IV - Make sure delay is not bigger than (possibly calculated for PDF) duration
             if (StaticVariables.autoScrollDelay > StaticVariables.autoScrollDuration) {
                 StaticVariables.autoScrollDelay = StaticVariables.autoScrollDuration;
             }

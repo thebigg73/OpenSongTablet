@@ -287,6 +287,8 @@ public class StageMode extends AppCompatActivity implements
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
     private boolean newsongloaded = false;
+    private boolean songUriExists;
+
 
     // Dialogue fragments and stuff
     private DialogFragment newFragment;
@@ -7010,6 +7012,8 @@ public class StageMode extends AppCompatActivity implements
                 Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder,
                         StaticVariables.songfilename);
 
+                songUriExists = storageAccess.uriExists(StageMode.this, uri);
+
                 if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
                     StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
                     ShowToast.showToast(StageMode.this);
@@ -7299,6 +7303,13 @@ public class StageMode extends AppCompatActivity implements
 
                     //Determine file type
                     storageAccess.determineFileTypeByExtension();
+
+                    // IV - File does not exist - the loadXML 'not found' song needs to be revealed
+                    if (!songUriExists) {
+                        FullscreenActivity.isSong = true;
+                        FullscreenActivity.isPDF = false;
+                        FullscreenActivity.isImage = false;
+                    }
 
                     // IV - Background colour set to white for PDF and Image
                     if (FullscreenActivity.isPDF) {
