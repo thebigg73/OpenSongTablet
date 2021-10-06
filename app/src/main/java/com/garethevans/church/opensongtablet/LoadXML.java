@@ -55,7 +55,9 @@ public class LoadXML extends Activity {
         Uri uri = storageAccess.getUriForItem(c, preferences, where, folder,
                 StaticVariables.songfilename);
 
-        if (!storageAccess.uriExists(c, uri)) {
+        if (StaticVariables.songfilename.equals("") ||
+                StaticVariables.songfilename.equals("Welcome to OpenSongApp") ||
+                !storageAccess.uriExists(c, uri)) {
             FullscreenActivity.isSong = true;
             if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
                 setWelcome(c);
@@ -93,8 +95,7 @@ public class LoadXML extends Activity {
                 utf = storageAccess.getUTFEncoding(c, uri);
 
                 // Try to read the file as an xml file, if it isn't, then read it in as text
-                if (!StaticVariables.songfilename.endsWith(".sqlite3") && !StaticVariables.songfilename.endsWith(".preferences") &&
-                        !StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
+                if (!StaticVariables.songfilename.endsWith(".sqlite3") && !StaticVariables.songfilename.endsWith(".preferences")) {
                     try {
                         grabOpenSongXML(c, preferences, storageAccess, processSong);
                     } catch (Exception e) {
@@ -519,7 +520,6 @@ public class LoadXML extends Activity {
         XmlPullParser xpp;
         xpp = factory.newPullParser();
 
-        // Just in case use the Welcome to OpenSongApp file
         initialiseSongTags(c);
 
         // Get the uri and stream of the file
@@ -719,10 +719,6 @@ public class LoadXML extends Activity {
                     Log.d("LoadXML", "Not xml so exiting");
                     eventType = XmlPullParser.END_DOCUMENT;
                 }
-            }
-
-            if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
-                setWelcome(c);
             }
 
             try {
