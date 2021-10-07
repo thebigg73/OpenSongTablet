@@ -64,13 +64,11 @@ public class LoadXML extends Activity {
             } else {
                 setNotFound(c);
             }
-            preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
         } else {
             // Initialise all the xml tags a song should have
             initialiseSongTags(c);
 
             needtoloadextra = false;
-            FullscreenActivity.myXML = null;
             FullscreenActivity.myXML = "";
 
             String filetype = "SONG";
@@ -100,12 +98,10 @@ public class LoadXML extends Activity {
                         grabOpenSongXML(c, preferences, storageAccess, processSong);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
                         setNotFound(c);
                         isxml = false;
                     }
                 } else {
-                    preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
                     setNotFound(c);
                 }
 
@@ -132,8 +128,6 @@ public class LoadXML extends Activity {
                 if (!isxml) {
                     try {
                         //NEW
-                        uri = storageAccess.getUriForItem(c, preferences, where, folder,
-                                StaticVariables.songfilename);
                         InputStream inputStream = storageAccess.getInputStream(c, uri);
                         InputStreamReader streamReader = new InputStreamReader(inputStream);
                         BufferedReader bufferedReader = new BufferedReader(streamReader);
@@ -146,16 +140,16 @@ public class LoadXML extends Activity {
                         inputStream.close();
                         streamReader.close();
                         bufferedReader.close();
-                        // Set the song load status to true:
                         if (FullscreenActivity.myXML != null && !FullscreenActivity.myXML.isEmpty()) {
+                            // Set the song load status to true:
                             preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
                         }
                     } catch (java.io.FileNotFoundException e) {
                         e.printStackTrace();
-                        preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
                         setNotFound(c);
                     } catch (OutOfMemoryError e1) {
                         e1.printStackTrace();
+                        setNotFound(c);
                     }
 
                     // If the song is OnSong format - try to import it
@@ -171,10 +165,11 @@ public class LoadXML extends Activity {
                         try {
                             grabOpenSongXML(c, preferences, storageAccess, processSong);
                         } catch (Exception e) {
+                            setNotFound(c);
                             Log.d("LoadXML", "Error performing grabOpenSongXML()");
                         }
 
-                        // If the song is usr format - try to import it
+                    // If the song is usr format - try to import it
                     } else if (StaticVariables.songfilename.contains(".usr")
                             || FullscreenActivity.myXML.contains("[File]")
                             || FullscreenActivity.myXML.contains("Type=")
@@ -189,10 +184,11 @@ public class LoadXML extends Activity {
                         try {
                             grabOpenSongXML(c, preferences, storageAccess, processSong);
                         } catch (Exception e) {
+                            setNotFound(c);
                             Log.d("LoadXML", "Error performing grabOpenSongXML()");
                         }
 
-                        // If the song is in ChordPro format - try to import it
+                    // If the song is in ChordPro format - try to import it
                     } else if (FullscreenActivity.myXML.contains("{title") ||
                             FullscreenActivity.myXML.contains("{t:") ||
                             FullscreenActivity.myXML.contains("{t :") ||
@@ -212,11 +208,11 @@ public class LoadXML extends Activity {
                         //TODO check this works
                         chordProConvert.convertTextToTags(c, storageAccess, preferences, songXML, uri, FullscreenActivity.myXML);
 
-
                         // Now read in the proper OpenSong xml file
                         try {
                             grabOpenSongXML(c, preferences, storageAccess, processSong);
                         } catch (Exception e) {
+                            setNotFound(c);
                             Log.d("LoadXML", "Error performing grabOpenSongXML()");
                         }
                     }
@@ -298,8 +294,6 @@ public class LoadXML extends Activity {
             FullscreenActivity.isImageSlide = loc.contains("../Images");
             FullscreenActivity.isScripture = loc.contains("../Scripture");
             FullscreenActivity.isSlide = loc.contains("../Slides");
-        } else if (loc.contains("../Variations")) {
-            FullscreenActivity.isSong = true;
         }
 
         StaticVariables.thisSongScale = preferences.getMyPreferenceString(c,"songAutoScale","W");
@@ -393,6 +387,8 @@ public class LoadXML extends Activity {
         StaticVariables.mTimeSig = "4/4";
         StaticVariables.mKey = "G";
         StaticVariables.mTempo = "72";
+        StaticVariables.mDuration = "100";
+        StaticVariables.mPreDelay = "10";
         StaticVariables.mLyrics = c.getString(R.string.user_guide_lyrics);
         FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
         FullscreenActivity.myXML = "<?xml><song><title>" + StaticVariables.mTitle + "</title>\n" +
@@ -494,8 +490,6 @@ public class LoadXML extends Activity {
         StaticVariables.mMidiIndex = "";
         StaticVariables.mPitch = "";
         StaticVariables.mRestrictions = "";
-        FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
-        FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
         StaticVariables.mNotes = "";
         StaticVariables.mStyle = "";
         StaticVariables.mLinkedSongs = "";
@@ -508,6 +502,7 @@ public class LoadXML extends Activity {
         StaticVariables.mLinkOther = "";
         StaticVariables.mExtraStuff1 = "";
         StaticVariables.mExtraStuff2 = "";
+        FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
     }
 
     private static void grabOpenSongXML(Context c, Preferences preferences, StorageAccess storageAccess,
