@@ -143,6 +143,9 @@ public class EditSongFragmentTags extends Fragment {
 
     private String themesSplitByLine() {
         String themes = mainActivityInterface.getTempSong().getTheme();
+        if (themes==null) {
+            themes = "";
+        }
         themes = themes.replace("; ", "\n");
         themes = themes.replace(";", "\n");
         return themes;

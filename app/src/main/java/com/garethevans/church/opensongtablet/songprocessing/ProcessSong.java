@@ -2276,10 +2276,27 @@ public class ProcessSong {
     private Bitmap getHighlighterBitmap(Context c, MainActivityInterface mainActivityInterface, String filename, int w, int h) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", filename);
         if (mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
-            // Load in the bitmap
-            try {
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
-                BitmapFactory.Options options = new BitmapFactory.Options();
+            return getBitmapFromUri(c,mainActivityInterface,uri,w,h);
+        } else {
+            return null;
+        }
+    }
+
+    public Bitmap getSongBitmap(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", folder, filename);
+        if (mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
+            return getBitmapFromUri(c,mainActivityInterface,uri,-1,-1);
+        } else {
+            return null;
+        }
+    }
+
+    public Bitmap getBitmapFromUri(Context c, MainActivityInterface mainActivityInterface, Uri uri, int w, int h) {
+        // Load in the bitmap
+        try {
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            if (w>0 && h>0) {
                 options.outWidth = w;
                 options.outHeight = h;
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
@@ -2288,11 +2305,11 @@ public class ProcessSong {
                 bitmap.recycle();
                 inputStream.close();
                 return newBitmap;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+            } else {
+                return BitmapFactory.decodeStream(inputStream, null, options);
             }
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

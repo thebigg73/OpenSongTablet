@@ -45,7 +45,11 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         tags = mainActivityInterface.getSQLiteHelper().getThemeTags(c,mainActivityInterface);
 
         // Also add any in the current temp song tags if they aren't there already
-        String[] currTags = mainActivityInterface.getTempSong().getTheme().split(";");
+        String currTag = mainActivityInterface.getTempSong().getTheme();
+        if (currTag==null) {
+            currTag = "";
+        }
+        String[] currTags = currTag.split(";");
         for (String tag:currTags) {
             if (!tag.trim().isEmpty() && !tags.contains(tag.trim())) {
                 tags.add(tag.trim());

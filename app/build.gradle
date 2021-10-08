@@ -94,5 +94,4 @@ dependencies {
     // TODO Check I can get rid of the following - I want to minimise external libraries
     //implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
     //implementation 'com.annimon:stream:1.2.1'                             // Not sure if I need this anymore
-    //implementation 'com.otaliastudios:zoomlayout:1.8.0'                   // For file structure graph - removing as only in jcenter()
 }

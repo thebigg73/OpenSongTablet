@@ -92,7 +92,11 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.pad.setText(niceTextFromPref(mainActivityInterface.getTempSong().getPadfile()));
 
         // The loop
-        myView.loop.setChecked(mainActivityInterface.getTempSong().getPadloop().equals("true"));
+        if (mainActivityInterface.getTempSong().getPadloop()!=null) {
+            myView.loop.setChecked(mainActivityInterface.getTempSong().getPadloop().equals("true"));
+        } else {
+            myView.loop.setChecked(false);
+        }
 
         // The tempo
         ArrayList<String> tempos = new ArrayList<>();

@@ -1021,4 +1021,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart.
     <string name="action_short_press">Short press/click action</string>
     <string name="action_long_press">Additional long press action</string>
     <string name="sound_level_meter">Sound level meter</string>
+    <string name="save_text_for_searching">Save text for searching</string>
 </resources>

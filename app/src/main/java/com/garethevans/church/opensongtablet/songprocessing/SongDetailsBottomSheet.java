@@ -2,8 +2,8 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,10 +80,26 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupListeners() {
-        myView.textExtract.setOnClickListener(v -> Log.d(TAG,"Start OCR"));
+        myView.textExtract.setOnClickListener(v -> extractText());
         myView.edit.setOnClickListener(v -> {
             mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
             dismiss();
         });
+    }
+
+    private void extractText() {
+        String filetype = mainActivityInterface.getSong().getFiletype();
+        String folder = mainActivityInterface.getSong().getFolder();
+        String filename = mainActivityInterface.getSong().getFilename();
+        if (filetype.equals("PDF")) {
+            mainActivityInterface.getOCR().getTextFromPDF(requireContext(), mainActivityInterface, mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
+            dismiss();
+        } else if (filetype.equals("IMG")) {
+            Bitmap bitmap = mainActivityInterface.getProcessSong().getSongBitmap(requireContext(),mainActivityInterface,folder,filename);
+            if (bitmap!=null) {
+                mainActivityInterface.getOCR().getTextFromImage(mainActivityInterface, bitmap);
+                dismiss();
+            }
+        }
     }
 }

@@ -873,13 +873,13 @@ public class StorageAccess {
         String toCheck = "";
         switch (whichType) {
             case "image":
-                toCheck = ".jpg.jpeg.gif.bmp";
+                toCheck = ".jpg.jpeg.gif.bmp.png";
                 break;
             case "pdf":
                 toCheck = ".pdf";
                 break;
             case "imageorpdf":
-                toCheck = ".jpg.jpeg.gif.bmp.pdf";
+                toCheck = ".jpg.jpeg.gif.bmp.pdf.png";
                 break;
             case "chordpro":
                 toCheck = ".cho.crd.chopro.pro";

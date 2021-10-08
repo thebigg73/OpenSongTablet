@@ -8,9 +8,7 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
@@ -21,6 +19,7 @@ public class OCR {
 
     private ArrayList<String> pdfPages;
     private int pageCount;
+    private String filename = null;
     private MainActivityInterface mainActivityInterface;
 
     public void getTextFromPDF(Context c, MainActivityInterface mainActivityInterface,
@@ -30,6 +29,7 @@ public class OCR {
 
         // This uses most bits of the ProcessSong methods used to display the pdf as an image
         // However we will iterate through each page and send the bitmap off for ocr recognition
+        // It also processes images (png, jpg, gif) and camera intents using the same logic with 1 page
 
         pdfPages = new ArrayList<>();
 
@@ -87,22 +87,33 @@ public class OCR {
         }
     }
 
+    public void getTextFromImage(MainActivityInterface mainActivityInterface, Bitmap bmp) {
+        this.mainActivityInterface = mainActivityInterface;
+        // Just a plain jpg, png or gif converted to a bitmap
+        // Pretenting it is from a 1 page pdf
+        pdfPages = new ArrayList<>();
+        pageCount = 1;
+        if (bmp!=null) {
+            extractTextFromBitmap(bmp, 0, 0);
+        }
+    }
+
+    public void getTextFromCamera() {
+        filename = "";
+    }
     private void extractTextFromBitmap(Bitmap bmp,int rotation,int page) {
         String s = "";
         InputImage image = InputImage.fromBitmap(bmp, rotation);
         TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
         final int currpage = page;
-        final Task<Text> result = recognizer.process(image)
-                        .addOnSuccessListener(visionText -> {
+        recognizer.process(image).addOnSuccessListener(visionText -> {
                             pdfPages.add(currpage,visionText.getText());
                             if (pdfPages.size()==pageCount) {
                                 // We're done
                                 runCompleteTask();
                             }
-
-                        })
-                        .addOnFailureListener(e -> {
+                        }).addOnFailureListener(e -> {
                             pdfPages.add(currpage,"");
                             Log.d("d","Error on page "+currpage);
                             if (pdfPages.size()==pageCount) {
@@ -114,15 +125,13 @@ public class OCR {
 
 
     private void runCompleteTask() {
-
-        StringBuilder sb = new StringBuilder();
-        for (String s:pdfPages) {
-            sb.append(s).append("\n");
+        // Get a filename
+        if (filename==null) {
+            // Send the song filename as it currently exists - camera pics set this separately
+            filename = mainActivityInterface.getSong().getFilename();
         }
-        String s = sb.toString();
-        Log.d("d","Found text:\n"+s);
-        if (mainActivityInterface!=null) {
-            // TODO do something with it
-        }
+        // Send the array of pages to the Bottom sheet for the user to decide what to do
+        PDFExtractBottomSheet pdfExtractBottomSheet = new PDFExtractBottomSheet(pdfPages,filename);
+        pdfExtractBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"PDFExtractBottomSheet");
     }
 }

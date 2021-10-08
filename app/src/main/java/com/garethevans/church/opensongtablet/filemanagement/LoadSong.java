@@ -157,6 +157,8 @@ public class LoadSong {
                 if (!indexing) {
                     sortLoadingSuccessful(c, mainActivityInterface, thisSong);
                 }
+            } else {
+                thisSong.setTitle(thisSong.getFilename());
             }
         } else {
             // Not found.  This will get the default 'not found' from the database query
@@ -171,7 +173,7 @@ public class LoadSong {
         // Check if the song has been loaded (will now have a lyrics value)
         Log.d(TAG,"Lyrics="+thisSong.getLyrics());
         Log.d(TAG,"Filetype="+thisSong.getFiletype());
-        if ((thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) &&
+        if (thisSong.getFiletype()!=null && (thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) &&
         thisSong.getLyrics()==null) {
             // A basic PDF/IMG without custom info
             thisSong.setLyrics("");
