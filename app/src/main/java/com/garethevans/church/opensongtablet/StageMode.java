@@ -7014,83 +7014,78 @@ public class StageMode extends AppCompatActivity implements
 
                 songUriExists = storageAccess.uriExists(StageMode.this, uri);
 
-                if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
-                    ShowToast.showToast(StageMode.this);
-                } else {
-                    newsongloaded = true;
+                newsongloaded = true;
 
-                    // IV - Animate out only when isSong
-                    if (FullscreenActivity.isSong) {
-                        // Animate out the current song
-                        if (FullscreenActivity.whichDirection.equals("L2R")) {
-                            if (songscrollview != null) {
-                                songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                            }
-                        } else {
-                            if (songscrollview != null) {
-                                songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                            }
-                        }
-                        // If there were highlight notes showing, move them away
-                        if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
-                            if (FullscreenActivity.whichDirection.equals("L2R")) {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                            } else if (highlightNotes != null) {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                            }
+                // IV - Animate out only when isSong
+                if (FullscreenActivity.isSong) {
+                    // Animate out the current song
+                    if (FullscreenActivity.whichDirection.equals("L2R")) {
+                        if (songscrollview != null) {
+                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                         }
                     } else {
-                        // If there were highlight notes showing, remove them
-                        CustomAnimations.faderAnimation(highlightNotes, 300, false);
-                    }
-
-                    // Remove any capokey
-                    FullscreenActivity.capokey = "";
-                    // IV - Clear capo info and animation - prevents disturbance with display of new song
-                    capoInfo.setVisibility(View.GONE);
-                    capoinfonewkey.setVisibility(View.GONE);
-                    capoInfo.clearAnimation();
-
-                    // End any current autoscroll
-                    if (StaticVariables.isautoscrolling) {
-                        stopAutoScroll();
-                    }
-
-                    // After animate out, load the song
-                    Handler h = new Handler();
-                    h.postDelayed(() -> {
-                        try {
-                            glideimage_HorizontalScrollView.setVisibility(View.GONE);
-                            glideimage_ScrollView.setVisibility(View.GONE);
-                            songscrollview.setVisibility(View.GONE);
-                            highlightNotes.setVisibility(View.GONE);
-                            highlightNotes.setScaleX(1.0f);
-                            highlightNotes.setScaleY(1.0f);
-                            FullscreenActivity.highlightOn = false;
-                            glideimage_ScrollView.scrollTo(0, 0);
-                            songscrollview.scrollTo(0, 0);
-
-                            // Hide the image, cause we might be loading a proper song!
-                            glideimage.setBackgroundColor(StaticVariables.transparent);
-                            glideimage.setImageDrawable(null);
-
-                        } catch (Exception e) {
-                            Log.d(TAG, "error updating the views");
+                        if (songscrollview != null) {
+                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                         }
-
-                        // Load the song
-                        doCancelAsyncTask(loadsong_async);
-                        doCancelAsyncTask(resizestage_async);
-                        doCancelAsyncTask(resizeperformance_async);
-                        loadsong_async = new LoadSongAsync();
-                        try {
-                            loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    }
+                    // If there were highlight notes showing, move them away
+                    if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
+                        if (FullscreenActivity.whichDirection.equals("L2R")) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                        } else if (highlightNotes != null) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                         }
-                    }, 300);
+                    }
+                } else {
+                    // If there were highlight notes showing, remove them
+                    CustomAnimations.faderAnimation(highlightNotes, 300, false);
                 }
+
+                // Remove any capokey
+                FullscreenActivity.capokey = "";
+                // IV - Clear capo info and animation - prevents disturbance with display of new song
+                capoInfo.setVisibility(View.GONE);
+                capoinfonewkey.setVisibility(View.GONE);
+                capoInfo.clearAnimation();
+
+                // End any current autoscroll
+                if (StaticVariables.isautoscrolling) {
+                    stopAutoScroll();
+                }
+
+                // After animate out, load the song
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    try {
+                        glideimage_HorizontalScrollView.setVisibility(View.GONE);
+                        glideimage_ScrollView.setVisibility(View.GONE);
+                        songscrollview.setVisibility(View.GONE);
+                        highlightNotes.setVisibility(View.GONE);
+                        highlightNotes.setScaleX(1.0f);
+                        highlightNotes.setScaleY(1.0f);
+                        FullscreenActivity.highlightOn = false;
+                        glideimage_ScrollView.scrollTo(0, 0);
+                        songscrollview.scrollTo(0, 0);
+
+                        // Hide the image, cause we might be loading a proper song!
+                        glideimage.setBackgroundColor(StaticVariables.transparent);
+                        glideimage.setImageDrawable(null);
+
+                    } catch (Exception e) {
+                        Log.d(TAG, "error updating the views");
+                    }
+
+                    // Load the song
+                    doCancelAsyncTask(loadsong_async);
+                    doCancelAsyncTask(resizestage_async);
+                    doCancelAsyncTask(resizeperformance_async);
+                    loadsong_async = new LoadSongAsync();
+                    try {
+                        loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, 300);
             }
         } catch (Exception e) {
             e.printStackTrace();
