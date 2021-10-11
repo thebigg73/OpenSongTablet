@@ -31,13 +31,6 @@ public class SetActions {
             transposeStart = "__tr__", cache = "_cache", customLocStart = "**";
 
     private ArrayList<Integer> missingKeyPositions;
-    private ArrayList<String> newItem_Folder;
-    private ArrayList<String> newItem_Filename;
-    private ArrayList<String> newItem_Content;
-
-    public void initialiseTheSet(MainActivityInterface mainActivityInterface) {
-        mainActivityInterface.getCurrentSet().initialiseTheSet();
-    }
 
     // Convert between the currentSet string in preferences and the arrayLists
     public void preferenceStringToArrays(Context c, MainActivityInterface mainActivityInterface) {
@@ -45,24 +38,37 @@ public class SetActions {
         initialiseTheSet(mainActivityInterface);
 
         // Split the set string in preferences into an arraylist for each item
-        buildSetItemArray(mainActivityInterface,
-                mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent",""));
+        buildSetItemArray(c,mainActivityInterface);
 
         // Now build the individual items in the set with the folder, filename and key separate
+        Log.d(TAG,"buildSetArraysFromItems() about to be called");
         buildSetArraysFromItems(c,mainActivityInterface);
     }
-    private void buildSetItemArray(MainActivityInterface mainActivityInterface, String set) {
+
+    public void initialiseTheSet(MainActivityInterface mainActivityInterface) {
+        Log.d(TAG,"initialiseTheSet()");
+        mainActivityInterface.getCurrentSet().initialiseTheSet();
+    }
+    private void buildSetItemArray(Context c, MainActivityInterface mainActivityInterface) {
         // Sets may or may not have the preferred key embedded in them (old sets before V6 will not)
         // $**_folder1/song1_**$$**_folder2/song2_**A**__**$
 
-        // Set the initial set string (so we can look for changes later for saving)
-        mainActivityInterface.getCurrentSet().setCurrentSetString(set);
+        // Get the current set and the last edited version
+        String currentSet = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent","");
+        String beforeEdit = mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentBeforeEdits","");
+        String setName = mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentLastName", "");
+        Log.d(TAG,"buildSetItemArray()\ncurrentSet="+currentSet+"\nbeforeEdit="+beforeEdit+"\nname="+setName);
+
+        // Set the initial set strings (so we can look for changes later for saving)
+        mainActivityInterface.getCurrentSet().setCurrentSetString(currentSet);
+        mainActivityInterface.getCurrentSet().setInitialSetString(beforeEdit);
+        mainActivityInterface.getCurrentSet().setSetName(setName);
 
         // Now split the set string into individual entries
-        set = set.replace(itemEnd+itemStart,"\n");
-        set = set.replace(itemStart,"");
-        set = set.replace(itemEnd,"");
-        String[] setItems = set.split("\n");
+        currentSet = currentSet.replace(itemEnd+itemStart,"\n");
+        currentSet = currentSet.replace(itemStart,"");
+        currentSet = currentSet.replace(itemEnd,"");
+        String[] setItems = currentSet.split("\n");
         for (String setItem:setItems) {
             if (!setItem.isEmpty()) {
                 if (!setItem.contains(keyStart) && !setItem.contains(keyEnd)) {
@@ -74,6 +80,8 @@ public class SetActions {
         }
     }
     public void buildSetArraysFromItems(Context c, MainActivityInterface mainActivityInterface) {
+        Log.d(TAG,"buldSetArraysFromItems()");
+
         // Each set item is a stored with the $**_folder/filename_***key***__**$
         // We now parse this to get the values separately
 
@@ -152,12 +160,16 @@ public class SetActions {
         for (int x = 0; x<mainActivityInterface.getCurrentSet().getSetFilenames().size(); x++) {
             if (!mainActivityInterface.getCurrentSet().getFilename(x).isEmpty())
                 try {
+                    String key = mainActivityInterface.getCurrentSet().getKey(x);
+                    if (key==null) {
+                        key = "";
+                    }
                     stringBuilder.append(itemStart).
                             append(mainActivityInterface.getCurrentSet().getFolder(x)).
                             append("/").
                             append(mainActivityInterface.getCurrentSet().getFilename(x)).
                             append(keyStart).
-                            append(mainActivityInterface.getCurrentSet().getKey(x)).
+                            append(key).
                             append(keyEnd).
                             append(itemEnd);
                 } catch (Exception e) {
@@ -192,10 +204,14 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().initialiseTheSpecifics();
 
         // Now build the individual values from the set item array which we shuffled
+        Log.d(TAG,"buildSetArraysFromItems() about to be called");
         buildSetArraysFromItems(c,mainActivityInterface);
 
         // Now build the modified set string for comparision for saving
-        mainActivityInterface.getCurrentSet().setCurrentSetString(getSetAsPreferenceString(mainActivityInterface));
+        String setCurrent = getSetAsPreferenceString(mainActivityInterface);
+        mainActivityInterface.getCurrentSet().setCurrentSetString(setCurrent);
+        Log.d(TAG,"Saving setCurrent:"+setCurrent);
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",setCurrent);
     }
 
     public void checkMissingKeys(Context c, MainActivityInterface mainActivityInterface) {
@@ -205,7 +221,6 @@ public class SetActions {
         // Build an arraylist of the positions so we can redraw the adapter
         missingKeyPositions = new ArrayList<>();
         int size = mainActivityInterface.getCurrentSet().getSetKeys().size();
-        Log.d(TAG,"size="+size);
         for (int x = 0; x<mainActivityInterface.getCurrentSet().getSetKeys().size(); x++) {
             String key = mainActivityInterface.getCurrentSet().getKey(x);
             if (key.isEmpty()) {
@@ -239,9 +254,13 @@ public class SetActions {
     public void saveTheSet(Context c, MainActivityInterface mainActivityInterface) {
         // This saves the set to user preferences for loading in next time
         // Not to be confused with exporting/saving the set as a file
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",
-                getSetAsPreferenceString(mainActivityInterface));
+        String setString = getSetAsPreferenceString(mainActivityInterface);
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent", setString);
+        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrentBeforeEdits", setString);
+        mainActivityInterface.getCurrentSet().setCurrentSetString(setString);
+        mainActivityInterface.getCurrentSet().setInitialSetString(setString);
         mainActivityInterface.updateSetList();
+        Log.d(TAG,"saveTheSet() setString="+setString);
     }
 
     public String currentSetNameForMenu(Context c, MainActivityInterface mainActivityInterface) {
@@ -249,15 +268,17 @@ public class SetActions {
         // If it is a new set (unsaved), it will be called 'current (unsaved)'
         // If it is a non-modified loaded set, it will be called 'set name'
         // If it is a modified, unsaved, loaded set, it will be called 'set name (unsaved)'
+        // Unsaved sets will be stored in the setCurrent preference though
 
         String title;
-        String lastSetName = mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentLastName", "");
+        String lastSetName = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrentLastName","");
+        mainActivityInterface.getCurrentSet().setSetName(lastSetName);
+
         if (lastSetName == null || lastSetName.equals("")) {
-            title = c.getString(R.string.set_current) +
-                    " (" + c.getString(R.string.not_saved) + ")";
+            title = c.getString(R.string.set_current);
         } else {
             title = lastSetName.replace(setCategorySeparator, "/");
-            if (mainActivityInterface.getCurrentSet().getInitialSetString().equals(
+            if (!mainActivityInterface.getCurrentSet().getInitialSetString().equals(
                     mainActivityInterface.getCurrentSet().getCurrentSetString())) {
                 title += " (" + c.getString(R.string.not_saved) + ")";
             }
@@ -395,7 +416,6 @@ public class SetActions {
 
     public int getItemIcon(String valueToDecideFrom) {
         int icon;
-        Log.d(TAG,"valueToDecideFrom: "+valueToDecideFrom);
         // Get rid of ** and ../
         valueToDecideFrom = valueToDecideFrom.replace("../","");
         valueToDecideFrom = valueToDecideFrom.replace(customLocStart,"");
@@ -463,14 +483,6 @@ public class SetActions {
             boolean isScripture = path.contains("**Scripture");
             boolean isSlide = path.contains("**Slides");
             boolean isNote = path.contains("**Notes");
-
-            Log.d(TAG,"name="+name);
-            Log.d(TAG,"path="+path);
-            Log.d(TAG, "isImage="+isImage);
-            Log.d(TAG, "isVariation="+isVariation);
-            Log.d(TAG, "isScripture="+isScripture);
-            Log.d(TAG, "isSlide="+isSlide);
-            Log.d(TAG, "isNote="+isNote);
 
             if (isImage) {
                 // Adding an image
@@ -560,11 +572,9 @@ public class SetActions {
         for (String mySlide : mySlides) {
             if (mySlide != null && mySlide.length() > 0) {
                 String text = mySlide.trim();
-                Log.d(TAG,"mySlide:"+mySlide);
                 text = text.replace(" \n","\n");
                 text = text.replace("\n ","\n");
                 text = text.replace("\n"," ").trim();
-                Log.d(TAG,"text:"+text);
                 sb.append("      <slide>\n")
                         .append("      ")
                         .append(emptyTagCheck(mainActivityInterface,"body",text))
@@ -773,10 +783,10 @@ public class SetActions {
         // Create the cache directories again as we likely deleted them in SAF
         mainActivityInterface.getStorageAccess().createOrCheckRootFolders(c,null,mainActivityInterface);
 
-        // Now users can load multiple sets and merge them, we need to load each one it turn
         // Initialise the arrays that will hold the loaded information
         mainActivityInterface.getCurrentSet().initialiseTheSet();
 
+        // Now users can load multiple sets and merge them, we need to load each one it turn
         for (Uri setToLoad:setsToLoad) {
             // Pass each uri to the set extraction function and let it populate the arrays
             extractSetFile(c, mainActivityInterface, setToLoad);
@@ -796,8 +806,6 @@ public class SetActions {
             XmlPullParser xpp = factory.newPullParser();
             String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
-            Log.d(TAG, "uri:" + uri);
-            Log.d(TAG, "inputStream:" + inputStream);
             if (inputStream != null) {
                 xpp.setInput(inputStream, utf);
                 int eventType;
@@ -983,18 +991,8 @@ public class SetActions {
                 tempSong.getFilename(),"");
 
         // Now create the file in the Scripture/_cache folder
-        Log.d(TAG,"title:"+tempSong.getTitle());
-        Log.d(TAG,"songid:"+tempSong.getSongid());
-        Log.d(TAG,"folder:"+tempSong.getFolder());
-        Log.d(TAG,"filename:"+tempSong.getFilename());
-        Log.d(TAG,"author:"+tempSong.getAuthor());
-        Log.d(TAG,"user1:"+tempSong.getUser1());
-        Log.d(TAG,"user2:"+tempSong.getUser2());
-        Log.d(TAG,"lyrics:"+tempSong.getLyrics());
-
         writeTempSlide(c,mainActivityInterface,folderScripture,cache,tempSong);
 
-        Log.d(TAG,"Scripture extracted: "+scripture_title);
         xpp.nextTag();
     }
 
@@ -1049,9 +1047,10 @@ public class SetActions {
                     case "tabs":
                     case "song_subtitle":
                     default:
-                        if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
+                        // Do nothing
+                        /*if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
                             Log.d("SetActions", xpp.getName());
-                        }
+                        }*/
                         break;
                 }
             }
@@ -1075,7 +1074,7 @@ public class SetActions {
         }
 
         // Remove first ---
-        if (custom_text.indexOf("\n---\n") == 0) {
+        if (custom_text.toString().startsWith("\n---\n")) {
             custom_text = new StringBuilder(custom_text.toString().replaceFirst("\n---\n", ""));
         }
         if (custom_notes.startsWith("\n---\n")) {
@@ -1092,11 +1091,16 @@ public class SetActions {
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
             tempSong.setFolder(customLocStart+folderNotes);
 
+
             } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
             // Prepare for a variation
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.variation) + " # - ", "");
             tempSong.setFolder(customLocStart + folderVariations);
             tempcache = "";
+        }
+
+        if (custom_text.toString().trim().isEmpty()) {
+            custom_text = new StringBuilder(custom_notes);
         }
 
         // Make sure to safe encode the filename as it might have unsafe characters
@@ -1271,9 +1275,7 @@ public class SetActions {
                                 String folder, String subfolder, Song tempSong) {
         // Get the song as XML
         tempSong.setSongXML(mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface, tempSong));
-        Log.d(TAG,"xml="+tempSong.getSongXML());
         mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,folder,subfolder,tempSong.getFilename(),tempSong.getSongXML());
-        Log.d(TAG,"folder:"+folder+"  subfolder:" + subfolder+"  filename:"+ tempSong.getFilename());
     }
 
     private String safeNextText(XmlPullParser xpp) {
@@ -1299,4 +1301,5 @@ public class SetActions {
             return "<" + tag + "/>";
         }
     }
+
 }

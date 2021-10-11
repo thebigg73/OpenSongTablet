@@ -420,12 +420,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void startBoot() {
         // The BootCheckFragment has already started and displayed the splash logo
         // Now initialise the checks
-        Log.d(TAG,"bootUpFragment="+bootUpFragment);
         if (bootUpFragment!=null && bootUpFragment.isAdded()) {
-            Log.d(TAG,"bootUpFragment.startOrSetUp() called");
             bootUpFragment.startOrSetUp();
-        } else {
-            Log.d(TAG, "bootUpFragment is null!!!");
         }
     }
     @Override
@@ -463,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         song.setFilename(preferences.getMyPreferenceString(this,"songfilename","Welcome to OpenSongApp"));
         song.setFolder(preferences.getMyPreferenceString(this, "whichSongFolder", getString(R.string.mainfoldername)));
 
-        // Set
+        // Set dealt with elsewhere
         setActions.preferenceStringToArrays(this,this);
 
         // Set the locale
@@ -684,7 +680,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "set_updateView":
                 case "set_updateItem":
                     // User has the set menu open and wants to do something
-                    SetMenuFragment setMenuFragment = (SetMenuFragment) getSupportFragmentManager().findFragmentById(R.id.setMenuFragment);
                     if (setMenuFragment!=null) {
                         if (fragName.equals("set_updateView")) {
                             setMenuFragment.updateSet();
@@ -739,13 +734,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private boolean currentFragment(int fragId) {
         getSupportFragmentManager().executePendingTransactions();
         Fragment fragment = getFragmentFromId(fragId);
-        Log.d(TAG, "fragId="+fragId);
-        Log.d(TAG, "fragment="+fragment);
-        if (fragment!=null) {
-            Log.d(TAG, "fragment.isAdded=" + fragment.isAdded());
-            Log.d(TAG, "fragment.isInLayout=" + fragment.isInLayout());
-            Log.d(TAG, "fragment.isVisible=" + fragment.isVisible());
-        }
         if (fragment!=null && fragment.isInLayout()) {
             return true;
         } else {
@@ -985,7 +973,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         switch (what) {
             case "performanceView":
                 // Try to get the hamburger icon
-                Log.d(TAG, "Trying to get hamburger icon: ");
                 if (myView.toolBar.getRoot().getChildCount() > 2) {
                     final View view = myView.toolBar.getRoot().getChildAt(2);
                     targets.add(view);
@@ -1060,7 +1047,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d(TAG,item.toString());
         switch (item.toString()) {
             case "Settings":
                 if (settingsOpen) {
@@ -1201,7 +1187,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void indexSongs() {
-        Log.d(TAG,"indexSong() called");
         new Thread(() -> {
             runOnUiThread(() -> showToast.doIt(this,getString(R.string.search_index_start)));
             songListBuildIndex.setIndexComplete(false);
@@ -1217,15 +1202,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void moveToSongInSongMenu() {
-        Log.d(TAG,"trying to move to song in song menu");
         if (songMenuFragment!=null) {
             try {
                 songMenuFragment.moveToSongInMenu(song);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            Log.d(TAG, "songMenuFragment not available");
         }
     }
     @Override
@@ -1272,8 +1254,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         songListBuildIndex.setIndexRequired(false);
         if (setSongMenuFragment() && songMenuFragment!=null) {
             songMenuFragment.updateSongMenu(song);
-        } else {
-            Log.d(TAG, "songMenuFragment not available");
         }
     }
     @Override
@@ -1388,7 +1368,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void showSticky(boolean forceshow, boolean hide) {
         // Try to show the sticky note
-        Log.d(TAG,"showSticky");
         if (!whichMode.equals("Presentation") && currentFragment(R.id.performanceFragment)) {
             try {
                 ((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).dealWithStickyNotes(forceshow, hide);
@@ -1560,8 +1539,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             songKey = sqLiteHelper.getKey(this,mainActivityInterface,setFolder,setFilename);
         }
-        Log.d(TAG,"setKey="+setKey+"  songKey="+songKey);
-        Log.d(TAG,"loadSongFromSet() called");
         doSongLoad(setFolder,setFilename,true);
     }
 
@@ -1670,6 +1647,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "newSet":
                     // Clear the current set
                     currentSet.initialiseTheSet();
+                    preferences.setMyPreferenceString(this, "setCurrent", "");
                     preferences.setMyPreferenceString(this, "setCurrentLastName", "");
                     updateFragment("set_updateView",null,null);
                     result = true;
@@ -1749,11 +1727,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public boolean playPad() {
         // If the pad is playing, stop else start
         if (pad.isPadPlaying()) {
-            Log.d(TAG, "stopPad()");
             pad.stopPad(this);
             return false;
         } else {
-            Log.d(TAG, "playPad()");
             pad.startPad(this);
             // Showcase if required
             mainActivityInterface.getShowCase().singleShowCase(this,myView.onScreenInfo.pad,getString(R.string.ok),getString(R.string.pad_playback_info),true,"padPlayback");
@@ -1780,12 +1756,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void fullIndex() {
-        Log.d(TAG,"fullIndex() called");
         if (fullIndexRequired) {
             showToast.doIt(this,getString(R.string.search_index_start));
             new Thread(() -> {
                 String outcome = songListBuildIndex.fullIndex(this,this);
-                Log.d(TAG,"index done");
                 if (songMenuFragment!=null) {
                     try {
                         songMenuFragment.updateSongMenu(song);
@@ -1944,6 +1918,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public String getWhattodo() {
+        if (whattodo == null) {
+            whattodo = "";
+        }
         return whattodo;
     }
 
@@ -2123,7 +2100,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 String mimeType = null;
                 if (location.contains(".")) {
                     String extension = location.substring(location.lastIndexOf(".") + 1);
-                    Log.d(TAG,"location: "+location);
                     MimeTypeMap myMime = MimeTypeMap.getSingleton();
                     mimeType= myMime.getMimeTypeFromExtension(extension);
                 }
@@ -2132,7 +2108,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 Uri uri = Uri.parse(location);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                Log.d(TAG,"mimeType: "+mimeType);
                 intent.setDataAndType(uri,mimeType);
             }
 
@@ -2321,9 +2296,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateValue(Fragment fragment, String fragname, String which, String value) {
         // This takes the info from the TextInputBottomSheet and passes back to the calling fragment
-        Log.d(TAG, "fragment: "+fragment);
-        Log.d(TAG, "fragname: "+fragname);
-        Log.d(TAG, "value: "+value);
         if (fragment!=null) {
             try {
                 switch (fragname) {
@@ -2382,7 +2354,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case 403:
                     // Access coarse/fine location, so can open the menu at 'Connect devices'
                     // The following checks we have both before navigating
-                    Log.d("d", "LOCATION granted!");
                     if (whattodo!=null && whattodo.equals("nearby")) {
                         openNearbyFragment();
                     }
@@ -2415,7 +2386,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Log.d(TAG,"Configuration changed");
         // Get the language
         fixLocale.setLocale(this,mainActivityInterface);
 

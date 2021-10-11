@@ -26,7 +26,6 @@ public class ShowCase {
             dismisstext_ornull = c.getResources().getString(android.R.string.ok);
         }
 
-        Log.d("d","Trying to showcase");
         MaterialShowcaseView.Builder mscb = new MaterialShowcaseView.Builder(c)
                 .setTarget(target)
                 .setDismissText(dismisstext_ornull)

@@ -16,7 +16,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="500dp"
+                android:layout_marginBottom="100dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
@@ -25,7 +25,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="@string/backup_osb" />
+                    android:text="@string/backup_sets" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/backupName"
@@ -46,37 +46,16 @@
                     android:text="@string/overwrite"
                     android:visibility="gone" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/includeHighlighter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:checked="true"
-                    android:text="@string/backup_highlighter" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/progressText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/section_box"
-                    android:minLines="3"
-                    android:padding="16dp"
-                    android:visibility="visible" />
-
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:text="@string/choosefolders"
+                    android:text="@string/set_name"
                     style="@style/largeText"/>
 
                 <LinearLayout
-                    android:id="@+id/foundFolders_ListView"
+                    android:id="@+id/foundSets_ListView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:isScrollContainer="true"
@@ -84,7 +63,6 @@
                     android:paddingBottom="60dp" />
 
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
 
         <ProgressBar
@@ -106,7 +84,7 @@
         android:layout_margin="24dp"
         android:contentDescription="@string/save"
         app:icon="@drawable/ic_content_save_white_36dp"
-        android:text="@string/import_basic"
+        android:text="@string/backup"
         app:useCompatPadding="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

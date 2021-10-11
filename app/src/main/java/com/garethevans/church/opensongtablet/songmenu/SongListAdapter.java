@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -190,7 +189,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 String ky = songList.get(adapterPosition).getKey();
                 String setentry = mainActivityInterface.getSetActions().getSongForSetWork(dr, fl, ky);
 
-                Log.d("SongListAdapter", "setentry=" + setentry);
                 mainActivityInterface.getCurrentSet().addToCurrentSetString(setentry);
                 mainActivityInterface.getCurrentSet().addSetItem(setentry);
                 mainActivityInterface.getCurrentSet().addSetValues(dr, fl, ky);
@@ -220,18 +218,13 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     }
 
     public int getPositionOfSong(Song song) {
-        Log.d(TAG, "songs in list:" + songList.size());
         for (int x=0; x<songList.size(); x++) {
             if (songList.get(x).getFilename().equals(song.getFilename()) &&
             songList.get(x).getFolder().equals(song.getFolder())) {
-                Log.d(TAG, "found at position:" + x);
                 return x;
             }
         }
         // Not found;
-        Log.d(TAG, "Looking for "+song.getFolder()+" / "+song.getFilename());
-        Log.d(TAG, "notfound");
-
         return -1;
     }
 

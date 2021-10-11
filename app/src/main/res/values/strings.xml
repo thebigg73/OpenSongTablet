@@ -1022,4 +1022,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart.
     <string name="action_long_press">Additional long press action</string>
     <string name="sound_level_meter">Sound level meter</string>
     <string name="save_text_for_searching">Save text for searching</string>
+    <string name="backup_sets">Backup sets</string>
+    <string name="backup_highlighter">Include highlighter notes</string>
+    <string name="restore_sets">Restore sets</string>
 </resources>

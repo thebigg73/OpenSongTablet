@@ -80,6 +80,23 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
+        String thisFolder = mainActivityInterface.getCurrentSet().getFolder(fromPosition);
+        String thisFilename = mainActivityInterface.getCurrentSet().getFilename(fromPosition);
+        String thisKey = mainActivityInterface.getCurrentSet().getKey(fromPosition);
+        String thisSetItem = mainActivityInterface.getCurrentSet().getItem(fromPosition);
+
+        // Remove from this position
+        mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition,null);
+
+        // Add to the new position
+        mainActivityInterface.getCurrentSet().addToCurrentSet(toPosition,thisSetItem,thisFolder,thisFilename,thisKey);
+
+        // Update the set string
+        mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
+
+        // Save the preference
+        mainActivityInterface.getPreferences().setMyPreferenceString((Context)mainActivityInterface,"setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+
         SetItemInfo thisItem = setList.get(fromPosition);
         setList.get(fromPosition).songitem = (toPosition+1) + ".";
         setList.get(toPosition).songitem = (fromPosition+1) + ".";
@@ -88,6 +105,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         notifyItemChanged(fromPosition);
         notifyItemChanged(toPosition);
         notifyItemMoved(fromPosition,toPosition);
+        Log.d(TAG,"MOVED: setCurrent:"+mainActivityInterface.getCurrentSet().getCurrentSetString());
     }
 
     @Override
@@ -95,6 +113,15 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         Log.d(TAG, "setList.size()="+setList.size());
         Log.d(TAG, "fromPosition="+fromPosition);
         try {
+            // Remove the item from the current set
+            mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition,null);
+
+            // Update the set string
+            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
+
+            // Save the preference
+            mainActivityInterface.getPreferences().setMyPreferenceString((Context)mainActivityInterface,"setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+
             setList.remove(fromPosition);
             notifyItemRemoved(fromPosition);
             // Go through the setList from this position and sort the numbers
@@ -105,6 +132,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Log.d(TAG,"SWIPED: setCurrent:"+mainActivityInterface.getCurrentSet().getCurrentSetString());
     }
 
     @Override
@@ -115,6 +143,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @Override
     public void onContentChanged(int position) {
         notifyItemChanged(position);
+        Log.d(TAG,"CHANGES: setCurrent:"+mainActivityInterface.getCurrentSet().getCurrentSetString());
     }
 
     @Override

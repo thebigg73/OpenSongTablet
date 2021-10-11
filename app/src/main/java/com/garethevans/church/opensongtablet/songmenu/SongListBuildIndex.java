@@ -93,13 +93,11 @@ public class SongListBuildIndex {
                                             uri, utf);
 
                             } catch (Exception e) {
-                                Log.d(TAG,"filename not xml = "+mainActivityInterface.getIndexingSong().getFilename());
                                 // OK, so this wasn't an XML file.  Try to extract as something else
                                 mainActivityInterface.setIndexingSong(tryToFixSong(c, mainActivityInterface, mainActivityInterface.getIndexingSong(),uri));
                             }
                         } else {
                             // Look for data in the nonopensong persistent database import
-                            Log.d(TAG, "non xml so looking elsewhere");
                             mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(c,mainActivityInterface,mainActivityInterface.getIndexingSong().getFolder(),mainActivityInterface.getIndexingSong().getFilename()));
                             if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf",mainActivityInterface.getIndexingSong().getFilename())) {
                                 // This is a PDF
@@ -157,9 +155,7 @@ public class SongListBuildIndex {
         f = f.toLowerCase(Locale.ROOT);
         if (f.contains(".")) {
             f = f.substring(f.lastIndexOf("."));
-            Log.d(TAG,"looking for: "+f);
             String badendings = ".pdf.png.jpg.jpeg.gif.jpeg.doc.docx.sqlite.db";
-            Log.d(TAG,"bad ending: "+badendings.contains(f));
             return !badendings.contains(f);
         }
         return true;

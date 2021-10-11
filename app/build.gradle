@@ -91,7 +91,4 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'                     // For better setting of images
     implementation 'com.github.deano2390:MaterialShowcaseView:1.3.4'                    // To highlight new features in the app
 
-    // TODO Check I can get rid of the following - I want to minimise external libraries
-    //implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
-    //implementation 'com.annimon:stream:1.2.1'                             // Not sure if I need this anymore
 }

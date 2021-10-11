@@ -2152,7 +2152,8 @@ public class ProcessSong {
         }
 
         // TODO - use a preference to see if we want to trim whitespace
-        return trimBitmap(bitmap);
+        //return trimBitmap(bitmap);
+        return bitmap;
     }
 
     public Bitmap trimBitmap(Bitmap bmp) {
@@ -2222,7 +2223,7 @@ public class ProcessSong {
                 endWidth - startWidth,
                 endHeight - startHeight
         );
-        bmp.recycle();
+        //bmp.recycle();
         return resizedBitmap;
     }
 
@@ -2253,6 +2254,40 @@ public class ProcessSong {
         return filename;
     }
 
+    public ArrayList<String> getInfoFromHighlighterFilename (String filename) {
+        ArrayList<String> bits = new ArrayList<>();
+        String[] filebits = filename.split("_");
+        String folder = "";
+        int namepos=1;
+        for (int x=0;x<filebits.length;x++) {
+            if (filebits[x].equals("p") || filebits[x].equals("l")) {
+                // the pos is before this
+                namepos = x-1;
+            }
+        }
+        if (namepos>0) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int x=0; x<namepos; x++) {
+                stringBuilder.append(filebits[x]).append("_");
+            }
+            bits.add(stringBuilder.toString());   // The folder
+
+            stringBuilder = new StringBuilder();
+            for (int x=namepos; x<filebits.length; x++) {
+                stringBuilder.append(filebits[x]).append("_");
+            }
+            bits.add(stringBuilder.toString());   // The file
+
+            // Get rid of underscores
+            bits.set(0,bits.get(0).substring(0,bits.get(0).lastIndexOf("_")));
+            bits.set(1,bits.get(1).substring(0,bits.get(1).lastIndexOf("_")));
+        } else {
+            bits.add(0,"");
+            bits.add(1,filename);
+        }
+        return bits;
+
+    }
     public Bitmap getPDFHighlighterBitmap(Context c, MainActivityInterface mainActivityInterface,
                                           Song song, int w, int h, int pageNum) {
         // The pdf highlighter song file is encoded as FOLDER_FILENAME_PAGENUM.png
@@ -2302,7 +2337,6 @@ public class ProcessSong {
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
                 Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, w,
                         h, true);
-                bitmap.recycle();
                 inputStream.close();
                 return newBitmap;
             } else {

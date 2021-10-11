@@ -46,6 +46,15 @@ public class SetActionsFragment extends Fragment {
         myView.bibleButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.bible_graph));
         myView.slideButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.customSlideFragment));
         myView.exportSet.setOnClickListener(v -> exportSet());
+        myView.backupSets.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("backupsets");
+            mainActivityInterface.navigateToFragment(null,R.id.backupRestoreSetsFragment);
+        });
+        myView.restoreSets.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("restoresets");
+            mainActivityInterface.navigateToFragment(null,R.id.backupRestoreSetsFragment);
+        });
+
         return myView.getRoot();
     }
 
@@ -67,4 +76,5 @@ public class SetActionsFragment extends Fragment {
             mainActivityInterface.navigateToFragment("opensongapp://settings/actions/export",0);
         }
     }
+
 }

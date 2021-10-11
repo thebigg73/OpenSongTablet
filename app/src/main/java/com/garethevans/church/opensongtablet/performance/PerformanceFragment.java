@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,7 +79,6 @@ public class PerformanceFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d(TAG,"binding");
         myView = ModePerformanceBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
 
@@ -88,7 +86,6 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.registerFragment(this,"Performance");
 
         // Initialise the helper classes that do the heavy lifting
-        Log.d(TAG,"binding");
         initialiseHelpers();
 
         // Pass view references to the Autoscroll class
@@ -100,7 +97,6 @@ public class PerformanceFragment extends Fragment {
 
         //mainActivityInterface.changeActionBarVisible(false,false);
         // Load in preferences
-        Log.d(TAG,"loadPreferences()");
         loadPreferences();
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
@@ -109,7 +105,6 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.fullIndex();
         }
 
-        Log.d(TAG,"doSongLoad()");
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
@@ -204,7 +199,6 @@ public class PerformanceFragment extends Fragment {
     private void prepareSongViews() {
         // This is called on UI thread above;
 
-        Log.d(TAG,"Preparing view for "+mainActivityInterface.getSong().getFilename());
         // Set the default color
         myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
 
@@ -222,14 +216,11 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface, mainActivityInterface.getSong(), scaleComments, false));
         myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
 
-        Log.d(TAG,"filename="+mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT));
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // We populate the PDF recycler view with the pages
-            Log.d(TAG,"pdf recognised");
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 int availWidth = getResources().getDisplayMetrics().widthPixels;
                 int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
-                Log.d(TAG,"availWidth="+availWidth+"  availHeight="+availHeight);
                 PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface,
                         availWidth, availHeight);
                 myView.pdfView.post(() -> {
@@ -243,7 +234,6 @@ public class PerformanceFragment extends Fragment {
                         animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
                     }
                     myView.pdfView.startAnimation(animSlideIn);
-                    Log.d(TAG,"PDF getting here");
                 });
             }
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
@@ -356,7 +346,6 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getPad().autoStartPad(requireContext());
     }
     private void dealWithHighlighterFile(int w, int h) {
-        Log.d(TAG,"height requested="+h);
         if (!mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")) {
             // Set the highlighter image view to match
@@ -371,14 +360,12 @@ public class PerformanceFragment extends Fragment {
                             getHighlighterFile(requireContext(), mainActivityInterface, w, h);
                     if (highlighterBitmap != null &&
                             mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "drawingAutoDisplay", true)) {
-                        Log.d(TAG,"height="+highlighterBitmap.getHeight());
                         myView.highlighterView.setVisibility(View.VISIBLE);
                         RequestOptions scaleOption = new RequestOptions().sizeMultiplier(myView.zoomLayout.getScaleFactor());
                         RequestOptions sizeOption = new RequestOptions().override(w,h);
                         GlideApp.with(requireContext()).load(highlighterBitmap).override(w,h).
                                 apply(scaleOption).apply(sizeOption).into(myView.highlighterView);
                         myView.highlighterView.setScaleY(myView.zoomLayout.getScaleFactor());
-                        Log.d(TAG,"height of imageView="+myView.highlighterView.getHeight());
                         // Hide after a certain length of time
                         int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
                         if (timetohide != 0) {
@@ -401,7 +388,6 @@ public class PerformanceFragment extends Fragment {
         }
     }
     public void dealWithStickyNotes(boolean forceShow, boolean hide) {
-        Log.d(TAG, "dealWithStickyNotes");
         if (hide) {
             if (stickyPopUp!=null) {
                 stickyPopUp.closeSticky();

@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,7 +52,6 @@ public class AppActionBar {
         delayactionBarHide = new Handler();
         hideActionBarRunnable = () -> {
             if (actionBar != null && actionBar.isShowing()) {
-                Log.d("AppActionBar", "hide actionBar");
                 actionBar.hide();
             }
         };
@@ -205,13 +203,11 @@ public class AppActionBar {
         }
 
         if (actionBar != null) {
-            Log.d("AppActionBar","showActionBar");
             actionBar.show();
         }
 
         if (hideActionBar && performanceMode) {
             try {
-                Log.d("AppActionBar","set delayed hide");
                 delayactionBarHide.postDelayed(hideActionBarRunnable, 3000);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.text.method.KeyListener;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -131,7 +130,6 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         editText.setGravity(gravity);
 
         textInputLayout.setEndIconMode(endIconMode);
-        Log.d("MaterialEditText","endIconMode="+endIconMode);
         a.recycle();
     }
 

@@ -12,16 +12,14 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,6 +34,7 @@ public class BackupOSBFragment extends Fragment {
     private StorageBackupBinding myView;
     private MainActivityInterface mainActivityInterface;
 
+    private final String TAG = "BackupOSB";
     private String backupFilename;
     private ArrayList<String> checkedFolders;
     private boolean error = false;
@@ -81,6 +80,7 @@ public class BackupOSBFragment extends Fragment {
                     myView.foundFoldersListView.addView(checkBox);
                 }
 
+                myView.createBackupFAB.setText(getString(R.string.export));
                 myView.createBackupFAB.setOnClickListener(v -> doSave());
             });
 
@@ -140,11 +140,12 @@ public class BackupOSBFragment extends Fragment {
             // The zip stuff
             byte[] tempBuff = new byte[1024];
             // Check the temp folder exists
-            File backupFile = new File(requireContext().getExternalFilesDir("Backups"), backupFilename);
-            FileOutputStream outputStream;
+            Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Backups","",backupFilename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,backupUri,null,"Backups","",backupFilename);
+            OutputStream outputStream;
             ZipOutputStream zipOutputStream = null;
             try {
-                outputStream = new FileOutputStream(backupFile);
+                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),backupUri);
                 zipOutputStream = new ZipOutputStream(outputStream);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -158,10 +159,7 @@ public class BackupOSBFragment extends Fragment {
                 try {
                     if (file.contains("/")) {
                         String thisFolder = file.substring(0, file.lastIndexOf("/"));
-                        String thisFile = file.substring(file.lastIndexOf("/") + 1);
-                        if (thisFile.isEmpty()) {
-                            thisFile = "/";
-                        }
+                        String thisFile = file.replace(thisFolder+"/","");
                         // Now check if we want it added
                         for (String folder : checkedFolders) {
                             if (alive && folder.equals(thisFolder)) {
@@ -202,6 +200,57 @@ public class BackupOSBFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
+
+            // Now add the matching highligher files
+            if (myView.includeHighlighter.isChecked()) {
+                ArrayList<String> highlighterFiles = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(), mainActivityInterface, "Highlighter", "");
+                for (String file : highlighterFiles) {
+                    ArrayList<String> bits = mainActivityInterface.getProcessSong().getInfoFromHighlighterFilename(file);
+                    String thisFolder = bits.get(0).replace("_","/");
+                    String fileName = bits.get(1);
+                    Log.d(TAG, "thisFolder: "+thisFolder+"  fileName="+fileName);
+                    // The folder is the first bit of the filename
+                    if (file.contains("_")) {
+
+                        // Now check if we want it added
+                        for (String wantedFolder : checkedFolders) {
+                            if (alive && wantedFolder.equals(thisFolder)) {
+                                try {
+                                    // Get the uri for this item
+                                    fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem(getContext(),
+                                            mainActivityInterface, "Highlighter", "", file);
+                                    inputStream = mainActivityInterface.getStorageAccess().getInputStream(getContext(), fileUriToCopy);
+                                    ze = new ZipEntry("_Highlighter/" + file);
+                                    if (zipOutputStream != null) {
+                                        // Update the screen
+                                        requireActivity().runOnUiThread(() -> {
+                                            String message = getString(R.string.processing) + ": " + file;
+                                            myView.progressText.setText(message);
+                                        });
+                                        try {
+                                            zipOutputStream.putNextEntry(ze);
+                                            if (!ze.isDirectory()) {
+                                                int len;
+                                                while ((len = inputStream.read(tempBuff)) > 0) {
+                                                    zipOutputStream.write(tempBuff, 0, len);
+                                                }
+                                            }
+                                            zipOutputStream.closeEntry();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            error = true;
+                                        }
+                                    }
+                                    inputStream.close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             try {
                 if (zipOutputStream!=null) {
                     zipOutputStream.close();
@@ -233,16 +282,27 @@ public class BackupOSBFragment extends Fragment {
         thread.start();
     }
 
+    private String getRidOfUnderscores(String string) {
+        if (string!=null && string.contains("_")) {
+            if (string.startsWith("_")) {
+                string = string.replaceFirst("_","");
+            }
+            if (string.endsWith("_")) {
+                string = string.substring(0,string.lastIndexOf("_"));
+            }
+            string = string.replace("_","/");
+        }
+        return string;
+    }
+
     private void exportBackup() {
-        // TODO Currently doesn't see the folders, so not working!!!!
         // Make sure we have an available backup folder
-        File backupFile = new File(requireContext().getExternalFilesDir("Backups"), backupFilename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,
+                "Backups","",backupFilename);
 
         mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"runssincebackup",0);
         mainActivityInterface.getAlertChecks();
 
-        Log.d("BackupOSBFrag","File="+backupFile);
-        Uri uri = FileProvider.getUriForFile(requireContext(), "com.garethevans.church.opensongtablet.fileprovider",backupFile);
         Intent intent = mainActivityInterface.getExportActions().exportBackup(requireContext(),uri,backupFilename);
         startActivity(Intent.createChooser(intent,getString(R.string.backup_info)));
     }

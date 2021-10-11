@@ -113,7 +113,6 @@ public class NearbyConnections implements NearbyInterface {
                             (Void unused) -> {
                                 // We're advertising!
                                 updateConnectionLog(c.getString(R.string.connections_advertise) + " " + getUserNickname(c, mainActivityInterface));
-                                Log.d(TAG, "startAdvertising() - success");
                                 isAdvertising = true;
                             })
                     .addOnFailureListener(
@@ -122,17 +121,13 @@ public class NearbyConnections implements NearbyInterface {
                                 updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname(c, mainActivityInterface));
                                 Log.d(TAG, "startAdvertising() - failure: " + e);
                             });
-        } else {
-            Log.d(TAG, "startAdvertising() - already advertising");
         }
     }
 
     @Override
     public void startDiscovery(Context c, MainActivityInterface mainActivityInterface) {
-        Log.d(TAG, "startDiscovery()");
         // IV - Only if still in use
         if (usingNearby) {
-            Log.d("NearbyConnections", "startDiscovery()");
             if (!isDiscovering) {
                 Nearby.getConnectionsClient(c)
                         .startDiscovery(serviceId, endpointDiscoveryCallback(c, mainActivityInterface), discoveryOptions)
@@ -149,8 +144,6 @@ public class NearbyConnections implements NearbyInterface {
                                     stopDiscovery(c);
                                     Log.d("NearbyConnections", "startDiscovery() - failure: " + e);
                                 });
-            } else {
-                Log.d("NearbyConnections", "startDiscovery() - already discovering");
             }
             // IV - Stop 30s after this (latest) call
             if (isDiscovering) {
@@ -162,7 +155,6 @@ public class NearbyConnections implements NearbyInterface {
 
     @Override
     public void stopAdvertising(Context c) {
-        Log.d(TAG, "stopAdvertising()");
         if (isAdvertising) {
             isAdvertising = false;
             try {
@@ -172,15 +164,11 @@ public class NearbyConnections implements NearbyInterface {
             } catch (Exception e) {
                 Log.d(TAG, "stopAdvertising() - failure: " + e);
             }
-
-        } else {
-            Log.d(TAG, "stopAdvertising() - wasn't advertising");
         }
     }
 
     @Override
     public void stopDiscovery(Context c) {
-        Log.d(TAG, "stopDiscovery()");
         if (isDiscovering) {
             try {
                 Nearby.getConnectionsClient(c).stopDiscovery();
@@ -188,8 +176,6 @@ public class NearbyConnections implements NearbyInterface {
             } catch (Exception e) {
                 Log.d(TAG, "stopDiscovery() - failure: " + e);
             }
-        } else {
-            Log.d(TAG, "stopDiscovery() -  wasn't discovering");
         }
         isDiscovering = false;
     }
@@ -217,7 +203,7 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     private String userConnectionInfo(String endpointId, ConnectionInfo connectionInfo) {
-        Log.d(TAG, "endpointId=" + endpointId + "  name=" + connectionInfo.getEndpointName() + "  getAuthenticationToken=" + connectionInfo.getAuthenticationToken());
+        //Log.d(TAG, "endpointId=" + endpointId + "  name=" + connectionInfo.getEndpointName() + "  getAuthenticationToken=" + connectionInfo.getAuthenticationToken());
         return endpointId + "__" + connectionInfo.getEndpointName();
     }
 

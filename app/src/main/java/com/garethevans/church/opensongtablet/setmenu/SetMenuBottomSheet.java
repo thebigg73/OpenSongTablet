@@ -51,6 +51,11 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetMenuSetBinding.inflate(inflater, container, false);
 
+        Log.d(TAG,"currentSet (pref):"+mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"setCurrent",""));
+        Log.d(TAG, "currentSet (CurrSet): "+mainActivityInterface.getCurrentSet().getCurrentSetString());
+        Log.d(TAG, "initialSet (CurrSet): "+mainActivityInterface.getCurrentSet().getInitialSetString());
+        Log.d(TAG, "setName (CurrSet): "+mainActivityInterface.getCurrentSet().getSetName());
+
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
@@ -94,7 +99,6 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
         myView.manageSet.setOnClickListener(v -> {
-            Log.d(TAG, "fragManager: "+requireActivity().getSupportFragmentManager());
             mainActivityInterface.navigateToFragment("opensongapp://settings/sets",-1);
             dismiss();
         });

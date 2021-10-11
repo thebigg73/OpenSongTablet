@@ -143,8 +143,6 @@ public class SetManageFragment extends Fragment {
         myView.setCategory.setAdapter(categoriesAdapter);
         myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
                 "whichSetCategory", requireContext().getString(R.string.mainfoldername)));
-        myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(
-                requireContext(), "whichSetCategory", getString(R.string.mainfoldername)));
         myView.setCategory.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -253,6 +251,7 @@ public class SetManageFragment extends Fragment {
         // Initialise the current set
         mainActivityInterface.getCurrentSet().initialiseTheSet();
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "setCurrent", "");
+        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "setCurrentBeforeEdits", "");
 
         // Because we can import multiple sets, we need to get them into an array
         ArrayList<Uri> setUris = new ArrayList<>();
@@ -270,9 +269,11 @@ public class SetManageFragment extends Fragment {
         }
 
         String setName = setNameBuilder.substring(0,setNameBuilder.lastIndexOf("_"));
+        if (setName.startsWith("_")) {
+            setName = setName.replaceFirst("_","");
+        }
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
-                "setCurrent",setName);
-        mainActivityInterface.getCurrentSet().setSetName(setName);
+                "setCurrentLastName",setName);
 
         new Thread(() -> {
             // Empty the cache directories as new sets can have custom items

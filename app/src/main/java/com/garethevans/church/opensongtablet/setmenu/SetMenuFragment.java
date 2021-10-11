@@ -50,38 +50,31 @@ public class SetMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         myView = MenuSetsBinding.inflate(inflater, container, false);
 
-        new Thread(() -> {
-            requireActivity().runOnUiThread(() -> {
-                myView.progressBar.setVisibility(View.VISIBLE);
-                myView.myRecyclerView.setVisibility(View.GONE);
-                setUpViews();
-            });
-
-            requireActivity().runOnUiThread(this::prepareSetListViews);
+        new Thread(() -> requireActivity().runOnUiThread(() -> {
+            myView.progressBar.setVisibility(View.VISIBLE);
+            myView.myRecyclerView.setVisibility(View.GONE);
+            setUpViews();
+            prepareSetListViews();
 
             // Try to move to the corresponding item in the set that we are viewing.
-            requireActivity().runOnUiThread(() -> {
-                // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
-                if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
-                        mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
-                    llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0);
-                }
-                myView.myRecyclerView.setVisibility(View.VISIBLE);
-                myView.progressBar.setVisibility(View.GONE);
 
-                setListeners();
-            });
-        }).start();
+            // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
+            if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
+                    mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
+                llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0);
+            }
+            myView.myRecyclerView.setVisibility(View.VISIBLE);
+            myView.progressBar.setVisibility(View.GONE);
 
+            setListeners();
+        })).start();
 
         return myView.getRoot();
     }
 
 
-    void setUpViews() {
-        String titletext = requireActivity().getResources().getString(R.string.set) + ": " + mainActivityInterface.getSetActions().currentSetNameForMenu(getContext(),mainActivityInterface);
-        myView.setTitle.setText(titletext);
-        llm = new LinearLayoutManager(getActivity());
+    private void setUpViews() {
+        llm = new LinearLayoutManager(requireContext());
         llm.setOrientation(RecyclerView.VERTICAL);
         myView.myRecyclerView.setLayoutManager(llm);
     }
@@ -89,7 +82,6 @@ public class SetMenuFragment extends Fragment {
     private void setListeners() {
         myView.setMasterFAB.setOnClickListener(v -> {
             SetMenuBottomSheet setMenuBottomSheet = new SetMenuBottomSheet();
-            Log.d(TAG, "fragManager: "+requireActivity().getSupportFragmentManager());
             setMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "setMenuBottomSheet");
         });
         myView.myRecyclerView.setFastScrollListener(new FastScroller.FastScrollListener() {
@@ -118,12 +110,10 @@ public class SetMenuFragment extends Fragment {
     }
 
     public void updateSet() {
-        mainActivityInterface.getSetActions().shuffleSet(getContext(),mainActivityInterface);
         prepareCurrentSet();
     }
 
     private void prepareSetListViews() {
-        mainActivityInterface.getSetActions().preferenceStringToArrays(getContext(),mainActivityInterface);
         buildList();
     }
 
@@ -144,6 +134,7 @@ public class SetMenuFragment extends Fragment {
     }
     public void prepareCurrentSet() {
         // We have received a call to redraw the set list either on first load or after song indexing
+        Log.d(TAG,"buildSetArraysFromItems() about to be called");
         mainActivityInterface.getSetActions().buildSetArraysFromItems(requireContext(),mainActivityInterface);
         myView.myRecyclerView.post(() -> {
             myView.myRecyclerView.removeAllViews();
@@ -151,8 +142,7 @@ public class SetMenuFragment extends Fragment {
             myView.myRecyclerView.invalidate();
         });
 
-        String titletext = requireActivity().getResources().getString(R.string.set) + ": " + mainActivityInterface.getSetActions().currentSetNameForMenu(getContext(),mainActivityInterface);
-        myView.setTitle.post(() -> myView.setTitle.setText(titletext));
+        updateSetTitle();
 
         buildList();
     }
@@ -167,13 +157,13 @@ public class SetMenuFragment extends Fragment {
             myView.myRecyclerView.setAdapter(setListAdapter);
             myView.myRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         });
+
+        updateSetTitle();
     }
 
     // Get the set list item objects for the recyclerview
     private List<SetItemInfo> createList() {
         setItemInfos = new ArrayList<>();
-
-        mainActivityInterface.getSetActions().buildSetArraysFromItems(requireContext(), mainActivityInterface);
         for (int i = 0; i<mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
             SetItemInfo si = new SetItemInfo();
             si.songitem = (i+1) + ".";
@@ -183,7 +173,6 @@ public class SetMenuFragment extends Fragment {
             si.songfilename = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
             si.songkey = mainActivityInterface.getCurrentSet().getSetKeys().get(i);
 
-            Log.d(TAG,"si.songFolder: "+si.songfolder);
             // Decide on the icon to use for the set item
             if (si.songfolder.equals("**Slides")) {
                 si.songicon = "Slides";
@@ -218,7 +207,17 @@ public class SetMenuFragment extends Fragment {
         // Check for icon
         setItemInfos.get(position).songicon = mainActivityInterface.getSetActions().
                 getIconIdentifier(mainActivityInterface,folder,filename);
+        // Update the set list
+        //mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"setCurrent",mainActivityInterface.getCurrentSet().getCurrentSetString());
+        updateSetTitle();
         setListAdapter.notifyItemChanged(position);
+
+    }
+
+    public void updateSetTitle() {
+        // Save the changes
+        String titletext = requireContext().getResources().getString(R.string.set) + ": " + mainActivityInterface.getSetActions().currentSetNameForMenu(getContext(),mainActivityInterface);
+        myView.setTitle.post(() -> myView.setTitle.setText(titletext));
     }
 
 }

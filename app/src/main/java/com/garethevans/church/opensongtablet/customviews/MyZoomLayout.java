@@ -58,7 +58,11 @@ public class MyZoomLayout extends FrameLayout {
 
     @Override
     public void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
+        try {
+            super.dispatchDraw(canvas);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (overScroller.computeScrollOffset()) {
             scrollTo(overScroller.getCurrX(), overScroller.getCurrY());
             scrolledToBottom = overScroller.getCurrY()>=maxScrollY;

@@ -701,6 +701,9 @@
                 <action
                     android:id="@+id/action_setActionsFragment_to_customSlideFragment"
                     app:destination="@id/customSlideFragment" />
+                <action
+                    android:id="@+id/action_setActionsFragment_to_backupRestoreSetsFragment"
+                    app:destination="@id/backupRestoreSetsFragment" />
             </fragment>
             <fragment
                 android:id="@+id/setManageFragment"
@@ -741,9 +744,12 @@
                     android:id="@+id/deepLink30"
                     app:uri="opensongapp://settings/sets/customslide" />
             </fragment>
+            <fragment
+                android:id="@+id/backupRestoreSetsFragment"
+                android:name="com.garethevans.church.opensongtablet.setprocessing.BackupRestoreSetsFragment"
+                android:label="BackupRestoreSetsFragment"
+                tools:layout="@layout/settings_sets_backups"/>
         </navigation>
-
-
 
     </navigation>
 

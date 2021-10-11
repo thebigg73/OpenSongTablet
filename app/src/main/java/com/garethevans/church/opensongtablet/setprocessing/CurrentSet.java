@@ -181,15 +181,24 @@ public class CurrentSet {
     public void addToCurrentSet(String item) {
         setItems.add(item);
     }
-    public int removeFromCurrentSet(int pos, String item) {
+    public void addToCurrentSet(int position, String item, String folder, String filename, String key) {
+        setItems.add(position,item);
+        setFolders.add(position,folder);
+        setFilenames.add(position,filename);
+        setKeys.add(position,key);
+    }
+
+    public void removeFromCurrentSet(int pos, String item) {
         if (pos==-1) {
             // Don't know, so look for it
             pos = setItems.indexOf(item);
         }
         if (pos!=-1) {
             setItems.remove(pos);
+            setFilenames.remove(pos);
+            setFolders.remove(pos);
+            setKeys.remove(pos);
         }
-        return pos;
     }
     public void setSetFolders(ArrayList<String> setFolders) {
         this.setFolders = setFolders;

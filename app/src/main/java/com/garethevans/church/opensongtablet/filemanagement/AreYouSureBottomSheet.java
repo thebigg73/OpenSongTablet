@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetAreYouSureBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -66,6 +67,7 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeading.setClose(this);
 
         myView.action.setText(action);
+        myView.okButton.setText(getString(R.string.ok));
         myView.okButton.setOnClickListener(v -> {
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);
             dismiss();

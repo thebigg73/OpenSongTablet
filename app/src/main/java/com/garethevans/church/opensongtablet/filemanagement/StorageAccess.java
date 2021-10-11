@@ -1157,16 +1157,13 @@ public class StorageAccess {
         }
     }
     public boolean doStringWriteToFile(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename, String string) {
-        Log.w(TAG,"doStringWriteToFile() called");
         try {
             Uri uri = getUriForItem(c, mainActivityInterface, folder, subfolder, filename);
-            Log.d(TAG,"uri="+uri);
             // If the file exists, delete it, otherwise it doesn't work
             if (uriExists(c,uri)) {
                 deleteFile(c, uri);
             }
             lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null, folder, subfolder, filename);
-            Log.d(TAG,"uri="+uri);
             OutputStream outputStream = getOutputStream(c, uri);
             return writeFileFromString(string, outputStream);
         } catch (Exception e) {

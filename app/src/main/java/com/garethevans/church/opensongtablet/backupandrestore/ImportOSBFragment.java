@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +85,6 @@ public class ImportOSBFragment extends Fragment {
     private void setupHelpers() {
         // Initialise the launcher
         initialiseLauncher();
-
         if (mainActivityInterface.getWhattodo().equals("importChurchSample")) {
             importSample("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM","Church.osb");
         } else if (mainActivityInterface.getWhattodo().equals("importBandSample")) {
@@ -105,7 +103,6 @@ public class ImportOSBFragment extends Fragment {
     private void initialiseLauncher() {
         // Initialise the launcher
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            Log.d(TAG,"resultCode()="+result.getResultCode());
             if (result.getResultCode() == Activity.RESULT_OK) {
                 try {
                     Intent data = result.getData();
@@ -168,7 +165,7 @@ public class ImportOSBFragment extends Fragment {
 
             try {
                 zipContents = 0;
-                inputStream = mainActivityInterface.getStorageAccess().getInputStream(getActivity(),importUri);
+                inputStream = mainActivityInterface.getStorageAccess().getInputStream(getActivity(), importUri);
                 zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
                 ZipEntry ze;
 
@@ -190,7 +187,7 @@ public class ImportOSBFragment extends Fragment {
                     if (ze.isDirectory() || ze.getName().contains("/")) {
                         String thisfolder = ze.getName();
                         if (thisfolder.contains("/")) {
-                            thisfolder = thisfolder.substring(0,thisfolder.lastIndexOf("/"));
+                            thisfolder = thisfolder.substring(0, thisfolder.lastIndexOf("/"));
                         }
                         // Only add it if we don't already have it
                         if (!foundFolders.contains(thisfolder)) {
@@ -207,7 +204,7 @@ public class ImportOSBFragment extends Fragment {
                 e.printStackTrace();
                 error = true;
             } finally {
-                if (zipInputStream!=null) {
+                if (zipInputStream != null) {
                     try {
                         zipInputStream.close();
                     } catch (Exception e) {
@@ -216,38 +213,39 @@ public class ImportOSBFragment extends Fragment {
                     }
                 }
             }
-        requireActivity().runOnUiThread(() -> {
-            if (error && alive) {
-                myView.progressText.setText(getString(R.string.error));
-            } else if (alive){
-                message = getString(R.string.songs) + ": " + zipContents;
-                myView.progressText.setText(message);
+            requireActivity().runOnUiThread(() -> {
+                if (error && alive) {
+                    myView.progressText.setText(getString(R.string.error));
+                } else if (alive) {
+                    message = getString(R.string.songs) + ": " + zipContents;
+                    myView.progressText.setText(message);
 
-                // Update the found folders
-                // Sort the folders
-                Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
-                coll.setStrength(Collator.SECONDARY);
-                Collections.sort(foundFolders, coll);
+                    // Update the found folders
+                    // Sort the folders
+                    Collator coll = Collator.getInstance(mainActivityInterface.getLocale());
+                    coll.setStrength(Collator.SECONDARY);
+                    Collections.sort(foundFolders, coll);
 
-                for (String folder:foundFolders) {
-                    CheckBox checkBox = new CheckBox(getContext());
-                    checkBox.setText(folder);
-                    checkBox.setTag(folder);
-                    checkBox.setChecked(true);
-                    checkBox.setPadding(16,32,16,32);
-                    myView.foundFoldersListView.addView(checkBox);
-                    checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                        int songs = getCurrentSongs();
-                        message = getString(R.string.songs) + ": " + songs;
-                        myView.progressText.setText(message);
-                    });
+                    for (String folder : foundFolders) {
+                        if (!folder.equals("_Highlighter")) {
+                            CheckBox checkBox = new CheckBox(getContext());
+                            checkBox.setText(folder);
+                            checkBox.setTag(folder);
+                            checkBox.setChecked(true);
+                            checkBox.setPadding(16, 32, 16, 32);
+                            myView.foundFoldersListView.addView(checkBox);
+                            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                                int songs = getCurrentSongs();
+                                message = getString(R.string.songs) + ": " + songs;
+                                myView.progressText.setText(message);
+                            });
+                        }
+                    }
+                    myView.createBackupFAB.setOnClickListener(v -> doImport());
+                    myView.backupName.setOnClickListener(v -> changeBackupFile());
                 }
-                myView.createBackupFAB.setOnClickListener(v -> doImport());
-                myView.backupName.setOnClickListener(v -> changeBackupFile());
-            }
-            myView.progressBar.setVisibility(View.GONE);
-        });
-
+                myView.progressBar.setVisibility(View.GONE);
+            });
             okToLoad();
         };
         thread = new Thread(runnable);
@@ -348,19 +346,23 @@ public class ImportOSBFragment extends Fragment {
                         String filename;
                         String filefolder = "";
                         if (alive) {
-                            file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, "Songs", "", ze.getName());
-                            // If the file exists and we have allowed overwriting, or it doesn't exist and it is in the checked folders, write it
-                            exists = mainActivityInterface.getStorageAccess().uriExists(getContext(), file_uri);
-                            if (alive) {
-                                filefolder = getString(R.string.mainfoldername);
+                            if (ze.getName().startsWith("_Highlighter")) {
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, "Highlighter", "", ze.getName().replace("_Highlighter/",""));
+                            } else {
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, "Songs", "", ze.getName());
+                                if (alive) {
+                                    filefolder = getString(R.string.mainfoldername);
+                                }
                             }
                             if (ze.getName().contains("/")) {
                                 filefolder = ze.getName().substring(0, ze.getName().lastIndexOf("/"));
                             }
 
-                            wantit = checkedFolders.contains(filefolder);
+                            // If the file exists and we have allowed overwriting, or it doesn't exist and it is in the checked folders, write it
+                            exists = mainActivityInterface.getStorageAccess().uriExists(getContext(), file_uri);
+                            wantit = checkedFolders.contains(filefolder) || (filefolder.equals("_Highlighter") && myView.includeHighlighter.isChecked());
                         }
-                        if (wantit && (!exists || canoverwrite)) {
+                        if (alive && wantit && (!exists || canoverwrite)) {
                             // We want it and either it doesn't exist, or we've selected overwriting
                             // Update the disply
                             zipProgress++;
@@ -379,9 +381,15 @@ public class ImportOSBFragment extends Fragment {
 
                             // Make sure the file exists (might be non-existent)
                             if (!exists && alive) {
-                                filename = ze.getName().replace(filefolder,"").replace("/","");
-                                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getContext(),mainActivityInterface,
-                                        file_uri,null,"Songs",filefolder,filename);
+                                if (ze.getName().startsWith("_Highlighter")) {
+                                    filename = ze.getName().replace("_Highlighter/","");
+                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,
+                                            file_uri,null,"Highlighter","",filename);
+                                } else {
+                                    filename = ze.getName().replace(filefolder, "").replace("/", "");
+                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getContext(), mainActivityInterface,
+                                            file_uri, null, "Songs", filefolder, filename);
+                                }
                             }
                             if (alive) {
                                 outputStream = mainActivityInterface.getStorageAccess().getOutputStream(getContext(), file_uri);
@@ -530,11 +538,6 @@ public class ImportOSBFragment extends Fragment {
     }
 
     private void okToLoad() {
-        Log.d(TAG,"myView.importTitle.getText().toString()="+myView.importTitle.getText().toString());
-        Log.d(TAG,"foundFolders="+foundFolders);
-        //Log.d(TAG,"foundFolders.size()="+foundFolders.size());
-        Log.d(TAG,"importUri="+importUri);
-
         if (myView.importTitle.getText()!=null && foundFolders!=null && foundFolders.size()>0 &&
                 !myView.importTitle.getText().toString().isEmpty() && importUri!=null) {
             // Udpate as post to keep on UI thread
