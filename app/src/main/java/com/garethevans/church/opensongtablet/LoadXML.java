@@ -37,7 +37,7 @@ public class LoadXML extends Activity {
         // Clear the heading default
         StaticVariables.songSection_holder = "";
 
-        // Set the song load status to false (helps check if it didn't load
+        // Set the song load status to false (helps check if it didn't load)
         preferences.setMyPreferenceBoolean(c,"songLoadSuccess",false);
 
         String where = "Songs";
@@ -57,8 +57,6 @@ public class LoadXML extends Activity {
             if (StaticVariables.songfilename.equals("Welcome to OpenSongApp") &&
                     ((StaticVariables.whichMode.equals("Performance") || StaticVariables.whichMode.equals("Stage")))) {
                 setWelcome(c);
-                StaticVariables.currentSection = 0;
-                FullscreenActivity.pdfPageCurrent = 0;
             } else {
                 setNotFound(c);
             }
@@ -111,7 +109,7 @@ public class LoadXML extends Activity {
                             onSongConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert, uri, FullscreenActivity.myXML);
                             grabOpenSongXML(c, preferences, storageAccess, processSong);
 
-                        // If the song is usr format - try to import it
+                            // If the song is usr format - try to import it
                         } else if (StaticVariables.songfilename.contains(".usr")
                                 || FullscreenActivity.myXML.contains("[File]")
                                 || FullscreenActivity.myXML.contains("Type=")
@@ -123,7 +121,7 @@ public class LoadXML extends Activity {
                             usrConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert, uri, FullscreenActivity.myXML);
                             grabOpenSongXML(c, preferences, storageAccess, processSong);
 
-                        // If the song is in ChordPro format - try to import it
+                            // If the song is in ChordPro format - try to import it
                         } else if (FullscreenActivity.myXML.contains("{title") ||
                                 FullscreenActivity.myXML.contains("{t:") ||
                                 FullscreenActivity.myXML.contains("{t :") ||
@@ -143,7 +141,7 @@ public class LoadXML extends Activity {
                             //TODO check this works
                             chordProConvert.convertTextToTags(c, storageAccess, preferences, songXML, uri, FullscreenActivity.myXML);
                             grabOpenSongXML(c, preferences, storageAccess, processSong);
-                        // If it is not a supported file type
+                            // If it is not a supported file type
                         } else if (!storageAccess.checkFileExtensionValid(uri)) {
                             FullscreenActivity.myXML = "";
                         }
@@ -200,7 +198,6 @@ public class LoadXML extends Activity {
 
                     // Set the song load status to true:
                     preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
-
                 } else {
                     if (!storageAccess.checkFileExtensionValid(uri)) {
                         setUnknown(c);
@@ -310,6 +307,8 @@ public class LoadXML extends Activity {
                 "<author>Gareth Evans</author>\n<lyrics>" +
                 StaticVariables.mLyrics + "</lyrics>";
         FullscreenActivity.myLyrics = "ERROR!";
+        StaticVariables.currentSection = 0;
+        FullscreenActivity.pdfPageCurrent = 0;
     }
 
     private static void setUnknown(Context c) {
@@ -328,6 +327,8 @@ public class LoadXML extends Activity {
                 "<author>Gareth Evans</author>\n<lyrics>" +
                 StaticVariables.mLyrics + "</lyrics>";
         FullscreenActivity.myLyrics = "ERROR!";
+        StaticVariables.currentSection = 0;
+        FullscreenActivity.pdfPageCurrent = 0;
     }
 
     private static void setWelcome(Context c) {
@@ -347,6 +348,8 @@ public class LoadXML extends Activity {
         FullscreenActivity.myXML = "<?xml><song><title>" + StaticVariables.mTitle + "</title>\n" +
                 "<author>" + StaticVariables.mAuthor + "</author>\n" +
                 "<lyrics>" + StaticVariables.mLyrics + "\n</lyrics></song>";
+        StaticVariables.currentSection = 0;
+        FullscreenActivity.pdfPageCurrent = 0;
     }
 
     static void prepareLoadCustomReusable(Context c, Preferences preferences,
