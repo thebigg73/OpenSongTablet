@@ -43,6 +43,10 @@ public class SetActionsFragment extends Fragment {
             mainActivityInterface.setWhattodo("saveset");
             mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
         });
+        myView.deleteSet.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("deleteset");
+            mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);
+        });
         myView.bibleButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.bible_graph));
         myView.slideButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.customSlideFragment));
         myView.exportSet.setOnClickListener(v -> exportSet());

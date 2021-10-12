@@ -67,7 +67,6 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         int fromPosition = viewHolder.getAbsoluteAdapterPosition();
         int toPosition = target.getAbsoluteAdapterPosition();
-        Log.d("SetListItem","fromPosition="+fromPosition+"  toPosition="+toPosition);
         setItemTouchInterface.onItemMoved(fromPosition,toPosition);
         return true;
     }
@@ -76,9 +75,7 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         //Remove item
         int fromPosition = viewHolder.getAbsoluteAdapterPosition();
-        Log.d("SetListItem","fromPosition="+fromPosition);
         setItemTouchInterface.onItemSwiped(fromPosition);
-        //mAdapter.remove(mainActivityInterface.getCurrentSet(),position);
     }
 
     public void startDrag(@NonNull RecyclerView.ViewHolder viewHolder) {

@@ -96,7 +96,7 @@ public class SetActions {
             // Check for embedded key
             if (setItem.contains(keyStart) && setItem.contains(keyEnd)) {
                 // A key has been included (so auto transpose is allowed)
-                key = setItem.substring(setItem.indexOf(keyStart) + 4, setItem.indexOf(keyEnd));
+                key = fixNull(setItem.substring(setItem.indexOf(keyStart) + 4, setItem.indexOf(keyEnd)));
                 setItem = setItem.replace(keyStart+key+keyEnd, "");
             } else {
                 // No key was specified, so keep it empty (i.e. just use song default)
@@ -118,9 +118,10 @@ public class SetActions {
             // Now we have the folder and filename, we can update default keys from the database
             // We only do this is the key isn't empty and it isn't a custom item (e.g. notes, slides)
             // Of course if the indexing isn't complete it will still be null - don't check the file yet
-            key = getKeyFromDatabaseOrFile(c,mainActivityInterface,false,key,folder,setItem);
+            key = fixNull(getKeyFromDatabaseOrFile(c,mainActivityInterface,false,key,folder,setItem));
 
             // Build the set item.  Useful for shuffling and rebuilding and searching
+
             item = itemStart + folder + "/" + setItem + keyStart + key + keyEnd + itemEnd;
             mainActivityInterface.getCurrentSet().setItem(x,item);
 
@@ -147,10 +148,8 @@ public class SetActions {
             // This is a custom variation item so load the key from the file
             key = mainActivityInterface.getLoadSong().loadKeyOfSong(c,mainActivityInterface,folder,filename);
         }
-        if (key==null) {
-            key = "";
-        }
-        return key;
+
+        return fixNull(key);
     }
     public String getSetAsPreferenceString(MainActivityInterface mainActivityInterface) {
         // Build the set list into a string that can be saved to preferences
@@ -160,10 +159,8 @@ public class SetActions {
         for (int x = 0; x<mainActivityInterface.getCurrentSet().getSetFilenames().size(); x++) {
             if (!mainActivityInterface.getCurrentSet().getFilename(x).isEmpty())
                 try {
-                    String key = mainActivityInterface.getCurrentSet().getKey(x);
-                    if (key==null) {
-                        key = "";
-                    }
+                    String key = fixNull(mainActivityInterface.getCurrentSet().getKey(x));
+
                     stringBuilder.append(itemStart).
                             append(mainActivityInterface.getCurrentSet().getFolder(x)).
                             append("/").
@@ -222,14 +219,13 @@ public class SetActions {
         missingKeyPositions = new ArrayList<>();
         int size = mainActivityInterface.getCurrentSet().getSetKeys().size();
         for (int x = 0; x<mainActivityInterface.getCurrentSet().getSetKeys().size(); x++) {
-            String key = mainActivityInterface.getCurrentSet().getKey(x);
+            String key = fixNull(mainActivityInterface.getCurrentSet().getKey(x));
             if (key.isEmpty()) {
                 String folder = mainActivityInterface.getCurrentSet().getFolder(x);
                 String filename = mainActivityInterface.getCurrentSet().getFilename(x);
 
-                key = getKeyFromDatabaseOrFile(c,mainActivityInterface,true,key,folder,filename);
+                //key = getKeyFromDatabaseOrFile(c,mainActivityInterface,true,key,folder,filename);
 
-                Log.d(TAG,"folder="+folder+"  filename="+filename+"  key="+key);
                 if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("imageorpdf",filename)) {
                     key = mainActivityInterface.getNonOpenSongSQLiteHelper().
                                     getKey(c, mainActivityInterface, folder, filename);
@@ -237,10 +233,10 @@ public class SetActions {
                     key = mainActivityInterface.getSQLiteHelper().
                                     getKey(c, mainActivityInterface, folder, filename);
                 }
-                Log.d(TAG,"found key="+key);
+                key = fixNull(key);
+
                 mainActivityInterface.getCurrentSet().setKey(x,key);
                 missingKeyPositions.add(x);
-                Log.d(TAG,"getKey["+x+"]="+mainActivityInterface.getCurrentSet().getKey(x));
             }
         }
     }
@@ -384,7 +380,7 @@ public class SetActions {
         // Get the current set item values
         String filename = mainActivityInterface.getCurrentSet().getFilename(position);
         String folder = mainActivityInterface.getCurrentSet().getFolder(position);
-        String key = mainActivityInterface.getCurrentSet().getKey(position);
+        String key = fixNull(mainActivityInterface.getCurrentSet().getKey(position));
         String variationFolder = niceCustomLocationFromFolder(c, folderVariations);
 
         // Fix the item in the set
@@ -472,7 +468,7 @@ public class SetActions {
         // Now go through each set entry and build the appropriate xml
         for (int x = 0; x < mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
             String path = mainActivityInterface.getCurrentSet().getFolder(x);
-            String key = mainActivityInterface.getCurrentSet().getKey(x);
+            String key = fixNull(mainActivityInterface.getCurrentSet().getKey(x));
             // If the path isn't empty, add a forward slash to the end
             if (!path.isEmpty()) {
                 path = path + "/";
@@ -884,8 +880,10 @@ public class SetActions {
         String key = "";
         if (xpp.getAttributeCount()>2) {
             // Assume a key has been set as well
-            key = xpp.getAttributeValue(null, "key");
+            key = xpp.getAttributeValue("", "prefKey");
         }
+
+        key = fixNull(key);
 
         mainActivityInterface.getCurrentSet().addSetValues(path, name, key);
         mainActivityInterface.getCurrentSet().addToCurrentSet(getSongForSetWork(path, name, key));

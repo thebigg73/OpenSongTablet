@@ -76,7 +76,12 @@ public class CurrentSet {
         return getValueAtPosition("filename",position);
     }
     public String getKey(int position) {
-        return getValueAtPosition("key",position);
+        String thisKey = getValueAtPosition("key",position);
+        if (thisKey==null) {
+            return "";
+        } else {
+            return thisKey;
+        }
     }
     private String getValueAtPosition(String what, int position) {
         String value = "";
@@ -114,6 +119,9 @@ public class CurrentSet {
         setFilenames.set(position, value);
     }
     public void setKey(int position, String value) {
+        if (value==null) {
+            value="";
+        }
         setKeys.set(position, value);
     }
 

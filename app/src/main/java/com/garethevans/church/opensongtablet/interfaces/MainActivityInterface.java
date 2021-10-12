@@ -224,5 +224,6 @@ public interface MainActivityInterface {
     int[] getDisplayMetrics();
     PerformanceGestures getPerformanceGestures();
     boolean getShowSetMenu();
+    void updateSetTitle();
 }
 

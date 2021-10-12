@@ -1539,6 +1539,34 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             songKey = sqLiteHelper.getKey(this,mainActivityInterface,setFolder,setFilename);
         }
+        if (setKey != null && songKey != null && !setKey.isEmpty() && !songKey.isEmpty() && !songKey.equals(setKey)) {
+            // The set has specified a key that is different from our song.
+            // We will use a variation of the current song
+            String newFolder = "**Variations";
+            String newFilename = setFolder+"_"+setFilename+"_"+setKey;
+
+            Uri variationUri = storageAccess.getUriForItem(this,this,"Variations","",newFilename);
+            if (!storageAccess.uriExists(this,variationUri)) {
+                // Make this temp variation file
+                storageAccess.lollipopCreateFileForOutputStream(this,this,variationUri,null,"Variations","",newFilename);
+                // Get a tempSong we can write
+                Song copySong = sqLiteHelper.getSpecificSong(this,mainActivityInterface,setFolder,setFilename);
+                copySong.setFolder(newFolder);
+                copySong.setFilename(newFilename);
+                // Transpose the lyrics
+                // Get the number of transpose times
+                int transposeTimes = transpose.getTransposeTimes(songKey,setKey);
+                Log.d(TAG,"transposeTimes: "+transposeTimes);
+                copySong.setKey(setKey);
+                copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes,false).getLyrics());
+                // Get the song XML
+                String songXML = processSong.getXML(this,this,copySong);
+                // Save the song
+                storageAccess.doStringWriteToFile(this,this,"Variations","",newFilename,songXML);
+            }
+            setFolder = newFolder;
+            setFilename = newFilename;
+        }
         doSongLoad(setFolder,setFilename,true);
     }
 
@@ -1701,6 +1729,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateSetList() {
         updateFragment("set_updateView",null,null);
+    }
+
+    @Override
+    public void updateSetTitle() {
+        if (setMenuFragment!=null) {
+            try {
+                ((SetMenuFragment)setMenuFragment).updateSetTitle();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -2306,7 +2345,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         ((NearbyConnectionsFragment) fragment).updateValue(which, value);
                         break;
                     case "SetManageFragment":
-                        ((SetManageFragment) fragment).updateValue(which, value);
+                        ((SetManageFragment) fragment).updateValue(value);
                         break;
                     case "EditSongFragmentMain":
                         ((EditSongFragmentMain) fragment).updateValue(value);

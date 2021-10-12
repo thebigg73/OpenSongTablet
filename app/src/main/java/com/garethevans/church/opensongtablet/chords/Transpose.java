@@ -9,6 +9,8 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class Transpose {
 
+    private final String TAG = "Transpose";
+
     //  A  A#/Bb  B/Cb  C/B#  C#/Db    D    D#/Eb   E/Fb   E#/F   F#/Gb   G     G#/Ab
     //  A    B     H     C
     //  1    2     3     4      5      6      7      8      9      10     11     12
@@ -318,6 +320,21 @@ public class Transpose {
         }
 
         return key;
+    }
+
+    public int getTransposeTimes(String from, String to) {
+        String startAt = keyToNumber(from);
+        Log.d(TAG,"from: "+from+"  startAt: "+startAt);
+        String endAt = keyToNumber(to);
+        Log.d(TAG,"to: "+to+"  endAt: "+endAt);
+        int transposeTimes = 0;
+        for (int x=1; x<13; x++) {
+            if (transposeKey(startAt,"+1",x).equals(endAt)) {
+                transposeTimes = x;
+            }
+        }
+
+        return transposeTimes;
     }
 
     private String chordToNumber1(String line) {
@@ -872,7 +889,13 @@ public class Transpose {
         return line;
     }
 
-    String transposeKey(String getkeynum, String direction, int transposetimes) {
+    public String transposeSetVariationKey(String originalKey, int transposeTimes) {
+        // Done for variations created from sets with specified keys
+        String keyNum = keyToNumber(originalKey);
+        return transposeKey(keyNum,"+1",transposeTimes);
+    }
+
+    public String transposeKey(String getkeynum, String direction, int transposetimes) {
         if (direction.equals("+1")) {
             // Put the numbers up by one.
             // Last step then fixes 13 to be 1

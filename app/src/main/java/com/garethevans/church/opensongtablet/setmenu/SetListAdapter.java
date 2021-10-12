@@ -105,13 +105,13 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         notifyItemChanged(fromPosition);
         notifyItemChanged(toPosition);
         notifyItemMoved(fromPosition,toPosition);
-        Log.d(TAG,"MOVED: setCurrent:"+mainActivityInterface.getCurrentSet().getCurrentSetString());
+
+        // Update the title
+        mainActivityInterface.updateSetTitle();
     }
 
     @Override
     public void onItemSwiped(int fromPosition) {
-        Log.d(TAG, "setList.size()="+setList.size());
-        Log.d(TAG, "fromPosition="+fromPosition);
         try {
             // Remove the item from the current set
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition,null);
@@ -129,10 +129,13 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
                 setList.get(x).songitem = (x + 1) + ".";
                 notifyItemChanged(x);
             }
+
+            // Update the title
+            mainActivityInterface.updateSetTitle();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d(TAG,"SWIPED: setCurrent:"+mainActivityInterface.getCurrentSet().getCurrentSetString());
     }
 
     @Override

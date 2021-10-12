@@ -211,7 +211,6 @@ public class SetMenuFragment extends Fragment {
         //mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"setCurrent",mainActivityInterface.getCurrentSet().getCurrentSetString());
         updateSetTitle();
         setListAdapter.notifyItemChanged(position);
-
     }
 
     public void updateSetTitle() {

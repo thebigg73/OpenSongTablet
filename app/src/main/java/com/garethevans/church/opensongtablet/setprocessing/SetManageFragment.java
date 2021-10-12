@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -76,23 +77,46 @@ public class SetManageFragment extends Fragment {
     private void changeViews(boolean saving, boolean deleting) {
         // Should the edit text box with the set name be shown?
         if (saving) {
+            mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.save));
+            String category = getString(R.string.mainfoldername);
+            String setname = mainActivityInterface.getCurrentSet().getSetName();
+            if (mainActivityInterface.getCurrentSet().getSetName().contains("__")) {
+                String[] bits = mainActivityInterface.getCurrentSet().getSetName().split("__");
+                if (bits.length>0) {
+                    category = bits[0];
+                    setname = bits[1];
+                }
+            }
             myView.setName.setVisibility(View.VISIBLE);
             myView.overWrite.setVisibility(View.VISIBLE);
             myView.setLoadInfo1.setVisibility(View.GONE);
             myView.setLoadInfo2.setVisibility(View.GONE);
-            myView.setName.setText(mainActivityInterface.getCurrentSet().getSetName());
+            myView.setName.setText(setname);
             myView.newCategory.setVisibility(View.VISIBLE);
+            myView.setCategory.setText(category);
             myView.loadorsaveButton.setText(getString(R.string.save));
+            myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.ic_content_save_white_36dp));
             myView.loadorsaveButton.setOnClickListener(v -> saveSet());
         } else if (deleting) {
-
+            mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.delete));
+            myView.setName.setVisibility(View.GONE);
+            myView.overWrite.setVisibility(View.GONE);
+            myView.setLoadInfo1.setVisibility(View.VISIBLE);
+            myView.setLoadInfo2.setVisibility(View.GONE);
+            myView.newCategory.setVisibility(View.GONE);
+            myView.setCategory.setVisibility(View.VISIBLE);
+            myView.loadorsaveButton.setText(getString(R.string.delete));
+            myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.ic_delete_white_36dp));
+            myView.loadorsaveButton.setOnClickListener(v -> deleteSet());
         } else {
+            mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.load));
             myView.setName.setVisibility(View.GONE);
             myView.overWrite.setVisibility(View.GONE);
             myView.newCategory.setVisibility(View.GONE);
             myView.setLoadInfo1.setVisibility(View.VISIBLE);
             myView.setLoadInfo2.setVisibility(View.VISIBLE);
             myView.loadorsaveButton.setText(getString(R.string.load));
+            myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.ic_content_save_white_36dp));
             myView.loadorsaveButton.setOnClickListener(v -> loadSet());
         }
     }
@@ -162,7 +186,6 @@ public class SetManageFragment extends Fragment {
         myView.setLists.removeAllViews();
         ArrayList<String> availableSets = mainActivityInterface.getSetActions().setsInCategory(requireContext(),
                 mainActivityInterface, allSets);
-
         // It will also get MAIN, but it won't matter as it just replaces it
         String bitToRemove = myView.setCategory.getText().toString() + "__";
 
@@ -174,7 +197,9 @@ public class SetManageFragment extends Fragment {
                 checkBox.setEnabled(false);
                 checkBox.setButtonDrawable(null);
             } else {
-                checkBox.setChecked(chosenSets.contains("%_%" + setName + "%_%"));
+                String toFind = bitToRemove + setName;
+                toFind = toFind.replace(getString(R.string.mainfoldername)+"__","");
+                checkBox.setChecked(chosenSets.contains("%_%" + toFind + "%_%"));
             }
             String setCategory = myView.setCategory.getText().toString();
             String finalSetName;
@@ -243,6 +268,38 @@ public class SetManageFragment extends Fragment {
                 }
             }
         }
+        prepareSets();
+    }
+
+    private void deleteSet() {
+        // Show the progressBar
+        myView.progressBar.setVisibility(View.VISIBLE);
+
+        // Split the sets chosen up into individual sets and get their uris
+        boolean success = true;
+        String[] setBits = chosenSets.split("%_%");
+        for (String setBit:setBits) {
+            if (setBit != null && !setBit.isEmpty()) {
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                        mainActivityInterface, "Sets", "", setBit);
+                if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),uri)) {
+                    // Try deleting the set file
+                    if (!mainActivityInterface.getStorageAccess().deleteFile(requireContext(), uri)) {
+                        success = false;
+                    }
+                }
+            }
+        }
+        if (success) {
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
+        } else {
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
+        }
+
+        // Hide the progress bar
+        myView.progressBar.setVisibility(View.GONE);
+
+        prepareSets();
     }
 
     private void loadSet() {
@@ -290,7 +347,7 @@ public class SetManageFragment extends Fragment {
 
     // This comes back from the activity after it gets the text from the TextInputBottomSheet dialog
     // This brings in a new category name
-    public void updateValue(String which, String value) {
+    public void updateValue(String value) {
         // We will temporarily add this category
         if (!categories.contains(value)) {
             categories.add(value);

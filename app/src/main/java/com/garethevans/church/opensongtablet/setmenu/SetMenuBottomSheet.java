@@ -54,6 +54,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         Log.d(TAG,"currentSet (pref):"+mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"setCurrent",""));
         Log.d(TAG, "currentSet (CurrSet): "+mainActivityInterface.getCurrentSet().getCurrentSetString());
         Log.d(TAG, "initialSet (CurrSet): "+mainActivityInterface.getCurrentSet().getInitialSetString());
+        Log.d(TAG,"currentSet==initialSet: "+(mainActivityInterface.getCurrentSet().getCurrentSetString().equals(mainActivityInterface.getCurrentSet().getInitialSetString())));
         Log.d(TAG, "setName (CurrSet): "+mainActivityInterface.getCurrentSet().getSetName());
 
         // Initialise the 'close' floatingactionbutton

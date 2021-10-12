@@ -1025,4 +1025,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart.
     <string name="backup_sets">Backup sets</string>
     <string name="backup_highlighter">Include highlighter notes</string>
     <string name="restore_sets">Restore sets</string>
+    <string name="set_delete_info">Delete old sets</string>
 </resources>
