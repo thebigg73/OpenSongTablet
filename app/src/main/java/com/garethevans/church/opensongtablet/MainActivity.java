@@ -277,7 +277,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
+
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         myView = ActivityBinding.inflate(getLayoutInflater());
@@ -299,7 +301,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Initiate the boot check progress
         doonetimeactions = false;
         startBoot();
-
     }
     private void setupHelpers() {
         storageAccess = new StorageAccess();
@@ -550,7 +551,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+/*
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // Make sure to call the super method so that the states of our views are saved
+        outState.putStringArrayList("setItems",currentSet.getSetItems());
+        outState.putStringArrayList("setFolders",currentSet.getSetFolders());
+        outState.putStringArrayList("setFilenames",currentSet.getSetFilenames());
+        outState.putStringArrayList("setKeys",currentSet.getSetKeys());
+        outState.putString("initialSetString",currentSet.getInitialSetString());
+        super.onSaveInstanceState(outState);
+    }
+    private void reinstateBundle(Bundle bundle) {
+        currentSet.setSetItems(bundle.getStringArrayList("setItems"));
+        currentSet.setSetFolders(bundle.getStringArrayList("setFolders"));
+        currentSet.setSetFilenames(bundle.getStringArrayList("setFilenames"));
+        currentSet.setSetKeys(bundle.getStringArrayList("setKeys"));
+        currentSet.setInitialSetString(bundle.getString("initialSetString"));
+    }
 
+*/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
@@ -653,9 +673,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (arguments!=null && arguments.size()>0 && arguments.get(0).equals("success")) {
                         // Write a blank xml file with the song name in it
                         // TODO
-                        song = processSong.initialiseSong(mainActivityInterface,song.getFolder(),"NEWSONGFILENAME");
-                        String newSongText = processSong.getXML(this,mainActivityInterface,song);
-                        if (storageAccess.doStringWriteToFile(this,mainActivityInterface,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
+                        song = processSong.initialiseSong(this,song.getFolder(),"NEWSONGFILENAME");
+                        String newSongText = processSong.getXML(this,this,song);
+                        if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
@@ -668,7 +688,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Check this was successful (saved as arguments)
                     if (arguments!=null && arguments.size()>1 && arguments.get(0).equals("success")) {
                         // We now need to copy the original file.  It's contents are saved in arguments.get(1)
-                        if (storageAccess.doStringWriteToFile(this,mainActivityInterface,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
+                        if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
                             doSongLoad(song.getFolder(),song.getFilename(),false);
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
@@ -951,7 +971,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string
         windowFlags.setWindowFlags();
-        appActionBar.setActionBar(this,mainActivityInterface, what);
+        appActionBar.setActionBar(this,this, what);
 
         if (what!=null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
             // Make sure the content shows below the action bar
@@ -962,7 +982,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible) {
         // If the user changes settings from the ActionBarSettingsFragment, they get sent here to deal with
         // So let's pass them on to the AppActionBar helper
-        appActionBar.updateActionBarSettings(this,mainActivityInterface,prefName,intval,floatval,isvisible);
+        appActionBar.updateActionBarSettings(this,this,prefName,intval,floatval,isvisible);
     }
     @Override
     public void showTutorial(String what) {
@@ -1269,7 +1289,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (position>-1 && songMenuFragment!=null && songMenuFragment.getSongsFound()!=null && songMenuFragment.getSongsFound().size()>position) {
             return songMenuFragment.getSongsFound().get(position);
         }
-        return mainActivityInterface.getSong();
+        return song;
     }
     @Override
     public ArrayList<Song> getSongsInMenu() {
@@ -1535,9 +1555,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Get the song key (from the database)
         if (storageAccess.isSpecificFileExtension("imageorpdf",currentSet.getFilename(position))) {
-            songKey = nonOpenSongSQLiteHelper.getKey(this,mainActivityInterface,setFolder,setFilename);
+            songKey = nonOpenSongSQLiteHelper.getKey(this,this,setFolder,setFilename);
         } else {
-            songKey = sqLiteHelper.getKey(this,mainActivityInterface,setFolder,setFilename);
+            songKey = sqLiteHelper.getKey(this,this,setFolder,setFilename);
         }
         if (setKey != null && songKey != null && !setKey.isEmpty() && !songKey.isEmpty() && !songKey.equals(setKey)) {
             // The set has specified a key that is different from our song.
@@ -1550,7 +1570,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Make this temp variation file
                 storageAccess.lollipopCreateFileForOutputStream(this,this,variationUri,null,"Variations","",newFilename);
                 // Get a tempSong we can write
-                Song copySong = sqLiteHelper.getSpecificSong(this,mainActivityInterface,setFolder,setFilename);
+                Song copySong = sqLiteHelper.getSpecificSong(this,this,setFolder,setFilename);
                 copySong.setFolder(newFolder);
                 copySong.setFilename(newFilename);
                 // Transpose the lyrics
@@ -1624,29 +1644,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             boolean allowToast = true;
             switch(what) {
                 case "deleteSong":
-                    result = storageAccess.doDeleteFile(this,mainActivityInterface,"Songs",
+                    result = storageAccess.doDeleteFile(this,this,"Songs",
                             song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
                     if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
-                        nonOpenSongSQLiteHelper.deleteSong(this,mainActivityInterface,song.getFolder(),song.getFilename());
+                        nonOpenSongSQLiteHelper.deleteSong(this,this,song.getFolder(),song.getFilename());
                     } else {
-                        sqLiteHelper.deleteSong(this, mainActivityInterface, song.getFolder(),song.getFilename());
+                        sqLiteHelper.deleteSong(this, this, song.getFolder(),song.getFilename());
                     }
                     // TODO
                     // Send a call to reindex?
                     break;
 
                 case "ccliDelete":
-                    Uri uri = storageAccess.getUriForItem(this,mainActivityInterface,"Settings","","ActivityLog.xml");
-                    result = ccliLog.createBlankXML(this,mainActivityInterface,uri);
+                    Uri uri = storageAccess.getUriForItem(this,this,"Settings","","ActivityLog.xml");
+                    result = ccliLog.createBlankXML(this,this,uri);
                     break;
 
                 case "deleteItem":
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
-                    result = storageAccess.doDeleteFile(this,mainActivityInterface,arguments.get(0),arguments.get(1),arguments.get(2));
+                    result = storageAccess.doDeleteFile(this,this,arguments.get(0),arguments.get(1),arguments.get(2));
                     if (arguments.get(2).isEmpty() && arguments.get(0).equals("Songs") && (arguments.get(1).isEmpty()||arguments.get(1)==null)) {
                         // Emptying the entire songs foler, so need to recreate it on finish
-                        storageAccess.createFolder(this,mainActivityInterface,"Songs","","");
+                        storageAccess.createFolder(this,this,"Songs","","");
                     }
                     //Rebuild the song index
                     updateSongMenu(fragName, callingFragment, arguments); // Passing the fragment allows an update to be sent to the calling fragment
@@ -1706,7 +1726,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         Intent intent;
         switch (what) {
             case "ccliLog":
-                intent = exportFiles.exportActivityLog(this, mainActivityInterface);
+                intent = exportFiles.exportActivityLog(this, this);
                 startActivityForResult(Intent.createChooser(intent, "ActivityLog.xml"), 2222);
         }
     }
@@ -1747,7 +1767,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (autoscroll.getIsPaused()) {
             // This sets to the opposite, so un-paused
             autoscroll.pauseAutoscroll();
-        } else if (mainActivityInterface.getAutoscroll().getIsAutoscrolling()) {
+        } else if (autoscroll.getIsAutoscrolling()) {
             autoscroll.stopAutoscroll();
         } else {
             autoscroll.startAutoscroll();
@@ -1771,7 +1791,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             pad.startPad(this);
             // Showcase if required
-            mainActivityInterface.getShowCase().singleShowCase(this,myView.onScreenInfo.pad,getString(R.string.ok),getString(R.string.pad_playback_info),true,"padPlayback");
+            showCase.singleShowCase(this,myView.onScreenInfo.pad,getString(R.string.ok),getString(R.string.pad_playback_info),true,"padPlayback");
             return true;
         }
     }
@@ -1919,6 +1939,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public String getMode() {
+        if (whichMode==null) {
+            whichMode = "Performance";
+        }
         return whichMode;
     }
     @Override
@@ -1929,6 +1952,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public Locale getLocale() {
+        if (locale==null) {
+            fixLocale.setLocale(this,this);
+            locale = fixLocale.getLocale();
+        }
         return locale;
     }
 
@@ -2280,9 +2307,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void toggleMetronome() {
         if (metronome.getIsRunning()) {
-            metronome.stopMetronome(mainActivityInterface);
+            metronome.stopMetronome(this);
         } else {
-            metronome.startMetronome(this,this,mainActivityInterface);
+            metronome.startMetronome(this,this,this);
         }
     }
 
@@ -2426,7 +2453,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onConfigurationChanged(newConfig);
 
         // Get the language
-        fixLocale.setLocale(this,mainActivityInterface);
+        fixLocale.setLocale(this,this);
 
         // Save a static variable that we have rotated the screen.
         // The media player will look for this.  If found, it won't restart when the song loads

@@ -28,6 +28,7 @@ public class MyZoomLayout extends FrameLayout {
     private int viewWidth, viewHeight, maxScrollX, maxScrollY, overShootX, overShootY,
             songWidth, songHeight, originalSongWidth, originalSongHeight;
     private boolean scrolledToTop, scrolledToBottom;
+    private float maxScaleFactor = 3f;
 
     public MyZoomLayout(Context c, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(c, attrs, defStyleAttr);
@@ -54,6 +55,12 @@ public class MyZoomLayout extends FrameLayout {
         overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
+    }
+
+    public void setCurrentScale(float currentScale) {
+        // Get the scale already worked out to fit the lyrics
+        // We want the scale to be 5x normal
+        maxScaleFactor = 5f * (1/currentScale);
     }
 
     @Override
@@ -157,8 +164,8 @@ public class MyZoomLayout extends FrameLayout {
         public boolean onScale(ScaleGestureDetector detector) {
             Log.d(TAG, "onScale() called");
             scaleFactor *= detector.getScaleFactor();
-            if (scaleFactor > 2) {
-                scaleFactor = 2;
+            if (scaleFactor > maxScaleFactor) {
+                scaleFactor = maxScaleFactor;
             }
             if (scaleFactor < minScale) {
                 scaleFactor = minScale;

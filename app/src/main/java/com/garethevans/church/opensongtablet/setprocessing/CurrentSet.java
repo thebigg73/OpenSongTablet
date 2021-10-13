@@ -3,11 +3,13 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // This is the (current) set object
 // All actions related to building/processing are in the SetActions class
 
+import androidx.lifecycle.ViewModel;
+
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 
-public class CurrentSet {
+public class CurrentSet extends ViewModel {
 
     private String initialSetString;
     private String currentSetString;

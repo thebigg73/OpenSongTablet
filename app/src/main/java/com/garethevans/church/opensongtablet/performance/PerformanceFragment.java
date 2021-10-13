@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -212,6 +213,7 @@ public class PerformanceFragment extends Fragment {
         myView.zoomLayout.setVisibility(View.GONE);
 
         // Get the song sheet headers
+        Log.d(TAG,"mainActivityInterface="+mainActivityInterface);
         mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
                 mainActivityInterface, mainActivityInterface.getSong(), scaleComments, false));
         myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
@@ -288,6 +290,9 @@ public class PerformanceFragment extends Fragment {
                 screenWidth, screenHeight,
                 myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
                 songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax);
+
+        // Pass this scale factor to the zoom layout
+        myView.zoomLayout.setCurrentScale(scaleFactor);
 
         // Set up the type of animate in
         if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {

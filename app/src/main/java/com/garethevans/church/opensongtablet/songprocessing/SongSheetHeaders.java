@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -11,6 +12,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class SongSheetHeaders {
 
+    private final String TAG = "SongSheetHeaders";
+
     public LinearLayout getSongSheet(Context c, MainActivityInterface mainActivityInterface,
                                      Song thisSong, float commentScaling, boolean forPDF) {
 
@@ -18,6 +21,8 @@ public class SongSheetHeaders {
         // This allows on the fly processing of other songs not processed (e.g. as part of a set)
 
         LinearLayout linearLayout = null;
+
+        Log.d(TAG,"mainActivityInterface.getMode()="+mainActivityInterface.getMode());
 
         if (forPDF || (mainActivityInterface.getMode().equals("Performance") &&
                 mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songSheet",false))) {
