@@ -76,7 +76,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorAltPrimary"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <include
             android:id="@+id/menu_top"

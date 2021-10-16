@@ -277,7 +277,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Set up the activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate() called");
         super.onCreate(savedInstanceState);
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
@@ -1576,7 +1575,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Transpose the lyrics
                 // Get the number of transpose times
                 int transposeTimes = transpose.getTransposeTimes(songKey,setKey);
-                Log.d(TAG,"transposeTimes: "+transposeTimes);
                 copySong.setKey(setKey);
                 copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes,false).getLyrics());
                 // Get the song XML
@@ -1749,6 +1747,38 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateSetList() {
         updateFragment("set_updateView",null,null);
+    }
+
+    @Override
+    public void addSetItem(int currentSetPosition) {
+        if (setMenuFragment!=null) {
+            try {
+                setMenuFragment.addSetItem(currentSetPosition);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void updateSongList() {
+        if (songMenuFragment!=null) {
+            try {
+                songMenuFragment.updateSongList();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    public void removeSetItem(int currentSetPosition) {
+        if (setMenuFragment!=null) {
+            try {
+                setMenuFragment.removeSetItem(currentSetPosition);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

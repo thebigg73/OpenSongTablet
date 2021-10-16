@@ -55,7 +55,11 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         if (mainActivityInterface.getStorageAccess().uriExists(c,pdfUri)) {
             ParcelFileDescriptor parcelFileDescriptor = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(c,pdfUri);
             PdfRenderer pdfRenderer = mainActivityInterface.getProcessSong().getPDFRenderer(parcelFileDescriptor);
-            totalPages = pdfRenderer.getPageCount();
+            if (pdfRenderer!=null) {
+                totalPages = pdfRenderer.getPageCount();
+            } else {
+                totalPages = 0;
+            }
             Log.d(TAG,"totalPages="+totalPages);
             totalHeight = 0;
             pageInfos = new ArrayList<>();
@@ -82,9 +86,13 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             }
             Log.d(TAG,"final total Height="+totalHeight);
 
-            pdfRenderer.close();
             try {
-                parcelFileDescriptor.close();
+                if (pdfRenderer!=null) {
+                    pdfRenderer.close();
+                }
+                if (parcelFileDescriptor!=null) {
+                    parcelFileDescriptor.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -287,7 +287,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
 
-    private void updateSongList() {
+    public void updateSongList() {
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
         myView.songListRecyclerView.setOnClickListener(null);
@@ -295,7 +295,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 songsFound, SongMenuFragment.this);
 
         myView.songListRecyclerView.setAdapter(songListAdapter);
-        //myView.fastScroller.setRecyclerView(myView.songListRecyclerView);
         myView.songListRecyclerView.setFastScrollEnabled(true);
         displayIndex(songsFound, songListAdapter);
         myView.progressBar.setVisibility(View.GONE);

@@ -225,5 +225,8 @@ public interface MainActivityInterface {
     PerformanceGestures getPerformanceGestures();
     boolean getShowSetMenu();
     void updateSetTitle();
+    void addSetItem(int currentSetPosition);
+    void removeSetItem(int currentSetPosition);
+    void updateSongList();
 }
 

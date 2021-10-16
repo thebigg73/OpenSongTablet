@@ -3,14 +3,15 @@ package com.garethevans.church.opensongtablet.setprocessing;
 // This is the (current) set object
 // All actions related to building/processing are in the SetActions class
 
-import androidx.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 
-public class CurrentSet extends ViewModel {
+public class CurrentSet {
 
+    private final String TAG = "CurrentSet";
     private String initialSetString;
     private String currentSetString;
     private ArrayList<String> setItems;      // The set item $**_folder/filename_***key***__**$ or $**_**{customsfolder}/filename_******__**$
@@ -203,6 +204,8 @@ public class CurrentSet extends ViewModel {
             // Don't know, so look for it
             pos = setItems.indexOf(item);
         }
+        Log.d(TAG,"removeFromCurrentSet().  pos="+pos);
+
         if (pos!=-1) {
             setItems.remove(pos);
             setFilenames.remove(pos);

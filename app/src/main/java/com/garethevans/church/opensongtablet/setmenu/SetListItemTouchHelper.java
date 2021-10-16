@@ -25,7 +25,7 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     @Override
     public boolean isLongPressDragEnabled() {
         // Dragging will be handled manually, so disable here
-        return false;
+        return true;
     }
 
     @Override
@@ -75,11 +75,12 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         //Remove item
         int fromPosition = viewHolder.getAbsoluteAdapterPosition();
+        Log.d(TAG,"fromPosition: "+fromPosition);
         setItemTouchInterface.onItemSwiped(fromPosition);
     }
 
-    public void startDrag(@NonNull RecyclerView.ViewHolder viewHolder) {
-        Log.d(TAG, "viewHolder="+viewHolder);
+    public void startDrag(RecyclerView.ViewHolder v) {
+
     }
 
 }

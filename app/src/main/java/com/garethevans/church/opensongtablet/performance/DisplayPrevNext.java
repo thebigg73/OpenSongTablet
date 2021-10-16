@@ -76,12 +76,8 @@ public class DisplayPrevNext {
         prev.hide();
         nextVisible = false;
         prevVisible = false;
-        int setPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
-        int songPosition = mainActivityInterface.getPositionOfSongInMenu();
 
-        // Set the local variables for prevIndex, nextIndex and if we are using the set or song menu
-        setIndexes(setPosition, songPosition);
-
+        getPositions();
         // If we are showing the buttons, deal with them
         if (showNext || showPrev) {
             // Get the text from either the set or song menu
@@ -147,6 +143,15 @@ public class DisplayPrevNext {
         }
     }
 
+
+    private void getPositions() {
+        int setPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+        int songPosition = mainActivityInterface.getPositionOfSongInMenu();
+
+        // Set the local variables for prevIndex, nextIndex and if we are using the set or song menu
+        setIndexes(setPosition, songPosition);
+    }
+
     private void setIndexes(int setPosition, int songPosition) {
         if (setPosition>=0) {
             moveToSongInSet = true;
@@ -201,11 +206,15 @@ public class DisplayPrevNext {
 
     public void moveToNext() {
         swipeDirection = "R2L";
-        doMove(nextIndex);
+        if (nextIndex!=-1) {
+            doMove(nextIndex);
+        }
     }
     public void moveToPrev() {
         swipeDirection = "L2R";
-        doMove(prevIndex);
+        if (prevIndex!=-1) {
+            doMove(prevIndex);
+        }
     }
 
     private void doMove(int position) {

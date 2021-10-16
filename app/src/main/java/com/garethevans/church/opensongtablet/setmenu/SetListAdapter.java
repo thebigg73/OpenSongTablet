@@ -15,27 +15,37 @@ import com.garethevans.church.opensongtablet.customviews.FastScroller;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> implements FastScroller.SectionIndexer, SetItemTouchInterface {
 
     // All the helpers we need to access are in the MainActivity
     private final MainActivityInterface mainActivityInterface;
-    private List<SetItemInfo> setList;
     private ItemTouchHelper itemTouchHelper;
     private final String TAG = "SetListAdapter";
+    private ArrayList<SetItemInfo> setList;
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
     }
 
-    SetListAdapter(MainActivityInterface mainActivityInterface, List<SetItemInfo> setList) {
+    SetListAdapter(MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
-        this.setList = setList;
     }
 
-    public void changeSetList(List<SetItemInfo> setList) {
-        this.setList = setList;
+    public void updateSetList(ArrayList<SetItemInfo> setItemInfos) {
+        if (setList!=null) {
+            int size = getItemCount();
+            setList.clear();
+            notifyItemRangeRemoved(0,size);
+        } else {
+            setList = new ArrayList<>();
+        }
+
+        for (int x=0; x<setItemInfos.size(); x++) {
+            setList.add(x,setItemInfos.get(x));
+            notifyItemInserted(x);
+        }
     }
 
     @Override
@@ -45,7 +55,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onBindViewHolder(@NonNull SetItemViewHolder setitemViewHolder, int i) {
-        Context c = mainActivityInterface.getActivity();
         SetItemInfo si = setList.get(i);
         String key = si.songkey;
         String titlesongname = si.songtitle;
@@ -65,7 +74,6 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         int icon = mainActivityInterface.getSetActions().getItemIcon(si.songicon);
 
         setitemViewHolder.vItem.setCompoundDrawablesWithIntrinsicBounds(icon,0,0,0);
-
     }
 
     @NonNull
@@ -78,11 +86,12 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         return new SetItemViewHolder(mainActivityInterface,itemView,itemTouchHelper,this);
     }
 
+
     @Override
     public void onItemMoved(int fromPosition, int toPosition) {
-        String thisFolder = mainActivityInterface.getCurrentSet().getFolder(fromPosition);
-        String thisFilename = mainActivityInterface.getCurrentSet().getFilename(fromPosition);
-        String thisKey = mainActivityInterface.getCurrentSet().getKey(fromPosition);
+        String thisFolder = setList.get(fromPosition).songfolder;
+        String thisFilename = setList.get(fromPosition).songfilename;
+        String thisKey = setList.get(fromPosition).songkey;
         String thisSetItem = mainActivityInterface.getCurrentSet().getItem(fromPosition);
 
         // Remove from this position
@@ -97,10 +106,10 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceString((Context)mainActivityInterface,"setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
-        SetItemInfo thisItem = setList.get(fromPosition);
         setList.get(fromPosition).songitem = (toPosition+1) + ".";
         setList.get(toPosition).songitem = (fromPosition+1) + ".";
-        setList.remove(thisItem);
+        SetItemInfo thisItem = setList.get(fromPosition);
+        setList.remove(fromPosition);
         setList.add(toPosition,thisItem);
         notifyItemChanged(fromPosition);
         notifyItemChanged(toPosition);
@@ -112,20 +121,27 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public void onItemSwiped(int fromPosition) {
+        // Check the setList matches the current set!
+
         try {
             // Remove the item from the current set
-            mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition,null);
+            Log.d(TAG, "fromPosition: " + fromPosition);
+            Log.d(TAG, "currentSet at pos: " + mainActivityInterface.getCurrentSet().getItem(fromPosition));
+            Log.d(TAG, "setList at pos: " + setList.get(fromPosition).songfolder + "/" + setList.get(fromPosition).songfilename);
+            mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
 
             // Update the set string
             mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
 
             // Save the preference
-            mainActivityInterface.getPreferences().setMyPreferenceString((Context)mainActivityInterface,"setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+            mainActivityInterface.getPreferences().setMyPreferenceString((Context) mainActivityInterface, "setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
+            Log.d(TAG, "setList size before: " + setList.size());
             setList.remove(fromPosition);
             notifyItemRemoved(fromPosition);
+            Log.d(TAG, "setList size after: " + setList.size());
             // Go through the setList from this position and sort the numbers
-            for (int x = 0; x < setList.size(); x++) {
+            for (int x = fromPosition; x < setList.size(); x++) {
                 setList.get(x).songitem = (x + 1) + ".";
                 notifyItemChanged(x);
             }
@@ -151,10 +167,15 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
     @Override
     public CharSequence getSectionText(int position) {
-        if (setList!=null && setList.size()>position) {
+        if (setList!=null &&
+                setList.size()>position) {
             return setList.get(position).songitem;
         } else {
             return "";
         }
+    }
+
+    public ArrayList<SetItemInfo> getSetList() {
+        return setList;
     }
 }

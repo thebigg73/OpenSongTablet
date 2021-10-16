@@ -3,13 +3,11 @@ package com.garethevans.church.opensongtablet.appdata;
 import android.content.Context;
 import android.content.res.Configuration;
 
-import androidx.lifecycle.ViewModel;
-
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.Locale;
 
-public class FixLocale extends ViewModel {
+public class FixLocale {
 
     private Locale userLocale;
     private final String TAG = "FixLocale";

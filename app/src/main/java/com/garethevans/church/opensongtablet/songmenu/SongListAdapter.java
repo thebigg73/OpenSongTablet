@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songmenu;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,10 +61,17 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 getMyPreferenceBoolean(c, "songMenuSetTicksShow", true);
     }
 
-    private void initialiseCheckedArray(CurrentSet currentSet) {
+    public void initialiseCheckedArray(CurrentSet currentSet) {
         for (int i = 0; i < songList.size(); i++) {
-            if (currentSet.getSetItems().contains(mainActivityInterface.getSetActions().
-                    getSongForSetWork(c, songList.get(i)))) {
+            String filename = songList.get(i).getFilename();
+            String folder = songList.get(i).getFolder();
+            String key = songList.get(i).getKey();
+            String item = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,key);
+            String itemalt1 = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,"");
+            String itemalt2 = mainActivityInterface.getSetActions().getSongForSetWork(folder,filename,null);
+
+            if (currentSet.getSetItems().contains(item) || currentSet.getSetItems().contains(itemalt1) ||
+            currentSet.getSetItems().contains(itemalt2)) {
                 checkedArray.put(i, true);
             }
         }
@@ -143,6 +151,10 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         final String itemFilename = filename;
         final String itemFolder = folder;
         final String itemKey = key;
+        final String setentryalt1 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, null);
+        final String setentryalt2 = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, "");
+        final String setentry = mainActivityInterface.getSetActions().getSongForSetWork(itemFolder, itemFilename, itemKey);
+
         songItemViewHolder.itemCard.setOnClickListener(v -> {
             song.setFilename(itemFilename);
             song.setFolder(itemFolder);
@@ -184,21 +196,29 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             int adapterPosition = songItemViewHolder.getAbsoluteAdapterPosition();
             if (!checkedArray.get(adapterPosition, false)) {
                 songItemViewHolder.itemChecked.setChecked(true);
-                String dr = songList.get(adapterPosition).getFolder();
-                String fl = songList.get(adapterPosition).getFilename();
-                String ky = songList.get(adapterPosition).getKey();
-                String setentry = mainActivityInterface.getSetActions().getSongForSetWork(dr, fl, ky);
+                Log.d(TAG,"setentry: "+ setentry);
 
                 mainActivityInterface.getCurrentSet().addToCurrentSetString(setentry);
                 mainActivityInterface.getCurrentSet().addSetItem(setentry);
-                mainActivityInterface.getCurrentSet().addSetValues(dr, fl, ky);
+                mainActivityInterface.getCurrentSet().addSetValues(itemFolder, itemFilename, itemKey);
                 checkedArray.put(adapterPosition, true);
-                mainActivityInterface.updateFragment("set_updateView", null, null);
+                Log.d(TAG,"currentSet.size()= "+mainActivityInterface.getCurrentSet().getSetItems().size());
+                mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
 
             } else {
                 songItemViewHolder.itemChecked.setChecked(false);
                 checkedArray.put(adapterPosition, false);
-                //mainActivityInterface.getSetActions().removeFromSet(c,mainActivityInterface,-1);
+                // Remove all entries of this song from the set
+                // Check for entries with actual, empty or null keys
+                for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
+                    if (mainActivityInterface.getCurrentSet().getItem(x).equals(setentry) ||
+                    mainActivityInterface.getCurrentSet().getItem(x).equals(setentryalt1) ||
+                    mainActivityInterface.getCurrentSet().getItem(x).equals(setentryalt2)) {
+                        mainActivityInterface.getCurrentSet().removeFromCurrentSet(x,null);
+                        mainActivityInterface.removeSetItem(x);
+                    }
+                }
+                mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
             }
             mainActivityInterface.getPreferences().setMyPreferenceString(c, "setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
         });

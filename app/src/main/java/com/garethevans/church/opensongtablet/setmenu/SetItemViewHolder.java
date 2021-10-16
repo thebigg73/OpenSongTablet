@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,19 +17,19 @@ import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
 public class SetItemViewHolder extends RecyclerView.ViewHolder implements
         View.OnTouchListener, GestureDetector.OnGestureListener {
 
-    final View v;
+    private final String TAG = "SetItemViewHolder";
+
     final TextView vItem;
     final TextView vSongTitle;
     final TextView vSongFolder;
     final RelativeLayout vCard;
-    ItemTouchHelper itemTouchHelper;
-    SetItemTouchInterface setItemTouchInterface;
-    GestureDetector gestureDetector;
-    MainActivityInterface mainActivityInterface;
+    private final ItemTouchHelper itemTouchHelper;
+    private final SetItemTouchInterface setItemTouchInterface;
+    private final GestureDetector gestureDetector;
+    private final MainActivityInterface mainActivityInterface;
 
     public SetItemViewHolder(MainActivityInterface mainActivityInterface, View v, ItemTouchHelper itemTouchHelper, SetItemTouchInterface setItemTouchInterface) {
         super(v);
-        this.v = v;
         vCard = v.findViewById(R.id.cardview_layout);
         vItem = v.findViewById(R.id.cardview_item);
         vSongTitle = v.findViewById(R.id.cardview_songtitle);
@@ -46,9 +47,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
     }
 
     @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
+    public void onShowPress(MotionEvent e) {}
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -61,14 +60,18 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
         return false;
     }
 
+
+
     @Override
     public void onLongPress(MotionEvent event) {
+        Log.d(TAG,"event="+event);
         try {
             itemTouchHelper.startDrag(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {

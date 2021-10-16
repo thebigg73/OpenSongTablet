@@ -171,8 +171,6 @@ public class LoadSong {
 
     private void sortLoadingSuccessful(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // Check if the song has been loaded (will now have a lyrics value)
-        Log.d(TAG,"Lyrics="+thisSong.getLyrics());
-        Log.d(TAG,"Filetype="+thisSong.getFiletype());
         if (thisSong.getFiletype()!=null && (thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) &&
         thisSong.getLyrics()==null) {
             // A basic PDF/IMG without custom info
@@ -448,7 +446,6 @@ public class LoadSong {
     public void fixSongs(Context c, MainActivityInterface mainActivityInterface) {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
-                Log.d(TAG, "Fixing rogue ending: " + thisSong.getFilename());
                 Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem(c,
                         mainActivityInterface,"Songs",thisSong.getFolder(),thisSong.getFilename());
                 InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, thisSongUri);
@@ -459,9 +456,7 @@ public class LoadSong {
                     e.printStackTrace();
                 }
                 if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
-                    Log.d(TAG,"before:"+content);
                     content = content.substring(0, content.indexOf("</song>")) + "</song>";
-                    Log.d(TAG,"after:"+content);
                     Log.d(TAG,"success = "+ mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,
                             "Songs", thisSong.getFolder(), thisSong.getFilename(), content));
                 }

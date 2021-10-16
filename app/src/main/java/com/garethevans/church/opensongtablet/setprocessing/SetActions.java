@@ -41,12 +41,10 @@ public class SetActions {
         buildSetItemArray(c,mainActivityInterface);
 
         // Now build the individual items in the set with the folder, filename and key separate
-        Log.d(TAG,"buildSetArraysFromItems() about to be called");
         buildSetArraysFromItems(c,mainActivityInterface);
     }
 
     public void initialiseTheSet(MainActivityInterface mainActivityInterface) {
-        Log.d(TAG,"initialiseTheSet()");
         mainActivityInterface.getCurrentSet().initialiseTheSet();
     }
     private void buildSetItemArray(Context c, MainActivityInterface mainActivityInterface) {
@@ -57,7 +55,6 @@ public class SetActions {
         String currentSet = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent","");
         String beforeEdit = mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentBeforeEdits","");
         String setName = mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentLastName", "");
-        Log.d(TAG,"buildSetItemArray()\ncurrentSet="+currentSet+"\nbeforeEdit="+beforeEdit+"\nname="+setName);
 
         // Set the initial set strings (so we can look for changes later for saving)
         mainActivityInterface.getCurrentSet().setCurrentSetString(currentSet);
@@ -80,7 +77,6 @@ public class SetActions {
         }
     }
     public void buildSetArraysFromItems(Context c, MainActivityInterface mainActivityInterface) {
-        Log.d(TAG,"buldSetArraysFromItems()");
 
         // Each set item is a stored with the $**_folder/filename_***key***__**$
         // We now parse this to get the values separately
@@ -136,7 +132,6 @@ public class SetActions {
         // still isn't in the database - could be a variation file created from the set.
         // We only check the variation file last to avoid any issues during indexing.
         if ((key==null || key.isEmpty()) && folder.startsWith("../") && folder.startsWith(customLocStart)) {
-            Log.d(TAG,"folder="+folder+"  filename="+filename+" key not set, checking database...");
             // If this is an image or pdf, check the nonOpenSongSQLite database
             // Otherwise use the normal database
             if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("imageorpdf",filename)) {
@@ -188,7 +183,6 @@ public class SetActions {
     public int indexSongInSet(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         String searchText = getSongForSetWork(c,thisSong);
         int position = mainActivityInterface.getCurrentSet().getSetItems().indexOf(searchText);
-        Log.d(TAG,"searchText="+searchText+ "  position="+position);
         return position;
     }
 
@@ -201,13 +195,11 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().initialiseTheSpecifics();
 
         // Now build the individual values from the set item array which we shuffled
-        Log.d(TAG,"buildSetArraysFromItems() about to be called");
         buildSetArraysFromItems(c,mainActivityInterface);
 
         // Now build the modified set string for comparision for saving
         String setCurrent = getSetAsPreferenceString(mainActivityInterface);
         mainActivityInterface.getCurrentSet().setCurrentSetString(setCurrent);
-        Log.d(TAG,"Saving setCurrent:"+setCurrent);
         mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",setCurrent);
     }
 
@@ -256,7 +248,7 @@ public class SetActions {
         mainActivityInterface.getCurrentSet().setCurrentSetString(setString);
         mainActivityInterface.getCurrentSet().setInitialSetString(setString);
         mainActivityInterface.updateSetList();
-        Log.d(TAG,"saveTheSet() setString="+setString);
+        mainActivityInterface.updateSongList();
     }
 
     public String currentSetNameForMenu(Context c, MainActivityInterface mainActivityInterface) {

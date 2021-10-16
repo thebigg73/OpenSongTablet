@@ -1,11 +1,11 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
-class SetItemInfo {
-    String songtitle;
-    String songfilename;
-    String songfolder;
-    String songfoldernice;
-    String songicon;
-    String songitem;
-    String songkey;
+public class SetItemInfo {
+    public String songtitle;
+    public String songfilename;
+    public String songfolder;
+    public String songfoldernice;
+    public String songicon;
+    public String songitem;
+    public String songkey;
 }

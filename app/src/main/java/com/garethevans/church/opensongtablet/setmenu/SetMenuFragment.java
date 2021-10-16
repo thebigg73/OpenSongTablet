@@ -20,7 +20,6 @@ import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class SetMenuFragment extends Fragment {
@@ -30,7 +29,7 @@ public class SetMenuFragment extends Fragment {
     private MenuSetsBinding myView;
     private LinearLayoutManager llm;
     private SetListAdapter setListAdapter;
-    List<SetItemInfo> setItemInfos;
+    private ArrayList<SetItemInfo> setItemInfos;
 
     private MainActivityInterface mainActivityInterface;
 
@@ -41,80 +40,80 @@ public class SetMenuFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         myView = MenuSetsBinding.inflate(inflater, container, false);
 
-        new Thread(() -> requireActivity().runOnUiThread(() -> {
-            myView.progressBar.setVisibility(View.VISIBLE);
-            myView.myRecyclerView.setVisibility(View.GONE);
-            setUpViews();
-            prepareSetListViews();
+        myView.myRecyclerView.setVisibility(View.GONE);
+        myView.progressBar.setVisibility(View.VISIBLE);
 
-            // Try to move to the corresponding item in the set that we are viewing.
-
-            // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
-            if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
-                    mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
-                llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0);
-            }
-            myView.myRecyclerView.setVisibility(View.VISIBLE);
-            myView.progressBar.setVisibility(View.GONE);
-
+        new Thread(() -> {
+            mainActivityInterface.getSetActions().buildSetArraysFromItems(requireContext(),mainActivityInterface);
+            setupAdapter();
+            buildList();
             setListeners();
-        })).start();
+            updateSetTitle();
+            scrollToItem();
+        }).start();
 
         return myView.getRoot();
     }
 
-
-    private void setUpViews() {
+    private void setupAdapter() {
+        setListAdapter = new SetListAdapter(mainActivityInterface);
+        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        setListAdapter.setTouchHelper(itemTouchHelper);
         llm = new LinearLayoutManager(requireContext());
         llm.setOrientation(RecyclerView.VERTICAL);
-        myView.myRecyclerView.setLayoutManager(llm);
+        myView.myRecyclerView.post(() -> {
+            myView.myRecyclerView.setLayoutManager(llm);
+            myView.myRecyclerView.setAdapter(setListAdapter);
+            itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
+        });
     }
 
     private void setListeners() {
-        myView.setMasterFAB.setOnClickListener(v -> {
+        myView.setMasterFAB.post(() -> myView.setMasterFAB.setOnClickListener(v -> {
             SetMenuBottomSheet setMenuBottomSheet = new SetMenuBottomSheet();
             setMenuBottomSheet.show(requireActivity().getSupportFragmentManager(), "setMenuBottomSheet");
-        });
-        myView.myRecyclerView.setFastScrollListener(new FastScroller.FastScrollListener() {
-            @Override
-            public void onFastScrollStart(@NonNull FastScroller fastScroller) {
-                myView.setMasterFAB.hide();
-            }
-
-            @Override
-            public void onFastScrollStop(@NonNull FastScroller fastScroller) {
-                myView.setMasterFAB.show();
-            }
-        });
-
-        myView.myRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    myView.setMasterFAB.show();
-                } else {
+        }));
+        myView.myRecyclerView.post(() -> {
+            myView.myRecyclerView.setFastScrollListener(new FastScroller.FastScrollListener() {
+                @Override
+                public void onFastScrollStart(@NonNull FastScroller fastScroller) {
                     myView.setMasterFAB.hide();
                 }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+
+                @Override
+                public void onFastScrollStop(@NonNull FastScroller fastScroller) {
+                    myView.setMasterFAB.show();
+                }
+            });
+            myView.myRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        myView.setMasterFAB.show();
+                    } else {
+                        myView.setMasterFAB.hide();
+                    }
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+            });
         });
+
+    }
+
+    public void scrollToItem() {
+        if (mainActivityInterface.getCurrentSet().getIndexSongInSet()>-1 &&
+                mainActivityInterface.getCurrentSet().getIndexSongInSet() < mainActivityInterface.getCurrentSet().getSetItems().size()) {
+            myView.myRecyclerView.post(() -> llm.scrollToPositionWithOffset(mainActivityInterface.getCurrentSet().getIndexSongInSet() , 0));
+        }
     }
 
     public void updateSet() {
         prepareCurrentSet();
-    }
-
-    private void prepareSetListViews() {
-        buildList();
     }
 
     public void updateKeys() {
@@ -123,7 +122,7 @@ public class SetMenuFragment extends Fragment {
                 setListAdapter!=null) {
             for (int position:mainActivityInterface.getSetActions().getMissingKeyPositions()) {
                 try {
-                    setItemInfos.get(position).songkey = mainActivityInterface.getCurrentSet().getKey(position);
+                    setListAdapter.getSetList().get(position).songkey = mainActivityInterface.getCurrentSet().getKey(position);
                     setListAdapter.notifyItemChanged(position);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -132,83 +131,38 @@ public class SetMenuFragment extends Fragment {
             mainActivityInterface.getSetActions().nullMissingKeyPositions();
         }
     }
+
     public void prepareCurrentSet() {
         // We have received a call to redraw the set list either on first load or after song indexing
-        Log.d(TAG,"buildSetArraysFromItems() about to be called");
-        mainActivityInterface.getSetActions().buildSetArraysFromItems(requireContext(),mainActivityInterface);
         myView.myRecyclerView.post(() -> {
             myView.myRecyclerView.removeAllViews();
-            myView.myRecyclerView.setOnClickListener(null);
             myView.myRecyclerView.invalidate();
         });
-
-        updateSetTitle();
-
         buildList();
+        updateSetTitle();
     }
 
     private void buildList() {
-        setListAdapter = new SetListAdapter(mainActivityInterface, createList());
-        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        setListAdapter.setTouchHelper(itemTouchHelper);
-        myView.myRecyclerView.post(() -> {
-            itemTouchHelper.attachToRecyclerView(myView.myRecyclerView);
-            myView.myRecyclerView.setAdapter(setListAdapter);
-            myView.myRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        });
-
-        updateSetTitle();
-    }
-
-    // Get the set list item objects for the recyclerview
-    private List<SetItemInfo> createList() {
         setItemInfos = new ArrayList<>();
         for (int i = 0; i<mainActivityInterface.getCurrentSet().getSetItems().size(); i++) {
-            SetItemInfo si = new SetItemInfo();
-            si.songitem = (i+1) + ".";
-            si.songfolder = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
-            si.songfoldernice = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
-            si.songtitle = Uri.decode(mainActivityInterface.getCurrentSet().getSetFilenames().get(i));
-            si.songfilename = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
-            si.songkey = mainActivityInterface.getCurrentSet().getSetKeys().get(i);
-
-            // Decide on the icon to use for the set item
-            if (si.songfolder.equals("**Slides")) {
-                si.songicon = "Slides";
-                si.songfoldernice = getString(R.string.slide);
-            } else if (si.songfolder.equals("**Notes")) {
-                si.songicon = "Notes";
-                si.songfoldernice = getString(R.string.note);
-            } else if (si.songfolder.equals("**Scripture")) {
-                si.songicon = "Scripture";
-                si.songfoldernice = getString(R.string.scripture);
-            } else if (si.songfolder.equals("**Images")) {
-                si.songicon = "Images";
-                si.songfoldernice = getString(R.string.image);
-            } else if (si.songfolder.equals("**Variations")) {
-                si.songicon = "Variations";
-                si.songfoldernice = getString(R.string.variation);
-            } else if (si.songtitle.toLowerCase(Locale.ROOT).contains(".pdf")) {
-                si.songicon = ".pdf";
-                si.songfoldernice = getString(R.string.pdf);
-            } else {
-                si.songicon = "Songs";
-            }
-            setItemInfos.add(si);
+            setItemInfos.add(makeSetItem(i));
         }
-        return setItemInfos;
+        myView.myRecyclerView.post(() -> {
+            setListAdapter.updateSetList(setItemInfos);
+            myView.myRecyclerView.setVisibility(View.VISIBLE);
+            myView.progressBar.setVisibility(View.GONE);
+        });
     }
 
     public void updateItem(int position) {
         String folder = mainActivityInterface.getCurrentSet().getFolder(position);
         String filename = mainActivityInterface.getCurrentSet().getFilename(position);
-        setItemInfos.get(position).songfolder = folder;
+        setListAdapter.getSetList().get(position).songfolder = folder;
+
         // Check for icon
-        setItemInfos.get(position).songicon = mainActivityInterface.getSetActions().
+        setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().
                 getIconIdentifier(mainActivityInterface,folder,filename);
-        // Update the set list
-        //mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"setCurrent",mainActivityInterface.getCurrentSet().getCurrentSetString());
+
         updateSetTitle();
         setListAdapter.notifyItemChanged(position);
     }
@@ -219,4 +173,50 @@ public class SetMenuFragment extends Fragment {
         myView.setTitle.post(() -> myView.setTitle.setText(titletext));
     }
 
+    public void addSetItem(int currentSetPosition) {
+        setListAdapter.getSetList().add(makeSetItem(currentSetPosition));
+        setListAdapter.notifyItemInserted(currentSetPosition);
+    }
+
+
+    // Called from clicking on checkboxes in song menu (via MainActivity)
+    public void removeSetItem(int currentSetPosition) {
+        Log.d(TAG,"removeSetItem("+currentSetPosition+")");
+        Log.d(TAG,"item: "+setListAdapter.getSetList().get(currentSetPosition).songfilename);
+        setListAdapter.getSetList().remove(currentSetPosition);
+        setListAdapter.notifyItemRemoved(currentSetPosition);
+    }
+    private SetItemInfo makeSetItem(int i) {
+        SetItemInfo si = new SetItemInfo();
+        si.songitem = (i+1) + ".";
+        si.songfolder = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
+        si.songfoldernice = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
+        si.songtitle = Uri.decode(mainActivityInterface.getCurrentSet().getSetFilenames().get(i));
+        si.songfilename = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
+        si.songkey = mainActivityInterface.getCurrentSet().getSetKeys().get(i);
+
+        // Decide on the icon to use for the set item
+        if (si.songfolder.equals("**Slides")) {
+            si.songicon = "Slides";
+            si.songfoldernice = getString(R.string.slide);
+        } else if (si.songfolder.equals("**Notes")) {
+            si.songicon = "Notes";
+            si.songfoldernice = getString(R.string.note);
+        } else if (si.songfolder.equals("**Scripture")) {
+            si.songicon = "Scripture";
+            si.songfoldernice = getString(R.string.scripture);
+        } else if (si.songfolder.equals("**Images")) {
+            si.songicon = "Images";
+            si.songfoldernice = getString(R.string.image);
+        } else if (si.songfolder.equals("**Variations")) {
+            si.songicon = "Variations";
+            si.songfoldernice = getString(R.string.variation);
+        } else if (si.songtitle.toLowerCase(Locale.ROOT).contains(".pdf")) {
+            si.songicon = ".pdf";
+            si.songfoldernice = getString(R.string.pdf);
+        } else {
+            si.songicon = "Songs";
+        }
+        return si;
+    }
 }
