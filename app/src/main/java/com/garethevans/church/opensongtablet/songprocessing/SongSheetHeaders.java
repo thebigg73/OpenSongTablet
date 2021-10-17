@@ -59,7 +59,7 @@ public class SongSheetHeaders {
                 linearLayout.addView(getSongSheetTexts(c,copyright,typeface,textColor,defFontSize*commentScaling));
             }
 
-            String keyCapoTempo = getKeyCapoTempo(c,mainActivityInterface, mainActivityInterface.getSong());
+            String keyCapoTempo = getKeyCapoTempo(c,mainActivityInterface, thisSong);
 
             if (!keyCapoTempo.isEmpty()) {
                 linearLayout.addView(getSongSheetTexts(c,keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling));
@@ -88,6 +88,10 @@ public class SongSheetHeaders {
         String capo = thisSong.getCapo();
         String tempo = thisSong.getTempo();
         String timesig = thisSong.getTimesig();
+
+        Log.d(TAG,"title: "+thisSong.getTitle());
+        Log.d(TAG,"key: "+key);
+        Log.d(TAG,"capo: "+capo);
 
         String keyCapoTempo = "";
 

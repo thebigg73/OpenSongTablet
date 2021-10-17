@@ -51,7 +51,7 @@ public class SetManageFragment extends Fragment {
         prepareSets();
 
         // Decide what we are doing
-        decideAction();
+        changeViews(mainActivityInterface.getWhattodo());
 
         // Set listener for category change
         setListener();
@@ -60,23 +60,13 @@ public class SetManageFragment extends Fragment {
     }
 
     // Decide what to do with the views depending on what we want to do
-    private void decideAction() {
-        switch (mainActivityInterface.getWhattodo()) {
-            case "loadset":
-                changeViews(false, false);
-                break;
-            case "saveset":
-                changeViews(true, false);
-                break;
-            case "deleteset":
-                changeViews(false, true);
-                break;
+   private void changeViews(String whattodo) {
+        if (whattodo.startsWith("exportset:")) {
+            whattodo = "exportset";
         }
-    }
-
-    private void changeViews(boolean saving, boolean deleting) {
         // Should the edit text box with the set name be shown?
-        if (saving) {
+        switch (whattodo) {
+            case "saveset":
             mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.save));
             String category = getString(R.string.mainfoldername);
             String setname = mainActivityInterface.getCurrentSet().getSetName();
@@ -97,7 +87,9 @@ public class SetManageFragment extends Fragment {
             myView.loadorsaveButton.setText(getString(R.string.save));
             myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.ic_content_save_white_36dp));
             myView.loadorsaveButton.setOnClickListener(v -> saveSet());
-        } else if (deleting) {
+            break;
+
+            case "deleteset":
             mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.delete));
             myView.setName.setVisibility(View.GONE);
             myView.overWrite.setVisibility(View.GONE);
@@ -108,7 +100,23 @@ public class SetManageFragment extends Fragment {
             myView.loadorsaveButton.setText(getString(R.string.delete));
             myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.ic_delete_white_36dp));
             myView.loadorsaveButton.setOnClickListener(v -> deleteSet());
-        } else {
+            break;
+
+            case "exportset":
+                mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.export));
+                myView.setName.setVisibility(View.GONE);
+                myView.overWrite.setVisibility(View.GONE);
+                myView.newCategory.setVisibility(View.GONE);
+                myView.setLoadInfo1.setVisibility(View.VISIBLE);
+                myView.setLoadInfo2.setVisibility(View.VISIBLE);
+                myView.setLoadInfo2.setText(getString(R.string.set_saved_not_current));
+                myView.loadorsaveButton.setText(getString(R.string.export));
+                myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.ic_share_variant_white_36dp));
+                myView.loadorsaveButton.setOnClickListener(v -> exportSet());
+                break;
+
+            case "loadset":
+            default:
             mainActivityInterface.updateToolbar(getString(R.string.set) + ": " + getString(R.string.load));
             myView.setName.setVisibility(View.GONE);
             myView.overWrite.setVisibility(View.GONE);
@@ -118,6 +126,7 @@ public class SetManageFragment extends Fragment {
             myView.loadorsaveButton.setText(getString(R.string.load));
             myView.loadorsaveButton.setIcon(ContextCompat.getDrawable(requireContext(),R.drawable.ic_content_save_white_36dp));
             myView.loadorsaveButton.setOnClickListener(v -> loadSet());
+            break;
         }
     }
 
@@ -143,10 +152,7 @@ public class SetManageFragment extends Fragment {
                     "SetManageFragment", getString(R.string.new_category),
                     getString(R.string.new_category),null,null,null,true);
             textInputBottomSheet.show(requireActivity().getSupportFragmentManager(),"TextInputBottomSheet");
-
-
         });
-
 
     }
 
@@ -300,6 +306,12 @@ public class SetManageFragment extends Fragment {
         myView.progressBar.setVisibility(View.GONE);
 
         prepareSets();
+    }
+
+    private void exportSet() {
+        // Set the "whattodo" to let the export fragment know we are exporting a set
+        mainActivityInterface.setWhattodo("exportset:"+chosenSets);
+        mainActivityInterface.navigateToFragment("opensongapp://settings/actions/export",0);
     }
 
     private void loadSet() {

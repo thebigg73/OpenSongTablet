@@ -27,19 +27,74 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/progressText">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/includeSongs"
+            <LinearLayout
+                android:id="@+id/setOptionsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/export_include_set_songs"
-                android:visibility="gone" />
+                android:paddingBottom="32dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set"
+                style="@style/largeText" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/openSongAppSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_set"/>
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/openSongSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_desktop" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/textSet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_text" />
+
+            </RadioGroup>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/includeSongs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/export_include_set_songs"
+                    android:layout_marginTop="16dp"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/songOptionsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/song"
+                    style="@style/largeText"/>
 
             <RadioGroup
                 android:id="@+id/exportFormat"
@@ -51,59 +106,46 @@
                     android:id="@+id/pdf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/pdf"
-                    android:visibility="gone" />
+                    android:text="@string/pdf" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/image"
-                    android:visibility="gone" />
+                    android:text="@string/image" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/openSongApp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_ost"
-                    android:visibility="gone" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/openSongAppSet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/export_set"
-                    android:visibility="gone" />
+                    android:text="@string/export_ost" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/openSong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_desktop"
-                    android:visibility="gone" />
+                    android:text="@string/export_desktop" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/onSong"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_onsong"
-                    android:visibility="gone" />
+                    android:text="@string/export_onsong" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/chordPro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_chordpro"
-                    android:visibility="gone" />
+                    android:text="@string/export_chordpro" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/export_text"
-                    android:visibility="gone" />
+                    android:text="@string/export_text" />
 
             </RadioGroup>
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -114,6 +156,15 @@
         android:layout_centerInParent="true"
         android:visibility="visible" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/progressText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:minLines="4"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/shareButton"
         android:layout_width="wrap_content"
@@ -123,5 +174,6 @@
         android:contentDescription="@string/export"
         android:src="@drawable/ic_share_variant_white_36dp"
         app:useCompatPadding="true" />
+
 
 </RelativeLayout>

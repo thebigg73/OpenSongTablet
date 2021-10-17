@@ -1015,7 +1015,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart.
     <string name="autoscroll_autostart">Keep autoscroll activated when changing songs</string>
     <string name="autoscroll_link_audio">Use duration of link audio file</string>
     <string name="custom_chord_exists">A custom chord with this name already exists for this instrument</string>
-    <string name="export_include_set_songs">Include songs in the same format</string>
+    <string name="export_include_set_songs">Include songs identified in the set</string>
     <string name="set_saved_not_current">Select a saved set.  Current sets should be saved before exporting.</string>
     <string name="nearby_large_file">This large song file is being shared</string>
     <string name="action_short_press">Short press/click action</string>

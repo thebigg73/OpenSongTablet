@@ -1081,8 +1081,7 @@ public class SetActions {
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
             tempSong.setFolder(customLocStart+folderNotes);
 
-
-            } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
+        } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
             // Prepare for a variation
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.variation) + " # - ", "");
             tempSong.setFolder(customLocStart + folderVariations);

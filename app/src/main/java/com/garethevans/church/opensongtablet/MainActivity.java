@@ -122,7 +122,6 @@ import com.garethevans.church.opensongtablet.secondarydisplay.PresentationCommon
 import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
-import com.garethevans.church.opensongtablet.setprocessing.SetActionsFragment;
 import com.garethevans.church.opensongtablet.setprocessing.SetManageFragment;
 import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.songmenu.SongMenuFragment;
@@ -2409,9 +2408,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         break;
                     case "CustomChordsFragment":
                         ((CustomChordsFragment) fragment).updateValue(value);
-                        break;
-                    case "SetActionsFragment":
-                        ((SetActionsFragment) fragment).updateValue(value);
                         break;
                 }
             } catch (Exception e) {
