@@ -291,11 +291,7 @@ public class ImportOSBFragment extends Fragment {
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         activityResultLauncher.launch(intent);
-/*
-        Intent intent = mainActivityInterface.getStorageAccess().selectFileIntent(new String[] {"application/zip","application/octet-stream"});
-        requireActivity().startActivityForResult(intent,
-                mainActivityInterface.getPreferences().getFinalInt("REQUEST_OSB_FILE"));
-*/
+
     }
     private void doImport() {
         // Get the folders we've selected

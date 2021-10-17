@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,9 @@ public class SetManageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSetsManageBinding.inflate(inflater, container, false);
 
+        // Check if we want to load a specific file
+        checkForLoadSpecific();
+
         // Get the sets in the folder
         prepareSets();
 
@@ -59,10 +63,20 @@ public class SetManageFragment extends Fragment {
         return myView.getRoot();
     }
 
+    private void checkForLoadSpecific() {
+        if (mainActivityInterface.getWhattodo().startsWith("loadset:")) {
+            Log.d(TAG,"trying to load a set automatically");
+            String lookFor = mainActivityInterface.getWhattodo().replace("loadset:","");
+            chosenSets = chosenSets + "%_%" + lookFor + "%_%";
+        }
+    }
     // Decide what to do with the views depending on what we want to do
    private void changeViews(String whattodo) {
         if (whattodo.startsWith("exportset:")) {
             whattodo = "exportset";
+        }
+        if (whattodo.startsWith("loadset:")) {
+            whattodo = "loadset";
         }
         // Should the edit text box with the set name be shown?
         switch (whattodo) {
@@ -206,6 +220,7 @@ public class SetManageFragment extends Fragment {
                 String toFind = bitToRemove + setName;
                 toFind = toFind.replace(getString(R.string.mainfoldername)+"__","");
                 checkBox.setChecked(chosenSets.contains("%_%" + toFind + "%_%"));
+                Log.d(TAG,"Looking for "+"%_%" + toFind + "%_%"+"   in chosenSets:"+chosenSets);
             }
             String setCategory = myView.setCategory.getText().toString();
             String finalSetName;

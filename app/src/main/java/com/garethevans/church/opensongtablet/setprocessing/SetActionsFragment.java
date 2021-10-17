@@ -1,11 +1,17 @@
 package com.garethevans.church.opensongtablet.setprocessing;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,9 +20,14 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsSetsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+
 public class SetActionsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+    private final String TAG = "SetActionsFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -30,6 +41,8 @@ public class SetActionsFragment extends Fragment {
         SettingsSetsBinding myView = SettingsSetsBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.set_manage));
+
+        initialiseLauncher();
 
         myView.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,"SetActionsFragment",this,null));
         myView.loadSet.setOnClickListener(v -> {
@@ -58,8 +71,55 @@ public class SetActionsFragment extends Fragment {
             mainActivityInterface.setWhattodo("restoresets");
             mainActivityInterface.navigateToFragment(null,R.id.backupRestoreSetsFragment);
         });
-
+        myView.importSet.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.setType("*/*");
+            String[] mimetypes = {"text/xml","application/octet-stream"};
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            activityResultLauncher.launch(intent);
+        });
         return myView.getRoot();
+    }
+
+    private void initialiseLauncher() {
+        // Initialise the launcher
+        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                try {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        Uri contentUri = data.getData();
+                        String location = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
+                        if (location.endsWith(".osts") || !location.contains(".")) {
+                            // Copy the file into the sets folder
+                            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), contentUri);
+                            String importFilename;
+                            if (location.contains("/")) {
+                                importFilename = location.substring(location.lastIndexOf("/"));
+                                importFilename = importFilename.replace("/", "");
+                            } else {
+                                importFilename = location;
+                            }
+                            importFilename = importFilename.replace(".osts","");
+
+                            Log.d(TAG,"importFile: "+importFilename);
+                            Uri copyToUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                                    mainActivityInterface, "Sets", "", importFilename);
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
+                                    mainActivityInterface, copyToUri, null, "Sets", "", importFilename);
+                            OutputStream outputStream = mainActivityInterface.getStorageAccess().
+                                    getOutputStream(requireContext(), copyToUri);
+                            mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+                            mainActivityInterface.setWhattodo("loadset:"+importFilename);
+                            mainActivityInterface.navigateToFragment("opensongapp://settings/sets/manage", 0);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }
