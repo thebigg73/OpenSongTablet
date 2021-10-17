@@ -309,9 +309,14 @@ public class SetManageFragment extends Fragment {
     }
 
     private void exportSet() {
-        // Set the "whattodo" to let the export fragment know we are exporting a set
-        mainActivityInterface.setWhattodo("exportset:"+chosenSets);
-        mainActivityInterface.navigateToFragment("opensongapp://settings/actions/export",0);
+        // Only allow if indexing is complete
+        if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+            // Set the "whattodo" to let the export fragment know we are exporting a set
+            mainActivityInterface.setWhattodo("exportset:" + chosenSets);
+            mainActivityInterface.navigateToFragment("opensongapp://settings/actions/export", 0);
+        } else {
+            mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.search_index_wait));
+        }
     }
 
     private void loadSet() {
