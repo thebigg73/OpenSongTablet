@@ -510,8 +510,6 @@ public class ChordDisplayProcessing {
         }
     }
 
-    // TODO custom chords before directory chords?
-
     public boolean codeMatchesInstrument(String code, String instrument) {
         String instrumentLetter = getPrefFromInstrument(instrument);
         return code.contains("_"+instrumentLetter+"_");

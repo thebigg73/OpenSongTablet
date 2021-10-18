@@ -45,7 +45,7 @@ public class PerformanceFragment extends Fragment {
             lineSpacing;
     private boolean trimLines, trimSections, addSectionSpace, songAutoScaleColumnMaximise,
             songAutoScaleOverrideFull, songAutoScaleOverrideWidth, boldChordHeading,
-            highlightChords,highlightHeadings;
+            highlightChords,highlightHeadings, displayChords;
     private int screenHeight;
     public int songViewWidth, songViewHeight, screenWidth, swipeMinimumDistance,
             swipeMaxDistanceYError, swipeMinimumVelocity;
@@ -53,6 +53,7 @@ public class PerformanceFragment extends Fragment {
     private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
     private GestureDetector gestureDetector;
+    private PDFPageAdapter pdfPageAdapter;
 
     // Attaching and destroying
     @Override
@@ -141,6 +142,7 @@ public class PerformanceFragment extends Fragment {
         trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"trimLines",true);
         lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f);
         trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"trimSections",true);
+        displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"displayChords",true);
         boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", false);
         addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "addSectionSpace", true);
         autoScale = mainActivityInterface.getPreferences().getMyPreferenceString(getActivity(),"songAutoScale","W");
@@ -223,11 +225,12 @@ public class PerformanceFragment extends Fragment {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 int availWidth = getResources().getDisplayMetrics().widthPixels;
                 int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
-                PDFPageAdapter pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface,
+                pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface,
                         availWidth, availHeight);
+
                 myView.pdfView.post(() -> {
-                    myView.pdfView.setAdapter(pdfPageAdapter);
                     myView.pdfView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
+                    myView.pdfView.setAdapter(pdfPageAdapter);
                     myView.pdfView.setVisibility(View.VISIBLE);
                     // Set up the type of animate in
                     if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
@@ -235,14 +238,16 @@ public class PerformanceFragment extends Fragment {
                     } else {
                         animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
                     }
+
                     myView.pdfView.startAnimation(animSlideIn);
                 });
             }
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
+            Log.d(TAG,"displayChords="+displayChords);
             mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
                     setSongInLayout(requireContext(), mainActivityInterface, trimSections, addSectionSpace,
-                            trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments,
+                            trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments, displayChords,
                             mainActivityInterface.getSong().getLyrics(), boldChordHeading, false));
 
             // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
@@ -330,8 +335,14 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h, screenHeight);
 
                     // Now take a screenshot (only runs is w!=0 and h!=0)
-                    myView.songView.postDelayed(() -> requireActivity().runOnUiThread(() -> getScreenshot(w,h)), 2000);
-
+                    // TODO rethink this as may not be attached 2 sec later!
+                    /*try {
+                        if (getActivity()!=null && isAdded()) {
+                            myView.songView.postDelayed(() -> requireActivity().runOnUiThread(() -> getScreenshot(w, h)), 2000);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }*/
                     // Now remove this viewtree observer
                     myView.songView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
@@ -426,6 +437,15 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getDisplayPrevNext().showAndHide();
             return gestureDetector.onTouchEvent(motionEvent);
         });
+    }
+
+    public void pdfScrollToPage(int pageNumber) {
+        Log.d(TAG,"trying to scroll to "+pageNumber);
+        //mainActivityInterface.getSong().setPdfPageCurrent(pageNumber);
+        LinearLayoutManager llm = (LinearLayoutManager) myView.pdfView.getLayoutManager();
+        if (llm!=null) {
+            llm.scrollToPosition(pageNumber-1);
+        }
     }
 
     private void getScreenshot(int w, int h) {

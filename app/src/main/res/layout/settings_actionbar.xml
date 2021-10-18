@@ -22,13 +22,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/title" />
+            android:text="@string/title"
+            style="@style/largeText"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box"
             android:padding="0dp"
             android:orientation="vertical">
 
@@ -52,6 +52,7 @@
                 app:stepSize="1"
                 android:padding="8dp"/>
 
+            <TableRow style="@style/DividerLine"/>
         </LinearLayout>
 
 
@@ -59,13 +60,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:text="@string/battery" />
+            android:text="@string/battery"
+            style="@style/largeText"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box"
             android:padding="0dp"
             android:orientation="vertical">
 
@@ -103,19 +104,20 @@
                 app:stepSize="1"
                 android:padding="8dp"/>
 
+            <TableRow style="@style/DividerLine"/>
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:text="@string/time" />
+            android:text="@string/time"
+            style="@style/largeText"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/section_box"
             android:padding="0dp"
             android:orientation="vertical">
 

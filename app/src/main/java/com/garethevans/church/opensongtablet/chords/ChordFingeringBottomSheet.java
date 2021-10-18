@@ -192,8 +192,4 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         }
     }
 
-    // TODO
-    // Hide diagrams that don't have fingerings (currently empty diagrams, horrible names)
-    // Custom chords
-
 }

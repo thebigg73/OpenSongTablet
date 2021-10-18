@@ -7,6 +7,7 @@
     style="@style/FullscreenBottomSheet">
 
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/select_page"/>

@@ -130,15 +130,3 @@ public class ImportOptionsFragment extends Fragment {
     }
 
 }
-
-/*
-
-// TODO for now try reading in a pdf
-                    Log.d("SongMwnuDialog","Getting here");
-                            mainActivityInterface.navigateToFragment(R.id.importOptionsFragment);
-                    */
-/*NavHostFragment.findNavController(callingFragment)
-                            .navigate(R.id.ac,null,null);*//*
-
-                            //ocr.getTextFromPDF(getContext(),preferences,storageAccess,processSong,mainActivityInterface,"test","MAIN_Give thanks.pdf");
-                            break;*/

@@ -172,7 +172,9 @@ public class PerformanceGestures {
 
     // Show chords in the song display
     public void showChords() {
-        // TODO
+        boolean displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayChords", true);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayChords", !displayChords);
+        mainActivityInterface.navHome();
     }
 
     // Show the chord settings

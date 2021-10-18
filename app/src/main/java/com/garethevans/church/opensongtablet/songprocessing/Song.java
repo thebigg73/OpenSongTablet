@@ -59,6 +59,8 @@ public class Song {
     private int currentSection =0;
     private boolean isImageSlide;
     private int pdfPageCurrent = 0;
+    private int pdfPageCount = 0;
+    private boolean showstartofpdf = true;
     private String songXML;
     private int halfSplit;
     private int thirdSplit;
@@ -162,6 +164,12 @@ public class Song {
     }
     public boolean getIsImageSlide() {return isImageSlide;}
     public int getPdfPageCurrent() {return pdfPageCurrent;}
+    public int getPdfPageCount() {
+        return pdfPageCount;
+    }
+    public boolean getShowstartofpdf() {
+        return showstartofpdf;
+    }
     public int getCurrentSection() {return currentSection;}
     public int getDetectedChordFormat() {
         return detectedChordFormat;
@@ -278,6 +286,12 @@ public class Song {
     }
     public void setIsImageSlide(boolean isImageSlide) {this.isImageSlide = isImageSlide;}
     public void setPdfPageCurrent(int pdfPageCurrent) {this.pdfPageCurrent = pdfPageCurrent;}
+    public void setPdfPageCount(int pdfPageCount) {
+        this.pdfPageCount = pdfPageCount;
+    }
+    public void setShowstartofpdf(boolean showstartofpdf) {
+        this.showstartofpdf = showstartofpdf;
+    }
     public void setCurrentSection(int currentSection) {this.currentSection = currentSection;}
     public void setDetectedChordFormat(int detectedChordFormat) {
         this.detectedChordFormat = detectedChordFormat;
@@ -325,8 +339,6 @@ public class Song {
         this.user1 = toCopy.user1;
         this.user2 = toCopy.user2;
         this.user3 = toCopy.user3;
-
-
         this.key = toCopy.key;
         this.timesig = toCopy.timesig;
         this.tempo = toCopy.tempo;
@@ -359,6 +371,8 @@ public class Song {
         this.currentSection = toCopy.currentSection;
         this.isImageSlide = toCopy.isImageSlide;
         this.pdfPageCurrent = toCopy.pdfPageCurrent;
+        this.pdfPageCount = toCopy.pdfPageCount;
+        this.showstartofpdf = toCopy.showstartofpdf;
         this.presentationorder = toCopy.presentationorder;
         this.songXML = toCopy.songXML;
         this.halfSplit = toCopy.halfSplit;

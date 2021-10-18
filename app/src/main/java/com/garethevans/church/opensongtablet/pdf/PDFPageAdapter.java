@@ -8,11 +8,13 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -36,7 +38,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private Uri pdfUri;
     private int totalPages;
     private int totalHeight;
-    private String scaleType;
+    private final String scaleType;
+    private boolean manualDrag = false;
 
     public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, int viewWidth, int viewHeight) {
         this.c = c;
@@ -60,29 +63,43 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             } else {
                 totalPages = 0;
             }
-            Log.d(TAG,"totalPages="+totalPages);
+            mainActivityInterface.getSong().setPdfPageCount(totalPages);
+            if (totalPages==0) {
+                mainActivityInterface.getSong().setPdfPageCurrent(0);
+            } else {
+                mainActivityInterface.getSong().setPdfPageCurrent(1);
+            }
+            mainActivityInterface.getSong().setShowstartofpdf(true);
+
             totalHeight = 0;
             pageInfos = new ArrayList<>();
-            for (int x=0;x<totalPages;x++) {
-                PdfRenderer.Page page = pdfRenderer.openPage(x);
-                PDFPageItemInfo pageInfo = new PDFPageItemInfo();
-                pageInfo.pageNum = x;
-                pageInfo.pageNumText = (x+1)+"/"+totalPages;
-                int width = page.getWidth();
-                int height = page.getHeight();
-                float scaleFactor;
-                if (scaleType.equals("Y") && width>0 && height>0) {
-                    scaleFactor = Math.min((float)((float)viewWidth/(float)width),(float)((float)viewHeight/(float)height));
-                } else if (scaleType.equals("W")) {
-                    scaleFactor = (float)((float)viewWidth/(float)width);
-                } else {
-                    scaleFactor = 1f;
+            if (pdfRenderer!=null) {
+                for (int x = 0; x < totalPages; x++) {
+                    PdfRenderer.Page page = pdfRenderer.openPage(x);
+                    PDFPageItemInfo pageInfo = new PDFPageItemInfo();
+                    pageInfo.pageNum = x;
+                    pageInfo.pageNumText = (x + 1) + "/" + totalPages;
+                    int width = page.getWidth();
+                    int height = page.getHeight();
+                    float scaleFactor;
+                    if (scaleType.equals("Y") && width > 0 && height > 0) {
+                        scaleFactor = Math.min((float) viewWidth / (float) width, (float) viewHeight / (float) height);
+                    } else if (scaleType.equals("W")) {
+                        scaleFactor = (float) viewWidth / (float) width;
+                    } else {
+                        scaleFactor = 1f;
+                    }
+                    Log.d(TAG, "width=" + width + "  height=" + height + "  scaleFactor=" + scaleFactor);
+                    pageInfo.width = (int) (width * scaleFactor);
+                    pageInfo.height = (int) (height * scaleFactor);
+                    pageInfos.add(pageInfo);
+                    page.close();
+
+                    // Set the song load success
+                    mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
+                    mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", mainActivityInterface.getSong().getFilename());
+                    mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", mainActivityInterface.getSong().getFolder());
                 }
-                Log.d(TAG,"width="+width+"  height="+height+"  scaleFactor="+scaleFactor);
-                pageInfo.width = (int)(width*scaleFactor);
-                pageInfo.height = (int)(height*scaleFactor);
-                pageInfos.add(pageInfo);
-                page.close();
             }
             Log.d(TAG,"final total Height="+totalHeight);
 
@@ -139,4 +156,50 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     public int getHeight() {
         return totalHeight;
     }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                if (e.getAction()==MotionEvent.ACTION_DOWN) {
+                    manualDrag = true;
+                } else if (e.getAction()==MotionEvent.ACTION_CANCEL ||
+                e.getAction()==MotionEvent.ACTION_UP) {
+                    manualDrag = false;
+                }
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if(manager != null && getItemCount() > 0) {
+            LinearLayoutManager llm = (LinearLayoutManager) manager;
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int visiblePosition = llm.findFirstVisibleItemPosition();
+                    if (visiblePosition > -1 && manualDrag) {
+                        mainActivityInterface.getSong().setPdfPageCurrent(visiblePosition);
+                    }
+                }
+            });
+        }
+    }
+
 }

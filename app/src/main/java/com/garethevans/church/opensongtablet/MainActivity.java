@@ -2054,6 +2054,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public PDFSong getPDFSong() {
         return pdfSong;
     }
+
+    @Override
+    public void pdfScrollToPage(int pageNumber) {
+        if (performanceFragment!=null) {
+            try {
+                performanceFragment.pdfScrollToPage(pageNumber);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public ShowCase getShowCase() {
         return showCase;

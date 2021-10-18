@@ -293,7 +293,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songListRecyclerView.setOnClickListener(null);
         songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface,
                 songsFound, SongMenuFragment.this);
-
         myView.songListRecyclerView.setAdapter(songListAdapter);
         myView.songListRecyclerView.setFastScrollEnabled(true);
         displayIndex(songsFound, songListAdapter);

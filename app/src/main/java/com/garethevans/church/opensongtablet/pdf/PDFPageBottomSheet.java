@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.pdf;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ public class PDFPageBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetPdfPageBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private final String TAG = "PDFPageBottomSheet";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -28,6 +30,7 @@ public class PDFPageBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetPdfPageBinding.inflate(inflater, container, false);
+        myView.dialogHeader.setClose(this);
 
         // Set up views
         setupViews();
@@ -45,9 +48,14 @@ public class PDFPageBottomSheet extends BottomSheetDialogFragment {
             isPDFVisible = View.VISIBLE;
             isNotPDFVisible = View.GONE;
             myView.pageSlider.setValueFrom(1);
-            myView.pageSlider.setValueTo(mainActivityInterface.getPDFSong().getPdfPageCount());
-            myView.pageSlider.setValue(mainActivityInterface.getPDFSong().getPdfPageCurrent());
-            myView.pageNumber.setText(mainActivityInterface.getPDFSong().getPdfPageCurrent());
+            if (mainActivityInterface.getSong().getPdfPageCount()>0 &&
+                    mainActivityInterface.getSong().getPdfPageCurrent()<=0) {
+                mainActivityInterface.getSong().setPdfPageCurrent(1);
+            }
+            myView.pageSlider.setValueTo(mainActivityInterface.getSong().getPdfPageCount());
+            myView.pageSlider.setValue(mainActivityInterface.getSong().getPdfPageCurrent());
+            String text = mainActivityInterface.getSong().getPdfPageCurrent() + "";
+            myView.pageNumber.setText(text);
         } else {
             isPDFVisible = View.GONE;
             isNotPDFVisible = View.VISIBLE;
@@ -62,37 +70,44 @@ public class PDFPageBottomSheet extends BottomSheetDialogFragment {
 
     private void setupListeners() {
         myView.previousPage.setOnClickListener(v -> {
-            if (mainActivityInterface.getPDFSong().getPdfPageCurrent()>1) {
-                mainActivityInterface.getPDFSong().setDirection("L2R");
-                mainActivityInterface.getPDFSong().setPdfPageCurrent(mainActivityInterface.getPDFSong().getPdfPageCurrent()-1);
+            if (mainActivityInterface.getSong().getPdfPageCurrent()>1) {
+                mainActivityInterface.getDisplayPrevNext().setSwipeDirection("L2R");
+                mainActivityInterface.getSong().setPdfPageCurrent(mainActivityInterface.getSong().getPdfPageCurrent()-1);
             }
+            myView.pageSlider.setValue(Integer.parseInt(myView.pageNumber.getText().toString()));
             checkButtonEnable(true);
+            myView.pageSlider.setValue(Integer.parseInt(myView.pageNumber.getText().toString()));
         });
         myView.nextPage.setOnClickListener(v -> {
-            if (mainActivityInterface.getPDFSong().getPdfPageCurrent()<mainActivityInterface.getPDFSong().getPdfPageCount()) {
-                mainActivityInterface.getPDFSong().setDirection("R2L");
-                mainActivityInterface.getPDFSong().setPdfPageCurrent(mainActivityInterface.getPDFSong().getPdfPageCurrent()+1);
+            if (mainActivityInterface.getSong().getPdfPageCurrent()<mainActivityInterface.getSong().getPdfPageCount()) {
+                mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
+                mainActivityInterface.getSong().setPdfPageCurrent(mainActivityInterface.getSong().getPdfPageCurrent()+1);
             }
             checkButtonEnable(true);
+            myView.pageSlider.setValue(Integer.parseInt(myView.pageNumber.getText().toString()));
         });
         myView.pageSlider.addOnChangeListener((slider, value, fromUser) -> {
-            if (mainActivityInterface.getPDFSong().getPdfPageCurrent()>value) {
-                mainActivityInterface.getPDFSong().setDirection("L2R");
-            } else {
-                mainActivityInterface.getPDFSong().setDirection("R2L");
+            if (fromUser) {
+                if (mainActivityInterface.getSong().getPdfPageCurrent() > value) {
+                    mainActivityInterface.getDisplayPrevNext().setSwipeDirection("L2R");
+                } else {
+                    mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
+                }
+                mainActivityInterface.getSong().setPdfPageCurrent((int) value);
+
+                checkButtonEnable(true);
             }
-            mainActivityInterface.getPDFSong().setPdfPageCurrent((int)value);
-            checkButtonEnable(true);
         });
     }
 
     private void checkButtonEnable(boolean hasChanged) {
-        myView.previousPage.setEnabled(mainActivityInterface.getPDFSong().getPdfPageCurrent() > 1);
-        myView.nextPage.setEnabled(mainActivityInterface.getPDFSong().getPdfPageCurrent() < mainActivityInterface.getPDFSong().getPdfPageCount());
+        myView.previousPage.setEnabled(mainActivityInterface.getSong().getPdfPageCurrent() > 1);
+        myView.nextPage.setEnabled(mainActivityInterface.getSong().getPdfPageCurrent() < mainActivityInterface.getSong().getPdfPageCount());
         if (hasChanged) {
             // Update the page number text
-            myView.pageNumber.setText(mainActivityInterface.getPDFSong().getPdfPageCurrent());
-            // TODO action move to page
+            String text = mainActivityInterface.getSong().getPdfPageCurrent() + "";
+            myView.pageNumber.setText(text);
+            mainActivityInterface.pdfScrollToPage(mainActivityInterface.getSong().getPdfPageCurrent());
         }
     }
 }

@@ -468,7 +468,7 @@ public class StorageAccess {
             subfolder = subfolder.replace("Images", "Images/_cache");
             subfolder = subfolder.replace("Slides", "Slides/_cache");
             subfolder = subfolder.replace("Scripture", "Scripture/_cache");
-            subfolder = subfolder.replace("Variations", "Variations");
+            //subfolder = subfolder.replace("Variations", "Variations");
             subfolder = subfolder.replace("Notes", "Notes/_cache");
         }
         if (subfolder.contains("../")) {
@@ -786,10 +786,10 @@ public class StorageAccess {
                 if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().equals("lyrics")) {
                         found = true; // It's a song
-                        // TODO maybe add a return message "foundsong"
+                        Log.d(TAG,"found song");
                     } else if (xpp.getName().equals("set")) {
                         found = true; // It's a set
-                        // TODO maybe add a return message "foundset"
+                        Log.d(TAG,"found set");
                     }
                 }
                 // If it isn't an xml file, an error is about to be thrown

@@ -473,6 +473,7 @@ public class ExportFragment extends Fragment {
         boolean trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"trimLines",true);
         boolean addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"addSectionSpace",true);
         boolean displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayBoldChordsHeadings",false);
+        boolean displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayChords",true);
         float lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"lineSpacing",0.1f);
         float scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleHeadings",0.6f);
         float scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleChords",0.8f);
@@ -481,7 +482,7 @@ public class ExportFragment extends Fragment {
         sectionViewsPDF = mainActivityInterface.getProcessSong().
                 setSongInLayout(c,mainActivityInterface, trimSections, addSectionSpace,
                         trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments,
-                        thisSong.getLyrics(),displayBoldChordsHeadings,true);
+                        displayChords,thisSong.getLyrics(),displayBoldChordsHeadings,true);
 
         // Now we have the views, add them to the temp layout and set up a view tree listener to measure
         ViewTreeObserver sectionsVTO = myView.hiddenSections.getViewTreeObserver();

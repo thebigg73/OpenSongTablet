@@ -228,5 +228,6 @@ public interface MainActivityInterface {
     void addSetItem(int currentSetPosition);
     void removeSetItem(int currentSetPosition);
     void updateSongList();
+    void pdfScrollToPage(int pageNumber);
 }
 

@@ -171,6 +171,7 @@ public class LoadSong {
 
     private void sortLoadingSuccessful(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // Check if the song has been loaded (will now have a lyrics value)
+        Log.d(TAG,"Check for loading success.  filename="+thisSong.getFilename()+"  type="+thisSong.getFiletype());
         if (thisSong.getFiletype()!=null && (thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) &&
         thisSong.getLyrics()==null) {
             // A basic PDF/IMG without custom info

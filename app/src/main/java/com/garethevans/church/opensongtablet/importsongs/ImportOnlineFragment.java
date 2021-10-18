@@ -103,9 +103,6 @@ public class ImportOnlineFragment extends Fragment {
         if (mainActivityInterface.getCheckInternet().getSearchSite() != null) {
             myView.onlineSource.setText(mainActivityInterface.getCheckInternet().getSearchSite());
         }
-        //TODO - remove the next 2 lines
-        myView.searchPhrase.post(() -> myView.searchPhrase.setText("I surrender all"));
-        myView.onlineSource.post(() -> myView.onlineSource.setText("UltimateGuitar"));
 
         setupWebView();
     }

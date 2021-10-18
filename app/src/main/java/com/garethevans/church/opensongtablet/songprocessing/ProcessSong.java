@@ -19,6 +19,7 @@ import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -772,7 +773,7 @@ public class ProcessSong {
 
 
     // Splitting the song up in to manageable chunks
-    private String makeGroups(String string) {
+    private String makeGroups(String string, boolean displayChords) {
         if (string == null) {
             string = "";
         }
@@ -782,7 +783,7 @@ public class ProcessSong {
         // Go through each line and add bits together as groups ($_groupline_$ between bits, \n for new group)
         int i = 0;
         while (i < lines.length) {
-            if (lines[i].startsWith(".")) {
+            if (lines[i].startsWith(".") && displayChords) {
                 // This is a chord line = this needs to be part of a group
                 sb.append("\n").append(lines[i]);
                 // If the next line is a lyric or comment add this to the group and stop there
@@ -803,7 +804,13 @@ public class ProcessSong {
                     }
                     // IV - Removed 'While the next line is still a chordline add this line' as breaks highlighting
                 }
-            } else {
+            } else if (!lines[i].startsWith(".") && !displayChords){
+                // Tidy it up
+                lines[i] = lines[i].trim();
+                lines[i] = lines[i].replace("_","");
+                lines[i] = " " + lines[i];
+                sb.append("\n").append(lines[i]);
+            } else if (!lines[i].startsWith(".")) {
                 sb.append("\n").append(lines[i]);
             }
             i++;
@@ -989,11 +996,9 @@ public class ProcessSong {
                         has_multiline_vtag = true;
                     } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("[c]")) {
                         has_multiline_ctag = true;
-                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("1") ||
-                            l.toLowerCase(mainActivityInterface.getLocale()).startsWith(" 1")) {
+                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("1")) {
                         has_multiline_1tag = true;
-                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("2") ||
-                            l.toLowerCase(mainActivityInterface.getLocale()).startsWith(" 2")) {
+                    } else if (l.toLowerCase(mainActivityInterface.getLocale()).startsWith("2")) {
                         has_multiline_2tag = true;
                     }
                 }
@@ -1073,7 +1078,7 @@ public class ProcessSong {
                         if (verse[vnum].equals("")) {
                             verse[vnum] = "[V" + vnum + "]\n";
                         }
-                        verse[vnum] += lines[z].substring(2) + "\n";
+                        verse[vnum] += " " + lines[z].substring(1) + "\n";
                         lines[z] = "__REMOVED__";
                     }
                 } else if (gettingchorus) {
@@ -1120,7 +1125,7 @@ public class ProcessSong {
         l = l.toLowerCase(mainActivityInterface.getLocale());
 
         if (l.startsWith("[" + type + "]") &&
-                (l_1.startsWith("1") || l_1.startsWith(" 1") || l_2.startsWith("1") || l_2.startsWith(" 1"))) {
+                (l_1.startsWith("1") || l_2.startsWith("1"))) {
             isit = true;
         }
         return isit;
@@ -1219,8 +1224,8 @@ public class ProcessSong {
     public ArrayList<View> setSongInLayout(Context c, MainActivityInterface mainActivityInterface,
                                            boolean trimSections, boolean addSectionSpace,
                                            boolean trimLines, float lineSpacing, float headingScale,
-                                           float chordScale, float commentScale, String string,
-                                           boolean boldChordHeading, boolean asPDF) {
+                                           float chordScale, float commentScale, boolean displayChords,
+                                           String string, boolean boldChordHeading, boolean asPDF) {
         ArrayList<View> sectionViews = new ArrayList<>();
 
         // This goes through processing the song
@@ -1229,7 +1234,7 @@ public class ProcessSong {
         string = fixMultiLineFormat(c, mainActivityInterface, string);
 
         // First up we go through the lyrics and group lines that should be in a table for alignment purposes
-        string = makeGroups(string);
+        string = makeGroups(string,displayChords);
         // Next we generate the split points for sections
         string = makeSections(string);
 
@@ -2046,18 +2051,19 @@ public class ProcessSong {
 
     public int getCurrentPage(MainActivityInterface mainActivityInterface, int page) {
         // TODO use Song or PDFSong?
-        if (!mainActivityInterface.getPDFSong().getShowstartofpdf()) {
+        Log.d(TAG,"page="+page);
+        if (!mainActivityInterface.getSong().getShowstartofpdf()) {
             // This is to deal with swiping backwards through songs, show the last page first!
-            page = mainActivityInterface.getPDFSong().getPdfPageCount() - 1;
-            mainActivityInterface.getPDFSong().setShowstartofpdf(true);
-            mainActivityInterface.getSong().setCurrentSection(mainActivityInterface.getPDFSong().getPdfPageCount()-1);
+            page = mainActivityInterface.getSong().getPdfPageCount() - 1;
+            mainActivityInterface.getSong().setShowstartofpdf(true);
+            mainActivityInterface.getSong().setCurrentSection(mainActivityInterface.getSong().getPdfPageCount()-1);
         }
-        if (page >= mainActivityInterface.getPDFSong().getPdfPageCount()) {
+        if (page >= mainActivityInterface.getSong().getPdfPageCount()) {
             mainActivityInterface.getSong().setPdfPageCurrent(0);
             mainActivityInterface.getSong().setCurrentSection(0);
             page = 0;
         } else {
-            mainActivityInterface.getPDFSong().setPdfPageCurrent(page);
+            mainActivityInterface.getSong().setPdfPageCurrent(page);
             mainActivityInterface.getSong().setPdfPageCurrent(page);
             mainActivityInterface.getSong().setCurrentSection(page);
         }

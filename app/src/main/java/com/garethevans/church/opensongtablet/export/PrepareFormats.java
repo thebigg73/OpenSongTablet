@@ -14,17 +14,23 @@ import java.util.ArrayList;
 
 public class PrepareFormats {
 
-    private Song thisSongSQL;
-
-    // TODO IV Request to export Variations properly as it isn't in SQL database
-
     // When a user asks for a song to be exported, it is first copied to the Exports folder in the folder_filename format
     public ArrayList<Uri> makeSongExportCopies(Context c, MainActivityInterface mainActivityInterface, String folder, String filename,
                                                boolean desktop, boolean ost, boolean txt, boolean chopro, boolean onsong) {
         ArrayList<Uri> uris = new ArrayList<>();
-        thisSongSQL = mainActivityInterface.getSQLiteHelper().getSpecificSong(c,mainActivityInterface,folder,filename);
+
+        Song thisSongSQL;
+        if (folder.startsWith("../Variations")) {
+            thisSongSQL = new Song();
+            thisSongSQL.setFolder(folder);
+            thisSongSQL.setFilename(filename);
+            thisSongSQL = mainActivityInterface.getLoadSong().doLoadSongFile(c,mainActivityInterface, thisSongSQL,false);
+        } else {
+            thisSongSQL = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface, folder, filename);
+        }
 
         String newFilename = folder.replace("/","_");
+        newFilename = newFilename.replace("..","");
         if (!newFilename.endsWith("_")) {
             newFilename = newFilename + "_";
         }
@@ -36,20 +42,20 @@ public class PrepareFormats {
         if (ost) {
             uris.add(doMakeCopy(c,mainActivityInterface,folder,filename,newFilename+".ost"));
         }
-        if (txt && thisSongSQL!=null) {
+        if (txt && thisSongSQL !=null) {
             String text = getSongAsText(thisSongSQL);
             if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".txt",text)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".txt"));
             }
         }
-        if (chopro && thisSongSQL!=null) {
-            String text = getSongAsChoPro(c,mainActivityInterface,thisSongSQL);
+        if (chopro && thisSongSQL !=null) {
+            String text = getSongAsChoPro(c,mainActivityInterface, thisSongSQL);
             if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".chopro",text)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".chopro"));
             }
         }
-        if (onsong && thisSongSQL!=null) {
-            String text = getSongAsOnSong(c,mainActivityInterface,thisSongSQL);
+        if (onsong && thisSongSQL !=null) {
+            String text = getSongAsOnSong(c,mainActivityInterface, thisSongSQL);
             if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".onsong",text)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".onsong"));
             }
@@ -71,21 +77,16 @@ public class PrepareFormats {
     }
 
     public String getSongAsText(Song thisSong) {
-        StringBuilder s = new StringBuilder();
 
-        s.append(replaceNulls("","\n",thisSong.getTitle()));
-        s.append(replaceNulls("","\n",thisSong.getAuthor()));
-        s.append(replaceNulls("Key: ","\n",thisSong.getKey()));
-        s.append(replaceNulls("Tempo: ","\n",thisSong.getTempo()));
-        s.append(replaceNulls("Time signature: ","\n",thisSong.getTimesig()));
-        s.append(replaceNulls("Copyright: ","\n",thisSong.getCopyright()));
-        s.append(replaceNulls("CCLI: ","\n",thisSong.getCcli()));
-
-        s.append("\n\n");
-
-        s.append(replaceNulls("\n","",thisSong.getLyrics()));
-
-        String string = s.toString();
+        String string = replaceNulls("", "\n", thisSong.getTitle()) +
+                replaceNulls("", "\n", thisSong.getAuthor()) +
+                replaceNulls("Key: ", "\n", thisSong.getKey()) +
+                replaceNulls("Tempo: ", "\n", thisSong.getTempo()) +
+                replaceNulls("Time signature: ", "\n", thisSong.getTimesig()) +
+                replaceNulls("Copyright: ", "\n", thisSong.getCopyright()) +
+                replaceNulls("CCLI: ", "\n", thisSong.getCcli()) +
+                "\n\n" +
+                replaceNulls("\n", "", thisSong.getLyrics());
         string = string.replace("\n\n\n", "\n\n");
 
         // IV - remove empty comments
@@ -95,20 +96,16 @@ public class PrepareFormats {
     }
     public String getSongAsChoPro(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // This converts an OpenSong file into a ChordPro file
-        StringBuilder s = new StringBuilder("{new_song}\n");
-        s.append(replaceNulls("{title:","}\n",thisSong.getTitle()));
-        s.append(replaceNulls("{artist:","}\n",thisSong.getAuthor()));
-        s.append(replaceNulls("{key:","}\n",thisSong.getKey()));
-        s.append(replaceNulls("{tempo:","}\n",thisSong.getTempo()));
-        s.append(replaceNulls("{time:","}\n",thisSong.getTimesig()));
-        s.append(replaceNulls("{copyright:","}\n",thisSong.getCopyright()));
-        s.append(replaceNulls("{ccli:","}\n",thisSong.getCcli()));
 
-        s.append("\n\n");
-
-        s.append(mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n","",thisSong.getLyrics())));
-        
-        String string = s.toString();
+        String string = "{new_song}\n" + replaceNulls("{title:", "}\n", thisSong.getTitle()) +
+                replaceNulls("{artist:", "}\n", thisSong.getAuthor()) +
+                replaceNulls("{key:", "}\n", thisSong.getKey()) +
+                replaceNulls("{tempo:", "}\n", thisSong.getTempo()) +
+                replaceNulls("{time:", "}\n", thisSong.getTimesig()) +
+                replaceNulls("{copyright:", "}\n", thisSong.getCopyright()) +
+                replaceNulls("{ccli:", "}\n", thisSong.getCcli()) +
+                "\n\n" +
+                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n", "", thisSong.getLyrics()));
         string = string.replace("\n\n\n", "\n\n");
 
         // IV - remove empty comments
@@ -132,20 +129,16 @@ public class PrepareFormats {
 
     public String getSongAsOnSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // This converts an OpenSong file into a OnSong file
-        StringBuilder s = new StringBuilder();
-        s.append(replaceNulls("","\n",thisSong.getTitle()));
-        s.append(replaceNulls("","\n",thisSong.getAuthor()));
-        s.append(replaceNulls("Key: ","\n",thisSong.getKey()));
-        s.append(replaceNulls("Tempo: ","\n",thisSong.getTempo()));
-        s.append(replaceNulls("Time signature: ","\n",thisSong.getTimesig()));
-        s.append(replaceNulls("Copyright: ","\n",thisSong.getCopyright()));
-        s.append(replaceNulls("CCLI: ","\n",thisSong.getCcli()));
 
-        s.append("\n\n");
-
-        s.append(mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n","",thisSong.getLyrics())));
-
-        String string = s.toString();
+        String string = replaceNulls("", "\n", thisSong.getTitle()) +
+                replaceNulls("", "\n", thisSong.getAuthor()) +
+                replaceNulls("Key: ", "\n", thisSong.getKey()) +
+                replaceNulls("Tempo: ", "\n", thisSong.getTempo()) +
+                replaceNulls("Time signature: ", "\n", thisSong.getTimesig()) +
+                replaceNulls("Copyright: ", "\n", thisSong.getCopyright()) +
+                replaceNulls("CCLI: ", "\n", thisSong.getCcli()) +
+                "\n\n" +
+                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n", "", thisSong.getLyrics()));
         string = string.replace("\n\n\n", "\n\n");
 
         // IV - remove empty comments
