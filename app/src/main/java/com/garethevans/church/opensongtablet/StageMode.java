@@ -4310,67 +4310,57 @@ public class StageMode extends AppCompatActivity implements
                 // Decide on the best scaling
                 FullscreenActivity.padding = getPixelsFromDpi(6);
                 int availablewidth_1col = getAvailableWidth() - FullscreenActivity.padding;
-                int availablewidth_2col = (int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(12 + 4);
-                int availablewidth_3col = (int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(18 + 4 + 4);
-                int availableheight = getAvailableHeight() - getPixelsFromDpi(12);
-
                 float myscale_1_1_col_x = (float) availablewidth_1col / (float) FullscreenActivity.viewwidth[0];
                 width_scale = myscale_1_1_col_x;
-                float myscale_1_2_col_x = (float) availablewidth_2col / (float) FullscreenActivity.viewwidth[1];
-                float myscale_2_2_col_x = (float) availablewidth_2col / (float) FullscreenActivity.viewwidth[2];
-                float myscale_1_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[3];
-                float myscale_2_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[4];
-                float myscale_3_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[5];
+                int availableheight = getAvailableHeight() - getPixelsFromDpi(12);
                 float myscale_1_1_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[0];
-                float myscale_1_2_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[1];
-                float myscale_2_2_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[2];
-                float myscale_1_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[3];
-                float myscale_2_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[4];
-                float myscale_3_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[5];
-
-                // If users don't want to maximise the size of every column
-                if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y") &&
-                        !preferences.getMyPreferenceBoolean(StageMode.this,"songAutoScaleColumnMaximise",true)) {
-                    // Two columns
-                    if (myscale_1_2_col_x < myscale_2_2_col_x) {
-                        myscale_2_2_col_x = myscale_1_2_col_x;
-                        myscale_2_2_col_y = myscale_1_2_col_y;
-                    } else {
-                        myscale_1_2_col_x = myscale_2_2_col_x;
-                        myscale_1_2_col_y = myscale_2_2_col_y;
-                    }
-
-                    // Three columns
-                    if (myscale_1_3_col_x < myscale_2_3_col_x) {
-                        myscale_2_3_col_x = myscale_1_3_col_x;
-                        myscale_2_3_col_y = myscale_1_3_col_y;
-                    } else {
-                        myscale_1_3_col_x = myscale_2_3_col_x;
-                        myscale_1_3_col_y = myscale_2_3_col_y;
-                    }
-                    if (myscale_1_3_col_x < myscale_3_3_col_x) {
-                        myscale_3_3_col_x = myscale_1_3_col_x;
-                        myscale_3_3_col_y = myscale_1_3_col_y;
-                    } else {
-                        myscale_1_3_col_x = myscale_3_3_col_x;
-                        myscale_2_3_col_x = myscale_3_3_col_x;
-                        myscale_1_3_col_y = myscale_3_3_col_y;
-                        myscale_2_3_col_y = myscale_3_3_col_y;
-                    }
-                }
-
                 StaticVariables.sectionScaleValue[0] = processSong.getScaleValue(StageMode.this,
                         preferences, myscale_1_1_col_x, myscale_1_1_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[1] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_1_2_col_x, myscale_1_2_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[2] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_2_2_col_x, myscale_2_2_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[3] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_1_3_col_x, myscale_1_3_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[4] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_2_3_col_x, myscale_2_3_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[5] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_3_3_col_x, myscale_3_3_col_y, 12.0f);
+
+                // IV - If we are going for full scaling
+                if (StaticVariables.thisSongScale.equals("Y")) {
+                    int availablewidth_2col = (int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(12 + 4);
+                    int availablewidth_3col = (int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(18 + 4 + 4);
+
+                    float myscale_1_2_col_x = (float) availablewidth_2col / (float) FullscreenActivity.viewwidth[1];
+                    float myscale_2_2_col_x = (float) availablewidth_2col / (float) FullscreenActivity.viewwidth[2];
+                    float myscale_1_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[3];
+                    float myscale_2_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[4];
+                    float myscale_3_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[5];
+                    float myscale_1_2_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[1];
+                    float myscale_2_2_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[2];
+                    float myscale_1_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[3];
+                    float myscale_2_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[4];
+                    float myscale_3_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[5];
+
+                    // If users don't want to scale columns independently
+                    if (!preferences.getMyPreferenceBoolean(StageMode.this,"songAutoScaleColumnMaximise",true)) {
+                        // Two columns
+                        myscale_1_2_col_x = Math.min(myscale_1_2_col_x,myscale_2_2_col_x);
+                        myscale_1_2_col_y = Math.min(myscale_1_2_col_y,myscale_2_2_col_y);
+                        myscale_2_2_col_x = myscale_1_2_col_x;
+                        myscale_2_2_col_y = myscale_1_2_col_y;
+
+                        // Three columns
+                        myscale_1_3_col_x = Math.min(Math.min(myscale_1_3_col_x,myscale_2_3_col_x),myscale_3_3_col_x);
+                        myscale_1_3_col_y = Math.min(Math.min(myscale_1_3_col_y,myscale_2_3_col_y),myscale_3_3_col_y);
+                        myscale_2_3_col_x = myscale_1_3_col_x;
+                        myscale_2_3_col_y = myscale_1_3_col_y;
+                        myscale_3_3_col_x = myscale_1_3_col_x;
+                        myscale_3_3_col_y = myscale_1_3_col_y;
+                    }
+
+                    StaticVariables.sectionScaleValue[1] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_1_2_col_x, myscale_1_2_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[2] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_2_2_col_x, myscale_2_2_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[3] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_1_3_col_x, myscale_1_3_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[4] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_2_3_col_x, myscale_2_3_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[5] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_3_3_col_x, myscale_3_3_col_y, 12.0f);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -5416,7 +5406,7 @@ public class StageMode extends AppCompatActivity implements
                 // We know how many columns we are using, so lets go for it.
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
                  // IV - If doing song block add a padding
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
+                if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
                 }
                 songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
@@ -5716,7 +5706,7 @@ public class StageMode extends AppCompatActivity implements
                 column1_2 = processSong.preparePerformanceColumnView(StageMode.this);
                 column2_2 = processSong.preparePerformanceColumnView(StageMode.this);
                 // IV - If doing song block add a padding
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
+                if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
                     column2_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
                 }
@@ -5819,7 +5809,7 @@ public class StageMode extends AppCompatActivity implements
                 column2_3 = processSong.preparePerformanceColumnView(StageMode.this);
                 column3_3 = processSong.preparePerformanceColumnView(StageMode.this);
                 // IV - If doing song block add a padding
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
+                if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
                     column2_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
                     column3_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
@@ -6178,7 +6168,7 @@ public class StageMode extends AppCompatActivity implements
                 // Only 1 column, but many sections
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
                 // IV - If doing song block add a padding
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
+                if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
                 }
                 songbit = processSong.prepareStageSongBitView(StageMode.this);

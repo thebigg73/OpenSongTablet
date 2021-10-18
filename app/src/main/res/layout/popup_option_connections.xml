@@ -162,32 +162,6 @@
                     android:text="@string/client" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/receiveHostFiles"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:background="@drawable/menu_button"
-                    android:drawableStart="@drawable/ic_download_white_36dp"
-                    android:drawablePadding="4dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/connections_receive_host"
-                    android:textColor="#fff"
-                    android:textSize="12sp" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/keepHostFiles"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:background="@drawable/menu_button"
-                    android:drawableStart="@drawable/ic_content_save_white_36dp"
-                    android:drawablePadding="4dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/connections_keephostsongs"
-                    android:textColor="#fff"
-                    android:textSize="12sp" />
-
-                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/receiveHostSongSections"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -210,6 +184,32 @@
                     android:drawablePadding="4dp"
                     android:gravity="center_vertical"
                     android:text="@string/autoscroll"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
+                
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/receiveHostFiles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/menu_button"
+                    android:drawableStart="@drawable/ic_download_white_36dp"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/connections_receive_host"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/keepHostFiles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/menu_button"
+                    android:drawableStart="@drawable/ic_content_save_white_36dp"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/connections_keephostsongs"
                     android:textColor="#fff"
                     android:textSize="12sp" />
 
