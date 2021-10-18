@@ -157,7 +157,16 @@ public class SetMenuFragment extends Fragment {
     public void updateItem(int position) {
         String folder = mainActivityInterface.getCurrentSet().getFolder(position);
         String filename = mainActivityInterface.getCurrentSet().getFilename(position);
-        setListAdapter.getSetList().get(position).songfolder = folder;
+        String key = mainActivityInterface.getCurrentSet().getKey(position);
+        setListAdapter.getSetList().get(position).songfolder = folder.replace("**","../");
+        setListAdapter.getSetList().get(position).songfoldernice = folder;
+        setListAdapter.getSetList().get(position).songfilename = filename;
+        setListAdapter.getSetList().get(position).songtitle = filename;
+        setListAdapter.getSetList().get(position).songkey = key;
+
+        Log.d(TAG,"updateItem().  folder="+folder);
+        Log.d(TAG,"updateItem().  filename="+filename);
+        Log.d(TAG,"updateItem().  key="+key);
 
         // Check for icon
         setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().

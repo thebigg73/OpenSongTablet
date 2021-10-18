@@ -36,6 +36,7 @@ public class LoadSong {
         String folder = thisSong.getFolder();
         String filename = thisSong.getFilename();
 
+        Log.d(TAG,folder+"/"+filename);
         // Clear the song object then add the folder filename back
         thisSong = new Song();
         thisSong.setFolder(folder);
@@ -83,7 +84,7 @@ public class LoadSong {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", false);
         }
 
-        // When getting the uri, it runs a check for custom folders **Variations, etc.
+        // When getting the uri, it runs a check for custom folders **Variation, etc.
         String where = "Songs";
 
         // Determine the filetype by extension - the best songs are xml (OpenSong formatted).
@@ -91,6 +92,8 @@ public class LoadSong {
 
         uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
                 where, thisSong.getFolder(), thisSong.getFilename());
+
+        Log.d(TAG,"loadSongFile uri="+uri);
 
         // Get the uri for the song - we know it exists as we found it!
         if (mainActivityInterface.getStorageAccess().uriExists(c,uri)) {

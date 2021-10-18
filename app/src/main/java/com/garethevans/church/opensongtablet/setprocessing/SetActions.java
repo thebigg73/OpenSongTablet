@@ -387,6 +387,7 @@ public class SetActions {
         Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem(
                 c, mainActivityInterface, "Songs", folder, filename);
 
+        Log.d(TAG,"uriOriginal="+uriOriginal);
         // Get the uri of the new variation file (Variations/filename)
         Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c,
                 mainActivityInterface, folderVariations, "", filename);
@@ -422,6 +423,7 @@ public class SetActions {
                 icon = R.drawable.ic_image_white_36dp;
                 break;
             case "Variations":
+            case "Variation":
                 icon = R.drawable.ic_file_xml_white_36dp;
                 break;
             case "PDF":
@@ -445,6 +447,7 @@ public class SetActions {
         } else {
             valueToDecideFrom = "Songs";
         }
+        Log.d(TAG,"valueToDecideFrom: "+valueToDecideFrom);
         return valueToDecideFrom;
     }
 
@@ -1258,6 +1261,16 @@ public class SetActions {
         // Now empty the actual folder
         mainActivityInterface.getStorageAccess().wipeFolder(c,mainActivityInterface,folder, "_cache");
 
+        if (folder.equals(folderVariations)) {
+            // Also cleae the non-cache folder
+            ArrayList<String> filesInNonCacheFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(c, mainActivityInterface, folder, "");
+            for (String filename:filesInFolder) {
+                mainActivityInterface.getSQLiteHelper().deleteSong(c, mainActivityInterface, customLocStart+folder, filename);
+            }
+
+            // Now empty the actual folder
+            mainActivityInterface.getStorageAccess().wipeFolder(c,mainActivityInterface,folder, "");
+        }
     }
 
     private void writeTempSlide(Context c, MainActivityInterface mainActivityInterface,

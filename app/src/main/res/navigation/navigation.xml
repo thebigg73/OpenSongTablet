@@ -842,7 +842,7 @@
             android:id="@+id/setVariationBottomSheet"
             android:name="com.garethevans.church.opensongtablet.setmenu.SetVariationBottomSheet"
             android:label="SetVariationBottomSheet"
-            tools:layout="@layout/bottom_sheet_variation"/>
+            tools:layout="@layout/bottom_sheet_setitemedit"/>
     </navigation>
 
 

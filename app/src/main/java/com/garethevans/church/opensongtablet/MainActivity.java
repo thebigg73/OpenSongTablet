@@ -1551,30 +1551,57 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Update the index in the set
         currentSet.setIndexSongInSet(position);
 
+        Log.d(TAG,"folder:"+setFolder+"  filename:"+setFilename+"  key:"+setKey);
         // Get the song key (from the database)
         if (storageAccess.isSpecificFileExtension("imageorpdf",currentSet.getFilename(position))) {
             songKey = nonOpenSongSQLiteHelper.getKey(this,this,setFolder,setFilename);
         } else {
-            songKey = sqLiteHelper.getKey(this,this,setFolder,setFilename);
+            if (setFolder.contains("**") || setFolder.contains("../")) {
+                Song quickSong = new Song();
+                quickSong.setFolder(setFolder);
+                quickSong.setFilename(setFilename);
+                quickSong = mainActivityInterface.getLoadSong().doLoadSongFile(this,this,quickSong,false);
+                songKey = quickSong.getKey();
+                Log.d(TAG,"quickSong.getKey()="+songKey);
+            } else {
+                songKey = sqLiteHelper.getKey(this, this, setFolder, setFilename);
+            }
         }
         if (setKey != null && songKey != null && !setKey.isEmpty() && !songKey.isEmpty() && !songKey.equals(setKey)) {
             // The set has specified a key that is different from our song.
             // We will use a variation of the current song
-            String newFolder = "**Variations";
-            String newFilename = setFolder+"_"+setFilename+"_"+setKey;
+            String newFolder = "**"+getString(R.string.variation);
+            String newFilename;
+            if (setFolder.contains("**")) {
+                // If we were already in a variation
+                newFilename = setFilename+"_"+setKey;
+            } else {
+                newFilename = setFolder + "_" + setFilename + "_" + setKey;
+            }
 
+            Log.d(TAG,"songKey="+songKey+"  setKey="+setKey);
             Uri variationUri = storageAccess.getUriForItem(this,this,"Variations","",newFilename);
             if (!storageAccess.uriExists(this,variationUri)) {
                 // Make this temp variation file
                 storageAccess.lollipopCreateFileForOutputStream(this,this,variationUri,null,"Variations","",newFilename);
                 // Get a tempSong we can write
-                Song copySong = sqLiteHelper.getSpecificSong(this,this,setFolder,setFilename);
+                Song copySong = new Song();
+                Log.d(TAG,"setFolder="+setFolder);
+                if (setFolder.contains("**") || setFolder.contains("../")) {
+                    // Already a variation (or other), so don't use the database
+                    copySong.setFilename(setFilename);
+                    copySong.setFolder(setFolder);
+                    copySong = mainActivityInterface.getLoadSong().doLoadSongFile(this,this,copySong,false);
+                } else {
+                    // Just a song, so use the database
+                    copySong = sqLiteHelper.getSpecificSong(this, this, setFolder, setFilename);
+                }
                 copySong.setFolder(newFolder);
                 copySong.setFilename(newFilename);
                 // Transpose the lyrics
                 // Get the number of transpose times
                 int transposeTimes = transpose.getTransposeTimes(songKey,setKey);
-                copySong.setKey(setKey);
+                copySong.setKey(songKey); // This will be transposed in the following...
                 copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes,false).getLyrics());
                 // Get the song XML
                 String songXML = processSong.getXML(this,this,copySong);

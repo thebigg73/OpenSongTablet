@@ -468,7 +468,8 @@ public class StorageAccess {
             subfolder = subfolder.replace("Images", "Images/_cache");
             subfolder = subfolder.replace("Slides", "Slides/_cache");
             subfolder = subfolder.replace("Scripture", "Scripture/_cache");
-            //subfolder = subfolder.replace("Variations", "Variations");
+            subfolder = subfolder.replace("Variations", "Variation");
+            subfolder = subfolder.replace("Variation", "Variations");
             subfolder = subfolder.replace("Notes", "Notes/_cache");
         }
         if (subfolder.contains("../")) {
@@ -1095,6 +1096,33 @@ public class StorageAccess {
         fixedFolders.add(where);
         fixedFolders.add(folderToCheck);
         return fixedFolders;
+    }
+    public String[] getActualFoldersFromNice(Context c, String folder) {
+        String[] location = new String[2];
+        location[0] = "Songs";
+        location[1] = folder;
+        if (folder.contains("../") || folder.contains("**")) {
+            folder = folder.replace("../", "");
+            folder = folder.replace("**", "");
+            folder = folder.replace("/_cache", "");
+            if (folder.contains(c.getString(R.string.variation)) || folder.contains("Variation")) {
+                location[0] = "Variations";
+                location[1] = "";
+            } else if (folder.contains(c.getString(R.string.note)) || folder.contains("Note")) {
+                location[0] = "Notes";
+                location[1] = "_cache";
+            } else if (folder.contains(c.getString(R.string.image)) || folder.contains("Image")) {
+                location[0] = "Images";
+                location[1] = "_cache";
+            } else if (folder.contains(c.getString(R.string.scripture)) || folder.contains("Scripture")) {
+                location[0] = "Scripture";
+                location[1] = "_cache";
+            } else if (folder.contains(c.getString(R.string.slide)) || folder.contains("Slide")) {
+                location[0] = "Slides";
+                location[1] = "_cache";
+            }
+        }
+        return location;
     }
     public void lollipopCreateFileForOutputStream(Context c, MainActivityInterface mainActivityInterface, Uri uri, String mimeType, String folder, String subfolder, String filename) {
         if (lollipopOrLater() && !uriExists(c, uri)) {
@@ -1870,6 +1898,15 @@ public class StorageAccess {
     }
     @SuppressLint("NewApi")
     public ArrayList<String> listFilesInFolder(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder) {
+        Log.d(TAG,"folder: "+folder+"  subfolder: "+subfolder);
+
+        if (subfolder.startsWith("../") || subfolder.startsWith("**")) {
+            folder = subfolder.replace("../","");
+            folder = subfolder.replace("**","");
+            subfolder = "";
+        }
+
+        Log.d(TAG,"folder: "+folder+"  subfolder: "+subfolder);
         if (lollipopOrLater()) {
             return listFilesInFolder_SAF(c, mainActivityInterface, folder, subfolder);
         } else {
