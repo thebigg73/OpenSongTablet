@@ -44,13 +44,13 @@
                     android:text="@string/set_manage" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                    android:id="@+id/variation"
+                    android:id="@+id/edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/variation_make"
+                    android:hint="@string/edit_set_item_info"
                     custom:mydrawable="@drawable/ic_pencil_white_36dp"
                     android:padding="16dp"
-                    android:text="@string/variation" />
+                    android:text="@string/edit_set_item" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                     android:id="@+id/addScripture"

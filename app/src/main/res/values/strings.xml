@@ -1027,4 +1027,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart.
     <string name="restore_sets">Restore sets</string>
     <string name="set_delete_info">Delete old sets</string>
     <string name="edit_set_item">Edit set item</string>
+    <string name="edit_set_item_info">Change item or key or make a variation</string>
 </resources>

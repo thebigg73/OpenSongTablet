@@ -74,7 +74,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         boolean songs = mainActivityInterface.getCurrentSet().getSetFilenames().size()>0;
 
         if (!songs) {
-            myView.variation.setVisibility(View.GONE);
+            myView.edit.setVisibility(View.GONE);
             myView.shuffleSet.setVisibility(View.GONE);
             myView.randomSong.setVisibility(View.GONE);
         }
@@ -103,8 +103,8 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.navigateToFragment("opensongapp://settings/sets",-1);
             dismiss();
         });
-        myView.variation.setOnClickListener(v -> {
-            SetVariationBottomSheet setVariationBottomSheet = new SetVariationBottomSheet();
+        myView.edit.setOnClickListener(v -> {
+            SetEditItemBottomSheet setVariationBottomSheet = new SetEditItemBottomSheet();
             setVariationBottomSheet.show(requireActivity().getSupportFragmentManager(),"setVariation");
             dismiss();
         });

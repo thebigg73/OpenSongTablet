@@ -27,13 +27,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
-public class SetVariationBottomSheet extends BottomSheetDialogFragment {
+public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
     // This allows the user to select a set item to make it a variation
     private MainActivityInterface mainActivityInterface;
     private BottomSheetSetitemeditBinding myView;
     private final String TAG = "SetVariationBottomSheet";
-    private ArrayList<String> folders, keys, filenames, currentSetFolder;
+    private ArrayList<String> filenames;
+    private ArrayList<String> currentSetFolder;
     private int setPosition = 0;
     private View selectedCard;
     ExposedDropDownArrayAdapter keyAdapter, folderAdapter, filenameAdapter;
@@ -88,12 +89,12 @@ public class SetVariationBottomSheet extends BottomSheetDialogFragment {
         myView.editKey.setAdapter(keyAdapter);
         myView.editKey.setText(mainActivityInterface.getCurrentSet().getKey(0));
 
-        folders = mainActivityInterface.getSQLiteHelper().getFolders(requireContext(),mainActivityInterface);
+        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders(requireContext(), mainActivityInterface);
         folders.add("**"+getString(R.string.note));
         folders.add("**"+getString(R.string.variation));
         folders.add("**"+getString(R.string.scripture));
         folders.add("**"+getString(R.string.slide));
-        folderAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.editFolder,R.layout.view_exposed_dropdown_item,folders);
+        folderAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.editFolder,R.layout.view_exposed_dropdown_item, folders);
         myView.editFolder.setAdapter(folderAdapter);
         myView.editFolder.setText(mainActivityInterface.getCurrentSet().getFolder(0));
 
@@ -230,7 +231,7 @@ public class SetVariationBottomSheet extends BottomSheetDialogFragment {
 
     private class MyTextWatcher implements TextWatcher {
 
-        private String which;
+        private final String which;
 
         private MyTextWatcher(String which) {
             this.which = which;
