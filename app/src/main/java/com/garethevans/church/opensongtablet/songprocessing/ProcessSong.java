@@ -2050,7 +2050,6 @@ public class ProcessSong {
     }
 
     public int getCurrentPage(MainActivityInterface mainActivityInterface, int page) {
-        // TODO use Song or PDFSong?
         Log.d(TAG,"page="+page);
         if (!mainActivityInterface.getSong().getShowstartofpdf()) {
             // This is to deal with swiping backwards through songs, show the last page first!
@@ -2157,11 +2156,10 @@ public class ProcessSong {
             e.printStackTrace();
         }
 
-        // TODO - use a preference to see if we want to trim whitespace
-        //return trimBitmap(bitmap);
         return bitmap;
     }
 
+    // Not working yet
     public Bitmap trimBitmap(Bitmap bmp) {
         int imgHeight = bmp.getHeight();
         int imgWidth = bmp.getWidth();

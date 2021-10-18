@@ -24,11 +24,6 @@ opening a song when in the set menu doesn't scroll to it
 
 
 
-
-PDF songs -  load as recyclerview?  Could allow scrolling vertically through pages?
-
-
-
     Display - song display / advanced - needs ProcessSong brought fully online
     Display - connected display (HDMI/Chromecast output) - needs SecondScreen working
     Display - Action bar - auto hide action bar not working yet
@@ -44,7 +39,6 @@ PDF songs -  load as recyclerview?  Could allow scrolling vertically through pag
     Song menu action button - show song actions
     Song menu action button - find new songs
 
-    Set management:
 
     Controls - page buttons: Add the features once they are all ready
     Controls - pedals: Add the features once they are ready
