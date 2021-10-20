@@ -72,10 +72,19 @@ public class NearbyConnectionsFragment extends Fragment {
             offHostClient(false,false);
         }
 
+        // IV - Display relevant options to process nearby Song Section changes and autoscroll
+        if (mainActivityInterface.getMode().equals("Performance")) {
+            myView.receiveHostSections.setVisibility(View.GONE);
+        } else {
+            myView.receiveAutoscroll.setVisibility(View.GONE);
+        }
+
         // Set the host switches
-        myView.nearbyHostMenuOnly.setChecked(mainActivityInterface.getNearbyConnections().nearbyHostMenuOnly);
-        myView.receiveHostFiles.setChecked(mainActivityInterface.getNearbyConnections().receiveHostFiles);
-        myView.keepHostFiles.setChecked(mainActivityInterface.getNearbyConnections().keepHostFiles);
+        myView.nearbyHostMenuOnly.setChecked(mainActivityInterface.getNearbyConnections().getNearbyHostMenuOnly());
+        myView.receiveHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostFiles());
+        myView.keepHostFiles.setChecked(mainActivityInterface.getNearbyConnections().getKeepHostFiles());
+        myView.receiveAutoscroll.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostAutoscroll());
+        myView.receiveHostSections.setChecked(mainActivityInterface.getNearbyConnections().getReceiveHostSongSections());
 
         // Show any connection log
         updateConnectionsLog();
@@ -112,9 +121,28 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.deviceButton.setOnClickListener(v -> textInputDialog());
 
         // The client/host options
-        myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().keepHostFiles = isChecked);
-        myView.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().receiveHostFiles = isChecked);
+        myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getNearbyConnections().keepHostFiles = isChecked;
+            if (isChecked) {
+                // IV - Re-connect to apply setting
+                Handler h = new Handler();
+                h.postDelayed(() -> myView.searchForHosts.performClick(), 2000);
+            }
+        });
+        myView.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mainActivityInterface.getNearbyConnections().receiveHostFiles = isChecked;
+            // IV - When off turn keep off - user must make an active choice to 'keep' as it may overwrite local songs
+            if (!isChecked) {
+                myView.keepHostFiles.setChecked(false);
+                mainActivityInterface.getNearbyConnections().setKeepHostFiles(false);
+            }
+            // IV - Re-connect to apply setting
+            Handler h = new Handler();
+            h.postDelayed(() -> myView.searchForHosts.performClick(),2000);
+        });
         myView.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyHostMenuOnly(requireContext(),mainActivityInterface,isChecked));
+        myView.receiveAutoscroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostAutoscroll(isChecked));
+        myView.receiveHostSections.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostSongSections(isChecked));
 
         // Changing the nearby connection
         myView.connectionsOff.setOnCheckedChangeListener((radioButton, isChecked) -> {
@@ -145,6 +173,17 @@ public class NearbyConnectionsFragment extends Fragment {
                 // IV - Short delay to help stability
                 Handler h = new Handler();
                 h.postDelayed(() -> myView.searchForHosts.performClick(),2000);
+
+            } else {
+                // IV - Reset the client options when leaving client mode
+                mainActivityInterface.getNearbyConnections().setReceiveHostFiles(false);
+                mainActivityInterface.getNearbyConnections().setKeepHostFiles(false);
+                mainActivityInterface.getNearbyConnections().setReceiveHostSongSections(true);
+                mainActivityInterface.getNearbyConnections().setReceiveHostAutoscroll(true);
+                myView.receiveHostFiles.setChecked(false);
+                myView.keepHostFiles.setChecked(false);
+                myView.receiveHostSections.setChecked(true);
+                myView.receiveAutoscroll.setChecked(true);
             }
         });
 

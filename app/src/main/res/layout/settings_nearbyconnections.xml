@@ -100,6 +100,20 @@
                     android:text="@string/connections_keephostsongs"
                     android:padding="8dp"/>
 
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/receiveHostSections"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/song_sections"
+                    android:padding="8dp"/>
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/receiveAutoscroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/autoscroll"
+                    android:padding="8dp"/>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/searchForHosts"
                     android:layout_width="match_parent"

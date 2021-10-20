@@ -454,12 +454,13 @@
  Welcome to OpenSongApp!
  This is an information page to show you some of the features of the app.
  OpenSongApp has many more features across three modes:
-     • Performance Mode - use your Android device as a song book on stage
-     • Stage Mode - control stage display monitors or hook up to a projector
-     • Presentation Mode - hook up to a projector and display lyrics
+     • Performance Mode – use your Android device as a song book on stage
+     • Stage Mode – control stage display monitors or hook up to a projector
+     • Presentation Mode – hook up to a projector and display lyrics
+
 [Menus]
  The left hand slide out song and set menu:
-        •  Show all songs and folders on the device
+        • Show all songs and folders on the device
         • Allows searching and filtering of songs
         • Show the current editable set
 
@@ -477,7 +478,7 @@
  You can manually create any song you like.
  The app only comes with this \'song\' by default due to copyright.
         You can start a song by import from other services:
-     • Desktop OpenSong - I highly recommend syncing using Dropbox
+     • Desktop OpenSong – I highly recommend syncing using Dropbox
      • ChordPro files
      • Ultimate Guitar website (using the import feature)
      • Chordie website (using the import feature)
@@ -524,34 +525,36 @@ Check out the categories in the right hand options menu.
 .||: G  | D/F#  | Em7  | D  :||
 [V1]
 .G2                D/F#
- Love everlasting, love without measure,
+ Love everlasting, love without measure
 .Em7                 D
- Full of compassion, righteous and pure;
+ Full of compassion, righteous and pure
 .C     G/B             Am7   C/D      D
- Is my Saviour\'s love, is my Father\'s heart.
+ Is my Saviour\'s love, is my Father\'s heart
 [V2]
 .G2                   D/F#
- Loved by the Father, saved by the Son,
+ Loved by the Father, saved by the Son
 .Em7                 D
- Born of His Spirit, washed in the blood;
-.C          G/B             Am7        C/D      D
- This is my Saviour\'s love, this is my Father\'s heart.
+ Born of His Spirit, washed in the blood
+.C          G/B             Am7        C/D       D
+ This is my Saviour\'s love, this is my Father\'s heart
+
 [B]
-.Em            Cmaj7 Em                Cmaj7
- Your love for me,   it reaches to the heavens,
-.Em              Cmaj7             Bm7
- Let my love for You just grow and grow !
-.Em            Cmaj7 Em                Cmaj7
- Your love for me,   it reaches to the heavens,
-.Em              Cmaj7             D  D/F#
- Let my love for You just grow and grow !
+.Em            Cmaj7  Em                Cmaj7
+ Your love for me, ___it reaches to the heavens
+.Em              Cmaj7                Bm7
+ Let my love for You __just grow and grow!
+.Em            Cmaj7  Em                Cmaj7
+ Your love for me, ___it reaches to the heavens
+.Em              Cmaj7               D  D/F#
+ Let my love for You __just grow and grow!
 [V3]
 .G2                       D/F#
- Love sent from heaven, received in our hearts,
+ Love sent from heaven, received in our hearts
 .Em7                      D
- Loving each other, since Christ first loved us;
+ Loving each other, since Christ first loved us
 .C          G/B             Am7        C/D      D
-Sharing my Saviour\'s love, showing my Father\'s heart.
+ Sharing my Saviour\'s love, showing my Father\'s heart
+
 [Outro]
 ;(Slow to end)
 .| G  |"</string>

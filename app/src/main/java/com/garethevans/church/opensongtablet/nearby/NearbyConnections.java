@@ -42,6 +42,7 @@ import java.util.Objects;
 
 public class NearbyConnections implements NearbyInterface {
 
+    private final Context c;
     private final String TAG = "NearbyConnections";
     private final ArrayList<String> connectedEndPoints;
     private final ArrayList<String> connectedEndPointsNames;
@@ -53,7 +54,9 @@ public class NearbyConnections implements NearbyInterface {
     private SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
     public String deviceId, connectionLog, incomingPrevious, connectionId, connectionEndPointName;
     public boolean isConnected, isHost, receiveHostFiles, keepHostFiles, usingNearby,
-            isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly;
+            isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
+            receiveHostAutoscroll = true,
+            receiveHostSongSections = true;
     NearbyReturnActionsInterface nearbyReturnActionsInterface;
     AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
     DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
@@ -68,6 +71,7 @@ public class NearbyConnections implements NearbyInterface {
 
 
     public NearbyConnections(Context c) {
+        this.c = c;
         connectedEndPoints = new ArrayList<>();
         connectedEndPointsNames = new ArrayList<>();
         connectedDeviceIds = new ArrayList<>();
@@ -93,7 +97,6 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
     }
-
 
     public void setMainActivityInterface(MainActivityInterface mainActivityInterface) {
         this.mainActivityInterface = mainActivityInterface;
@@ -178,28 +181,6 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
         isDiscovering = false;
-    }
-
-    private String getDeviceNameFromId(String endpointId) {
-        // When requesting connections, the proper device name is stored in an arraylist like endpointId__deviceName
-        for (String s : connectedEndPointsNames) {
-            if (s.startsWith(endpointId + "__")) {
-                return s.replace(endpointId + "__", "");
-            }
-        }
-        return endpointId;
-    }
-
-    public String getUserNickname(Context c, MainActivityInterface mainActivityInterface) {
-        String model = android.os.Build.MODEL.trim();
-        // If the user has saved a value for their device name, use that instead
-        // Don't need to save the device name unless the user edits it to make it custom
-        return deviceId = mainActivityInterface.getPreferences().getMyPreferenceString(c, "deviceId", model);
-    }
-
-    public void setNearbyHostMenuOnly(Context c, MainActivityInterface mainActivityInterface, boolean nearbyHostMenuOnly) {
-        this.nearbyHostMenuOnly = nearbyHostMenuOnly;
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "nearbyHostMenuOnly", nearbyHostMenuOnly);
     }
 
     private String userConnectionInfo(String endpointId, ConnectionInfo connectionInfo) {
@@ -587,9 +568,6 @@ public class NearbyConnections implements NearbyInterface {
         pendingCurrentSection = 0;
     }
 
-    public String getReceivedSongFilename() {
-        return getReceivedSongFilename();
-    }
     private void payloadFile(Context c, MainActivityInterface mainActivityInterface, Payload payload, String foldernamepair) {
         // IV - CLIENT: Cancel previous song transfers - a new song has arrived
         cancelTransferIds(c);
@@ -715,10 +693,15 @@ public class NearbyConnections implements NearbyInterface {
                             fileNewLocation.put(Long.parseLong(id), foldernamepair);
 
                         } else if (incoming != null && incoming.contains("autoscroll_")) {
-                            payloadAutoscroll(mainActivityInterface.getAutoscroll(), incoming);
+                            // IV - Autoscroll only in Performance mode when user option is selected
+                            if (mainActivityInterface.getMode().equals("Performance") && receiveHostAutoscroll) {
+                                payloadAutoscroll(mainActivityInterface.getAutoscroll(), incoming);
+                            }
                         } else if (incoming != null && incoming.contains("___section___")) {
-                            //Log.d("NearbyConnections", "Section " + incoming);
-                            payloadSection(incoming);
+                            // IV - Section change only in Stage and Presentation mode when user option is selected
+                            if (!mainActivityInterface.getMode().equals("Performance") && receiveHostSongSections) {
+                                payloadSection(incoming);
+                            }
                         } else if (incoming != null && incoming.contains("_ep__ep_")) {
                             payloadEndpoints(incoming);
                         } else if (incoming != null && incoming.contains("_xx____xx_")) {
@@ -797,4 +780,60 @@ public class NearbyConnections implements NearbyInterface {
             fileNewLocation = new SimpleArrayMap<>();
         }
     }
+
+
+    // The getters
+    public boolean getNearbyHostMenuOnly() {
+        return nearbyHostMenuOnly;
+    }
+    public boolean getReceiveHostFiles() {
+        return receiveHostFiles;
+    }
+    public boolean getKeepHostFiles() {
+        return keepHostFiles;
+    }
+    public boolean getReceiveHostAutoscroll() {
+        return receiveHostAutoscroll;
+    }
+    public boolean getReceiveHostSongSections() {
+        return receiveHostSongSections;
+    }
+    public String getReceivedSongFilename() {
+        return receivedSongFilename;
+    }
+    private String getDeviceNameFromId(String endpointId) {
+        // When requesting connections, the proper device name is stored in an arraylist like endpointId__deviceName
+        for (String s : connectedEndPointsNames) {
+            if (s.startsWith(endpointId + "__")) {
+                return s.replace(endpointId + "__", "");
+            }
+        }
+        return endpointId;
+    }
+    public String getUserNickname(Context c, MainActivityInterface mainActivityInterface) {
+        String model = android.os.Build.MODEL.trim();
+        // If the user has saved a value for their device name, use that instead
+        // Don't need to save the device name unless the user edits it to make it custom
+        return deviceId = mainActivityInterface.getPreferences().getMyPreferenceString(c, "deviceId", model);
+    }
+
+
+    // The setters
+    public void setNearbyHostMenuOnly(Context c, MainActivityInterface mainActivityInterface, boolean nearbyHostMenuOnly) {
+        this.nearbyHostMenuOnly = nearbyHostMenuOnly;
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "nearbyHostMenuOnly", nearbyHostMenuOnly);
+    }
+    public void setReceiveHostFiles(boolean receiveHostFiles) {
+        this.receiveHostFiles = receiveHostFiles;
+    }
+    public void setKeepHostFiles(boolean keepHostFiles) {
+        this.keepHostFiles = keepHostFiles;
+    }
+    public void setReceiveHostAutoscroll(boolean receiveHostAutoscroll) {
+        this.receiveHostAutoscroll = receiveHostAutoscroll;
+    }
+    public void setReceiveHostSongSections(boolean receiveHostSongSections) {
+        this.receiveHostSongSections = receiveHostSongSections;
+    }
+
 }
