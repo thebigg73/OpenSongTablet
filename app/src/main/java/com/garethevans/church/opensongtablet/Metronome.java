@@ -331,6 +331,12 @@ class Metronome {
                     } else {
                         publishProgress(metronomeColorDarker);
                     }
+                    // IV - Sleep some of the loop to give other threads time
+                    try {
+                        Thread.sleep(time_in_millisecs - 90);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             return null;

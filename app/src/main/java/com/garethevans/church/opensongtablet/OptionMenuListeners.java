@@ -1739,6 +1739,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         SwitchCompat nearbyHostMenuOnly = v.findViewById(R.id.nearbyHostMenuOnly);
         SwitchCompat receiveHostFiles = v.findViewById(R.id.receiveHostFiles);
         SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
+        SwitchCompat receiveHostSongSections = v.findViewById(R.id.receiveHostSongSections);
+        SwitchCompat receiveHostAutoscroll = v.findViewById(R.id.receiveHostAutoscroll);
         connectionLog = v.findViewById(R.id.options_connections_log);
         connectionSearch = v.findViewById(R.id.searchForHosts);
 
@@ -1758,6 +1760,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextSwitch(nearbyHostMenuOnly,c.getResources().getString(R.string.nearby_host_menu_only));
         setTextSwitch(receiveHostFiles,c.getResources().getString(R.string.connections_receive_host));
         setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
+        setTextSwitch(receiveHostSongSections,c.getResources().getString(R.string.song_sections));
+        setTextSwitch(receiveHostAutoscroll,c.getResources().getString(R.string.autoscroll));
         setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
@@ -1772,6 +1776,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         nearbyHostMenuOnly.setChecked(preferences.getMyPreferenceBoolean(c,"nearbyHostMenuOnly",false));
         receiveHostFiles.setChecked(StaticVariables.receiveHostFiles);
         keepHostFiles.setChecked(StaticVariables.keepHostFiles);
+        receiveHostSongSections.setChecked(StaticVariables.receiveHostSongSections);
+        receiveHostAutoscroll.setChecked(StaticVariables.receiveHostAutoscroll);
 
         if (StaticVariables.isHost) {
             hostOptions.setVisibility(View.VISIBLE);
@@ -1782,6 +1788,13 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         } else {
             hostOptions.setVisibility(View.GONE);
             clientOptions.setVisibility(View.GONE);
+        }
+
+        // IV - Display relevant options to process nearby Song Section changes and autoscroll
+        if (StaticVariables.whichMode.equals("Performance")) {
+            receiveHostSongSections.setVisibility(View.GONE);
+        } else {
+            receiveHostAutoscroll.setVisibility(View.GONE);
         }
 
         // Set the listeners
@@ -1828,6 +1841,16 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 // IV - Short delay to help stability
                 Handler h = new Handler();
                 h.postDelayed(() -> connectionSearch.performClick(),2000);
+            } else {
+                // IV - Reset the client options when leaving client mode
+                StaticVariables.receiveHostFiles = false;
+                StaticVariables.keepHostFiles = false;
+                StaticVariables.receiveHostSongSections = true;
+                StaticVariables.receiveHostAutoscroll = true;
+                receiveHostFiles.setChecked(false);
+                keepHostFiles.setChecked(false);
+                receiveHostSongSections.setChecked(true);
+                receiveHostAutoscroll.setChecked(true);
             }
         });
 
@@ -1853,9 +1876,15 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked));
+
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;
             keepHostFiles.setEnabled(isChecked);
+            // IV - When off turn keep off - user must make an active choice to 'keep' as it may overwrite local songs
+            if (!isChecked) {
+                keepHostFiles.setChecked(false);
+                StaticVariables.keepHostFiles = false;
+            }
             // IV - Re-connect to apply setting
             Handler h = new Handler();
             h.postDelayed(() -> connectionSearch.performClick(),2000);
@@ -1863,9 +1892,19 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
         keepHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.keepHostFiles = isChecked;
-            // IV - Re-connect to apply setting
-            Handler h = new Handler();
-            h.postDelayed(() -> connectionSearch.performClick(),2000);
+            if (isChecked) {
+                // IV - Re-connect to apply setting
+                Handler h = new Handler();
+                h.postDelayed(() -> connectionSearch.performClick(), 2000);
+            }
+        });
+
+        receiveHostSongSections.setOnCheckedChangeListener((view,isChecked) -> {
+            StaticVariables.receiveHostSongSections = isChecked;
+        });
+
+        receiveHostAutoscroll.setOnCheckedChangeListener((view,isChecked) -> {
+            StaticVariables.receiveHostAutoscroll = isChecked;
         });
 
         deviceName.setOnClickListener(view -> {

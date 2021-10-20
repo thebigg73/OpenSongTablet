@@ -287,6 +287,8 @@ public class StageMode extends AppCompatActivity implements
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
     private boolean newsongloaded = false;
+    private boolean songUriExists;
+
 
     // Dialogue fragments and stuff
     private DialogFragment newFragment;
@@ -384,6 +386,8 @@ public class StageMode extends AppCompatActivity implements
         sendSongToConnected();
         sendSongDelay = 3000;
     };
+    private final Handler playPadHandler = new Handler();
+    private final Runnable playPadRunnable = () -> playPad();
     private final Handler resetSendSongAfterDelayHandler = new Handler();
     private final Runnable resetSendSongAfterDelayRunnable = () -> sendSongDelay = 0;
 
@@ -4308,67 +4312,57 @@ public class StageMode extends AppCompatActivity implements
                 // Decide on the best scaling
                 FullscreenActivity.padding = getPixelsFromDpi(6);
                 int availablewidth_1col = getAvailableWidth() - FullscreenActivity.padding;
-                int availablewidth_2col = (int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(12 + 4);
-                int availablewidth_3col = (int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(18 + 4 + 4);
-                int availableheight = getAvailableHeight() - getPixelsFromDpi(12);
-
                 float myscale_1_1_col_x = (float) availablewidth_1col / (float) FullscreenActivity.viewwidth[0];
                 width_scale = myscale_1_1_col_x;
-                float myscale_1_2_col_x = (float) availablewidth_2col / (float) FullscreenActivity.viewwidth[1];
-                float myscale_2_2_col_x = (float) availablewidth_2col / (float) FullscreenActivity.viewwidth[2];
-                float myscale_1_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[3];
-                float myscale_2_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[4];
-                float myscale_3_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[5];
+                int availableheight = getAvailableHeight() - getPixelsFromDpi(12);
                 float myscale_1_1_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[0];
-                float myscale_1_2_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[1];
-                float myscale_2_2_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[2];
-                float myscale_1_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[3];
-                float myscale_2_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[4];
-                float myscale_3_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[5];
-
-                // If users don't want to maximise the size of every column
-                if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y") &&
-                        !preferences.getMyPreferenceBoolean(StageMode.this,"songAutoScaleColumnMaximise",true)) {
-                    // Two columns
-                    if (myscale_1_2_col_x < myscale_2_2_col_x) {
-                        myscale_2_2_col_x = myscale_1_2_col_x;
-                        myscale_2_2_col_y = myscale_1_2_col_y;
-                    } else {
-                        myscale_1_2_col_x = myscale_2_2_col_x;
-                        myscale_1_2_col_y = myscale_2_2_col_y;
-                    }
-
-                    // Three columns
-                    if (myscale_1_3_col_x < myscale_2_3_col_x) {
-                        myscale_2_3_col_x = myscale_1_3_col_x;
-                        myscale_2_3_col_y = myscale_1_3_col_y;
-                    } else {
-                        myscale_1_3_col_x = myscale_2_3_col_x;
-                        myscale_1_3_col_y = myscale_2_3_col_y;
-                    }
-                    if (myscale_1_3_col_x < myscale_3_3_col_x) {
-                        myscale_3_3_col_x = myscale_1_3_col_x;
-                        myscale_3_3_col_y = myscale_1_3_col_y;
-                    } else {
-                        myscale_1_3_col_x = myscale_3_3_col_x;
-                        myscale_2_3_col_x = myscale_3_3_col_x;
-                        myscale_1_3_col_y = myscale_3_3_col_y;
-                        myscale_2_3_col_y = myscale_3_3_col_y;
-                    }
-                }
-
                 StaticVariables.sectionScaleValue[0] = processSong.getScaleValue(StageMode.this,
                         preferences, myscale_1_1_col_x, myscale_1_1_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[1] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_1_2_col_x, myscale_1_2_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[2] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_2_2_col_x, myscale_2_2_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[3] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_1_3_col_x, myscale_1_3_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[4] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_2_3_col_x, myscale_2_3_col_y, 12.0f);
-                StaticVariables.sectionScaleValue[5] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_3_3_col_x, myscale_3_3_col_y, 12.0f);
+
+                // IV - If we are going for full scaling
+                if (StaticVariables.thisSongScale.equals("Y")) {
+                    int availablewidth_2col = (int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(12 + 4);
+                    int availablewidth_3col = (int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(18 + 4 + 4);
+
+                    float myscale_1_2_col_x = (float) availablewidth_2col / (float) FullscreenActivity.viewwidth[1];
+                    float myscale_2_2_col_x = (float) availablewidth_2col / (float) FullscreenActivity.viewwidth[2];
+                    float myscale_1_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[3];
+                    float myscale_2_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[4];
+                    float myscale_3_3_col_x = (float) availablewidth_3col / (float) FullscreenActivity.viewwidth[5];
+                    float myscale_1_2_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[1];
+                    float myscale_2_2_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[2];
+                    float myscale_1_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[3];
+                    float myscale_2_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[4];
+                    float myscale_3_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[5];
+
+                    // If users don't want to scale columns independently
+                    if (!preferences.getMyPreferenceBoolean(StageMode.this,"songAutoScaleColumnMaximise",true)) {
+                        // Two columns
+                        myscale_1_2_col_x = Math.min(myscale_1_2_col_x,myscale_2_2_col_x);
+                        myscale_1_2_col_y = Math.min(myscale_1_2_col_y,myscale_2_2_col_y);
+                        myscale_2_2_col_x = myscale_1_2_col_x;
+                        myscale_2_2_col_y = myscale_1_2_col_y;
+
+                        // Three columns
+                        myscale_1_3_col_x = Math.min(Math.min(myscale_1_3_col_x,myscale_2_3_col_x),myscale_3_3_col_x);
+                        myscale_1_3_col_y = Math.min(Math.min(myscale_1_3_col_y,myscale_2_3_col_y),myscale_3_3_col_y);
+                        myscale_2_3_col_x = myscale_1_3_col_x;
+                        myscale_2_3_col_y = myscale_1_3_col_y;
+                        myscale_3_3_col_x = myscale_1_3_col_x;
+                        myscale_3_3_col_y = myscale_1_3_col_y;
+                    }
+
+                    StaticVariables.sectionScaleValue[1] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_1_2_col_x, myscale_1_2_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[2] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_2_2_col_x, myscale_2_2_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[3] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_1_3_col_x, myscale_1_3_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[4] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_2_3_col_x, myscale_2_3_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[5] = processSong.getScaleValue(StageMode.this,
+                            preferences, myscale_3_3_col_x, myscale_3_3_col_y, 12.0f);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -5414,7 +5408,7 @@ public class StageMode extends AppCompatActivity implements
                 // We know how many columns we are using, so lets go for it.
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
                  // IV - If doing song block add a padding
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
+                if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
                 }
                 songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
@@ -5714,7 +5708,7 @@ public class StageMode extends AppCompatActivity implements
                 column1_2 = processSong.preparePerformanceColumnView(StageMode.this);
                 column2_2 = processSong.preparePerformanceColumnView(StageMode.this);
                 // IV - If doing song block add a padding
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
+                if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
                     column2_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
                 }
@@ -5817,7 +5811,7 @@ public class StageMode extends AppCompatActivity implements
                 column2_3 = processSong.preparePerformanceColumnView(StageMode.this);
                 column3_3 = processSong.preparePerformanceColumnView(StageMode.this);
                 // IV - If doing song block add a padding
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
+                if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
                     column2_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
                     column3_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
@@ -6176,7 +6170,7 @@ public class StageMode extends AppCompatActivity implements
                 // Only 1 column, but many sections
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
                 // IV - If doing song block add a padding
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
+                if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
                 }
                 songbit = processSong.prepareStageSongBitView(StageMode.this);
@@ -6318,6 +6312,9 @@ public class StageMode extends AppCompatActivity implements
     }
     private void fadeoutPad() {
 
+        // IV - Remove any outstanding cross-fade playPad requests
+        playPadHandler.removeCallbacks(playPadRunnable);
+
         // Put the quick fade mechanism into a known state
         StaticVariables.padInQuickFade = 0;
 
@@ -6342,7 +6339,12 @@ public class StageMode extends AppCompatActivity implements
         // IV - Pad time display logic is elsewhere
 
         while (StaticVariables.pad1Playing && StaticVariables.pad2Playing) {
-            // Wait until a pad is free for use
+            // Sleep until a pad is free for use
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         StaticVariables.padInQuickFade = 0;
     }
@@ -6978,6 +6980,7 @@ public class StageMode extends AppCompatActivity implements
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
                 startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
                 showStickyHandler.removeCallbacks(showStickyRunnable);
+                playPadHandler.removeCallbacks(playPadRunnable);
 
                 // If there is a sticky note showing, remove it early
                 if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
@@ -7010,83 +7013,80 @@ public class StageMode extends AppCompatActivity implements
                 Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder,
                         StaticVariables.songfilename);
 
-                if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
-                    ShowToast.showToast(StageMode.this);
-                } else {
-                    newsongloaded = true;
+                songUriExists = storageAccess.uriExists(StageMode.this, uri);
 
-                    // IV - Animate out only when isSong
-                    if (FullscreenActivity.isSong) {
-                        // Animate out the current song
-                        if (FullscreenActivity.whichDirection.equals("L2R")) {
-                            if (songscrollview != null) {
-                                songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                            }
-                        } else {
-                            if (songscrollview != null) {
-                                songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                            }
-                        }
-                        // If there were highlight notes showing, move them away
-                        if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
-                            if (FullscreenActivity.whichDirection.equals("L2R")) {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                            } else if (highlightNotes != null) {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                            }
+                newsongloaded = true;
+
+                // IV - Animate out only when isSong
+                if (FullscreenActivity.isSong) {
+                    // Animate out the current song
+                    if (FullscreenActivity.whichDirection.equals("L2R")) {
+                        if (songscrollview != null) {
+                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                         }
                     } else {
-                        // If there were highlight notes showing, remove them
-                        CustomAnimations.faderAnimation(highlightNotes, 300, false);
-                    }
-
-                    // Remove any capokey
-                    FullscreenActivity.capokey = "";
-                    // IV - Clear capo info and animation - prevents disturbance with display of new song
-                    capoInfo.setVisibility(View.GONE);
-                    capoinfonewkey.setVisibility(View.GONE);
-                    capoInfo.clearAnimation();
-
-                    // End any current autoscroll
-                    if (StaticVariables.isautoscrolling) {
-                        stopAutoScroll();
-                    }
-
-                    // After animate out, load the song
-                    Handler h = new Handler();
-                    h.postDelayed(() -> {
-                        try {
-                            glideimage_HorizontalScrollView.setVisibility(View.GONE);
-                            glideimage_ScrollView.setVisibility(View.GONE);
-                            songscrollview.setVisibility(View.GONE);
-                            highlightNotes.setVisibility(View.GONE);
-                            highlightNotes.setScaleX(1.0f);
-                            highlightNotes.setScaleY(1.0f);
-                            FullscreenActivity.highlightOn = false;
-                            glideimage_ScrollView.scrollTo(0, 0);
-                            songscrollview.scrollTo(0, 0);
-
-                            // Hide the image, cause we might be loading a proper song!
-                            glideimage.setBackgroundColor(StaticVariables.transparent);
-                            glideimage.setImageDrawable(null);
-
-                        } catch (Exception e) {
-                            Log.d(TAG, "error updating the views");
+                        if (songscrollview != null) {
+                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                         }
-
-                        // Load the song
-                        doCancelAsyncTask(loadsong_async);
-                        doCancelAsyncTask(resizestage_async);
-                        doCancelAsyncTask(resizeperformance_async);
-                        loadsong_async = new LoadSongAsync();
-                        try {
-                            loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    }
+                    // If there were highlight notes showing, move them away
+                    if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
+                        if (FullscreenActivity.whichDirection.equals("L2R")) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                        } else if (highlightNotes != null) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                         }
-                    }, 300);
+                    }
+                } else {
+                    // If there were highlight notes showing, remove them
+                    CustomAnimations.faderAnimation(highlightNotes, 300, false);
                 }
+
+                // Remove any capokey
+                FullscreenActivity.capokey = "";
+                // IV - Clear capo info and animation - prevents disturbance with display of new song
+                capoInfo.setVisibility(View.GONE);
+                capoinfonewkey.setVisibility(View.GONE);
+                capoInfo.clearAnimation();
+
+                // End any current autoscroll
+                if (StaticVariables.isautoscrolling) {
+                    stopAutoScroll();
+                }
+
+                // After animate out, load the song
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    try {
+                        glideimage_HorizontalScrollView.setVisibility(View.GONE);
+                        glideimage_ScrollView.setVisibility(View.GONE);
+                        songscrollview.setVisibility(View.GONE);
+                        highlightNotes.setVisibility(View.GONE);
+                        highlightNotes.setScaleX(1.0f);
+                        highlightNotes.setScaleY(1.0f);
+                        FullscreenActivity.highlightOn = false;
+                        glideimage_ScrollView.scrollTo(0, 0);
+                        songscrollview.scrollTo(0, 0);
+
+                        // Hide the image, cause we might be loading a proper song!
+                        glideimage.setBackgroundColor(StaticVariables.transparent);
+                        glideimage.setImageDrawable(null);
+
+                    } catch (Exception e) {
+                        Log.d(TAG, "error updating the views");
+                    }
+
+                    // Load the song
+                    doCancelAsyncTask(loadsong_async);
+                    doCancelAsyncTask(resizestage_async);
+                    doCancelAsyncTask(resizeperformance_async);
+                    loadsong_async = new LoadSongAsync();
+                    try {
+                        loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, 300);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -7300,6 +7300,13 @@ public class StageMode extends AppCompatActivity implements
                     //Determine file type
                     storageAccess.determineFileTypeByExtension();
 
+                    // IV - File does not exist - the loadXML 'not found' song needs to be revealed
+                    if (!songUriExists) {
+                        FullscreenActivity.isSong = true;
+                        FullscreenActivity.isPDF = false;
+                        FullscreenActivity.isImage = false;
+                    }
+
                     // IV - Background colour set to white for PDF and Image
                     if (FullscreenActivity.isPDF) {
                         mypage.setBackgroundColor(StaticVariables.white);
@@ -7327,7 +7334,8 @@ public class StageMode extends AppCompatActivity implements
 
                             if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
                                     !orientationChanged) {
-                                playPad();
+                                playPadHandler.removeCallbacks(playPadRunnable);
+                                playPadHandler.postDelayed(playPadRunnable, 3000);
                             } else {
                                 fadeoutPad();
                             }

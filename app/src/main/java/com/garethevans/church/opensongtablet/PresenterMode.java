@@ -795,21 +795,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Don't do this for a blacklisted filetype (application, video, audio)
                 Uri uri = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", StaticVariables.whichSongFolder,
                         StaticVariables.songfilename);
-                if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
-                    ShowToast.showToast(PresenterMode.this);
-                } else {
-                    // Declare we have loaded a new song (for the ccli log).
-                    // This stops us reporting projecting every section
-                    newsongloaded = true;
 
-                    doCancelAsyncTask(loadsong_async);
-                    loadsong_async = new LoadSong();
-                    try {
-                        loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    } catch (Exception e) {
-                        // Error loading the song
-                    }
+                // Declare we have loaded a new song (for the ccli log).
+                // This stops us reporting projecting every section
+                newsongloaded = true;
+
+                doCancelAsyncTask(loadsong_async);
+                loadsong_async = new LoadSong();
+                try {
+                    loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } catch (Exception e) {
+                    // Error loading the song
                 }
             }
         } catch (Exception e) {
@@ -3394,6 +3390,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 // Clear the old headings (presention order looks for these)
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
+
+                if (StaticVariables.mLyrics != null) {
+                    FullscreenActivity.myLyrics = StaticVariables.mLyrics;
+                } else {
+                    FullscreenActivity.myLyrics = "";
+                }
 
                 // Don't process images or image slide details here.  No need.  Only do this for songs
                 if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {

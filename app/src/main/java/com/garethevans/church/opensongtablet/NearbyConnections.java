@@ -706,10 +706,16 @@ public class NearbyConnections implements NearbyInterface {
                                 }
                                 latestfoldernamepair = foldernamepair;
                             } else if (incoming.contains("autoscroll_")) {
-                                payloadAutoscroll(incoming);
+                                // IV - Autoscroll only in Performance mode when user option is selected
+                                if (StaticVariables.whichMode.equals("Performance") && StaticVariables.receiveHostAutoscroll) {
+                                    payloadAutoscroll(incoming);
+                                }
                             } else if (incoming.contains("___section___")) {
                                 //Log.d("NearbyConnections", "Section " + incoming);
-                                payloadSection(incoming);
+                                // IV - Section change only in Stage and Presentation mode when user option is selected
+                                if (!StaticVariables.whichMode.equals("Performance") && StaticVariables.receiveHostSongSections) {
+                                    payloadSection(incoming);
+                                }
                             } else if (incoming.contains("_ep__ep_")) {
                                 payloadEndpoints(incoming);
                             } else if (incoming.contains("_xx____xx_")) {
