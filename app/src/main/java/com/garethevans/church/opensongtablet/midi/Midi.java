@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -318,6 +317,7 @@ public class Midi {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void enableMidiListener(Context c) {
+        Log.d(TAG,"midiListener");
         if (midiDevice!=null && midiOutputPort!=null) {
             pedalMidiReceiver = new PedalMidiReceiver(this,mainActivityInterface);
             try {
@@ -327,7 +327,8 @@ public class Midi {
                 pedalMidiReceiver = null;
             }
         } else {
-            ShowToast.showToast(c,c.getString(R.string.midi_error));
+            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.midi_error));
+
         }
     }
 

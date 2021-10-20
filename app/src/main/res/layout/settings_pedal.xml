@@ -31,6 +31,12 @@
                 android:paddingBottom="16dp"
                 android:text="@string/pedal_midi_warning" />
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/midiAsPedal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/midi_pedal"/>
+
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial

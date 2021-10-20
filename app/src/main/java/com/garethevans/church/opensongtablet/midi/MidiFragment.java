@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,7 +42,6 @@ import com.garethevans.church.opensongtablet.databinding.SettingsMidiBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiItemTouchInterface;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +71,15 @@ public class MidiFragment extends Fragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         midiAdapterInterface = (MidiAdapterInterface) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Window w = requireActivity().getWindow();
+        if (w!=null) {
+            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -190,6 +199,9 @@ public class MidiFragment extends Fragment {
             myView.progressBar.setVisibility(View.VISIBLE);
         }
 
+        // Set the pedal preference
+        myView.midiAsPedal.setChecked(mainActivityInterface.getPedalActions().getMidiAsPedal());
+
         // Now deal with the note, controller, value, velocity drop downs
         if (midiCommand.indexOf(myView.midiCommand.getText().toString())<2) {
             // Note on or off
@@ -252,7 +264,13 @@ public class MidiFragment extends Fragment {
         myView.testMidiDevice.setOnClickListener(v -> sendTestNote());
         myView.disconnectMidiDevice.setOnClickListener(v -> disconnectDevices());
         myView.autoSendBluetooth.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(),"midiSendAuto",false)));
-        myView.midiAsPedal.setOnCheckedChangeListener(((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(),"midiAsPedal",false)));
+        myView.midiAsPedal.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(getContext(),"midiAsPedal",isChecked);
+            mainActivityInterface.getPedalActions().setMidiAsPedal(isChecked);
+            if (isChecked) {
+                mainActivityInterface.getMidi().enableMidiListener(requireContext());
+            }
+        }));
         myView.midiCommand.addTextChangedListener(new MyTextWatcher());
         myView.midiChannel.addTextChangedListener(new MyTextWatcher());
         myView.midiNote.addTextChangedListener(new MyTextWatcher());
@@ -378,8 +396,7 @@ public class MidiFragment extends Fragment {
         if (bluetoothLeScanner != null) {
             bluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
-            ShowToast.showToast(getContext(), getString(R.string.nothighenoughapi));
-            myView.enableBluetooth.setEnabled(true);
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
         }
 
     }
@@ -514,11 +531,12 @@ public class MidiFragment extends Fragment {
                 mainActivityInterface.getMidi().sendMidi(buffer2);
             }, 1000);
             if (sent) {
-                ShowToast.showToast(getContext(), getString(android.R.string.ok));
+                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.ok));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            ShowToast.showToast(getContext(), getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
+
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -533,9 +551,9 @@ public class MidiFragment extends Fragment {
             e.printStackTrace();
         }
         if (!success) {
-            ShowToast.showToast(getContext(),getString(R.string.midi_error));
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.midi_error));
         } else {
-            ShowToast.showToast(getContext(), getString(android.R.string.ok));
+            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.ok));
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)

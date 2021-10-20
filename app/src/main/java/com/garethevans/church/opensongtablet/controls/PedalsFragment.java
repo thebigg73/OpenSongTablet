@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 
 public class PedalsFragment extends Fragment {
 
+    private final String TAG = "PedalsFragment";
     private SettingsPedalBinding myView;
     private MainActivityInterface mainActivityInterface;
 
@@ -90,6 +92,19 @@ public class PedalsFragment extends Fragment {
     }
 
     private void midiPedalAllowed() {
+        String midiDevice = mainActivityInterface.getMidi().getMidiDeviceName();
+        Log.d(TAG,"getMidiDevice: "+mainActivityInterface.getMidi().getMidiDevice());
+        Log.d(TAG,"getMidiAsPedal: "+mainActivityInterface.getPedalActions().getMidiAsPedal());
+
+        myView.midiAsPedal.setChecked(mainActivityInterface.getPedalActions().getMidiAsPedal());
+        myView.midiAsPedal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"midiAsPedal",b);
+                mainActivityInterface.getPedalActions().setMidiAsPedal(b);
+                midiPedalAllowed();
+            }
+        });
         if (mainActivityInterface.getMidi() != null && mainActivityInterface.getMidi().getMidiDevice() != null &&
                 mainActivityInterface.getPedalActions().getMidiAsPedal()) {
             String message = getString(R.string.midi_pedal) + ": " +

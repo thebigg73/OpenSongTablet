@@ -12,6 +12,7 @@ import java.util.TimerTask;
 
 public class PedalActions {
 
+    private final String TAG = "PedalActions";
     private final MainActivityInterface mainActivityInterface;
     private ArrayList<String> actions, actionCodes;
     private final int[] pedalCode = new int[9]; // 8 buttons, but ignore item 0
@@ -109,6 +110,8 @@ public class PedalActions {
 
     public void commonEventDown(int keyCode, String keyMidi) {
         // If using AirTurnMode, grab this and start counting for long press mode
+        // Otherwise, we ignore it
+        longpress = false;
         if (airTurnMode && !airTurnPaused && keyRepeatCount<repeatsRecorded) {
             repeatsRecorded++;
             if (repeatsRecorded > keyRepeatCount) {
@@ -129,13 +132,15 @@ public class PedalActions {
     }
 
     public void commonEventUp(int keyCode, String keyMidi) {
+        Log.d(TAG,"commonEventUp() longress"+longpress);
+
         if (!longpress) {
             whichEventTriggered(true,keyCode,keyMidi);
         }
     }
 
     public void commonEventLong(int keyCode, String keyMidi) {
-        longpress = true;
+        longpress = false;
         whichEventTriggered(false,keyCode,keyMidi);
     }
 
@@ -371,5 +376,8 @@ public class PedalActions {
         }
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceString(c, pref, action);
+    }
+    public void setMidiAsPedal(boolean midiAsPedal) {
+        this.midiAsPedal = midiAsPedal;
     }
 }
