@@ -3935,7 +3935,24 @@ public class StageMode extends AppCompatActivity implements
                 showStickyHandler.removeCallbacks(showStickyRunnable);
                 showStickyHandler.postDelayed(showStickyRunnable, 2000);
             }
+
+            // Do the pad fade and play here after song animated in. This ensures a good cross-fade after the song is displayed
+            if (!StaticVariables.reloadOfSong && StaticVariables.clickedOnPadStart) {
+                // If pads were already playing (previous song), start them up again if wanted
+                // Don't do this if the orientation has changed (causing a reload)
+                // A delay supports cross-fade for latest song only when rapidly changing songs
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
+                        !FullscreenActivity.orientationchanged) {
+                    playPadHandler.removeCallbacks(playPadRunnable);
+                    playPadHandler.postDelayed(playPadRunnable, 2000);
+                } else {
+                    fadeoutPad();
+                }
+            }
         }
+
+        // Now, reset the orientation changed flag
+        FullscreenActivity.orientationchanged = false;
 
         setUpCapoInfo();
 
@@ -7242,9 +7259,6 @@ public class StageMode extends AppCompatActivity implements
         }
 
         protected void onPostExecute(String s) {
-            // IV - Store value for use later
-            boolean orientationChanged = FullscreenActivity.orientationchanged;
-
             try {
                 if (!cancelled) {
                     // If we have changed folders, redraw the song menu
@@ -7285,8 +7299,6 @@ public class StageMode extends AppCompatActivity implements
                     if (!StaticVariables.myToastMessage.equals("")) {
                         ShowToast.showToast(StageMode.this);
                     }
-                    // Now, reset the orientation.
-                    FullscreenActivity.orientationchanged = false;
 
                     // Get the current orientation
                     FullscreenActivity.mScreenOrientation = getResources().getConfiguration().orientation;
@@ -7320,26 +7332,6 @@ public class StageMode extends AppCompatActivity implements
                         mypage.setBackgroundColor(lyricsBackgroundColor);
                         //Prepare the song views
                         prepareView();
-                    }
-
-                    // Do the pad fade and play here after display. This ensures a good cross-fade once the song is displayed
-                    if (StaticVariables.clickedOnPadStart) {
-                        // Do not touch on a reload
-                        if (!StaticVariables.reloadOfSong) {
-                            // If pads were already playing (previous song), start them up again if wanted
-                            // Don't redo this if the orientation has changed (causing a reload)
-                            // Stop restarting the pads if changing portrait/landscape
-                            // Only play if this isn't called by an orientation change
-                            // Or moving between the pages of a PDF
-
-                            if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
-                                    !orientationChanged) {
-                                playPadHandler.removeCallbacks(playPadRunnable);
-                                playPadHandler.postDelayed(playPadRunnable, 3000);
-                            } else {
-                                fadeoutPad();
-                            }
-                        }
                     }
 
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
