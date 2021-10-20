@@ -6312,6 +6312,9 @@ public class StageMode extends AppCompatActivity implements
     }
     private void fadeoutPad() {
 
+        // IV - Remove any outstanding cross-fade playPad requests
+        playPadHandler.removeCallbacks(playPadRunnable);
+
         // Put the quick fade mechanism into a known state
         StaticVariables.padInQuickFade = 0;
 
