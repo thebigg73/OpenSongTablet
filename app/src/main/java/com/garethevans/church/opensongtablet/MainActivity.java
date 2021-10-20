@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Song actions/features
         performanceGestures = new PerformanceGestures(this,this);
         pageButtons = new PageButtons(this);
-        midi = new Midi();
+        midi = new Midi(this);
         pedalActions = new PedalActions(this,this);
         pad = new Pad(this, myView.onScreenInfo.pad);
         autoscroll = new Autoscroll(this,myView.onScreenInfo.autoscrollTime,
@@ -1370,17 +1370,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     @Override
-    public Midi getMidi(MainActivityInterface mainActivityInterface) {
-        // First update the mainActivityInterface used in midi
-        midi.setMainActivityInterface(mainActivityInterface);
-        // Return a reference to midi
-        return midi;
-    }
-    @Override
     public Midi getMidi() {
         return midi;
     }
-
 
     // Sticky notes
     @Override
@@ -1673,11 +1665,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Now remove from the SQL database
                     if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
                         nonOpenSongSQLiteHelper.deleteSong(this,this,song.getFolder(),song.getFilename());
-                    } else {
-                        sqLiteHelper.deleteSong(this, this, song.getFolder(),song.getFilename());
                     }
-                    // TODO
-                    // Send a call to reindex?
+                    sqLiteHelper.deleteSong(this, this, song.getFolder(),song.getFilename());
+                    // Set the welcome song
+                    song.setFilename("Welcome to OpenSongApp");
+                    song.setFolder(getString(R.string.mainfoldername));
+                    updateSongMenu(song);
+                    navHome();
                     break;
 
                 case "ccliDelete":
@@ -2031,7 +2025,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public SaveSong getSaveSong() {
         return saveSong;
     }
-
+    @Override
+    public void updateSong() {
+        saveSong.updateSong(this,this);
+        Log.d(TAG,"getMidi():"+song.getMidi());
+    }
 
     @Override
     public Activity getActivity() {

@@ -249,7 +249,7 @@ public class PageButtons {
         shortText.add(c.getString(R.string.inc_autoscroll_speed));
         shortText.add(c.getString(R.string.dec_autoscroll_speed));
         shortText.add(c.getString(R.string.pause) + " / " + c.getString(R.string.resume));
-        shortText.add(c.getString(R.string.settings));
+        shortText.add(c.getString(R.string.midi_send));
         shortText.add(c.getString(R.string.search));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.exit) + " " + c.getString(R.string.app_name));
@@ -283,7 +283,7 @@ public class PageButtons {
         longText.add("");
         longText.add("");
         longText.add("");
-        longText.add("");
+        longText.add(c.getString(R.string.settings));
         longText.add("");
         longText.add("");
         longText.add("");
@@ -571,7 +571,11 @@ public class PageButtons {
                 actionInterface.getPerformanceGestures().pauseAutoscroll();
                 break;
             case "midi":
-                actionInterface.getPerformanceGestures().editMidi();
+                if (isLongPress) {
+                    actionInterface.getPerformanceGestures().editMidi();
+                } else {
+                    actionInterface.getPerformanceGestures().songMidi();
+                }
                 break;
             case "bible":
                 actionInterface.getPerformanceGestures().bibleSettings();

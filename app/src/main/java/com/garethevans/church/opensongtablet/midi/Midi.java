@@ -15,18 +15,24 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 public class Midi {
 
-    private MainActivityInterface mainActivityInterface;
+    private final String TAG = "Midi";
+    private final MainActivityInterface mainActivityInterface;
     private PedalMidiReceiver pedalMidiReceiver;
 
     // Initialise
-    public Midi() {}
+    public Midi(MainActivityInterface mainActivityInterface) {
+        this.mainActivityInterface = mainActivityInterface;
+    }
 
+    private ArrayList<String> songMidiMessages = new ArrayList<>();
     private MidiDevice midiDevice;
     private MidiManager midiManager;
     private MidiInputPort midiInputPort;
@@ -88,10 +94,6 @@ public class Midi {
     }
     public void setIncludeBluetoothMidi(boolean includeBluetoothMidi) {
         this.includeBluetoothMidi = includeBluetoothMidi;
-    }
-
-    public void setMainActivityInterface(MainActivityInterface mainActivityInterface) {
-        this.mainActivityInterface = mainActivityInterface;
     }
 
     String getMidiCommand(int i) {
@@ -206,6 +208,16 @@ public class Midi {
             }
         }
         return success;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    void sendMidi(int position) {
+        Log.d(TAG,"sendMidi("+position+")");
+        // Send midi from the arrayList
+        if (position>=0 && position<songMidiMessages.size()) {
+            Log.d(TAG,"Sending "+position+" :" + songMidiMessages.get(position));
+            sendMidi(returnBytesFromHexText(songMidiMessages.get(position)));
+        }
     }
 
     String buildMidiString(String action, int channel, int byte2, int byte3) {
@@ -330,4 +342,42 @@ public class Midi {
         }
     }
 
+    public void buildSongMidiMessages() {
+        if (songMidiMessages==null) {
+            songMidiMessages = new ArrayList<>();
+        } else {
+            songMidiMessages.clear();
+        }
+
+        String messages = mainActivityInterface.getSong().getMidi();
+        Log.d(TAG,"songMessages="+messages);
+
+        String[] bits = messages.split("\n");
+        Collections.addAll(songMidiMessages, bits);
+    }
+    public ArrayList<String> getSongMidiMessages() {
+        return songMidiMessages;
+    }
+    public void removeFromSongMessages(int position) {
+        songMidiMessages.remove(position);
+    }
+    public void addToSongMessages(int position, String command) {
+        // if -1, then add to the end, else add where requested
+        if (position==-1) {
+            songMidiMessages.add(command);
+        } else {
+            songMidiMessages.add(position,command);
+        }
+    }
+    public void updateSongMessages() {
+        StringBuilder s = new StringBuilder();
+        for (String message:songMidiMessages) {
+            if (!message.trim().isEmpty()) {
+                s.append(message).append("\n");
+            }
+        }
+        Log.d(TAG,"s="+s);
+        mainActivityInterface.getSong().setMidi(s.toString().trim());
+        mainActivityInterface.updateSong();
+    }
 }

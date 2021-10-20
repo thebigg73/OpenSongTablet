@@ -60,8 +60,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
         return false;
     }
 
-
-
     @Override
     public void onLongPress(MotionEvent event) {
         Log.d(TAG,"event="+event);
@@ -71,7 +69,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
             e.printStackTrace();
         }
     }
-
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {

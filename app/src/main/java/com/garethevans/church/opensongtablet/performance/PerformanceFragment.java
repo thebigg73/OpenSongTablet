@@ -360,6 +360,9 @@ public class PerformanceFragment extends Fragment {
 
         // Start the pad (if the pads are activated and the pad is valid)
         mainActivityInterface.getPad().autoStartPad(requireContext());
+
+        // Update any midi commands (if any)
+        mainActivityInterface.getMidi().buildSongMidiMessages();
     }
     private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().

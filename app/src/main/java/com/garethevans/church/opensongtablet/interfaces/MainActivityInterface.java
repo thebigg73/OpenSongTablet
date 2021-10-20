@@ -122,7 +122,6 @@ public interface MainActivityInterface {
     // Get the helpers initialised in the main activity
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
     NearbyConnections getNearbyConnections();
-    Midi getMidi(MainActivityInterface mainActivityInterface);
     Midi getMidi();
     DrawerLayout getDrawer();
     ActionBar getMyActionBar();
@@ -229,5 +228,6 @@ public interface MainActivityInterface {
     void removeSetItem(int currentSetPosition);
     void updateSongList();
     void pdfScrollToPage(int pageNumber);
+    void updateSong();
 }
 

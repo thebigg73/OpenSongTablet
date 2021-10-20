@@ -14,6 +14,7 @@ import com.garethevans.church.opensongtablet.chords.TransposeBottomSheet;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
 import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
@@ -280,6 +281,12 @@ public class PerformanceGestures {
     // Open the pedal settings
     public void editPedals() {
         mainActivityInterface.navigateToFragment("opensongapp://settings/controls/pedals",0);
+    }
+
+    // Open the song midi bottom sheet
+    public void songMidi() {
+        MidiSongBottomSheet midiSongBottomSheet = new MidiSongBottomSheet();
+        midiSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"midiSongBottomSheet");
     }
 
     // Open the midi settings

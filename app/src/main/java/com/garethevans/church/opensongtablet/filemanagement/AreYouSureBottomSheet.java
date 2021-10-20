@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetAreYouSureBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -51,10 +50,10 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
     private final Song song;
 
     public AreYouSureBottomSheet(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
-        this.what = what;
-        this.action = action;
-        this.arguments = arguments;
-        this.fragName = fragName;
+        this.what = what;      // Variable passed to MainActivity to trigger required action
+        this.action = action;  // Information displayed about what is about to happen
+        this.arguments = arguments;  // Extra info passed back.  Can be null
+        this.fragName = fragName;    // The fragment requesting confirmation
         this.callingFragment = callingFragment;
         this.song = song;
     }
@@ -67,7 +66,6 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeading.setClose(this);
 
         myView.action.setText(action);
-        myView.okButton.setText(getString(R.string.ok));
         myView.okButton.setOnClickListener(v -> {
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);
             dismiss();

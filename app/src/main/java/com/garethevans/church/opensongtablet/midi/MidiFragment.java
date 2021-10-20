@@ -31,13 +31,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsMidiBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
+import com.garethevans.church.opensongtablet.interfaces.MidiItemTouchInterface;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.util.ArrayList;
@@ -56,8 +59,12 @@ public class MidiFragment extends Fragment {
     private MidiDeviceInfo[] usbDevices;
     private ArrayList<BluetoothDevice> bluetoothDevices;
     private ArrayList<String> usbNames, usbManufact, midiCommand, midiChannel,
-            midiNote, midiValue, songMidiMessages, songMidiMessagesToSave;
+            midiNote, midiValue;
+    private ArrayList<MidiInfo> midiInfos;
     private MidiMessagesAdapter midiMessagesAdapter;
+    private MidiItemTouchInterface midiItemTouchInterface;
+    private LinearLayoutManager llm;
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -91,7 +98,9 @@ public class MidiFragment extends Fragment {
 
             // Set known values
             setValues();
-            initialiseCurrentMessages();
+            setupAdapter();
+            buildList();
+            //initialiseCurrentMessages();
 
             // Hide the desired views
             hideShowViews(true, false);
@@ -493,8 +502,6 @@ public class MidiFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void sendTestNote() {
         try {
-            //byte[] b = midi.returnBytesFromHexText("0x90 0x3C 0x63");
-            //midi.sendMidi(b);
             String s1 = mainActivityInterface.getMidi().buildMidiString("NoteOn", 1, 60, 100);
             Log.d("d","s1="+s1);
             byte[] buffer1 = mainActivityInterface.getMidi().returnBytesFromHexText(s1);
@@ -534,7 +541,7 @@ public class MidiFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     // Called back from main activity
     public void sendMidiFromList(int i) {
-        String s = songMidiMessagesToSave.get(i);
+        String s = midiMessagesAdapter.getMidiInfos().get(i).midiCommand;
         testTheMidiMessage(s);
     }
 
@@ -609,32 +616,69 @@ public class MidiFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void addMidiToList() {
         try {
-            String s = myView.midiCode.getText().toString();
-            String hr = mainActivityInterface.getMidi().getReadableStringFromHex(s, requireContext());
-            String message = hr + "\n" + "(" + s + ")";
-            songMidiMessagesToSave.add(s);
-            songMidiMessages.add(message);
-            updateCurrentMessages();
+            String command = myView.midiCode.getText().toString();
+            String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command, requireContext());
+            mainActivityInterface.getMidi().addToSongMessages(-1,command);
+
+            MidiInfo midiInfo = new MidiInfo();
+            midiInfo.midiCommand = command;
+            midiInfo.readableCommand = readable;
+            int position = midiMessagesAdapter.addToEnd(midiInfo);
+            midiMessagesAdapter.notifyItemInserted(position);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        saveSongMessages();
+        mainActivityInterface.getMidi().updateSongMessages();
     }
     // Called back from MainActivity
     public void deleteMidiFromList(int i) {
         try {
-            songMidiMessages.remove(i);
-            songMidiMessagesToSave.remove(i);
-            updateCurrentMessages();
+            midiMessagesAdapter.removeItem(i);
+            midiMessagesAdapter.notifyItemRemoved(i);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        saveSongMessages();
+        mainActivityInterface.getMidi().updateSongMessages();
     }
 
 
     // Process song midi messages
+    private void setupAdapter() {
+        midiMessagesAdapter = new MidiMessagesAdapter(mainActivityInterface,false);
+        ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        midiMessagesAdapter.setTouchHelper(itemTouchHelper);
+        llm = new LinearLayoutManager(requireContext());
+        llm.setOrientation(RecyclerView.VERTICAL);
+        myView.recyclerView.post(() -> {
+            myView.recyclerView.setLayoutManager(llm);
+            myView.recyclerView.setAdapter(midiMessagesAdapter);
+            itemTouchHelper.attachToRecyclerView(myView.recyclerView);
+        });
+    }
+    private void buildList() {
+        midiInfos = new ArrayList<>();
+
+        String[] bits = mainActivityInterface.getSong().getMidi().trim().split("\n");
+        for (String command : bits) {
+            if (command!=null && !command.equals("") && !command.isEmpty() && getActivity()!=null) {
+                // Get a human readable version of the midi code
+                String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command,getActivity());
+                MidiInfo midiInfo = new MidiInfo();
+                midiInfo.midiCommand = command;
+                midiInfo.readableCommand = readable;
+                midiInfos.add(midiInfo);
+            }
+        }
+
+        myView.recyclerView.post(() -> {
+            midiMessagesAdapter.updateMidiInfos(midiInfos);
+            myView.recyclerView.setVisibility(View.VISIBLE);
+        });
+    }
+
+/*
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initialiseCurrentMessages() {
         songMidiMessages = new ArrayList<>();
@@ -646,8 +690,7 @@ public class MidiFragment extends Fragment {
             if (s!=null && !s.equals("") && !s.isEmpty() && getActivity()!=null) {
                 // Get a human readable version of the midi code
                 String hr = mainActivityInterface.getMidi().getReadableStringFromHex(s,getActivity());
-                String message = hr + "\n" + "(" + s + ")";
-                songMidiMessages.add(message);
+                songMidiMessages.add(hr);
                 songMidiMessagesToSave.add(s);
             }
         }
@@ -656,23 +699,22 @@ public class MidiFragment extends Fragment {
         myView.recyclerView.setLayoutManager(linearLayoutManager);
 
         // specify an adapter (see also next example)
-        midiMessagesAdapter = new MidiMessagesAdapter(getContext(),midiAdapterInterface,songMidiMessages);
+        midiMessagesAdapter = new MidiMessagesAdapter(mainActivityInterface, true);
         myView.recyclerView.setAdapter(midiMessagesAdapter);
-    }
-    private void updateCurrentMessages() {
-        myView.recyclerView.setAdapter(midiMessagesAdapter);
-    }
 
+    }
+*/
 
     // Save the song messages
     private void saveSongMessages() {
+        mainActivityInterface.getMidi().updateSongMessages();
         try {
             // Get a string representation of the midi commands
             StringBuilder s = new StringBuilder();
-            for (String c:songMidiMessagesToSave) {
-                c = c.trim();
-                if (!c.isEmpty()) {
-                    s.append(c).append("\n");
+            for (MidiInfo midiInfo : midiMessagesAdapter.getMidiInfos()) {
+                String command = midiInfo.midiCommand.trim();
+                if (!command.isEmpty()) {
+                    s.append(command).append("\n");
                 }
             }
             s = new StringBuilder(s.toString().trim()); // Get rid of extra line breaks
