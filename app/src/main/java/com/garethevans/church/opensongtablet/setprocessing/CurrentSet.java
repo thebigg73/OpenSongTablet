@@ -14,10 +14,10 @@ public class CurrentSet {
     private final String TAG = "CurrentSet";
     private String initialSetString;
     private String currentSetString;
-    private ArrayList<String> setItems;      // The set item $**_folder/filename_***key***__**$ or $**_**{customsfolder}/filename_******__**$
-    private ArrayList<String> setFolders;    // The folder only
-    private ArrayList<String> setFilenames;  // The filename only
-    private ArrayList<String> setKeys;       // The key only
+    private ArrayList<String> setItems = new ArrayList<>();      // The set item $**_folder/filename_***key***__**$ or $**_**{customsfolder}/filename_******__**$
+    private ArrayList<String> setFolders = new ArrayList<>();    // The folder only
+    private ArrayList<String> setFilenames = new ArrayList<>();  // The filename only
+    private ArrayList<String> setKeys = new ArrayList<>();       // The key only
     private int indexSongInSet;
     private String setName;
 

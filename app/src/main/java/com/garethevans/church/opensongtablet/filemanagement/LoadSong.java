@@ -163,6 +163,8 @@ public class LoadSong {
             } else {
                 thisSong.setTitle(thisSong.getFilename());
             }
+        } else if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
+            thisSong = mainActivityInterface.getSong().showWelcomeSong(c,thisSong);
         } else {
             // Not found.  This will get the default 'not found' from the database query
             thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c,mainActivityInterface,thisSong.getFolder(),thisSong.getFilename());

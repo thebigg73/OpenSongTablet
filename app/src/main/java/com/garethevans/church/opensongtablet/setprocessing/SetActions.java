@@ -84,6 +84,10 @@ public class SetActions {
         // Make sure the specific arrays are empty to start with!
         mainActivityInterface.getCurrentSet().initialiseTheSpecifics();
 
+        if (mainActivityInterface.getCurrentSet().getSetItems()==null) {
+            mainActivityInterface.getCurrentSet().initialiseTheSet();
+        }
+
         for (int x=0; x<mainActivityInterface.getCurrentSet().getSetItems().size(); x++) {
             String setItem = mainActivityInterface.getCurrentSet().getItem(x);
             String key, folder, item;

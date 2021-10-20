@@ -1635,22 +1635,22 @@ public class StorageAccess {
                 File oldfile = new File(oldUri.getPath());
                 File newfile = new File(newUri.getPath());
                 if (oldfile.renameTo(newfile)) {
-                    showToast.setMessage(c.getString(R.string.rename) + " - " +
+                    showToast.doIt(c,c.getString(R.string.rename) + " - " +
                             c.getString(android.R.string.ok));
                     song.setFolder(newsubfolder);
                     return true;
                 } else {
-                    showToast.setMessage(c.getString(R.string.rename) + " - " +
+                    showToast.doIt(c,c.getString(R.string.rename) + " - " +
                             c.getString(R.string.create_folder_error));
                     return false;
                 }
             } else {
-                showToast.setMessage(c.getString(R.string.rename) + " - " +
+                showToast.doIt(c,c.getString(R.string.rename) + " - " +
                         c.getString(R.string.create_folder_error));
                 return false;
             }
         } else {
-            showToast.setMessage(c.getString(R.string.rename) +
+            showToast.doIt(c,c.getString(R.string.rename) +
                     " - " + c.getString(R.string.folder_exists));
             return false;
         }
@@ -1667,12 +1667,12 @@ public class StorageAccess {
         }
         try {
             DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
-            showToast.setMessage(c.getString(R.string.rename) + " - " +
+            showToast.doIt(c,c.getString(R.string.rename) + " - " +
                     c.getString(android.R.string.ok));
             song.setFolder(newsubfolder);
             return true;
         } catch (Exception e) {
-            showToast.setMessage(c.getString(R.string.rename) + " - " +
+            showToast.doIt(c,c.getString(R.string.rename) + " - " +
                     c.getString(R.string.create_folder_error));
             return false;
         }

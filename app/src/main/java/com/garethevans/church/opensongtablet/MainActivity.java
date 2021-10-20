@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // The screen display stuff
         customAnimation = new CustomAnimation();
         showCase = new ShowCase();
-        showToast = new ShowToast();
+        showToast = new ShowToast(this,myView.fragmentView);
 
         // The app setup
         versionNumber = new VersionNumber();
@@ -573,8 +573,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
-        if (currentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
-            ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).keyDownListener(keyCode);
+        if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
+            ((PedalsFragment)getCurrentFragment()).keyDownListener(keyCode);
             return false;
         } else {
             pedalActions.commonEventDown(keyCode, null);
@@ -584,9 +584,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
-        if (currentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
-            ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).commonEventUp();
-        } else {
+        if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
+            ((PedalsFragment)getCurrentFragment()).commonEventUp();
+        } else if (!settingsOpen) {
             pedalActions.commonEventUp(keyCode,null);
         }
         return super.onKeyUp(keyCode, keyEvent);
@@ -595,10 +595,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
-        if (currentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
-            ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).commonEventLong();
+        if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment)getCurrentFragment()).isListening()) {
+            ((PedalsFragment)getCurrentFragment()).commonEventLong();
             return true;
-        } else {
+        } else if (!settingsOpen) {
             pedalActions.commonEventLong(keyCode,null);
         }
         return super.onKeyLongPress(keyCode, keyEvent);
@@ -642,15 +642,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         lockDrawer(true);
         closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         hideActionButton(true);
-        try {
-            if (deepLink!=null) {
-                navController.navigate(Uri.parse(deepLink));
-            } else {
-                navController.navigate(id);
+        runOnUiThread(() -> {
+            try {
+                if (deepLink!=null) {
+                    navController.navigate(Uri.parse(deepLink));
+                } else {
+                    navController.navigate(id);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
     @Override
     public void popTheBackStack(int id, boolean inclusive) {
@@ -676,7 +678,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
                         } else {
-                            ShowToast.showToast(this,getString(R.string.error));
+                            showToast.doIt(this,getString(R.string.error));
                         }
                     }
                     break;
@@ -689,7 +691,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
                             doSongLoad(song.getFolder(),song.getFilename(),false);
                         } else {
-                            ShowToast.showToast(this,getString(R.string.error));
+                            showToast.doIt(this,getString(R.string.error));
                         }
                     }
                     break;
@@ -749,14 +751,81 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-    private boolean currentFragment(int fragId) {
-        getSupportFragmentManager().executePendingTransactions();
-        Fragment fragment = getFragmentFromId(fragId);
-        if (fragment!=null && fragment.isInLayout()) {
+
+    public Fragment getCurrentFragment() {
+        return navHostFragment.getChildFragmentManager().getFragments().get(0);
+
+        //return getSupportFragmentManager().findFragmentById(fragId);
+        //return navHostFragment.getChildFragmentManager().findFragmentById(fragId);
+    }
+
+    private boolean isCurrentFragment(int fragId) {
+        runOnUiThread(() -> getSupportFragmentManager().executePendingTransactions());
+        int currFrag = -1;
+        if (navController!=null && navController.getCurrentDestination()!=null) {
+            currFrag = navController.getCurrentDestination().getId();
+        }
+        return currFrag == fragId;
+    }
+
+    private boolean currentFragment(String fragLabel) {
+        runOnUiThread(() -> {
+            getSupportFragmentManager().executePendingTransactions();
+        });
+
+        String currentFragment = "ERROR";
+        if (navController!=null && navController.getCurrentDestination()!=null &&
+        navController.getCurrentDestination().getLabel()!=null) {
+            currentFragment = navController.getCurrentDestination().getLabel().toString();
+        }
+
+        try {
+            int id = navController.getCurrentDestination().getId();
+            Log.d(TAG, "id=" + id);
+            Log.d(TAG, "menuSettings currentFragment.id" + getCurrentFragment().getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG,"currentFragment="+currentFragment);
+
+        return currentFragment.equals(fragLabel);
+
+        /*int currentId = navController.getCurrentDestination().getId();
+        Log.d(TAG,"currentId="+navController.getCurrentDestination().getLabel());
+        Log.d(TAG,"lookingId="+fragId);
+
+        String currentFragmentLabel = getCurrentFragmentLabel();
+        Fragment currentFragmentL = getCurrentFragment();
+        Fragment lookingForFragment = getMyFragmentManager().findFragmentById(R.id.nav_host_fragment).getChildFragmentManager().findFragmentById(fragId);
+
+        Log.d(TAG, "currentFragment="+currentFragment);
+        Log.d(TAG, "lookingForFragment="+lookingForFragment);
+        if (lookingForFragment!=null) {
+            Log.d(TAG, "lookingForFragment=" + lookingForFragment);
+            Log.d(TAG, "inLayout=" + lookingForFragment.isInLayout());
+            Log.d(TAG, "isAdded=" + lookingForFragment.isAdded());
+            Log.d(TAG, "isVisible=" + lookingForFragment.isVisible());
+            Log.d(TAG, "isDetached=" + lookingForFragment.isDetached());
+            Log.d(TAG, "isResumed=" + lookingForFragment.isResumed());
+        }
+
+        if (currentFragment!=null) {
+            Log.d(TAG, "currentFragment=" + currentFragment);
+            Log.d(TAG, "inLayout=" + currentFragment.isInLayout());
+            Log.d(TAG, "isAdded=" + currentFragment.isAdded());
+            Log.d(TAG, "isVisible=" + currentFragment.isVisible());
+            Log.d(TAG, "isDetached=" + currentFragment.isDetached());
+            Log.d(TAG, "isResumed=" + currentFragment.isResumed());
+            Log.d(TAG,"id="+currentFragment.getId());
+        }
+
+        if (lookingForFragment!=null && lookingForFragment.isInLayout()) {
             return true;
         } else {
             return false;
-        }
+        }*/
+
     }
     private Fragment getFragmentFromId(int fragId) {
         return getSupportFragmentManager().findFragmentById(fragId);
@@ -935,22 +1004,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Instructions sent from fragments for MainActivity to deal with
     @Override
     public void hideActionButton(boolean hide) {
-        if (hide) {
-            myView.pageButtonRight.actionFAB.setVisibility(View.GONE);
-            myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
-            myView.onScreenInfo.info.setVisibility(View.GONE);
-            myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
+        runOnUiThread(() -> {
+            if (hide) {
+                myView.pageButtonRight.actionFAB.setVisibility(View.GONE);
+                myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
+                myView.onScreenInfo.info.setVisibility(View.GONE);
+                myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
 
-        } else {
-            myView.pageButtonRight.actionFAB.setVisibility(View.VISIBLE);
-            myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
-            myView.onScreenInfo.info.setVisibility(View.VISIBLE);
-            if (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext()) {
-                myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
+            } else {
+                myView.pageButtonRight.actionFAB.setVisibility(View.VISIBLE);
+                myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
+                myView.onScreenInfo.info.setVisibility(View.VISIBLE);
+                if (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext()) {
+                    myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
+                }
+                // Do this with a delay
+                customAnimation.fadeActionButton(myView.pageButtonRight.actionFAB, themeColors.getPageButtonsSplitAlpha());
             }
-            // Do this with a delay
-            customAnimation.fadeActionButton(myView.pageButtonRight.actionFAB, themeColors.getPageButtonsSplitAlpha());
-        }
+        });
     }
     @Override
     public void hideActionBar(boolean hide) {
@@ -1338,33 +1409,40 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void sendMidiFromList(int item) {
-        if (currentFragment(R.id.midiFragment)) {
-            ((MidiFragment)getFragmentFromId(R.id.midiFragment)).sendMidiFromList(item);
+        Log.d(TAG,"sendMidiFromList("+item+")");
+        if (isCurrentFragment(R.id.midiFragment)) {
+            ((MidiFragment)getCurrentFragment()).sendMidiFromList(item);
         }
     }
     @Override
     public void deleteMidiFromList(int item) {
-        if (currentFragment(R.id.midiFragment)) {
-            ((MidiFragment)getFragmentFromId(R.id.midiFragment)).deleteMidiFromList(item);
+        if (isCurrentFragment(R.id.midiFragment)) {
+            ((MidiFragment)getCurrentFragment()).deleteMidiFromList(item);
         }
     }
     @Override
     public void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note) {
         // If pedalsFragment is open, send the midiNote and event there
-        if (currentFragment(R.id.pedalsFragment) && ((PedalsFragment)getFragmentFromId(R.id.pedalsFragment)).isListening()) {
+        Log.d(TAG,"currentFragment(pedalsFragment): "+isCurrentFragment(R.id.pedalsFragment));
+        try {
+            Log.d(TAG, "isListening()=" + ((PedalsFragment) getCurrentFragment()).isListening());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (isCurrentFragment(R.id.pedalsFragment) && ((PedalsFragment)getCurrentFragment()).isListening()) {
             if (actionDown) {
-                ((PedalsFragment) getFragmentFromId(R.id.pedalsFragment)).midiDownListener(note);
+                ((PedalsFragment) getCurrentFragment()).midiDownListener(note);
             } else if (actionUp) {
-                ((PedalsFragment) getFragmentFromId(R.id.pedalsFragment)).commonEventUp();
+                ((PedalsFragment) getCurrentFragment()).commonEventUp();
             } else if (actionLong) {
-                ((PedalsFragment) getFragmentFromId(R.id.pedalsFragment)).commonEventLong();
+                ((PedalsFragment) getCurrentFragment()).commonEventLong();
             }
         } else {
-            if (actionDown) {
+            if (actionDown && !settingsOpen) {
                 pedalActions.commonEventDown(-1,note);
-            } else if (actionUp) {
+            } else if (actionUp && !settingsOpen) {
                 pedalActions.commonEventUp(-1,note);
-            } else if (actionLong) {
+            } else if (actionLong && !settingsOpen) {
                 pedalActions.commonEventLong(-1,note);
             }
         }
@@ -1378,9 +1456,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void showSticky(boolean forceshow, boolean hide) {
         // Try to show the sticky note
-        if (!whichMode.equals("Presentation") && currentFragment(R.id.performanceFragment)) {
+        if (!whichMode.equals("Presentation") && isCurrentFragment(R.id.performanceFragment)) {
+            ((PerformanceFragment)getCurrentFragment()).dealWithStickyNotes(forceshow,hide);
             try {
-                ((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).dealWithStickyNotes(forceshow, hide);
+                //((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).dealWithStickyNotes(forceshow, hide);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2386,13 +2465,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateSizes(int width, int height) {
-        if (whichMode.equals("Performance") && currentFragment(R.id.performanceFragment)) {
-            ((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).updateSizes(width, height);
+        if (whichMode.equals("Performance") && isCurrentFragment(R.id.performanceFragment)) {
+            ((PerformanceFragment)getCurrentFragment()).updateSizes(width,height);
+            if (getFragmentFromId(R.id.performanceFragment) != null) {
+                //((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).updateSizes(width, height);
+            }
         }
     }
-
-
-
 
 
     @Override
@@ -2455,9 +2534,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void getSwipeValues(int minDistance, int minHeight, int minTime) {
-        if (currentFragment(R.id.swipeFragment)) {
+        if (isCurrentFragment(R.id.swipeFragment)) {
             try {
-                ((SwipeFragment) getFragmentFromId(R.id.swipeFragment)).getSwipeValues(minDistance, minHeight, minTime);
+                ((SwipeFragment) getCurrentFragment()).getSwipeValues(minDistance, minHeight, minTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2522,7 +2601,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // The media player will look for this.  If found, it won't restart when the song loads
         pad.setOrientationChanged(pad.getCurrentOrientation()!=newConfig.orientation);
         // If orientation has changed, we need to reload the song to get it resized.
-        if (pad.getOrientationChanged()) {
+        // Only do this if we are not in a settings menu though!
+        if (!settingsOpen && pad.getOrientationChanged()) {
             // Set the current orientation
             pad.setCurrentOrientation(newConfig.orientation);
             doSongLoad(song.getFolder(),song.getFilename(),true);

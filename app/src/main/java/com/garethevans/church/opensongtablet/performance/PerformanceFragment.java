@@ -391,9 +391,17 @@ public class PerformanceFragment extends Fragment {
                             new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
                         }
                     } else {
-                        myView.highlighterView.setVisibility(View.GONE);
+                        try {
+                            myView.highlighterView.setVisibility(View.GONE);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                    myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    try {
+                        myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             myView.pageHolder.getLayoutParams().height = h;

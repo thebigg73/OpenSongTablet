@@ -3,8 +3,8 @@ package com.garethevans.church.opensongtablet.chords;
 import android.content.Context;
 import android.util.Log;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class Transpose {
@@ -523,7 +523,7 @@ public class Transpose {
                 thisSong.setLyrics(convertToNumerals(c, mainActivityInterface, thisSong));
             }
         } else {
-            ShowToast.showToast(c,"No Nashville/Numeral chord format detected.");
+            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.nashville_error));
         }
         return lyrics;
     }
