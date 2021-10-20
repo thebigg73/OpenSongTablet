@@ -386,6 +386,8 @@ public class StageMode extends AppCompatActivity implements
         sendSongToConnected();
         sendSongDelay = 3000;
     };
+    private final Handler playPadHandler = new Handler();
+    private final Runnable playPadRunnable = () -> playPad();
     private final Handler resetSendSongAfterDelayHandler = new Handler();
     private final Runnable resetSendSongAfterDelayRunnable = () -> sendSongDelay = 0;
 
@@ -6334,7 +6336,12 @@ public class StageMode extends AppCompatActivity implements
         // IV - Pad time display logic is elsewhere
 
         while (StaticVariables.pad1Playing && StaticVariables.pad2Playing) {
-            // Wait until a pad is free for use
+            // Sleep until a pad is free for use
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         StaticVariables.padInQuickFade = 0;
     }
@@ -6970,6 +6977,7 @@ public class StageMode extends AppCompatActivity implements
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
                 startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
                 showStickyHandler.removeCallbacks(showStickyRunnable);
+                playPadHandler.removeCallbacks(playPadRunnable);
 
                 // If there is a sticky note showing, remove it early
                 if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
@@ -7323,7 +7331,8 @@ public class StageMode extends AppCompatActivity implements
 
                             if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
                                     !orientationChanged) {
-                                playPad();
+                                playPadHandler.removeCallbacks(playPadRunnable);
+                                playPadHandler.postDelayed(playPadRunnable, 3000);
                             } else {
                                 fadeoutPad();
                             }
