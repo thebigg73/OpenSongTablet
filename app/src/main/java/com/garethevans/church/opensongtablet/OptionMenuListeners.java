@@ -1567,7 +1567,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.myToastMessage = c.getString(R.string.wait);
             ShowToast.showToast(c);
             if (mListener!=null) {
-                mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA");
+                mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA&resourcekey=0-vmzRuYNgGSCG6N1dmpg3dQ");
                 mListener.closeMyDrawers("option");
             }
         });
@@ -1576,7 +1576,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.myToastMessage = c.getString(R.string.wait);
             ShowToast.showToast(c);
             if (mListener!=null) {
-                mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM");
+                mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM&resourcekey=0-BaKEvQTwaRk4pln4UzfGSQ");
                 mListener.closeMyDrawers("option");
             }
         });
