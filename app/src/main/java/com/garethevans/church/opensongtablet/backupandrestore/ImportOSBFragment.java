@@ -117,7 +117,6 @@ public class ImportOSBFragment extends Fragment {
                         } else {
                             myView.backupName.setText(getString(R.string.unknown));
                             myView.progressText.setText(getString(R.string.unknown));
-                            importFilename = null;
                             importUri = null;
                             foundFolders = null;
                             myView.foundFoldersListView.removeAllViews();
@@ -266,6 +265,7 @@ public class ImportOSBFragment extends Fragment {
             return 0;
         }
     }
+
     private void getCheckedFolders() {
         checkedFolders = new ArrayList<>();
         for (int x=0; x<myView.foundFoldersListView.getChildCount();x++) {
@@ -285,6 +285,7 @@ public class ImportOSBFragment extends Fragment {
         activityResultLauncher.launch(intent);
 
     }
+
     private void doImport() {
         // Get the folders we've selected
         getCheckedFolders();
