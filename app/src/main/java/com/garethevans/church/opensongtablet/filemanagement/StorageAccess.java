@@ -1615,7 +1615,30 @@ public class StorageAccess {
             return false;
         }
     }
-
+    public String getFileNameFromUri(Context c, Uri uri) {
+        if (uri!=null) {
+            String scheme = uri.getScheme();
+            if (scheme.equals("file")) {
+                return uri.getLastPathSegment();
+            } else if (scheme.equals("content")) {
+                Cursor cursor = c.getContentResolver().query(uri, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    int i = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (i >= 0) {
+                        return cursor.getString(i);
+                    } else {
+                        return uri.getLastPathSegment();
+                    }
+                } else {
+                    return uri.toString();
+                }
+            } else {
+                return uri.toString();
+            }
+        } else {
+            return "";
+        }
+    }
 
     // Actions for folders (create, delete, rename, clear)
     boolean renameFolder(Context c, MainActivityInterface mainActivityInterface, ShowToast showToast, Song song, String oldsubfolder, String newsubfolder) {

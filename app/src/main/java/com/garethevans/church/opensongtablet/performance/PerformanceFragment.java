@@ -392,7 +392,9 @@ public class PerformanceFragment extends Fragment {
                         }
                     } else {
                         try {
-                            myView.highlighterView.setVisibility(View.GONE);
+                            if (myView.highlighterView!=null) {
+                                myView.highlighterView.setVisibility(View.GONE);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

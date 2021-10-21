@@ -26,7 +26,7 @@ public class ImportOptionsFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private SettingsImportBinding myView;
     private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream"};
-    private final String[] validBackups = new String[] {"application/zip","application/octet-stream"};
+    private final String[] validBackups = new String[] {"application/zip","application/octet-stream","application/*"};
     private Thread thread;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private int whichFileType;

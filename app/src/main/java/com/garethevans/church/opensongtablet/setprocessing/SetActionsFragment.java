@@ -88,19 +88,23 @@ public class SetActionsFragment extends Fragment {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 try {
                     Intent data = result.getData();
+                    Log.d(TAG,"data="+data);
+
                     if (data != null) {
                         Uri contentUri = data.getData();
-                        String location = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
-                        if (location.endsWith(".osts") || !location.contains(".")) {
+                        Log.d(TAG,"contentUri="+contentUri);
+                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(requireContext(),contentUri);
+                        //String location = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
+                        Log.d(TAG,"filename="+importFilename);
+                        if (importFilename.endsWith(".osts") || !importFilename.contains(".")) {
                             // Copy the file into the sets folder
                             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), contentUri);
-                            String importFilename;
-                            if (location.contains("/")) {
+                            /*if (location.contains("/")) {
                                 importFilename = location.substring(location.lastIndexOf("/"));
                                 importFilename = importFilename.replace("/", "");
                             } else {
                                 importFilename = location;
-                            }
+                            }*/
                             importFilename = importFilename.replace(".osts","");
 
                             Log.d(TAG,"importFile: "+importFilename);
@@ -113,6 +117,8 @@ public class SetActionsFragment extends Fragment {
                             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
                             mainActivityInterface.setWhattodo("loadset:"+importFilename);
                             mainActivityInterface.navigateToFragment("opensongapp://settings/sets/manage", 0);
+                        } else {
+                            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.file_type)+" "+getString(R.string.unknown));
                         }
                     }
                 } catch (Exception e) {

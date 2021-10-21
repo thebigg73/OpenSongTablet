@@ -43,7 +43,7 @@ public class EditSongFragmentLyrics extends Fragment {
         super.onCreate(savedInstanceState);
         Window w = requireActivity().getWindow();
         if (w!=null) {
-            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
     }
 

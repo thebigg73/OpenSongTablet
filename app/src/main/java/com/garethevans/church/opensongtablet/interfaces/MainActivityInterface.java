@@ -229,5 +229,6 @@ public interface MainActivityInterface {
     void updateSongList();
     void pdfScrollToPage(int pageNumber);
     void updateSong();
+    void setWindowFlags();
 }
 

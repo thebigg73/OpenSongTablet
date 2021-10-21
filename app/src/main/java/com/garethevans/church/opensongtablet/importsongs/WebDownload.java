@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.importsongs;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 
@@ -13,6 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class WebDownload {
+
+    private final String TAG = "WebDownload";
 
     // This class is used to download files from the internet
     // These can be my sample songs, or files from UG, SongSelect, etc.
@@ -30,7 +31,6 @@ public class WebDownload {
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
 
-            Log.d("d", "address=" + address);
             // expect HTTP 200 OK, so we don't mistakenly save error report
             // instead of the file
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -40,29 +40,16 @@ public class WebDownload {
                 return returnMessages;
 
             } else {
-                // this will be useful to display download percentage
-                // might be -1: server did not report the length
-                int fileLength = connection.getContentLength();
-
-                Log.d("d", "fileLength=" + fileLength);
-
                 // download the file
                 input = connection.getInputStream();
-                Log.d("d", "input=" + input);
-                Log.d("d", "filename=" + filename);
 
                 if (input != null) {
-
+                    // Put the file into our chosen OpenSong folder
                     File tempfile = new File(c.getExternalFilesDir("Files"),filename);
+
                     Uri uri = Uri.fromFile(tempfile);
 
-                    Log.d("DownloadTask", "uri=" + uri);
-                    Log.d("DownloadTask", "filename=" + filename);
-
                     outputStream = new FileOutputStream(tempfile);
-                    Log.d("DownloadTask", "outputStream=" + outputStream);
-                    Log.d("DownloadTask", "c="+c);
-                    Log.d("DownloadTask", "c.getContentResolver()="+c.getContentResolver());
 
                     byte[] data = new byte[4096];
                     int count;
@@ -85,10 +72,13 @@ public class WebDownload {
 
         } finally {
             try {
-                if (outputStream != null)
+                if (outputStream != null) {
+                    outputStream.flush();
                     outputStream.close();
-                if (input != null)
+                }
+                if (input != null) {
                     input.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

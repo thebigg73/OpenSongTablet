@@ -13,6 +13,7 @@ import android.text.method.KeyListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -110,7 +112,20 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         } else {
             editText.setInputType(inputType);
             editText.setImeOptions(imeOptions);
-        }
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if(actionId==EditorInfo.IME_ACTION_DONE){
+
+                        //Clear focus here from edittext
+                        editText.clearFocus();
+                        MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
+                        mainActivityInterface.setWindowFlags();
+                    }
+                    return false;
+                }
+            });
+        };
 
         if (useMonospace) {
             editText.setTypeface(Typeface.MONOSPACE);

@@ -537,7 +537,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-    private void setWindowFlags() {
+    @Override
+    public void setWindowFlags() {
         // Fix the page flags
         if (windowFlags==null) {
             windowFlags = new WindowFlags(this.getWindow());
@@ -2649,6 +2650,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         // Set the fullscreen window flags]
+        setWindowFlags();
         if (hasFocus) {
             setWindowFlags();
             //appActionBar.showActionBar(settingsOpen);
