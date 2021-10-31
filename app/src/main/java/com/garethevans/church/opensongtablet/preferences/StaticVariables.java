@@ -11,7 +11,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
-import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
+import com.garethevans.church.opensongtablet.presenter.PresentationFragment;
 
 import java.util.ArrayList;
 

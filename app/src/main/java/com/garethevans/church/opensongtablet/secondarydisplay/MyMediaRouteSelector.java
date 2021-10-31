@@ -5,7 +5,7 @@ import androidx.mediarouter.media.MediaRouteSelector;
 
 import com.google.android.gms.cast.CastMediaControlIntent;
 
-public class MediaRoute {
+public class MyMediaRouteSelector {
 
     public MediaRouteSelector getMediaRouteSelector() {
     return new MediaRouteSelector.Builder()

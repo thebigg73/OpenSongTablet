@@ -244,11 +244,10 @@ public class PerformanceFragment extends Fragment {
             }
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
-            Log.d(TAG,"displayChords="+displayChords);
             mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
                     setSongInLayout(requireContext(), mainActivityInterface, trimSections, addSectionSpace,
                             trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments, displayChords,
-                            mainActivityInterface.getSong().getLyrics(), boldChordHeading, false));
+                            mainActivityInterface.getSong().getLyrics(), boldChordHeading, false, false));
 
             // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
             setUpTestViewListener();
@@ -363,7 +362,11 @@ public class PerformanceFragment extends Fragment {
 
         // Update any midi commands (if any)
         mainActivityInterface.getMidi().buildSongMidiMessages();
+
+        // Update the secondary display (if present)
+        mainActivityInterface.updateDisplays();
     }
+
     private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")) {

@@ -49,7 +49,7 @@ import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
-import com.garethevans.church.opensongtablet.secondarydisplay.PresentationCommon;
+import com.garethevans.church.opensongtablet.secondarydisplay.CastService;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songmenu.SongListBuildIndex;
@@ -191,10 +191,6 @@ public interface MainActivityInterface {
     CheckInternet getCheckInternet();
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
     void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri);
-    //void setDisplay(Display display);
-    //Display getDisplay();
-    //ExternalDisplay getExternalDisplay();
-    PresentationCommon getPresentationCommon();
     void openDocument(String guideId, String location);
     PrepareFormats getPrepareFormats();
     void setSectionViews(ArrayList<View> views);
@@ -230,5 +226,8 @@ public interface MainActivityInterface {
     void pdfScrollToPage(int pageNumber);
     void updateSong();
     void setWindowFlags();
+    void resetOptionMenu();
+    CastService getPresentationService();
+    void updateDisplays();
 }
 

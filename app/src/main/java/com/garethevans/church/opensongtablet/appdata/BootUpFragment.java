@@ -161,7 +161,7 @@ public class BootUpFragment extends Fragment {
                                 break;
 
                             case "Presentation":
-                                destination = R.id.presentationFragment;
+                                destination = R.id.presenterFragment;
                                 break;
                         }
                         NavOptions navOptions = new NavOptions.Builder().

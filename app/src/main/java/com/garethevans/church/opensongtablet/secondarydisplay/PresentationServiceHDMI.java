@@ -1,21 +1,107 @@
 package com.garethevans.church.opensongtablet.secondarydisplay;
 
-import android.app.Presentation;
 import android.content.Context;
+import android.util.Log;
 import android.view.Display;
 
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-public class PresentationServiceHDMI extends Presentation {
+public class PresentationServiceHDMI  {
 
+    Context c;
+    DisplayInterface displayInterface;
     MainActivityInterface mainActivityInterface;
+    Display[] displays;
+    MyCastDisplay[] myCastDisplays;
 
-    public PresentationServiceHDMI(Context outerContext, Display display) {
-        super(outerContext, display);
-        mainActivityInterface = (MainActivityInterface) outerContext;
+    private final String TAG = "PresentationServiceHDMI";
+
+    public PresentationServiceHDMI(MainActivityInterface mainActivityInterface) {
+        this.mainActivityInterface = mainActivityInterface;
     }
 
+    public void setMainActivityInterface(Context c, MainActivityInterface mainActivityInterface) {
+        this.c = c;
+        this.mainActivityInterface = mainActivityInterface;
+    }
+
+
+    public Display[] getMyDisplays() {
+        return displays;
+    }
+
+    public void updateMainActivityInterface(MainActivityInterface mainActivityInterface) {
+        this.mainActivityInterface = mainActivityInterface;
+        Log.d(TAG,"mainActivityInterface="+mainActivityInterface);
+    }
+
+    /*@Override
+    public void onCreatePresentation(@NonNull Display display) {
+        this.display = display;
+        mainActivityInterface.getPresentationCommon().setIsPresenting(true);
+        createPresentation(display);
+    }*/
+
+    public void createPresentation(Display[] displays) {
+        // Do this for each display
+        Log.d(TAG,"displays.length="+displays.length);
+        myCastDisplays = new MyCastDisplay[displays.length];
+        for (int x=0; x<displays.length; x++) {
+            myCastDisplays[x] = new MyCastDisplay(c,displays[x],mainActivityInterface);
+            myCastDisplays[x].show();
+        }
+
+        //myCastDisplay = new MyCastDisplay(this.getContext(), display, mainActivityInterface);
+        //myCastDisplay.show();
+        //this.mainActivityInterface = mainActivityInterface;
+        /*dismissPresentation();
+        myCastDisplay = new MyCastDisplay(this, display, mainActivityInterface);
+        try {
+            myCastDisplay.show();
+            mainActivityInterface.getPresentationCommon().setIsPresenting(true);
+
+        } catch (WindowManager.InvalidDisplayException ex) {
+            ex.printStackTrace();
+            dismissPresentation();
+            mainActivityInterface.getPresentationCommon().setIsPresenting(false);
+        }*/
+    }
+
+//    @Override
+//    public void onDismissPresentation() {
+//        //mainActivityInterface.getPresentationCommon().setIsPresenting(false);
+//        dismissPresentation();
+//    }
+
+    /*@Override
+    public void onDestroy() {
+        if (myCastDisplay!=null) {
+            try {
+                myCastDisplay.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        *//*if (mainActivityInterface!=null) {
+            mainActivityInterface.getPresentationCommon().setIsPresenting(false);
+        }*//*
+    }*/
+
+    private void dismissPresentation() {
+        for (MyCastDisplay myCastDisplay:myCastDisplays) {
+            if (myCastDisplay!=null) {
+                myCastDisplay.dismiss();
+                myCastDisplay = null;
+            }
+        }
+
+        //mainActivityInterface.getPresentationCommon().setIsPresenting(false);
+    }
+
+
 }
+
 
 
 // All of the classes after initialisation are the same for the PresentationService and PresentationServiceHDMI files

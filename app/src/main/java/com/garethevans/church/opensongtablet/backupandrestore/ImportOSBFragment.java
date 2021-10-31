@@ -63,7 +63,6 @@ public class ImportOSBFragment extends Fragment {
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

@@ -46,22 +46,22 @@ public class ModeFragment extends Fragment {
             case "Performance":
                 myView.performanceMode.showCheckMark(true);
                 break;
-            case "Presentation":
-                myView.presentationMode.showCheckMark(true);
+            case "Presenter":
+                myView.presenterMode.showCheckMark(true);
                 break;
             case "Stage":
                 myView.stageMode.showCheckMark(true);
                 break;
         }
         // TODO disable to non-available modes for now...
-        myView.presentationMode.setEnabled(false);
+        //myView.presentationMode.setEnabled(false);
         myView.stageMode.setEnabled(false);
     }
 
     private void setListeners() {
         myView.performanceMode.setOnClickListener(v -> updatePreference("Performance"));
         myView.stageMode.setOnClickListener(v -> updatePreference("Stage"));
-        myView.presentationMode.setOnClickListener(v -> updatePreference("Presentation"));
+        myView.presenterMode.setOnClickListener(v -> updatePreference("Presenter"));
         myView.webLink.setOnClickListener(v -> mainActivityInterface.openDocument("mode",null));
     }
 

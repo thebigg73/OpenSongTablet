@@ -113,7 +113,7 @@ public class BatteryStatus extends BroadcastReceiver {
     }
 
     public void setBatteryImage(Context c, ImageView batteryImage, int abheight, int charge, int thickness) {
-        BitmapDrawable bmp = batteryImage(c, abheight, charge,thickness);
+        BitmapDrawable bmp = batteryImage(c, abheight, charge, thickness);
         batteryImage.setImageDrawable(bmp);
     }
 

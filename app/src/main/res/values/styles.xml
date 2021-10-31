@@ -43,6 +43,7 @@
         <item name="buttonBarButtonStyle">@style/popupButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/popupButtonStyle</item>
         <item name="buttonBarNegativeButtonStyle">@style/popupButtonStyle</item>
+        <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>
 
         <!-- Exposed popup window -->
         <item name="popupMenuBackground">@drawable/popup_bg</item>
@@ -268,8 +269,28 @@
         <item name="backgroundTint">@color/colorSecondary</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:padding">16dp</item>
-
     </style>
+
+    <style name="CastAppThemeMediaRouter" parent="Widget.MediaRouter.MediaRouteButton">
+        <item name="android:popupBackground">@color/colorSecondary</item>
+        <item name="backgroundColor">@color/colorSecondary</item>
+        <item name="background">@color/colorSecondary</item>
+        <item name="castBackground">@color/colorSecondary</item>
+
+        <item name="colorPrimaryDark">@color/colorAltPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/yellow</item>
+    </style>
+<!--
+    <style name="MediaRouterOverlay" parent="">
+        <item name="android:popupBackground">@color/colorSecondary</item>
+        <item name="castBackground">@color/colorSecondary</item>
+        <item name="backgroundColor">@color/colorSecondary</item>
+        <item name="background">@color/colorSecondary</item>
+        <item name="colorPrimary">@color/colorAltSecondary</item>
+        <item name="colorOnPrimary">@color/colorAltSecondary</item>
+        <item name="colorOnSurface">@color/colorSecondary</item>
+    </style>-->
 
     <!-- Sliders -->
     <style name="Slider" parent="Widget.MaterialComponents.Slider">
@@ -322,8 +343,26 @@
         <item name="android:alpha">0.8</item>
     </style>
 
-    <style name="CustomMediaRouterTheme" parent="AppTheme">
-        <item name="android:background">@color/colorAltPrimary</item>
+
+    <!-- Casting -->
+    <style name="CustomCastMiniController" parent="CastMiniController">
+        <item name="castShowImageThumbnail">true</item>
+        <item name="castTitleTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="castSubtitleTextAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="castBackground">#FFFFFF</item>
+        <item name="castProgressBarColor">#FFFFFF</item>
+        <item name="castPlayButtonDrawable">@drawable/cast_ic_mini_controller_play</item>
+        <item name="castPauseButtonDrawable">@drawable/cast_ic_mini_controller_pause</item>
+        <item name="castStopButtonDrawable">@drawable/cast_ic_mini_controller_stop</item>
+        <item name="castLargePlayButtonDrawable">@drawable/cast_ic_mini_controller_play_large</item>
+        <item name="castLargePauseButtonDrawable">@drawable/cast_ic_mini_controller_pause_large</item>
+        <item name="castLargeStopButtonDrawable">@drawable/cast_ic_mini_controller_stop_large</item>
+        <item name="castSkipPreviousButtonDrawable">@drawable/cast_ic_mini_controller_skip_prev</item>
+        <item name="castSkipNextButtonDrawable">@drawable/cast_ic_mini_controller_skip_next</item>
+        <item name="castRewind30ButtonDrawable">@drawable/cast_ic_mini_controller_rewind30</item>
+        <item name="castForward30ButtonDrawable">@drawable/cast_ic_mini_controller_forward30</item>
+        <item name="castMuteToggleButtonDrawable">@drawable/cast_ic_mini_controller_mute</item>
+        <item name="castClosedCaptionsButtonDrawable">@drawable/cast_ic_mini_controller_closed_caption</item>
     </style>
 
 </resources>

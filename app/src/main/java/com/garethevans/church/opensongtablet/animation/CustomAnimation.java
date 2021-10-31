@@ -22,6 +22,8 @@ public class CustomAnimation {
             start = 0;
             end = 1;
         }
+        v.setAlpha(start);
+        v.setVisibility(View.VISIBLE);
         Animation fader = new AlphaAnimation(start, end);
 
         if (fadeIn) {
@@ -34,6 +36,12 @@ public class CustomAnimation {
         AnimationSet animation = new AnimationSet(false); //change to false
         animation.addAnimation(fader);
         v.setAnimation(animation);
+        int finalEnd = end;
+        v.postDelayed(() -> {
+            if (finalEnd == 0) {
+                v.setVisibility(View.GONE);
+            }
+        },time);
     }
 
     public void fadeActionButton(FloatingActionButton fab, float fadeTo) {

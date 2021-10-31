@@ -856,7 +856,7 @@ public class ProcessSong {
                                    String string, float headingScale, float commentScale,
                                    float chordScale, int lyricColor, int chordColor,
                                    boolean trimLines, float lineSpacing, boolean boldChordHeading,
-                                   int highlightChordColor) {
+                                   int highlightChordColor, boolean presentation) {
         TableLayout tableLayout = newTableLayout(c);
         // Split the group into lines
         String[] lines = string.split("____groupline_____");
@@ -912,7 +912,7 @@ public class ProcessSong {
                 lastlinetype = linetype;
             }
 
-            Typeface typeface = getTypeface(mainActivityInterface, linetype);
+            Typeface typeface = getTypeface(mainActivityInterface, presentation, linetype);
             float size = getFontSize(linetype, headingScale, commentScale, chordScale);
             int color = getFontColor(linetype, lyricColor, chordColor);
             int startpos = 0;
@@ -1225,8 +1225,19 @@ public class ProcessSong {
                                            boolean trimSections, boolean addSectionSpace,
                                            boolean trimLines, float lineSpacing, float headingScale,
                                            float chordScale, float commentScale, boolean displayChords,
-                                           String string, boolean boldChordHeading, boolean asPDF) {
+                                           String string, boolean boldChordHeading, boolean asPDF, boolean presentation) {
         ArrayList<View> sectionViews = new ArrayList<>();
+
+        int backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
+        int textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
+        int chordsColor = mainActivityInterface.getMyThemeColors().getLyricsChordsColor();
+        if (presentation) {
+            textColor = mainActivityInterface.getMyThemeColors().getPresoFontColor();
+        } else if (asPDF) {
+            backgroundColor = Color.WHITE;
+            textColor = Color.BLACK;
+        }
+
 
         // This goes through processing the song
 
@@ -1250,54 +1261,50 @@ public class ProcessSong {
                 section = section + "\n ";
             }
             LinearLayout linearLayout = newLinearLayout(c); // transparent color
-            int backgroundColor;
-            if (asPDF) {
-                backgroundColor = Color.WHITE;
-            } else {
-                backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
-            }
+
              // Now split by line
             String[] lines = section.split("\n");
             for (String line : lines) {
                 // Get the text stylings
                 String linetype = getLineType(line);
-                if (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab")) {
-                    if (asPDF) {
-                        backgroundColor = Color.WHITE;
-                    } else {
-                        backgroundColor = getBGColor(c, mainActivityInterface, line);
-                    }
+                if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
+                    backgroundColor = getBGColor(c, mainActivityInterface, line);
                 }
-                Typeface typeface = getTypeface(mainActivityInterface, linetype);
+                Typeface typeface = getTypeface(mainActivityInterface, presentation, linetype);
                 float size = getFontSize(linetype, headingScale, commentScale, chordScale);
-                int color;
-                if (asPDF) {
-                    color = Color.BLACK;
-                } else {
-                    color = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
+                if (!asPDF && !presentation) {
+                    textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
                             getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
                 }
+
                 if (line.contains("____groupline_____")) {
                     if (asPDF) {
                         linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
                                 commentScale, chordScale, Color.BLACK, Color.BLACK,
-                                trimLines, lineSpacing, true, Color.TRANSPARENT));
+                                trimLines, lineSpacing, true, Color.TRANSPARENT,false));
+                    } else if (presentation) {
+                        linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
+                                commentScale, chordScale,
+                                mainActivityInterface.getMyThemeColors().getPresoFontColor(),
+                                mainActivityInterface.getMyThemeColors().getPresoFontColor(),
+                                trimLines, lineSpacing, boldChordHeading,
+                                mainActivityInterface.getMyThemeColors().getHighlightChordColor(),true));
                     } else {
                         linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
                                 commentScale, chordScale,
                                 mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
                                 mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
                                 trimLines, lineSpacing, boldChordHeading,
-                                mainActivityInterface.getMyThemeColors().getHighlightChordColor()));
+                                mainActivityInterface.getMyThemeColors().getHighlightChordColor(),false));
                     }
                 } else {
                     if (asPDF) {
                         linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
-                                size, color, trimLines, lineSpacing, true, Color.TRANSPARENT, Color.TRANSPARENT));
+                                size, textColor, trimLines, lineSpacing, true, Color.TRANSPARENT, Color.TRANSPARENT));
 
                     } else {
                         linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
-                                size, color, trimLines, lineSpacing, boldChordHeading,
+                                size, textColor, trimLines, lineSpacing, boldChordHeading,
                                 mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
                                 mainActivityInterface.getMyThemeColors().getHighlightChordColor()));
                     }
@@ -1311,12 +1318,15 @@ public class ProcessSong {
 
 
     // Get properties for creating the views
-    private Typeface getTypeface(MainActivityInterface mainActivityInterface, String string) {
-        if (string.equals("chord")) {
-            return mainActivityInterface.getMyFonts().getChordFont();
-        } else if (string.equals("tab")) {
+    private Typeface getTypeface(MainActivityInterface mainActivityInterface, boolean presentation, String string) {
+        if (string.equals("tab")) {
             return mainActivityInterface.getMyFonts().getMonoFont();
+        } else if (presentation) {
+            return mainActivityInterface.getMyFonts().getPresoFont();
         } else {
+            if (string.equals("chord")) {
+                return mainActivityInterface.getMyFonts().getChordFont();
+            }
             return mainActivityInterface.getMyFonts().getLyricFont();
         }
     }

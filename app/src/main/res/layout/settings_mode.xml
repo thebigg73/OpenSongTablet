@@ -35,7 +35,7 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/presentationMode"
+                android:id="@+id/presenterMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/presentation_mode"

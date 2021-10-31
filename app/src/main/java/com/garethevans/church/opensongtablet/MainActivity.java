@@ -4,7 +4,9 @@ import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH
 import static com.google.android.material.snackbar.Snackbar.make;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,8 +43,8 @@ import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.mediarouter.app.MediaRouteButton;
 import androidx.mediarouter.media.MediaRouteSelector;
-import androidx.mediarouter.media.MediaRouter;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -87,6 +90,7 @@ import com.garethevans.church.opensongtablet.importsongs.ImportOnlineFragment;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
@@ -107,7 +111,7 @@ import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
-import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
+import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
@@ -115,10 +119,9 @@ import com.garethevans.church.opensongtablet.screensetup.FontSetupFragment;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
-import com.garethevans.church.opensongtablet.secondarydisplay.ExternalDisplay;
-import com.garethevans.church.opensongtablet.secondarydisplay.MediaRouterCallback;
+import com.garethevans.church.opensongtablet.secondarydisplay.CastService;
+import com.garethevans.church.opensongtablet.secondarydisplay.MyHDMIDisplay;
 import com.garethevans.church.opensongtablet.secondarydisplay.MySessionManagerListener;
-import com.garethevans.church.opensongtablet.secondarydisplay.PresentationCommon;
 import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
@@ -140,13 +143,16 @@ import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tools.TimeTools;
 import com.google.android.gms.cast.CastDevice;
+import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.SessionManager;
+import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.Status;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -159,7 +165,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
-        MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface {
+        MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
+        DisplayInterface {
 
     private ActivityBinding myView;
 
@@ -189,7 +196,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Gestures gestures;
     private LoadSong loadSong;
     private MakePDF makePDF;
-    private MediaRouterCallback mediaRouterCallback;
+    //private MediaRouterCallback mediaRouterCallback;
+    //private MediaRouter mediaRouter;
     private Metronome metronome;
     private Midi midi;
     private NearbyConnections nearbyConnections;
@@ -202,7 +210,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private PerformanceGestures performanceGestures;
     private Preferences preferences;
     private PrepareFormats prepareFormats;
-    private PresentationCommon presentationCommon;
     private ProcessSong processSong;
     private ProfileActions profileActions;
     private SaveSong saveSong;
@@ -231,13 +238,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private WindowFlags windowFlags;
     private BatteryStatus batteryStatus;
     private CastContext castContext;
-    private SessionManager sessionManager;
     private CastSession castSession;
-    private MySessionManagerListener sessionManagerListener;
+    private SessionManager sessionManager;
+    private SessionManagerListener<CastSession> sessionManagerListener;
+
+    //private SessionManager sessionManager;
+    //private CastSession castSession;
+    //private MySessionManagerListener sessionManagerListener;
     private SongMenuFragment songMenuFragment;
     private SetMenuFragment setMenuFragment;
     private PerformanceFragment performanceFragment;
-    private PresentationFragment presentationFragment;
+    private PresenterFragment presenterFragment;
     private BootUpFragment bootUpFragment;
     private EditSongFragment editSongFragment;
     private EditSongFragmentMain editSongFragmentMain;
@@ -248,13 +259,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ViewPager2 viewPager;
     private ActionBar actionBar;
     private AppBarConfiguration appBarConfiguration;
-    private DisplayManager displayManager;
-    private ExternalDisplay externalDisplay;
     private CastStateListener castStateListener;
-    private MediaRouter mediaRouter;
-    private MediaRouteSelector mediaRouteSelector;
     private CastDevice castDevice;
-    //private PresentationServiceHDMI hdmi;
+    private CastService castService;
+    private MyHDMIDisplay hdmiPresentation;
+    private MediaRouteSelector mediaRouteSelector;
+    private Display[] connectedDisplays;
+    private DisplayManager displayManager;
+
 
     // Variables used
     private ArrayList<View> targets;
@@ -295,6 +307,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Set up the navigation controller
         setupNavigation();
 
+        // Initiate cast
+        setupCast();
+
         // One time actions will have been completed
         // Initiate the boot check progress
         doonetimeactions = false;
@@ -317,10 +332,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         fixLocale = new FixLocale();
         checkInternet = new CheckInternet();
         nearbyConnections = new NearbyConnections(this);
-        mediaRouterCallback = new MediaRouterCallback();
         doVibrate = new DoVibrate();
         customAnimation = new CustomAnimation();
-        presentationCommon = new PresentationCommon();
         webDownload = new WebDownload();
         alertChecks = new AlertChecks();
 
@@ -377,7 +390,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         exportActions = new ExportActions();
         bible = new Bible();
         customSlide = new CustomSlide();
+
+        // Casting
+        //myMediaRouteSelector = new MyMediaRouteSelector();
+        //mediaRouteSelector = myMediaRouteSelector.getMediaRouteSelector();
+        castService = new CastService(this);
     }
+
     private void setupBatteryStatus() {
         // Battery monitor
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -389,10 +408,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
     }
     @Override
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
-        if (!whichMode.equals("Presentation") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
+        if (!whichMode.equals("Presenter") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
             // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
             myView.fragmentView.setTop(0);
         } else {
@@ -447,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setupNearby();
 
         // Initialise the CastContext
-        setUpCast();
+        setupCast();
 
     }
     private void initialiseStartVariables() {
@@ -608,7 +628,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void onBackPressed() {
         if (navController.getCurrentDestination()!=null &&
                 (navController.getCurrentDestination().getId()==R.id.performanceFragment ||
-                        navController.getCurrentDestination().getId()==R.id.presentationFragment ||
+                        navController.getCurrentDestination().getId()==R.id.presenterFragment ||
                         navController.getCurrentDestination().getId()==R.id.storageManagementFragment)) {
             displayAreYouSure("exit", getString(R.string.exit_confirm), null,
                     navController.getCurrentDestination().getNavigatorName(),
@@ -631,7 +651,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = new AppBarConfiguration.Builder(R.id.bootUpFragment,
-                R.id.performanceFragment, R.id.presentationFragment)
+                R.id.performanceFragment, R.id.presenterFragment)
                 .setOpenableLayout(myView.drawerLayout)
                 .build();
 
@@ -641,7 +661,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void navigateToFragment(String deepLink, int id) {
         // Either sent a deeplink string, or a fragment id
         lockDrawer(true);
-        closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
+        closeDrawer(true);  // Only the Performance and Presenter fragments allow this.  Switched on in these fragments
         hideActionButton(true);
         runOnUiThread(() -> {
             try {
@@ -740,8 +760,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (navController.getCurrentDestination()!=null) {
             navController.popBackStack(navController.getCurrentDestination().getId(), true);
         }
-        if (whichMode.equals("Presentation")) {
-            navigateToFragment("opensongapp://presentation",0);
+        if (whichMode.equals("Presenter")) {
+            navigateToFragment("opensongapp://presenter",0);
         } else {
             navigateToFragment("opensongapp://performance",0);
         }
@@ -831,8 +851,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Fragment getFragmentFromId(int fragId) {
         return getSupportFragmentManager().findFragmentById(fragId);
     }
-
-
 
 
     // Nearby stuff
@@ -959,12 +977,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
 
     // Secondary screen stuff
-    private void setUpCast() {
+    @SuppressLint("ServiceCast")
+    private void setupCast() {
         try {
-            castContext = CastContext.getSharedInstance(this);
-            sessionManager = castContext.getSessionManager();
-            castSession = castContext.getSessionManager().getCurrentCastSession();
-            sessionManagerListener = new MySessionManagerListener(this);
+            if (castContext == null) {
+                castContext = CastContext.getSharedInstance(this);
+            }
+            if (sessionManager == null) {
+                sessionManager = castContext.getSessionManager();
+            }
+            if (sessionManagerListener == null) {
+                sessionManagerListener = new MySessionManagerListener(this);
+            }
+
+            // The stuff for HDMI output
+            displayManager = (DisplayManager) getSystemService(DISPLAY_SERVICE);
+
+
+/*
+
+            mediaRouter = MediaRouter.getInstance(this);
+            mediaRouteSelector = new MediaRouteSelector.Builder()
+                    .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO).build();
+            //mediaRouterCallback = new MediaRouterCallback(this,this);
+            mediaRouterCallback = new MediaRouterCallback(this,this);
+*/
 
         } catch (Exception e) {
             // No Google Service available
@@ -973,15 +1010,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     private void recoverCastState() {
-        castSession = sessionManager.getCurrentCastSession();
-        sessionManager.addSessionManagerListener(new MySessionManagerListener(this));
+        //castSession = sessionManager.getCurrentCastSession();
+        //sessionManager.addSessionManagerListener(new MySessionManagerListener());
     }
     private void endCastState() {
-        if (sessionManager!=null && sessionManagerListener!=null) {
+        /*if (mediaRouter!=null && mediaRouterCallback!=null) {
+            mediaRouter.removeCallback(mediaRouterCallback);
+        }*/
+        /*if (sessionManager!=null && sessionManagerListener!=null) {
             sessionManager.removeSessionManagerListener(sessionManagerListener);
-        }
-        castSession = null;
+        }*/
     }
+
+
     // THIS BIT CAUSES ERROR WHEN SETCONTENTVIEW CALLED AS DISPLAY IS NULL
     // MAYBE ADD TO SEPARATE EXTERNAL DISPLAY CLASS?
     /*@Override
@@ -1167,9 +1208,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
 
         // Setup the menu item for connecting to cast devices
-
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
             MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+            MediaRouteButton mediaRouteButton = (MediaRouteButton) mediaRouteMenuItem.getActionView();
         } else {
             Log.d(TAG, "Google Play Services Not Available");
             // TODO
@@ -1184,7 +1225,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.toolBar.batteryimage,actionBar);
         return true;
     }
-
+    @Override
+    public void resetOptionMenu() {
+        invalidateOptionsMenu();
+    }
 
     // The drawers and actionbars
     @Override
@@ -1457,13 +1501,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void showSticky(boolean forceshow, boolean hide) {
         // Try to show the sticky note
-        if (!whichMode.equals("Presentation") && isCurrentFragment(R.id.performanceFragment)) {
+        if (!whichMode.equals("Presenter") && isCurrentFragment(R.id.performanceFragment)) {
             ((PerformanceFragment)getCurrentFragment()).dealWithStickyNotes(forceshow,hide);
-            try {
-                //((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).dealWithStickyNotes(forceshow, hide);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -1571,10 +1610,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public CustomSlide getCustomSlide() {
         return customSlide;
     }
-    @Override
-    public PresentationCommon getPresentationCommon() {
-        return presentationCommon;
-    }
 
 
 
@@ -1597,9 +1632,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void doSongLoad(String folder, String filename, boolean closeDrawer) {
-        if (whichMode.equals("Presentation")) {
-            if (presentationFragment!=null && presentationFragment.isAdded()) {
-                presentationFragment.doSongLoad(folder,filename);
+        if (whichMode.equals("Presenter")) {
+            if (presenterFragment!=null && presenterFragment.isAdded()) {
+                presenterFragment.doSongLoad(folder,filename);
             } else {
                 navigateToFragment(null,R.id.performanceFragment);
             }
@@ -1607,7 +1642,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (performanceFragment!=null && performanceFragment.isAdded()) {
                 performanceFragment.doSongLoad(folder,filename);
             } else {
-                navigateToFragment(null,R.id.presentationFragment);
+                navigateToFragment(null,R.id.presenterFragment);
             }
         }
         closeDrawer(closeDrawer);
@@ -1632,7 +1667,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 Song quickSong = new Song();
                 quickSong.setFolder(setFolder);
                 quickSong.setFilename(setFilename);
-                quickSong = mainActivityInterface.getLoadSong().doLoadSongFile(this,this,quickSong,false);
+                quickSong = loadSong.doLoadSongFile(this,this,quickSong,false);
                 songKey = quickSong.getKey();
                 Log.d(TAG,"quickSong.getKey()="+songKey);
             } else {
@@ -1663,7 +1698,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Already a variation (or other), so don't use the database
                     copySong.setFilename(setFilename);
                     copySong.setFolder(setFolder);
-                    copySong = mainActivityInterface.getLoadSong().doLoadSongFile(this,this,copySong,false);
+                    copySong = loadSong.doLoadSongFile(this,this,copySong,false);
                 } else {
                     // Just a song, so use the database
                     copySong = sqLiteHelper.getSpecificSong(this, this, setFolder, setFilename);
@@ -1705,8 +1740,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             case "Performance":
                 performanceFragment = (PerformanceFragment) frag;
                 break;
-            case "Presentation":
-                presentationFragment = (PresentationFragment) frag;
+            case "Presenter":
+                presenterFragment = (PresenterFragment) frag;
                 break;
             case "EditSongFragment":
                 editSongFragment = (EditSongFragment) frag;
@@ -2099,6 +2134,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public LoadSong getLoadSong() {
+        // TODO for now
         return loadSong;
     }
     @Override
@@ -2492,6 +2528,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSong() {
+        Log.d(TAG,"loadSong() called");
         doSongLoad(song.getFolder(),song.getFilename(),true);
     }
 
@@ -2578,6 +2615,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void onStart() {
         super.onStart();
+
+
         // Deal with the Cast logic
         // TODO
         /*if (mediaRouter != null && mediaRouteSelector != null) {
@@ -2612,7 +2651,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onResume() {
         super.onResume();
-        //setUpCast();
+        castSession = sessionManager.getCurrentCastSession();
+        sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
+        // Listen for changes to media routes.
+        //mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
+
+        connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+        connectHDMI();
+
+        //mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mediaRouterCallback,MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
 
         // Fix the page flags
         setWindowFlags();
@@ -2620,7 +2667,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onPause() {
         super.onPause();
-        endCastState();
+        sessionManager.removeSessionManagerListener(sessionManagerListener, CastSession.class);
+        castSession = null;
+        // Stop listening for changes to media routes.
+        //mediaRouter.removeCallback(mediaRouterCallback);
     }
     @Override
     protected void onDestroy() {
@@ -2630,7 +2680,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void onStop() {
         super.onStop();
-        // TODO
         try {
             //mediaRouter.removeCallback(mediaRouterCallback);
         } catch (Exception e) {
@@ -2671,5 +2720,93 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         displayMetrics[0] = getWindow().getDecorView().getWidth();
         displayMetrics[1] = getWindow().getDecorView().getHeight();
         return displayMetrics;
+    }
+
+    @Override
+    public void updateDisplays() {
+        Log.d(TAG,"updateDisplays()");
+        if (castService!=null && castDevice!=null) {
+            // TODO
+        }
+        if (hdmiPresentation!=null) {
+            hdmiPresentation.setSongInfo();
+        }
+    }
+
+    @Override
+    public void setupDisplay(Display presentationDisplay) {
+        /*Log.d(TAG,"setupDisplay()");
+        Presentation presentation = new MyCastDisplay(this,presentationDisplay,this);
+        presentation.show();*/
+    }
+
+    @Override
+    public void setupCastDevice(CastDevice castDevice) {
+        this.castDevice = castDevice;
+        /*CastRemoteDisplayLocalService.NotificationSettings notificationSettings = new CastRemoteDisplayLocalService.NotificationSettings.Builder().setNotification(getNotification()).build();
+        PresentationService.startService(this, PresentationService.class , getString(R.string.app_id), castDevice, notificationSettings, (CastRemoteDisplayLocalService.Callbacks) sessionManagerListener);
+*/
+        Intent intent = new Intent(this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent notificationPendingIntent = null;
+        notificationPendingIntent = PendingIntent.getActivity(
+                    this, 0, intent, 0);
+
+        CastRemoteDisplayLocalService.NotificationSettings settings =
+                new CastRemoteDisplayLocalService.NotificationSettings.Builder()
+                        .setNotificationPendingIntent(notificationPendingIntent).build();
+
+        CastRemoteDisplayLocalService.startService(this,
+                CastService.class,
+                getString(R.string.app_id),
+                castDevice,
+                settings,
+                new CastRemoteDisplayLocalService.Callbacks() {
+                    @Override
+                    public void onServiceCreated(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        Log.d(TAG,"onServiceCreated()");
+                        Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                    }
+
+                    @Override
+                    public void onRemoteDisplaySessionStarted(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        Log.d(TAG,"onRemoteDisplaySessionStarted()");
+                        Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                        castService = ((CastService)castRemoteDisplayLocalService);
+                        castService.updateMainActivityInterface((MainActivityInterface)getActivity());
+                    }
+
+                    @Override
+                    public void onRemoteDisplaySessionError(@NonNull Status status) {
+                        Log.d(TAG,"onRemoteDisplaySessionError()");
+                        Log.d(TAG,"status="+status);
+                    }
+
+                    @Override
+                    public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                        Log.d(TAG,"onRemoteDisplaySessionEnded()");
+                        Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
+                    }
+
+                    @Override
+                    public void zza() {
+                        Log.d(TAG,"zza()");
+                    }
+                });
+
+    }
+
+    private void connectHDMI() {
+        Log.d(TAG,"displays: "+connectedDisplays.length);
+        if (connectedDisplays.length > 0) {
+            Log.i(TAG, "Showing presentation on display: " + connectedDisplays[0]);
+            hdmiPresentation = new MyHDMIDisplay(this, connectedDisplays[0], this);
+            hdmiPresentation.show();
+        }
+    }
+
+    @Override
+    public CastService getPresentationService() {
+        return castService;
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,15 +81,8 @@ public class BackupRestoreSetsFragment extends Fragment {
                     Intent data = result.getData();
                     if (data != null) {
                         backupUri = data.getData();
-                        String location = mainActivityInterface.getStorageAccess().fixUriToLocal(backupUri);
-                        if (location.endsWith(".osbs")) {
-                            String importFilename;
-                            if (location.contains("/")) {
-                                importFilename = location.substring(location.lastIndexOf("/"));
-                                importFilename = importFilename.replace("/", "");
-                            } else {
-                                importFilename = location;
-                            }
+                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(requireContext(),backupUri);
+                        if (importFilename.endsWith(".osbs")) {
                             myView.backupName.setText(importFilename);
                             setupViews();
                         } else {
