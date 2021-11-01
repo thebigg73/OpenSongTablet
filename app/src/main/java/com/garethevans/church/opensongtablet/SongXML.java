@@ -95,46 +95,48 @@ class SongXML {
         }
         String myNEWXML = "<?xml version=\"1.0\" encoding=\""+ StaticVariables.mEncoding+"\"?>\n";
         myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + parseToHTMLEntities(StaticVariables.mTitle) + "</title>\n";
-        myNEWXML += "  <author>" + parseToHTMLEntities(StaticVariables.mAuthor) + "</author>\n";
-        myNEWXML += "  <copyright>" + parseToHTMLEntities(StaticVariables.mCopyright) + "</copyright>\n";
-        myNEWXML += "  <presentation>" + parseToHTMLEntities(StaticVariables.mPresentation) + "</presentation>\n";
-        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(StaticVariables.mHymnNumber) + "</hymn_number>\n";
-        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(StaticVariables.mCapoPrint) + "\">" + parseToHTMLEntities(StaticVariables.mCapo) + "</capo>\n";
-        myNEWXML += "  <tempo>" + parseToHTMLEntities(StaticVariables.mTempo) + "</tempo>\n";
-        myNEWXML += "  <time_sig>" + parseToHTMLEntities(StaticVariables.mTimeSig) + "</time_sig>\n";
-        myNEWXML += "  <duration>" + parseToHTMLEntities(StaticVariables.mDuration) + "</duration>\n";
-        myNEWXML += "  <predelay>" + parseToHTMLEntities(StaticVariables.mPreDelay) + "</predelay>\n";
-        myNEWXML += "  <ccli>" + parseToHTMLEntities(StaticVariables.mCCLI) + "</ccli>\n";
-        myNEWXML += "  <theme>" + parseToHTMLEntities(StaticVariables.mTheme) + "</theme>\n";
-        myNEWXML += "  <alttheme>" + parseToHTMLEntities(StaticVariables.mAltTheme) + "</alttheme>\n";
-        myNEWXML += "  <user1>" + parseToHTMLEntities(StaticVariables.mUser1) + "</user1>\n";
-        myNEWXML += "  <user2>" + parseToHTMLEntities(StaticVariables.mUser2) + "</user2>\n";
-        myNEWXML += "  <user3>" + parseToHTMLEntities(StaticVariables.mUser3) + "</user3>\n";
-        myNEWXML += "  <key>" + parseToHTMLEntities(StaticVariables.mKey) + "</key>\n";
-        myNEWXML += "  <aka>" + parseToHTMLEntities(StaticVariables.mAka) + "</aka>\n";
-        myNEWXML += "  <key_line>" + parseToHTMLEntities(StaticVariables.mKeyLine) + "</key_line>\n";
-        myNEWXML += "  <books>" + parseToHTMLEntities(StaticVariables.mBooks) + "</books>\n";
-        myNEWXML += "  <midi>" + parseToHTMLEntities(StaticVariables.mMidi) + "</midi>\n";
-        myNEWXML += "  <midi_index>" + parseToHTMLEntities(StaticVariables.mMidiIndex) + "</midi_index>\n";
-        myNEWXML += "  <pitch>" + parseToHTMLEntities(StaticVariables.mPitch) + "</pitch>\n";
-        myNEWXML += "  <restrictions>" + parseToHTMLEntities(StaticVariables.mRestrictions) + "</restrictions>\n";
-        myNEWXML += "  <notes>" + parseToHTMLEntities(StaticVariables.mNotes) + "</notes>\n";
-        myNEWXML += "  <lyrics>" + parseToHTMLEntities(StaticVariables.mLyrics) + "</lyrics>\n";
-        myNEWXML += "  <linked_songs>" + parseToHTMLEntities(StaticVariables.mLinkedSongs) + "</linked_songs>\n";
-        myNEWXML += "  <pad_file>" + parseToHTMLEntities(StaticVariables.mPadFile) + "</pad_file>\n";
-        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(StaticVariables.mCustomChords) + "</custom_chords>\n";
-        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(StaticVariables.mLinkYouTube) + "</link_youtube>\n";
-        myNEWXML += "  <link_web>" + parseToHTMLEntities(StaticVariables.mLinkWeb) + "</link_web>\n";
-        myNEWXML += "  <link_audio>" + parseToHTMLEntities(StaticVariables.mLinkAudio) + "</link_audio>\n";
-        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(StaticVariables.mLoopAudio) + "</loop_audio>\n";
-        myNEWXML += "  <link_other>" + parseToHTMLEntities(StaticVariables.mLinkOther) + "</link_other>\n";
-        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(StaticVariables.mNotation) + "</abcnotation>\n";
+        myNEWXML += "  <title>"         + parseToHTMLEntities(StaticVariables.mTitle)           + "</title>\n";
+        myNEWXML += "  <author>"        + parseToHTMLEntities(StaticVariables.mAuthor)          + "</author>\n";
+        myNEWXML += "  <copyright>"     + parseToHTMLEntities(StaticVariables.mCopyright)       + "</copyright>\n";
+        myNEWXML += "  <presentation>"  + parseToHTMLEntities(StaticVariables.mPresentation)    + "</presentation>\n";
+        myNEWXML += "  <hymn_number>"   + parseToHTMLEntities(StaticVariables.mHymnNumber)      + "</hymn_number>\n";
+        myNEWXML += "  <capo print=\""  + parseToHTMLEntities(StaticVariables.mCapoPrint)       + "\">" + parseToHTMLEntities(StaticVariables.mCapo) + "</capo>\n";
+        myNEWXML += "  <tempo>"         + parseToHTMLEntities(StaticVariables.mTempo)           + "</tempo>\n";
+        myNEWXML += "  <time_sig>"      + parseToHTMLEntities(StaticVariables.mTimeSig)         + "</time_sig>\n";
+        myNEWXML += "  <duration>"      + parseToHTMLEntities(StaticVariables.mDuration)        + "</duration>\n";
+        myNEWXML += "  <predelay>"      + parseToHTMLEntities(StaticVariables.mPreDelay)        + "</predelay>\n";
+        myNEWXML += "  <ccli>"          + parseToHTMLEntities(StaticVariables.mCCLI)            + "</ccli>\n";
+        myNEWXML += "  <theme>"         + parseToHTMLEntities(StaticVariables.mTheme)           + "</theme>\n";
+        myNEWXML += "  <alttheme>"      + parseToHTMLEntities(StaticVariables.mAltTheme)        + "</alttheme>\n";
+        myNEWXML += "  <user1>"         + parseToHTMLEntities(StaticVariables.mUser1)           + "</user1>\n";
+        myNEWXML += "  <user2>"         + parseToHTMLEntities(StaticVariables.mUser2)           + "</user2>\n";
+        myNEWXML += "  <user3>"         + parseToHTMLEntities(StaticVariables.mUser3)           + "</user3>\n";
+        myNEWXML += "  <key>"           + parseToHTMLEntities(StaticVariables.mKey)             + "</key>\n";
+        myNEWXML += "  <aka>"           + parseToHTMLEntities(StaticVariables.mAka)             + "</aka>\n";
+        myNEWXML += "  <key_line>"      + parseToHTMLEntities(StaticVariables.mKeyLine)         + "</key_line>\n";
+        myNEWXML += "  <books>"         + parseToHTMLEntities(StaticVariables.mBooks)           + "</books>\n";
+        myNEWXML += "  <midi>"          + parseToHTMLEntities(StaticVariables.mMidi)            + "</midi>\n";
+        myNEWXML += "  <midi_index>"    + parseToHTMLEntities(StaticVariables.mMidiIndex)       + "</midi_index>\n";
+        myNEWXML += "  <pitch>"         + parseToHTMLEntities(StaticVariables.mPitch)           + "</pitch>\n";
+        myNEWXML += "  <restrictions>"  + parseToHTMLEntities(StaticVariables.mRestrictions)    + "</restrictions>\n";
+        myNEWXML += "  <notes>"         + parseToHTMLEntities(StaticVariables.mNotes)           + "</notes>\n";
+        myNEWXML += "  <lyrics>"        + parseToHTMLEntities(StaticVariables.mLyrics)          + "</lyrics>\n";
+        myNEWXML += "  <linked_songs>"  + parseToHTMLEntities(StaticVariables.mLinkedSongs)     + "</linked_songs>\n";
+        myNEWXML += "  <pad_file>"      + parseToHTMLEntities(StaticVariables.mPadFile)         + "</pad_file>\n";
+        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(StaticVariables.mCustomChords)    + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>"  + parseToHTMLEntities(StaticVariables.mLinkYouTube)     + "</link_youtube>\n";
+        myNEWXML += "  <link_web>"      + parseToHTMLEntities(StaticVariables.mLinkWeb)         + "</link_web>\n";
+        myNEWXML += "  <link_audio>"    + parseToHTMLEntities(StaticVariables.mLinkAudio)       + "</link_audio>\n";
+        myNEWXML += "  <loop_audio>"    + parseToHTMLEntities(StaticVariables.mLoopAudio)       + "</loop_audio>\n";
+        myNEWXML += "  <link_other>"    + parseToHTMLEntities(StaticVariables.mLinkOther)       + "</link_other>\n";
+        myNEWXML += "  <abcnotation>"   + parseToHTMLEntities(StaticVariables.mNotation)        + "</abcnotation>\n";
 
-        if (!StaticVariables.mExtraStuff1.isEmpty()) {
+        if (!StaticVariables.mExtraStuff1.isEmpty() && StaticVariables.mExtraStuff1.trim().startsWith("<") &&
+        StaticVariables.mExtraStuff1.trim().endsWith(">")) {
             myNEWXML += "  " + StaticVariables.mExtraStuff1 + "\n";
         }
-        if (!StaticVariables.mExtraStuff2.isEmpty()) {
+        if (!StaticVariables.mExtraStuff2.isEmpty() && StaticVariables.mExtraStuff2.trim().startsWith("<") &&
+                StaticVariables.mExtraStuff2.trim().endsWith(">")) {
             myNEWXML += "  " + StaticVariables.mExtraStuff2 + "\n";
         }
         myNEWXML += "</song>";

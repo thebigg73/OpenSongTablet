@@ -475,6 +475,7 @@ public class LoadXML extends Activity {
         xpp = factory.newPullParser();
 
         initialiseSongTags();
+        boolean needToLoadExtra = false;  // Will be set to true if backgrounds/styles found.
 
         // Get the uri and stream of the file
         String where = "Songs";
@@ -656,9 +657,9 @@ public class LoadXML extends Activity {
                             //FullscreenActivity.mExtraStuff2 = xpp.nextText();
                             // Simplest way to get this is to load the file in line by line as asynctask
                             // If we really have to load extra stuff, lets do it as an asynctask
-                            inputStream = storageAccess.getInputStream(c, uri);
-                            SideTask loadextra = new SideTask(c, inputStream, uri);
-                            loadextra.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+                            // GE do it after closing the song input stream
+                            needToLoadExtra = true;
                             break;
                     }
                 }
@@ -680,6 +681,11 @@ public class LoadXML extends Activity {
         } else {
             FullscreenActivity.myXML = "";
             StaticVariables.mLyrics = "";
+        }
+        if (needToLoadExtra && StaticVariables.mLyrics!=null && !StaticVariables.mLyrics.isEmpty()) {
+            InputStream extraInputStream = storageAccess.getInputStream(c, uri);
+            SideTask loadextra = new SideTask(c, extraInputStream, uri);
+            loadextra.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
@@ -1019,17 +1025,19 @@ public class LoadXML extends Activity {
             try {
                 int style_start = result.indexOf("<style");
                 int style_end = result.indexOf("</style>");
-                if (style_end > style_start && style_start > -1) {
+                if (style_start > -1 && style_end > style_start) {
                     StaticVariables.mExtraStuff1 = result.substring(style_start, style_end + 8);
                 }
                 int backgrounds_start = result.indexOf("<backgrounds");
                 int backgrounds_end = result.indexOf("</backgrounds>");
-                if (backgrounds_end < 0) {
+                // GE Fix for breaking songs
+                if (backgrounds_end < 0 && backgrounds_start>-1) {
+                    // Self closing tag
                     backgrounds_end = result.indexOf("/>", backgrounds_start) + 2;
-                } else {
+                } else if (backgrounds_end>-1) {
                     backgrounds_end += 14;
                 }
-                if (backgrounds_end > backgrounds_start && backgrounds_start > -1) {
+                if (backgrounds_start > -1 && backgrounds_end > backgrounds_start) {
                     StaticVariables.mExtraStuff2 = result.substring(backgrounds_start, backgrounds_end);
                 }
             } catch (Exception e) {
