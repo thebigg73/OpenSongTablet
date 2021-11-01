@@ -347,7 +347,7 @@
     <string name="position">"Pozycja"</string>
     <string name="prechorus_background">"Prechorus tle"</string>
     <string name="pref_key_text">"Wybierz kluczowe preferowane ustawienia"</string>
-    <string name="presentation_mode">"Tryb prezentacji"</string>
+    <string name="presenter_mode">"Tryb prezentacji"</string>
     <string name="background">"Prezentacja w tle"</string>
     <string name="font_presentation">"Czcionka prezentacji"</string>
     <string name="presoFontShadow">"Cień czcionki prezentacji"</string>

@@ -311,7 +311,7 @@
     <string name="portrait">Portrait</string>
     <string name="prechorus">Pre-Chorus</string>
     <string name="presentation_order">Presentation order</string>
-    <string name="presentation_mode">Presenter mode</string>
+    <string name="presenter_mode">Presenter mode</string>
     <string name="presentation_mode_info">Control the display to a projector</string>
     <string name="previous">Previous</string>
     <string name="processing">Files are being processed</string>

@@ -346,7 +346,7 @@
     <string name="position">"位置"</string>
     <string name="prechorus_background">"Prechorus背景"</string>
     <string name="pref_key_text">"选择您喜欢的键设置"</string>
-    <string name="presentation_mode">"演示模式"</string>
+    <string name="presenter_mode">"演示模式"</string>
     <string name="background">"背景介绍"</string>
     <string name="font_presentation">"演示字体"</string>
     <string name="presoFontShadow">"演示文字阴影"</string>

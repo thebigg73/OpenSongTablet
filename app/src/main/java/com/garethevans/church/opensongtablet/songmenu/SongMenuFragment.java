@@ -361,6 +361,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     @Override
     public void onItemClicked(int position, String folder, String filename, String key) {
         mainActivityInterface.hideKeyboard();
+        Log.d(TAG,"Clicked on "+folder+"/"+filename);
         mainActivityInterface.doSongLoad(folder, filename,true);
         songListLayoutManager.scrollToPositionWithOffset(position,0);
     }

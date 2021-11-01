@@ -347,7 +347,7 @@
     <string name="position">"Позиция"</string>
     <string name="prechorus_background">"Фон предприпева"</string>
     <string name="pref_key_text">"Выберите предпочтительные параметры тональности"</string>
-    <string name="presentation_mode">"режим презентации"</string>
+    <string name="presenter_mode">"режим презентации"</string>
     <string name="background">"Показать фон"</string>
     <string name="font_presentation">"Шрифт презентации"</string>
     <string name="presoFontShadow">"Тень шрифта презентации"</string>

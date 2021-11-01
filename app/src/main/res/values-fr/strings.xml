@@ -346,7 +346,7 @@
     <string name="position">"Position"</string>
     <string name="prechorus_background">"Fond des pre-refrains"</string>
     <string name="pref_key_text">"Choisissez vos paramètres de tonalité préférés"</string>
-    <string name="presentation_mode">"Mode présentation"</string>
+    <string name="presenter_mode">"Mode présentation"</string>
     <string name="background">"Arriere plan de présentation"</string>
     <string name="font_presentation">"Police de présentation"</string>
     <string name="presoFontShadow">"Ombre de police de présentation"</string>

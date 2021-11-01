@@ -347,7 +347,7 @@
     <string name="position">"Position"</string>
     <string name="prechorus_background">"Φόντο προ ρεφρέν"</string>
     <string name="pref_key_text">"Choose your preferred key settings"</string>
-    <string name="presentation_mode">"Λειτουργία προβολής"</string>
+    <string name="presenter_mode">"Λειτουργία προβολής"</string>
     <string name="background">"Φόντο"</string>
     <string name="font_presentation">"Παρουσίαση γραμματοσειράς"</string>
     <string name="presoFontShadow">"Σκιά γραμματοσειράς παρουσίασης"</string>

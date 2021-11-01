@@ -165,7 +165,7 @@
     <string name="choose_video2">"Odabrati pozadinski video 2"</string>
     <string name="choosechordformat">"Odabrati format akorda (bitno kada se transponuje pesma)"</string>
     <string name="switchtoperformmode">"Prebaciti na mod izvođenja"</string>
-    <string name="presentation_mode">"Mod prezentacije"</string>
+    <string name="presenter_mode">"Mod prezentacije"</string>
     <string name="project">"Projektovati"</string>
     <string name="background">"Pozadina"</string>
     <string name="show_logo">"Prikazati logo"</string>

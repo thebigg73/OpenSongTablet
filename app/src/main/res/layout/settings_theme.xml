@@ -187,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:text="@string/presentation_mode" />
+                    android:text="@string/presenter_mode" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/presoButton"

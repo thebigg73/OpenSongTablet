@@ -32,9 +32,9 @@
         android:shortcutId="Presentation"
         android:enabled="true"
         android:icon="@drawable/ic_projector_white_36dp"
-        android:shortcutShortLabel="@string/presentation_mode"
-        android:shortcutLongLabel="@string/presentation_mode"
-        android:shortcutDisabledMessage="@string/presentation_mode"
+        android:shortcutShortLabel="@string/presenter_mode"
+        android:shortcutLongLabel="@string/presenter_mode"
+        android:shortcutDisabledMessage="@string/presenter_mode"
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"

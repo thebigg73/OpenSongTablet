@@ -4,6 +4,7 @@ import android.app.Presentation;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
 
@@ -51,7 +52,7 @@ public class MyHDMIDisplay extends Presentation implements MediaPlayer.OnVideoSi
         changeMargins();
         setDefaultBackgroundImage();
         matchPresentationToMode();
-        setUpLogo();
+        setupLogo();
         myView.songProjectionInfo1.postDelayed(this::setSongInfo,2000);
 
         //normalStartUp();
@@ -84,11 +85,23 @@ public class MyHDMIDisplay extends Presentation implements MediaPlayer.OnVideoSi
     private void matchPresentationToMode() {
         presentationCommon.matchPresentationToMode();
     }
-    private void setUpLogo() {
-        presentationCommon.showLogo(true, !mainActivityInterface.getMode().equals("Presentation"));
+
+
+
+    // The logo
+    private void setupLogo() {
+        Log.d(TAG,"setupLogo().  mode="+mainActivityInterface.getMode());
+        presentationCommon.showLogo(true, !mainActivityInterface.getMode().equals("Presenter"));
+    }
+    public void showLogo(boolean show) {
+        presentationCommon.showLogo(show,false);
     }
 
 
+    // The black screen
+    public void showBlackScreen(boolean black) {
+        presentationCommon.showBlackScreen(black);
+    }
 
     // The song info bar
     public void setSongInfo() {

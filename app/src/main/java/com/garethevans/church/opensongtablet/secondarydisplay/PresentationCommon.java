@@ -179,7 +179,6 @@ public class PresentationCommon {
         showWhich = 1;
         switch (mainActivityInterface.getMode()) {
             case "Performance":
-            default:
                 // Show the logo for 2 seconds, then fade it away
                 mainLogo.postDelayed(() -> {
                     mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
@@ -210,16 +209,14 @@ public class PresentationCommon {
     // Deal with the logo
     public void showLogo(boolean show, boolean hideAfterShow) {
         Log.d(TAG,"show="+show+"  hideAfterShow="+hideAfterShow);
-        Log.d(TAG,"mainLogo.getVisibility()="+mainLogo.getVisibility());
-
-        if (show && mainLogo.getVisibility()!=View.VISIBLE) {
+        if (show) {
             Log.d(TAG,"showing Logo");
             mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,true);
-        } else if (!show && mainLogo.getVisibility()==View.VISIBLE) {
+        } else {
             Log.d(TAG,"hiding Logo");
             mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
         }
-        if (hideAfterShow) {
+        if (show && hideAfterShow) {
             // This will hide the logo after 2 seconds
             mainLogo.postDelayed(() -> {
                 mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
@@ -229,6 +226,10 @@ public class PresentationCommon {
     }
 
 
+    // Deal with the black screen
+    public void showBlackScreen(boolean black) {
+        mainActivityInterface.getCustomAnimation().faderAnimation(pageHolder,crossFadeTime, !black);
+    }
 
 
     public void matchPresentationToMode() {
@@ -258,7 +259,7 @@ public class PresentationCommon {
                 boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "boldChordHeading", false);
                 break;
 
-            case "Presentation":
+            case "Presenter":
                 songProjectionInfo1.showMiniLogo(false);
                 songProjectionInfo2.showMiniLogo(false);
                 scaleHeadings = 0.0f;
@@ -280,7 +281,7 @@ public class PresentationCommon {
 
     public void normalStartUp() {
         // Animate out the default logo
-        mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        //mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
 
 

@@ -346,7 +346,7 @@
     <string name="position">"Pozice"</string>
     <string name="prechorus_background">"Prechorus pozadí"</string>
     <string name="pref_key_text">"Vyberte si své preferované nastavení klíčů"</string>
-    <string name="presentation_mode">"Režim prezentace"</string>
+    <string name="presenter_mode">"Režim prezentace"</string>
     <string name="background">"Prezentace na pozadí"</string>
     <string name="font_presentation">"Prezentační font"</string>
     <string name="presoFontShadow">"Prezentace písma stín"</string>

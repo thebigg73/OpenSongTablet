@@ -5,7 +5,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,15 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.SetItemTouchInterface;
+import com.google.android.material.textview.MaterialTextView;
 
 public class SetItemViewHolder extends RecyclerView.ViewHolder implements
         View.OnTouchListener, GestureDetector.OnGestureListener {
 
     private final String TAG = "SetItemViewHolder";
 
-    final TextView vItem;
-    final TextView vSongTitle;
-    final TextView vSongFolder;
+    final MaterialTextView vItem;
+    final MaterialTextView vSongTitle;
+    final MaterialTextView vSongFolder;
     final RelativeLayout vCard;
     private final ItemTouchHelper itemTouchHelper;
     private final SetItemTouchInterface setItemTouchInterface;

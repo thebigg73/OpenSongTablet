@@ -347,7 +347,7 @@
     <string name="position">"ポジション"</string>
     <string name="prechorus_background">"Prechorusの背景"</string>
     <string name="pref_key_text">"お好みのキー設定を選択してください"</string>
-    <string name="presentation_mode">"プレゼンテーションモード"</string>
+    <string name="presenter_mode">"プレゼンテーションモード"</string>
     <string name="background">"プレゼンテーションの背景"</string>
     <string name="font_presentation">"プレゼンテーションフォント"</string>
     <string name="presoFontShadow">"プレゼンテーションフォントの影"</string>

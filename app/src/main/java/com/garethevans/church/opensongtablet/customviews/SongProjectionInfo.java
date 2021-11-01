@@ -15,7 +15,7 @@ import com.google.android.material.textview.MaterialTextView;
 public class SongProjectionInfo extends LinearLayout {
 
     private final Context c;
-    private final LinearLayout castSongInfo;
+    private final LinearLayout castSongInfo, contentLayout;
     private final MaterialTextView songTitle, songAuthor, songCopyright, songAlert;
     private final ImageView miniLogo;
 
@@ -25,6 +25,7 @@ public class SongProjectionInfo extends LinearLayout {
         inflate(context, R.layout.cast_song_info, this);
 
         castSongInfo = findViewById(R.id.castSongInfo);
+        contentLayout = findViewById(R.id.contentLayout);
         songTitle = findViewById(R.id.songTitle);
         songAuthor = findViewById(R.id.songAuthor);
         songCopyright = findViewById(R.id.songCopyright);
@@ -32,6 +33,7 @@ public class SongProjectionInfo extends LinearLayout {
         miniLogo = findViewById(R.id.miniLogo);
 
         castSongInfo.setId(View.generateViewId());
+        contentLayout.setId(View.generateViewId());
         songTitle.setId(View.generateViewId());
         songAuthor.setId(View.generateViewId());
         songCopyright.setId(View.generateViewId());
@@ -92,6 +94,7 @@ public class SongProjectionInfo extends LinearLayout {
         songCopyright.setTextColor(c.getResources().getColor(R.color.vlightgrey));
         songAlert.setText(null);
         songAlert.setVisibility(View.GONE);
+        contentLayout.setPadding(0,0,0,0);
         showMiniLogo(false);
     }
 }

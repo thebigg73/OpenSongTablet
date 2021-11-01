@@ -66,8 +66,8 @@ public class SettingsCategories extends Fragment {
             case "Stage":
                 mode = getString(R.string.stage_mode);
                 break;
-            case "Presentation":
-                mode = getString(R.string.presentation_mode);
+            case "Presenter":
+                mode = getString(R.string.presenter_mode);
                 break;
         }
         myView.modeButton.setHint(mode);

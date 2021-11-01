@@ -8,4 +8,7 @@ public interface DisplayInterface {
     void updateDisplays();
     void setupDisplay(Display presentationDisplay);
     void setupCastDevice(CastDevice castDevice);
+    void presenterShowLogo(boolean show);
+    void presenterBlackScreen(boolean black);
+    void presenterShowSection(int position);
 }

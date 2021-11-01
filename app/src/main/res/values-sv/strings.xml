@@ -347,7 +347,7 @@
     <string name="position">"Placera"</string>
     <string name="prechorus_background">"Prechorus bakgrund"</string>
     <string name="pref_key_text">"Välj dina önskade nyckelinställningar"</string>
-    <string name="presentation_mode">"Presentationsläge"</string>
+    <string name="presenter_mode">"Presentationsläge"</string>
     <string name="background">"Bakgrund"</string>
     <string name="font_presentation">"Presentation typsnitt"</string>
     <string name="presoFontShadow">"Presentation font skugga"</string>

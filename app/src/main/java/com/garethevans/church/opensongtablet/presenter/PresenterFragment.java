@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,14 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class PresenterFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
     private ModePresenterBinding myView;
     private SongSectionsFragment songSectionsFragment;
     private MediaFragment mediaFragment;
@@ -30,8 +31,10 @@ public class PresenterFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) context;
         mainActivityInterface.registerFragment(this,"Presenter");
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -43,6 +46,7 @@ public class PresenterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = ModePresenterBinding.inflate(inflater,container,false);
+        mainActivityInterface.updateToolbar(getString(R.string.presenter_mode));
 
         // Hide the main page buttons
         mainActivityInterface.getAppActionBar().setPerformanceMode(false);
@@ -51,14 +55,14 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.lockDrawer(false);
         mainActivityInterface.hideActionButton(true);
 
-
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
-                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
-
-
         // Set up the the pager
         setupPager();
 
+        // Set up the main action listeners
+        setupListeners();
+
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
+                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
 
         return myView.getRoot();
@@ -93,10 +97,19 @@ public class PresenterFragment extends Fragment {
     }
 
     public void doSongLoad(String folder, String filename) {
-        Log.d(TAG,"doSongLoad("+folder+", "+filename+") called");
         mainActivityInterface.getSong().setFolder(folder);
-        mainActivityInterface.getSong().setFilename((filename));
+        mainActivityInterface.getSong().setFilename(filename);
         mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
                 mainActivityInterface.getSong(),false));
+        mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
+                mainActivityInterface.getSong(),false));
+        songSectionsFragment.showSongInfo();
+
+
+    }
+
+    private void setupListeners() {
+        myView.showLogo.setOnCheckedChangeListener((compoundButton, b) -> displayInterface.presenterShowLogo(b));
+        myView.blackScreen.setOnCheckedChangeListener(((compoundButton, b) -> displayInterface.presenterBlackScreen(b)));
     }
 }

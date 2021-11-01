@@ -347,7 +347,7 @@
     <string name="position">"Position"</string>
     <string name="prechorus_background">"Hintergrund Prechorus"</string>
     <string name="pref_key_text">"Wählen Sie die Tonarteinstellungen"</string>
-    <string name="presentation_mode">"Präsentationsmodus"</string>
+    <string name="presenter_mode">"Präsentationsmodus"</string>
     <string name="background">"Hintergrundbild"</string>
     <string name="font_presentation">"Schriftart für Präsentation"</string>
     <string name="presoFontShadow">"Text in Präsentation schattieren"</string>

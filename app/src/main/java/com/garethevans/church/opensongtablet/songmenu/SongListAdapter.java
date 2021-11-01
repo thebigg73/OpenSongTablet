@@ -159,6 +159,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             song.setFilename(itemFilename);
             song.setFolder(itemFolder);
             song.setKey(itemKey);
+            Log.d(TAG,"Clicked on "+itemFolder+"/"+itemFilename);
             //mainActivityInterface.getSetActions().getSongForSetWork(c, song);
             // Since we clicked on a song in the song list, check for it in the set
             mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getSetActions().indexSongInSet(c,mainActivityInterface,song));

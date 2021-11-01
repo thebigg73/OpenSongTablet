@@ -522,7 +522,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 } else if (!decided && initialVal!=-0.0f) {
                     // We have our first value, so now compare.
                     // If we are getting bigger = opening, if smaller, closing
-                    hideActionButton(slideOffset > initialVal);
+                    if (!whichMode.equals("Presenter")) {
+                        hideActionButton(slideOffset > initialVal);
+                    }
                     decided = true;
                 }
             }
@@ -538,7 +540,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-                hideActionButton(myView.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
+                Log.d(TAG,"whichMode from drawer="+whichMode);
+                if (!whichMode.equals("Presenter")) {
+                    hideActionButton(myView.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
+                }
                 hideKeyboard();
             }
 
@@ -1633,13 +1638,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void doSongLoad(String folder, String filename, boolean closeDrawer) {
         if (whichMode.equals("Presenter")) {
-            if (presenterFragment!=null && presenterFragment.isAdded()) {
+            if (presenterFragment!=null) {
                 presenterFragment.doSongLoad(folder,filename);
             } else {
                 navigateToFragment(null,R.id.performanceFragment);
             }
         } else {
-            if (performanceFragment!=null && performanceFragment.isAdded()) {
+            if (performanceFragment!=null) {
                 performanceFragment.doSongLoad(folder,filename);
             } else {
                 navigateToFragment(null,R.id.presenterFragment);
@@ -2105,7 +2110,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public String getMode() {
         if (whichMode==null) {
-            whichMode = "Performance";
+            whichMode = preferences.getMyPreferenceString(this, "whichMode", "Performance");
         }
         return whichMode;
     }
@@ -2808,5 +2813,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public CastService getPresentationService() {
         return castService;
+    }
+
+    @Override
+    public void presenterShowLogo(boolean show) {
+        if (castService!=null && castDevice!=null) {
+            //castService.getMyCastDisplay().showLogo(show);
+        }
+        if (hdmiPresentation!=null) {
+            hdmiPresentation.showLogo(show);
+        }
+    }
+
+    @Override
+    public void presenterBlackScreen(boolean black) {
+        if (castService!=null && castDevice!=null) {
+            //castService.getMyCastDisplay().showBlackScreen(black);
+        }
+        if (hdmiPresentation!=null) {
+            hdmiPresentation.showBlackScreen(black);
+        }
+    }
+
+    @Override
+    public void presenterShowSection(int position) {
+        Log.d(TAG,"presenterShowSection");
     }
 }

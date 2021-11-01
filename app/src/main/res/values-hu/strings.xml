@@ -347,7 +347,7 @@
     <string name="position">"Pozíció"</string>
     <string name="prechorus_background">"Prechorus háttér"</string>
     <string name="pref_key_text">"Válassza ki a kívánt kulcs beállításai"</string>
-    <string name="presentation_mode">"Bemutató üzemmód"</string>
+    <string name="presenter_mode">"Bemutató üzemmód"</string>
     <string name="background">"Bemutatkozás háttér"</string>
     <string name="font_presentation">"Bemutató font"</string>
     <string name="presoFontShadow">"Bemutató font árnyék"</string>

@@ -27,14 +27,14 @@ have set it to a usable location.  If not, we get stuck on this page until we gr
 and set the storage location.
 
 When all is done, the user can click on the pulsating green start button and this will then move to
-either the Performace or Presentation fragment.
+either the Performace or Presenter fragment.
 
 Before it does that, it does a quick scan of the storage to make a very basic song menu available.
 This will just contain the filenames and folders.  It does this by running the call found in the
 MainActivity - the hub of the app!
 
 The full indexing of the songs (lyrics, key, etc.) will be called on the MainActivity from either
-the Performance/Presentation fragment.
+the Performance/Presenter fragment.
 */
 
 public class BootUpFragment extends Fragment {
@@ -160,7 +160,7 @@ public class BootUpFragment extends Fragment {
                                 destination = R.id.performanceFragment;
                                 break;
 
-                            case "Presentation":
+                            case "Presenter":
                                 destination = R.id.presenterFragment;
                                 break;
                         }
