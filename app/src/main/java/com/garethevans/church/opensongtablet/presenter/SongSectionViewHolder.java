@@ -20,7 +20,7 @@ public class SongSectionViewHolder extends RecyclerView.ViewHolder {
     public SongSectionViewHolder(@NonNull View itemView) {
         super(itemView);
         item = itemView.findViewById(R.id.item);
-        heading = itemView.findViewById(R.id.title);
+        heading = itemView.findViewById(R.id.heading);
         content = itemView.findViewById(R.id.content);
         image = itemView.findViewById(R.id.image);
     }

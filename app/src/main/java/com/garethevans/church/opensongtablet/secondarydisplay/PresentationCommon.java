@@ -364,9 +364,8 @@ public class PresentationCommon {
     private void setSectionViews() {
 
         mainActivityInterface.getProcessSong().
-                setSongInLayout(c, mainActivityInterface, trimSections, addSectionSpace,
-                        trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments, displayChords,
-                        mainActivityInterface.getSong().getLyrics(), boldChordHeading, false, true);
+                setSongInLayout(c, mainActivityInterface, mainActivityInterface.getSong().getLyrics(),
+                        false, true);
     }
     /*
 

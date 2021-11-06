@@ -143,7 +143,11 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
                     }
                     return false;
                 });
+            } else {
+                mainActivityInterface.getProcessSong().editBoxToMultiline(myView.prefEditText);
+                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.prefEditText,6);
             }
+
             myView.prefEditText.setHint(hint);
             myView.prefEditText.requestFocus();
 

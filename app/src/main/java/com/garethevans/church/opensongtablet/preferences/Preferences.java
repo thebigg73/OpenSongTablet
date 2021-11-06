@@ -336,7 +336,7 @@ public class Preferences extends Activity {
     padCrossFadeTime                int         The time in ms used to fade out a pad.  Set in the PopUpCrossFade fragment (def:8000)
     padLargeFontInfoBar             boolean     The text size of the floating pad info bar (def:true is 20.0f false is 14.0f)
     padPan                          String      The panning of the pad (L, C or R) (def:C)
-    PadVol                          float       The volume of the pad (def:1.0f)
+    padVol                          float       The volume of the pad (def:1.0f)
     pageButton1...                  String      The action for page button 1,2,3... (def for 1=set, 2=transpose, the rest empty)
     pageButtonShow1...              boolean     Should the button be visible. User can temporarily hide (or change the num)
     pdfSize                         String      The size for printing PDF (def:A4)

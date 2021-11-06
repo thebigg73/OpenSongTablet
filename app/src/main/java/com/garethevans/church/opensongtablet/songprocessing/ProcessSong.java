@@ -44,7 +44,50 @@ import java.util.Locale;
 
 public class ProcessSong {
 
+    // The variables used for repeated song processing
     private final String TAG = "ProcessSong";
+    private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
+            displayCapoChords, displayCapoAndNativeChords, displayChords, displayLyrics,
+            highlightChords, highlightHeadings, songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
+            songAutoScaleOverrideWidth, trimLines, trimSections;
+    private float blockShadowAlpha, fontSize, fontSizeMax, fontSizeMin, fontSizePreso, fontSizePresoMax,
+            lineSpacing, scaleHeadings, scaleChords, scaleComments;
+    private String songAutoScale;
+
+    // Update the processing preferences
+    public void updateProcessingPreferences(Context c, MainActivityInterface mainActivityInterface) {
+        addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "addSectionSpace", true);
+        blockShadow = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "blockShadow", false);
+        displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayBoldChordsHeadings", false);
+        displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoChords", true);
+        displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
+        displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayChords", true);
+        displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayLyrics", true);
+        displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayBoldChordsHeadings", false);
+        highlightChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"highlightChords",false);
+        highlightHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"highlightHeadings",false);
+        songAutoScale = mainActivityInterface.getPreferences().getMyPreferenceString(c,"songAutoScale","W");
+        songAutoScaleColumnMaximise = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songAutoScaleColumnMaximise",true);
+        songAutoScaleOverrideFull = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songAutoScaleOverrideFull",true);
+        songAutoScaleOverrideWidth = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songAutoScaleOverrideWidth",false);
+        trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"trimLines",true);
+        trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"trimSections",true);
+
+        blockShadowAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "blockShadowAlpha", 0.7f);
+        fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSize", 20f);
+        fontSizeMax = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizeMax", 50f);
+        fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizeMin", 8f);
+        fontSizePreso = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizePreso", 14.f);
+        fontSizePresoMax = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizePresoMax", 40f);
+        lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "lineSpacing", 0.1f);
+        scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleHeadings",0.6f);
+        scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleChords",0.8f);
+        scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleComments",0.8f);
+    }
+    // Get some preferences back
+    public float getScaleComments() {
+        return scaleComments;
+    }
 
     public Song initialiseSong(MainActivityInterface mainActivityInterface, String newFolder, String newFilename) {
         Song song = new Song();
@@ -790,13 +833,13 @@ public class ProcessSong {
                 int nl = i + 1;
                 boolean stillworking = true;
                 if (shouldNextLineBeAdded(nl, lines, true)) {
-                    sb.append("____groupline_____").append(lines[nl]);
+                    sb.append("____groupline____").append(lines[nl]);
                     while (stillworking) {
                         // Keep going for multiple lines to be added
                         if (shouldNextLineBeAdded(nl + 1, lines, false)) {
                             i = nl;
                             nl++;
-                            sb.append("____groupline_____").append(lines[nl]);
+                            sb.append("____groupline____").append(lines[nl]);
                         } else {
                             i++;
                             stillworking = false;
@@ -853,13 +896,11 @@ public class ProcessSong {
     }
 
     private TableLayout groupTable(Context c, MainActivityInterface mainActivityInterface,
-                                   String string, float headingScale, float commentScale,
-                                   float chordScale, int lyricColor, int chordColor,
-                                   boolean trimLines, float lineSpacing, boolean boldChordHeading,
+                                   String string, int lyricColor, int chordColor,
                                    int highlightChordColor, boolean presentation) {
         TableLayout tableLayout = newTableLayout(c);
         // Split the group into lines
-        String[] lines = string.split("____groupline_____");
+        String[] lines = string.split("____groupline____");
 
         // Line 0 is the chord line.  All other lines need to be at least this size
         // Make it 1 char bigger to identify the end of it
@@ -913,13 +954,12 @@ public class ProcessSong {
             }
 
             Typeface typeface = getTypeface(mainActivityInterface, presentation, linetype);
-            float size = getFontSize(linetype, headingScale, commentScale, chordScale);
+            float size = getFontSize(linetype);
             int color = getFontColor(linetype, lyricColor, chordColor);
             int startpos = 0;
             for (int endpos : pos) {
                 if (endpos != 0) {
-                    TextView textView = newTextView(c, linetype, typeface, size, color, trimLines,
-                            lineSpacing, boldChordHeading);
+                    TextView textView = newTextView(c, linetype, typeface, size, color);
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(c, mainActivityInterface, linetype, str);
@@ -938,8 +978,7 @@ public class ProcessSong {
                 }
             }
             // Add the final position
-            TextView textView = newTextView(c, linetype, typeface, size, color, trimLines,
-                    lineSpacing, boldChordHeading);
+            TextView textView = newTextView(c, linetype, typeface, size, color);
             String str = lines[t].substring(startpos);
             if (str.startsWith(".")) {
                 str = str.replaceFirst(".", "");
@@ -1156,10 +1195,9 @@ public class ProcessSong {
 
     private TextView lineText(Context c, MainActivityInterface mainActivityInterface, String linetype,
                               String string, Typeface typeface, float size,
-                              int color, boolean trimLines, float lineSpacing, boolean boldChordHeading,
+                              int color,
                               int highlightHeadingColor, int highlightChordColor) {
-        TextView textView = newTextView(c, linetype, typeface, size, color, trimLines, lineSpacing,
-                boldChordHeading);
+        TextView textView = newTextView(c, linetype, typeface, size, color);
         String str = trimOutLineIdentifiers(c, mainActivityInterface, linetype, string);
         if (linetype.equals("heading") && highlightHeadingColor != 0x00000000) {
             Spannable span = new SpannableString(str);
@@ -1222,11 +1260,10 @@ public class ProcessSong {
     }
 
     public ArrayList<View> setSongInLayout(Context c, MainActivityInterface mainActivityInterface,
-                                           boolean trimSections, boolean addSectionSpace,
-                                           boolean trimLines, float lineSpacing, float headingScale,
-                                           float chordScale, float commentScale, boolean displayChords,
-                                           String string, boolean boldChordHeading, boolean asPDF, boolean presentation) {
+                                           String string, boolean asPDF, boolean presentation) {
         ArrayList<View> sectionViews = new ArrayList<>();
+        ArrayList<String> songSections = new ArrayList<>();
+        ArrayList<String> sectionHeaders = new ArrayList<>();
 
         int backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
         int textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
@@ -1244,12 +1281,12 @@ public class ProcessSong {
         // First check for multiverse/multiline formatting
         string = fixMultiLineFormat(c, mainActivityInterface, string);
 
-        // First up we go through the lyrics and group lines that should be in a table for alignment purposes
+        // Next up we go through the lyrics and group lines that should be in a table for alignment purposes
         string = makeGroups(string,displayChords);
         // Next we generate the split points for sections
         string = makeSections(string);
 
-        // Split into sections an process each separately
+        // Split into sections and process each separately
         String[] sections = string.split("____SPLIT____");
 
         for (int sect = 0; sect < sections.length; sect++) {
@@ -1262,6 +1299,9 @@ public class ProcessSong {
             }
             LinearLayout linearLayout = newLinearLayout(c); // transparent color
 
+            // Add this section to the array (so it can be called later for presentation)
+            songSections.add(section.replace("____groupline____","\n"));
+
              // Now split by line
             String[] lines = section.split("\n");
             for (String line : lines) {
@@ -1271,47 +1311,52 @@ public class ProcessSong {
                     backgroundColor = getBGColor(c, mainActivityInterface, line);
                 }
                 Typeface typeface = getTypeface(mainActivityInterface, presentation, linetype);
-                float size = getFontSize(linetype, headingScale, commentScale, chordScale);
+                float size = getFontSize(linetype);
                 if (!asPDF && !presentation) {
                     textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
                             getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
                 }
 
-                if (line.contains("____groupline_____")) {
+                if (line.contains("____groupline____")) {
                     if (asPDF) {
-                        linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
-                                commentScale, chordScale, Color.BLACK, Color.BLACK,
-                                trimLines, lineSpacing, true, Color.TRANSPARENT,false));
+                        linearLayout.addView(groupTable(c, mainActivityInterface, line, Color.BLACK, Color.BLACK,
+                                Color.TRANSPARENT,false));
                     } else if (presentation) {
-                        linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
-                                commentScale, chordScale,
+                        linearLayout.addView(groupTable(c, mainActivityInterface, line,
                                 mainActivityInterface.getMyThemeColors().getPresoFontColor(),
                                 mainActivityInterface.getMyThemeColors().getPresoFontColor(),
-                                trimLines, lineSpacing, boldChordHeading,
                                 mainActivityInterface.getMyThemeColors().getHighlightChordColor(),true));
                     } else {
-                        linearLayout.addView(groupTable(c, mainActivityInterface, line, headingScale,
-                                commentScale, chordScale,
+                        linearLayout.addView(groupTable(c, mainActivityInterface, line,
                                 mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
                                 mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
-                                trimLines, lineSpacing, boldChordHeading,
                                 mainActivityInterface.getMyThemeColors().getHighlightChordColor(),false));
                     }
                 } else {
                     if (asPDF) {
                         linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
-                                size, textColor, trimLines, lineSpacing, true, Color.TRANSPARENT, Color.TRANSPARENT));
+                                size, textColor, Color.TRANSPARENT, Color.TRANSPARENT));
 
                     } else {
                         linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
-                                size, textColor, trimLines, lineSpacing, boldChordHeading,
+                                size, textColor,
                                 mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
                                 mainActivityInterface.getMyThemeColors().getHighlightChordColor()));
                     }
                 }
             }
+
             linearLayout.setBackgroundColor(backgroundColor);
             sectionViews.add(linearLayout);
+        }
+        mainActivityInterface.getSong().setSongSections(songSections);
+
+        for (String songSection:songSections) {
+            Log.d(TAG,"songSection: "+songSection);
+        }
+
+        for (String sectionHeader:sectionHeaders) {
+            Log.d(TAG,"sectionHeader: "+sectionHeader);
         }
         return sectionViews;
     }
@@ -1339,17 +1384,17 @@ public class ProcessSong {
         }
     }
 
-    private float getFontSize(String string, float headingScale, float commentScale, float chordScale) {
+    private float getFontSize(String string) {
         float f = defFontSize;
         switch (string) {
             case "chord":
-                f = defFontSize * chordScale;
+                f = defFontSize * scaleChords;
                 break;
             case "comment":
-                f = defFontSize * commentScale;
+                f = defFontSize * scaleComments;
                 break;
             case "heading":
-                f = defFontSize * headingScale;
+                f = defFontSize * scaleHeadings;
                 break;
         }
         return f;
@@ -1413,8 +1458,7 @@ public class ProcessSong {
         return linearLayout;
     }
 
-    private TextView newTextView(Context c, String linetype, Typeface typeface, float size, int color,
-                                 boolean trimLines, float lineSpacing, boolean boldChordsHeadings) {
+    private TextView newTextView(Context c, String linetype, Typeface typeface, float size, int color) {
         TextView textView = new TextView(c);
         if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             int trimval = (int) (size * lineSpacing);
@@ -1428,13 +1472,13 @@ public class ProcessSong {
         textView.setTextColor(color);
         textView.setIncludeFontPadding(false);
         if (linetype.equals("heading")) {
-            if (boldChordsHeadings) {
+            if (displayBoldChordsHeadings) {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
             } else {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }
         }
-        if (linetype.equals("chord") && boldChordsHeadings) {
+        if (linetype.equals("chord") && displayBoldChordsHeadings) {
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
         }
         return textView;
@@ -1571,10 +1615,7 @@ public class ProcessSong {
                                   RelativeLayout testPane, RelativeLayout pageHolder,
                                   LinearLayout songView, LinearLayout songSheetView,
                                   int screenWidth, int screenHeight, LinearLayout column1,
-                                  LinearLayout column2, LinearLayout column3, String autoScale,
-                                  boolean songAutoScaleOverrideFull, boolean songAutoScaleOverrideWidth,
-                                  boolean songAutoScaleColumnMaximise, float fontSize,
-                                  float fontSizeMin, float fontSizeMax) {
+                                  LinearLayout column2, LinearLayout column3) {
         // Now we have all the sizes in, determines the best was to show the song
         // This will be single, two or three columns.  The best one will be the one
         // which gives the best scale size
@@ -1605,12 +1646,12 @@ public class ProcessSong {
             column1.setTop(0);
         }
 
-        thisAutoScale = autoScale;
+        thisAutoScale = songAutoScale;
 
         // All scaling types need to process the single column view, either to use it or compare to 2/3 columns
         float[] scaleSize_2cols = new float[3];
         float[] scaleSize_3cols = new float[4];
-        if (autoScale.equals("Y")) {
+        if (songAutoScale.equals("Y")) {
             // Figure out two and three columns.  Only do this if we need to to save processing time.
             scaleSize_2cols = col2Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
             scaleSize_3cols = col3Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
@@ -1622,19 +1663,19 @@ public class ProcessSong {
         testPane.removeAllViews();
 
         // Now decide if 1,2 or 3 columns is best
-        int howmany = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, autoScale, fontSizeMin, songAutoScaleOverrideFull);
+        int howmany = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull);
 
         switch (howmany) {
             case 1:
                 // If we are using one column and resizing to width only, change the scale size
-                if (autoScale.equals("W") || thisAutoScale.equals("W")) {
+                if (songAutoScale.equals("W") || thisAutoScale.equals("W")) {
                     scaleSize_1col = (float) screenWidth / (float) currentWidth;
                     if (defFontSize * scaleSize_1col < fontSizeMin && songAutoScaleOverrideWidth) {
                         thisAutoScale = "N";
                     }
                 }
                 // If autoscale is off, scale to the desired fontsize
-                if (autoScale.equals("N") || thisAutoScale.equals("N")) {
+                if (songAutoScale.equals("N") || thisAutoScale.equals("N")) {
                     scaleSize_1col = fontSize / defFontSize;
                 }
                 setOneColumn(c, mainActivityInterface, mainActivityInterface.getSectionViews(), column1, column2, column3, currentWidth, currentHeight, scaleSize_1col, fontSizeMax);
@@ -1983,6 +2024,7 @@ public class ProcessSong {
 
     // Now the stuff to read in pdf files (converts the pages to an image for displaying)
     // This uses Android built in PdfRenderer, so will only work on Lollipop+
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap getBitmapFromPDF(Context c, MainActivityInterface mainActivityInterface,

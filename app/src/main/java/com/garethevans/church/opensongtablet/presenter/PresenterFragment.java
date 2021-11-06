@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
+
 public class PresenterFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
@@ -25,6 +28,7 @@ public class PresenterFragment extends Fragment {
     private MediaFragment mediaFragment;
     private AlertFragment alertFragment;
     private SettingsFragment settingsFragment;
+    private ArrayList<View> sectionViews = new ArrayList<>();
     private final String TAG = "PresenterFragment";
 
     @Override
@@ -55,15 +59,17 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.lockDrawer(false);
         mainActivityInterface.hideActionButton(true);
 
+        // Get preferences
+        getPreferences();
+
         // Set up the the pager
         setupPager();
-
-        // Set up the main action listeners
-        setupListeners();
 
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
+        // Set up the main action listeners
+        setupListeners();
 
         return myView.getRoot();
     }
@@ -97,6 +103,7 @@ public class PresenterFragment extends Fragment {
     }
 
     public void doSongLoad(String folder, String filename) {
+        Log.d(TAG,"doSongLoad() called");
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);
         mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
@@ -105,8 +112,38 @@ public class PresenterFragment extends Fragment {
                 mainActivityInterface.getSong(),false));
         songSectionsFragment.showSongInfo();
 
+        // Get the song views
+        getSongViews();
 
+        // Update the recyclerView with the song sections
+        songSectionsFragment.showSongInfo();
     }
+
+    private void getPreferences() {
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(), mainActivityInterface);
+    }
+
+    public void getSongViews() {
+        if (sectionViews==null) {
+            sectionViews = new ArrayList<>();
+        } else {
+            sectionViews.clear();
+        }
+
+        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            // Get the pages as required
+
+        } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+            // Get the image as required (will be 1 page)
+        } else if (mainActivityInterface.getSong().getFolder().contains("Images/")) {
+            // This will be a custom slide with images
+        } else {
+            // A standard XML file
+            sectionViews = mainActivityInterface.getProcessSong().setSongInLayout(requireContext(), mainActivityInterface,
+                    mainActivityInterface.getSong().getLyrics(), false, true);
+        }
+    }
+
 
     private void setupListeners() {
         myView.showLogo.setOnCheckedChangeListener((compoundButton, b) -> displayInterface.presenterShowLogo(b));

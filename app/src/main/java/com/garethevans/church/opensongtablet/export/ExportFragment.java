@@ -469,20 +469,11 @@ public class ExportFragment extends Fragment {
     }
     private void createOnTheFlySections(Context c, MainActivityInterface mainActivityInterface, Song thisSong, float scaleComments) {
 
-        boolean trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"trimSections",true);
-        boolean trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"trimLines",true);
-        boolean addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"addSectionSpace",true);
-        boolean displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayBoldChordsHeadings",false);
-        boolean displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayChords",true);
-        float lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"lineSpacing",0.1f);
-        float scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleHeadings",0.6f);
-        float scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleChords",0.8f);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(c, mainActivityInterface);
 
         // Create the content for the section views.
         sectionViewsPDF = mainActivityInterface.getProcessSong().
-                setSongInLayout(c,mainActivityInterface, trimSections, addSectionSpace,
-                        trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments,
-                        displayChords,thisSong.getLyrics(),displayBoldChordsHeadings,true, false);
+                setSongInLayout(c,mainActivityInterface,thisSong.getLyrics(),true, false);
 
         // Now we have the views, add them to the temp layout and set up a view tree listener to measure
         ViewTreeObserver sectionsVTO = myView.hiddenSections.getViewTreeObserver();

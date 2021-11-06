@@ -41,11 +41,8 @@ public class PerformanceFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
 
     // The variables used in the fragment
-    private float scaleHeadings, scaleComments, scaleChords, fontSize, fontSizeMin, fontSizeMax,
-            lineSpacing;
-    private boolean trimLines, trimSections, addSectionSpace, songAutoScaleColumnMaximise,
-            songAutoScaleOverrideFull, songAutoScaleOverrideWidth, boldChordHeading,
-            highlightChords,highlightHeadings, displayChords;
+    private boolean songAutoScaleColumnMaximise,
+            songAutoScaleOverrideFull, songAutoScaleOverrideWidth;
     private int screenHeight;
     public int songViewWidth, songViewHeight, screenWidth, swipeMinimumDistance,
             swipeMaxDistanceYError, swipeMinimumVelocity;
@@ -135,29 +132,11 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getPerformanceGestures().setPDFRecycler(myView.pdfView);
     }
     private void loadPreferences() {
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
-        scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"scaleHeadings",0.6f);
-        scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"scaleChords",0.8f);
-        scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"scaleComments",0.8f);
-        trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"trimLines",true);
-        lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f);
-        trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"trimSections",true);
-        displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"displayChords",true);
-        boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", false);
-        addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "addSectionSpace", true);
-        autoScale = mainActivityInterface.getPreferences().getMyPreferenceString(getActivity(),"songAutoScale","W");
-        songAutoScaleColumnMaximise = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true);
-        fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"fontSize",42.0f);
-        fontSizeMax = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f);
-        fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f);
-        songAutoScaleOverrideFull = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true);
-        songAutoScaleOverrideWidth = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideWidth",false);
         swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumDistance", 250);
         swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMaxDistanceYError", 200);
         swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumVelocity", 600);
-        highlightChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"highlightChords",false);
-        highlightHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"highlightHeadings",false);
-        fontSizeMax = 90.0f;
         songAutoScaleOverrideWidth = false;
         songAutoScaleOverrideFull = false;
         myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
@@ -217,7 +196,7 @@ public class PerformanceFragment extends Fragment {
         // Get the song sheet headers
         Log.d(TAG,"mainActivityInterface="+mainActivityInterface);
         mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
-                mainActivityInterface, mainActivityInterface.getSong(), scaleComments, false));
+                mainActivityInterface, mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
         myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
 
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
@@ -245,9 +224,8 @@ public class PerformanceFragment extends Fragment {
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
             mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
-                    setSongInLayout(requireContext(), mainActivityInterface, trimSections, addSectionSpace,
-                            trimLines, lineSpacing, scaleHeadings, scaleChords, scaleComments, displayChords,
-                            mainActivityInterface.getSong().getLyrics(), boldChordHeading, false, false));
+                    setSongInLayout(requireContext(), mainActivityInterface,
+                            mainActivityInterface.getSong().getLyrics(), false, false));
 
             // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
             setUpTestViewListener();
@@ -292,8 +270,7 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface,
                 myView.testPane, myView.pageHolder, myView.songView, myView.songSheetTitle,
                 screenWidth, screenHeight,
-                myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
-                songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax);
+                myView.col1, myView.col2, myView.col3);
 
         // Pass this scale factor to the zoom layout
         myView.zoomLayout.setCurrentScale(scaleFactor);
