@@ -54,7 +54,7 @@ public class MyHDMIDisplay extends Presentation implements MediaPlayer.OnVideoSi
         matchPresentationToMode();
         setupLogo();
         myView.songProjectionInfo1.postDelayed(this::setSongInfo,2000);
-
+        setSongContent();
         //normalStartUp();
     }
 
@@ -208,6 +208,10 @@ public class MyHDMIDisplay extends Presentation implements MediaPlayer.OnVideoSi
     }
 
     // Update the screen content
+    public void showSection(int position) {
+        presentationCommon.showSection(position);
+    }
+
     private void doUpdate() {
         /*presentermode_alert.setAlpha(1.0f);
         presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,presentermode_bottombit,projected_SurfaceView,

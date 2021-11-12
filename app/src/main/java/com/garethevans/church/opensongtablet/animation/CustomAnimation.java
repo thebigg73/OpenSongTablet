@@ -4,12 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -25,26 +24,22 @@ public class CustomAnimation {
             start = 0;
             end = 1;
         }
-        //v.setAlpha(start);
         v.setVisibility(View.VISIBLE);
 
         Animation fader = new AlphaAnimation(start, end);
-
-        if (fadeIn) {
-            fader.setInterpolator(new DecelerateInterpolator());
-        } else {
-            fader.setInterpolator(new AccelerateInterpolator());
-        }
+        fader.setInterpolator(new LinearInterpolator());
         fader.setDuration(time);
-
+        
         Log.d(TAG,"v="+v.getId()+"  start="+start+"  end="+end);
 
         AnimationSet animation = new AnimationSet(false);
         animation.addAnimation(fader);
-        v.startAnimation(animation);
-        if (end==0) {
+        animation.setFillAfter(true);
+        /*if (end==0) {
             v.postDelayed(() -> v.setVisibility(View.INVISIBLE), time);
-        }
+        }*/
+        v.startAnimation(animation);
+
     }
 
     public void fadeActionButton(FloatingActionButton fab, float fadeTo) {

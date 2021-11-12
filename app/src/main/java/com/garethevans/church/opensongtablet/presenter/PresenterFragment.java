@@ -17,8 +17,6 @@ import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
-
 public class PresenterFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
@@ -28,7 +26,6 @@ public class PresenterFragment extends Fragment {
     private MediaFragment mediaFragment;
     private AlertFragment alertFragment;
     private SettingsFragment settingsFragment;
-    private ArrayList<View> sectionViews = new ArrayList<>();
     private final String TAG = "PresenterFragment";
 
     @Override
@@ -124,10 +121,10 @@ public class PresenterFragment extends Fragment {
     }
 
     public void getSongViews() {
-        if (sectionViews==null) {
-            sectionViews = new ArrayList<>();
+        if (mainActivityInterface.getSectionViews()==null) {
+            mainActivityInterface.setSectionViews(null);
         } else {
-            sectionViews.clear();
+            mainActivityInterface.getSectionViews().clear();
         }
 
         if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
@@ -139,8 +136,8 @@ public class PresenterFragment extends Fragment {
             // This will be a custom slide with images
         } else {
             // A standard XML file
-            sectionViews = mainActivityInterface.getProcessSong().setSongInLayout(requireContext(), mainActivityInterface,
-                    mainActivityInterface.getSong().getLyrics(), false, true);
+            mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(requireContext(), mainActivityInterface,
+                    mainActivityInterface.getSong().getLyrics(), false, true));
         }
     }
 

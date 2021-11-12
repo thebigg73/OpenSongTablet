@@ -242,9 +242,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SessionManager sessionManager;
     private SessionManagerListener<CastSession> sessionManagerListener;
 
-    //private SessionManager sessionManager;
-    //private CastSession castSession;
-    //private MySessionManagerListener sessionManagerListener;
     private SongMenuFragment songMenuFragment;
     private SetMenuFragment setMenuFragment;
     private PerformanceFragment performanceFragment;
@@ -276,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ArrayList<View> sectionViews;
     private LinearLayout songSheetTitleLayout;
     private ArrayList<Integer> sectionWidths, sectionHeights, songSheetTitleLayoutSize;
+    private ArrayList<Float> sectionScale;
     private String whichMode, whattodo, importFilename;
     private Uri importUri;
     private boolean doonetimeactions = true, settingsOpen = false, nearbyOpen = false, showSetMenu,
@@ -2388,6 +2386,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             sectionWidths = new ArrayList<>();
             sectionHeights = null;
             sectionHeights = new ArrayList<>();
+            sectionScale = null;
+            sectionScale = new ArrayList<>();
         } else {
             sectionViews = views;
         }
@@ -2837,6 +2837,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void presenterShowSection(int position) {
+        if (castService!=null && castDevice!=null) {
+            //castService.getMyCastDisplay().showSection(position);
+        }
+        if (hdmiPresentation!=null) {
+            hdmiPresentation.showSection(position);
+        }
         Log.d(TAG,"presenterShowSection");
     }
 }

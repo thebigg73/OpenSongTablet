@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,8 +20,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.SongProjectionInfo;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.gms.cast.CastDevice;
-
-import java.util.ArrayList;
 
 public class PresentationCommon {
 
@@ -36,10 +35,8 @@ public class PresentationCommon {
     }
 
     // Default variables
-    private ArrayList<View> sectionViews;
-    private ArrayList<Integer> sectionWidths, sectionHeights;
     private boolean trimLines, trimSections, addSectionSpace, boldChordHeading, displayChords;
-    private float scaleChords, scaleHeadings, scaleComments, lineSpacing;
+    private float scaleChords, scaleHeadings, scaleComments, lineSpacing, fontSizePresoMax;
 
     private int defaultPadding, screenWidth, availableScreenWidth, screenHeight, availableScreenHeight,
             availableWidth_1col, availableWidth_2col, availableWidth_3col,
@@ -232,12 +229,79 @@ public class PresentationCommon {
     }
 
 
+    // Show the sections
+    public void showSection(final int position) {
+        // Decide which view to show to
+        // Check the view isn't already attached to a parent
+        Log.d(TAG,"position: "+position+"  sectionView.size(): "+mainActivityInterface.getSectionViews().size());
+        if (position<mainActivityInterface.getSectionViews().size()) {
+            if (mainActivityInterface.getSectionViews().get(position).getParent() != null) {
+                ((LinearLayout) mainActivityInterface.getSectionViews().get(position).getParent()).removeView(mainActivityInterface.getSectionViews().get(position));
+            }
+
+            // Set a listener to wait for drawing, then measure and scale
+            ViewTreeObserver viewTreeObserver = testLayout.getViewTreeObserver();
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // Measure the height of the layouts
+                    int width = mainActivityInterface.getSectionViews().get(position).getMeasuredWidth();
+                    int height = mainActivityInterface.getSectionViews().get(position).getMeasuredHeight();
+                    screenWidth = pageHolder.getMeasuredWidth();
+                    screenHeight = pageHolder.getMeasuredHeight();
+
+                    Log.d(TAG,position+": width="+width+"  height="+height);
+                    Log.d(TAG,position+": screenWidth="+screenWidth+"  screenHeight="+screenHeight);
+
+                    float max_x = (float) screenWidth / (float) width;
+                    float max_y = (float) screenHeight / (float) height;
+
+                    float best = Math.min(max_x,max_y);
+                    if (best > (fontSizePresoMax/14f)) {
+                        best = fontSizePresoMax/14f;
+                    }
+
+                    Log.d(TAG,position+": best="+best);
+
+                    mainActivityInterface.getSectionViews().get(position).setPivotX(0f);
+                    mainActivityInterface.getSectionViews().get(position).setPivotY(0f);
+                    mainActivityInterface.getSectionViews().get(position).setScaleX(best);
+                    mainActivityInterface.getSectionViews().get(position).setScaleY(best);
+
+                    // Remove from the test layout
+                    testLayout.removeAllViews();
+
+                    // Remove this listener
+                    viewTreeObserver.removeOnGlobalLayoutListener(this);
+
+                    if (showWhich == 1) {
+                        songContent1.removeAllViews();
+                        songContent1.addView(mainActivityInterface.getSectionViews().get(position));
+                        mainActivityInterface.getCustomAnimation().faderAnimation(songContent1, crossFadeTime, true);
+                        mainActivityInterface.getCustomAnimation().faderAnimation(songContent2, crossFadeTime, false);
+                        showWhich = 2;
+                    } else {
+                        songContent2.removeAllViews();
+                        songContent2.addView(mainActivityInterface.getSectionViews().get(position));
+                        mainActivityInterface.getCustomAnimation().faderAnimation(songContent2, crossFadeTime, true);
+                        mainActivityInterface.getCustomAnimation().faderAnimation(songContent1, crossFadeTime, false);
+                        showWhich = 1;
+                    }
+
+                }
+            });
+            testLayout.addView(mainActivityInterface.getSectionViews().get(position));
+        }
+    }
+
+
     public void matchPresentationToMode() {
         trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "trimLines", false);
         trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "trimSections", false);
         addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "addSectionSpace", true);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scaleChords", 0.8f);
         lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "lineSpacing", 0.1f);
+        fontSizePresoMax = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizePresoMax", 40f);
 
         switch (mainActivityInterface.getMode()) {
             case "Stage":
@@ -339,34 +403,63 @@ public class PresentationCommon {
 
         // Decide if this is an XML, PDF or IMG file and proceed accordingly
         if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
-            clearSectionViews();
+            mainActivityInterface.setSectionViews(null);
             setSectionViews();
         }
     }
 
-    private void clearSectionViews() {
-        if (sectionViews == null) {
-            sectionViews = new ArrayList<>();
-        } else {
-            sectionViews.clear();
-        }
-        if (sectionWidths == null) {
-            sectionWidths = new ArrayList<>();
-        } else {
-            sectionWidths.clear();
-        }
-        if (sectionHeights == null) {
-            sectionHeights = new ArrayList<>();
-        } else {
-            sectionHeights.clear();
-        }
-    }
+
     private void setSectionViews() {
 
-        mainActivityInterface.getProcessSong().
+        mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
                 setSongInLayout(c, mainActivityInterface, mainActivityInterface.getSong().getLyrics(),
-                        false, true);
+                        false, true));
+
+        // Draw them to the screen test layout for measuring
+        ViewTreeObserver testObs = testLayout.getViewTreeObserver();
+        testObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // The views are ready so prepare to create the song page
+                for (View v:mainActivityInterface.getSectionViews())  {
+                    int width = v.getMeasuredWidth();
+                    int height = v.getMeasuredHeight();
+                    Log.d(TAG,"width:"+width+"  height:"+height);
+                    mainActivityInterface.addSectionSize(width,height);
+                }
+                screenWidth = pageHolder.getMeasuredWidth();
+                screenHeight = pageHolder.getMeasuredHeight();
+
+                // Calculate the scale factor for each section individually
+                // For each meausured view, get the max x and y scale value
+                // Check they are less than the max preferred value
+                for (int x=0; x<mainActivityInterface.getSectionWidths().size(); x++) {
+                    float max_x = (float)screenWidth/(float)mainActivityInterface.getSectionWidths().get(x);
+                    float max_y = (float)screenHeight/(float)mainActivityInterface.getSectionHeights().get(x);
+                    // The text size is 14sp by default.  Compare this to the pref
+                    float best = Math.min(max_x,max_y);
+                    if (best*14f > fontSizePresoMax) {
+                        best = fontSizePresoMax*14f;
+                    }
+                    Log.d(TAG,"scale["+x+"]="+best);
+                    mainActivityInterface.getSectionViews().get(x).setPivotX(0f);
+                    mainActivityInterface.getSectionViews().get(x).setPivotY(0f);
+                    mainActivityInterface.getSectionViews().get(x).setScaleX(best);
+                    mainActivityInterface.getSectionViews().get(x).setScaleY(best);
+                }
+
+                // We can now remove the views from the test layout and remove this listener
+                testLayout.removeAllViews();
+                testLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+        for (View view:mainActivityInterface.getSectionViews()) {
+            testLayout.addView(view);
+        }
+
     }
+
+
     /*
 
 

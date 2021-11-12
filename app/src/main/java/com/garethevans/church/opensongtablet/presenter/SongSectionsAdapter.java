@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +29,8 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final RecyclerView recyclerView;
     private final SongSectionsFragment fragment;
     private final String TAG = "SongSetionsAdapter";
+    private final int onColor, offColor;
+    private int selectedPosition = 0;
 
     SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface, SongSectionsFragment fragment,
                         DisplayInterface displayInterface, RecyclerView recyclerView) {
@@ -38,6 +39,8 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         this.displayInterface = displayInterface;
         this.recyclerView = recyclerView;
         this.fragment = fragment;
+        onColor = ContextCompat.getColor(c, R.color.colorSecondary);
+        offColor = ContextCompat.getColor(c, R.color.colorAltPrimary);
     }
 
     public void buildSongSections() {
@@ -73,20 +76,23 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
                 if (line.startsWith(".")) {
                     line = line.replaceFirst(".","");
                 }
-                if (!line.startsWith(";")) {
-                    newContent.append(line).append("\n");
+                if (line.startsWith(";")) {
+                    line = line.replaceFirst(";","");
                 }
+                newContent.append(line).append("\n");
             }
             content = newContent.toString().trim();
             heading = heading.trim();
-            if (!content.isEmpty() && !heading.isEmpty()) {
-                songSectionInfo.content = content;
-                songSectionInfo.heading = heading;
-                songSectionInfo.needsImage = !mainActivityInterface.getSong().getFiletype().equals("XML");
-                songSectionInfo.position = x;
-                songSections.add(songSectionInfo);
-                Log.d(TAG, "content: " + songSectionInfo.content);
+
+            if (!content.isEmpty() || !heading.isEmpty()) {
             }
+            songSectionInfo.content = content;
+            songSectionInfo.heading = heading;
+            songSectionInfo.needsImage = !mainActivityInterface.getSong().getFiletype().equals("XML");
+            songSectionInfo.position = x;
+            songSections.add(songSectionInfo);
+            Log.d(TAG, "heading: " + heading + "\ncontent: " + content + "\nsection: " + x);
+
         }
         notifyItemRangeChanged(0,mainActivityInterface.getSong().getSongSections().size());
     }
@@ -107,6 +113,19 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         String heading = si.heading;
         String content = si.content;
         int section = si.position;
+        if (position==selectedPosition) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                holder.item.setBackgroundTintList(ColorStateList.valueOf(onColor));
+            } else {
+                holder.item.setBackgroundColor(onColor);
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                holder.item.setBackgroundTintList(ColorStateList.valueOf(offColor));
+            } else {
+                holder.item.setBackgroundColor(offColor);
+            }
+        }
         boolean needsImage = si.needsImage;
 
         holder.content.setTypeface(Typeface.MONOSPACE);
@@ -127,7 +146,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             holder.content.setVisibility(View.GONE);
         }
         if ((content==null||content.isEmpty()) && (heading==null||heading.isEmpty())) {
-            holder.item.setVisibility(View.GONE);
+            //holder.item.setVisibility(View.GONE);
         }
 
         if (needsImage) {
@@ -155,27 +174,11 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     }
 
     private void itemSelected(int thisPos) {
-        int onColor = ContextCompat.getColor(c, R.color.colorSecondary);
-        int offColor = ContextCompat.getColor(c, R.color.colorAltPrimary);
+        notifyItemChanged(selectedPosition);
+        notifyItemChanged(thisPos);
+        selectedPosition = thisPos;
 
-        for (int x=0; x<recyclerView.getChildCount(); x++) {
-            CardView view = (CardView) recyclerView.getChildAt(x);
-            if (x==thisPos) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    view.setBackgroundTintList(ColorStateList.valueOf(onColor));
-                } else {
-                    view.setBackgroundColor(onColor);
-                }
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    view.setBackgroundTintList(ColorStateList.valueOf(offColor));
-                } else {
-                    view.setBackgroundColor(offColor);
-                }
-            }
-        }
         Log.d(TAG,"thisPos="+thisPos);
         displayInterface.presenterShowSection(thisPos);
-
     }
 }
