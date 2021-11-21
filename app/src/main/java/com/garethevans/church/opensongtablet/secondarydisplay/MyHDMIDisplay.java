@@ -53,8 +53,11 @@ public class MyHDMIDisplay extends Presentation implements MediaPlayer.OnVideoSi
         setDefaultBackgroundImage();
         matchPresentationToMode();
         setupLogo();
-        myView.songProjectionInfo1.postDelayed(this::setSongInfo,2000);
-        setSongContent();
+
+        presentationCommon.setInitialView();
+
+        //myView.songProjectionInfo1.postDelayed(this::setSongInfo,3000);
+        //setSongContent();
         //normalStartUp();
     }
 

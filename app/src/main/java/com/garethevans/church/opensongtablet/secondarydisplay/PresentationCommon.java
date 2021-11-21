@@ -39,6 +39,7 @@ public class PresentationCommon {
     private float scaleChords, scaleHeadings, scaleComments, lineSpacing, fontSizePresoMax;
 
     private int defaultPadding, screenWidth, availableScreenWidth, screenHeight, availableScreenHeight,
+            bottombarheight,
             availableWidth_1col, availableWidth_2col, availableWidth_3col,
             lyricsCapoColor, lyricsChordsColor, presoFontColor, lyricsBackgroundColor,
             lyricsTextColor, presoInfoColor, presoAlertColor, presoShadowColor, lyricsVerseColor,
@@ -60,7 +61,7 @@ public class PresentationCommon {
     private SongProjectionInfo songProjectionInfo1, songProjectionInfo2;
     private SurfaceView surfaceView1, surfaceView2;
     private RelativeLayout pageHolder;
-    private int showWhich = 1, crossFadeTime = 800;
+    private int showWhich = 1, showWhichInfo = 1, crossFadeTime = 800, logoSplashTime = 3000;
 
     // Set up defaults
     public void setDefaultColors() {
@@ -86,49 +87,55 @@ public class PresentationCommon {
     public void setScreenSizes(Display display) {
         DisplayMetrics metrics = new DisplayMetrics();
         display.getRealMetrics(metrics);
-        int bottombarheight = 0;
-        // IV - Use infobar height (was previously icon height)
-        if (songProjectionInfo1.getVisibility() != View.GONE) {
-            bottombarheight = bottombarheight + songProjectionInfo1.getMeasuredHeight();
-        } else if (songProjectionInfo2.getVisibility() != View.GONE) {
-            bottombarheight = bottombarheight + songProjectionInfo2.getMeasuredHeight();
-        }
 
-        defaultPadding = 8;
-        int leftpadding = pageHolder.getPaddingLeft();
-        int rightpadding = pageHolder.getPaddingRight();
-        int toppadding = pageHolder.getPaddingTop();
-        int bottompadding = pageHolder.getPaddingBottom();
+        updateBottomBarSize();
 
-        pageHolder.setRotation(castRotation);
-        int originalWidth = metrics.widthPixels;
-        int originalHeight = metrics.heightPixels;
-        int newWidth, newHeight;
+        defaultPadding = 0;
+        pageHolder.post(()-> {
+            // The display will have default margins - figure them out
 
+            int leftpadding = pageHolder.getPaddingLeft();
+            int rightpadding = pageHolder.getPaddingRight();
+            int toppadding = pageHolder.getPaddingTop();
+            int bottompadding = pageHolder.getPaddingBottom();
 
-        if (castRotation == 90.0f || castRotation == 270.0f) {  // Switch width for height and vice versa
-            newWidth = metrics.heightPixels;
-            newHeight = metrics.widthPixels;
+            pageHolder.setRotation(castRotation);
 
+            int horizontalSize, verticalSize, horizontalDisplayPadding, verticalDisplayPadding;
+
+            if (castRotation == 90.0f || castRotation == 270.0f) {  // Switch width for height and vice versa
+                horizontalSize = metrics.heightPixels;
+                verticalSize = metrics.widthPixels;
+
+            } else {
+                horizontalSize = metrics.widthPixels;
+                verticalSize = metrics.heightPixels;
+            }
+
+            horizontalDisplayPadding = horizontalSize - pageHolder.getMeasuredWidth();
+            verticalDisplayPadding = verticalSize - pageHolder.getMeasuredHeight();
+
+            screenWidth = horizontalSize - horizontalDisplayPadding;
+            screenHeight = verticalSize - verticalDisplayPadding;
+
+            Log.d(TAG,"horizontalSize="+horizontalSize+"  horizontalDisplayPadding="+horizontalDisplayPadding+"  screenWidth="+screenWidth);
+            pageHolder.requestLayout();
+
+            availableScreenWidth = screenWidth - leftpadding - rightpadding;
+            availableScreenHeight = screenHeight - toppadding - bottompadding - bottombarheight;
+            availableWidth_1col = availableScreenWidth;
+            availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f);
+            availableWidth_3col = (int) ((float) availableScreenWidth / 3.0f);
+
+        });
+    }
+    private void updateBottomBarSize() {
+        bottombarheight = 0;
+        if (showWhich==1) {
+            songProjectionInfo1.post(() -> bottombarheight = songProjectionInfo1.getMeasuredHeight());
         } else {
-            newWidth = metrics.widthPixels;
-            newHeight = metrics.heightPixels;
+            songProjectionInfo2.post(() -> bottombarheight = songProjectionInfo2.getMeasuredHeight());
         }
-
-        screenWidth = newWidth;
-        screenHeight = newHeight;
-
-        pageHolder.setTranslationX((originalWidth - newWidth)/2.0f);
-        pageHolder.setTranslationY((originalHeight - newHeight)/2.0f);
-        //lp.height = screenHeight;
-        //lp.width = screenWidth;
-        pageHolder.requestLayout();
-
-        availableScreenWidth = screenWidth - leftpadding - rightpadding - (defaultPadding * 2);
-        availableScreenHeight = screenHeight - toppadding - bottompadding - bottombarheight - (defaultPadding * 4);
-        availableWidth_1col = availableScreenWidth - (defaultPadding * 2);
-        availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f) - (defaultPadding * 3);
-        availableWidth_3col = (int) ((float) availableScreenWidth / 3.0f) - (defaultPadding * 4);
     }
     public void changeMargins() {
         int presoXMargin = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoXMargin",20) + defaultPadding;
@@ -174,26 +181,26 @@ public class PresentationCommon {
         surfaceView2.setVisibility(View.GONE);
         mainLogo.setVisibility(View.VISIBLE);
         showWhich = 1;
+        showWhichInfo = 1;
         switch (mainActivityInterface.getMode()) {
             case "Performance":
-                // Show the logo for 2 seconds, then fade it away
                 mainLogo.postDelayed(() -> {
                     mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
                     showPerformanceContent();
-                }, 2000);
+                }, logoSplashTime);
                 break;
             case "Stage":
-                // Hide the logo after 2 seconds, then display the
                 mainLogo.postDelayed(() -> {
                     mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
                     showPresentationContent();
-                }, 2000);
+                }, logoSplashTime);
                 break;
         }
     }
 
     // Deal with the display of song content
     public void showPerformanceContent() {
+
     }
 
 
@@ -247,14 +254,12 @@ public class PresentationCommon {
                     // Measure the height of the layouts
                     int width = mainActivityInterface.getSectionViews().get(position).getMeasuredWidth();
                     int height = mainActivityInterface.getSectionViews().get(position).getMeasuredHeight();
-                    screenWidth = pageHolder.getMeasuredWidth();
-                    screenHeight = pageHolder.getMeasuredHeight();
 
                     Log.d(TAG,position+": width="+width+"  height="+height);
-                    Log.d(TAG,position+": screenWidth="+screenWidth+"  screenHeight="+screenHeight);
+                    Log.d(TAG,position+": screenWidth="+availableScreenWidth+"  screenHeight="+availableScreenHeight);
 
-                    float max_x = (float) screenWidth / (float) width;
-                    float max_y = (float) screenHeight / (float) height;
+                    float max_x = (float) availableScreenWidth / (float) width;
+                    float max_y = (float) availableScreenHeight / (float) height;
 
                     float best = Math.min(max_x,max_y);
                     if (best > (fontSizePresoMax/14f)) {
@@ -356,33 +361,41 @@ public class PresentationCommon {
 
     public void setSongInfo() {
         // All info should be shown if available
-        if (showWhich==1) {
-            songProjectionInfo1.setAlpha(0f);
-            songProjectionInfo1.setVisibility(View.VISIBLE);
+        Log.d(TAG,"setSongInfo()  showWhichInfo:"+showWhichInfo);
+        if (showWhichInfo==1) {
             songProjectionInfo1.setSongTitle(mainActivityInterface.getSong().getTitle());
             songProjectionInfo1.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             songProjectionInfo1.setSongCopyright(mainActivityInterface.getSong().getCopyright());
 
+            Log.d(TAG,"title="+mainActivityInterface.getSong().getTitle());
+
             // Fade in 1
+            songProjectionInfo1.setAlpha(1.0f);
+            songProjectionInfo1.setVisibility(View.VISIBLE);
             mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo1,crossFadeTime,true);
             // Fade out 2
             if (songProjectionInfo2.getAlpha()>0) {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo2,crossFadeTime,false);
             }
+            showWhichInfo = 2;
         } else {
-            songProjectionInfo2.setAlpha(0f);
-            songProjectionInfo2.setVisibility(View.VISIBLE);
             songProjectionInfo2.setSongTitle(mainActivityInterface.getSong().getTitle());
             songProjectionInfo2.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             songProjectionInfo2.setSongCopyright(mainActivityInterface.getSong().getCopyright());
 
             // Fade in 2
+            songProjectionInfo2.setAlpha(1.0f);
+            songProjectionInfo2.setVisibility(View.VISIBLE);
             mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo2,crossFadeTime,true);
             // Fade out 1
             if (songProjectionInfo1.getAlpha()>0) {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo1,crossFadeTime,false);
             }
+            showWhichInfo = 1;
         }
+        Log.d(TAG,"title1="+songProjectionInfo1.getSongTitle());
+        Log.d(TAG,"title2="+songProjectionInfo2.getSongTitle());
+
     }
 
     public void setSongContentPrefs() {
@@ -427,8 +440,8 @@ public class PresentationCommon {
                     Log.d(TAG,"width:"+width+"  height:"+height);
                     mainActivityInterface.addSectionSize(width,height);
                 }
-                screenWidth = pageHolder.getMeasuredWidth();
-                screenHeight = pageHolder.getMeasuredHeight();
+                //screenWidth = pageHolder.getMeasuredWidth();
+                //screenHeight = pageHolder.getMeasuredHeight();
 
                 // Calculate the scale factor for each section individually
                 // For each meausured view, get the max x and y scale value
@@ -441,7 +454,6 @@ public class PresentationCommon {
                     if (best*14f > fontSizePresoMax) {
                         best = fontSizePresoMax*14f;
                     }
-                    Log.d(TAG,"scale["+x+"]="+best);
                     mainActivityInterface.getSectionViews().get(x).setPivotX(0f);
                     mainActivityInterface.getSectionViews().get(x).setPivotY(0f);
                     mainActivityInterface.getSectionViews().get(x).setScaleX(best);
@@ -451,6 +463,7 @@ public class PresentationCommon {
                 // We can now remove the views from the test layout and remove this listener
                 testLayout.removeAllViews();
                 testLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
             }
         });
         for (View view:mainActivityInterface.getSectionViews()) {

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +19,7 @@ public class SongProjectionInfo extends LinearLayout {
     private final LinearLayout castSongInfo, contentLayout;
     private final MaterialTextView songTitle, songAuthor, songCopyright, songAlert;
     private final ImageView miniLogo;
+    private final String TAG = "SongProjectionInfo";
 
     public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -54,6 +56,7 @@ public class SongProjectionInfo extends LinearLayout {
         setText(songAlert,alert);
     }
     private void setText(MaterialTextView textView, String text) {
+        Log.d(TAG,"text="+text);
         if (text==null || text.isEmpty()) {
             textView.setVisibility(View.GONE);
         } else {
@@ -83,6 +86,14 @@ public class SongProjectionInfo extends LinearLayout {
         songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songCopyright.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songAlert.setTextColor(mainActivityInterface.getMyThemeColors().getPresoAlertColor());
+    }
+
+    public String getSongTitle() {
+        if (songTitle.getText()!=null) {
+            return songTitle.getText().toString();
+        } else {
+            return "";
+        }
     }
 
     // Used in presenter mode to display song info on device

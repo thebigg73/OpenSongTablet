@@ -194,7 +194,6 @@ public class PerformanceFragment extends Fragment {
         myView.zoomLayout.setVisibility(View.GONE);
 
         // Get the song sheet headers
-        Log.d(TAG,"mainActivityInterface="+mainActivityInterface);
         mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
                 mainActivityInterface, mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
         myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
@@ -341,7 +340,8 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getMidi().buildSongMidiMessages();
 
         // Update the secondary display (if present)
-        mainActivityInterface.updateDisplays();
+        mainActivityInterface.updateDisplay("info");
+        mainActivityInterface.updateDisplay("content");
     }
 
     private void dealWithHighlighterFile(int w, int h) {

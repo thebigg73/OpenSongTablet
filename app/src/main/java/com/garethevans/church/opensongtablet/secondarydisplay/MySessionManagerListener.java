@@ -83,12 +83,13 @@ public class MySessionManagerListener implements SessionManagerListener<CastSess
     }
 
     @Override
-    public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+    public void onRemoteDisplayMuteStateChanged(boolean b) {
 
     }
 
     @Override
-    public void zza() {
+    public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
 
     }
+
 }

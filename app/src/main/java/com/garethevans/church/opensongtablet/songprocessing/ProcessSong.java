@@ -1351,13 +1351,6 @@ public class ProcessSong {
         }
         mainActivityInterface.getSong().setSongSections(songSections);
 
-        for (String songSection:songSections) {
-            Log.d(TAG,"songSection: "+songSection);
-        }
-
-        for (String sectionHeader:sectionHeaders) {
-            Log.d(TAG,"sectionHeader: "+sectionHeader);
-        }
         return sectionViews;
     }
 

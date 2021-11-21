@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:id="@+id/pageHolder"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         tools:ignore="UselessParent">
 
@@ -57,55 +57,65 @@
 
         <LinearLayout
             android:id="@+id/testLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/songProjectionInfo1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/bottomBit"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:orientation="vertical"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
         <LinearLayout
             android:id="@+id/songContent1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/songProjectionInfo1"
+            android:layout_above="@+id/bottomBit"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_margin="0dp"
+            android:padding="0dp"
             android:orientation="vertical"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/songContent2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/songProjectionInfo1"
+            android:layout_above="@+id/bottomBit"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_margin="0dp"
+            android:padding="0dp"
             android:orientation="vertical"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
-        <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
-            android:id="@+id/songProjectionInfo1"
+        <RelativeLayout
+            android:id="@+id/bottomBit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:gravity="center"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:visibility="gone"/>
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary">
 
-        <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
-            android:id="@+id/songProjectionInfo2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:gravity="center"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:visibility="gone"/>
+            <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
+                android:id="@+id/songProjectionInfo1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:visibility="gone"/>
+
+            <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
+                android:id="@+id/songProjectionInfo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/mainLogo"
@@ -113,7 +123,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:contentDescription="@string/app_name"
-            android:padding="16dp"
+            android:padding="0dp"
+            android:layout_margin="0dp"
             android:src="@drawable/ost_logo"
             android:visibility="visible"/>
 

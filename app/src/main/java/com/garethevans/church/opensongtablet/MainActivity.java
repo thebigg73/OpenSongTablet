@@ -2728,6 +2728,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public void updateDisplay(String what) {
+        Log.d(TAG,"updateDisplay("+what+")");
+        if (castService!=null && castDevice!=null) {
+            // TODO
+        }
+        if (hdmiPresentation!=null) {
+            switch (what) {
+                case "info":
+                    hdmiPresentation.setSongInfo();
+                    break;
+
+                case "content":
+                    hdmiPresentation.setSongContent();
+                    break;
+            }
+
+        }
+    }
+    @Override
     public void updateDisplays() {
         Log.d(TAG,"updateDisplays()");
         if (castService!=null && castDevice!=null) {
@@ -2735,6 +2754,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         if (hdmiPresentation!=null) {
             hdmiPresentation.setSongInfo();
+            hdmiPresentation.setSongContent();
         }
     }
 
@@ -2756,6 +2776,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         PendingIntent notificationPendingIntent = null;
         notificationPendingIntent = PendingIntent.getActivity(
                     this, 0, intent, 0);
+
 
         CastRemoteDisplayLocalService.NotificationSettings settings =
                 new CastRemoteDisplayLocalService.NotificationSettings.Builder()
@@ -2788,14 +2809,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     }
 
                     @Override
+                    public void onRemoteDisplayMuteStateChanged(boolean b) { }
+
+                    @Override
                     public void onRemoteDisplaySessionEnded(@NonNull CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
                         Log.d(TAG,"onRemoteDisplaySessionEnded()");
                         Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
-                    }
-
-                    @Override
-                    public void zza() {
-                        Log.d(TAG,"zza()");
                     }
                 });
 

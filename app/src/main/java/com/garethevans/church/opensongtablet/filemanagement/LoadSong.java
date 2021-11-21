@@ -93,8 +93,6 @@ public class LoadSong {
         uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
                 where, thisSong.getFolder(), thisSong.getFilename());
 
-        Log.d(TAG,"loadSongFile uri="+uri);
-
         // Get the uri for the song - we know it exists as we found it!
         if (mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
 
@@ -176,7 +174,6 @@ public class LoadSong {
 
     private void sortLoadingSuccessful(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // Check if the song has been loaded (will now have a lyrics value)
-        Log.d(TAG,"Check for loading success.  filename="+thisSong.getFilename()+"  type="+thisSong.getFiletype());
         if (thisSong.getFiletype()!=null && (thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) &&
         thisSong.getLyrics()==null) {
             // A basic PDF/IMG without custom info

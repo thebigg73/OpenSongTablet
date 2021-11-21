@@ -229,5 +229,6 @@ public interface MainActivityInterface {
     void resetOptionMenu();
     CastService getPresentationService();
     void updateDisplays();
+    void updateDisplay(String what);
 }
 
