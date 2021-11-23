@@ -65,8 +65,9 @@ public class MakePDF {
         // Wipe it for now
         clearPage(page);
 
+        boolean displayChords = preferences.getMyPreferenceBoolean(c,"displayChords",true);
         // Test write content to the page to get its height (uses the header and footer heights from test writes)
-        writePDFContent(c,processSong,thisSong,clyrics,0,1.0f);
+        writePDFContent(c,processSong, displayChords, thisSong,clyrics,0,1.0f);
         // Wipe it for now
         clearPage(page);
 
@@ -75,7 +76,7 @@ public class MakePDF {
         // Add the header back in
         writeTheHeader(c,thisSong,canvas,margin,headerScaling);
         // Add the lyrics back in
-        writePDFContent(c,processSong,thisSong,canvas,headerHeight+margin,lyricScaling);
+        writePDFContent(c,processSong,displayChords,thisSong,canvas,headerHeight+margin,lyricScaling);
         // Add the footer back in
         writeTheFooter(thisSong,canvas,(docHeight-margin),footerScaling);
 
@@ -213,7 +214,7 @@ public class MakePDF {
         footerScaling = getScaling(width, 0);
     }
 
-    private void writePDFContent(Context c, ProcessSong processSong, SQLite thisSong, Canvas canvas, int ypos, float scaling) {
+    private void writePDFContent(Context c, ProcessSong processSong, boolean displayChords, SQLite thisSong, Canvas canvas, int ypos, float scaling) {
         // Now go though the lyrics
         int height = 0;
         int width = 0;
@@ -231,8 +232,12 @@ public class MakePDF {
 
             if (line.startsWith(".")) {
                 // Chord line
-                paint.setColor(chordColor);
-                line = line.replaceFirst("."," ");
+                if (displayChords) {
+                    paint.setColor(chordColor);
+                    line = line.replaceFirst(".", " ");
+                } else {
+                    line = null;
+                }
 
             } else if (line.startsWith("[") || line.startsWith(" [")) {
                 // Heading line
@@ -252,11 +257,13 @@ public class MakePDF {
                 line = line.replace("|"," ");
             }
 
-            paint.getTextBounds(line,0,line.length(),bounds);
-            height = ypos + bounds.height();
-            width = Math.max(width,bounds.width());
-            canvas.drawText(line,margin,ypos,paint);
-            ypos = ypos + (int)(lineSpacing+0.6f);   // Add on 0.6 to ensure it is always rounded up
+            if (line!=null) {
+                paint.getTextBounds(line, 0, line.length(), bounds);
+                height = ypos + bounds.height();
+                width = Math.max(width, bounds.width());
+                canvas.drawText(line, margin, ypos, paint);
+                ypos = ypos + (int) (lineSpacing + 0.6f);   // Add on 0.6 to ensure it is always rounded up
+            }
         }
         // Make sure void exits with underline off
         paint.setUnderlineText(false);
