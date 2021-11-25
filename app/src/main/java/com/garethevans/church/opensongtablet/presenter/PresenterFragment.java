@@ -145,5 +145,9 @@ public class PresenterFragment extends Fragment {
     private void setupListeners() {
         myView.showLogo.setOnCheckedChangeListener((compoundButton, b) -> displayInterface.presenterShowLogo(b));
         myView.blackScreen.setOnCheckedChangeListener(((compoundButton, b) -> displayInterface.presenterBlackScreen(b)));
+        myView.updateProjector.setOnClickListener(view -> {
+            displayInterface.resetHDMI();
+            //displayInterface.updateDisplay("info");
+        });
     }
 }

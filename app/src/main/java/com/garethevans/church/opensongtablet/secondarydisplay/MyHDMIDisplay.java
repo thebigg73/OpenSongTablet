@@ -39,7 +39,7 @@ public class MyHDMIDisplay extends Presentation implements MediaPlayer.OnVideoSi
 
         // Pass reference to the views
         presentationCommon.initialiseViews(myView.pageHolder, myView.testLayout, myView.songContent1,
-                myView.songContent2, myView.songProjectionInfo1, myView.songProjectionInfo2,
+                myView.songContent2, myView.bottomBarBackground, myView.songProjectionInfo1, myView.songProjectionInfo2,
                 myView.mainLogo, myView.backgroundImage, myView.imageView1, myView.imageView2,
                 myView.surfaceView1, myView.surfaceView2);
 
@@ -56,9 +56,9 @@ public class MyHDMIDisplay extends Presentation implements MediaPlayer.OnVideoSi
 
         presentationCommon.setInitialView();
 
-        //myView.songProjectionInfo1.postDelayed(this::setSongInfo,3000);
-        //setSongContent();
-        //normalStartUp();
+        myView.songProjectionInfo1.postDelayed(this::setSongInfo,3000);
+        setSongContent();
+        normalStartUp();
     }
 
     // Calls sent to the PresentationCommon class to deal with

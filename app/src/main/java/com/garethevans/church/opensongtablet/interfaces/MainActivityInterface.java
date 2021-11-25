@@ -228,7 +228,6 @@ public interface MainActivityInterface {
     void setWindowFlags();
     void resetOptionMenu();
     CastService getPresentationService();
-    void updateDisplays();
     void updateDisplay(String what);
 }
 

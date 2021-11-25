@@ -2661,10 +2661,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Listen for changes to media routes.
         //mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
 
-        connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
-        connectHDMI();
+        // Post this in a few seconds - need to ensure song is loaded first
+        myView.drawerLayout.postDelayed(() -> resetHDMI(),2000);
 
-        //mediaRouter.addCallback(MediaRouter.ROUTE_TYPE_LIVE_VIDEO, mediaRouterCallback,MediaRouter.CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
 
         // Fix the page flags
         setWindowFlags();
@@ -2727,6 +2726,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return displayMetrics;
     }
 
+
+
+    // The secondary displays (HDMI or Cast)
     @Override
     public void updateDisplay(String what) {
         Log.d(TAG,"updateDisplay("+what+")");
@@ -2744,17 +2746,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
             }
 
-        }
-    }
-    @Override
-    public void updateDisplays() {
-        Log.d(TAG,"updateDisplays()");
-        if (castService!=null && castDevice!=null) {
-            // TODO
-        }
-        if (hdmiPresentation!=null) {
-            hdmiPresentation.setSongInfo();
-            hdmiPresentation.setSongContent();
         }
     }
 
@@ -2827,6 +2818,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             hdmiPresentation = new MyHDMIDisplay(this, connectedDisplays[0], this);
             hdmiPresentation.show();
         }
+    }
+
+    @Override
+    public void resetHDMI() {
+        connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+        connectHDMI();
     }
 
     @Override

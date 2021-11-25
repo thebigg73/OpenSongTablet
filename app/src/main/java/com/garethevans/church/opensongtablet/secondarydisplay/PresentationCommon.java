@@ -10,6 +10,7 @@ import android.view.Display;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,7 +37,8 @@ public class PresentationCommon {
 
     // Default variables
     private boolean trimLines, trimSections, addSectionSpace, boldChordHeading, displayChords;
-    private float scaleChords, scaleHeadings, scaleComments, lineSpacing, fontSizePresoMax;
+    private float scaleChords, scaleHeadings, scaleComments, lineSpacing, fontSizePresoMax,
+            presoInfoBarAlpha;
 
     private int defaultPadding, screenWidth, availableScreenWidth, screenHeight, availableScreenHeight,
             bottombarheight,
@@ -61,18 +63,27 @@ public class PresentationCommon {
     private SongProjectionInfo songProjectionInfo1, songProjectionInfo2;
     private SurfaceView surfaceView1, surfaceView2;
     private RelativeLayout pageHolder;
+    private FrameLayout bottomBarBackground;
     private int showWhich = 1, showWhichInfo = 1, crossFadeTime = 800, logoSplashTime = 3000;
 
     // Set up defaults
     public void setDefaultColors() {
+        // The font and section colours
+        updateFontColor();
+
+        // The page background
+        updatePageBackgroundColor();
+
+        // The song info bar
+        updateInfoBarColor();
+    }
+    public void updateFontColor() {
         lyricsCapoColor = mainActivityInterface.getMyThemeColors().getLyricsCapoColor();
         lyricsChordsColor = mainActivityInterface.getMyThemeColors().getLyricsChordsColor();
         presoFontColor = mainActivityInterface.getMyThemeColors().getPresoFontColor();
-        lyricsBackgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
         lyricsTextColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
         presoInfoColor = mainActivityInterface.getMyThemeColors().getPresoInfoFontColor();
         presoAlertColor = mainActivityInterface.getMyThemeColors().getPresoAlertColor();
-        presoShadowColor = mainActivityInterface.getMyThemeColors().getPresoShadowColor();
         lyricsVerseColor = mainActivityInterface.getMyThemeColors().getLyricsVerseColor();
         lyricsChorusColor = mainActivityInterface.getMyThemeColors().getLyricsChorusColor();
         lyricsPreChorusColor = mainActivityInterface.getMyThemeColors().getLyricsPreChorusColor();
@@ -81,6 +92,19 @@ public class PresentationCommon {
         lyricsCommentColor = mainActivityInterface.getMyThemeColors().getLyricsCommentColor();
         lyricsCustomColor = mainActivityInterface.getMyThemeColors().getLyricsCustomColor();
     }
+    public void updateInfoBarColor() {
+        presoShadowColor = mainActivityInterface.getMyThemeColors().getPresoShadowColor();
+        presoInfoBarAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f);
+        bottomBarBackground.setBackgroundColor(presoShadowColor);
+        bottomBarBackground.setAlpha(presoInfoBarAlpha);
+    }
+    public void updatePageBackgroundColor() {
+        lyricsBackgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
+        songContent1.setBackgroundColor(lyricsBackgroundColor);
+        songContent2.setBackgroundColor(lyricsBackgroundColor);
+        pageHolder.setBackgroundColor(lyricsBackgroundColor);
+    }
+
     public void setRotation(float castRotation) {
         this.castRotation = castRotation;
     }
@@ -130,7 +154,7 @@ public class PresentationCommon {
         });
     }
     private void updateBottomBarSize() {
-        bottombarheight = 0;
+        //bottombarheight = 0;
         if (showWhich==1) {
             songProjectionInfo1.post(() -> bottombarheight = songProjectionInfo1.getMeasuredHeight());
         } else {
@@ -147,10 +171,10 @@ public class PresentationCommon {
         backgroundImage.setImageDrawable(defaultImage);
     }
     public void initialiseViews(RelativeLayout pageHolder, LinearLayout testLayout, LinearLayout songContent1,
-                                LinearLayout songContent2, SongProjectionInfo songProjectionInfo1,
-                                SongProjectionInfo songProjectionInfo2, ImageView mainLogo,
-                                ImageView backgroundImage, ImageView imageView1, ImageView imageView2,
-                                SurfaceView surfaceView1, SurfaceView surfaceView2) {
+                                LinearLayout songContent2, FrameLayout bottomBarBackground,
+                                SongProjectionInfo songProjectionInfo1, SongProjectionInfo songProjectionInfo2,
+                                ImageView mainLogo, ImageView backgroundImage, ImageView imageView1,
+                                ImageView imageView2, SurfaceView surfaceView1, SurfaceView surfaceView2) {
         this.pageHolder = pageHolder;
         this.testLayout = testLayout;
         this.songContent1 = songContent1;
@@ -161,6 +185,7 @@ public class PresentationCommon {
         this.surfaceView1 = surfaceView1;
         this.surfaceView2 = surfaceView2;
         this.mainLogo = mainLogo;
+        this.bottomBarBackground = bottomBarBackground;
         this.songProjectionInfo1 = songProjectionInfo1;
         this.songProjectionInfo2 = songProjectionInfo2;
     }
@@ -180,19 +205,20 @@ public class PresentationCommon {
         surfaceView1.setVisibility(View.GONE);
         surfaceView2.setVisibility(View.GONE);
         mainLogo.setVisibility(View.VISIBLE);
-        showWhich = 1;
-        showWhichInfo = 1;
+
+        Log.d(TAG,"mode="+mainActivityInterface.getMode());
         switch (mainActivityInterface.getMode()) {
             case "Performance":
                 mainLogo.postDelayed(() -> {
-                    mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
+                    mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo, crossFadeTime, false);
                     showPerformanceContent();
                 }, logoSplashTime);
                 break;
-            case "Stage":
+            case "Presenter":
                 mainLogo.postDelayed(() -> {
-                    mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
-                    showPresentationContent();
+                    setSongInfo();
+                    //showPresenterContent();
+                    //fadeInOutSong(true,false);
                 }, logoSplashTime);
                 break;
         }
@@ -200,11 +226,18 @@ public class PresentationCommon {
 
     // Deal with the display of song content
     public void showPerformanceContent() {
-
+        Log.d(TAG,"showPerformanceContent()");
+        songProjectionInfo1.setVisibility(View.VISIBLE);
+        songProjectionInfo1.setAlpha(1.0f);
+        Log.d(TAG,"title="+songProjectionInfo1.getSongTitle());
+        songProjectionInfo1.post(()->{
+            updateBottomBarSize();
+            Log.d(TAG,"bottombarheight="+bottombarheight);
+        });
     }
 
 
-    public void showPresentationContent() {
+    public void showPresenterContent() {
 
     }
 
@@ -216,19 +249,40 @@ public class PresentationCommon {
         if (show) {
             Log.d(TAG,"showing Logo");
             mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,true);
+            fadeInOutSong(false,false);
+            fadeInOutSong(false, true);
         } else {
             Log.d(TAG,"hiding Logo");
             mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
+            fadeInOutSong(true,false);
+            fadeInOutSong(true, true);
         }
         if (show && hideAfterShow) {
-            // This will hide the logo after 2 seconds
+            // This will hide the logo after the logoSplashTime
             mainLogo.postDelayed(() -> {
                 mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo,crossFadeTime,false);
+                fadeInOutSong(true,false);
+                fadeInOutSong(true, true);
                 Log.d(TAG,"timed hiding of logo");
-            },2000);
+            },logoSplashTime);
         }
     }
 
+    private void fadeInOutSong(boolean fadeIn, boolean content) {
+        if (showWhichInfo==1) {
+            if (content) {
+                mainActivityInterface.getCustomAnimation().faderAnimation(songContent1,crossFadeTime,fadeIn);
+            } else {
+                mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo1, crossFadeTime, fadeIn);
+            }
+        } else {
+            if (content) {
+                mainActivityInterface.getCustomAnimation().faderAnimation(songContent2,crossFadeTime,fadeIn);
+            } else {
+                mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo2, crossFadeTime, fadeIn);
+            }
+        }
+    }
 
     // Deal with the black screen
     public void showBlackScreen(boolean black) {
@@ -251,6 +305,13 @@ public class PresentationCommon {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    // Move to the next view
+                    if (showWhich == 2) {
+                        showWhich = 1;
+                    } else {
+                        showWhich = 2;
+                    }
+
                     // Measure the height of the layouts
                     int width = mainActivityInterface.getSectionViews().get(position).getMeasuredWidth();
                     int height = mainActivityInterface.getSectionViews().get(position).getMeasuredHeight();
@@ -284,13 +345,11 @@ public class PresentationCommon {
                         songContent1.addView(mainActivityInterface.getSectionViews().get(position));
                         mainActivityInterface.getCustomAnimation().faderAnimation(songContent1, crossFadeTime, true);
                         mainActivityInterface.getCustomAnimation().faderAnimation(songContent2, crossFadeTime, false);
-                        showWhich = 2;
                     } else {
                         songContent2.removeAllViews();
                         songContent2.addView(mainActivityInterface.getSectionViews().get(position));
                         mainActivityInterface.getCustomAnimation().faderAnimation(songContent2, crossFadeTime, true);
                         mainActivityInterface.getCustomAnimation().faderAnimation(songContent1, crossFadeTime, false);
-                        showWhich = 1;
                     }
 
                 }
@@ -360,6 +419,19 @@ public class PresentationCommon {
     }
 
     public void setSongInfo() {
+        // Change the current showInfo
+        if (showWhichInfo==1) {
+            showWhichInfo = 2;
+        } else {
+            showWhichInfo = 1;
+        }
+
+        Log.d(TAG,"info1.getVisibility()="+songProjectionInfo1.getVisibility());
+        Log.d(TAG,"info2.getVisibility()="+songProjectionInfo2.getVisibility());
+        Log.d(TAG,"info1.getAlpha()="+songProjectionInfo1.getAlpha());
+        Log.d(TAG,"info2.getAlpha()="+songProjectionInfo2.getAlpha());
+
+
         // All info should be shown if available
         Log.d(TAG,"setSongInfo()  showWhichInfo:"+showWhichInfo);
         if (showWhichInfo==1) {
@@ -370,31 +442,38 @@ public class PresentationCommon {
             Log.d(TAG,"title="+mainActivityInterface.getSong().getTitle());
 
             // Fade in 1
-            songProjectionInfo1.setAlpha(1.0f);
             songProjectionInfo1.setVisibility(View.VISIBLE);
             mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo1,crossFadeTime,true);
             // Fade out 2
             if (songProjectionInfo2.getAlpha()>0) {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo2,crossFadeTime,false);
             }
-            showWhichInfo = 2;
+
+
+
         } else {
             songProjectionInfo2.setSongTitle(mainActivityInterface.getSong().getTitle());
             songProjectionInfo2.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             songProjectionInfo2.setSongCopyright(mainActivityInterface.getSong().getCopyright());
 
             // Fade in 2
-            songProjectionInfo2.setAlpha(1.0f);
             songProjectionInfo2.setVisibility(View.VISIBLE);
             mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo2,crossFadeTime,true);
             // Fade out 1
             if (songProjectionInfo1.getAlpha()>0) {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo1,crossFadeTime,false);
             }
-            showWhichInfo = 1;
         }
         Log.d(TAG,"title1="+songProjectionInfo1.getSongTitle());
         Log.d(TAG,"title2="+songProjectionInfo2.getSongTitle());
+        songProjectionInfo1.postDelayed(() -> {
+            Log.d(TAG,"info1.getVisibility()="+songProjectionInfo1.getVisibility());
+            Log.d(TAG,"info1.getAlpha()="+songProjectionInfo1.getAlpha());
+        },crossFadeTime);
+        songProjectionInfo2.postDelayed(() -> {
+            Log.d(TAG,"info2.getVisibility()="+songProjectionInfo2.getVisibility());
+            Log.d(TAG,"info2.getAlpha()="+songProjectionInfo2.getAlpha());
+        },crossFadeTime);
 
     }
 
@@ -456,8 +535,10 @@ public class PresentationCommon {
                     }
                     mainActivityInterface.getSectionViews().get(x).setPivotX(0f);
                     mainActivityInterface.getSectionViews().get(x).setPivotY(0f);
-                    mainActivityInterface.getSectionViews().get(x).setScaleX(best);
-                    mainActivityInterface.getSectionViews().get(x).setScaleY(best);
+                    if (best>0) {
+                        mainActivityInterface.getSectionViews().get(x).setScaleX(best);
+                        mainActivityInterface.getSectionViews().get(x).setScaleY(best);
+                    }
                 }
 
                 // We can now remove the views from the test layout and remove this listener
