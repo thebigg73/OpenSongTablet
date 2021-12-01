@@ -2,7 +2,7 @@
 <resources>
     <string name="action">Action</string>
     <string name="action_search">Search songs</string>
-    <string name="action_settings">OpenSong settings</string>
+    <string name="action_settings">Options</string>
     <string name="actionbar">Menu bar info</string>
     <string name="actions">Actions</string>
     <string name="activated">Activated / running</string>
@@ -100,7 +100,7 @@
     <string name="choose_video1">Choose background video 1</string>
     <string name="choose_video2">Choose background video 2</string>
     <string name="choosechordfont">Choose chord font</string>
-    <string name="choosechordformat">Choose chord format (important when transposing a song)</string>
+    <string name="choosechordformat">Choose your preferred chord format for transposing and capo display</string>
     <string name="choosefolder">Choose folder to save file in</string>
     <string name="choosefolders">Choose folders</string>
     <string name="chooselyricfont">Choose lyric font</string>
@@ -113,8 +113,8 @@
     <string name="chordFormat5" translatable="false">1  2  3  4  5  6  7  8  9  10  11  12</string>
     <string name="chordFormat6" translatable="false">I  II  III  IV  V  VI  VII  VIII  IX  X  XI  XII</string>
     <string name="chord_color">Chords font</string>
-    <string name="chord_convert">Convert song to my preferred chord format</string>
-    <string name="chordformat_default">Always assume songs are in my preferred chord format</string>
+    <string name="chord_convert">Use preferred chord format</string>
+    <string name="chordformat_default">Always assume original songs are in my preferred chord format</string>
     <string name="chordiesearch">Online search at Chordie.com</string>
     <string name="chordline_scale">Scale chords</string>
     <string name="chordpro_false">No ChordPro song detected!</string>
@@ -454,7 +454,7 @@
     <string name="pleaseselect">Please select</string>
     <string name="position">Position</string>
     <string name="prechorus_background">Prechorus background</string>
-    <string name="pref_key_text">Choose your preferred key settings</string>
+    <string name="pref_key_text">Choose your preferred key settings for transposing and capo display</string>
     <string name="presentermode">Presentation mode</string>
     <string name="presoBackground">Background</string>
     <string name="presoFont">Presentation font</string>

@@ -44,6 +44,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
     @Override
     public void onDetach() {
+        mListener.adjustABInfo();
         mListener = null;
         super.onDetach();
     }
@@ -319,5 +320,4 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             batteryDialSizeLabel.setVisibility(View.GONE);
         }
     }
-
 }

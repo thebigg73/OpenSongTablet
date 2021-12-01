@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/popup_bg">
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
 
     <FrameLayout
         android:id="@+id/myTitle"
@@ -13,12 +14,15 @@
     </FrameLayout>
 
     <ListView
+        android:id="@+id/songfolders_ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
         android:layout_below="@+id/myTitle"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:divider="@null"
-        android:dividerHeight="8dp"
-        android:id="@+id/songfolders_ListView"/>
+        android:dividerHeight="8dp" />
 
 </RelativeLayout>

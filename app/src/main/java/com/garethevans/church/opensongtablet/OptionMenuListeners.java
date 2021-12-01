@@ -384,7 +384,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 break;
 
             case "CHORDS":
-                chordOptionListener(v, c, storageAccess, preferences);
+                chordOptionListener(v, c, preferences);
                 break;
 
             case "DISPLAY":
@@ -1011,7 +1011,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
     }
 
-    private static void chordOptionListener(View v, final Context c, final StorageAccess storageAccess, final Preferences preferences) {
+    private static void chordOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1122,13 +1122,12 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
                 ShowToast.showToast(c);
             } else {
-                StaticVariables.transposeDirection = "0";
-                transpose.checkChordFormat(c,preferences);
-                if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
-                    StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
-                }
                 try {
-                    transpose.doTranspose(c,storageAccess, preferences, true, false, false);
+                    // Detect and use the existing format for a 0 transpose
+                    Transpose.checkChordFormat();
+                    StaticVariables.transposeDirection = "0";
+                    StaticVariables.transposeTimes = 0;
+                    transpose.doTranspose(c, preferences, true, false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1150,13 +1149,13 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
                 ShowToast.showToast(c);
             } else {
-                StaticVariables.transposeDirection = "0";
-                transpose.checkChordFormat(c,preferences);
-                if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
-                    StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
-                }
+
                 try {
-                    transpose.doTranspose(c, storageAccess, preferences, false, true, false);
+                    // Detect and use the existing format for transpose
+                    Transpose.checkChordFormat();
+                    StaticVariables.transposeDirection = "0";
+                    StaticVariables.transposeTimes = 0;
+                    transpose.doTranspose(c,preferences, false, true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1246,7 +1245,14 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
                 ShowToast.showToast(c);
             } else {
-                transpose.convertChords(c,storageAccess,preferences);
+                // Detect the existing format and use for a 0 tranpose unless a preferred chord format is in use
+                Transpose.checkChordFormat();
+                if (preferences.getMyPreferenceInt(c,"chordFormat",0) > 0) {
+                    StaticVariables.newChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
+                }
+                StaticVariables.transposeDirection = "0";
+                StaticVariables.transposeTimes = 0;
+                transpose.doTranspose(c, preferences, false, false);
             }
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");
@@ -1899,13 +1905,9 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             }
         });
 
-        receiveHostSongSections.setOnCheckedChangeListener((view,isChecked) -> {
-            StaticVariables.receiveHostSongSections = isChecked;
-        });
+        receiveHostSongSections.setOnCheckedChangeListener((view,isChecked) -> StaticVariables.receiveHostSongSections = isChecked);
 
-        receiveHostAutoscroll.setOnCheckedChangeListener((view,isChecked) -> {
-            StaticVariables.receiveHostAutoscroll = isChecked;
-        });
+        receiveHostAutoscroll.setOnCheckedChangeListener((view,isChecked) -> StaticVariables.receiveHostAutoscroll = isChecked);
 
         deviceName.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "connect_name";
@@ -2015,15 +2017,9 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 mListener.prepareOptionMenu();
             }
         });
-        modePerformanceButton.setOnClickListener(view -> {
-            modeOptionListenerActivity(c, preferences, "Performance");
-        });
-        modeStageButton.setOnClickListener(view -> {
-            modeOptionListenerActivity(c, preferences, "Stage");
-        });
-        modePresentationButton.setOnClickListener(view -> {
-            modeOptionListenerActivity(c, preferences, "Presentation");
-        });
+        modePerformanceButton.setOnClickListener(view -> modeOptionListenerActivity(c, preferences, "Performance"));
+        modeStageButton.setOnClickListener(view -> modeOptionListenerActivity(c, preferences, "Stage"));
+        modePresentationButton.setOnClickListener(view -> modeOptionListenerActivity(c, preferences, "Presentation"));
         closeOptionsFAB.setOnClickListener(view -> {
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");

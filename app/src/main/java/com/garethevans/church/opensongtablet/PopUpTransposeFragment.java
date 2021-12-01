@@ -1,13 +1,13 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -45,14 +45,11 @@ public class PopUpTransposeFragment extends DialogFragment {
     }
 
     private SeekBar transposeSeekBar;
-    private TextView transposeValTextView, keyChange_TextView;
+    private TextView transposeValTextView, keyChange_TextView, detectedChordFormatText;
     private RadioButton chordFormat1Radio, chordFormat2Radio, chordFormat3Radio, chordFormat4Radio,
             chordFormat5Radio, chordFormat6Radio;
     private SwitchCompat assumePreferred_SwitchCompat;
-    private LinearLayout chooseFormat_LinearLayout;
-
     private Preferences preferences;
-    private StorageAccess storageAccess;
     private Transpose transpose;
 
     @Override
@@ -90,7 +87,6 @@ public class PopUpTransposeFragment extends DialogFragment {
         });
 
         preferences = new Preferences();
-        storageAccess = new StorageAccess();
         transpose = new Transpose();
 
         // Initialise views
@@ -103,12 +99,12 @@ public class PopUpTransposeFragment extends DialogFragment {
         setListeners();
 
         // Initialise the transpose values
-        StaticVariables.transposeDirection = "";
-        StaticVariables.transposeTimes = Math.abs(0);
+        Transpose.checkChordFormat();
+        StaticVariables.transposeDirection = "-1";
+        StaticVariables.transposeTimes = 0;
 
         // Decide if we are using preferred chord format
         usePreferredChordFormat(preferences.getMyPreferenceBoolean(getContext(),"chordFormatUsePreferred",false));
-
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
@@ -125,7 +121,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         chordFormat5Radio = V.findViewById(R.id.chordFormat5Radio);
         chordFormat6Radio = V.findViewById(R.id.chordFormat6Radio);
         assumePreferred_SwitchCompat = V.findViewById(R.id.assumePreferred_SwitchCompat);
-        chooseFormat_LinearLayout = V.findViewById(R.id.chooseFormat_LinearLayout);
+        detectedChordFormatText = V.findViewById(R.id.detectedChordFormatText);
     }
 
     private void setButtons() {
@@ -143,11 +139,11 @@ public class PopUpTransposeFragment extends DialogFragment {
             keyChange_TextView.setVisibility(View.GONE);
         }
 
-        // Set the detected chordformat
-        Log.d("PopUpTranspose","detectedChordFormat="+StaticVariables.detectedChordFormat);
+        // Set the new chordformat
+        Log.d("PopUpTranspose","newChordFormat="+StaticVariables.newChordFormat);
 
 
-        switch (StaticVariables.detectedChordFormat) {
+        switch (StaticVariables.newChordFormat) {
             case 1:
                 chordFormat1Radio.setChecked(true);
                 break;
@@ -174,21 +170,21 @@ public class PopUpTransposeFragment extends DialogFragment {
         transposeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int val = progress-6;
-                if (val<0) {
+                int val = progress - 6;
+                if (val < 0) {
                     StaticVariables.transposeDirection = "-1";
                     StaticVariables.transposeTimes = Math.abs(val);
-                    String text = "-"+Math.abs(val);
+                    String text = "-"+ Math.abs(val);
                     transposeValTextView.setText(text);
 
-                } else if (val>0) {
+                } else if (val > 0) {
                     StaticVariables.transposeDirection = "+1";
                     StaticVariables.transposeTimes = Math.abs(val);
-                    String text = "+"+Math.abs(val);
+                    String text = "+"+ Math.abs(val);
                     transposeValTextView.setText(text);
                 } else {
-                    StaticVariables.transposeDirection = "";
-                    StaticVariables.transposeTimes = Math.abs(0);
+                    StaticVariables.transposeDirection = "-1";
+                    StaticVariables.transposeTimes = 0;
                     transposeValTextView.setText("0");
                 }
 
@@ -196,7 +192,7 @@ public class PopUpTransposeFragment extends DialogFragment {
                 if (StaticVariables.mKey!=null && !StaticVariables.mKey.equals("")) {
                     // Get the new key value
                     String keynum = transpose.keyToNumber(StaticVariables.mKey);
-                    String transpkeynum = transpose.transposeKey(keynum, StaticVariables.transposeDirection, StaticVariables.transposeTimes);
+                    String transpkeynum = transpose.transposeNumber(keynum, StaticVariables.transposeDirection, StaticVariables.transposeTimes);
                     String newkey = transpose.numberToKey(getContext(), preferences, transpkeynum);
 
                     String keychange = getString(R.string.edit_song_key) + ": " + StaticVariables.mKey + "\n" +
@@ -215,46 +211,73 @@ public class PopUpTransposeFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getContext(),"chordFormatUsePreferred",isChecked);
+            // IV -  Set of preference removed - we now use preference only as an aid to selecting
             usePreferredChordFormat(isChecked);
         });
     }
 
-    private void usePreferredChordFormat(boolean trueorfalse) {
+    private void usePreferredChordFormat(boolean preferred) {
         // Use preferred chord format or detected one
-        int formattouse;
+        int formattouse = preferences.getMyPreferenceInt(getContext(),"chordFormat",1);
 
-        if (trueorfalse) {
+        if (formattouse == 0) {
+            assumePreferred_SwitchCompat.setVisibility(View.GONE);
+        } else {
+            assumePreferred_SwitchCompat.setVisibility(View.VISIBLE);
+        }
+
+        if (StaticVariables.detectedChordFormat==1) chordFormat1Radio.setTypeface(chordFormat1Radio.getTypeface(), Typeface.BOLD);
+        if (StaticVariables.detectedChordFormat==2) chordFormat2Radio.setTypeface(chordFormat2Radio.getTypeface(), Typeface.BOLD);
+        if (StaticVariables.detectedChordFormat==3) chordFormat3Radio.setTypeface(chordFormat3Radio.getTypeface(), Typeface.BOLD);
+        if (StaticVariables.detectedChordFormat==4) chordFormat4Radio.setTypeface(chordFormat4Radio.getTypeface(), Typeface.BOLD);
+        if (StaticVariables.detectedChordFormat==5) chordFormat5Radio.setTypeface(chordFormat5Radio.getTypeface(), Typeface.BOLD);
+        if (StaticVariables.detectedChordFormat==6) chordFormat6Radio.setTypeface(chordFormat6Radio.getTypeface(), Typeface.BOLD);
+
+        if (preferred && formattouse != 0) {
             formattouse = preferences.getMyPreferenceInt(getContext(),"chordFormat",1);
         } else {
+            preferred = false;
             formattouse = StaticVariables.detectedChordFormat;
         }
 
-        switch (formattouse) {
-            case 1:
-                chordFormat1Radio.setChecked(true);
-                break;
-            case 2:
-                chordFormat2Radio.setChecked(true);
-                break;
-            case 3:
-                chordFormat3Radio.setChecked(true);
-                break;
-            case 4:
-                chordFormat4Radio.setChecked(true);
-                break;
-            case 5:
-                chordFormat5Radio.setChecked(true);
-                break;
-        }
+        chordFormat1Radio.setChecked(formattouse==1);
+        chordFormat2Radio.setChecked(formattouse==2);
+        chordFormat3Radio.setChecked(formattouse==3);
+        chordFormat4Radio.setChecked(formattouse==4);
+        chordFormat5Radio.setChecked(formattouse==5);
+        chordFormat6Radio.setChecked(formattouse==6);
 
-        boolean usePreferred = preferences.getMyPreferenceBoolean(getContext(),"chordFormatUsePreferred",true);
-        assumePreferred_SwitchCompat.setChecked(usePreferred);
+        assumePreferred_SwitchCompat.setChecked(preferred);
 
-        if (usePreferred) {
-            chooseFormat_LinearLayout.setVisibility(View.GONE);
+        if (preferred) {
+            detectedChordFormatText.setVisibility(View.GONE);
+
+            if (formattouse!=1) chordFormat1Radio.setVisibility(View.GONE);
+            else chordFormat1Radio.setVisibility(View.VISIBLE);
+
+            if (formattouse!=2) chordFormat2Radio.setVisibility(View.GONE);
+            else chordFormat2Radio.setVisibility(View.VISIBLE);
+
+            if (formattouse!=3) chordFormat3Radio.setVisibility(View.GONE);
+            else chordFormat3Radio.setVisibility(View.VISIBLE);
+
+            if (formattouse!=4) chordFormat4Radio.setVisibility(View.GONE);
+            else chordFormat4Radio.setVisibility(View.VISIBLE);
+
+            if (formattouse!=5) chordFormat5Radio.setVisibility(View.GONE);
+            else chordFormat5Radio.setVisibility(View.VISIBLE);
+
+            if (formattouse!=6) chordFormat6Radio.setVisibility(View.GONE);
+            else chordFormat6Radio.setVisibility(View.VISIBLE);
         } else {
-            chooseFormat_LinearLayout.setVisibility(View.VISIBLE);
+            detectedChordFormatText.setVisibility(View.VISIBLE);
+
+            chordFormat1Radio.setVisibility(View.VISIBLE);
+            chordFormat2Radio.setVisibility(View.VISIBLE);
+            chordFormat3Radio.setVisibility(View.VISIBLE);
+            chordFormat4Radio.setVisibility(View.VISIBLE);
+            chordFormat5Radio.setVisibility(View.VISIBLE);
+            chordFormat6Radio.setVisibility(View.VISIBLE);
         }
     }
 
@@ -262,27 +285,27 @@ public class PopUpTransposeFragment extends DialogFragment {
         // Extract the transpose value and the chord format
 
         if (chordFormat1Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 1;
+            StaticVariables.newChordFormat = 1;
         }
         if (chordFormat2Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 2;
+            StaticVariables.newChordFormat = 2;
         }
         if (chordFormat3Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 3;
+            StaticVariables.newChordFormat = 3;
         }
         if (chordFormat4Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 4;
+            StaticVariables.newChordFormat = 4;
         }
         if (chordFormat5Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 5;
+            StaticVariables.newChordFormat = 5;
         }
         if (chordFormat6Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 6;
+            StaticVariables.newChordFormat = 6;
         }
 
         // Do the transpose
         try {
-            transpose.doTranspose(getContext(), storageAccess, preferences, false, false, false);
+            transpose.doTranspose(getContext(), preferences, false, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

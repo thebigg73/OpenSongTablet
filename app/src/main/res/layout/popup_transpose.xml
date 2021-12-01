@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
-                android:text="@string/chordformat_default"
+                android:text="@string/chord_convert"
                 android:theme="@style/SwitchStyle" />
 
             <LinearLayout
@@ -91,10 +91,10 @@
 
                 <RadioButton
                     android:id="@+id/chordFormat2Radio"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat2"
-                    android:textSize="12sp" />
+                    android:text="@string/chordFormat2" />
 
                 <RadioButton
                     android:id="@+id/chordFormat3Radio"

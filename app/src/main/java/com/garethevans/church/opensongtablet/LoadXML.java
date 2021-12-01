@@ -62,13 +62,14 @@ public class LoadXML extends Activity {
             }
         } else {
             // IV - We have a file to load
-            if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+            String songfilename = StaticVariables.songfilename.toLowerCase(Locale.ROOT);
+            if (songfilename.endsWith(".pdf")) {
                 FullscreenActivity.isPDF = true;
-            } else if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
-                    StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
-                    StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".png") ||
-                    StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".gif") ||
-                    StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
+            } else if (songfilename.endsWith(".jpg") ||
+                    songfilename.endsWith(".jpeg") ||
+                    songfilename.endsWith(".png") ||
+                    songfilename.endsWith(".gif") ||
+                    songfilename.endsWith(".bmp")) {
                 FullscreenActivity.isImage = true;
             } else {
                 FullscreenActivity.isSong = true;
@@ -81,7 +82,7 @@ public class LoadXML extends Activity {
                 try {
                     // Try to read the file as OpenSong xml. If it isn't, read as text and maybe convert to and open as OpenSong xml!
                     if (!StaticVariables.songfilename.endsWith(".sqlite3") && !StaticVariables.songfilename.endsWith(".preferences")) {
-                        grabOpenSongXML(c, preferences, storageAccess, processSong);
+                        grabOpenSongXML(c, preferences, storageAccess);
                     }
 
                     if (StaticVariables.mLyrics == null || StaticVariables.mLyrics.isEmpty()) {
@@ -107,7 +108,7 @@ public class LoadXML extends Activity {
                             ChordProConvert chordProConvert = new ChordProConvert();
                             // TODO check this works
                             onSongConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert, uri, FullscreenActivity.myXML);
-                            grabOpenSongXML(c, preferences, storageAccess, processSong);
+                            grabOpenSongXML(c, preferences, storageAccess);
 
                             // If the song is usr format - try to import it
                         } else if (StaticVariables.songfilename.contains(".usr")
@@ -119,7 +120,7 @@ public class LoadXML extends Activity {
                             SongXML songXML = new SongXML();
                             ChordProConvert chordProConvert = new ChordProConvert();
                             usrConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert, uri, FullscreenActivity.myXML);
-                            grabOpenSongXML(c, preferences, storageAccess, processSong);
+                            grabOpenSongXML(c, preferences, storageAccess);
 
                             // If the song is in ChordPro format - try to import it
                         } else if (FullscreenActivity.myXML.contains("{title") ||
@@ -140,7 +141,7 @@ public class LoadXML extends Activity {
                             SongXML songXML = new SongXML();
                             //TODO check this works
                             chordProConvert.convertTextToTags(c, storageAccess, preferences, songXML, uri, FullscreenActivity.myXML);
-                            grabOpenSongXML(c, preferences, storageAccess, processSong);
+                            grabOpenSongXML(c, preferences, storageAccess);
                             // If it is not a supported file type
                         } else if (!storageAccess.checkFileExtensionValid(uri)) {
                             FullscreenActivity.myXML = "";
@@ -154,31 +155,22 @@ public class LoadXML extends Activity {
                     // Fix all the rogue code
                     StaticVariables.mLyrics = processSong.parseLyrics(StaticVariables.mLyrics, c);
 
-                    // Just in case we have improved the song, prepare the improved xml
+                    // Always prepare xml (needed for nearby)
                     PopUpEditSongFragment.prepareSongXML();
                     FullscreenActivity.myXML = FullscreenActivity.mynewXML;
 
                     // Write what is left to the mLyrics field just incase the file is badly formatted
                     if (!FullscreenActivity.myXML.contains("<lyrics")) {
-                        // Need to add a space to the start of each line
-                        String[] lines = FullscreenActivity.myXML.split("\n");
-                        StringBuilder text = new StringBuilder();
-                        for (int z = 0; z < lines.length; z++) {
-                            if (lines[z].indexOf("[") != 0 && lines[z].indexOf(".") != 0 && lines[z].indexOf(";") != 0 && lines[z].indexOf("---") != 0 && lines[z].indexOf(" ") != 0) {
-                                lines[z] = " " + lines[z];
-                            }
-                            text.append(lines[z]).append("\n");
-                        }
-                        StaticVariables.mLyrics = text.toString();
+                        StaticVariables.mLyrics = processSong.fixStartOfLines(FullscreenActivity.myXML);
                     }
 
-                    //FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.mLyrics,c);
-                    StaticVariables.mTempo = StaticVariables.mTempo.replace("Very Fast", "140");
-                    StaticVariables.mTempo = StaticVariables.mTempo.replace("Fast", "120");
-                    StaticVariables.mTempo = StaticVariables.mTempo.replace("Moderate", "100");
-                    StaticVariables.mTempo = StaticVariables.mTempo.replace("Slow", "80");
-                    StaticVariables.mTempo = StaticVariables.mTempo.replace("Very Slow", "60");
-                    StaticVariables.mTempo = StaticVariables.mTempo.replaceAll("[\\D]", "");
+                    StaticVariables.mTempo = StaticVariables.mTempo
+                            .replace("Very Fast", "140")
+                            .replace("Fast", "120")
+                            .replace("Moderate", "100")
+                            .replace("Slow", "80")
+                            .replace("Very Slow", "60")
+                            .replace("[\\D]", "");
 
                     if (!StaticVariables.mDuration.isEmpty()) {
                         try {
@@ -227,13 +219,10 @@ public class LoadXML extends Activity {
             }
         }
 
-        String loc = "";
-        if (StaticVariables.whichSongFolder!=null) {
-            loc = StaticVariables.whichSongFolder;
-        }
-
         // IV - Presentation handles various special content. These are handled as song with content for other modes.
-        if (StaticVariables.whichMode.equals("Presentation")) {
+        if (StaticVariables.whichSongFolder!=null && StaticVariables.whichMode.equals("Presentation")) {
+            String loc;
+            loc = StaticVariables.whichSongFolder;
             FullscreenActivity.isImageSlide = loc.contains("../Images");
             FullscreenActivity.isScripture = loc.contains("../Scripture");
             FullscreenActivity.isSlide = loc.contains("../Slides");
@@ -464,8 +453,7 @@ public class LoadXML extends Activity {
         StaticVariables.mAka = "";
    }
 
-    private static void grabOpenSongXML(Context c, Preferences preferences, StorageAccess storageAccess,
-                                        ProcessSong processSong) throws Exception {
+    private static void grabOpenSongXML(Context c, Preferences preferences, StorageAccess storageAccess) throws Exception {
         // Extract all of the key bits of the song
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
@@ -515,7 +503,7 @@ public class LoadXML extends Activity {
             // Keep a note of this encoding incase we resave the song!
             StaticVariables.mEncoding = utf;
 
-            // read every line of the file into the line-variable, on line at the time
+            // read every line of the file into the line-variable, one line at the time
             inputStream.close();
             inputStream = storageAccess.getInputStream(c, uri);
 
@@ -548,7 +536,7 @@ public class LoadXML extends Activity {
                             break;
                         case "lyrics":
                             try {
-                                StaticVariables.mLyrics = processSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
+                                StaticVariables.mLyrics = parseFromHTMLEntities(xpp.nextText());
                                 FullscreenActivity.myLyrics = StaticVariables.mLyrics;
                             } catch (Exception e) {
                                 // Try to read in the xml
@@ -770,21 +758,21 @@ public class LoadXML extends Activity {
     }
 
     static String parseFromHTMLEntities(String val) {
+        if (val == null) return "";
+
         //Fix broken stuff
-        if (val==null) {
-            val = "";
-        }
-        val = val.replace("&amp;apos;","'");
-        val = val.replace("&amp;quote;","\"");
-        val = val.replace("&amp;quot;","\"");
-        val = val.replace("&amp;lt;","<");
-        val = val.replace("&amp;gt;",">");
-        val = val.replace("&amp;","&");
-        val = val.replace("&lt;","<");
-        val = val.replace("&gt;",">");
-        val = val.replace("&apos;","'");
-        val = val.replace("&quote;","\"");
-        val = val.replace("&quot;","\"");
+        val = val
+                .replace("&amp;apos;","'")
+                .replace("&amp;quote;","\"")
+                .replace("&amp;quot;","\"")
+                .replace("&amp;lt;","<")
+                .replace("&amp;gt;",">")
+                .replace("&amp;","&")
+                .replace("&lt;","<")
+                .replace("&gt;",">")
+                .replace("&apos;","'")
+                .replace("&quote;","\"")
+                .replace("&quot;","\"");
         return val;
     }
 
@@ -971,9 +959,10 @@ public class LoadXML extends Activity {
     }
 
     private static String doFix(String tofix) {
-        tofix = tofix.replace("&amp;", "&");
-        tofix = tofix.replace("&apos;", "'");  // ' are actually fine - no need
-        tofix = tofix.replace("&quot;", "\"");
+        tofix = tofix
+                .replace("&amp;", "&")
+                .replace("&apos;", "'")  // ' are actually fine - no need
+                .replace("&quot;", "\"");
 
         // Get rid of doubles
         while (tofix.contains("&&")) {
@@ -981,9 +970,10 @@ public class LoadXML extends Activity {
         }
 
         // Now put them back
-        tofix = tofix.replace("&", "$_amp_$");
-        tofix = tofix.replace("\"", "&quot;");
-        tofix = tofix.replace("$_amp_$", "&amp;");
+        tofix = tofix
+                .replace("&", "$_amp_$")
+                .replace("\"", "&quot;")
+                .replace("$_amp_$", "&amp;");
 
         return tofix;
     }
@@ -1050,5 +1040,4 @@ public class LoadXML extends Activity {
             }
         }
     }
-
 }

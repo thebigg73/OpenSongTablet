@@ -432,19 +432,20 @@ public class PopUpFontsFragment extends DialogFragment {
 
     @SuppressLint("StaticFieldLeak")
     private class GetFontList extends AsyncTask<Object,String,String> {
-
+        // IV - Async so can complete and cause crash if popup has closed - code wrapped with try
         @Override
         protected String doInBackground(Object... objects) {
-            // IV - Give the spinners an empty line to avoid them starting at reduced height
-            ArrayList<String> fontnames = new ArrayList<>();
-            fontnames.add("");
-            choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, fontnames);
-            lyricsFontSpinner.setAdapter(choose_fonts);
-            chordsFontSpinner.setAdapter(choose_fonts);
-            stickyFontSpinner.setAdapter(choose_fonts);
-            presoFontSpinner.setAdapter(choose_fonts);
-            presoInfoFontSpinner.setAdapter(choose_fonts);
             try {
+                // IV - Give the spinners an empty line to avoid them starting at reduced height
+                ArrayList<String> fontnames = new ArrayList<>();
+                fontnames.add("");
+                choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, fontnames);
+                lyricsFontSpinner.setAdapter(choose_fonts);
+                chordsFontSpinner.setAdapter(choose_fonts);
+                stickyFontSpinner.setAdapter(choose_fonts);
+                presoFontSpinner.setAdapter(choose_fonts);
+                presoInfoFontSpinner.setAdapter(choose_fonts);
+
                 URL url = new URL("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBKvCB1NnWwXGyGA7RTar0VQFCM3rdOE8k&sort=alpha");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 try {
@@ -468,67 +469,70 @@ public class PopUpFontsFragment extends DialogFragment {
         }
 
         protected void onPostExecute(String response) {
-            ArrayList<String> fontnames = new ArrayList<>();
+            try {
+                ArrayList<String> fontnames = new ArrayList<>();
 
-            if (response == null) {
-                // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
-                ArrayList<String> customfontsavail = setTypeFace.googleFontsAllowed();
-                try {
-                    choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, customfontsavail);
-                    choose_fonts.setDropDownViewResource(R.layout.my_spinner);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                if (response == null) {
+                    // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
+                    ArrayList<String> customfontsavail = setTypeFace.googleFontsAllowed();
+                    try {
+                        choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, customfontsavail);
+                        choose_fonts.setDropDownViewResource(R.layout.my_spinner);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
 
-            } else {
-                // Split the returned JSON into lines
-                String[] lines = response.split("\n");
+                } else {
+                    // Split the returned JSON into lines
+                    String[] lines = response.split("\n");
 
-                for (String line : lines) {
-                    if (line.contains("\"family\":")) {
-                        line = line.replace("\"family\"", "");
-                        line = line.replace(":", "");
-                        line = line.replace("\"", "");
-                        line = line.replace(",", "");
-                        line = line.trim();
+                    for (String line : lines) {
+                        if (line.contains("\"family\":")) {
+                            line = line.replace("\"family\"", "");
+                            line = line.replace(":", "");
+                            line = line.replace("\"", "");
+                            line = line.replace(",", "");
+                            line = line.trim();
 
-                        // Fonts that don't work (there are hundred that do, so don't include the ones that don't)
-                        String notworking = "Aleo Angkor Asap_Condensed B612 B612_Mono Bai_Jamjuree " +
-                                "Barlow_Condensed Barlow_Semi_Condensed Barricecito Battambang " +
-                                "Bayon Beth_Ellen BioRhyme_Expanded Blinker Bokor Buda Cabin_Condensed " +
-                                "Calligraffitti Chakre_Petch Charm Charmonman Chenla Coda_Caption " +
-                                "Content Crimson_Pro DM_Sans DM_Serif_Display DM_Serif_Text Dangrek " +
-                                "Darker_Grotesque Encode_Sans_Condensed Encode_Sans_Expanded " +
-                                "Encode_Sans_Semi_Condensed Encode_Sans_Semi_Expanded Fahkwang " +
-                                "Farro Fasthand Fira_Code Freehand Grenze Hanuman IBM_Plex_Sans_Condensed " +
-                                "K2D Khmer KoHo Kodchasan Kosugi Kosugi_Maru Koulen Krub Lacquer " +
-                                "Libre_Barcode_128 Libre_Barcode_128_Text Libre_Barcode_39 " +
-                                "Libre_Barcode_39_Extended Libre_Barcode_39_Extended_Text Libre_Barcode_39_Text " +
-                                "Libre_Caslon_Display Libre_Caslon_Text Literata Liu_Jian_Mao_Cao " +
-                                "Long_Cang M_PLUS_1p M_PLUS_Rounded_1c Ma_Shan_Zheng Major_Mono_Display " +
-                                "Mali Markazi_Text Metal Molle Moul Moulpali Niramit Nokora Notable " +
-                                "Noto_Sans_HK Noto_Sans_JP Noto_Sans_KR Noto_Sans_SC Noto_Sans_TC " +
-                                "Noto_Serif_JP Noto_Serif_KR Noto_Serif_SC Noto_Serif_TC Open_Sans_Condensed " +
-                                "Orbitron Preahvihear Red_Hat_Display Red_Hat_Text Roboto_Condensed " +
-                                "Saira_Condensed Saira_Extra_Condensed Saira_Semi_Condensed Saira_Stencil_One " +
-                                "Sarabun Sawarabi_Gothic Sawarabi_Mincho Siemreap Single_Day Srisakdi " +
-                                "Staatliches Sunflower Suwannaphum Taprom Thasadith Ubuntu_Condensed " +
-                                "UnifrakturCook ZCOOL_KuaiLe ZCOOL_QingKe_HuangYou ZCOOL_XiaoWei Zhi_Mhang_Xing ";
+                            // Fonts that don't work (there are hundred that do, so don't include the ones that don't)
+                            String notworking = "Aleo Angkor Asap_Condensed B612 B612_Mono Bai_Jamjuree " +
+                                    "Barlow_Condensed Barlow_Semi_Condensed Barricecito Battambang " +
+                                    "Bayon Beth_Ellen BioRhyme_Expanded Blinker Bokor Buda Cabin_Condensed " +
+                                    "Calligraffitti Chakre_Petch Charm Charmonman Chenla Coda_Caption " +
+                                    "Content Crimson_Pro DM_Sans DM_Serif_Display DM_Serif_Text Dangrek " +
+                                    "Darker_Grotesque Encode_Sans_Condensed Encode_Sans_Expanded " +
+                                    "Encode_Sans_Semi_Condensed Encode_Sans_Semi_Expanded Fahkwang " +
+                                    "Farro Fasthand Fira_Code Freehand Grenze Hanuman IBM_Plex_Sans_Condensed " +
+                                    "K2D Khmer KoHo Kodchasan Kosugi Kosugi_Maru Koulen Krub Lacquer " +
+                                    "Libre_Barcode_128 Libre_Barcode_128_Text Libre_Barcode_39 " +
+                                    "Libre_Barcode_39_Extended Libre_Barcode_39_Extended_Text Libre_Barcode_39_Text " +
+                                    "Libre_Caslon_Display Libre_Caslon_Text Literata Liu_Jian_Mao_Cao " +
+                                    "Long_Cang M_PLUS_1p M_PLUS_Rounded_1c Ma_Shan_Zheng Major_Mono_Display " +
+                                    "Mali Markazi_Text Metal Molle Moul Moulpali Niramit Nokora Notable " +
+                                    "Noto_Sans_HK Noto_Sans_JP Noto_Sans_KR Noto_Sans_SC Noto_Sans_TC " +
+                                    "Noto_Serif_JP Noto_Serif_KR Noto_Serif_SC Noto_Serif_TC Open_Sans_Condensed " +
+                                    "Orbitron Preahvihear Red_Hat_Display Red_Hat_Text Roboto_Condensed " +
+                                    "Saira_Condensed Saira_Extra_Condensed Saira_Semi_Condensed Saira_Stencil_One " +
+                                    "Sarabun Sawarabi_Gothic Sawarabi_Mincho Siemreap Single_Day Srisakdi " +
+                                    "Staatliches Sunflower Suwannaphum Taprom Thasadith Ubuntu_Condensed " +
+                                    "UnifrakturCook ZCOOL_KuaiLe ZCOOL_QingKe_HuangYou ZCOOL_XiaoWei Zhi_Mhang_Xing ";
 
-                        if (!notworking.contains(line.trim().replace(" ","_")+" ")) {
-                            fontnames.add(line);
+                            if (!notworking.contains(line.trim().replace(" ", "_") + " ")) {
+                                fontnames.add(line);
+                            }
                         }
                     }
+                    // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
+                    choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, fontnames);
+                    choose_fonts.setDropDownViewResource(R.layout.my_spinner);
+                    choose_fonts.notifyDataSetChanged();
                 }
-                // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
-                choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, fontnames);
-                choose_fonts.setDropDownViewResource(R.layout.my_spinner);
-                choose_fonts.notifyDataSetChanged();
+                // Set the dropdown lists
+                setSpinners();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            // Set the dropdown lists
-            setSpinners();
         }
     }
 }

@@ -102,9 +102,15 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
             preferences.setMyPreferenceString(c,"setCurrent",val);
 
-            // Tell the user that the song has been added.
-            StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" " +
-                    c.getResources().getString(R.string.addedtoset);
+            // For a received song (which is about to become a variation) use the stored received song filename
+            if (StaticVariables.songfilename.equals("ReceivedSong")) {
+                StaticVariables.myToastMessage = "\"" + StaticVariables.receivedSongfilename + "\" " +
+                        c.getResources().getString(R.string.addedtoset);
+            } else {
+                // Tell the user that the song has been added.
+                StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" " +
+                        c.getResources().getString(R.string.addedtoset);
+            }
             ShowToast.showToast(c);
         }
     }

@@ -209,9 +209,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         if (StaticVariables.midiManager!=null) {
             infos = StaticVariables.midiManager.getDevices();
             usbNames = new ArrayList<>();
-            usbNames.clear();
             usbManufact = new ArrayList<>();
-            usbManufact.clear();
             for (MidiDeviceInfo md : infos) {
                 String manuf = "Unknown";
                 String device = "Unknown";

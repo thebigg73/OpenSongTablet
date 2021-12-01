@@ -46,7 +46,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:contentDescription="@string/choosefolder"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_folder_upload_white_36dp" />
@@ -85,27 +88,31 @@
 
         <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:id="@+id/side_index"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingEnd="-8dp"
+                android:paddingStart="4dp"
                 android:padding="1dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical" />
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="vertical"/>
         </ScrollView>
 
         <ListView
             android:id="@+id/song_list_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingStart="5dp"
+            android:paddingStart="12dp"
             android:scrollbarStyle="outsideOverlay"
             android:layout_weight="1"
             android:choiceMode="singleChoice"
             android:divider="#aaa"
             android:dividerHeight="1dp"
+            android:verticalScrollbarPosition="left"
             android:fastScrollEnabled="true" />
 
     </LinearLayout>

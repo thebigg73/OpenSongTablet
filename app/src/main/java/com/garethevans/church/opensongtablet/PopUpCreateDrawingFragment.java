@@ -214,9 +214,6 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         setCurrentTool();
         setCurrentColor();
         setCurrentSize();
-        if (what.equals("highlighter")) {
-
-        }
         showorhideToolOptions(isvis);
     }
 

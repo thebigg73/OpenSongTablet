@@ -2,18 +2,12 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!-- Show Songs -->
 
-    <item android:id="@+id/action_search"
-        android:icon="@drawable/ic_music_note_white_36dp"
+    <item android:id="@+id/action_fullsearch"
         android:title="@string/action_search"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
-
-    <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_white_36dp"
-        android:title="@string/action_settings"
-        app:showAsAction="always" />
+        android:icon="@drawable/ic_magnify_white_36dp"
+        android:label="@string/action_search"
+        app:showAsAction="ifRoom|collapseActionView"/>
 
     <item android:id="@+id/media_route_menu_item"
         android:title="Chromecast"
@@ -21,16 +15,8 @@
         app:showAsAction="always"
         tools:ignore="HardcodedText" />
 
-    <item android:id="@+id/action_fullsearch"
-        android:title="@string/action_search"
-        android:icon="@drawable/ic_magnify_white_36dp"
-        android:label="@string/action_search"
-        android:hint="@string/action_search"
-        app:showAsAction="ifRoom|collapseActionView"/>
-
-    <item android:id="@+id/set_add"
-        android:icon="@drawable/ic_plus_white_36dp"
-        android:title="@string/add_song_to_set"
-        app:showAsAction="ifRoom"/>
-
+    <item android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_white_36dp"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom|collapseActionView" />
 </menu>

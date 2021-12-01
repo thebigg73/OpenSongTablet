@@ -717,7 +717,7 @@ class PresentationCommon {
                             // IV - Force consideration of alert state after the Until period
                             infoBarAlertState = "";
                             // IV - Fade in only if something to show
-                            if (new StringBuilder().append(finalNew_title).append(finalNew_author).append(finalNew_copyright).append(finalNew_ccli).toString().trim() != "") {
+                            if (!(finalNew_title + finalNew_author + finalNew_copyright + finalNew_ccli).trim().equals("")) {
                                 CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                             }
                         } else {
@@ -725,9 +725,7 @@ class PresentationCommon {
                                 // IV - Align alert text the same as lyrics
                                 presentermode_alert.setGravity(preferences.getMyPreferenceInt(c, "presoLyricsAlign", Gravity.END));
                                 presentermode_alert.setVisibility(View.VISIBLE);
-                                h.postDelayed(() -> {
-                                    CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-                                }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+                                h.postDelayed(() -> CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true), preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
                             } else {
                                 presentermode_alert.setVisibility(View.GONE);
                             }
@@ -1099,8 +1097,7 @@ class PresentationCommon {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
             LinearLayout lyrics1_1 = processSong.createLinearLayout(c);
-            LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
+            LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor, StaticVariables.cast_padding);
             float fontsize1_1 = processSong.getProjectedFontSize(scale1_1);
 
             // Remove all views from the projector
@@ -1141,12 +1138,17 @@ class PresentationCommon {
         try {
             LinearLayout lyrics1_2 = processSong.createLinearLayout(c);
             LinearLayout lyrics2_2 = processSong.createLinearLayout(c);
-            LinearLayout box1_2 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
-            LinearLayout box2_2 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
+            LinearLayout box1_2 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor, StaticVariables.cast_padding);
+            LinearLayout box2_2 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor, StaticVariables.cast_padding);
             float fontsize1_2 = processSong.getProjectedFontSize(scale1_2);
             float fontsize2_2 = processSong.getProjectedFontSize(scale2_2);
+
+            // If users don't want to scale columns independently
+            if (!preferences.getMyPreferenceBoolean(c,"songAutoScaleColumnMaximise",true)) {
+                // Two columns
+                fontsize1_2 = Math.min(fontsize1_2,fontsize2_2);
+                fontsize2_2 = fontsize1_2;
+            }
 
             // Remove all views from the projector
             projected_LinearLayout.removeAllViews();
@@ -1207,15 +1209,20 @@ class PresentationCommon {
             LinearLayout lyrics1_3 = processSong.createLinearLayout(c);
             LinearLayout lyrics2_3 = processSong.createLinearLayout(c);
             LinearLayout lyrics3_3 = processSong.createLinearLayout(c);
-            LinearLayout box1_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
-            LinearLayout box2_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
-            LinearLayout box3_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
+            LinearLayout box1_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor, StaticVariables.cast_padding);
+            LinearLayout box2_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor, StaticVariables.cast_padding);
+            LinearLayout box3_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor, StaticVariables.cast_padding);
             float fontsize1_3 = processSong.getProjectedFontSize(scale1_3);
             float fontsize2_3 = processSong.getProjectedFontSize(scale2_3);
             float fontsize3_3 = processSong.getProjectedFontSize(scale3_3);
+
+            // If users don't want to scale columns independently
+            if (!preferences.getMyPreferenceBoolean(c,"songAutoScaleColumnMaximise",true)) {
+                // Three columns
+                fontsize1_3 = Math.min(Math.min(fontsize1_3,fontsize2_3),fontsize3_3);
+                fontsize2_3 = fontsize1_3;
+                fontsize3_3 = fontsize1_3;
+            }
 
             // Remove all views from the projector
             projected_LinearLayout.removeAllViews();
@@ -1352,8 +1359,7 @@ class PresentationCommon {
         try {
 
             LinearLayout lyrics1_1 = processSong.createLinearLayout(c);
-            LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
+            LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor, StaticVariables.cast_padding);
             float fontsize1_1 = processSong.getProjectedFontSize(scale1_1);
 
             // Remove all views from the projector
@@ -1450,8 +1456,7 @@ class PresentationCommon {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
             LinearLayout lyrics1_1 = processSong.createLinearLayout(c);
-            LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
+            LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor, StaticVariables.cast_padding);
             float fontsize1_1 = processSong.getProjectedFontSize(scale1_1);
 
             // Remove all views from the projector

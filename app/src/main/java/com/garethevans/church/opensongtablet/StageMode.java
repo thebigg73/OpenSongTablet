@@ -140,7 +140,8 @@ public class StageMode extends AppCompatActivity implements
         PopUpCreateDrawingFragment.MyInterface,
         PopUpConnectFragment.MyInterface,
         PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
-        PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
+        PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface,
+        PopUpChordFormatFragment.MyInterface {
 
     private final String TAG = "StageMode";
     // The toolbar and menu
@@ -153,7 +154,10 @@ public class StageMode extends AppCompatActivity implements
     private TextView songauthor_ab;
     private TextView batterycharge;
     private ImageView batteryimage;
-
+    private RelativeLayout batteryholder;
+    private FloatingActionButton action_search;
+    private FloatingActionButton set_add;
+    
     // The popup window (sticky)
     private PopupWindow stickyPopUpWindow;
 
@@ -336,7 +340,7 @@ public class StageMode extends AppCompatActivity implements
     private final Runnable onEverySecond = this::preparePadProgress;
     private Handler delaycheckscroll;
     private Runnable checkScrollPosition;
-    private final Handler mRestoreImmersiveModeHandler = new Handler();
+    private final Handler restoreImmersiveModeHandler = new Handler();
     private final Runnable restoreImmersiveModeRunnable = this::restoreTransparentBars;
     private final Handler delayactionBarHide = new Handler();
     private final Runnable hideActionBarRunnable = new Runnable() {
@@ -359,6 +363,9 @@ public class StageMode extends AppCompatActivity implements
     private final Runnable showStickyRunnable  = this::showSticky;
     private final Handler startCapoAnimationHandler = new Handler();
     private final Runnable startCapoAnimationRunnable = () -> CustomAnimations.highlightAction(capoInfo,StageMode.this);
+    private final Handler startMetronomeHandler = new Handler();
+    private final Runnable startMetronomeRunnable = this::gesture7;
+
     // Handler for temporary pause of autoscroll
     private final Handler endManualDraggingHandler = new Handler();
     private final Runnable endManualDraggingRunnable = () -> {
@@ -387,7 +394,7 @@ public class StageMode extends AppCompatActivity implements
         sendSongDelay = 3000;
     };
     private final Handler playPadHandler = new Handler();
-    private final Runnable playPadRunnable = () -> playPad();
+    private final Runnable playPadRunnable = this::playPad;
     private final Handler resetSendSongAfterDelayHandler = new Handler();
     private final Runnable resetSendSongAfterDelayRunnable = () -> sendSongDelay = 0;
 
@@ -428,12 +435,13 @@ public class StageMode extends AppCompatActivity implements
     private SQLite sqLite;  // This is the song values for the sqlite database, search and menus
     private NonOpenSongSQLite nonOpenSongSQLite; // For the pdf and image songs
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
-    private Transpose transpose;
     private ProfileActions profileActions;
     private MakePDF makePDF;
 
     private boolean pdfCanContinueScrolling;
     private boolean dealtwithaspdf;
+
+    private long songTransitionStart;
 
 
     @Override
@@ -461,7 +469,6 @@ public class StageMode extends AppCompatActivity implements
         sqLiteHelper = new SQLiteHelper(StageMode.this);
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(StageMode.this);
         processSong = new ProcessSong();
-        transpose = new Transpose();
         profileActions = new ProfileActions();
         makePDF = new MakePDF();
         OptionMenuListeners optionMenuListeners = new OptionMenuListeners(this);
@@ -759,7 +766,7 @@ public class StageMode extends AppCompatActivity implements
         songauthor_ab = findViewById(R.id.songauthor_ab);
         batterycharge = findViewById(R.id.batterycharge);
         batteryimage = findViewById(R.id.batteryimage);
-        RelativeLayout batteryholder = findViewById(R.id.batteryholder);
+        batteryholder = findViewById(R.id.batteryholder);
         mypage = findViewById(R.id.mypage);
         //mypage.init(StageMode.this);
         mypage.setBackgroundColor(lyricsBackgroundColor);
@@ -887,7 +894,7 @@ public class StageMode extends AppCompatActivity implements
     private void restoreTranslucentBarsDelayed() {
         // we restore it now and after 500 ms!
         restoreTransparentBars();
-        mRestoreImmersiveModeHandler.postDelayed(restoreImmersiveModeRunnable, 500);
+        restoreImmersiveModeHandler.postDelayed(restoreImmersiveModeRunnable, 500);
     }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -966,6 +973,8 @@ public class StageMode extends AppCompatActivity implements
                 allowswipe.postDelayed(() -> {
                     FullscreenActivity.tempswipeSet = "enable"; // enable swipe after short delay
                 }, FullscreenActivity.delayswipe_time); // 1800ms delay
+                // Song index use will set this false.  Set true on drawer close.
+                song_list_view.setFastScrollEnabled(true);
                 hideActionBar();
                 // Make sure all dynamic (scroll and set) buttons display
                 onScrollAction();
@@ -996,52 +1005,61 @@ public class StageMode extends AppCompatActivity implements
     }
     @Override
     public void adjustABInfo() {
+        boolean inuse = false;
         // Change the visibilities
         if (preferences.getMyPreferenceBoolean(StageMode.this,"batteryDialOn",true)) {
             batteryimage.setVisibility(View.VISIBLE);
+            inuse = true;
         } else {
             batteryimage.setVisibility(View.INVISIBLE);
         }
         if (preferences.getMyPreferenceBoolean(StageMode.this,"batteryTextOn",true)) {
             batterycharge.setVisibility(View.VISIBLE);
+            inuse = true;
         } else {
             batterycharge.setVisibility(View.GONE);
         }
         if (preferences.getMyPreferenceBoolean(StageMode.this,"clockOn",true)) {
             digitalclock.setVisibility(View.VISIBLE);
+            inuse = true;
         } else {
             digitalclock.setVisibility(View.GONE);
         }
 
-        // Set the text sizes
-        batterycharge.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "batteryTextSize",9.0f));
-        digitalclock.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"clockTextSize",9.0f));
-        songtitle_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"songTitleSize",13.0f));
-        songtitle_ab.setSingleLine(true);
-        songcapo_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"songTitleSize",13.0f));
-        songcapo_ab.setSingleLine(true);
-        songauthor_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"songAuthorSize",11.0f));
-        songauthor_ab.setSingleLine(true);
-        songkey_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"songTitleSize",13.0f));
-        songkey_ab.setSingleLine(true);
+        if (inuse) {
+            // Set the text sizes
+            batterycharge.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "batteryTextSize", 9.0f));
+            digitalclock.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "clockTextSize", 9.0f));
+            songtitle_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
+            songtitle_ab.setSingleLine(true);
+            songcapo_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
+            songcapo_ab.setSingleLine(true);
+            songauthor_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songAuthorSize", 11.0f));
+            songauthor_ab.setSingleLine(true);
+            songkey_ab.setTextSize(preferences.getMyPreferenceFloat(StageMode.this, "songTitleSize", 13.0f));
+            songkey_ab.setSingleLine(true);
 
-        // Set the time format
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df;
-        if (preferences.getMyPreferenceBoolean(StageMode.this,"clock24hFormat",true)) {
-            df = new SimpleDateFormat("HH:mm", StaticVariables.locale);
+            // Set the time format
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df;
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "clock24hFormat", true)) {
+                df = new SimpleDateFormat("HH:mm", StaticVariables.locale);
+            } else {
+                df = new SimpleDateFormat("h:mm", StaticVariables.locale);
+            }
+            String formattedTime = df.format(c.getTime());
+            digitalclock.setText(formattedTime);
+            batteryholder.setVisibility(View.VISIBLE);
         } else {
-            df = new SimpleDateFormat("h:mm", StaticVariables.locale);
+            batteryholder.setVisibility(View.GONE);
         }
-        String formattedTime = df.format(c.getTime());
-        digitalclock.setText(formattedTime);
     }
-
 
     @Override
     public void setUpBatteryMonitor() {
         // Get clock
         try {
+            boolean inuse = false;
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df;
             if (preferences.getMyPreferenceBoolean(StageMode.this,"clock24hFormat",true)) {
@@ -1052,6 +1070,7 @@ public class StageMode extends AppCompatActivity implements
             String formattedTime = df.format(c.getTime());
             if (preferences.getMyPreferenceBoolean(StageMode.this,"clockOn",true)) {
                 digitalclock.setVisibility(View.VISIBLE);
+                inuse = true;
             } else {
                 digitalclock.setVisibility(View.GONE);
             }
@@ -1063,6 +1082,7 @@ public class StageMode extends AppCompatActivity implements
             String charge = i + "%";
             if (preferences.getMyPreferenceBoolean(StageMode.this,"batteryTextOn",true)) {
                 batterycharge.setVisibility(View.VISIBLE);
+                inuse = true;
             } else {
                 batterycharge.setVisibility(View.GONE);
             }
@@ -1072,12 +1092,18 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.ab_height = abh;
             if (preferences.getMyPreferenceBoolean(StageMode.this,"batteryDialOn",true)) {
                 batteryimage.setVisibility(View.VISIBLE);
+                inuse = true;
             } else {
                 batteryimage.setVisibility(View.INVISIBLE);
             }
             if (ab != null && abh > 0) {
                 BitmapDrawable bmp = BatteryMonitor.batteryImage(StageMode.this, preferences,i, abh);
                 batteryimage.setImageDrawable(bmp);
+            }
+            if (inuse) {
+                batteryholder.setVisibility(View.VISIBLE);
+            } else {
+                batteryholder.setVisibility(View.GONE);
             }
 
             // Ask the app to check again in 60s
@@ -1423,6 +1449,7 @@ public class StageMode extends AppCompatActivity implements
 
             closeMyDrawers("both");
             resizeDrawers();
+
             loadSong();
         }
     }
@@ -1640,7 +1667,6 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void updateExtraInfoColorsAndSizes(String what) {
-
         try {
             switch (what) {
                 case "capo":
@@ -1740,7 +1766,8 @@ public class StageMode extends AppCompatActivity implements
     //@Override
     public void setupPageButtons() {
         runOnUiThread(() -> {
-            //coordinator_layout = findViewById(R.id.coordinator_layout);
+            action_search = findViewById(R.id.action_search);
+            set_add = findViewById(R.id.set_add);
 
             setButton = findViewById(R.id.setButton);
             padButton = findViewById(R.id.padButton);
@@ -1816,6 +1843,85 @@ public class StageMode extends AppCompatActivity implements
         // Set the sizes and the alphas
         pageButtonAlpha("");
 
+        // Set the menu listeners
+        action_search.setOnClickListener(view -> {
+            // Open/close the song drawer
+            openMyDrawers("song_toggle");
+        });
+        action_search.setOnLongClickListener(view -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "transpose";
+                openFragment();
+            } else {
+                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                ShowToast.showToast(StageMode.this);
+            }
+            return true;
+        });
+
+        set_add.setOnClickListener(view -> {
+            // A Nearby received song will get added as a variation
+            if (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals(""))) {
+                SetActions setActions;
+                setActions = new SetActions();
+                PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
+                setActions.prepareSetList(StageMode.this,preferences);
+                StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
+                PopUpSetViewNew.makeVariation(StageMode.this, preferences);
+                loadSong();
+                // Vibrate to indicate something has happened
+                DoVibrate.vibrate(StageMode.this, 50);
+
+                try {
+                    prepareOptionMenu();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (!StaticVariables.whichSongFolder.startsWith("..")) {
+                if (StaticVariables.whichSongFolder.equals(getResources().getString(R.string.mainfoldername)) ||
+                        StaticVariables.whichSongFolder.equals("MAIN") ||
+                        StaticVariables.whichSongFolder.equals("")) {
+                    StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
+                } else {
+                    StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"
+                            + StaticVariables.songfilename + "_**$";
+                }
+                // Allow the song to be added, even if it is already there
+                String newval = preferences.getMyPreferenceString(StageMode.this,"setCurrent","") + StaticVariables.whatsongforsetwork;
+                preferences.setMyPreferenceString(StageMode.this,"setCurrent",newval);
+                // Tell the user that the song has been added.
+                StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" "
+                        + getResources().getString(R.string.addedtoset);
+                ShowToast.showToast(StageMode.this);
+                // Vibrate to indicate something has happened
+                DoVibrate.vibrate(StageMode.this,50);
+
+                try {
+                    prepareOptionMenu();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // Not a song
+                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                ShowToast.showToast(StageMode.this);
+            }
+        });
+        set_add.setOnLongClickListener(view -> {
+            if (!StaticVariables.whichSongFolder.startsWith("..") || (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals("")))) {
+                PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
+                setActions.prepareSetList(StageMode.this, preferences);
+                StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
+                PopUpSetViewNew.makeVariation(StageMode.this, preferences);
+                loadSong();
+            } else {
+                // Not a song
+                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                ShowToast.showToast(StageMode.this);
+            }
+            return true;
+        });
+        
         // IV - No animations for grouped buttons as the collapse of the group will 'animate' the click
         // Set the listeners
         setButtonLayout.setOnClickListener(view -> setButton.performClick());
@@ -2986,6 +3092,7 @@ public class StageMode extends AppCompatActivity implements
             // TODO - Fix scaling and positioning of highlightNotes when song is scaled
             if ((!FullscreenActivity.highlightOn && !fromautoshow) ) {
                 // IV - If a manual click of highlight button to hide the highlight then hide - do nothing as already done
+                FullscreenActivity.highlightOn = false;
             } else if (StaticVariables.thisSongScale.equals("Y")) {
                 // IV - If the song has been scaled then reload to display without scale
                 if (highlightNotes.getScaleX() != 1.0f) {
@@ -3066,7 +3173,7 @@ public class StageMode extends AppCompatActivity implements
                                 highlightNotes.setAlpha(0.0f);
                                 // IV - Might have been scrolled
                                 highlightNotes.setX(0.0f);
-                                CustomAnimations.faderAnimation(highlightNotes, 300, true);
+                                CustomAnimations.faderAnimation(highlightNotes, 200, true);
                             }
                         } catch (OutOfMemoryError | Exception e) {
                             e.printStackTrace();
@@ -3367,7 +3474,6 @@ public class StageMode extends AppCompatActivity implements
 
         songscrollview.removeAllViews();
 
-        // Animate the view in after a delay (waiting for slide out animation to complete
         animateInSong();
 
         // Check for scroll position
@@ -3826,7 +3932,7 @@ public class StageMode extends AppCompatActivity implements
             songscrollview.setVisibility(View.GONE);
             glideimage_ScrollView.setAlpha(0.0f);
             // IV - Fade in for PDF and Image songs
-            CustomAnimations.faderAnimation(glideimage_ScrollView, 300, true);
+            CustomAnimations.faderAnimation(glideimage_ScrollView, 100, true);
         } else {
             glideimage_ScrollView.setVisibility(View.GONE);
             glideimage_HorizontalScrollView.setVisibility(View.GONE);
@@ -3836,24 +3942,20 @@ public class StageMode extends AppCompatActivity implements
             } else {
                 songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
             }
+            // Enable the scroll bar as animate out will have disabled
+            songscrollview.setVerticalScrollBarEnabled(true);
+        }
+
+        // Wait for animate
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (StaticVariables.currentSection < 0) {
             StaticVariables.currentSection = -(1 + StaticVariables.currentSection);
-        }
-
-        // IV - If StaticVariables.metronomeonoff == "on" this is a reload with the Metronome left running
-        // For all other case loadSong has stopped any running Metronome task == "off"
-        if (StaticVariables.metronomeonoff == "off") {
-            // If we were running and need to autostart the metronome for the new song...
-            if ((StaticVariables.clickedOnMetronomeStart) &&
-                    preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false)) {
-                // Start it
-                gesture7();
-            } else {
-                StaticVariables.clickedOnMetronomeStart = false;
-            }
         }
 
         // Check for dual screen presentation
@@ -3909,23 +4011,6 @@ public class StageMode extends AppCompatActivity implements
 
         glideimage_ScrollView.scrollTo(0,0);
         FullscreenActivity.newPosFloat = 0.0f;
-        // Automatically start the autoscroll
-        if (StaticVariables.clickedOnAutoScrollStart && (preferences.getMyPreferenceBoolean(StageMode.this, "autoscrollAutoStart", false) || pdfCanContinueScrolling)) {
-            // IV - Using a runnable to autostart if needed - proceeds only after settled on an item
-            // IV - Avoids unneeded work during quick song changes
-            // IV - Longer delay to start autoscroll when acting as a nearby host - to give time for remote song to render and (hopefully) to have starts in sync
-            startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
-            if (StaticVariables.isHost && StaticVariables.isConnected) {
-                startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 8000);
-                // There will be a wait, display autoscroll icon only to indicate pending
-                currentTime_TextView.setText("");
-                timeSeparator_TextView.setText("");
-                totalTime_TextView.setText("");
-                playbackProgress.setVisibility(View.VISIBLE);
-            } else {
-                startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 2000);
-            }
-        }
 
         // Do not touch on a reload
         if (!StaticVariables.reloadOfSong) {
@@ -3944,10 +4029,50 @@ public class StageMode extends AppCompatActivity implements
                 if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
                         !FullscreenActivity.orientationchanged) {
                     playPadHandler.removeCallbacks(playPadRunnable);
-                    playPadHandler.postDelayed(playPadRunnable, 2000);
+                    playPadHandler.postDelayed(playPadRunnable, 3000);
                 } else {
                     fadeoutPad();
                 }
+            }
+        }
+
+        // Dealt with display so can move on to other things...
+
+        // Decide if the metronome is good to go
+        StaticVariables.metronomeok = Metronome.isMetronomeValid();
+
+        // IV - If StaticVariables.metronomeonoff == "on" this is a reload with the Metronome left running
+        // For all other case loadSong has stopped any running Metronome task == "off"
+        if (StaticVariables.metronomeonoff.equals("off")) {
+            // If we were running and need to autostart the metronome for the new song...
+            if ((StaticVariables.clickedOnMetronomeStart) &&
+                    preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false)) {
+                // Start it
+                startMetronomeHandler.removeCallbacks(startMetronomeRunnable);
+                startMetronomeHandler.postDelayed(startMetronomeRunnable, 2000);
+            } else {
+                StaticVariables.clickedOnMetronomeStart = false;
+            }
+        }
+
+        // Decide if the autoscroll is good to go
+        StaticVariables.autoscrollok = processSong.isAutoScrollValid(StageMode.this,preferences);
+
+        // Automatically start the autoscroll
+        if (StaticVariables.clickedOnAutoScrollStart && (preferences.getMyPreferenceBoolean(StageMode.this, "autoscrollAutoStart", false) || pdfCanContinueScrolling)) {
+            // IV - Using a runnable to autostart if needed - proceeds only after settled on an item
+            // IV - Avoids unneeded work during quick song changes
+            // IV - Longer delay to start autoscroll when acting as a nearby host - to give time for remote song to render and (hopefully) to have starts in sync
+            startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
+            if (StaticVariables.isHost && StaticVariables.isConnected) {
+                startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 8000);
+                // There will be a wait, display autoscroll icon only to indicate pending
+                currentTime_TextView.setText("");
+                timeSeparator_TextView.setText("");
+                totalTime_TextView.setText("");
+                playbackProgress.setVisibility(View.VISIBLE);
+            } else {
+                startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 2000);
             }
         }
 
@@ -3980,7 +4105,7 @@ public class StageMode extends AppCompatActivity implements
 
         String capokey = processSong.getCapoNewKey();
         if (!capokey.equals("")) {
-            allcapodetails.append(" - ").append(capokey);
+            allcapodetails.append(" (").append(capokey).append(")");
             String t = " (" + capokey + ")";
             capoinfonewkey.setText(t);
             capoinfonewkey.setVisibility(View.VISIBLE);
@@ -3999,7 +4124,7 @@ public class StageMode extends AppCompatActivity implements
             // IV - This avoids mis-display during rapid song changes
             // IV - Empty then add to queue (known state)
             startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
-            startCapoAnimationHandler.postDelayed(startCapoAnimationRunnable, 2000);
+            startCapoAnimationHandler.postDelayed(startCapoAnimationRunnable, 4000);
         }
 
         // Add the capo information for theactionbar
@@ -4072,7 +4197,7 @@ public class StageMode extends AppCompatActivity implements
 
     @SuppressLint("StaticFieldLeak")
     @SuppressWarnings("deprecation")
-    private class DualScreenWork extends AsyncTask<Object, Void, String> {
+    private static class DualScreenWork extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
             return null;
@@ -4212,13 +4337,8 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             try {
-                // Remove the views from the test panes if there was any!
+                // Remove the views from the test pane if any!
                 testpane.removeAllViews();
-                testpane1_2.removeAllViews();
-                testpane2_2.removeAllViews();
-                testpane1_3.removeAllViews();
-                testpane2_3.removeAllViews();
-                testpane3_3.removeAllViews();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -4333,8 +4453,7 @@ public class StageMode extends AppCompatActivity implements
                 width_scale = myscale_1_1_col_x;
                 int availableheight = getAvailableHeight() - getPixelsFromDpi(12);
                 float myscale_1_1_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[0];
-                StaticVariables.sectionScaleValue[0] = processSong.getScaleValue(StageMode.this,
-                        preferences, myscale_1_1_col_x, myscale_1_1_col_y, 12.0f);
+                StaticVariables.sectionScaleValue[0] = processSong.getScaleValue(StageMode.this, preferences, myscale_1_1_col_x, myscale_1_1_col_y);
 
                 // IV - If we are going for full scaling
                 if (StaticVariables.thisSongScale.equals("Y")) {
@@ -4369,16 +4488,11 @@ public class StageMode extends AppCompatActivity implements
                         myscale_3_3_col_y = myscale_1_3_col_y;
                     }
 
-                    StaticVariables.sectionScaleValue[1] = processSong.getScaleValue(StageMode.this,
-                            preferences, myscale_1_2_col_x, myscale_1_2_col_y, 12.0f);
-                    StaticVariables.sectionScaleValue[2] = processSong.getScaleValue(StageMode.this,
-                            preferences, myscale_2_2_col_x, myscale_2_2_col_y, 12.0f);
-                    StaticVariables.sectionScaleValue[3] = processSong.getScaleValue(StageMode.this,
-                            preferences, myscale_1_3_col_x, myscale_1_3_col_y, 12.0f);
-                    StaticVariables.sectionScaleValue[4] = processSong.getScaleValue(StageMode.this,
-                            preferences, myscale_2_3_col_x, myscale_2_3_col_y, 12.0f);
-                    StaticVariables.sectionScaleValue[5] = processSong.getScaleValue(StageMode.this,
-                            preferences, myscale_3_3_col_x, myscale_3_3_col_y, 12.0f);
+                    StaticVariables.sectionScaleValue[1] = processSong.getScaleValue(StageMode.this, preferences, myscale_1_2_col_x, myscale_1_2_col_y);
+                    StaticVariables.sectionScaleValue[2] = processSong.getScaleValue(StageMode.this, preferences, myscale_2_2_col_x, myscale_2_2_col_y);
+                    StaticVariables.sectionScaleValue[3] = processSong.getScaleValue(StageMode.this, preferences, myscale_1_3_col_x, myscale_1_3_col_y);
+                    StaticVariables.sectionScaleValue[4] = processSong.getScaleValue(StageMode.this, preferences, myscale_2_3_col_x, myscale_2_3_col_y);
+                    StaticVariables.sectionScaleValue[5] = processSong.getScaleValue(StageMode.this, preferences, myscale_3_3_col_x, myscale_3_3_col_y);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -4794,9 +4908,14 @@ public class StageMode extends AppCompatActivity implements
                             Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                         }
 
+                        // IV - After a rebase against upstream - something happened to make this not needed and add onRemoteDisplayMuteStateChanged
+                        //@Override
+                        //public void zza() {
+                        //    Log.d(TAG,"zza()");
+                        //}
+
                         @Override
-                        public void zza() {
-                            Log.d(TAG,"zza()");
+                        public void onRemoteDisplayMuteStateChanged(boolean b) {
                         }
                     });
 
@@ -5185,8 +5304,10 @@ public class StageMode extends AppCompatActivity implements
             for (String index : indexList) {
                 textView = (TextView) View.inflate(StageMode.this,R.layout.leftmenu, null);
                 textView.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f));
-                int i = (int) preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f) *2;
+                int i = (int) ((int) preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f) * 2.0f);
                 textView.setPadding(i,i,i,i);
+                textView.setMinimumWidth(48);
+                textView.setMinimumHeight(48);
                 textView.setText(index);
                 textView.setOnClickListener(view -> {
                     TextView selectedIndex = (TextView) view;
@@ -5195,6 +5316,8 @@ public class StageMode extends AppCompatActivity implements
                             String myval = selectedIndex.getText().toString();
                             Object obj = map.get(myval);
                             if (obj!=null) {
+                                // Using index so turn off fast scroll to have a clean display behaviour for index use
+                                song_list_view.setFastScrollEnabled(false);
                                 song_list_view.setSelection((int) obj);
                             }
                             /*
@@ -5259,16 +5382,19 @@ public class StageMode extends AppCompatActivity implements
         // Save our preferences
         saveFileLocation(clickedfile,clickedfolder);
 
-        // Load the song
-        loadSong();
+        // Allow drawer close animation time to cleanly complete
+        Handler delayloadsong = new Handler();
+        delayloadsong.postDelayed(() -> {
+            // Load the song
+            loadSong();
 
-        FullscreenActivity.currentSongIndex = i;
+            FullscreenActivity.currentSongIndex = i;
+            // Scroll to this song in the song menu
+            song_list_view.smoothScrollToPosition(i);
 
-        // Scroll to this song in the song menu
-        song_list_view.smoothScrollToPosition(i);
-
-        // Initialise the previous and next songs
-        findSongInFolders();
+            // Initialise the previous and next songs
+            findSongInFolders();
+        }, 300);
     }
 
     @Override
@@ -5420,7 +5546,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             start = System.currentTimeMillis();
-            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Log.d(TAG, "Duration(ms): Before Create final view: " + (System.currentTimeMillis() - songTransitionStart));
             try {
                 // We know how many columns we are using, so lets go for it.
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
@@ -5429,19 +5555,14 @@ public class StageMode extends AppCompatActivity implements
                     column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
                 }
                 songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
-                boxbit1_1 = processSong.preparePerformanceBoxView(StageMode.this, preferences,lyricsTextColor,
-                        lyricsBackgroundColor, FullscreenActivity.padding);
+                boxbit1_1 = processSong.preparePerformanceBoxView(StageMode.this, lyricsTextColor, FullscreenActivity.padding);
 
                 // Add the song sections...
                 for (int x = 0; x < StaticVariables.songSections.length; x++) {
-                    float fontsize = processSong.setScaledFontSize(0);
-                    LinearLayout sectionview = processSong.songSectionView(StageMode.this, x, fontsize, false,
+                    final LinearLayout sectionview = processSong.songSectionView(StageMode.this, x, processSong.setScaledFontSize(0),
                             storageAccess, preferences,
                             lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                            lyricsCapoColor, presoFontColor);
-                    sectionview.setPadding(0, 0, 0, 0);
-                    sectionview.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],lyricsVerseColor,
-                            lyricsChorusColor, lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor,lyricsCommentColor,lyricsCustomColor));
+                            lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor, lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor);
                     column1_1.addView(sectionview);
                 }
             } catch (Exception e) {
@@ -5465,13 +5586,15 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
             try {
+                songTransition_QOS();
+                Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
                 if (!cancelled) {
                     songscrollview.removeAllViews();
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     if (StaticVariables.thisSongScale.equals("Y")) {
                         llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), getAvailableHeight());
-                        //llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
                     } else if (StaticVariables.thisSongScale.equals("W")) {
                         llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
                     }
@@ -5485,6 +5608,7 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
         }
     }
 
@@ -5729,34 +5853,30 @@ public class StageMode extends AppCompatActivity implements
                     column1_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
                     column2_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
                 }
-        songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
-                boxbit1_2 = processSong.preparePerformanceBoxView(StageMode.this, preferences, lyricsTextColor,
-                        lyricsBackgroundColor, FullscreenActivity.padding);
-                boxbit2_2 = processSong.preparePerformanceBoxView(StageMode.this, preferences, lyricsTextColor,
-                        lyricsBackgroundColor, FullscreenActivity.padding);
+                songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
+                boxbit1_2 = processSong.preparePerformanceBoxView(StageMode.this, lyricsTextColor, FullscreenActivity.padding);
+                boxbit2_2 = processSong.preparePerformanceBoxView(StageMode.this, lyricsTextColor, FullscreenActivity.padding);
 
                 // Add the song sections...
                 for (int x = 0; x < StaticVariables.songSections.length; x++) {
 
                     if (x < FullscreenActivity.halfsplit_section) {
                         float fontsize = processSong.setScaledFontSize(1);
-                        LinearLayout sectionview = processSong.songSectionView(StageMode.this, x, fontsize, false,
+                        final LinearLayout sectionview = processSong.songSectionView(StageMode.this, x, fontsize,
                                 storageAccess, preferences,
                                 lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                lyricsCapoColor, presoFontColor);
-                        sectionview.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],lyricsVerseColor,
-                                lyricsChorusColor, lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor,lyricsCommentColor,lyricsCustomColor));
+                                lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor);
                         sectionview.setPadding(0, 0, 0, 0);
                         column1_2.addView(sectionview);
 
                     } else {
                         float fontsize = processSong.setScaledFontSize(2);
-                        LinearLayout sectionview2 = processSong.songSectionView(StageMode.this, x, fontsize, false,
+                        final LinearLayout sectionview2 = processSong.songSectionView(StageMode.this, x, fontsize,
                                 storageAccess, preferences,
                                 lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                lyricsCapoColor, presoFontColor);
-                        sectionview2.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],lyricsVerseColor,
-                                lyricsChorusColor, lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor,lyricsCommentColor,lyricsCustomColor));
+                                lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor);
                         sectionview2.setPadding(0, 0, 0, 0);
                         column2_2.addView(sectionview2);
                     }
@@ -5782,7 +5902,10 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
             try {
+                songTransition_QOS();
+                Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
                 if (!cancelled) {
                     songscrollview.removeAllViews();
                     LinearLayout.LayoutParams llp1_2 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(2), LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -5801,6 +5924,7 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
         }
     }
 
@@ -5834,45 +5958,39 @@ public class StageMode extends AppCompatActivity implements
                     column3_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
                 }
                 songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
-                boxbit1_3 = processSong.preparePerformanceBoxView(StageMode.this, preferences,lyricsTextColor,
-                        lyricsBackgroundColor, FullscreenActivity.padding);
-                boxbit2_3 = processSong.preparePerformanceBoxView(StageMode.this, preferences, lyricsTextColor,
-                        lyricsBackgroundColor, FullscreenActivity.padding);
-                boxbit3_3 = processSong.preparePerformanceBoxView(StageMode.this, preferences, lyricsTextColor,
-                        lyricsBackgroundColor, FullscreenActivity.padding);
+                boxbit1_3 = processSong.preparePerformanceBoxView(StageMode.this, lyricsTextColor, FullscreenActivity.padding);
+                boxbit2_3 = processSong.preparePerformanceBoxView(StageMode.this, lyricsTextColor, FullscreenActivity.padding);
+                boxbit3_3 = processSong.preparePerformanceBoxView(StageMode.this, lyricsTextColor, FullscreenActivity.padding);
 
                 // Add the song sections...
                 for (int x = 0; x < StaticVariables.songSections.length; x++) {
                     if (x < FullscreenActivity.thirdsplit_section) {
                         float fontsize = processSong.setScaledFontSize(3);
-                        LinearLayout sectionview = processSong.songSectionView(StageMode.this, x, fontsize, false,
+                        final LinearLayout sectionview = processSong.songSectionView(StageMode.this, x, fontsize,
                                 storageAccess, preferences,
                                 lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                lyricsCapoColor, presoFontColor);
-                        sectionview.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],lyricsVerseColor,
-                                lyricsChorusColor, lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor,lyricsCommentColor,lyricsCustomColor));
+                                lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor);
                         sectionview.setPadding(0, 0, 0, 0);
                         column1_3.addView(sectionview);
 
                     } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
                         float fontsize = processSong.setScaledFontSize(4);
-                        LinearLayout sectionview2 = processSong.songSectionView(StageMode.this, x, fontsize, false,
+                        final LinearLayout sectionview2 = processSong.songSectionView(StageMode.this, x, fontsize,
                                 storageAccess, preferences,
                                 lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                lyricsCapoColor, presoFontColor);
-                        sectionview2.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],lyricsVerseColor,
-                                lyricsChorusColor, lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor,lyricsCommentColor,lyricsCustomColor));
+                                lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor);
                         sectionview2.setPadding(0, 0, 0, 0);
                         column2_3.addView(sectionview2);
 
                     } else {
                         float fontsize = processSong.setScaledFontSize(5);
-                        LinearLayout sectionview3 = processSong.songSectionView(StageMode.this, x, fontsize, false,
+                        final LinearLayout sectionview3 = processSong.songSectionView(StageMode.this, x, fontsize,
                                 storageAccess, preferences,
                                 lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                lyricsCapoColor, presoFontColor);
-                        sectionview3.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],lyricsVerseColor,
-                                lyricsChorusColor, lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor,lyricsCommentColor,lyricsCustomColor));
+                                lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor);
                         sectionview3.setPadding(0, 0, 0, 0);
                         column3_3.addView(sectionview3);
                     }
@@ -5898,7 +6016,10 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
             try {
+                songTransition_QOS();
+                Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
                 if (!cancelled) {
                     songscrollview.removeAllViews();
                     LinearLayout.LayoutParams llp1_3 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(3), LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -5920,7 +6041,7 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
         }
     }
 
@@ -5993,11 +6114,13 @@ public class StageMode extends AppCompatActivity implements
                 songscrollview.setBackgroundColor(lyricsBackgroundColor);
                 width_scale = 0f;
                 testpane.removeAllViews();
-                testpane1_2.removeAllViews();
-                testpane2_2.removeAllViews();
-                testpane1_3.removeAllViews();
-                testpane2_3.removeAllViews();
-                testpane3_3.removeAllViews();
+                if (StaticVariables.whichMode.equals("Performance") && !(preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("W"))) {
+                    testpane1_2.removeAllViews();
+                    testpane2_2.removeAllViews();
+                    testpane1_3.removeAllViews();
+                    testpane2_3.removeAllViews();
+                    testpane3_3.removeAllViews();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -6036,89 +6159,87 @@ public class StageMode extends AppCompatActivity implements
                     if (column1_1 != null) {
                         column1_1.removeAllViews();
                     }
-                    if (column1_2 != null) {
-                        column1_2.removeAllViews();
-                    }
-                    if (column2_2 != null) {
-                        column2_2.removeAllViews();
-                    }
-                    if (column1_3 != null) {
-                        column1_3.removeAllViews();
-                    }
-                    if (column2_3 != null) {
-                        column2_3.removeAllViews();
-                    }
-                    if (column3_3 != null) {
-                        column3_3.removeAllViews();
-                    }
 
+                    // IV - Always do 1 column activity. Only do 2 and 3 if needed.
                     column1_1 = processSong.createLinearLayout(StageMode.this);
-                    column1_2 = processSong.createLinearLayout(StageMode.this);
-                    column2_2 = processSong.createLinearLayout(StageMode.this);
-                    column1_3 = processSong.createLinearLayout(StageMode.this);
-                    column2_3 = processSong.createLinearLayout(StageMode.this);
-                    column3_3 = processSong.createLinearLayout(StageMode.this);
 
-                    LinearLayout section1_1;
-                    LinearLayout section1_2;
-                    LinearLayout section2_2;
-                    LinearLayout section1_3;
-                    LinearLayout section2_3;
-                    LinearLayout section3_3;
+                    if (StaticVariables.whichMode.equals("Performance") && !(preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("W"))) {
+                        if (column1_2 != null) {
+                            column1_2.removeAllViews();
+                        }
+                        if (column2_2 != null) {
+                            column2_2.removeAllViews();
+                        }
+                        if (column1_3 != null) {
+                            column1_3.removeAllViews();
+                        }
+                        if (column2_3 != null) {
+                            column2_3.removeAllViews();
+                        }
+                        if (column3_3 != null) {
+                            column3_3.removeAllViews();
+                        }
+                        column1_2 = processSong.createLinearLayout(StageMode.this);
+                        column2_2 = processSong.createLinearLayout(StageMode.this);
+                        column1_3 = processSong.createLinearLayout(StageMode.this);
+                        column2_3 = processSong.createLinearLayout(StageMode.this);
+                        column3_3 = processSong.createLinearLayout(StageMode.this);
+                    }
 
                     // Go through each section
                     for (int x = 0; x < StaticVariables.songSections.length; x++) {
 
                         // The single stage mode view
-                        final LinearLayout section = processSong.songSectionView(StageMode.this, x, 12.0f, false,
+                        final LinearLayout section = processSong.songSectionView(StageMode.this, x, 12.0f,
                                 storageAccess, preferences,
                                 lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                lyricsCapoColor, presoFontColor);
+                                lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor);
+
+                        column1_1.addView(section);
+
                         section.setClipChildren(false);
                         section.setClipToPadding(false);
                         section.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         FullscreenActivity.viewwidth[x] = section.getMeasuredWidth();
                         FullscreenActivity.viewheight[x] = section.getMeasuredHeight();
 
-                        // The other views for 2 or 3 column mode
-                        section1_1 = processSong.songSectionView(StageMode.this, x, 12.0f, false,
-                                storageAccess, preferences,
-                                lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                lyricsCapoColor, presoFontColor);
-                        column1_1.addView(section1_1);
+                        // IV - Only do split 1 2 and 3 if needed.
+                        if (StaticVariables.whichMode.equals("Performance") && !(preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("W"))) {
 
-                        if (x < FullscreenActivity.halfsplit_section) {
-                            section1_2 = processSong.songSectionView(StageMode.this, x, 12.0f, false,
-                                    storageAccess, preferences,
-                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                    lyricsCapoColor, presoFontColor);
-                            column1_2.addView(section1_2);
-                        } else {
-                            section2_2 = processSong.songSectionView(StageMode.this, x, 12.0f, false,
-                                    storageAccess, preferences,
-                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                    lyricsCapoColor, presoFontColor);
-                            column2_2.addView(section2_2);
-                        }
+                            if (x < FullscreenActivity.halfsplit_section) {
+                                column1_2.addView(processSong.songSectionView(StageMode.this, x, 12.0f,
+                                        storageAccess, preferences,
+                                        lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor, lyricsCommentColor, lyricsCustomColor,
+                                        lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                        lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor));
+                            } else {
+                                column2_2.addView(processSong.songSectionView(StageMode.this, x, 12.0f,
+                                        storageAccess, preferences,
+                                        lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor, lyricsCommentColor, lyricsCustomColor,
+                                        lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                        lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor));
+                            }
 
-                        if (x < FullscreenActivity.thirdsplit_section) {
-                            section1_3 = processSong.songSectionView(StageMode.this, x, 12.0f, false,
-                                    storageAccess, preferences,
-                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                    lyricsCapoColor, presoFontColor);
-                            column1_3.addView(section1_3);
-                        } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                            section2_3 = processSong.songSectionView(StageMode.this, x, 12.0f, false,
-                                    storageAccess, preferences,
-                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                    lyricsCapoColor, presoFontColor);
-                            column2_3.addView(section2_3);
-                        } else {
-                            section3_3 = processSong.songSectionView(StageMode.this, x, 12.0f, false,
-                                    storageAccess, preferences,
-                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                                    lyricsCapoColor, presoFontColor);
-                            column3_3.addView(section3_3);
+                            if (x < FullscreenActivity.thirdsplit_section) {
+                                column1_3.addView(processSong.songSectionView(StageMode.this, x, 12.0f,
+                                        storageAccess, preferences,
+                                        lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor, lyricsCommentColor, lyricsCustomColor,
+                                        lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                        lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor));
+                            } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
+                                column2_3.addView(processSong.songSectionView(StageMode.this, x, 12.0f,
+                                        storageAccess, preferences,
+                                        lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor, lyricsCommentColor, lyricsCustomColor,
+                                        lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                        lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor));
+                            } else {
+                                column3_3.addView(processSong.songSectionView(StageMode.this, x, 12.0f,
+                                        storageAccess, preferences,
+                                        lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor, lyricsCommentColor, lyricsCustomColor,
+                                        lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                                        lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor));
+                            }
                         }
 
                         if (StaticVariables.whichMode.equals("Stage")) {
@@ -6136,35 +6257,38 @@ public class StageMode extends AppCompatActivity implements
                         testpane.setClipChildren(false);
                         testpane.setClipToPadding(false);
                         testpane.addView(column1_1);
-                        testpane1_2.setClipChildren(false);
-                        testpane1_2.setClipToPadding(false);
-                        testpane1_2.addView(column1_2);
-                        testpane2_2.setClipChildren(false);
-                        testpane2_2.setClipToPadding(false);
-                        testpane2_2.addView(column2_2);
-                        testpane1_3.setClipChildren(false);
-                        testpane1_3.setClipToPadding(false);
-                        testpane1_3.addView(column1_3);
-                        testpane2_3.setClipChildren(false);
-                        testpane2_3.setClipToPadding(false);
-                        testpane2_3.addView(column2_3);
-                        testpane3_3.setClipChildren(false);
-                        testpane3_3.setClipToPadding(false);
-                        testpane3_3.addView(column3_3);
-
                         testpane.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane1_2.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane2_2.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane1_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane2_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane3_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
                         testpane.setVisibility(View.INVISIBLE);
-                        testpane1_2.setVisibility(View.INVISIBLE);
-                        testpane2_2.setVisibility(View.INVISIBLE);
-                        testpane1_3.setVisibility(View.INVISIBLE);
-                        testpane2_3.setVisibility(View.INVISIBLE);
-                        testpane3_3.setVisibility(View.INVISIBLE);
+
+                        if (!(preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("W"))) {
+                            testpane1_2.setClipChildren(false);
+                            testpane1_2.setClipToPadding(false);
+                            testpane1_2.addView(column1_2);
+                            testpane2_2.setClipChildren(false);
+                            testpane2_2.setClipToPadding(false);
+                            testpane2_2.addView(column2_2);
+                            testpane1_3.setClipChildren(false);
+                            testpane1_3.setClipToPadding(false);
+                            testpane1_3.addView(column1_3);
+                            testpane2_3.setClipChildren(false);
+                            testpane2_3.setClipToPadding(false);
+                            testpane2_3.addView(column2_3);
+                            testpane3_3.setClipChildren(false);
+                            testpane3_3.setClipToPadding(false);
+                            testpane3_3.addView(column3_3);
+
+                            testpane1_2.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            testpane2_2.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            testpane1_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            testpane2_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            testpane3_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                            testpane1_2.setVisibility(View.INVISIBLE);
+                            testpane2_2.setVisibility(View.INVISIBLE);
+                            testpane1_3.setVisibility(View.INVISIBLE);
+                            testpane2_3.setVisibility(View.INVISIBLE);
+                            testpane3_3.setVisibility(View.INVISIBLE);
+                        }
                         resizePerformanceView();
                     }
                 }
@@ -6180,9 +6304,12 @@ public class StageMode extends AppCompatActivity implements
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
         LinearLayout column1_1 = new LinearLayout(StageMode.this);
+        long start;
 
         @Override
         protected void onPreExecute() {
+            start = System.currentTimeMillis();
+            Log.d(TAG, "Duration(ms): Before render of final view: " + (System.currentTimeMillis() - songTransitionStart));
             try {
                 // Only 1 column, but many sections
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
@@ -6192,19 +6319,18 @@ public class StageMode extends AppCompatActivity implements
                 }
                 songbit = processSong.prepareStageSongBitView(StageMode.this);
 
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
+                llp.setMargins(0, 0, 0, getPixelsFromDpi(4));
+
                 // Add the song sections...
                 for (int x = 0; x < StaticVariables.songSections.length; x++) {
                     float fontsize = processSong.setScaledFontSize(x);
-                    LinearLayout sectionview = processSong.songSectionView(StageMode.this, x, fontsize, false,
+                    final LinearLayout sectionview = processSong.songSectionView(StageMode.this, x, fontsize,
                             storageAccess, preferences,
                             lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,  lyricsCommentColor, lyricsCustomColor,
-                            lyricsCapoColor, presoFontColor);
-                    sectionview.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],lyricsVerseColor,
-                            lyricsChorusColor, lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor,lyricsCommentColor,lyricsCustomColor));
-                    LinearLayout boxbit = processSong.prepareStageBoxView(StageMode.this, preferences, lyricsTextColor,
-                            lyricsBackgroundColor, 0, FullscreenActivity.padding);
-                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    llp.setMargins(0, 0, 0, getPixelsFromDpi(4));
+                            lyricsCapoColor, presoFontColor, lyricsVerseColor, lyricsChorusColor,
+                            lyricsPreChorusColor, lyricsBridgeColor, lyricsTagColor);
+                    LinearLayout boxbit = processSong.prepareStageBoxView(StageMode.this, lyricsTextColor, FullscreenActivity.padding);
                     boxbit.setLayoutParams(llp);
                     boxbit.addView(sectionview);
                     column1_1.addView(boxbit);
@@ -6232,13 +6358,16 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(String s) {
+            Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
+            songTransition_QOS();
+            Log.d(TAG, "Duration(ms): Overall QOS: " + (System.currentTimeMillis() - songTransitionStart));
             try {
                 if (!cancelled) {
                     songscrollview.removeAllViews();
                     songbit.addView(column1_1);
                     songscrollview.addView(songbit);
                     if (FullscreenActivity.sectionviews[StaticVariables.currentSection] != null) {
-                        // Make the first section active (full alpha)
+                        // Make the current section active (full alpha)
                         try {
                             FullscreenActivity.sectionviews[StaticVariables.currentSection].setAlpha(1.0f);
                         } catch (Exception e) {
@@ -6250,9 +6379,10 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
         }
     }
-    // playPad  moved to be with other related voids
+
     private class Player1Prepared implements MediaPlayer.OnPreparedListener {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
@@ -6967,9 +7097,26 @@ public class StageMode extends AppCompatActivity implements
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
 
-                // IV - For a load
+                // Clear any queued activity - we are moving to a new song
+                startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
+                startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
+                startMetronomeHandler.removeCallbacks(startMetronomeRunnable);
+                showStickyHandler.removeCallbacks(showStickyRunnable);
+                playPadHandler.removeCallbacks(playPadRunnable);
+                doCancelAsyncTask(loadsong_async);
+                doCancelAsyncTask(resizestage_async);
+                doCancelAsyncTask(resizeperformance_async);
+                doCancelAsyncTask(createperformanceview1col_async);
+                doCancelAsyncTask(createperformanceview2col_async);
+                doCancelAsyncTask(createperformanceview3col_async);
+
+                // We may transpose to Nashville and need to init variables
+                StaticVariables.fromchordnumsnash = null;
+                StaticVariables.tochordnumsnash = null;
+
+                // For a load
                 if (!StaticVariables.reloadOfSong) {
-                    // Stop the metronome now as it is high drain and breaks async starts!
+                    // Stop the metronome now as it is high drain!
                     Metronome.stopMetronomeTask();
                     // IV - Set current section
                     if (StaticVariables.currentSection >= 0) {
@@ -6993,12 +7140,6 @@ public class StageMode extends AppCompatActivity implements
 
                 FullscreenActivity.pdfPageCurrent = StaticVariables.currentSection;
 
-                // Clear any queued 'after song display' activity - we are moving to a new song
-                startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
-                startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
-                showStickyHandler.removeCallbacks(showStickyRunnable);
-                playPadHandler.removeCallbacks(playPadRunnable);
-
                 // If there is a sticky note showing, remove it early
                 if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
                     try {
@@ -7006,6 +7147,18 @@ public class StageMode extends AppCompatActivity implements
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+
+                // Remove any capokey
+                FullscreenActivity.capokey = "";
+                // IV - Clear capo info and animation - prevents disturbance with display of new song
+                capoInfo.setVisibility(View.GONE);
+                capoinfonewkey.setVisibility(View.GONE);
+                capoInfo.clearAnimation();
+
+                // End any current autoscroll
+                if (StaticVariables.isautoscrolling) {
+                    stopAutoScroll();
                 }
 
                 // Check for set song
@@ -7016,8 +7169,6 @@ public class StageMode extends AppCompatActivity implements
                 updateExtraInfoColorsAndSizes("pad");
                 updateExtraInfoColorsAndSizes("metronome");
 
-                // Set the focus
-                // Don't do this for a blacklisted filetype (application, video, audio)
                 String where = "Songs";
                 String folder = StaticVariables.whichSongFolder;
 
@@ -7034,9 +7185,11 @@ public class StageMode extends AppCompatActivity implements
 
                 newsongloaded = true;
 
+                songTransitionStart = System.currentTimeMillis();
                 // IV - Animate out only when isSong
                 if (FullscreenActivity.isSong) {
-                    // Animate out the current song
+                    // Animate out the current song without a scrollbar line - so it looks nice!
+                    songscrollview.setVerticalScrollBarEnabled(false);
                     if (FullscreenActivity.whichDirection.equals("L2R")) {
                         if (songscrollview != null) {
                             songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
@@ -7056,20 +7209,11 @@ public class StageMode extends AppCompatActivity implements
                     }
                 } else {
                     // If there were highlight notes showing, remove them
-                    CustomAnimations.faderAnimation(highlightNotes, 300, false);
+                    CustomAnimations.faderAnimation(highlightNotes, 100, false);
                 }
 
-                // Remove any capokey
-                FullscreenActivity.capokey = "";
-                // IV - Clear capo info and animation - prevents disturbance with display of new song
-                capoInfo.setVisibility(View.GONE);
-                capoinfonewkey.setVisibility(View.GONE);
-                capoInfo.clearAnimation();
 
-                // End any current autoscroll
-                if (StaticVariables.isautoscrolling) {
-                    stopAutoScroll();
-                }
+                Log.d(TAG, "Transition start: " + (System.currentTimeMillis() - songTransitionStart));
 
                 // After animate out, load the song
                 Handler h = new Handler();
@@ -7089,21 +7233,14 @@ public class StageMode extends AppCompatActivity implements
                         glideimage.setBackgroundColor(StaticVariables.transparent);
                         glideimage.setImageDrawable(null);
 
+                        // Load the song
+                        loadsong_async = new LoadSongAsync();
+                        loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
                     } catch (Exception e) {
                         Log.d(TAG, "error updating the views");
                     }
-
-                    // Load the song
-                    doCancelAsyncTask(loadsong_async);
-                    doCancelAsyncTask(resizestage_async);
-                    doCancelAsyncTask(resizeperformance_async);
-                    loadsong_async = new LoadSongAsync();
-                    try {
-                        loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }, 300);
+                }, 100);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -7120,13 +7257,13 @@ public class StageMode extends AppCompatActivity implements
                 StaticVariables.infoBarChangeRequired = true;
                 FullscreenActivity.scalingfiguredout = false;
                 sectionpresented = false;
-
+                Log.d(TAG, "Duration(ms): Wait complete: Before LoadXML: " + (System.currentTimeMillis() - songTransitionStart));
                 try {
                     LoadXML.loadXML(StageMode.this, preferences, storageAccess, processSong);
                 } catch (Exception e) {
                     Log.d(TAG, "Error loading song:" + StaticVariables.songfilename);
                 }
-
+                Log.d(TAG, "Duration(ms): After LoadXML: " + (System.currentTimeMillis() - songTransitionStart));
                 if (!StaticVariables.reloadOfSong) {
                     // Send Nearby song intent
                     if (StaticVariables.isConnected && StaticVariables.isHost && !FullscreenActivity.orientationchanged) {
@@ -7156,72 +7293,30 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
 
                 if (FullscreenActivity.isSong) {
-
-                    // Check the chord format
+                    // CheckChordFormat returns the current format to both StaticVariables detectedChordFormat and newChordFormat
                     try {
-                        transpose.checkChordFormat(StageMode.this,preferences);
-                        if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
-                            StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1);
+                        Transpose.checkChordFormat();
+                        if (preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1) != 0) {
+                            // Override output format to preference
+                            StaticVariables.newChordFormat = preferences.getMyPreferenceInt(StageMode.this, "chordFormat", 1);
+
+                            if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
+                                StaticVariables.detectedChordFormat = StaticVariables.newChordFormat;
+                            }
+                        } else {
+                           StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
                         }
                     } catch (Exception e) {
                         Log.d(TAG, "Error checking the chord format");
                     }
 
-                    // Sort song formatting
-                    // 1. Sort multiline verse/chord formats
-                    FullscreenActivity.myLyrics = processSong.fixMultiLineFormat(StageMode.this, preferences, FullscreenActivity.myLyrics);
-
-                    // If we want info on the next song in the set, add it as a comment line
-                    processSong.addExtraInfo(StageMode.this, storageAccess, preferences);
-
-                    // Decide if the metronome and autoscroll are good to go
-                    StaticVariables.metronomeok = Metronome.isMetronomeValid();
-                    StaticVariables.autoscrollok = processSong.isAutoScrollValid(StageMode.this,preferences);
-
-                    // 2. Split the song into sections
-                    StaticVariables.songSections = processSong.splitSongIntoSections(StageMode.this, preferences, FullscreenActivity.myLyrics);
-
-                    // 3. Put the song into presentation order if required
-                    if (preferences.getMyPreferenceBoolean(StageMode.this,"usePresentationOrder",false) &&
-                            !StaticVariables.mPresentation.equals("")) {
-                        StaticVariables.songSections = processSong.matchPresentationOrder(StageMode.this, preferences, StaticVariables.songSections);
-                    }
-
-                    StaticVariables.songSections = processSong.splitLaterSplits(StageMode.this, preferences, StaticVariables.songSections);
-
-                    // 4. Get the section headings/types (may have changed after presentationorder
-                    StaticVariables.songSectionsLabels = new String[StaticVariables.songSections.length];
-                    StaticVariables.songSectionsTypes = new String[StaticVariables.songSections.length];
-                    // IV - Set value before entry to loop
-                    StaticVariables.songSection_holder = "";
-                    for (int sl = 0; sl < StaticVariables.songSections.length; sl++) {
-                        // IV - A useful loop for removing extra information header and footer headings
-                        StaticVariables.songSections[sl] = StaticVariables.songSections[sl].replace("[H__1]\n","").replace("[F__1]\n","");
-                        StaticVariables.songSectionsLabels[sl] = processSong.getSectionHeadings(StaticVariables.songSections[sl]);
-                    }
-
-                    // We need to split each section into string arrays by line
-                    StaticVariables.sectionContents = new String[StaticVariables.songSections.length][];
-                    for (int x = 0; x < StaticVariables.songSections.length; x++) {
-                        StaticVariables.sectionContents[x] = StaticVariables.songSections[x].split("\n");
-                    }
-
-                    // Determine what each line type is
-                    // Copy the array of sectionContents into sectionLineTypes
-                    // Then we'll replace the content with the line type
-                    // This keeps the array sizes the same simply
-                    StaticVariables.sectionLineTypes = new String[StaticVariables.sectionContents.length][];
-                    for (int x = 0; x < StaticVariables.sectionLineTypes.length; x++) {
-                        StaticVariables.sectionLineTypes[x] = new String[StaticVariables.sectionContents[x].length];
-                        for (int y = 0; y < StaticVariables.sectionLineTypes[x].length; y++) {
-                            StaticVariables.sectionLineTypes[x][y] = processSong.determineLineTypes(StaticVariables.sectionContents[x][y], StageMode.this);
-                            if (StaticVariables.sectionContents[x][y].length() > 0 && (StaticVariables.sectionContents[x][y].indexOf(" ") == 0 ||
-                                    StaticVariables.sectionContents[x][y].indexOf(".") == 0 || StaticVariables.sectionContents[x][y].indexOf(";") == 0)) {
-                                StaticVariables.sectionContents[x][y] = StaticVariables.sectionContents[x][y].substring(1);
-                            }
-                        }
-                    }
-
+                    // IV - PrepareSongSections prepares
+                    // FullscreenActivity.myLyrics,
+                    // StaticVariables.songSections, StaticVariables.songSectionsLabels, StaticVariables.songSectionsTypes,
+                    // StaticVariables.sectionContents, StaticVariables.sectionLineTypes
+                    Log.d(TAG, "Duration(ms): Before PrepareSongSections: " + (System.currentTimeMillis() - songTransitionStart));
+                    processSong.prepareSongSections(StageMode.this, preferences, storageAccess);
+                    Log.d(TAG, "Duration(ms): After PrepareSongSections: " + (System.currentTimeMillis() - songTransitionStart));
                     if (StaticVariables.whichMode.equals("Performance")) {
                         // Put the song back together for checking for splitpoints
                         processSong.rebuildParsedLyrics(StaticVariables.songSections.length);
@@ -7243,7 +7338,7 @@ public class StageMode extends AppCompatActivity implements
                             FullscreenActivity.twothirdsplit_section = 0;
                         }
                     }
-                }
+                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -7261,39 +7356,16 @@ public class StageMode extends AppCompatActivity implements
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    // If we have changed folders, redraw the song menu
-                    if (menuFolder_TextView.getText() != null) {
-                        if (menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
-                            // Just move to the correct song
-                            indexOfSongInMenu();
-
-                        } else {
-                            prepareSongMenu();
-                        }
-                    }
-
+                    // Activities are kept to a minimum before content load
                     // Fix the page flags
                     setWindowFlags();
                     setWindowFlagsAdvanced();
 
-                    // Show the ActionBar
-                    try {
-                        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    if (ab != null) {
-                        ab.show();
-                    }
-
-                    if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
-                        try {
-                            delayactionBarHide.postDelayed(hideActionBarRunnable, 1000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    // Put the title of the song in the taskbar
+                    songtitle_ab.setText(processSong.getSongTitle());
+                    songkey_ab.setText(processSong.getSongKey());
+                    songauthor_ab.setText(processSong.getSongAuthor());
+                    songcapo_ab.setText("");
 
                     // Any errors to show?
                     if (!StaticVariables.myToastMessage.equals("")) {
@@ -7302,12 +7374,6 @@ public class StageMode extends AppCompatActivity implements
 
                     // Get the current orientation
                     FullscreenActivity.mScreenOrientation = getResources().getConfiguration().orientation;
-
-                    // Put the title of the song in the taskbar
-                    songtitle_ab.setText(processSong.getSongTitle());
-                    songkey_ab.setText(processSong.getSongKey());
-                    songauthor_ab.setText(processSong.getSongAuthor());
-                    songcapo_ab.setText("");
 
                     //Determine file type
                     storageAccess.determineFileTypeByExtension();
@@ -7319,6 +7385,7 @@ public class StageMode extends AppCompatActivity implements
                         FullscreenActivity.isImage = false;
                     }
 
+                    Log.d(TAG, "Duration(ms): Before prepareView: " + (System.currentTimeMillis() - songTransitionStart));
                     // IV - Background colour set to white for PDF and Image
                     if (FullscreenActivity.isPDF) {
                         mypage.setBackgroundColor(StaticVariables.white);
@@ -7334,7 +7401,18 @@ public class StageMode extends AppCompatActivity implements
                         prepareView();
                     }
 
-                    // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
+                    // If we have changed folders, redraw the song menu
+                    if (menuFolder_TextView.getText() != null) {
+                        if (menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
+                            // Just move to the correct song
+                            indexOfSongInMenu();
+
+                        } else {
+                            prepareSongMenu();
+                        }
+                    }
+
+                    // If the user is shown the 'Welcome to OpenSongApp' file and their song lists are empty,
                     // open the find new songs menu
                     if (StaticVariables.mTitle.equals("Welcome to OpenSongApp") &&
                             sqLiteHelper.getSongsCount(StageMode.this)<1) {
@@ -7367,6 +7445,15 @@ public class StageMode extends AppCompatActivity implements
                             sqLiteHelper.updateSong(StageMode.this, sqLite);
                         }
                         prepareSongMenu();
+                    }
+
+                    delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+                    if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
+                        delayactionBarHide.postDelayed(hideActionBarRunnable, 1000);
+                    }
+
+                    if (ab != null) {
+                        ab.show();
                     }
 
                     // Get the SQLite stuff
@@ -7505,7 +7592,8 @@ public class StageMode extends AppCompatActivity implements
         protected void onPreExecute() {
             menuCount_TextView.setText("");
             menuCount_TextView.setVisibility(View.GONE);
-            menuFolder_TextView.setText(getString(R.string.wait));
+            // IV - Recently fixed to work but disabled as it is too slow!
+            //menuFolder_TextView.setText(getString(R.string.wait));
             song_list_view.setAdapter(null);
             LinearLayout indexLayout = findViewById(R.id.side_index);
             indexLayout.removeAllViews();
@@ -7515,17 +7603,18 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... params) {
             try {
                 songsInFolder = sqLiteHelper.getSongsInFolder(StageMode.this, StaticVariables.whichSongFolder);
+                // IV - Recently fixed to work but disabled as it is too slow!
                 // Remove any that aren't there (due to updating something) - permanently fixed on reboot
-                for (SQLite s:songsInFolder) {
-                    if (s!=null && s.getFolder()==null && s.getFilename()!=null) {
-                        Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", StaticVariables.whichSongFolder, s.getFilename());
-                        if (!storageAccess.uriExists(StageMode.this, u)) {
-                            songsInFolder.remove(s);
-                            // IV - We have a DB entry for a missing song - so delete it
-                            sqLiteHelper.deleteSong(StageMode.this, StaticVariables.whichSongFolder + "/" + s.getFilename());
-                        }
-                    }
-                }
+                //for (SQLite s:songsInFolder) {
+                //    if (s!=null && s.getFolder()==null && s.getFilename()!=null) {
+                //        Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", StaticVariables.whichSongFolder, s.getFilename());
+                //        if (!storageAccess.uriExists(StageMode.this, u)) {
+                //            songsInFolder.remove(s);
+                //            // IV - We have a DB entry for a missing song - so delete it
+                //            sqLiteHelper.deleteSong(StageMode.this, StaticVariables.whichSongFolder + "/" + s.getFilename());
+                //        }
+                //    }
+                //}
                 // Get a list of the child folders
                 childFolders = sqLiteHelper.getChildFolders(StageMode.this, StaticVariables.whichSongFolder);
                 songsInFolder.addAll(0,childFolders);
@@ -8745,5 +8834,19 @@ public class StageMode extends AppCompatActivity implements
             }
         }
         startActivityForResult(intent, StaticVariables.REQUEST_FILE_CHOOSER);
+    }
+
+    private void  songTransition_QOS () {
+        int songTransition_QOS_time = 750;
+        // To give a more consistent speed of song change sleep when render is quick!
+        // This is followed by animateout
+        long diff = (System.currentTimeMillis() - songTransitionStart);
+        if (diff < songTransition_QOS_time) {
+            try {
+                Thread.sleep((long) (songTransition_QOS_time - diff));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

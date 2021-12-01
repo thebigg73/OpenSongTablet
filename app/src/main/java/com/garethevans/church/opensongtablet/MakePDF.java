@@ -19,8 +19,8 @@ public class MakePDF {
     int paintSize;
     int headerHeight;
     int footerHeight;
-    int docWidth  = 595;  // Based on 1/72 of an inch  595/72 * 2.54 = 21.0cm
-    int docHeight = 842;  // Based on 1/72 of an inch  842/72 * 2.54 = 29.7cm
+    final int docWidth  = 595;  // Based on 1/72 of an inch  595/72 * 2.54 = 21.0cm
+    final int docHeight = 842;  // Based on 1/72 of an inch  842/72 * 2.54 = 29.7cm
     float headerScaling;
     float footerScaling;
     float lyricScaling;
@@ -252,9 +252,22 @@ public class MakePDF {
                 line = line.replaceFirst(";"," ");
 
             } else {
-                // If none of the above, it's a lyrics line
-                line = line.replace("_"," ");
-                line = line.replace("|"," ");
+                    // If none of the above, it's a lyrics line
+                    line = line.replace("_"," ");
+                    line = line.replace("|"," ");
+                    // IV - Same logic as in ProcessSong
+                    if (!displayChords) {
+                        // IV - Remove (....) comments when Stage or Presentation mode
+                        if (!StaticVariables.whichMode.equals("Performance")) {
+                            line = line.replaceAll("\\(.*?\\)", "");
+                        }
+
+                        // IV - Remove typical word splits, white space and trim - beautify!
+                        line = line.replaceAll("_", "")
+                                .replaceAll("\\s+-\\s+", "")
+                                .replaceAll("\\s{2,}", " ")
+                                .trim();
+                    }
             }
 
             if (line!=null) {

@@ -13,18 +13,17 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 class Metronome {
 
-    private static Executor METRONOME_THREAD_POOL_EXECUTOR = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+    private static final Executor METRONOME_THREAD_POOL_EXECUTOR = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
     private double bpm;
 	private short beat, noteValue;
-	private int duration;
-	private float metrovol;
 
-	private double beatSound, sound;
+    private double beatSound, sound;
     private boolean play = true;
 
 	private final AudioGenerator audioGenerator = new AudioGenerator(8000);
-    private double[] soundTickArray, soundTockArray, soundSilenceArray;
-	private int currentBeat = 1;
+    private double[] soundTickArray;
+    private double[] soundTockArray;
+    private int currentBeat = 1;
 	private int runningBeatCount;
 	static private int maxBeatCount;
 
@@ -76,7 +75,7 @@ class Metronome {
         }
         // IV - Build double interval sound arrays of silence - overwrite start with tick/tock
         // IV - Make intentionally slightly short
-        duration = (int) ((((60/bpm)*(8000)) * 2) - 100);
+        int duration = (int) ((((60 / bpm) * (8000)) * 2) - 100);
         soundTickArray = new double[duration];
         soundTockArray = new double[duration];
 		for(int i = 0; i< tick1; i++) {
@@ -104,14 +103,14 @@ class Metronome {
                 // IV - Sound jitter means sound periods are not exact
                 // IV - An adjustment is made to align the next sound start with the beat
                 if ((nexttime - System.currentTimeMillis()) > 0) {
-                    soundSilenceArray = new double[(int) ((nexttime - System.currentTimeMillis()) * 8)];
+                    double[] soundSilenceArray = new double[(int) ((nexttime - System.currentTimeMillis()) * 8)];
                     audioGenerator.writeSound(pan, vol, soundSilenceArray);
                 }
                 if (currentBeat == 1) {
                     // IV - Start the visual metronome with the first beat
                     if (runningBeatCount == 0 && showvisual) {
                         startTime = System.currentTimeMillis();
-                        startstopVisualMetronome(showvisual, metronomeColor, startTime);
+                        startstopVisualMetronome(true, metronomeColor, startTime);
                     }
                     audioGenerator.writeSound(pan, vol, soundTockArray);
                 } else {
@@ -136,7 +135,7 @@ class Metronome {
             }
 		} while(play);
 	}
-	
+
 	private void stop() {
 		play = false;
 		audioGenerator.destroyAudioTrack();
@@ -163,14 +162,9 @@ class Metronome {
 	}
 
 	private void setVolume(float metrovol_set) {
-		this.metrovol = metrovol_set;
-	}
+    }
 
-	public float getVolume () {
-		return metrovol;
-	}
-
-	private void setCurrentBeat(int currentBeat_set) {
+    private void setCurrentBeat(int currentBeat_set) {
 		this.currentBeat = currentBeat_set;
 	}
 
@@ -283,7 +277,7 @@ class Metronome {
     }
 
     static void startstopVisualMetronome(boolean showvisual, int metronomeColor, long startTime) {
-        visualMetronome = new VisualMetronomeAsyncTask(showvisual, metronomeColor, startTime);
+        visualMetronome = new VisualMetronomeAsyncTask(metronomeColor, startTime);
         try {
             visualMetronome.executeOnExecutor(METRONOME_THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -292,20 +286,18 @@ class Metronome {
     }
     private static class VisualMetronomeAsyncTask extends AsyncTask<Void, Integer, String> {
 
-        VisualMetronomeAsyncTask(boolean showvis, int metronomeColor, long startTime) {
+        VisualMetronomeAsyncTask(int metronomeColor, long startTime) {
 	        this.metronomeColor = metronomeColor;
-	        this.showvisual = showvis;
-	        this.nexttime = startTime;
+            this.nexttime = startTime;
         }
 
         // IV - Visual is an on & off for each each beat so use half a beat
         // IV - We align sounds to beat using the clock.  Calculate based on a 6th of a beat and scale up.
-        long sixth_time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 1000)) / 6 ;
-        long time_in_millisecs = sixth_time_in_millisecs * 3;
+        final long sixth_time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 1000)) / 6 ;
+        final long time_in_millisecs = sixth_time_in_millisecs * 3;
 
         long oldtime;
         long nexttime; // IV = SetTime - see above
-        final boolean showvisual;
         final int metronomeColor;
 
         @Override
@@ -368,7 +360,7 @@ class Metronome {
         Metronome metronome;
         final String pan;
         final float vol;
-        int barsrequired;
+        final int barsrequired;
         final boolean showvisual;
         final int metronomeColor;
 

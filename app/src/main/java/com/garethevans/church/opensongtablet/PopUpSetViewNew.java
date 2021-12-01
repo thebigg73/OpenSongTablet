@@ -52,7 +52,6 @@ public class PopUpSetViewNew extends DialogFragment {
         // The set may have been edited and then the user clicks on a song, so save the set first
         if (mListener != null) {
             FullscreenActivity.whattodo = "saveset";
-            StaticVariables.myToastMessage = "yes";
             StringBuilder tempmySet = new StringBuilder();
             String tempItem;
             if (StaticVariables.mTempSetList == null) {
@@ -66,16 +65,22 @@ public class PopUpSetViewNew extends DialogFragment {
             mListener.confirmedAction();
             StaticVariables.setchanged = false;
         }
-        // Prepare the name of the new variation slide
-        // If the file already exists, add _ to the filename
-        StringBuilder newsongname = new StringBuilder(StaticVariables.songfilename);
-        StorageAccess storageAccess = new StorageAccess();
-        Uri uriVariation = storageAccess.getUriForItem(c, preferences, "Variations", "",
-                storageAccess.safeFilename(StaticVariables.songfilename));
 
+        // Prepare the name of the new variation slide
+        StorageAccess storageAccess = new StorageAccess();
         // Original file
         Uri uriOriginal = storageAccess.getUriForItem(c, preferences, "Songs", StaticVariables.whichSongFolder,
                 StaticVariables.songfilename);
+
+        // IV - When a received song - use the stored received song filename
+        if (StaticVariables.songfilename.equals("ReceivedSong")) {
+            StaticVariables.songfilename = StaticVariables.receivedSongfilename;
+        }
+
+        StringBuilder newsongname = new StringBuilder(StaticVariables.songfilename);
+
+        Uri uriVariation = storageAccess.getUriForItem(c, preferences, "Variations", "",
+                storageAccess.safeFilename(StaticVariables.songfilename));
 
         // Copy the file into the variations folder
         InputStream inputStream = storageAccess.getInputStream(c, uriOriginal);
@@ -164,7 +169,11 @@ public class PopUpSetViewNew extends DialogFragment {
         if (mListener != null) {
             mListener.loadSongFromSet();
         }
-        setfrag.dismiss();
+        try {
+            setfrag.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void doSave() {

@@ -240,7 +240,6 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         protected String doInBackground(String... strings) {
             ZipInputStream zis = null;
             foldersfoundinzip = new ArrayList<>();
-            foldersfoundinzip.clear();
             try {
                 InputStream inputStream = storageAccess.getInputStream(getContext(),FullscreenActivity.file_uri);
                 zis = new ZipInputStream(new BufferedInputStream(inputStream));
@@ -378,7 +377,6 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         @Override
         protected String doInBackground(String... strings) {
             ArrayList<String> createdfolders = new ArrayList<>();
-            createdfolders.clear();
 
             try {
                 ZipEntry ze;
