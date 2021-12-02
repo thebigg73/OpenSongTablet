@@ -83,18 +83,19 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="14dp"
+            android:layout_marginLeft="12dp"
             android:layout_toStartOf="@+id/action_search"
-            android:gravity=""
-            android:minWidth="50dp"
+            android:gravity="left"
+            android:maxWidth="48dp"
+            android:minWidth="48dp"
             android:orientation="vertical"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
 
             <ImageView
                 android:id="@+id/batteryimage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_centerInParent="true"
                 android:contentDescription="@string/time" />
 
@@ -143,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_marginStart="14dp"
+            android:layout_marginLeft="12dp"
             android:layout_toStartOf="@+id/set_add"
             android:contentDescription="@string/action_search"
             android:scaleX="1.1"
