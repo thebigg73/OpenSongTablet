@@ -4908,14 +4908,15 @@ public class StageMode extends AppCompatActivity implements
                             Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                         }
 
-                        // IV - After a rebase against upstream - something happened to make this not needed and add onRemoteDisplayMuteStateChanged
+                        // IV - After a rebase against upstream - cast update makes this not needed and adds onRemoteDisplayMuteStateChanged
                         //@Override
                         //public void zza() {
                         //    Log.d(TAG,"zza()");
                         //}
 
-                        @Override
                         public void onRemoteDisplayMuteStateChanged(boolean b) {
+                            Log.d(TAG, "onRemoteDisplayMuteStateChanged()");
+                            Log.d(TAG, "b=" + b);
                         }
                     });
 
