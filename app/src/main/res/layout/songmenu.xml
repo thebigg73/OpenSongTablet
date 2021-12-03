@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:paddingEnd="-8dp"
                 android:paddingStart="4dp"
-                android:padding="1dp"
+                android:minWidth="1dp"
                 android:gravity="center_horizontal|center_vertical"
                 android:orientation="vertical"/>
         </ScrollView>
