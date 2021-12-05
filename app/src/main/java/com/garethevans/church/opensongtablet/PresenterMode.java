@@ -170,8 +170,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private TextView batterycharge;
     private ImageView batteryimage;
     private RelativeLayout batteryholder;
-    private FloatingActionButton action_search;
-    private FloatingActionButton set_add;
 
     // AsyncTasks
     private AsyncTask<Object, Void, String> preparesongmenu_async;
@@ -4092,92 +4090,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // Page buttons not officially used in PresenterMode, although some features are
     @Override
     public void setupPageButtons() {
-        runOnUiThread(() -> {
-            action_search = findViewById(R.id.action_search);
-            set_add = findViewById(R.id.set_add);
-        });
-
-        // Set the menu listeners
-        action_search.setOnClickListener(view -> {
-            // Open/close the song drawer
-            openMyDrawers("song_toggle");
-        });
-        action_search.setOnLongClickListener(view -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "transpose";
-                openFragment();
-            } else {
-                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                ShowToast.showToast(PresenterMode.this);
-            }
-            return true;
-        });
-
-        set_add.setOnClickListener(view -> {
-            // A Nearby received song will get added as a variation
-            if (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals(""))) {
-                SetActions setActions;
-                setActions = new SetActions();
-                PopUpLongSongPressFragment.addtoSet(PresenterMode.this, preferences);
-                setActions.prepareSetList(PresenterMode.this, preferences);
-                StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
-                PopUpSetViewNew.makeVariation(PresenterMode.this, preferences);
-                loadSong();
-                // Vibrate to indicate something has happened
-                DoVibrate.vibrate(PresenterMode.this, 50);
-
-                try {
-                    prepareOptionMenu();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (!StaticVariables.whichSongFolder.startsWith("..")) {
-                if (StaticVariables.whichSongFolder.equals(getResources().getString(R.string.mainfoldername)) ||
-                        StaticVariables.whichSongFolder.equals("MAIN") ||
-                        StaticVariables.whichSongFolder.equals("")) {
-                    StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
-                } else {
-                    StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"
-                            + StaticVariables.songfilename + "_**$";
-                }
-                // Allow the song to be added, even if it is already there
-                String newval = preferences.getMyPreferenceString(PresenterMode.this, "setCurrent", "") + StaticVariables.whatsongforsetwork;
-                preferences.setMyPreferenceString(PresenterMode.this, "setCurrent", newval);
-                // Tell the user that the song has been added.
-                StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" "
-                        + getResources().getString(R.string.addedtoset);
-                ShowToast.showToast(PresenterMode.this);
-                // Vibrate to indicate something has happened
-                DoVibrate.vibrate(PresenterMode.this, 50);
-
-                try {
-                    prepareOptionMenu();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                // Not a song
-                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                ShowToast.showToast(PresenterMode.this);
-            }
-        });
-        set_add.setOnLongClickListener(view -> {
-            if (!StaticVariables.whichSongFolder.startsWith("..") || (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals("")))) {
-                PopUpLongSongPressFragment.addtoSet(PresenterMode.this, preferences);
-                setActions.prepareSetList(PresenterMode.this, preferences);
-                StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
-                PopUpSetViewNew.makeVariation(PresenterMode.this, preferences);
-                loadSong();
-            } else {
-                // Not a song
-                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                ShowToast.showToast(PresenterMode.this);
-            }
-            return true;
-        });
-    }
-
-    @Override
+        // Not using page buttons as FABs on the screen, so do nothing
+    }@Override
     public void setupPageButtonsColors() {
         // Not using page buttons as FABs on the screen, so do nothing
     }

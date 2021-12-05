@@ -155,9 +155,7 @@ public class StageMode extends AppCompatActivity implements
     private TextView batterycharge;
     private ImageView batteryimage;
     private RelativeLayout batteryholder;
-    private FloatingActionButton action_search;
-    private FloatingActionButton set_add;
-    
+
     // The popup window (sticky)
     private PopupWindow stickyPopUpWindow;
 
@@ -1219,6 +1217,9 @@ public class StageMode extends AppCompatActivity implements
             CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
         }
 
+        // Add long press actions
+        menuButtonLongPressActions();
+
         /*
         MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
@@ -1447,9 +1448,9 @@ public class StageMode extends AppCompatActivity implements
             // Get the current orientation
             FullscreenActivity.mScreenOrientation = getResources().getConfiguration().orientation;
 
+            invalidateOptionsMenu();
             closeMyDrawers("both");
             resizeDrawers();
-
             loadSong();
         }
     }
@@ -1741,14 +1742,15 @@ public class StageMode extends AppCompatActivity implements
             if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
                 FullscreenActivity.newPosFloat = songscrollview.getScrollY();
             }
-            if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true)) {
-                // IV - Added handling for multi-page PDF
-                // Use checkCanScroll results
-                showFAB(scrollDownButton, checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)));
-                showFAB(scrollUpButton, checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0));
-            } else {
-                showFAB(scrollDownButton, false);
-                showFAB(scrollUpButton, false);
+
+            // IV - Added handling for multi-page PDF
+            // Use checkCanScroll results
+            // IV - Made invisible when so that they remain active areas on the screen
+            showFAB(scrollDownButton, checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)));
+            showFAB(scrollUpButton, checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0));
+            if (!preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true)) {
+                scrollDownButton.setAlpha((0.0f));
+                scrollUpButton.setAlpha((0.0f));
             }
 
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true) && StaticVariables.setView ) {
@@ -1766,8 +1768,7 @@ public class StageMode extends AppCompatActivity implements
     //@Override
     public void setupPageButtons() {
         runOnUiThread(() -> {
-            action_search = findViewById(R.id.action_search);
-            set_add = findViewById(R.id.set_add);
+            //coordinator_layout = findViewById(R.id.coordinator_layout);
 
             setButton = findViewById(R.id.setButton);
             padButton = findViewById(R.id.padButton);
@@ -1843,85 +1844,6 @@ public class StageMode extends AppCompatActivity implements
         // Set the sizes and the alphas
         pageButtonAlpha("");
 
-        // Set the menu listeners
-        action_search.setOnClickListener(view -> {
-            // Open/close the song drawer
-            openMyDrawers("song_toggle");
-        });
-        action_search.setOnLongClickListener(view -> {
-            if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "transpose";
-                openFragment();
-            } else {
-                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                ShowToast.showToast(StageMode.this);
-            }
-            return true;
-        });
-
-        set_add.setOnClickListener(view -> {
-            // A Nearby received song will get added as a variation
-            if (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals(""))) {
-                SetActions setActions;
-                setActions = new SetActions();
-                PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
-                setActions.prepareSetList(StageMode.this,preferences);
-                StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
-                PopUpSetViewNew.makeVariation(StageMode.this, preferences);
-                loadSong();
-                // Vibrate to indicate something has happened
-                DoVibrate.vibrate(StageMode.this, 50);
-
-                try {
-                    prepareOptionMenu();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (!StaticVariables.whichSongFolder.startsWith("..")) {
-                if (StaticVariables.whichSongFolder.equals(getResources().getString(R.string.mainfoldername)) ||
-                        StaticVariables.whichSongFolder.equals("MAIN") ||
-                        StaticVariables.whichSongFolder.equals("")) {
-                    StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
-                } else {
-                    StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"
-                            + StaticVariables.songfilename + "_**$";
-                }
-                // Allow the song to be added, even if it is already there
-                String newval = preferences.getMyPreferenceString(StageMode.this,"setCurrent","") + StaticVariables.whatsongforsetwork;
-                preferences.setMyPreferenceString(StageMode.this,"setCurrent",newval);
-                // Tell the user that the song has been added.
-                StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" "
-                        + getResources().getString(R.string.addedtoset);
-                ShowToast.showToast(StageMode.this);
-                // Vibrate to indicate something has happened
-                DoVibrate.vibrate(StageMode.this,50);
-
-                try {
-                    prepareOptionMenu();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                // Not a song
-                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                ShowToast.showToast(StageMode.this);
-            }
-        });
-        set_add.setOnLongClickListener(view -> {
-            if (!StaticVariables.whichSongFolder.startsWith("..") || (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals("")))) {
-                PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
-                setActions.prepareSetList(StageMode.this, preferences);
-                StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
-                PopUpSetViewNew.makeVariation(StageMode.this, preferences);
-                loadSong();
-            } else {
-                // Not a song
-                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                ShowToast.showToast(StageMode.this);
-            }
-            return true;
-        });
-        
         // IV - No animations for grouped buttons as the collapse of the group will 'animate' the click
         // Set the listeners
         setButtonLayout.setOnClickListener(view -> setButton.performClick());
@@ -8514,6 +8436,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public void onRouteSelected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo info, int reason) {
+            menuButtonLongPressActions ();
             super.onRouteSelected(router,info,reason);
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
             try {
@@ -8525,6 +8448,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info, int reason) {
+            menuButtonLongPressActions ();
             super.onRouteUnselected(router,info,reason);
             teardown();
             mSelectedDevice = null;
@@ -8533,6 +8457,7 @@ public class StageMode extends AppCompatActivity implements
         }
 
         void teardown() {
+            menuButtonLongPressActions ();
             try {
                 CastRemoteDisplayLocalService.stopService();
             } catch (Exception e) {
@@ -8551,18 +8476,22 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public void onRouteAdded(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+            menuButtonLongPressActions ();
         }
 
         @Override
         public void onRouteRemoved(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+            menuButtonLongPressActions ();
         }
 
         @Override
         public void onRouteChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+            menuButtonLongPressActions ();
         }
 
         @Override
         public void onRouteVolumeChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+            menuButtonLongPressActions ();
         }
     }
 
@@ -8849,5 +8778,56 @@ public class StageMode extends AppCompatActivity implements
                 e.printStackTrace();
             }
         }
+    }
+
+    private void menuButtonLongPressActions () {
+        // IV - Also called on Cast state change events as the dynamic icon causes a redraw of the menu without trigger of normal menu change calls!
+        new Handler().postDelayed(() -> {
+            // IV - Support long press of song icon to enter Transpose
+            final View view = findViewById(R.id.action_search);
+
+            if (view == null) {
+                // Not there yet! Try again.
+                menuButtonLongPressActions();
+            } else {
+                Log.d(TAG,"Menu Button found");
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (FullscreenActivity.isSong) {
+                            FullscreenActivity.whattodo = "transpose";
+                            openFragment();
+                        } else {
+                            StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                            ShowToast.showToast(StageMode.this);
+                        }
+                        return true;
+                    }
+                });
+
+                // IV - Support long press of '+' icon to directly add the song to the end of the set as a variation
+                final View view2 = findViewById(R.id.set_add);
+
+                if (view2 != null) {
+                    view2.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            if (!StaticVariables.whichSongFolder.startsWith("..") || (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals("")))) {
+                                PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
+                                setActions.prepareSetList(StageMode.this, preferences);
+                                StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
+                                PopUpSetViewNew.makeVariation(StageMode.this, preferences);
+                                loadSong();
+                            } else {
+                                // Not a song
+                                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(StageMode.this);
+                            }
+                            return true;
+                        }
+                    });
+                }
+            }
+        }, 500);
     }
 }

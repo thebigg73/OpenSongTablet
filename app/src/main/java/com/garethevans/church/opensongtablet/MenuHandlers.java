@@ -16,16 +16,27 @@ class MenuHandlers {
     public interface MyInterface {
         void openMyDrawers(String what);
         void openFragment();
+        void prepareOptionMenu();
     }
 
     static void actOnClicks(Context c, Preferences preferences, int menuitem) {
         MyInterface mListener = (MyInterface) c;
         StaticVariables.setMoveDirection = "";
 
+        final int search = R.id.action_search;
         final int settings = R.id.action_settings;
         final int fullsearch = R.id.action_fullsearch;
+        final int setadd = R.id.set_add;
 
         switch (menuitem) {
+
+            case search:
+                // Open/close the song drawer
+                if (mListener !=null) {
+                    mListener.openMyDrawers("song_toggle");
+                }
+                break;
+
             case settings:
                 // Open/close the option drawer
                 if (mListener !=null) {
@@ -37,6 +48,34 @@ class MenuHandlers {
                 // Full search window
                 FullscreenActivity.whattodo = "fullsearch";
                 mListener.openFragment();
+                break;
+
+            case setadd:
+                if (!StaticVariables.whichSongFolder.startsWith("..")) {
+                    if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+                            StaticVariables.whichSongFolder.equals("MAIN") ||
+                            StaticVariables.whichSongFolder.equals("")) {
+                        StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
+                    } else {
+                        StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"
+                                + StaticVariables.songfilename + "_**$";
+                    }
+                    // Allow the song to be added, even if it is already there
+                    String newval = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
+                    preferences.setMyPreferenceString(c,"setCurrent",newval);
+                    // Tell the user that the song has been added.
+                    StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" "
+                            + c.getResources().getString(R.string.addedtoset);
+                    ShowToast.showToast(c);
+                    // Vibrate to indicate something has happened
+                    DoVibrate.vibrate(c,50);
+
+                    try {
+                        mListener.prepareOptionMenu();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 break;
         }
     }
