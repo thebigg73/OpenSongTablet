@@ -3868,9 +3868,9 @@ public class StageMode extends AppCompatActivity implements
             songscrollview.setVerticalScrollBarEnabled(true);
         }
 
-        // Wait for animate
+        // IV - Same duration as animate in
         try {
-            Thread.sleep(200);
+            Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -4272,9 +4272,9 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // Decide on the best scaling
                 FullscreenActivity.padding = getPixelsFromDpi(16);
-                int availablewidth_1col = getAvailableWidth() - getPixelsFromDpi(16);
+                int availablewidth_1col = getAvailableWidth() - FullscreenActivity.padding;
                 int availableheight = (int) (preferences.getMyPreferenceFloat(StageMode.this,"stageModeScale", 0.8f) *
-                        getAvailableHeight()) - getPixelsFromDpi(16);
+                        getAvailableHeight()) - FullscreenActivity.padding;
 
                 for (int f = 0; f < FullscreenActivity.sectionviews.length; f++) {
                     float myscale_1_1_col_x = availablewidth_1col / (float) FullscreenActivity.viewwidth[f];
@@ -7163,7 +7163,8 @@ public class StageMode extends AppCompatActivity implements
                     } catch (Exception e) {
                         Log.d(TAG, "error updating the views");
                     }
-                }, 100);
+                    // IV - Duration a little longer than animate out
+                }, 20);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -8767,7 +8768,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void  songTransition_QOS () {
-        int songTransition_QOS_time = 750;
+        int songTransition_QOS_time = 400;
         // To give a more consistent speed of song change sleep when render is quick!
         // This is followed by animateout
         long diff = (System.currentTimeMillis() - songTransitionStart);
@@ -8790,7 +8791,6 @@ public class StageMode extends AppCompatActivity implements
                 // Not there yet! Try again.
                 menuButtonLongPressActions();
             } else {
-                Log.d(TAG,"Menu Button found");
                 view.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -8828,6 +8828,6 @@ public class StageMode extends AppCompatActivity implements
                     });
                 }
             }
-        }, 500);
+        }, 200);
     }
 }
