@@ -234,7 +234,7 @@ public class MakePDF {
                 // Chord line
                 if (displayChords) {
                     paint.setColor(chordColor);
-                    line = line.replaceFirst(".", " ");
+                    line = line.replaceFirst(".", "");
                 } else {
                     line = null;
                 }
@@ -249,12 +249,14 @@ public class MakePDF {
 
             } else if (line.startsWith(";")) {
                 // Comment or tab line
-                line = line.replaceFirst(";"," ");
+                line = line.replaceFirst(";","");
 
             } else {
                     // If none of the above, it's a lyrics line
-                    line = line.replace("_"," ");
-                    line = line.replace("|"," ");
+                    line = line
+                            .replace("_"," ")
+                            .replace("|"," ")
+                            .substring(1);
                     // IV - Same logic as in ProcessSong
                     if (!displayChords) {
                         // IV - Remove (....) comments when Stage or Presentation mode

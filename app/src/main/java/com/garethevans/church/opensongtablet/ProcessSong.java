@@ -420,7 +420,7 @@ public class ProcessSong extends Activity {
             }
         }
 
-        vals[0] = string;
+        vals[0] = string.trim();
 
         if (section.equals("")) {
             vals[0] = heading
@@ -2070,34 +2070,52 @@ public class ProcessSong extends Activity {
     }
 
     String songSectionText(Context c, Preferences preferences, int x) {
+        boolean displayChords = preferences.getMyPreferenceBoolean(c, "displayChords", true);
         boolean trimSections = preferences.getMyPreferenceBoolean(c, "trimSections", true);
         StringBuilder text = new StringBuilder();
         String[] heading = beautifyHeadings(StaticVariables.songSectionsLabels[x], c);
         if (heading[0].trim().equals("")) {
             text.append("Section:\n");
         } else {
-            text.append(heading[0].trim()).append(":");
+            text.append(heading[0].trim()).append(":\n");
         }
 
         int linenums = StaticVariables.sectionContents[x].length;
 
         // Go through each line and add the appropriate lyrics with chords in them
         for (int y = 0; y < linenums; y++) {
-            if (StaticVariables.sectionContents[x][y].length() > 1 &&
-                    StaticVariables.sectionContents[x][y].startsWith("[")) {
-                text.append("");
-            } else if (StaticVariables.sectionContents[x][y].length() > 1 &&
-                    StaticVariables.sectionContents[x][y].startsWith(" ") ||
-                    StaticVariables.sectionContents[x][y].startsWith(".") ||
-                    StaticVariables.sectionContents[x][y].startsWith(";")) {
-                // IV - Replace leading character with space to keep correct txt alignment
-                text.append(" ").append(StaticVariables.sectionContents[x][y].substring(1));
-            } else {
-                text.append(StaticVariables.sectionContents[x][y]);
+            if (StaticVariables.sectionContents[x][y].length() > 1) {
+                switch (StaticVariables.sectionLineTypes[x][y]) {
+                    case "heading":
+                        // Already added above
+                        break;
+                    case "comment":
+                        text.append(StaticVariables.sectionContents[x][y]).append("\n");
+                        break;
+                    case "chord":
+                        if (displayChords) {
+                            text.append(StaticVariables.sectionContents[x][y]).append("\n");
+                        }
+                        break;
+                    default:
+                        // If none of the above, it's a lyrics line without leading space
+                        // IV - Same logic as in ProcessSong
+                        if (!displayChords) {
+                            // IV - Remove (....) comments when Stage or Presentation mode
+                            if (!StaticVariables.whichMode.equals("Performance")) {
+                                StaticVariables.sectionContents[x][y] = StaticVariables.sectionContents[x][y].replaceAll("\\(.*?\\)", "");
+                            }
+                            // IV - Remove typical word splits, white space and trim - beautify!
+                            StaticVariables.sectionContents[x][y] = StaticVariables.sectionContents[x][y].replaceAll("_", "")
+                                    .replaceAll("\\s+-\\s+", "")
+                                    .replaceAll("\\s{2,}", " ")
+                                    .trim();
+                        }
+                        text.append(StaticVariables.sectionContents[x][y]).append("\n");
+                        break;
+                }
             }
-            text.append("\n");
         }
-        text.append("\n");
 
         if (trimSections) {
             text = new StringBuilder(text.toString().trim());
