@@ -28,6 +28,7 @@ class ExportPreparer {
     private String song_title;
     private String song_author;
     private String song_hymnnumber;
+    private String song_ccli;
     private String song_key;
     private String folderstoexport = "";
     private final ArrayList<String> filesinset = new ArrayList<>();
@@ -454,9 +455,6 @@ class ExportPreparer {
 
                                     // Set the default values exported with the text for the set
                                     song_title = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
-                                    song_author = "";
-                                    song_hymnnumber = "";
-                                    song_key = "";
                                     // Now try to improve on this info
                                     if (storageAccess.uriExists(c, songuri) && !isImgOrPDF(fname)) {
                                         // Read in the song title, author, copyright, hymnnumber, key
@@ -464,13 +462,16 @@ class ExportPreparer {
                                     }
                                     sb.append(song_title);
                                     if (!song_author.isEmpty()) {
-                                        sb.append(", ").append(song_author);
+                                        sb.append("¬ ").append(song_author);
                                     }
                                     if (!song_hymnnumber.isEmpty()) {
-                                        sb.append(", #").append(song_hymnnumber);
+                                        sb.append("¬ #").append(song_hymnnumber);
+                                    }
+                                    if (!song_ccli.isEmpty() && preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
+                                        sb.append("¬ CCLI Song # ").append(song_ccli);
                                     }
                                     if (!song_key.isEmpty()) {
-                                        sb.append(" (").append(song_key).append(")");
+                                        sb.append("¬ ").append(song_key);
                                     }
                                     sb.append("\n");
                                 } else if (xpp.getAttributeValue(null, "name").contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
@@ -527,7 +528,8 @@ class ExportPreparer {
         }
 
         // Send the settext back to the FullscreenActivity as emailtext
-        FullscreenActivity.emailtext = sb.toString();
+        // IV - , (comma) is the delimiter so use within content is replaced with " |" and the the temporary delimeter ¬ replaced with ,
+        FullscreenActivity.emailtext = sb.toString().replace(","," |").replace("¬",",");
         FullscreenActivity.exportsetfilenames = filesinset;
         FullscreenActivity.exportsetfilenames_ost = filesinset_ost;
 	}
@@ -539,6 +541,7 @@ class ExportPreparer {
 		song_title = "";
 		song_author = "";
         song_hymnnumber = "";
+        song_ccli = "";
 		song_key = "";
 
 
@@ -569,6 +572,8 @@ class ExportPreparer {
                         case "key":
                             song_key = LoadXML.parseFromHTMLEntities(xppSong.nextText());
                             break;
+                        case "ccli":
+                            song_ccli = LoadXML.parseFromHTMLEntities(xppSong.nextText());
                     }
                 }
                 eventType = xppSong.next();
