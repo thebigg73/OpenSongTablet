@@ -92,7 +92,7 @@ class Transpose {
     //  A trick! Minors arrive ending ┤m, the m is moved into the number to give numbers for minors. '┤ma' is treated as the start of major and is protected.
     private final String[] fromchordsnumm = "┤ma ┤m ├2m┤ ├5m┤ ├7m┤ ├Wm┤ ├Ym┤ ├1m┤ ├3m┤ ├4m┤ ├6m┤ ├8m┤ ├9m┤ ├Xm┤ ├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤ ¬".split(" ");
     private final String[] tosharpchords3 = "┤¬a m┤ »ais »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g Ais Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
-    private final String[] toflatchords3 =  "┤¬m m┤ »»»b »des »»es »ges »»as »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Des »Es Ges »As »»A »»H »»C »»D »»E »»F »»G m".split(" ");
+    private final String[] toflatchords3 =  "┤¬a m┤ »»»b »des »»es »ges »»as »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Des »Es Ges »As »»A »»H »»C »»D »»E »»F »»G m".split(" ");
     private String[] fromchordnumsnash;
     private String[] fromchordnumsnashtype;
     private String[] tonash;
@@ -120,7 +120,7 @@ class Transpose {
         catch (Exception ignored) {}
     }
 
-    // This is the lyric transpose engine
+    // This is the chord transpose engine
     String transposeString(Context c, Preferences preferences, String string, boolean forcesharps, boolean forceflats) {
         // StaticVariables: detectedChordFormat, newChordFormat, transposeDirection, transposeTimes must be set before call
         try {
@@ -461,7 +461,7 @@ class Transpose {
         // Remove chord space adjustment indicators
         key = key.replace("»","").replace("«","");
 
-        if (key.equals("G#") && preferences.getMyPreferenceBoolean(c,"prefKeyAb",true))         key = "Ab";
+        if      (key.equals("G#") && preferences.getMyPreferenceBoolean(c,"prefKeyAb",true))    key = "Ab";
         else if (key.equals("G#m") && preferences.getMyPreferenceBoolean(c,"prefKeyAbm",false)) key = "Abm";
         else if (key.equals("A#")  && preferences.getMyPreferenceBoolean(c,"prefKeyBb",true))   key = "Bb";
         else if (key.equals("A#m") && preferences.getMyPreferenceBoolean(c,"prefKeyBbm",true))  key = "Bbm";
