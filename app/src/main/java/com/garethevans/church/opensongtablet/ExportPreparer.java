@@ -178,14 +178,10 @@ class ExportPreparer {
         if (preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
             for (int q = 0; q < FullscreenActivity.exportsetfilenames.size(); q++) {
                 String s = FullscreenActivity.exportsetfilenames.get(q);
-
-                if (!isImgOrPDF(s)) {
-                    if (s.startsWith("/# Variation # - ")) {
-                        s = s.replace("# Variation # - ","../Variations/");
-                    }
-                    if (s.startsWith("/") && !s.contains(c.getResources().getString(R.string.mainfoldername))) {
-                        s = c.getResources().getString(R.string.mainfoldername) + s;
-                    }
+                // IV - Variations are not supported as not in DB [was doing s = s.replace("/# Variation # - ","../Variations/")];
+                if (!s.startsWith("/# Variation # - ") && !isImgOrPDF(s)) {
+                    s = s.substring(1);
+                    // IV - If a MAIN song (not a subfolder / song) then add main folder name
                     if (!s.contains("/")) {
                         s = c.getResources().getString(R.string.mainfoldername) + "/" + s;
                     }
