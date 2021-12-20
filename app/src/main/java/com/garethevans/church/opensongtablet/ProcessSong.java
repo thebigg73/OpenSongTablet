@@ -3092,7 +3092,7 @@ public class ProcessSong extends Activity {
 
         // If we have footer information add as [F__1] section
         if (footerInformation.length() > 0) {
-            FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "[F__1]\n" + footerInformation.toString();
+            FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n[F__1]\n" + footerInformation.toString();
         }
     }
 

@@ -810,14 +810,26 @@ public class StageMode extends AppCompatActivity implements
         songscrollview.setBackgroundColor(lyricsBackgroundColor);
         //songscrollview.setBackgroundColor(0xff0000ff);
 
-        // Enable the song and author section to link to edit song
-        songandauthor.setOnClickListener(v -> {
+        // Enable the song and author section to link to song details
+        songandauthor.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "songdetails";
             openFragment();
+        });
+        // Enable the song and author section to link to edit song
+        songandauthor.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "editsong";
+            openFragment();
+            return true;
         });
         batteryholder.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "actionbarinfo";
             openFragment();
+        });
+        // Give batteryholder long click the same action
+        batteryholder.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "actionbarinfo";
+            openFragment();
+            return true;
         });
 
         // Set up the navigation drawer

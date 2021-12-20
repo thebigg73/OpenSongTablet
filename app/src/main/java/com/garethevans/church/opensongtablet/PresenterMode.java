@@ -1229,13 +1229,26 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         noSecondScreen();
     }
     private void screenClickListeners() {
+        // Enable the song and author section to link to song details
         songandauthor.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "songdetails";
             openFragment();
         });
+        // Enable the song and author section to link to edit song
+        songandauthor.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "editsong";
+            openFragment();
+            return true;
+        });
         batteryholder.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "actionbarinfo";
             openFragment();
+        });
+        // Give batteryholder long click the same action
+        batteryholder.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "actionbarinfo";
+            openFragment();
+            return true;
         });
         pres_details.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "songdetails";
