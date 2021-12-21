@@ -14,11 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.BottomSheetTransposeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetTransposeBinding;
 
 public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
@@ -95,7 +95,34 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
         myView.assumePreferred.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 requireContext(), "chordFormatUsePreferred", false));
-        usePreferredChordFormat(myView.assumePreferred.isChecked());
+        String hint;
+        switch (mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),
+                "",1)) {
+            case 1:
+            default:
+                hint = getString(R.string.chordformat_1);
+                break;
+            case 2:
+                hint = getString(R.string.chordformat_2);
+                break;
+            case 3:
+                hint = getString(R.string.chordformat_3);
+                break;
+            case 4:
+                hint = getString(R.string.chordformat_4);
+                break;
+            case 5:
+                hint = getString(R.string.chordformat_5);
+                break;
+            case 6:
+                hint = getString(R.string.chordformat_6);
+                break;
+        }
+        myView.assumePreferred.setHint(hint);
+
+
+
+        usePreferredChordFormat(myView.assumePreferred.getChecked());
 
         // Set the detected chordformat
         switch (mainActivityInterface.getSong().getDetectedChordFormat()) {
@@ -158,7 +185,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             }
         });
 
-        myView.assumePreferred.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        myView.assumePreferred.getSwitch().setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
             usePreferredChordFormat(isChecked);
         });
@@ -178,9 +205,11 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
         if (trueorfalse) {
             formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
+            myView.detectedChordFormatText.setVisibility(View.GONE);
             myView.chooseFormatLinearLayout.setVisibility(View.GONE);
         } else {
             formattouse = mainActivityInterface.getSong().getDetectedChordFormat();
+            myView.detectedChordFormatText.setVisibility(View.VISIBLE);
             myView.chooseFormatLinearLayout.setVisibility(View.VISIBLE);
         }
 
@@ -199,6 +228,9 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 break;
             case 5:
                 myView.chordFormat5Radio.setChecked(true);
+                break;
+            case 6:
+                myView.chordFormat6Radio.setChecked(true);
                 break;
         }
     }
@@ -250,8 +282,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
             transposeTimes = Math.abs(transposeTimes);
 
-            boolean ignoreChordFormat = myView.assumePreferred.isChecked();
-            int newChordFormat = 1;
+            boolean ignoreChordFormat = myView.assumePreferred.getChecked();
+            int newChordFormat;
             if (ignoreChordFormat) {
                 newChordFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
             } else {
