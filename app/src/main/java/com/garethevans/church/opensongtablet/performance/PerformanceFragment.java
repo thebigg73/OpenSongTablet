@@ -164,18 +164,18 @@ public class PerformanceFragment extends Fragment {
                 } else {
                     myView.pageHolder.startAnimation(animSlideOut);
                 }
+
+                // Reset the views
+                mainActivityInterface.setSectionViews(null);
+                mainActivityInterface.setSongSheetTitleLayout(null);
+
+                // Now reset the song
+                mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
+                        mainActivityInterface.getSong(),false));
+
+                mainActivityInterface.moveToSongInSongMenu();
+                prepareSongViews();
             });
-
-            // Reset the views
-            mainActivityInterface.setSectionViews(null);
-            requireActivity().runOnUiThread(() -> mainActivityInterface.setSongSheetTitleLayout(null));
-
-            // Now reset the song
-            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
-                    mainActivityInterface.getSong(),false));
-
-            requireActivity().runOnUiThread(this::prepareSongViews);
-            mainActivityInterface.moveToSongInSongMenu();
         }).start();
     }
     private void prepareSongViews() {
@@ -216,7 +216,6 @@ public class PerformanceFragment extends Fragment {
                     } else {
                         animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
                     }
-
                     myView.pdfView.startAnimation(animSlideIn);
                 });
             }
@@ -408,7 +407,6 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getPreferences().
                             getMyPreferenceBoolean(requireContext(), "stickyAuto", true)) || forceShow) {
                 // This is called from the MainActivity when we clicked on the page button
-
                 stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);
             } }
     }

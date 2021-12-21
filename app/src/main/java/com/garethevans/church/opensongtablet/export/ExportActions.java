@@ -78,7 +78,7 @@ public class ExportActions {
     }
 
     public Uri getActualSongFile(Context c, MainActivityInterface mainActivityInterface,
-                             String subfolder, String filename) {
+                                 String subfolder, String filename) {
         return mainActivityInterface.getStorageAccess().getUriForItem(c,
                 mainActivityInterface, "Songs", subfolder, filename);
     }
@@ -104,7 +104,7 @@ public class ExportActions {
     }
 
     public ArrayList<Uri> addOpenSongAppSetsToUris(Context c, MainActivityInterface mainActivityInterface,
-                                        ArrayList<String> setNames) {
+                                                   ArrayList<String> setNames) {
         ArrayList<Uri> extraUris = new ArrayList<>();
         for (String setName : setNames) {
             extraUris.add(mainActivityInterface.getStorageAccess().copyFromTo(c,
@@ -115,7 +115,7 @@ public class ExportActions {
     }
 
     public ArrayList<Uri> addOpenSongSetsToUris(Context c, MainActivityInterface mainActivityInterface,
-                                                   ArrayList<String> setNames) {
+                                                ArrayList<String> setNames) {
         ArrayList<Uri> extraUris = new ArrayList<>();
         for (String setName : setNames) {
             extraUris.add(mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
@@ -180,79 +180,82 @@ public class ExportActions {
                                             xpp.getAttributeValue(null, "name").contains("# " +
                                                     c.getResources().getString(R.string.note) + " # - ") ||
                                             xpp.getAttributeValue(null, "type").equals("song")){
-                                    String folder;
-                                    String filename = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name")));
-                                    String title = "";
-                                    String key = "";
-                                    String author = "";
-                                    String hymn = "";
-                                    String ccli = "";
-                                    String custom = "";
-                                    String id;
+                                        String folder;
+                                        String filename = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "name")));
+                                        String title = "";
+                                        String key = "";
+                                        String author = "";
+                                        String hymn = "";
+                                        String ccli = "";
+                                        String custom = "";
+                                        String id;
 
-                                    if (filename.contains("# " + c.getString(R.string.variation) + " # - ")) {
-                                        filename = filename.replace("# " + c.getString(R.string.variation) + " # - ", "");
-                                        id = "../Variations/" + filename;
-                                        custom = c.getString(R.string.variation);
+                                        if (filename.contains("# " + c.getString(R.string.variation) + " # - ")) {
+                                            filename = filename.replace("# " + c.getString(R.string.variation) + " # - ", "");
+                                            id = "../Variations/" + filename;
+                                            custom = c.getString(R.string.variation);
 
-                                    } else if (filename.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
-                                        filename = filename.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
-                                        id = "../Notes/" + filename;
-                                        custom = c.getString(R.string.note);
+                                        } else if (filename.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
+                                            filename = filename.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
+                                            id = "../Notes/" + filename;
+                                            custom = c.getString(R.string.note);
 
-                                    } else {
-                                        // This is a song, which should be in the database
-                                        folder = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "path")));
-                                        if (xpp.getAttributeCount() > 2) {
-                                            // Assume a key has been set as well
-                                            key = xpp.getAttributeValue("", "prefKey");
+                                        } else {
+                                            // This is a song, which should be in the database
+                                            folder = stripSlashes(mainActivityInterface.getProcessSong().parseHTML(xpp.getAttributeValue(null, "path")));
+                                            if (xpp.getAttributeCount() > 2) {
+                                                // Assume a key has been set as well
+                                                key = xpp.getAttributeValue("", "prefKey");
+                                            }
+                                            if (folder.isEmpty()) {
+                                                folder = c.getString(R.string.mainfoldername);
+                                            }
+                                            Song thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface, folder, filename);
+                                            if (key == null) {
+                                                // Not stored in the set, so look for the song value
+                                                key = thisSong.getKey();
+                                            }
+                                            title = thisSong.getTitle();
+                                            author = thisSong.getAuthor();
+                                            hymn = thisSong.getHymnnum();
+                                            ccli = thisSong.getCcli();
+                                            id = thisSong.getSongid();
                                         }
-                                        if (folder.isEmpty()) {
-                                            folder = c.getString(R.string.mainfoldername);
+
+                                        key = fixNull(key);
+                                        if (!key.isEmpty()) {
+                                            key = " (" + key + ")";
                                         }
-                                        Song thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface, folder, filename);
-                                        if (key == null) {
-                                            // Not stored in the set, so look for the song value
-                                            key = thisSong.getKey();
+
+                                        author = fixNull(author);
+                                        if (!author.isEmpty()) {
+                                            author = "¬ " + author;
                                         }
-                                        title = thisSong.getTitle();
-                                        author = thisSong.getAuthor();
-                                        hymn = thisSong.getHymnnum();
-                                        ccli = thisSong.getCcli();
-                                        id = thisSong.getSongid();
-                                    }
 
-                                    key = fixNull(key);
-                                    if (!key.isEmpty()) {
-                                        key = " (" + key + ")";
-                                    }
+                                        hymn = fixNull(hymn);
+                                        if (!hymn.isEmpty()) {
+                                            hymn = "¬ #" + hymn;
+                                        }
 
-                                    author = fixNull(author);
-                                    if (!author.isEmpty()) {
-                                        author = "," + author;
-                                    }
+                                        ccli = fixNull(ccli);
+                                        if (!ccli.isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
+                                            ccli = "¬ CCLI Song #" + ccli;
+                                        }
 
-                                    hymn = fixNull(hymn);
-                                    if (!hymn.isEmpty()) {
-                                        hymn = ", #" + hymn;
-                                    }
+                                        title = fixNull(title);
+                                        if (title.isEmpty()) {
+                                            title = filename;
+                                        }
 
-                                    ccli = fixNull(ccli);
-                                    if (!ccli.isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
-                                            ccli = ", CCLI Song #" + ccli;
-                                    }
+                                        if (!custom.isEmpty()) {
+                                            custom = " (" + custom + ")";
+                                        }
+                                        String bittoadd = title + custom + author + hymn + ccli + key + "\n";
 
-                                    title = fixNull(title);
-                                    if (title.isEmpty()) {
-                                        title = filename;
+                                        // IV - , (comma) is the delimiter so use within content is replaced with " |" and the the temporary delimeter ¬ replaced with ,
+                                        stringBuilderSet.append(bittoadd.replace(","," |").replace("¬", ","));
+                                        stringBuilderIDs.append(id).append("\n");
                                     }
-
-                                    if (!custom.isEmpty()) {
-                                        custom = " (" + custom + ")";
-                                    }
-                                    stringBuilderSet.append(title).append(custom).append(author).append(hymn).append(ccli).append(key).append("\n");
-                                    stringBuilderIDs.append(id).append("\n");
-                                }
                                     break;
                                 case "scripture":
                                     // Get Scripture

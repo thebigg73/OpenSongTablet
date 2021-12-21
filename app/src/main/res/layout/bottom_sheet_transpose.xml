@@ -29,8 +29,8 @@
                 android:text="@null"
                 app:thumbRadius="24dp"
                 app:trackHeight="8dp"
-                android:valueFrom="-6"
-                android:valueTo="6"
+                android:valueFrom="-12"
+                android:valueTo="12"
                 app:trackColor="@color/colorSecondary"
                 app:thumbColor="@color/colorAltSecondary"/>
 

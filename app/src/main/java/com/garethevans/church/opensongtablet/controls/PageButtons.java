@@ -44,7 +44,7 @@ public class PageButtons {
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
 
-    private final int translateY;
+    private int translateY;
 
     public PageButtons(Context c) {
         // Set up the return interface for sending instructions back to the main activity
@@ -56,10 +56,10 @@ public class PageButtons {
         prepareLongActionText(c);
         prepareDrawableIds();
 
-        translateY = c.getResources().getDisplayMetrics().heightPixels;
-
         // Now get our button preferences
         setPreferences(c);
+
+        translateY = c.getResources().getDisplayMetrics().heightPixels;
     }
 
     public void setMainFABS(MainActivityInterface mainActivityInterface,
@@ -100,7 +100,7 @@ public class PageButtons {
     }
     private final OvershootInterpolator interpolator = new OvershootInterpolator(1.0f);
 
-    public void animatePageButton(Context c, boolean open) {
+    public void animatePageButton(Context c, MainActivityInterface mainActivityInterface, boolean open) {
         if (open) {
             ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();
@@ -118,6 +118,8 @@ public class PageButtons {
                 getFAB(x).setVisibility(View.GONE);
             }
         }
+        pageButtonsLayout.invalidate();
+
         animateView(pageButtonsLayout,open);
     }
 
@@ -137,7 +139,7 @@ public class PageButtons {
         ViewCompat.animate(view).alpha(alpha).translationYBy(translationBy).setDuration(500).
                 setInterpolator(interpolator).withStartAction(startRunnable).withEndAction(endRunnable).start();
     }
-    private Runnable hideView(View view,boolean show) {
+    private Runnable hideView(View view, boolean show) {
         return () -> {
             if (show) {
                 view.setVisibility(View.VISIBLE);

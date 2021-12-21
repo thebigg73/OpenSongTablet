@@ -5,8 +5,8 @@
      android:fromXDelta="0%" android:toXDelta="-100%"
      android:fromYDelta="0%" android:toYDelta="0%"
      android:duration="10" />
-  <alpha
+  <!--<alpha
       android:fromAlpha="1.0"
       android:toAlpha="0.0"
-      android:duration="10" />
+      android:duration="10" />-->
 </set>

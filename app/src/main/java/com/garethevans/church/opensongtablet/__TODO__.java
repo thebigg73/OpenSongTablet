@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet;
 
 public class __TODO__ {
 
+    // Slide in an out to be smoother.  Swipe seems to delay before slide out
+
     //TODO - still to complete
     // Anything still listed below needs work
     // Anything missing has been tested as ok

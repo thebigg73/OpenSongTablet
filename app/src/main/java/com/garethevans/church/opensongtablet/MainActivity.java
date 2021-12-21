@@ -406,7 +406,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
     }
     @Override
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
@@ -432,7 +431,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
                 myView.pageButtonRight.custom4Button,myView.pageButtonRight.custom5Button,
                 myView.pageButtonRight.custom6Button,myView.pageButtonRight.bottomButtons);
-        pageButtons.animatePageButton(this,false);
+        pageButtons.animatePageButton(this,mainActivityInterface,false);
     }
     private void startBoot() {
         // The BootCheckFragment has already started and displayed the splash logo
@@ -1421,13 +1420,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Page buttons
     private void animatePageButtons() {
         float rotation = myView.pageButtonRight.actionFAB.getRotation();
-        pageButtons.animatePageButton(this,rotation == 0);
+        pageButtons.animatePageButton(this,mainActivityInterface, rotation == 0);
     }
     @Override
     public void updatePageButtonLayout() {
         // We have changed something about the page buttons (or initialising them
         if (myView.pageButtonRight.actionFAB.getRotation()!=0) {
-            pageButtons.animatePageButton(this,false);
+            pageButtons.animatePageButton(this, mainActivityInterface,false);
         }
         pageButtons.updateColors(this);
         pageButtons.setPageButton(this, myView.pageButtonRight.actionFAB, -1, false);

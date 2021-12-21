@@ -89,9 +89,27 @@ public class AppActionBar {
             } else {
                 hideView(key, true);
             }
-            title.setOnClickListener(v -> openDetails(mainActivityInterface));
-            author.setOnClickListener(v -> openDetails(mainActivityInterface));
-            key.setOnClickListener(v -> openDetails(mainActivityInterface));
+            if (title!=null) {
+                title.setOnClickListener(v -> openDetails(mainActivityInterface));
+                title.setOnLongClickListener(view -> {
+                    editSong(mainActivityInterface);
+                    return true;
+                });
+            }
+            if (author!=null) {
+                author.setOnClickListener(v -> openDetails(mainActivityInterface));
+                author.setOnLongClickListener(view -> {
+                    editSong(mainActivityInterface);
+                    return true;
+                });
+            }
+            if (key!=null) {
+                key.setOnClickListener(v -> openDetails(mainActivityInterface));
+                key.setOnLongClickListener(view -> {
+                    editSong(mainActivityInterface);
+                    return true;
+                });
+            }
         } else {
             // We are in a different fragment, so don't hide the song info stuff
             actionBar.show();
@@ -105,8 +123,15 @@ public class AppActionBar {
     }
 
     private void openDetails(MainActivityInterface mainActivityInterface) {
-        SongDetailsBottomSheet songDetailsBottomSheet = new SongDetailsBottomSheet();
-        songDetailsBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"songDetailsBottomSheet");
+        if (!mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp")) {
+            SongDetailsBottomSheet songDetailsBottomSheet = new SongDetailsBottomSheet();
+            songDetailsBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "songDetailsBottomSheet");
+        }
+    }
+    private void editSong(MainActivityInterface mainActivityInterface) {
+        if (!mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp")) {
+            mainActivityInterface.navigateToFragment("opensongapp://settings/edit", 0);
+        }
     }
 
     public void setActionBarCapo(TextView capo, String string) {

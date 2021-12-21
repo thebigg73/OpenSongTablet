@@ -766,7 +766,6 @@ public class SetActions {
         return sb;
     }
 
-
     public void loadSets(Context c, MainActivityInterface mainActivityInterface, ArrayList<Uri> setsToLoad) {
         // This is called via a new thread in the manage sets fragment
         // We can append multiple sets together

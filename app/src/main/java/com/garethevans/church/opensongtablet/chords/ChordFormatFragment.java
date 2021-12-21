@@ -65,7 +65,7 @@ public class ChordFormatFragment extends Fragment {
 
         myView.assumePreferred.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 requireContext(),"chordFormatUsePreferred",false));
-        showHideView(myView.chordFormat,myView.assumePreferred.isChecked());
+        showHideView(myView.chordFormatLayout,myView.assumePreferred.isChecked());
         int formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
         switch (formattouse) {
             case 0:

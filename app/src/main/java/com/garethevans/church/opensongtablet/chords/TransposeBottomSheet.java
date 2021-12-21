@@ -226,17 +226,30 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void doTranspose() {
+        getValues();
         new Thread(() -> {
-            requireActivity().runOnUiThread(this::getValues);
-
             String transposeDirection;
-            if (myView.transposeSlider.getValue()>=0) {
+            int transposeTimes = (int)myView.transposeSlider.getValue();
+
+            // Simplify slider to minimum number of transpose steps
+            // Why transpose up 11 times, when you can just transpose down once.
+            // Giving the option as it makes it easier for the user to select new key
+            if (transposeTimes>6) {
+                // 7>-5  8>-4 9>-3 10>-2 11>-1 12>0
+                transposeTimes = transposeTimes-12;
+            } else if (transposeTimes<-6) {
+                // -7>5 -8>4 -9>3 -10>2 -11>1 -12>0
+                transposeTimes = 12+transposeTimes;
+            }
+
+            if (transposeTimes>=0) {
                 transposeDirection = "+1";
             } else {
                 transposeDirection = "-1";
             }
 
-            int transposeTimes = Math.abs((int)myView.transposeSlider.getValue());
+            transposeTimes = Math.abs(transposeTimes);
+
             boolean ignoreChordFormat = myView.assumePreferred.isChecked();
             int newChordFormat = 1;
             if (ignoreChordFormat) {
@@ -245,23 +258,12 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 newChordFormat = mainActivityInterface.getSong().getDetectedChordFormat();
             }
 
-            // Do the transpose
+            // Do the transpose (song and key)
             mainActivityInterface.getTranspose().doTranspose(requireContext(),mainActivityInterface,mainActivityInterface.getSong(),
                     transposeDirection, transposeTimes, newChordFormat);
 
-            // Change the song key if set
-            if (!mainActivityInterface.getSong().getKey().isEmpty()) {
-                String keyNum = mainActivityInterface.getTranspose().keyToNumber(mainActivityInterface.getSong().getKey());
-                String keyNumTransposed = mainActivityInterface.getTranspose().transposeNumber(keyNum,transposeDirection,transposeTimes);
-                String newKey = mainActivityInterface.getTranspose().numberToKey(requireContext(),mainActivityInterface,keyNumTransposed);
-                //String newKey = mainActivityInterface.getTranspose().numberToKey(requireContext(),
-                //        mainActivityInterface,mainActivityInterface.getTranspose().transposeKey(keyNum,transposeDirection,transposeTimes));
-                mainActivityInterface.getSong().setKey(newKey);
-            }
-
             // Now save the changes
             mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface);
-
 
 
             requireActivity().runOnUiThread(() -> {
