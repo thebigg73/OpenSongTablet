@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 android {
 
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion '31.0.0'
     buildTypes {
         release {
@@ -50,9 +50,9 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-cast:20.1.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:20.1.0'
-    implementation 'com.google.android.gms:play-services-nearby:18.0.0'
+    implementation 'com.google.android.gms:play-services-cast:21.0.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:21.0.0'
+    implementation 'com.google.android.gms:play-services-nearby:18.0.1'
 
     implementation 'androidx.mediarouter:mediarouter:1.2.5'
     implementation 'androidx.appcompat:appcompat:1.4.0'
