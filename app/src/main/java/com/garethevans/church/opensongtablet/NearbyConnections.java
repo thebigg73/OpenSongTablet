@@ -37,19 +37,19 @@ import java.util.UUID;
 
 public class NearbyConnections implements NearbyInterface {
 
-    Context context;
-    OptionMenuListeners optionMenuListeners;
-    Preferences preferences;
-    StorageAccess storageAccess;
-    ProcessSong processSong;
-    SQLiteHelper sqLiteHelper;
+    final Context context;
+    final OptionMenuListeners optionMenuListeners;
+    final Preferences preferences;
+    final StorageAccess storageAccess;
+    final ProcessSong processSong;
+    final SQLiteHelper sqLiteHelper;
 
     private boolean isDiscovering = false, isAdvertising = false;
 
-    AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
-    DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+    final AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+    final DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
 
-    NearbyReturnActionsInterface nearbyReturnActionsInterface;
+    final NearbyReturnActionsInterface nearbyReturnActionsInterface;
 
     private final ArrayList<String> connectedEndPoints;
     private final ArrayList<String> connectedEndPointsNames;
@@ -84,7 +84,7 @@ public class NearbyConnections implements NearbyInterface {
     String connectionEndPointName;
 
     // The stuff used for Google Nearby for connecting devices
-    String serviceId = "com.garethevans.church.opensongtablet";
+    final String serviceId = "com.garethevans.church.opensongtablet";
     private void updateConnectionLog(String newMessage) {
         if (newMessage!=null) {
             StaticVariables.connectionLog += newMessage + "\n";
@@ -409,7 +409,7 @@ public class NearbyConnections implements NearbyInterface {
         String infoPayload = null;
         String infoFilePayload = null;
         Payload payloadFile = null;
-        Boolean largePayLoad = false;
+        boolean largePayLoad = false;
 
         Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
@@ -611,6 +611,8 @@ public class NearbyConnections implements NearbyInterface {
         } else if (!StaticVariables.isHost && StaticVariables.isConnected && StaticVariables.receiveHostFiles) {
             // The new file goes into our Received folder
             folder = "../Received";
+            // IV - Store the received song filename in case the user wants to duplicate the received song
+            StaticVariables.receivedSongfilename = filename;
             newLocation = storageAccess.getUriForItem(context, preferences, "Received", "", filename);
             storageAccess.lollipopCreateFileForOutputStream(context, preferences, newLocation, null, "Received", "", filename);
         }

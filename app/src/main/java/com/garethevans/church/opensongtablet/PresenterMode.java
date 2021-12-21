@@ -1,5 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -91,9 +94,6 @@ import java.util.Set;
 
 import lib.folderpicker.FolderPicker;
 
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
-
 public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyInterface,
         SongMenuListeners.MyInterface, PopUpChooseFolderFragment.MyInterface,
         PopUpSongDetailsFragment.MyInterface, PopUpEditSongFragment.MyInterface,
@@ -124,10 +124,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpRandomSongFragment.MyInterface,
         PopUpConnectFragment.MyInterface,
         PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
-        PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
-
+        PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface,
+        PopUpChordFormatFragment.MyInterface {
     private DialogFragment newFragment;
 
+    private final String TAG = "PresenterMode";
     // Helper classes
     private SetActions setActions;
     private ExportPreparer exportPreparer;
@@ -297,7 +298,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("PresenterMode", "Welcome to Presentation Mode");
+        Log.d(TAG, "Welcome to Presentation Mode");
 
         StaticVariables.activity = PresenterMode.this;
         FullscreenActivity.mContext = PresenterMode.this;
@@ -366,7 +367,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             br = new BatteryMonitor();
             PresenterMode.this.registerReceiver(br, filter);
         } catch (Exception e) {
-            Log.d("PresenterMode", "Didn't register battery");
+            Log.d(TAG, "Didn't register battery");
         }
 
         // Setup the CastContext
@@ -375,7 +376,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         try {
             CastContext.getSharedInstance(this);
         } catch (Exception e) {
-            Log.d("PresenterMode", "No Google Services");
+            Log.d(TAG, "No Google Services");
         }
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
@@ -471,14 +472,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             FullscreenActivity.appRunning = false;
             mMediaRouter.removeCallback(mMediaRouterCallback);
         } catch (Exception e) {
-            Log.d("PresenterMode", "Problem removing mediaroutercallback");
+            Log.d(TAG, "Problem removing mediaroutercallback");
         }
 
         if (br!=null) {
             try {
                 PresenterMode.this.unregisterReceiver(br);
             } catch (Exception e2) {
-                Log.d("PresenterMode", "Battery receiver not registerd, so no need to unregister");
+                Log.d(TAG, "Battery receiver not registerd, so no need to unregister");
             }
         }
     }
@@ -494,11 +495,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         // Battery monitor
@@ -506,7 +502,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 PresenterMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                Log.d("PresenterMode", "Battery monitor not registered anymore");
+                Log.d(TAG, "Battery monitor not registered anymore");
             }
         }
         tryCancelAsyncTasks();
@@ -712,41 +708,50 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void adjustABInfo() {
+        boolean inuse = false;
         // Change the visibilities
         if (preferences.getMyPreferenceBoolean(PresenterMode.this,"batteryDialOn",true)) {
             batteryimage.setVisibility(View.VISIBLE);
+            inuse = true;
         } else {
             batteryimage.setVisibility(View.INVISIBLE);
         }
         if (preferences.getMyPreferenceBoolean(PresenterMode.this,"batteryTextOn",true)) {
             batterycharge.setVisibility(View.VISIBLE);
+            inuse = true;
         } else {
             batterycharge.setVisibility(View.GONE);
         }
         if (preferences.getMyPreferenceBoolean(PresenterMode.this,"clockOn",true)) {
             digitalclock.setVisibility(View.VISIBLE);
+            inuse = true;
         } else {
             digitalclock.setVisibility(View.GONE);
         }
 
-        // Set the text sizes
-        batterycharge.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this, "batteryTextSize",9.0f));
-        digitalclock.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"clockTextSize",9.0f));
-        songtitle_ab.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songTitleSize",13.0f));
-        songcapo_ab.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songTitleSize",13.0f));
-        songauthor_ab.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songAuthorSize",11.0f));
-        songkey_ab.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songTitleSize",13.0f));
+        if (inuse) {
+            // Set the text sizes
+            batterycharge.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this, "batteryTextSize", 9.0f));
+            digitalclock.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this, "clockTextSize", 9.0f));
+            songtitle_ab.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this, "songTitleSize", 13.0f));
+            songcapo_ab.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this, "songTitleSize", 13.0f));
+            songauthor_ab.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this, "songAuthorSize", 11.0f));
+            songkey_ab.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this, "songTitleSize", 13.0f));
 
-        // Set the time format
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df;
-        if (preferences.getMyPreferenceBoolean(PresenterMode.this,"clock24hFormat",true)) {
-            df = new SimpleDateFormat("HH:mm", StaticVariables.locale);
-        } else {
-            df = new SimpleDateFormat("h:mm", StaticVariables.locale);
+            // Set the time format
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df;
+            if (preferences.getMyPreferenceBoolean(PresenterMode.this, "clock24hFormat", true)) {
+                df = new SimpleDateFormat("HH:mm", StaticVariables.locale);
+            } else {
+                df = new SimpleDateFormat("h:mm", StaticVariables.locale);
+            }
+            String formattedTime = df.format(c.getTime());
+            digitalclock.setText(formattedTime);
+            batteryholder.setVisibility(View.VISIBLE);
+        }else {
+            batteryholder.setVisibility(View.GONE);
         }
-        String formattedTime = df.format(c.getTime());
-        digitalclock.setText(formattedTime);
     }
 
     @Override
@@ -789,16 +794,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // It will get set back to false in the post execute of the async task
                 FullscreenActivity.alreadyloading = true;
 
-                // Get the song indexes
-                //listSongFiles.getCurrentSongIndex();
-
-                // Don't do this for a blacklisted filetype (application, video, audio)
-                Uri uri = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", StaticVariables.whichSongFolder,
-                        StaticVariables.songfilename);
+                // Remove any capokey
+                FullscreenActivity.capokey = "";
 
                 // Declare we have loaded a new song (for the ccli log).
                 // This stops us reporting projecting every section
                 newsongloaded = true;
+
+                // We may transpose to Nashville and need to init
+                StaticVariables.fromchordnumsnash = null;
+                StaticVariables.tochordnumsnash = null;
 
                 doCancelAsyncTask(loadsong_async);
                 loadsong_async = new LoadSong();
@@ -1001,6 +1006,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void setUpBatteryMonitor() {
         // Get clock
         try {
+            boolean inuse = false;
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df;
             if (preferences.getMyPreferenceBoolean(PresenterMode.this,"clock24hFormat",true)) {
@@ -1011,6 +1017,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             String formattedTime = df.format(c.getTime());
             if (preferences.getMyPreferenceBoolean(PresenterMode.this,"clockOn",true)) {
                 digitalclock.setVisibility(View.VISIBLE);
+                inuse = true;
             } else {
                 digitalclock.setVisibility(View.GONE);
             }
@@ -1022,6 +1029,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             String charge = i + "%";
             if (preferences.getMyPreferenceBoolean(PresenterMode.this,"batteryTextOn",true)) {
                 batterycharge.setVisibility(View.VISIBLE);
+                inuse = true;
             } else {
                 batterycharge.setVisibility(View.GONE);
             }
@@ -1031,12 +1039,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             StaticVariables.ab_height = abh;
             if (preferences.getMyPreferenceBoolean(PresenterMode.this,"batteryDialOn",true)) {
                 batteryimage.setVisibility(View.VISIBLE);
+                inuse = true;
             } else {
                 batteryimage.setVisibility(View.INVISIBLE);
             }
             if (ab != null && abh > 0) {
                 BitmapDrawable bmp = BatteryMonitor.batteryImage(PresenterMode.this, preferences, i, abh);
                 batteryimage.setImageDrawable(bmp);
+            }
+            if (inuse) {
+                batteryholder.setVisibility(View.VISIBLE);
+            } else {
+                batteryholder.setVisibility(View.GONE);
             }
 
             // Ask the app to check again in 60s
@@ -1215,13 +1229,26 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         noSecondScreen();
     }
     private void screenClickListeners() {
+        // Enable the song and author section to link to song details
         songandauthor.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "songdetails";
             openFragment();
         });
+        // Enable the song and author section to link to edit song
+        songandauthor.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "editsong";
+            openFragment();
+            return true;
+        });
         batteryholder.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "actionbarinfo";
             openFragment();
+        });
+        // Give batteryholder long click the same action
+        batteryholder.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "actionbarinfo";
+            openFragment();
+            return true;
         });
         pres_details.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "songdetails";
@@ -1735,7 +1762,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             case "wipeallsongs":
                 // Wipe all songs - Getting rid of this!!!!!
-                Log.d("PresenterMode", "Trying wipe songs folder - ignoring");
+                Log.d(TAG, "Trying wipe songs folder - ignoring");
                 /*storageAccess.wipeFolder(PresenterMode.this, preferences, "Songs", "");
                 // Rebuild the song list
                 storageAccess.listSongs(PresenterMode.this, preferences);
@@ -1862,7 +1889,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 StaticVariables.projectedLineTypes[StaticVariables.currentSection] = new String[linesnow];
                 for (int i = 0; i < linesnow; i++) {
                     StaticVariables.projectedLineTypes[StaticVariables.currentSection][i] =
-                            processSong.determineLineTypes(StaticVariables.projectedContents[StaticVariables.currentSection][i], PresenterMode.this);
+                        processSong.determineLineTypes(StaticVariables.projectedContents[StaticVariables.currentSection][i], PresenterMode.this);
+                    if (StaticVariables.projectedContents[StaticVariables.currentSection][i] != null &&
+                            StaticVariables.projectedContents[StaticVariables.currentSection][i].length() > 0 && (StaticVariables.projectedContents[StaticVariables.currentSection][i].startsWith(" ") ||
+                            StaticVariables.projectedContents[StaticVariables.currentSection][i].startsWith(".") || StaticVariables.projectedContents[StaticVariables.currentSection][i].startsWith(";"))) {
+                        StaticVariables.projectedContents[StaticVariables.currentSection][i] = StaticVariables.projectedContents[StaticVariables.currentSection][i].replaceAll("\\s+$", "");
+                    }
                 }
             }
 
@@ -1958,7 +1990,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("PresenterMode", "Error sending activity result to fragment");
+                Log.d(TAG, "Error sending activity result to fragment");
             }
 
         } else if (requestCode==StaticVariables.REQUEST_IMAGE_CODE) {
@@ -1966,7 +1998,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("PresenterMode", "Error sending activity result to fragment");
+                Log.d(TAG, "Error sending activity result to fragment");
             }
 
         } else if (requestCode==StaticVariables.REQUEST_BACKGROUND_IMAGE1 ||
@@ -1978,7 +2010,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
-                Log.d("PresenterMode", "Error sending activity result to fragment");
+                Log.d(TAG, "Error sending activity result to fragment");
             }
 
         } else if (requestCode == StaticVariables.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
@@ -2131,7 +2163,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Get the image location from the projectedSongSection
                 if (imagelocs[StaticVariables.currentSection] != null) {
                     String loc = imagelocs[StaticVariables.currentSection];
-                    Log.d("PresenterMode","image uri="+loc);
+                    Log.d(TAG,"image uri="+loc);
                     //StaticVariables.uriToLoad = Uri.parse(imagelocs[StaticVariables.currentSection]);
                     StaticVariables.uriToLoad = storageAccess.fixLocalisedUri(PresenterMode.this,preferences,loc);
                     loadImagePreview();
@@ -2681,7 +2713,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     StaticVariables.mMidi = StaticVariables.mMidi.replace("\n\n", "\n");
                     String[] midilines = StaticVariables.mMidi.trim().split("\n");
                     for (String ml : midilines) {
-                        Log.d("PresenterMode", "Sending "+ml);
+                        Log.d(TAG, "Sending "+ml);
                         if (midi!=null) {
                             midi.sendMidi(midi.returnBytesFromHexText(ml));
                         }
@@ -2717,7 +2749,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             String myval = selectedIndex.getText().toString();
                             Object obj = map.get(myval);
                             if (obj!=null) {
-                                song_list_view.setSelection((int)obj);
+                                // Using index so turn off fast scroll to have a clean display behaviour for index use
+                                song_list_view.setFastScrollEnabled(false);
+                                song_list_view.setSelection((int) obj);
                             }
                         }
                     } catch (Exception e) {
@@ -2737,7 +2771,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 
             Uri photoUri = getImageUri();
-            Log.d("PresenterMode", "photoUri=" + photoUri);
+            Log.d(TAG, "photoUri=" + photoUri);
             // Continue only if the File was successfully created
             if (photoUri != null) {
                 try {
@@ -2907,7 +2941,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Get clock time
                 long start = System.currentTimeMillis();
                 long end = start;
-                while (end < (start + (autoslidetime * 1000)) && isplayingautoslideshow) {
+                while (end < (start + (autoslidetime * 1000L)) && isplayingautoslideshow) {
                     try {
                         Thread.sleep(1000);
                     } catch (Exception e) {
@@ -3289,7 +3323,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // Google Nearby
     @Override
     public boolean requestNearbyPermissions() {
-        Log.d("PresenterMode", "Requesting nearby permissions");
+        Log.d(TAG, "Requesting nearby permissions");
         if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
             return true;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
@@ -3336,6 +3370,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         // If request is cancelled, the result arrays are empty.
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
@@ -3346,7 +3381,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 case 404:
                     // Access fine location, so can open the menu at 'Connect devices'
-                    Log.d("PresenterMode", "FINE LOCATION granted!");
+                    Log.d(TAG, "FINE LOCATION granted!");
                     break;
             }
         }
@@ -3397,95 +3432,32 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     FullscreenActivity.myLyrics = "";
                 }
 
-                // Don't process images or image slide details here.  No need.  Only do this for songs
-                if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {
+                // CheckChordFormat returns the detected current format to both StaticVariables detectedChordFormat and newChordFormat
+                try {
+                    Transpose.checkChordFormat();
+                    if (preferences.getMyPreferenceInt(PresenterMode.this,"chordFormat",1) != 0) {
+                        // Override output format to preference
+                        StaticVariables.newChordFormat = preferences.getMyPreferenceInt(PresenterMode.this, "chordFormat", 1);
 
-                    // 1. Sort multiline verse/chord formats
-                    FullscreenActivity.myLyrics = processSong.fixMultiLineFormat(PresenterMode.this, preferences,FullscreenActivity.myLyrics);
-                    // 2. Split the song into sections
-                    StaticVariables.songSections = processSong.splitSongIntoSections(PresenterMode.this, preferences, FullscreenActivity.myLyrics);
-
-                    // 3. Put the song into presentation order if required
-                    if (preferences.getMyPreferenceBoolean(PresenterMode.this,"usePresentationOrder",false) &&
-                            !StaticVariables.mPresentation.isEmpty()) {
-                        StaticVariables.songSections = processSong.matchPresentationOrder(PresenterMode.this, preferences, StaticVariables.songSections);
-                    }
-
-                    // 3b Add extra sections for double linebreaks and || code
-                    StaticVariables.songSections = processSong.splitLaterSplits(PresenterMode.this,preferences,StaticVariables.songSections);
-
-                    // 4. Get the section headings/types (may have changed after presentationorder
-                    StaticVariables.songSectionsLabels = new String[StaticVariables.songSections.length];
-                    StaticVariables.songSectionsTypes = new String[StaticVariables.songSections.length];
-                    for (int sl = 0; sl < StaticVariables.songSections.length; sl++) {
-                        StaticVariables.songSectionsLabels[sl] = processSong.getSectionHeadings(StaticVariables.songSections[sl]);
-                        if (!FullscreenActivity.foundSongSections_heading.contains(StaticVariables.songSectionsLabels[sl])) {
-                            FullscreenActivity.foundSongSections_heading.add(StaticVariables.songSectionsLabels[sl]);
+                        if (preferences.getMyPreferenceBoolean(PresenterMode.this,"chordFormatUsePreferred",true)) {
+                            StaticVariables.detectedChordFormat = StaticVariables.newChordFormat;
                         }
-                    }
-
-                    // 5. Get rid of the tag/heading lines
-                    StaticVariables.songSections = processSong.removeTagLines(StaticVariables.songSections);
-
-                    // If we are a host then rebuild
-                    if (StaticVariables.isHost && StaticVariables.isConnected) {
-                        PopUpEditSongFragment.prepareSongXML();
-                        // Replace the lyrics
-                        FullscreenActivity.presenterSendSong = FullscreenActivity.myXML.replace(StaticVariables.mLyrics,
-                                processSong.rebuildParsedLyrics(StaticVariables.songSections.length));
                     } else {
-                        FullscreenActivity.presenterSendSong = FullscreenActivity.myXML;
+                        StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
                     }
-
-                    // Now that we have generated the song to send to a guest device, decide if we should remove chords, comments, etc.
-                    for (int i = 0; i < StaticVariables.songSections.length; i++) {
-                        if (!preferences.getMyPreferenceBoolean(PresenterMode.this,"presoShowChords",false)) {
-                            StaticVariables.songSections[i] = processSong.removeChordLines(StaticVariables.songSections[i]);
-                        }
-                        if (!StaticVariables.isHost || !StaticVariables.isConnected || !StaticVariables.usingNearby) {
-                            StaticVariables.songSections[i] = processSong.removeCommentLines(StaticVariables.songSections[i]);
-                        }
-                        StaticVariables.songSections[i] = processSong.removeUnderScores(PresenterMode.this,
-                                preferences, StaticVariables.songSections[i]);
-                    }
-
-                    // We need to split each section into string arrays by line
-                    StaticVariables.sectionContents = new String[StaticVariables.songSections.length][];
-                    StaticVariables.projectedContents = new String[StaticVariables.songSections.length][];
-                    for (int x = 0; x < StaticVariables.songSections.length; x++) {
-
-                        StaticVariables.sectionContents[x] = StaticVariables.songSections[x].split("\n");
-                        StaticVariables.projectedContents[x] = StaticVariables.songSections[x].split("\n");
-                    }
-
-                    // Determine what each line type is
-                    // Copy the array of sectionContents into sectionLineTypes
-                    // Then we'll replace the content with the line type
-                    // This keeps the array sizes the same simply
-                    StaticVariables.sectionLineTypes = new String[StaticVariables.songSections.length][];
-                    StaticVariables.projectedLineTypes = new String[StaticVariables.songSections.length][];
-
-
-                    for (int x = 0; x < StaticVariables.sectionLineTypes.length; x++) {
-                        StaticVariables.sectionLineTypes[x] = new String[StaticVariables.sectionContents[x].length];
-                        for (int y = 0; y < StaticVariables.sectionLineTypes[x].length; y++) {
-                            StaticVariables.sectionLineTypes[x][y] = processSong.determineLineTypes(StaticVariables.sectionContents[x][y], PresenterMode.this);
-                            if (StaticVariables.sectionContents[x][y] != null &&
-                                    StaticVariables.sectionContents[x][y].length() > 0 && (StaticVariables.sectionContents[x][y].indexOf(" ") == 0 ||
-                                    StaticVariables.sectionContents[x][y].indexOf(".") == 0 || StaticVariables.sectionContents[x][y].indexOf(";") == 0)) {
-                                StaticVariables.sectionContents[x][y] = StaticVariables.sectionContents[x][y].substring(1);
-                            }
-                        }
-                    }
-
-                    for (int x = 0; x < StaticVariables.projectedLineTypes.length; x++) {
-                        StaticVariables.projectedLineTypes[x] = new String[StaticVariables.projectedContents[x].length];
-                        for (int y = 0; y < StaticVariables.projectedLineTypes[x].length; y++) {
-                            StaticVariables.projectedLineTypes[x][y] = processSong.determineLineTypes(StaticVariables.projectedContents[x][y], PresenterMode.this);
-
-                        }
-                    }
+                } catch (Exception e) {
+                    Log.d(TAG, "Error checking the chord format");
                 }
+
+                // Don't process images or image slide details here.  No need.  Only do songs
+                if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {
+                    // IV - PrepareSongSections prepares
+                    // FullscreenActivity.myLyrics,
+                    // StaticVariables.songSections, StaticVariables.songSectionsLabels, StaticVariables.songSectionsTypes,
+                    // StaticVariables.sectionContents, StaticVariables.sectionLineTypes
+                    // StaticVariables.projectedContents, StaticVariables.projectedLineTypes
+                    processSong.prepareSongSections(PresenterMode.this, preferences, storageAccess);
+                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -3826,31 +3798,38 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     new CastRemoteDisplayLocalService.Callbacks() {
                         @Override
                         public void onServiceCreated(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("PresenterMode", "onServiceCreated()");
-                            Log.d("PresenterMode", "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
+                            Log.d(TAG, "onServiceCreated()");
+                            Log.d(TAG, "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
                         }
 
                         @Override
                         public void onRemoteDisplaySessionStarted(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("PresenterMode", "onRemoteDisplaySessionStarted()");
-                            Log.d("PresenterMode", "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
+                            Log.d(TAG, "onRemoteDisplaySessionStarted()");
+                            Log.d(TAG, "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
                         }
 
                         @Override
                         public void onRemoteDisplaySessionError(Status status) {
-                            Log.d("PresenterMode", "onRemoteDisplaySessionError()");
-                            Log.d("PresenterMode", "status=" + status);
+                            Log.d(TAG, "onRemoteDisplaySessionError()");
+                            Log.d(TAG, "status=" + status);
                         }
 
                         @Override
                         public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("PresenterMode", "onRemoteDisplaySessionEnded()");
-                            Log.d("PresenterMode", "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
+                            Log.d(TAG, "onRemoteDisplaySessionEnded()");
+                            Log.d(TAG, "castRemoteDisplayLocalService=" + castRemoteDisplayLocalService);
                         }
 
+                        // IV - After a rebase against upstream - cast update makes this not needed and adds onRemoteDisplayMuteStateChanged
+                        //@Override
+                        //public void zza() {
+                        //    Log.d(TAG,"zza()");
+                        //}
+
                         @Override
-                        public void zza() {
-                            Log.d("PresenterMode", "zza()");
+                        public void onRemoteDisplayMuteStateChanged(boolean b) {
+                            Log.d(TAG, "onRemoteDisplayMuteStateChanged()");
+                            Log.d(TAG, "b=" + b);
                         }
                     });
         } else {
@@ -3870,7 +3849,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
-                    Log.d("PresenterMode","dm=" + dm);
+                    Log.d(TAG,"dm=" + dm);
 
                     // If a Chromebook HDMI, need to do this
                     Display[] displays = dm.getDisplays();
@@ -3894,7 +3873,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("PresenterMode","Error" + e);
+                Log.d(TAG,"Error" + e);
             }
         }
     }
@@ -4165,7 +4144,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         Intent intent;
         // Start location
         Uri uri = storageAccess.getUriForItem(PresenterMode.this,preferences,"","","");
-        Log.d("PresenterMode","Start uri=" + uri);
+        Log.d(TAG,"Start uri=" + uri);
         if (storageAccess.lollipopOrLater()) {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -4199,6 +4178,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     StaticVariables.whichOptionMenu = "MAIN";
                     prepareOptionMenu();
                 }, 100);
+                // Song index use will set this false.  Set to true again on drawer close.
+                song_list_view.setFastScrollEnabled(true);
             }
         };
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);

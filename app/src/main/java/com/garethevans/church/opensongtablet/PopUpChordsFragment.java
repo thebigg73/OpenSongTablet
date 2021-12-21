@@ -281,9 +281,7 @@ public class PopUpChordsFragment extends DialogFragment {
                 try {
                     Transpose transpose;
                     transpose = new Transpose();
-                    StaticVariables.temptranspChords = StaticVariables.allchords;
-                    transpose.capoTranspose(getContext(), preferences);
-                    StaticVariables.allchords = StaticVariables.temptranspChords;
+                    StaticVariables.allchords = transpose.capoTranspose(getContext(), preferences, StaticVariables.allchords);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

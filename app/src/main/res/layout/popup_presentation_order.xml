@@ -20,8 +20,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/myTitle"
-        android:layout_margin="12dp"
-        style="@style/MyHeadingText" />
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        style="@style/MyHeadingText"/>
 
     <TextView
         android:id="@+id/popuppres_mPresentation"
@@ -29,8 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/popuppresorder_presorder_title"
-        android:layout_margin="12dp"
-        style="@style/MyInfoText" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="12dp"
+        style="@style/MyInfoText"/>
 
     <ScrollView
         android:id="@+id/scrollView"

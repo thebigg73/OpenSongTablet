@@ -274,16 +274,16 @@ public class PopUpScalingFragment extends DialogFragment {
     }
 
     private void setupmaxfontsizeseekbar() {
-        // Seekbar size is 60 wide
-        // Subtract 20 from all values - min is then 0, max is then 60
-        // Actual mMaxFontSize is between 20 and 80 though
-        if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f)<20) {
-            preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",20.0f);
-        } else if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f)>80) {
-            preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",80.0f);
+        // Seekbar size is 80 wide
+        // Add 4 to all values - min is then 0, max is then 80
+        // Actual mMaxFontSize is between 4 and 84 though
+        if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f)<4) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",4.0f);
+        } else if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f)>84) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",84.0f);
         }
 
-        int progressbar = (int) preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f) - 20;
+        int progressbar = (int) preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f) - 4;
         String text = (int) preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f) + " sp";
 
         maxAutoScale_seekBar.setProgress(progressbar);
@@ -330,7 +330,7 @@ public class PopUpScalingFragment extends DialogFragment {
     }
 
     private void updatemaxfontsize() {
-        int val = maxAutoScale_seekBar.getProgress() + 20;
+        int val = maxAutoScale_seekBar.getProgress() + 4;
         preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",(float)val);
         String text = val + " sp";
         maxAutoScale_TextView.setText(text);

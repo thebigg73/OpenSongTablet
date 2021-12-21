@@ -442,7 +442,7 @@ class ChordProConvert {
                     // IV - Add a space after the last space found - is this space is under the chord it is considered on the next loop
                     // IV - This intentionally ensures 1 lyric space following the chord
                     s = s.replaceFirst(" ", "¦");
-                    if (s.indexOf("¦ ") == -1) {
+                    if (!s.contains("¦ ")) {
                         s = s.replace("¦", "¬ ");
                     } else {
                         s = s.replace("¦", "¬");
@@ -662,7 +662,7 @@ class ChordProConvert {
             if (outputStream != null) {
                 // Now remove the old chordpro file
                 storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
-                Boolean deleteFileResult = storageAccess.deleteFile(c, oldUri);
+                boolean deleteFileResult = storageAccess.deleteFile(c, oldUri);
                 Log.d("ChordProConvert","attempt to deletefile="+deleteFileResult);
 
                 // Remove old song from database

@@ -300,7 +300,6 @@ public class PopUpImportExternalFile extends DialogFragment {
             folderlist.add(getString(R.string.set));
         } else if (what.contains("onsong")) {
             folderlist = new ArrayList<>();
-            folderlist.clear();
             folderlist = songFolders.prepareSongFolders(getContext(),preferences);
             folderlist.add(0, "OnSong");
         } else {

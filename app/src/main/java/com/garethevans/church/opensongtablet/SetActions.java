@@ -278,11 +278,6 @@ class SetActions {
         } else if (StaticVariables.mSetList!=null) {
             StaticVariables.myToastMessage = c.getString(R.string.notset);
         }
-
-        if (StaticVariables.myToastMessage.equals("yes")) {
-            StaticVariables.myToastMessage = c.getString(R.string.currentset)
-                    + " - " + c.getString(R.string.ok);
-        }
     }
 
     void clearSet(Context c, Preferences preferences) {

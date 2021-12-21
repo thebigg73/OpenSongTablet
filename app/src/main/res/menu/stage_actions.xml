@@ -9,11 +9,11 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
 
-    <!-- Show Options -->
-    <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_white_36dp"
-        android:title="@string/action_settings"
-        app:showAsAction="always" />
+    <item android:id="@+id/set_add"
+        android:icon="@drawable/ic_plus_white_36dp"
+        android:title="@string/add_song_to_set"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"/>
 
     <item android:id="@+id/action_fullsearch"
         android:title="@string/action_search"
@@ -22,15 +22,15 @@
         android:hint="@string/action_search"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/set_add"
-        android:icon="@drawable/ic_plus_white_36dp"
-        android:title="@string/add_song_to_set"
-        app:showAsAction="ifRoom"/>
-
     <item android:id="@+id/media_route_menu_item"
         android:title="Chromecast"
         app:actionProviderClass="androidx.mediarouter.app.MediaRouteActionProvider"
         app:showAsAction="always"
         tools:ignore="HardcodedText" />
 
+    <!-- Show Options -->
+    <item android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_white_36dp"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom" />
 </menu>

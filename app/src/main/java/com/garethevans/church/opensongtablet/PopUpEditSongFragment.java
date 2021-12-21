@@ -601,7 +601,15 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             if (startSelection > 0 && endSelection > startSelection) {
                 String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
                 // Transpose it
-                selectedText = transpose.transposeThisString(getContext(),preferences,"+1",  selectedText);
+                try {
+                    // Detect and use the existing format for transpose
+                    Transpose.checkChordFormat();
+                    StaticVariables.transposeDirection = "+1";
+                    StaticVariables.transposeTimes = 1;
+                    selectedText = transpose.transposeString(getContext(),preferences, selectedText, false, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 // Replace the old text
                 String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
@@ -620,7 +628,15 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             if (startSelection > 0 && endSelection > startSelection) {
                 String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
                 // Transpose it
-                selectedText = transpose.transposeThisString(getContext(),preferences,"-1",  selectedText);
+                try {
+                    // Detect and use the existing format for transpose
+                    Transpose.checkChordFormat();
+                    StaticVariables.transposeDirection = "-1";
+                    StaticVariables.transposeTimes = 1;
+                    selectedText = transpose.transposeString(getContext(),preferences, selectedText, false, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 // Replace the old text
                 String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);

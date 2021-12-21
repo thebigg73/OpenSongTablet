@@ -38,6 +38,7 @@
                 style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:labelFor="@+id/deviceNameEditText"
                 android:singleLine="true"
                 android:layout_margin="8dp"
                 tools:ignore="Autofill,TextFields" />

@@ -105,6 +105,7 @@
         <item name="colorAccent">@color/accent</item>
         <item name="android:dialogTheme">@style/CustomDialog</item>
         <item name="colorControlActivated">@color/accent</item>
+        <item name="android:listChoiceIndicatorMultiple">@drawable/setcheckbox</item>
     </style>
 
     <style name="SwitchStyle">

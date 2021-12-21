@@ -57,6 +57,42 @@
                     android:layout_margin="8dp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/alphabeticalSizeGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/choose_fontsize" />
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/alphabeticalSize_SeekBar"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:max="30"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/alphabeticalSize_TextView"
+                    android:layout_margin="8dp"
+                    android:gravity="center_horizontal"
+                    style="@style/MyInfoText" />
+
+            </LinearLayout>
+
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/gesturesMenuSwipeButton"
                 android:layout_width="match_parent"
@@ -111,40 +147,6 @@
                 app:thumbTextPadding="4dp"
                 app:thumbTint="#444488" />
 
-            <LinearLayout
-                android:id="@+id/alphabeticalSizeGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/size" />
-
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/alphabeticalSize_SeekBar"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="16dp"
-                android:max="30"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/alphabeticalSize_TextView"
-                android:layout_margin="8dp"
-                android:gravity="center_horizontal"
-                style="@style/MyInfoText" />
-
-                </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

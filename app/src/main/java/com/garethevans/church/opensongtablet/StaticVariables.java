@@ -137,8 +137,14 @@ class StaticVariables {
     static MidiReceiver loggingReceiver;
 
     // Stuff for transposing songs
-    static int detectedChordFormat = 1, transposeTimes = 1;
+    static int detectedChordFormat = 1, newChordFormat = 1, transposeTimes = 1;
     static String transposeDirection = "0", transposedLyrics = "";
+    static String [] fromchordnumsnash;
+    static String [] fromchordnumsnashtype;
+    static String [] tonash;
+    static String [] tochordnumsnash;
+    static String [] fromnash;
+    static boolean capoforceflats;
 
     // The toast message - sometimes used to identify next steps for the app, sometimes just to display
     static String myToastMessage = "";
@@ -190,7 +196,6 @@ class StaticVariables {
 
     // Used for the chord image display
     static String allchords = "", chordnotes = "";
-    static String temptranspChords = "";
 
     // Request codes for callbacks
     static final int REQUEST_CAMERA_CODE = 1973, REQUEST_MICROPHONE_CODE = 1974, REQUEST_PDF_CODE = 1975,

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -48,7 +47,6 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
     private SeekBar scalemenu_SeekBar;
     private TextView scalemenu_TextView;
     private TextView alphabeticalSize_TextView;
-    private LinearLayout alphabeticalSizeGroup;
     private String scale;
     private Preferences preferences;
 
@@ -89,7 +87,6 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         SwitchCompat showAlphabetInSongMenu = V.findViewById(R.id.showAlphabetInSongMenu);
         SeekBar alphabeticalSize_SeekBar = V.findViewById(R.id.alphabeticalSize_SeekBar);
         alphabeticalSize_TextView = V.findViewById(R.id.alphabeticalSize_TextView);
-        alphabeticalSizeGroup = V.findViewById(R.id.alphabeticalSizeGroup);
 
         int pos = preferences.getMyPreferenceInt(getContext(), "menuSize", 250);
         scale = pos + " px";
@@ -99,7 +96,6 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         gesturesMenuSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"swipeForMenus",true));
         showSetTickBoxInSongMenu.setChecked(preferences.getMyPreferenceBoolean(getContext(),"songMenuSetTicksShow",true));
         showAlphabetInSongMenu.setChecked(preferences.getMyPreferenceBoolean(getContext(),"songMenuAlphaIndexShow",true));
-        assignVisibility(alphabeticalSizeGroup, preferences.getMyPreferenceBoolean(getContext(),"songMenuAlphaIndexShow",true));
         alphabeticalSize_SeekBar.setProgress(textSizeFloatToInt(preferences.getMyPreferenceFloat(getContext(),"songMenuAlphaIndexSize",14.0f)));
         String s = ((int) preferences.getMyPreferenceFloat(getContext(),"songMenuAlphaIndexSize",14.0f)) + "sp";
         alphabeticalSize_TextView.setText(s);
@@ -141,7 +137,6 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         });
         showAlphabetInSongMenu.setOnCheckedChangeListener((compoundButton, b) -> {
             preferences.setMyPreferenceBoolean(getContext(),"songMenuAlphaIndexShow",b);
-            assignVisibility(alphabeticalSizeGroup,b);
             if (mListener!=null) {
                 mListener.prepareSongMenu();
             }
@@ -183,14 +178,6 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
             size = 0;
         }
         return size;
-    }
-
-    private void assignVisibility(View v, boolean b) {
-        if (b) {
-            v.setVisibility(View.VISIBLE);
-        } else {
-            v.setVisibility(View.GONE);
-        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,8 +25,26 @@ public class PopUpChordFormatFragment extends DialogFragment {
         return frag;
     }
 
+    public interface MyInterface {
+        void refreshAll();
+    }
+
+    private MyInterface mListener;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
+
     private RadioGroup chordFormat;
-    private RadioButton chordFormat1, chordFormat2, chordFormat3, chordFormat4, chordFormat5, chordFormat6;
+    private RadioButton chordFormat0, chordFormat1, chordFormat2, chordFormat3, chordFormat4, chordFormat5, chordFormat6;
     private SwitchCompat switchAb, switchBb, switchDb, switchEb, switchGb, switchAbm, switchBbm,
             switchDbm, switchEbm, switchGbm, assumePreferred_SwitchCompat;
 
@@ -51,7 +70,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_chordformat, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getString(R.string.choosechordformat));
+        title.setText(getString(R.string.choose_chordformat));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe,getContext());
@@ -90,6 +109,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
         switchGbm = V.findViewById(R.id.switchGbm);
         assumePreferred_SwitchCompat = V.findViewById(R.id.assumePreferred_SwitchCompat);
         chordFormat = V.findViewById(R.id.chordFormat);
+        chordFormat0 = V.findViewById(R.id.chordFormat0);
         chordFormat1 = V.findViewById(R.id.chordFormat1);
         chordFormat2 = V.findViewById(R.id.chordFormat2);
         chordFormat3 = V.findViewById(R.id.chordFormat3);
@@ -109,9 +129,14 @@ public class PopUpChordFormatFragment extends DialogFragment {
         setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyDbm",false), switchDbm);
         setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyEbm",true), switchEbm);
         setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyGbm",false), switchGbm);
-        setSwitches(preferences.getMyPreferenceBoolean(getContext(), "chordFormatUsePreferred",true), assumePreferred_SwitchCompat);
+        setSwitches(!preferences.getMyPreferenceBoolean(getContext(), "chordFormatUsePreferred",true), assumePreferred_SwitchCompat);
 
         switch (preferences.getMyPreferenceInt(getContext(),"chordFormat",1)) {
+            case 0:
+                chordFormat0.setChecked(true);
+                assumePreferred_SwitchCompat.setChecked(false);
+                assumePreferred_SwitchCompat.setEnabled(false);
+                break;
             case 1:
                 chordFormat1.setChecked(true);
                 break;
@@ -146,6 +171,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
         switchGbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyGbm",!isChecked));
         assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"chordFormatUsePreferred",isChecked));
         chordFormat.setOnCheckedChangeListener((group, checkedId) -> {
+            final int cf0 = R.id.chordFormat0;
             final int cf1 = R.id.chordFormat1;
             final int cf2 = R.id.chordFormat2;
             final int cf3 = R.id.chordFormat3;
@@ -154,23 +180,40 @@ public class PopUpChordFormatFragment extends DialogFragment {
             final int cf6 = R.id.chordFormat6;
 
             switch (checkedId) {
+                case cf0:
+                    preferences.setMyPreferenceInt(getContext(), "chordFormat", 0);
+                    assumePreferred_SwitchCompat.setChecked(false);
+                    assumePreferred_SwitchCompat.setEnabled(false);
+                    break;
                 case cf1:
                     preferences.setMyPreferenceInt(getContext(), "chordFormat", 1);
+                    assumePreferred_SwitchCompat.setChecked(false);
+                    assumePreferred_SwitchCompat.setEnabled(true);
                     break;
                 case cf2:
                     preferences.setMyPreferenceInt(getContext(), "chordFormat", 2);
+                    assumePreferred_SwitchCompat.setChecked(false);
+                    assumePreferred_SwitchCompat.setEnabled(true);
                     break;
                 case cf3:
                     preferences.setMyPreferenceInt(getContext(), "chordFormat", 3);
+                    assumePreferred_SwitchCompat.setChecked(false);
+                    assumePreferred_SwitchCompat.setEnabled(true);
                     break;
                 case cf4:
                     preferences.setMyPreferenceInt(getContext(), "chordFormat", 4);
+                    assumePreferred_SwitchCompat.setChecked(false);
+                    assumePreferred_SwitchCompat.setEnabled(true);
                     break;
                 case cf5:
                     preferences.setMyPreferenceInt(getContext(), "chordFormat", 5);
+                    assumePreferred_SwitchCompat.setChecked(false);
+                    assumePreferred_SwitchCompat.setEnabled(true);
                     break;
                 case cf6:
                     preferences.setMyPreferenceInt(getContext(), "chordFormat", 6);
+                    assumePreferred_SwitchCompat.setChecked(false);
+                    assumePreferred_SwitchCompat.setEnabled(true);
                     break;
             }
         });
@@ -182,6 +225,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
 
     private void exitChordFormat() {
         try {
+            mListener.refreshAll();
             dismiss();
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,5 +236,4 @@ public class PopUpChordFormatFragment extends DialogFragment {
     public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
-
 }

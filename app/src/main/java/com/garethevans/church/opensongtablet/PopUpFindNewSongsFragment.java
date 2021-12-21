@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
+
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -49,8 +51,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
-import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class PopUpFindNewSongsFragment extends DialogFragment {
 
@@ -330,10 +330,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             }
         }
     };
-
-    @JavascriptInterface
-    public void processHTML(String html) {
-    }
 
     @Override
     public void onDismiss(@NonNull final DialogInterface dialog) {
@@ -1294,7 +1290,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
     private String getLyricsSongSelectChordPro(String s) {
         // IV - Added handling of lyrics with with nore than one cproSongBody as split over pages
-        String lyrics = "";
+        StringBuilder lyrics = new StringBuilder();
         while (s.contains("<pre class=\"cproSongBody\">")) {
             int start = s.indexOf("<pre class=\"cproSongBody\">");
             int end = s.indexOf("</pre>",start);
@@ -1303,15 +1299,15 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             s = s.replaceFirst("<pre class=\"cproSongBody\">", "<xxxxxxxxxxxxxxxxxxxxxxxx>");
 
             if (start>-1 && end>-1 && end>start) {
-                lyrics = lyrics + s.substring(start+26,end);
+                lyrics.append(s.substring(start + 26, end));
 
                 // Fix the song section headers
-                while (lyrics.contains("<span class=\"cproSongSection\"><span class=\"cproComment\">")) {
+                while (lyrics.toString().contains("<span class=\"cproSongSection\"><span class=\"cproComment\">")) {
                     start = lyrics.indexOf("<span class=\"cproSongSection\"><span class=\"cproComment\">");
-                    lyrics = lyrics.substring(0,start) +
+                    lyrics = new StringBuilder(lyrics.substring(0, start) +
                             (lyrics.substring(start).
                             replaceFirst("<span class=\"cproSongSection\"><span class=\"cproComment\">","#[").
-                            replaceFirst("</span>", "]"));
+                            replaceFirst("</span>", "]")));
                 }
 
                 // Fix the chords
@@ -1319,17 +1315,17 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 // We replace start with [< and end with ] to give: [<"D<sup>2</sup>">D<sup>2</sup>]
                 // The following clean up removes all "<...>" to give [D2]
 
-                while (lyrics.contains("<span class=\"chordWrapper\"><code class=\"chord\" data-chordname=\"")) {
+                while (lyrics.toString().contains("<span class=\"chordWrapper\"><code class=\"chord\" data-chordname=\"")) {
                     start = lyrics.indexOf("<span class=\"chordWrapper\"><code class=\"chord\" data-chordname=\"");
-                    lyrics = lyrics.substring(0,start) +
+                    lyrics = new StringBuilder(lyrics.substring(0, start) +
                             (lyrics.substring(start).
                             replaceFirst("<span class=\"chordWrapper\"><code class=\"chord\" data-chordname=\"","[<").
-                            replaceFirst("</code>","]"));
+                            replaceFirst("</code>","]")));
                 }
             }
         }
         // Get rid of code that we don't need
-        return getRidOfRogueCode(lyrics);
+        return getRidOfRogueCode(lyrics.toString());
     }
 
     private String extractSongSelectUsr(String s, String temptitle) {

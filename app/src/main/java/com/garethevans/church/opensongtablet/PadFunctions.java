@@ -36,7 +36,7 @@ class PadFunctions {
     static boolean getPad1Status() {
         boolean result;
         try {
-            result = FullscreenActivity.mPlayer1 != null && (FullscreenActivity.mPlayer1.isPlaying() || FullscreenActivity.mPlayer1Paused);
+            result = FullscreenActivity.mPlayer1.isPlaying() || FullscreenActivity.mPlayer1Paused;
         } catch (Exception e) {
             result = false;
         }
@@ -47,7 +47,7 @@ class PadFunctions {
     static boolean getPad2Status() {
         boolean result;
         try {
-            result = FullscreenActivity.mPlayer2 != null && (FullscreenActivity.mPlayer2.isPlaying() || FullscreenActivity.mPlayer2Paused);
+            result = FullscreenActivity.mPlayer2.isPlaying() || FullscreenActivity.mPlayer2Paused;
         } catch (Exception e) {
             result = false;
         }

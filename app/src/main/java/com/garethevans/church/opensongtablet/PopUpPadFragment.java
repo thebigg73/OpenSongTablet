@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -65,8 +64,6 @@ public class PopUpPadFragment extends DialogFragment {
     private SeekBar popupPad_pan;
     private TextView popupPad_pan_text;
     private Button start_stop_padplay;
-    private String text;
-    private boolean validpad;
     private Preferences preferences;
     private StorageAccess storageAccess;
 
@@ -202,29 +199,6 @@ public class PopUpPadFragment extends DialogFragment {
         public void onNothingSelected(AdapterView<?> parent) {}
     }
 
-    private void startenabled() {
-        validpad = false;
-        Uri uri = storageAccess.fixLocalisedUri(getContext(), preferences, StaticVariables.mLinkAudio);
-        boolean isvalid = storageAccess.uriExists(getContext(), uri);
-
-        if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
-            validpad = true;
-        } else if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() < 1) {
-            text = getString(R.string.pad_choose_key);
-            validpad = false;
-
-        } else if (popupPad_file.getSelectedItemPosition() == 1 && isvalid) {
-            validpad = true;
-        } else if (popupPad_file.getSelectedItemPosition() == 1 && !isvalid) {
-            validpad = false;
-            text = getString(R.string.link_audio) + " - " + getString(R.string.notset);
-
-        } else if (popupPad_file.getSelectedItemPosition() == 2) {
-            validpad = false;
-            text = getString(R.string.notset);
-        }
-    }
-
     private class popupPad_volumeListener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -242,7 +216,7 @@ public class PopUpPadFragment extends DialogFragment {
                 popupPad_pan_text.setText("C");
             }
             // IV - Additional test to prevent volume change affecting a fading pad
-            if (FullscreenActivity.mPlayer1 != null && !StaticVariables.pad1Fading) {
+            if (!StaticVariables.pad1Fading) {
                 float leftVolume = temp_padvol;
                 float rightVolume = temp_padvol;
                 if (temp_padpan.equals("left")) {
@@ -259,8 +233,7 @@ public class PopUpPadFragment extends DialogFragment {
                 }
             }
 
-            if (FullscreenActivity.mPlayer2 != null && !StaticVariables.pad2Fading) {
-
+            if (!StaticVariables.pad2Fading) {
                 float leftVolume = temp_padvol;
                 float rightVolume = temp_padvol;
                 if (temp_padpan.equals("left")) {
@@ -387,35 +360,19 @@ public class PopUpPadFragment extends DialogFragment {
     }
 
     private void checkPadStatus() {
-
         // Proceed if we are not in the middle of an Async song load!
         if (!FullscreenActivity.alreadyloading) {
-            boolean pad1playing = false;
-            boolean pad2playing = false;
-            try {
-                pad1playing = FullscreenActivity.mPlayer1 != null && FullscreenActivity.mPlayer1.isPlaying();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                pad2playing = FullscreenActivity.mPlayer2 != null && FullscreenActivity.mPlayer2.isPlaying();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
             if (((StaticVariables.pad1Playing && !StaticVariables.pad1Fading) || (StaticVariables.pad2Playing & !StaticVariables.pad2Fading))) {
-                text = getString(R.string.stop);
+                start_stop_padplay.setText(getString(R.string.stop));
             } else {
-                text = "Start";
+                start_stop_padplay.setText(getString(R.string.start));
             }
-                start_stop_padplay.setText(text);
 
-                start_stop_padplay.setOnClickListener(view -> {
-                // IV - gesture6 has the start and stop logic
-                    mListener.gesture6();
+            start_stop_padplay.setOnClickListener(view -> {
+            // IV - gesture6 has the start and stop logic
+                mListener.gesture6();
                 PopUpPadFragment.this.dismiss();
-                });
+            });
         }
     }
 
