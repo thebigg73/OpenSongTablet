@@ -186,8 +186,9 @@ public class ExportActions {
                                     String key = "";
                                     String author = "";
                                     String hymn = "";
+                                    String ccli = "";
                                     String custom = "";
-                                    String id = "";
+                                    String id;
 
                                     if (filename.contains("# " + c.getString(R.string.variation) + " # - ")) {
                                         filename = filename.replace("# " + c.getString(R.string.variation) + " # - ", "");
@@ -217,6 +218,7 @@ public class ExportActions {
                                         title = thisSong.getTitle();
                                         author = thisSong.getAuthor();
                                         hymn = thisSong.getHymnnum();
+                                        ccli = thisSong.getCcli();
                                         id = thisSong.getSongid();
                                     }
 
@@ -227,12 +229,17 @@ public class ExportActions {
 
                                     author = fixNull(author);
                                     if (!author.isEmpty()) {
-                                        author = ", " + author;
+                                        author = "," + author;
                                     }
 
                                     hymn = fixNull(hymn);
                                     if (!hymn.isEmpty()) {
                                         hymn = ", #" + hymn;
+                                    }
+
+                                    ccli = fixNull(ccli);
+                                    if (!ccli.isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
+                                            ccli = ", CCLI Song #" + ccli;
                                     }
 
                                     title = fixNull(title);
@@ -243,7 +250,7 @@ public class ExportActions {
                                     if (!custom.isEmpty()) {
                                         custom = " (" + custom + ")";
                                     }
-                                    stringBuilderSet.append(title).append(custom).append(author).append(hymn).append(key).append("\n");
+                                    stringBuilderSet.append(title).append(custom).append(author).append(hymn).append(ccli).append(key).append("\n");
                                     stringBuilderIDs.append(id).append("\n");
                                 }
                                     break;

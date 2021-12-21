@@ -393,6 +393,12 @@ public class SetActions {
 
         Log.d(TAG,"uriOriginal="+uriOriginal);
         // Get the uri of the new variation file (Variations/filename)
+
+        // IV - When a received song - use the stored received song filename
+        if (filename.equals("ReceivedSong")) {
+            filename = mainActivityInterface.getNearbyConnections().getReceivedSongFilename();
+        }
+
         Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c,
                 mainActivityInterface, folderVariations, "", filename);
 

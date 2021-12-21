@@ -1712,7 +1712,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Get the number of transpose times
                 int transposeTimes = transpose.getTransposeTimes(songKey,setKey);
                 copySong.setKey(songKey); // This will be transposed in the following...
-                copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes,false).getLyrics());
+                copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes,copySong.getDetectedChordFormat()).getLyrics());
+                //copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes).getLyrics());
                 // Get the song XML
                 String songXML = processSong.getXML(this,this,copySong);
                 // Save the song
@@ -2662,8 +2663,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         //mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
 
         // Post this in a few seconds - need to ensure song is loaded first
-        myView.drawerLayout.postDelayed(() -> resetHDMI(),2000);
-
+        myView.drawerLayout.postDelayed(this::resetHDMI,2000);
 
         // Fix the page flags
         setWindowFlags();

@@ -96,6 +96,12 @@ public class SongProjectionInfo extends LinearLayout {
         }
     }
 
+    public void setAlign(int align) {
+        songTitle.setGravity(align);
+        songAuthor.setGravity(align);
+        songAuthor.setGravity(align);
+    }
+
     // Used in presenter mode to display song info on device
     public void minifyLayout() {
         songTitle.setTextSize(18);

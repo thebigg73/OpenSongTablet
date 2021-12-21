@@ -57,11 +57,11 @@ public class NearbyConnections implements NearbyInterface {
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
             receiveHostAutoscroll = true,
             receiveHostSongSections = true;
-    NearbyReturnActionsInterface nearbyReturnActionsInterface;
-    AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
-    DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+    private NearbyReturnActionsInterface nearbyReturnActionsInterface;
+    private final AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+    private final DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
     // The stuff used for Google Nearby for connecting devices
-    String serviceId = "com.garethevans.church.opensongtablet";
+    private final String serviceId = "com.garethevans.church.opensongtablet";
     private String receivedSongFilename;
     private MainActivityInterface mainActivityInterface;
 
@@ -594,6 +594,8 @@ public class NearbyConnections implements NearbyInterface {
         } else if (!isHost && isConnected && receiveHostFiles) {
             // The new file goes into our Received folder
             folder = "../Received";
+            // IV - Store the received song filename in case the user wants to duplicate the received song
+            receivedSongFilename = filename;
             newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Received", "", filename);
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Received", "", filename);
         }
@@ -816,7 +818,6 @@ public class NearbyConnections implements NearbyInterface {
         // Don't need to save the device name unless the user edits it to make it custom
         return deviceId = mainActivityInterface.getPreferences().getMyPreferenceString(c, "deviceId", model);
     }
-
 
     // The setters
     public void setNearbyHostMenuOnly(Context c, MainActivityInterface mainActivityInterface, boolean nearbyHostMenuOnly) {

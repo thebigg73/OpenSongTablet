@@ -641,15 +641,19 @@ public class LoadSong {
         // If the indexing is done and the song is there,
 
         // Get the android version
-        boolean nextisxml = filename != null && !filename.isEmpty() &&
-                !filename.toLowerCase(Locale.ROOT).endsWith(".pdf") &&
-                !filename.toLowerCase(Locale.ROOT).endsWith(".doc") &&
-                !filename.toLowerCase(Locale.ROOT).endsWith(".docx") &&
-                !filename.toLowerCase(Locale.ROOT).endsWith(".jpg") &&
-                !filename.toLowerCase(Locale.ROOT).endsWith(".jpeg") &&
-                !filename.toLowerCase(Locale.ROOT).endsWith(".png") &&
-                !filename.toLowerCase(Locale.ROOT).endsWith(".gif") &&
-                !filename.toLowerCase(Locale.ROOT).endsWith(".bmp");
+        String lowerfilename = "";
+        if (filename!=null && !filename.isEmpty()) {
+            lowerfilename = filename.toLowerCase(Locale.ROOT);
+        }
+
+        boolean nextisxml = !lowerfilename.endsWith(".pdf") &&
+                !lowerfilename.endsWith(".doc") &&
+                !lowerfilename.endsWith(".docx") &&
+                !lowerfilename.endsWith(".jpg") &&
+                !lowerfilename.endsWith(".jpeg") &&
+                !lowerfilename.endsWith(".png") &&
+                !lowerfilename.endsWith(".gif") &&
+                !lowerfilename.endsWith(".bmp");
 
         String nextutf = null;
 

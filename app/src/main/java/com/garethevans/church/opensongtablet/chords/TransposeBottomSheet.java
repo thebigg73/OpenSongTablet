@@ -145,9 +145,11 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 // We need to get the transposed key
                 String keyToNum = mainActivityInterface.getTranspose().keyToNumber(originalKey);
                 if (value<0) {
-                    newKey = mainActivityInterface.getTranspose().transposeKey(keyToNum,"-1",(int)Math.abs(value));
+                    newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"-1",(int)Math.abs(value));
+                    // newKey = mainActivityInterface.getTranspose().transposeKey(keyToNum,"-1",(int)Math.abs(value));
                 } else if (value>0) {
-                    newKey = mainActivityInterface.getTranspose().transposeKey(keyToNum,"+1",(int)Math.abs(value));
+                    newKey = mainActivityInterface.getTranspose().transposeNumber(keyToNum,"+1",(int)Math.abs(value));
+                    //newKey = mainActivityInterface.getTranspose().transposeKey(keyToNum,"+1",(int)Math.abs(value));
                 } else {
                     newKey = originalKey;
                 }
@@ -236,16 +238,24 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
             int transposeTimes = Math.abs((int)myView.transposeSlider.getValue());
             boolean ignoreChordFormat = myView.assumePreferred.isChecked();
+            int newChordFormat = 1;
+            if (ignoreChordFormat) {
+                newChordFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
+            } else {
+                newChordFormat = mainActivityInterface.getSong().getDetectedChordFormat();
+            }
 
             // Do the transpose
-            mainActivityInterface.getTranspose().doTranspose(requireContext(),mainActivityInterface,
-                    mainActivityInterface.getSong(),transposeDirection,transposeTimes,ignoreChordFormat);
+            mainActivityInterface.getTranspose().doTranspose(requireContext(),mainActivityInterface,mainActivityInterface.getSong(),
+                    transposeDirection, transposeTimes, newChordFormat);
 
             // Change the song key if set
             if (!mainActivityInterface.getSong().getKey().isEmpty()) {
                 String keyNum = mainActivityInterface.getTranspose().keyToNumber(mainActivityInterface.getSong().getKey());
-                String newKey = mainActivityInterface.getTranspose().numberToKey(requireContext(),
-                        mainActivityInterface,mainActivityInterface.getTranspose().transposeKey(keyNum,transposeDirection,transposeTimes));
+                String keyNumTransposed = mainActivityInterface.getTranspose().transposeNumber(keyNum,transposeDirection,transposeTimes);
+                String newKey = mainActivityInterface.getTranspose().numberToKey(requireContext(),mainActivityInterface,keyNumTransposed);
+                //String newKey = mainActivityInterface.getTranspose().numberToKey(requireContext(),
+                //        mainActivityInterface,mainActivityInterface.getTranspose().transposeKey(keyNum,transposeDirection,transposeTimes));
                 mainActivityInterface.getSong().setKey(newKey);
             }
 

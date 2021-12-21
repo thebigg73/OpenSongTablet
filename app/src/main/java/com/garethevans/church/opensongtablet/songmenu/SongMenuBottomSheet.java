@@ -96,7 +96,13 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void addToSet() {
-        // Firstly add the song to the current set
+        // For a received song (which is about to become a variation) use the stored received song filename
+        // TODO from IV pull request #136 - UNTESTED
+        if (mainActivityInterface.getSong().getFilename().equals("ReceivedSong")) {
+            mainActivityInterface.getSong().setFilename(mainActivityInterface.getSong().getTitle());
+        }
+
+        // Add the song to the current set
         mainActivityInterface.getCurrentSet().
                 addToCurrentSet(mainActivityInterface.getSetActions().
                         getSongForSetWork(requireContext(), mainActivityInterface.getSong()));

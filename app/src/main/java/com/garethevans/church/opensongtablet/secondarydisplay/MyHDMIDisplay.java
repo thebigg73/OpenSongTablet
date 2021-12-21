@@ -56,7 +56,7 @@ public class MyHDMIDisplay extends Presentation implements MediaPlayer.OnVideoSi
 
         presentationCommon.setInitialView();
 
-        myView.songProjectionInfo1.postDelayed(this::setSongInfo,3000);
+        //myView.songProjectionInfo1.postDelayed(this::setSongInfo,3000);
         setSongContent();
         normalStartUp();
     }

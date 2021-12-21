@@ -271,7 +271,6 @@ public class ExportFragment extends Fragment {
                                     });
                                 });
 
-
                             } else {
                                 // Do nothing
                                 songsProcessed++;

@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.ColorUtils;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.SongProjectionInfo;
@@ -95,8 +97,8 @@ public class PresentationCommon {
     public void updateInfoBarColor() {
         presoShadowColor = mainActivityInterface.getMyThemeColors().getPresoShadowColor();
         presoInfoBarAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f);
+        presoShadowColor = ColorUtils.setAlphaComponent(presoShadowColor,(int)(presoInfoBarAlpha*255));
         bottomBarBackground.setBackgroundColor(presoShadowColor);
-        bottomBarBackground.setAlpha(presoInfoBarAlpha);
     }
     public void updatePageBackgroundColor() {
         lyricsBackgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
@@ -170,6 +172,11 @@ public class PresentationCommon {
         Drawable defaultImage = ResourcesCompat.getDrawable(c.getResources(), R.drawable.preso_default_bg, null);
         backgroundImage.setImageDrawable(defaultImage);
     }
+    public void updateAlignment() {
+        int infoAlign = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoInfoAlign", Gravity.END);
+        songProjectionInfo1.setAlign(infoAlign);
+        songProjectionInfo2.setAlign(infoAlign);
+    }
     public void initialiseViews(RelativeLayout pageHolder, LinearLayout testLayout, LinearLayout songContent1,
                                 LinearLayout songContent2, FrameLayout bottomBarBackground,
                                 SongProjectionInfo songProjectionInfo1, SongProjectionInfo songProjectionInfo2,
@@ -188,6 +195,7 @@ public class PresentationCommon {
         this.bottomBarBackground = bottomBarBackground;
         this.songProjectionInfo1 = songProjectionInfo1;
         this.songProjectionInfo2 = songProjectionInfo2;
+        updateAlignment();
     }
     public void updateCrossFadeTime() {
         crossFadeTime = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoTransitionTime",800);
@@ -209,6 +217,7 @@ public class PresentationCommon {
         Log.d(TAG,"mode="+mainActivityInterface.getMode());
         switch (mainActivityInterface.getMode()) {
             case "Performance":
+            case "Stage":
                 mainLogo.postDelayed(() -> {
                     mainActivityInterface.getCustomAnimation().faderAnimation(mainLogo, crossFadeTime, false);
                     showPerformanceContent();
@@ -216,7 +225,7 @@ public class PresentationCommon {
                 break;
             case "Presenter":
                 mainLogo.postDelayed(() -> {
-                    setSongInfo();
+                    //setSongInfo();
                     //showPresenterContent();
                     //fadeInOutSong(true,false);
                 }, logoSplashTime);
@@ -274,12 +283,14 @@ public class PresentationCommon {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songContent1,crossFadeTime,fadeIn);
             } else {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo1, crossFadeTime, fadeIn);
+                mainActivityInterface.getCustomAnimation().faderAnimation(bottomBarBackground,crossFadeTime,fadeIn);
             }
         } else {
             if (content) {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songContent2,crossFadeTime,fadeIn);
             } else {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo2, crossFadeTime, fadeIn);
+                mainActivityInterface.getCustomAnimation().faderAnimation(bottomBarBackground,crossFadeTime,fadeIn);
             }
         }
     }
@@ -426,20 +437,11 @@ public class PresentationCommon {
             showWhichInfo = 1;
         }
 
-        Log.d(TAG,"info1.getVisibility()="+songProjectionInfo1.getVisibility());
-        Log.d(TAG,"info2.getVisibility()="+songProjectionInfo2.getVisibility());
-        Log.d(TAG,"info1.getAlpha()="+songProjectionInfo1.getAlpha());
-        Log.d(TAG,"info2.getAlpha()="+songProjectionInfo2.getAlpha());
-
-
         // All info should be shown if available
-        Log.d(TAG,"setSongInfo()  showWhichInfo:"+showWhichInfo);
         if (showWhichInfo==1) {
             songProjectionInfo1.setSongTitle(mainActivityInterface.getSong().getTitle());
             songProjectionInfo1.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             songProjectionInfo1.setSongCopyright(mainActivityInterface.getSong().getCopyright());
-
-            Log.d(TAG,"title="+mainActivityInterface.getSong().getTitle());
 
             // Fade in 1
             songProjectionInfo1.setVisibility(View.VISIBLE);
@@ -448,8 +450,6 @@ public class PresentationCommon {
             if (songProjectionInfo2.getAlpha()>0) {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo2,crossFadeTime,false);
             }
-
-
 
         } else {
             songProjectionInfo2.setSongTitle(mainActivityInterface.getSong().getTitle());
@@ -464,17 +464,6 @@ public class PresentationCommon {
                 mainActivityInterface.getCustomAnimation().faderAnimation(songProjectionInfo1,crossFadeTime,false);
             }
         }
-        Log.d(TAG,"title1="+songProjectionInfo1.getSongTitle());
-        Log.d(TAG,"title2="+songProjectionInfo2.getSongTitle());
-        songProjectionInfo1.postDelayed(() -> {
-            Log.d(TAG,"info1.getVisibility()="+songProjectionInfo1.getVisibility());
-            Log.d(TAG,"info1.getAlpha()="+songProjectionInfo1.getAlpha());
-        },crossFadeTime);
-        songProjectionInfo2.postDelayed(() -> {
-            Log.d(TAG,"info2.getVisibility()="+songProjectionInfo2.getVisibility());
-            Log.d(TAG,"info2.getAlpha()="+songProjectionInfo2.getAlpha());
-        },crossFadeTime);
-
     }
 
     public void setSongContentPrefs() {

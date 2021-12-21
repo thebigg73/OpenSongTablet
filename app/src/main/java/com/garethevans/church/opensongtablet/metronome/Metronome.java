@@ -177,12 +177,12 @@ public class Metronome {
         validTempo = false;
         String t = mainActivityInterface.getSong().getTempo();
         // Check for text version from desktop app
-        t = t.replace("Very Fast", "140");
-        t = t.replace("Fast", "120");
-        t = t.replace("Moderate", "100");
-        t = t.replace("Slow", "80");
-        t = t.replace("Very Slow", "60");
-        t = t.replaceAll("[\\D]", "");
+        t = t.replace("Very Fast", "140").
+                replace("Fast", "120").
+                replace("Moderate", "100").
+                replace("Slow", "80").
+                replace("Very Slow", "60").
+                replaceAll("[\\D]", "");
         int tempo;
         try {
             tempo = (short) Integer.parseInt(t);

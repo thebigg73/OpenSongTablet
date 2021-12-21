@@ -160,7 +160,7 @@ public class UltimateGuitar {
 
                     newSong = mainActivityInterface.getTranspose().
                             doTranspose(c,mainActivityInterface,newSong,
-                                    "+1",transpnum,true);
+                                    "+1",transpnum,newSong.getDetectedChordFormat());
                     // Put the original key back as we only want transposed lyrics
                     newSong.setKey(key);
                 } catch (Exception e) {

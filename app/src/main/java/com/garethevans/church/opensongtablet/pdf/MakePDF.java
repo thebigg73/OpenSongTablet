@@ -56,7 +56,6 @@ public class MakePDF {
         // Get the space available to the song sections and pages needed to fit them all in
         determineSpaceAndPages(mainActivityInterface, sectionWidths, sectionHeights);
 
-
         // Add in the song sections and the footer at the bottom of each page.
         addSectionViews(sectionViews, sectionWidths, sectionHeights);
 

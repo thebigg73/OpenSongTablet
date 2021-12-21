@@ -159,75 +159,75 @@ public class ProcessSong {
         if (s == null) {
             return "";
         }
-        s = s.replace("&amp;apos;", "'");
-        s = s.replace("&amp;quote;", "\"");
-        s = s.replace("&amp;quot;", "\"");
-        s = s.replace("&amp;lt;", "<");
-        s = s.replace("&amp;gt;", ">");
-        s = s.replace("&amp;", "&");
-        s = s.replace("&lt;", "<");
-        s = s.replace("&gt;", ">");
-        s = s.replace("&apos;", "'");
-        s = s.replace("&quote;", "\"");
-        s = s.replace("&quot;", "\"");
-        s = s.replace("&iquest;", "¿");
-        s = s.replace("&Agrave;", "À");
-        s = s.replace("&agrave;", "à");
-        s = s.replace("&Aacute;", "Á");
-        s = s.replace("&aacute;", "á");
-        s = s.replace("&Acirc;;", "Â");
-        s = s.replace("&acirc;;", "â");
-        s = s.replace("&Atilde;", "Ã");
-        s = s.replace("&atilde;", "ã");
-        s = s.replace("&Aring;", "Å");
-        s = s.replace("&aring;", "å");
-        s = s.replace("&Auml;", "Ä");
-        s = s.replace("&auml;", "ä");
-        s = s.replace("&AElig;", "Æ");
-        s = s.replace("&aelig;", "æ");
-        s = s.replace("&Cacute;", "Ć");
-        s = s.replace("&cacute;", "ć");
-        s = s.replace("&Ccedil;", "Ç");
-        s = s.replace("&ccedil;", "ç");
-        s = s.replace("&Eacute;", "É");
-        s = s.replace("&eacute;", "é");
-        s = s.replace("&Ecirc;;", "Ê");
-        s = s.replace("&ecirc;;", "ê");
-        s = s.replace("&Egrave;", "È");
-        s = s.replace("&egrave;", "è");
-        s = s.replace("&Euml;", "Ë");
-        s = s.replace("&euml;", "ë");
-        s = s.replace("&Iacute;", "Í");
-        s = s.replace("&iacute;", "í");
-        s = s.replace("&Icirc;;", "Î");
-        s = s.replace("&icirc;;", "î");
-        s = s.replace("&Igrave;", "Ì");
-        s = s.replace("&igrave;", "ì");
-        s = s.replace("&Iuml;", "Ï");
-        s = s.replace("&iuml;", "ï");
-        s = s.replace("&Oacute;", "Ó");
-        s = s.replace("&oacute;", "ó");
-        s = s.replace("&Ocirc;;", "Ô");
-        s = s.replace("&ocirc;;", "ô");
-        s = s.replace("&Ograve;", "Ò");
-        s = s.replace("&ograve;", "ò");
-        s = s.replace("&Ouml;", "Ö");
-        s = s.replace("&ouml;", "ö");
-        s = s.replace("&szlig;", "ß");
-        s = s.replace("&Uacute;", "Ú");
-        s = s.replace("&uacute;", "ú");
-        s = s.replace("&Ucirc;;", "Û");
-        s = s.replace("&ucirc;;", "û");
-        s = s.replace("&Ugrave;", "Ù");
-        s = s.replace("&ugrave;", "ù");
-        s = s.replace("&Uuml;", "Ü");
-        s = s.replace("&uuml;", "ü");
-        s = s.replace("&#039;", "'");
-        s = s.replace("&#8217;", "'");
-        s = s.replace("�??", "'");
-        s = s.replace("�?", "'");
-        s = s.replace("�", "'");
-        s = s.replace("&nbsp;", " ");
+        s = s.replace("&amp;apos;", "'").
+                replace("&amp;quote;", "\"").
+                replace("&amp;quot;", "\"").
+                replace("&amp;lt;", "<").
+                replace("&amp;gt;", ">").
+                replace("&amp;", "&").
+                replace("&lt;", "<").
+                replace("&gt;", ">").
+                replace("&apos;", "'").
+                replace("&quote;", "\"").
+                replace("&quot;", "\"").
+                replace("&iquest;", "¿").
+                replace("&Agrave;", "À").
+                replace("&agrave;", "à").
+                replace("&Aacute;", "Á").
+                replace("&aacute;", "á").
+                replace("&Acirc;;", "Â").
+                replace("&acirc;;", "â").
+                replace("&Atilde;", "Ã").
+                replace("&atilde;", "ã").
+                replace("&Aring;", "Å").
+                replace("&aring;", "å").
+                replace("&Auml;", "Ä").
+                replace("&auml;", "ä").
+                replace("&AElig;", "Æ").
+                replace("&aelig;", "æ").
+                replace("&Cacute;", "Ć").
+                replace("&cacute;", "ć").
+                replace("&Ccedil;", "Ç").
+                replace("&ccedil;", "ç").
+                replace("&Eacute;", "É").
+                replace("&eacute;", "é").
+                replace("&Ecirc;;", "Ê").
+                replace("&ecirc;;", "ê").
+                replace("&Egrave;", "È").
+                replace("&egrave;", "è").
+                replace("&Euml;", "Ë").
+                replace("&euml;", "ë").
+                replace("&Iacute;", "Í").
+                replace("&iacute;", "í").
+                replace("&Icirc;;", "Î").
+                replace("&icirc;;", "î").
+                replace("&Igrave;", "Ì").
+                replace("&igrave;", "ì").
+                replace("&Iuml;", "Ï").
+                replace("&iuml;", "ï").
+                replace("&Oacute;", "Ó").
+                replace("&oacute;", "ó").
+                replace("&Ocirc;;", "Ô").
+                replace("&ocirc;;", "ô").
+                replace("&Ograve;", "Ò").
+                replace("&ograve;", "ò").
+                replace("&Ouml;", "Ö").
+                replace("&ouml;", "ö").
+                replace("&szlig;", "ß").
+                replace("&Uacute;", "Ú").
+                replace("&uacute;", "ú").
+                replace("&Ucirc;;", "Û").
+                replace("&ucirc;;", "û").
+                replace("&Ugrave;", "Ù").
+                replace("&ugrave;", "ù").
+                replace("&Uuml;", "Ü").
+                replace("&uuml;", "ü").
+                replace("&#039;", "'").
+                replace("&#8217;", "'").
+                replace("�??", "'").
+                replace("�?", "'").
+                replace("�", "'").
+                replace("&nbsp;", " ");
 
         // If UG has been bad, replace these bits:
         s = s.replace("pre class=\"\"", "");
@@ -276,10 +276,7 @@ public class ProcessSong {
         String[] lines = lyrics.split("\n");
 
         for (String line : lines) {
-            if (!line.startsWith("[") && !line.startsWith(";") && !line.startsWith(".") && !line.startsWith(" ") &&
-                    !line.startsWith("1") && !line.startsWith("2") && !line.startsWith("3") && !line.startsWith("4") &&
-                    !line.startsWith("5") && !line.startsWith("6") && !line.startsWith("7") && !line.startsWith("8") &&
-                    !line.startsWith("9") && !line.startsWith("-")) {
+            if (line.length()==0 || !("[;. 123456789-".contains(line.substring(0,1)))) {
                 line = " " + line;
             } else if (line.matches("^[0-9].*$") && line.length() > 1 && !line.startsWith(".", 1)) {
                 // Multiline verse
@@ -291,41 +288,43 @@ public class ProcessSong {
     }
 
     public String fixLineBreaksAndSlashes(String s) {
-        s = s.replace("\r\n", "\n");
-        s = s.replace("\r", "\n");
-        s = s.replace("\n\n\n", "\n\n");
-        s = s.replace("&quot;", "\"");
-        s = s.replace("\\'", "'");
-        s = s.replace("&quot;", "\"");
-        s = s.replace("<", "(");
-        s = s.replace(">", ")");
-        s = s.replace("&#39;", "'");
-        s = s.replace("\t", "    ");
-        s = s.replace("\\'", "'");
-        return s;
+        return s.replace("\r\n", "\n").
+                replace("\r", "\n").
+                replace("\n\n\n", "\n\n").
+                replace("&quot;", "\"").
+                replace("\\'", "'").
+                replace("&quot;", "\"").
+                replace("<", "(").
+                replace(">", ")").
+                replace("&#39;", "'").
+                replace("\t", "    ").
+                replace("\\'", "'");
     }
 
     String determineLineTypes(String string, Context c) {
         String type;
-        if (string.indexOf(".") == 0) {
-            type = "chord";
-        } else if (string.indexOf(";__" + c.getResources().getString(R.string.capo_fret)) == 0) {
-            type = "capoinfo";
-        } else if (string.indexOf(";__") == 0) {
-            type = "extra";
-            //} else if (string.startsWith(";"+c.getString(R.string.music_score))) {
-            //    type = "abcnotation";
-        } else if (string.startsWith(";") && string.length() > 4 && (string.indexOf("|") == 2 || string.indexOf("|") == 3)) {
-            // Used to do this by identifying type of string start or drum start
-            // Now just look for ;*| or ;**| where * is anything such as ;e | or ;BD|
-            type = "tab";
-        } else if (string.startsWith(";") && string.contains("1") && string.contains("+") && string.contains("2")) {
-            // Drum tab count line
-            type = "tab";
-        } else if (string.startsWith(";")) {
-            type = "comment";
-        } else if (string.startsWith("[")) {
+        if (string.startsWith("[")) {
             type = "heading";
+        } else if (string.startsWith(".")) {
+            type = "chord";
+        } else if (string.startsWith(";")) {
+            // Simple test for ; above means that the complex tests below are done only if a comment line
+            if (string.startsWith(";__" + c.getResources().getString(R.string.capo))) {
+                type = "capoinfo";
+            } else if (string.startsWith(";__")) {
+                type = "extra";
+                //} else if (string.startsWith(";"+c.getString(R.string.music_score))) {
+                //    type = "abcnotation";
+            } else if (string.length() > 4 && (string.indexOf("|") == 2 || string.indexOf("|") == 3)) {
+                // Used to do this by identifying type of string start or drum start
+                // Now just look for ;*| or ;**| where * is anything such as ;e | or ;BD|
+                type = "tab";
+            } else if ((string.contains("+") && string.contains("1") && string.contains("2"))) {
+                // Drum tab count line
+                type = "tab";
+            } else {
+                type = "comment";
+            }
         } else {
             type = "lyric";
         }
@@ -333,41 +332,41 @@ public class ProcessSong {
     }
 
     String howToProcessLines(int linenum, int totallines, String thislinetype, String nextlinetype, String previouslinetype) {
-        String what;
-        // If this is a chord line followed by a lyric line.
-        if (linenum < totallines - 1 && thislinetype.equals("chord") &&
-                (nextlinetype.equals("lyric") || nextlinetype.equals("comment"))) {
-            what = "chord_then_lyric";
-        } else if (thislinetype.equals("chord") && (nextlinetype.equals("") || nextlinetype.equals("chord"))) {
-            what = "chord_only";
-        } else if (thislinetype.equals("lyric") && !previouslinetype.equals("chord")) {
-            what = "lyric_no_chord";
-        } else if (thislinetype.equals("comment") && !previouslinetype.equals("chord")) {
-            what = "comment_no_chord";
-        } else if (thislinetype.equals("capoinfo")) {
-            what = "capo_info";
-        } else if (thislinetype.equals("extra")) {
-            what = "extra_info";
-        } else if (thislinetype.equals("tab")) {
-            what = "guitar_tab";
-        } else if (thislinetype.equals("heading")) {
-            what = "heading";
-            //} else if (thislinetype.equals("abcnotation")) {
-            //    what = "abc_notation";
-        } else {
-            what = "null"; // Probably a lyric line with a chord above it - already dealt with
+        String what = "null";
+        switch (thislinetype) {
+            case "chord":
+                if (linenum < totallines - 1 && (nextlinetype.equals("lyric") || nextlinetype.equals("comment"))) {
+                    what = "chord_then_lyric";
+                } else if (nextlinetype.equals("") || nextlinetype.equals("chord")) {
+                    what = "chord_only";
+                }
+                break;
+            case "lyric":
+                if (!previouslinetype.equals("chord"))
+                    what = "lyric_no_chord";
+                break;
+            case "comment":
+                if (!previouslinetype.equals("chord"))
+                    what = "comment_no_chord";
+                break;
+            case "capoinfo":
+                what = "capo_info";
+                break;
+            case "extra":
+                what = "extra_info";
+                break;
+            case "tab":
+                what = "guitar_tab";
+                break;
+            case "heading":
+                what = "heading";
+                break;
         }
         return what;
     }
 
     String fixLineLength(String string, int newlength) {
-        int extraspacesrequired = newlength - string.length();
-        StringBuilder stringBuilder = new StringBuilder(string);
-        for (int x = 0; x < extraspacesrequired; x++) {
-            stringBuilder.append(" ");
-        }
-        string = stringBuilder.toString();
-        return string;
+        return String.format("%1$-" + newlength + "s", string);
     }
 
     public boolean looksLikeGuitarTab(String line) {
@@ -410,86 +409,68 @@ public class ProcessSong {
                 !mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.image)) &&
                 !mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.note)) &&
                 !mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture))) {
-            s = s.replace("Slide 1", "[V1]");
-            s = s.replace("Slide 2", "[V2]");
-            s = s.replace("Slide 3", "[V3]");
-            s = s.replace("Slide 4", "[V4]");
-            s = s.replace("Slide 5", "[V5]");
+            s = s.replace("Slide 1", "[V1]").
+                    replace("Slide 2", "[V2]").
+                    replace("Slide 3", "[V3]").
+                    replace("Slide 4", "[V4]").
+                    replace("Slide 5", "[V5]");
         }
         return s;
     }
 
-    String[] getChordPositions(String string, String lyric) {
-        // IV - Lyric is now needed. Part of preventing lyrics starting too close after a chord above a run of spaces
+    String[] getChordPositions(String chord, String lyric) {
         ArrayList<String> chordpositions = new ArrayList<>();
-        String inString = string;
-        boolean thischaraspace;
-        boolean prevcharaspace;
 
-        if (inString.startsWith(".")) {
-            inString = inString.replaceFirst(".", " ");
-        }
-        // Add a space to identify chords at the end of a line
-        inString = inString + " ";
+        // IV - Set ready for the loop
+        boolean thischordcharempty;
+        boolean prevchordcharempty = false;
+        boolean prevlyriccharempty;
+        boolean prevlyricempty = true;
 
-        for (int x = 1; x < (inString.length()); x++) {
-            thischaraspace = inString.startsWith(" ", x);
-            prevcharaspace = inString.startsWith(" ", x - 1);
-            // Add the start of chord and the end of a chord where it ends above a space in the lyric
-            if ((!thischaraspace && prevcharaspace) || (thischaraspace && !prevcharaspace && lyric.startsWith(" ", x - 1))) {
-                chordpositions.add(x + "");
+        for (int x = 1; x < (chord.length()); x++) {
+            thischordcharempty = chord.startsWith(" ", x);
+            prevlyriccharempty = lyric.startsWith(" ", x - 1);
+            prevlyricempty = prevlyricempty & prevlyriccharempty;
+
+            // Add the start position of a chord
+            if (!thischordcharempty && prevchordcharempty) {
+                // Remove the previous chord end position when in a run of chords over lyric spaces
+                if (prevlyricempty && lyric.startsWith(" ", x)) {
+                    chordpositions.remove(chordpositions.size() - 1);
+                }
+                chordpositions.add(String.valueOf(x));
+                prevlyricempty = true;
+                // Add the end position of a chord if it ends over a lyric space
+            } else if (thischordcharempty && !prevchordcharempty && prevlyriccharempty) {
+                chordpositions.add(String.valueOf(x));
+                prevlyricempty = true;
             }
-        }
 
+            prevchordcharempty = thischordcharempty;
+        }
         String[] chordpos = new String[chordpositions.size()];
-        chordpos = chordpositions.toArray(chordpos);
-        return chordpos;
+        return chordpositions.toArray(chordpos);
     }
 
     String[] getSections(String string, String[] pos_string) {
         // Go through the line identifying sections
         ArrayList<String> workingsections = new ArrayList<>();
         int startpos = 0;
-        int endpos = -1;
-
-        if (string == null) {
-            string = "";
-        }
-        if (pos_string == null) {
-            pos_string = new String[0];
-        }
+        int endpos;
 
         for (int x = 0; x < pos_string.length; x++) {
-            if (pos_string[x].equals("0")) {
-                // First section is at the start of the line
-                startpos = 0;
-            } else if (x == pos_string.length - 1) {
-                // Last section, so end position is end of the line
-                // First get the second last section
-                endpos = Integer.parseInt(pos_string[x]);
-                if (startpos < endpos) {
-                    workingsections.add(string.substring(startpos, endpos));
-                }
-
-                // Now get the last one
-                startpos = Integer.parseInt(pos_string[x]);
+            endpos = Integer.parseInt(pos_string[x]);
+            // We have a position for the end of a section, add the section
+            workingsections.add(string.substring(startpos, endpos));
+            startpos = endpos;
+            if (x == pos_string.length - 1) {
+                // For the last position we also add the end of line section
                 endpos = string.length();
-                if (startpos < endpos) {
-                    workingsections.add(string.substring(startpos, endpos));
-                }
-
-            } else {
-                // We are at the start of a section somewhere other than the start or end
-                // Add the text of the previous section;
-                endpos = Integer.parseInt(pos_string[x]);
-                if (startpos < endpos) {
-                    workingsections.add(string.substring(startpos, endpos));
-                }
-                startpos = endpos;
+                workingsections.add(string.substring(startpos, endpos));
             }
         }
-        if (startpos == 0 && endpos == -1) {
-            // This is just line, so add the whole line
+        if (startpos == 0) {
+            // This is just a line, so add the whole line
             workingsections.add(string);
         }
 
@@ -504,107 +485,103 @@ public class ProcessSong {
             locale = Locale.getDefault();
         }
         String myLyrics = song.getLyrics();
-        myLyrics = myLyrics.replace("]\n\n", "]\n");
-        myLyrics = myLyrics.replaceAll("\r\n", "\n");
-        myLyrics = myLyrics.replaceAll("\r", "\n");
-        myLyrics = myLyrics.replaceAll("\\t", "    ");
-        myLyrics = myLyrics.replaceAll("\f", "    ");
-        myLyrics = myLyrics.replace("\r", "");
-        myLyrics = myLyrics.replace("\t", "    ");
-        myLyrics = myLyrics.replace("\b", "    ");
-        myLyrics = myLyrics.replace("\f", "    ");
-        myLyrics = myLyrics.replace("&#27;", "'");
-        myLyrics = myLyrics.replace("&#027;", "'");
-        myLyrics = myLyrics.replace("&#39;", "'");
-        myLyrics = myLyrics.replace("&#34;", "'");
-        myLyrics = myLyrics.replace("&#039;", "'");
-        myLyrics = myLyrics.replace("&ndash;", "-");
-        myLyrics = myLyrics.replace("&mdash;", "-");
-        myLyrics = myLyrics.replace("&apos;", "'");
-        myLyrics = myLyrics.replace("&lt;", "<");
-        myLyrics = myLyrics.replace("&gt;", ">");
-        myLyrics = myLyrics.replace("&quot;", "\"");
-        myLyrics = myLyrics.replace("&rdquo;", "'");
-        myLyrics = myLyrics.replace("&rdquor;", "'");
-        myLyrics = myLyrics.replace("&rsquo;", "'");
-        myLyrics = myLyrics.replace("&rdquor;", "'");
-        myLyrics = myLyrics.replaceAll("\u0092", "'");
-        myLyrics = myLyrics.replaceAll("\u0093", "'");
-        myLyrics = myLyrics.replaceAll("\u2018", "'");
-        myLyrics = myLyrics.replaceAll("\u2019", "'");
 
-        // If UG has been bad, replace these bits:
-        myLyrics = myLyrics.replace("pre class=\"\"", "");
+        // To replace [<Verse>] with [V] and [<Verse> 1] with [V1]
+        String languageverseV = c.getResources().getString(R.string.verse);
+        String languageverse_lowercaseV = languageverseV.toLowerCase(locale);
+        String languageverse_uppercaseV = languageverseV.toUpperCase(locale);
 
-        if (!song.getFolder().contains(c.getResources().getString(R.string.slide)) &&
-                !song.getFolder().contains(c.getResources().getString(R.string.image)) &&
-                !song.getFolder().contains(c.getResources().getString(R.string.note)) &&
-                !song.getFolder().contains(c.getResources().getString(R.string.scripture))) {
-            myLyrics = myLyrics.replace("Slide 1", "[V1]");
-            myLyrics = myLyrics.replace("Slide 2", "[V2]");
-            myLyrics = myLyrics.replace("Slide 3", "[V3]");
-            myLyrics = myLyrics.replace("Slide 4", "[V4]");
-            myLyrics = myLyrics.replace("Slide 5", "[V5]");
-        }
+        // To replace [<Chorus>] with [C] and [<Chorus> 1] with [C1]
+        String languagechorusC = c.getResources().getString(R.string.chorus);
+        String languagechorus_lowercaseC = languagechorusC.toLowerCase(locale);
+        String languagechorus_uppercaseC = languagechorusC.toUpperCase(locale);
 
-        // Make double tags into single ones
-        myLyrics = myLyrics.replace("[[", "[");
-        myLyrics = myLyrics.replace("]]", "]");
+        myLyrics = myLyrics
+                .replace("Slide 1", "[V1]")
+                .replace("Slide 2", "[V2]")
+                .replace("Slide 3", "[V3]")
+                .replace("Slide 4", "[V4]")
+                .replace("Slide 5", "[V5]")
+                .replace("]\n\n", "]\n")
+                .replaceAll("\r\n", "\n")
+                .replaceAll("\r", "\n")
+                .replaceAll("\\t", "    ")
+                .replaceAll("\f", "    ")
+                .replace("\r", "")
+                .replace("\t", "    ")
+                .replace("\b", "    ")
+                .replace("\f", "    ")
+                .replace("&#27;", "'")
+                .replace("&#x27;", "'")
+                .replace("&#027;", "'")
+                .replace("&#39;", "'")
+                .replace("&#34;", "'")
+                .replace("&#039;", "'")
+                .replace("&ndash;", "-")
+                .replace("&mdash;", "-")
+                .replace("&apos;", "'")
+                .replace("&lt;", "<")
+                .replace("&gt;", ">")
+                .replace("&quot;", "\"")
+                .replace("&rdquo;", "'")
+                .replace("&rdquor;", "'")
+                .replace("&rsquo;", "'")
+                .replace("&amp;rsquo;", "'")
+                .replace("&rdquor;", "'")
+                .replaceAll("\u0092", "'")
+                .replaceAll("\u0093", "'")
+                .replaceAll("\u2018", "'")
+                .replaceAll("\u2019", "'")
+                // If UG has been bad, replace these bits:
+                .replace("pre class=\"\"", "")
+                // Make double tags into single ones
+                .replace("[[", "[")
+                .replace("]]", "]")
+                // Make lowercase start tags into caps
+                .replace("[v", "[V")
+                .replace("[b", "[B")
+                .replace("[c", "[C")
+                .replace("[t", "[T")
+                .replace("[p", "[P")
+                // Replace [Verse] with [V] and [Verse 1] with [V1]
+                .replace("[" + languageverse_lowercaseV, "[" + languageverseV)
+                .replace("[" + languageverse_uppercaseV, "[" + languageverseV)
+                .replace("[" + languageverseV + "]", "[V]")
+                .replace("[" + languageverseV + " 1]", "[V1]")
+                .replace("[" + languageverseV + " 2]", "[V2]")
+                .replace("[" + languageverseV + " 3]", "[V3]")
+                .replace("[" + languageverseV + " 4]", "[V4]")
+                .replace("[" + languageverseV + " 5]", "[V5]")
+                .replace("[" + languageverseV + " 6]", "[V6]")
+                .replace("[" + languageverseV + " 7]", "[V7]")
+                .replace("[" + languageverseV + " 8]", "[V8]")
+                .replace("[" + languageverseV + " 9]", "[V9]")
+                // Replace [<Chorus>] with [C] and [<Chorus> 1] with [C1]
+                .replace("[" + languagechorus_lowercaseC, "[" + languagechorusC)
+                .replace("[" + languagechorus_uppercaseC, "[" + languagechorusC)
+                .replace("[" + languagechorusC + "]", "[C]")
+                .replace("[" + languagechorusC + " 1]", "[C1]")
+                .replace("[" + languagechorusC + " 2]", "[C2]")
+                .replace("[" + languagechorusC + " 3]", "[C3]")
+                .replace("[" + languagechorusC + " 4]", "[C4]")
+                .replace("[" + languagechorusC + " 5]", "[C5]")
+                .replace("[" + languagechorusC + " 6]", "[C6]")
+                .replace("[" + languagechorusC + " 7]", "[C7]")
+                .replace("[" + languagechorusC + " 8]", "[C8]")
+                .replace("[" + languagechorusC + " 9]", "[C9]")
+                // Try to convert ISO / Windows
+                .replace("\0x91", "'")
+                // Get rid of BOMs and stuff
+                .replace("\uFEFF", "")
+                .replace("\uFEFF", "")
+                .replace("[&#x27;]", "")
+                .replace("[\\xEF]", "")
+                .replace("[\\xBB]", "")
+                .replace("[\\xFF]", "")
+                .replace("\\xEF", "")
+                .replace("\\xBB", "")
+                .replace("\\xFF", "");
 
-        // Make lowercase start tags into caps
-        myLyrics = myLyrics.replace("[v", "[V");
-        myLyrics = myLyrics.replace("[b", "[B");
-        myLyrics = myLyrics.replace("[c", "[C");
-        myLyrics = myLyrics.replace("[t", "[T");
-        myLyrics = myLyrics.replace("[p", "[P");
-
-        // Replace [Verse] with [V] and [Verse 1] with [V1]
-        String languageverse = c.getResources().getString(R.string.verse);
-        String languageverse_lowercase = languageverse.toLowerCase(locale);
-        String languageverse_uppercase = languageverse.toUpperCase(locale);
-        myLyrics = myLyrics.replace("[" + languageverse_lowercase, "[" + languageverse);
-        myLyrics = myLyrics.replace("[" + languageverse_uppercase, "[" + languageverse);
-        myLyrics = myLyrics.replace("[" + languageverse + "]", "[V]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 1]", "[V1]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 2]", "[V2]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 3]", "[V3]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 4]", "[V4]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 5]", "[V5]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 6]", "[V6]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 7]", "[V7]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 8]", "[V8]");
-        myLyrics = myLyrics.replace("[" + languageverse + " 9]", "[V9]");
-
-        // Replace [Chorus] with [C] and [Chorus 1] with [C1]
-        String languagechorus = c.getResources().getString(R.string.chorus);
-        String languagechorus_lowercase = languagechorus.toLowerCase(locale);
-        String languagechorus_uppercase = languagechorus.toUpperCase(locale);
-        myLyrics = myLyrics.replace("[" + languagechorus_lowercase, "[" + languagechorus);
-        myLyrics = myLyrics.replace("[" + languagechorus_uppercase, "[" + languagechorus);
-        myLyrics = myLyrics.replace("[" + languagechorus + "]", "[C]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 1]", "[C1]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 2]", "[C2]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 3]", "[C3]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 4]", "[C4]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 5]", "[C5]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 6]", "[C6]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 7]", "[C7]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 8]", "[C8]");
-        myLyrics = myLyrics.replace("[" + languagechorus + " 9]", "[C9]");
-
-        // Try to convert ISO / Windows
-        myLyrics = myLyrics.replace("\0x91", "'");
-
-        // Get rid of BOMs and stuff
-        myLyrics = myLyrics.replace("\uFEFF", "");
-        myLyrics = myLyrics.replace("\uFEFF", "");
-        myLyrics = myLyrics.replace("[&#x27;]", "");
-        myLyrics = myLyrics.replace("[\\xEF]", "");
-        myLyrics = myLyrics.replace("[\\xBB]", "");
-        myLyrics = myLyrics.replace("[\\xFF]", "");
-        myLyrics = myLyrics.replace("\\xEF", "");
-        myLyrics = myLyrics.replace("\\xBB", "");
-        myLyrics = myLyrics.replace("\\xFF", "");
         song.setLyrics(myLyrics);
         return myLyrics;
     }
@@ -650,8 +627,61 @@ public class ProcessSong {
     }
 
     public String beautifyHeading(Context c, MainActivityInterface mainActivityInterface, String line) {
-        line = line.replace("[", "");
-        line = line.replace("]", "");
+        String section = "";
+        boolean annotated = line.contains("-]");
+
+        if (line.equals("")) {
+            return "";
+        }
+
+        if (annotated) {
+            line = line
+                    .replace("[","")
+                    .replace(" -]", "")
+                    .replace("-]", "")
+                    .replace ("]","")
+                    .trim();
+        } else {
+            line = line
+                    .replace("[","")
+                    .replace("]", "")
+                    .trim();
+        }
+
+        // Fix for filtered section labels. ':' is a 'quick exit for non filtered headings
+        if (line.contains(":") &&
+                (line.contains(":V") || line.contains(":C") || line.contains(":B") ||
+                        line.contains(":T") || line.contains(":P"))) {
+            line = line.substring(line.indexOf(":") + 1);
+        }
+
+        // IV - Test 1 char or 2 chars ending 0-9 or 3 chars ending 10
+        if (line.length() == 1 ||
+                (line.length() == 2 && "123456789".contains(line.substring(1))) ||
+                (line.length() == 3 && line.substring(1).equals("10"))) {
+            switch (line.substring(0, 1)) {
+                case "V":
+                    line = removeAnnotatedSections(line).replace("V", c.getResources().getString(R.string.verse) + " ").replace("-", "");
+                    break;
+                case "T":
+                    line = removeAnnotatedSections(line).replace("T", c.getResources().getString(R.string.tag) + " ");
+                    break;
+                case "C":
+                    line = removeAnnotatedSections(line).replace("C", c.getResources().getString(R.string.chorus) + " ");
+                    break;
+                case "B":
+                    line = removeAnnotatedSections(line).replace("B", c.getResources().getString(R.string.bridge) + " ");
+                    break;
+                case "P":
+                    line = removeAnnotatedSections(line).replace("P", c.getResources().getString(R.string.prechorus) + " ");
+                    break;
+                case "I":
+                default:
+                    break;
+            }
+        }
+
+        line = line.replace("[", "").replace("]", "");
 
         // Look for caps or English tags for non-English app users
         line = replaceBadHeadings(mainActivityInterface, line,"verse", "V");
@@ -661,132 +691,14 @@ public class ProcessSong {
         line = replaceBadHeadings(mainActivityInterface, line, "tag","T");
         line = replaceBadHeadings(mainActivityInterface, line, "bridge","B");
 
-        // Fix for filtered section labels
-        if (line.contains(":V") || line.contains(":C") ||
-                line.contains(":B") || line.contains(":T") ||
-                line.contains(":P")) {
-            line = line.substring(line.indexOf(":") + 1);
-        }
-
-        switch (line) {
-            case "V-":
-            case "V - ":
-            case "V":
-            case "V1":
-            case "V2":
-            case "V3":
-            case "V4":
-            case "V5":
-            case "V6":
-            case "V7":
-            case "V8":
-            case "V9":
-            case "V10":
-            case "V1-":
-            case "V2-":
-            case "V3-":
-            case "V4-":
-            case "V5-":
-            case "V6-":
-            case "V7-":
-            case "V8-":
-            case "V9-":
-            case "V10-":
-            case "V1 -":
-            case "V2 -":
-            case "V3 -":
-            case "V4 -":
-            case "V5 -":
-            case "V6 -":
-            case "V7 -":
-            case "V8 -":
-            case "V9 -":
-            case "V - 10":
-                line = removeAnnotatedSections(line);
-                line = line.replace("V", c.getResources().getString(R.string.verse) + " ");
-                line = line.replace("-", "");
-                break;
-
-            case "T-":
-            case "T -":
-            case "T":
-            case "T1":
-            case "T2":
-            case "T3":
-            case "T4":
-            case "T5":
-            case "T6":
-            case "T7":
-            case "T8":
-            case "T9":
-            case "T10":
-                line = removeAnnotatedSections(line);
-                line = line.replace("T", c.getResources().getString(R.string.tag) + " ");
-                break;
-
-            case "C-":
-            case "C -":
-            case "C":
-            case "C1":
-            case "C2":
-            case "C3":
-            case "C4":
-            case "C5":
-            case "C6":
-            case "C7":
-            case "C8":
-            case "C9":
-            case "C10":
-                line = removeAnnotatedSections(line);
-                line = line.replace("C", c.getResources().getString(R.string.chorus) + " ");
-                break;
-
-            case "B-":
-            case "B -":
-            case "B":
-            case "B1":
-            case "B2":
-            case "B3":
-            case "B4":
-            case "B5":
-            case "B6":
-            case "B7":
-            case "B8":
-            case "B9":
-            case "B10":
-                line = removeAnnotatedSections(line);
-                line = line.replace("B", c.getResources().getString(R.string.bridge) + " ");
-                break;
-
-            case "P-":
-            case "P -":
-            case "P":
-            case "P1":
-            case "P2":
-            case "P3":
-            case "P4":
-            case "P5":
-            case "P6":
-            case "P7":
-            case "P8":
-            case "P9":
-            case "P10":
-                line = removeAnnotatedSections(line);
-                line = line.replace("P", c.getResources().getString(R.string.prechorus) + " ");
-                break;
-            default:
-                line = removeAnnotatedSections(line);
-                break;
-        }
-
         return line.trim();
     }
     private String replaceBadHeadings(MainActivityInterface mainActivityInterface, String line, String fix, String replacement) {
         if (line.contains(fix) || line.contains(fix.toUpperCase(mainActivityInterface.getLocale()))) {
-            line = line.replace(fix+" ",replacement);
-            line = line.replace(fix.toUpperCase(mainActivityInterface.getLocale())+" ",replacement);
-            line = line.replace(fix,replacement);
-            line = line.replace(fix.toUpperCase(mainActivityInterface.getLocale()),replacement);
+            line = line.replace(fix+" ",replacement).
+                    replace(fix.toUpperCase(mainActivityInterface.getLocale())+" ",replacement).
+                    replace(fix,replacement).
+                    replace(fix.toUpperCase(mainActivityInterface.getLocale()),replacement);
         }
         return line;
     }
@@ -849,8 +761,7 @@ public class ProcessSong {
                 }
             } else if (!lines[i].startsWith(".") && !displayChords){
                 // Tidy it up
-                lines[i] = lines[i].trim();
-                lines[i] = lines[i].replace("_","");
+                lines[i] = lines[i].trim().replace("_","");
                 lines[i] = " " + lines[i];
                 sb.append("\n").append(lines[i]);
             } else if (!lines[i].startsWith(".")) {
@@ -871,14 +782,14 @@ public class ProcessSong {
     }
 
     private String makeSections(String string) {
-        string = string.replace("\n\n\n", "\n \n____SPLIT____");
-        string = string.replace("\n \n \n", "\n \n____SPLIT____");
-        string = string.replace("\n\n", "\n \n____SPLIT____");
-        string = string.replace("\n \n", "\n \n____SPLIT____");
-        string = string.replace("\n[", "\n____SPLIT____[");
-        string = string.replace("\n [", "\n____SPLIT____[");
-        string = string.replace("\n[", "\n____SPLIT____[");
-        string = string.replace("____SPLIT________SPLIT____", "____SPLIT____");
+        string = string.replace("\n\n\n", "\n \n____SPLIT____").
+                replace("\n \n \n", "\n \n____SPLIT____").
+                replace("\n\n", "\n \n____SPLIT____").
+                replace("\n \n", "\n \n____SPLIT____").
+                replace("\n[", "\n____SPLIT____[").
+                replace("\n [", "\n____SPLIT____[").
+                replace("\n[", "\n____SPLIT____[").
+                replace("____SPLIT________SPLIT____", "____SPLIT____");
         if (string.trim().startsWith("____SPLIT____")) {
             string = string.replaceFirst(" ____SPLIT____", "");
             while (string.startsWith("\n") || string.startsWith(" ")) {
@@ -1267,7 +1178,6 @@ public class ProcessSong {
 
         int backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
         int textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
-        int chordsColor = mainActivityInterface.getMyThemeColors().getLyricsChordsColor();
         if (presentation) {
             textColor = mainActivityInterface.getMyThemeColors().getPresoFontColor();
         } else if (asPDF) {
@@ -1454,7 +1364,14 @@ public class ProcessSong {
     private TextView newTextView(Context c, String linetype, Typeface typeface, float size, int color) {
         TextView textView = new TextView(c);
         if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            int trimval = (int) (size * lineSpacing);
+            int trimval;
+            if (linetype.equals("chord")) {
+                trimval = (int) (size * scaleChords * lineSpacing);
+            } else if (linetype.equals("heading")) {
+                trimval = (int) (size * scaleHeadings * lineSpacing);
+            } else {
+                trimval = (int) (size * lineSpacing);
+            }
             textView.setPadding(0, -trimval, 0, -trimval);
         } else {
             textView.setPadding(0, 0, 0, 0);

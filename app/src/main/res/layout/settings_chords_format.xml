@@ -153,6 +153,12 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/chordFormat0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/chordformat_detected" />
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/chordFormat1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

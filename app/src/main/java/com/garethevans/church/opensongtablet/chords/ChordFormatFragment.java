@@ -68,6 +68,9 @@ public class ChordFormatFragment extends Fragment {
         showHideView(myView.chordFormat,myView.assumePreferred.isChecked());
         int formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
         switch (formattouse) {
+            case 0:
+                myView.chordFormat0.setChecked(true);
+                break;
             case 1:
                 myView.chordFormat1.setChecked(true);
                 break;
@@ -129,6 +132,7 @@ public class ChordFormatFragment extends Fragment {
             showHideView(myView.chordFormat,b);
         });
 
+        myView.chordFormat0.setOnCheckedChangeListener(new MyRadioListener(0));
         myView.chordFormat1.setOnCheckedChangeListener(new MyRadioListener(1));
         myView.chordFormat2.setOnCheckedChangeListener(new MyRadioListener(2));
         myView.chordFormat3.setOnCheckedChangeListener(new MyRadioListener(3));
