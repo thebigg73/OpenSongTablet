@@ -43,11 +43,11 @@
                 android:text="@string/key"
                 android:textSize="24sp" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/assumePreferred"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/chordformat_default"/>
+                android:text="@string/chord_convert" />
 
             <LinearLayout
                 android:id="@+id/chooseFormat_LinearLayout"
@@ -55,13 +55,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/detectedChordFormatText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:text="@string/chord_format" />
+                    android:text="@string/chordformat_detected" />
 
                 <RadioGroup
                     android:id="@+id/detectedChordFormat"
