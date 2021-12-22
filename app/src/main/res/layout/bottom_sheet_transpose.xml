@@ -50,65 +50,27 @@
                 android:text="@string/chord_convert" />
 
             <LinearLayout
-                android:id="@+id/chooseFormat_LinearLayout"
+                android:id="@+id/chordFormat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/detectedChordFormatText"
-                    android:layout_width="wrap_content"
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/chordFormatFrom"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/chordformat_detected" />
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:hint="@string/transpose_from"/>
 
-                <RadioGroup
-                    android:id="@+id/detectedChordFormat"
-                    android:layout_width="match_parent"
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/chordFormatTo"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="16dp">
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:hint="@string/transpose_to"/>
 
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat1Radio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="@string/chordformat_1" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat2Radio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_2" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat3Radio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_3" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat4Radio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_4" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat5Radio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_5" />
-
-                    <RadioButton
-                        android:id="@+id/chordFormat6Radio"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_6" />
-
-                </RadioGroup>
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton

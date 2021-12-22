@@ -119,14 +119,15 @@ public class Transpose {
     private boolean capoForceFlats;
     private boolean capoUsesFlats;
     private String capoKey;
-    private int newChordFormat;
+    private int oldChordFormat, newChordFormat;
     private String transposeDirection;
     private int transposeTimes;
 
     // The song is sent in and the song is sent back after processing (key and lyrics get changed)
     public Song doTranspose(Context c, MainActivityInterface mainActivityInterface, Song thisSong,
-                     String transposeDirection, int transposeTimes, int newChordFormat) {
+                     String transposeDirection, int transposeTimes, int oldChordFormat, int newChordFormat) {
         // Initialise the variables that might be looked up later
+        this.oldChordFormat = oldChordFormat;
         this.newChordFormat = newChordFormat;
         this.transposeDirection = transposeDirection;
         this.transposeTimes = transposeTimes;
@@ -179,7 +180,7 @@ public class Transpose {
                 // IV - Use leading \n as we can be certain it is safe to remove later
                 sb.append("\n");
                 if (line.startsWith(".")) {
-                    switch (thisSong.getDetectedChordFormat()) {
+                    switch (oldChordFormat) {
                         default:
                         case 1:
                             for (int z = 0; z < fromChords1.length; z++)
@@ -651,22 +652,26 @@ public class Transpose {
         boolean contains_nashnumeral = (contains_nashnumeral_count > 4);
 
         // Set the chord style detected - Ok so the user chord format may not quite match the song - it might though!
+        int formatNum;
+
         if (contains_do) {
-            thisSong.setDetectedChordFormat(4);
+            formatNum = 4;
         } else if (contains_H && !contains_es_is) {
-            thisSong.setDetectedChordFormat(2);
+            formatNum = 2;
         } else if (contains_H || contains_es_is) {
-            thisSong.setDetectedChordFormat(3);
+            formatNum = 3;
         } else if (contains_nash) {
-            thisSong.setDetectedChordFormat(5);
+            formatNum = 5;
         } else if (contains_nashnumeral) {
-            thisSong.setDetectedChordFormat(6);
+            formatNum = 6;
         } else {
-            thisSong.setDetectedChordFormat(1);
+            formatNum = 1;
         }
 
+        thisSong.setDesiredChordFormat(formatNum);
+        thisSong.setDetectedChordFormat(formatNum);
         // We set the newChordFormat default to the same as detected
-        newChordFormat = thisSong.getDetectedChordFormat();
+        newChordFormat = formatNum;
     }
 
 

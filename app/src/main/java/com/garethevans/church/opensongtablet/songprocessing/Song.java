@@ -51,7 +51,9 @@ public class Song {
     private String presentationorder="";
     private boolean hasExtraStuff;
     private String filetype="XML";
+    // TODO change this on song initialisation based on preferences
     private int detectedChordFormat=1;
+    private int desiredChordFormat=1;
     private String encoding="UTF-8";
     private ArrayList<String> songSections;
     private ArrayList<String> songSectionHeadings;
@@ -173,6 +175,9 @@ public class Song {
     public int getCurrentSection() {return currentSection;}
     public int getDetectedChordFormat() {
         return detectedChordFormat;
+    }
+    public int getDesiredChordFormat() {
+        return desiredChordFormat;
     }
     public String getEncoding() {
         return encoding;
@@ -296,6 +301,9 @@ public class Song {
     public void setDetectedChordFormat(int detectedChordFormat) {
         this.detectedChordFormat = detectedChordFormat;
     }
+    public void setDesiredChordFormat(int desiredChordFormat) {
+        this.desiredChordFormat = desiredChordFormat;
+    }
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
@@ -364,6 +372,7 @@ public class Song {
         this.hasExtraStuff = toCopy.hasExtraStuff;
         this.filetype = toCopy.filetype;
         this.detectedChordFormat = toCopy.detectedChordFormat;
+        this.desiredChordFormat = toCopy.desiredChordFormat;
         this.encoding = toCopy.encoding;
         this.songSections = toCopy.songSections;
         this.songSectionHeadings = toCopy.songSectionHeadings;

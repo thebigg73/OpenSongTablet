@@ -1711,7 +1711,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Get the number of transpose times
                 int transposeTimes = transpose.getTransposeTimes(songKey,setKey);
                 copySong.setKey(songKey); // This will be transposed in the following...
-                copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes,copySong.getDetectedChordFormat()).getLyrics());
+                copySong.setLyrics(transpose.doTranspose(this,this,copySong,
+                        "+1",transposeTimes,copySong.getDetectedChordFormat(),
+                        copySong.getDesiredChordFormat()).getLyrics());
                 //copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes).getLyrics());
                 // Get the song XML
                 String songXML = processSong.getXML(this,this,copySong);
