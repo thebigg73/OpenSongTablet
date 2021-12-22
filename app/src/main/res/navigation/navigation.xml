@@ -591,7 +591,11 @@
                     android:id="@+id/chordFormatFragment"
                     android:name="com.garethevans.church.opensongtablet.chords.ChordFormatFragment"
                     android:label="ChordFormatFragment"
-                    tools:layout="@layout/settings_chords_format"/>
+                    tools:layout="@layout/settings_chords_format">
+                <deepLink
+                    android:id="@+id/chordFormat_DeepLink"
+                    app:uri="opensongapp://settings/chords/settings" />
+                </fragment>
                 <fragment
                     android:id="@+id/customChordsFragment"
                     android:name="com.garethevans.church.opensongtablet.chords.CustomChordsFragment"

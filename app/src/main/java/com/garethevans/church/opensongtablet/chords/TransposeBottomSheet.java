@@ -180,6 +180,12 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         });
 
         myView.doTransposeButton.setOnClickListener(v -> doTranspose());
+
+        myView.chordsFormat.setOnClickListener(view -> {
+            mainActivityInterface.navigateToFragment("opensongapp://settings/chords/settings",0);
+            dismiss();
+
+        });
     }
 
     private void usePreferredChordFormat(boolean trueorfalse) {

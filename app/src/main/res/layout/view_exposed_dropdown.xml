@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:dropDownHeight="200dp"
         android:padding="16dp"
+        android:background="@null"
         tools:text="Text"/>
 
 </com.google.android.material.textfield.TextInputLayout>

@@ -18,7 +18,7 @@
                 android:id="@+id/displayChords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/show_chords"/>
+                android:text="@string/show_chords" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/capoStyle"
@@ -31,11 +31,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:textL="@string/chords"
+                app:label="@string/chord_capo_display"
                 app:textC="@string/capo"
-                app:textR="@string/both"
-                app:label="@string/chord_capo_display"/>
-            <TableRow style="@style/DividerLine"/>
+                app:textL="@string/chords"
+                app:textR="@string/both" />
+
+            <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:layout_width="match_parent"
@@ -124,78 +125,52 @@
                 app:textLeft="Gbm"
                 app:textRight="F#m"
                 app:value="1" />
+
             <TableRow style="@style/DividerLine" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/assumePreferred"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:hint="@string/chordformat_default_info"
                 android:text="@string/chordformat_default" />
 
             <LinearLayout
-                android:id="@+id/chordFormatLayout"
+                android:id="@+id/chooseFormatLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+                    android:id="@+id/choosePreferredFormat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:hint="@string/chord_format" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/chosenPreferredFormat"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/choosechordformat"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/chord_format" />
-
-                <RadioGroup
-                    android:id="@+id/chordFormat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_detected" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_1" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_2" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_3" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_4" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_5" />
-
-                    <com.google.android.material.radiobutton.MaterialRadioButton
-                        android:id="@+id/chordFormat6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chordformat_6" />
-
-                </RadioGroup>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:hint="@string/chordformat_1"
+                    android:text="@null" />
             </LinearLayout>
+
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/autoChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="12dp"
+                android:hint="@string/chordformat_autochange_info"
+                android:text="@string/chordformat_autochange" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

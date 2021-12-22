@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,17 +32,19 @@ public class ExposedDropDown extends TextInputLayout {
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
         autoCompleteTextView.setSingleLine(true);
-
+        // The popup background is set in styles, but it seems to require programmatic setting!
+        autoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_bg);
         if (text!=null) {
             autoCompleteTextView.setText(text);
         }
         if (hint!=null) {
             textInputLayout.setHint(hint);
         }
-
+        textInputLayout.setBoxBackgroundColor(getResources().getColor(R.color.transparent));
+        textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE);
         textInputLayout.setPadding(0,0,0,0);
-        ((LinearLayout.LayoutParams)textInputLayout.getLayoutParams()).setMargins(0,0,0,getPxFromDp(context, -16));
-        textInputLayout.setTranslationY(getPxFromDp(context, -16));
+        //((LinearLayout.LayoutParams)textInputLayout.getLayoutParams()).setMargins(0,0,0,getPxFromDp(context, -16));
+        //textInputLayout.setTranslationY(getPxFromDp(context, -16));
         a.recycle();
     }
 

@@ -27,8 +27,8 @@
 
     <dimen name="fastscroll_scrollbar_margin_top">8dp</dimen>
     <dimen name="fastscroll_scrollbar_margin_bottom">8dp</dimen>
-    <dimen name="fastscroll_scrollbar_padding_start">8dp</dimen>
-    <dimen name="fastscroll_scrollbar_padding_end">8dp</dimen>
+    <dimen name="fastscroll_scrollbar_padding_start">2dp</dimen>
+    <dimen name="fastscroll_scrollbar_padding_end">2dp</dimen>
 
     <!-- For the chord diagrams -->
     <dimen name="fingering_width">12dp</dimen>

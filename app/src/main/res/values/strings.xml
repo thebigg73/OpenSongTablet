@@ -69,7 +69,10 @@
     <string name="chordformat_5_name" translatable="false">Nashville</string>
     <string name="chordformat_6" translatable="false">I  II  III  IV  V  VI  VII  VIII  IX  X  XI  XII</string>
     <string name="chordformat_6_name">Numeral</string>
+    <string name="chordformat_autochange">Autochange chord format</string>
+    <string name="chordformat_autochange_info">If a song uses a different chord format, should the app try to display using preferred setting</string>
     <string name="chordformat_default">Always assume original songs are in my preferred chord format</string>
+    <string name="chordformat_default_info">Default for transposing and capo display</string>
     <string name="chordformat_detected">Detected current chord format</string>
     <string name="chords">Chords</string>
     <string name="chorus">Chorus</string>
@@ -1043,4 +1046,4 @@ Check out the categories in the right hand options menu.
     <string name="delete_song_warning">You cannot undo this action.  Please make sure you have created a backup just in case!</string>
     <string name="nashville_error">No Nashville/Numeral chord format detected</string>
     <string name="update_projector_automatically">Update projector automatically</string>
-</resources>
+    </resources>

@@ -49,14 +49,10 @@ public class MaterialTextView extends LinearLayout {
         boolean isChecked = a.getBoolean(R.styleable.MaterialTextView_showCheckMark,false);
         boolean isCheckBox = a.getBoolean(R.styleable.MaterialTextView_showCheckBox, false);
         String mainText = typedArray.getString(0);
-        if (mainText!=null) {
-            textView.setText(mainText);
-        }
+        textView.setText(mainText);
 
         String hintText = typedArray.getString(1);
-        if (hintText!=null) {
-            hintView.setText(hintText);
-        }
+        hintView.setText(hintText);
 
         if (drawable!=null) {
             imageView.setImageDrawable(drawable);
@@ -71,10 +67,20 @@ public class MaterialTextView extends LinearLayout {
     }
 
     public void setHint(String hintText) {
+        if (hintText==null || hintText.isEmpty()) {
+            hintView.setVisibility(View.GONE);
+        } else {
+            hintView.setVisibility(View.VISIBLE);
+        }
         hintView.setText(hintText);
     }
 
     public void setText(String mainText) {
+        if (mainText==null || mainText.isEmpty()) {
+            textView.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.VISIBLE);
+        }
         textView.setText(mainText);
     }
 

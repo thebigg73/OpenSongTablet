@@ -62,7 +62,8 @@ android {
 
 dependencies {
     implementation 'androidx.activity:activity:1.4.0'                                   // Required for permission requests
-    implementation 'androidx.fragment:fragment:1.4.0'                                   // Required for permission requests
+    implementation 'androidx.fragment:fragment:1.4.0'
+    implementation 'com.google.android.material:material:1.6.0-alpha01'                 // Required for material designs
     implementation 'com.google.android.gms:play-services-cast:21.0.0'                   // For casting obviously!
     implementation 'com.google.android.gms:play-services-cast-framework:21.0.0'         // For casting obviously!
     implementation 'com.google.android.gms:play-services-nearby:18.0.1'                 // For Google Nearby Connect devices

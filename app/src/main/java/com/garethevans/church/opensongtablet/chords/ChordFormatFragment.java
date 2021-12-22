@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.chords;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +14,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsChordsFormatBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
 
+import java.util.ArrayList;
+
 public class ChordFormatFragment extends Fragment {
 
     private SettingsChordsFormatBinding myView;
+    private ArrayList<String> chordFormats, chordFormatNames;
     MainActivityInterface mainActivityInterface;
 
     @Override
@@ -65,31 +71,36 @@ public class ChordFormatFragment extends Fragment {
 
         myView.assumePreferred.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 requireContext(),"chordFormatUsePreferred",false));
-        showHideView(myView.chordFormatLayout,myView.assumePreferred.isChecked());
+        showHideView(myView.chooseFormatLinearLayout,myView.assumePreferred.getSwitch().isChecked());
+        showHideView(myView.autoChange,myView.assumePreferred.getSwitch().isChecked());
         int formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
-        switch (formattouse) {
-            case 0:
-                myView.chordFormat0.setChecked(true);
-                break;
-            case 1:
-                myView.chordFormat1.setChecked(true);
-                break;
-            case 2:
-                myView.chordFormat2.setChecked(true);
-                break;
-            case 3:
-                myView.chordFormat3.setChecked(true);
-                break;
-            case 4:
-                myView.chordFormat4.setChecked(true);
-                break;
-            case 5:
-                myView.chordFormat5.setChecked(true);
-                break;
-            case 6:
-                myView.chordFormat6.setChecked(true);
-                break;
-        }
+
+        chordFormats = new ArrayList<>();
+        chordFormats.add(getString(R.string.chordformat_1));
+        chordFormats.add(getString(R.string.chordformat_2));
+        chordFormats.add(getString(R.string.chordformat_3));
+        chordFormats.add(getString(R.string.chordformat_4));
+        chordFormats.add(getString(R.string.chordformat_5));
+        chordFormats.add(getString(R.string.chordformat_6));
+
+        chordFormatNames = new ArrayList<>();
+        chordFormatNames.add(getString(R.string.chordformat_1_name));
+        chordFormatNames.add(getString(R.string.chordformat_2_name));
+        chordFormatNames.add(getString(R.string.chordformat_3_name));
+        chordFormatNames.add(getString(R.string.chordformat_4_name));
+        chordFormatNames.add(getString(R.string.chordformat_5_name));
+        chordFormatNames.add(getString(R.string.chordformat_6_name));
+
+        ExposedDropDownArrayAdapter formatAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+                myView.choosePreferredFormat,R.layout.view_exposed_dropdown_item,chordFormatNames);
+        myView.choosePreferredFormat.setAdapter(formatAdapter);
+        myView.choosePreferredFormat.setText(chordFormatNames.get(formattouse-1));
+        myView.chosenPreferredFormat.setText(null);
+        myView.chosenPreferredFormat.setHint(chordFormats.get(formattouse-1));
+
+        myView.autoChange.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
+                requireContext(), "chordFormatAutoChange", false));
+
     }
 
     private void setListeners() {
@@ -126,18 +137,31 @@ public class ChordFormatFragment extends Fragment {
         myView.sliderEbm.addOnChangeListener(new MySliderChangeListener("prefKey_Ebm"));
         myView.sliderGbm.addOnChangeListener(new MySliderChangeListener("prefKey_Gbm"));
 
-        myView.assumePreferred.setOnCheckedChangeListener((compoundButton, b) -> {
+        myView.assumePreferred.getSwitch().setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     requireContext(), "chordFormatUsePreferred", b);
-            showHideView(myView.chordFormat,b);
+            showHideView(myView.chooseFormatLinearLayout,b);
+            showHideView(myView.autoChange,b);
         });
+        myView.autoChange.getSwitch().setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(
+                    requireContext(), "chordFormatAutoChange", b);
+        });
+        myView.choosePreferredFormat.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
-        myView.chordFormat0.setOnCheckedChangeListener(new MyRadioListener(0));
-        myView.chordFormat1.setOnCheckedChangeListener(new MyRadioListener(1));
-        myView.chordFormat2.setOnCheckedChangeListener(new MyRadioListener(2));
-        myView.chordFormat3.setOnCheckedChangeListener(new MyRadioListener(3));
-        myView.chordFormat4.setOnCheckedChangeListener(new MyRadioListener(4));
-        myView.chordFormat5.setOnCheckedChangeListener(new MyRadioListener(5));
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                int pos = chordFormatNames.indexOf(editable.toString());
+                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                        "chordFormat", pos+1);
+                myView.chosenPreferredFormat.setHint(chordFormats.get(pos));
+            }
+        });
     }
 
     private int setSwitchSliderFromPref(String prefName, boolean defaultValue) {

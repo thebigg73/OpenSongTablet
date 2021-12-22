@@ -148,6 +148,7 @@ public class Preferences extends Activity {
     ccliChurchName                  String      The name of the church for CCLI logging (def:"")
     ccliLicence                     String      The CCLI licence number (def:"")
     chordFormat                     int         My preferred chord format (def:1=normal, 2=Bb->B and B->H, 3=same as 2, but with is/es/as. 4=doremi, 5=nashvillenumber 6=nashvillenumeral) (def:1)
+    chordFormatAutoChange           boolean     When a song is loaded and use preferred is switched on, should the song try to auto change (not overwrite) (def:false);
     chordFormatUsePreferred         boolean     When transposing, should we assume we are using preferred chord format (def:true)
     chordInstrument                 String      The default instrument for showing chords (def:g)
     chosenstorage                   String      The uri of the document tree (Storage Access Framework) (def:null)
