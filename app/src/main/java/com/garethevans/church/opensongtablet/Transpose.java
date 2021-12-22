@@ -6,8 +6,8 @@ import java.util.Collections;
 
 class Transpose {
     //  A  A#/Bb  B/(Cb) C/(B#) C#/Db    D    D#/Eb  E/(Fb) (E#)/F   F#/Gb   G     G#/Ab
-    //  A    B     H      C
-    //  1    2     3      4      5      6      7      8      9     W(10)  X(11)   Y(12)
+    //  A    B      H      C
+    //  1    2      3      4      5      6      7      8      9      W(10)  X(11)  Y(12)
     // On transpose Cb -> B, B# -> C, Fb -> E,  E# -> F
     //
     // A 'number' format ├y┤ is used - y is the 'position in key' as above and ├ and ┤ are start and end markers
@@ -551,7 +551,7 @@ class Transpose {
                         line.contains(" f") || line.contains(".f") ||
                         line.contains(" g") || line.contains(".g")) {
                     contains_es_is_count = contains_es_is_count + 1;
-                } else if (line.contains(" H") || line.contains("\\H")) {
+                } else if (line.contains(" H") || line.contains(".H") || line.contains("/H")) {
                     contains_H_count = contains_H_count + 1;
                 } else if (line.contains(" Do") || line.contains(" Re") || line.contains(" Ré") ||
                         line.contains(" Mi") || line.contains(" Fa") ||
