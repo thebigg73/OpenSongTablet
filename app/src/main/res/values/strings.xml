@@ -64,7 +64,7 @@
     <string name="chordformat_3" translatable="false">C  Cis/Des  D  Dis/Es  E  F  Fis/Ges  G  Gis/As  A  B  H</string>
     <string name="chordformat_3_name" translatable="false">Euro (B,H,is,es)</string>
     <string name="chordformat_4" translatable="false">Do  Do#/Reb  Re  Re#/Mib  Mi  Fa  Fa#/Solb  Sol  Sol#/Lab  La  La#/Sib Si</string>
-    <string name="chordformat_4_name" translatable="false">Solfeggio</string>
+    <string name="chordformat_4_name" translatable="false">Solfège</string>
     <string name="chordformat_5" translatable="false">1  2  3  4  5  6  7  8  9  10  11  12</string>
     <string name="chordformat_5_name" translatable="false">Nashville</string>
     <string name="chordformat_6" translatable="false">I  II  III  IV  V  VI  VII  VIII  IX  X  XI  XII</string>
@@ -73,7 +73,10 @@
     <string name="chordformat_autochange_info">If a song uses a different chord format, should the app try to display using preferred setting</string>
     <string name="chordformat_default">Always assume original songs are in my preferred chord format</string>
     <string name="chordformat_default_info">Default for transposing and capo display</string>
-    <string name="chordformat_detected">Detected current chord format</string>
+    <string name="chordformat_desired">New chord format</string>
+    <string name="chordformat_detected">Detected chord format</string>
+    <string name="chordformat_preferred">Use preferred chord format</string>
+    <string name="chordformat_preferred_info">Assume current/detected and desired chord format is</string>
     <string name="chords">Chords</string>
     <string name="chorus">Chorus</string>
     <string name="client">Client</string>
@@ -456,8 +459,6 @@
         <item>1/4</item>
     </string-array><string name="title">Title</string>
     <string name="transpose">Transpose</string>
-    <string name="transpose_from">Current chord format</string>
-    <string name="transpose_to">New chord format</string>
     <string name="unknown">Unknown</string>
     <string name="update_projector">Update\nprojector</string>
     <string name="user_guide">User guide</string>
@@ -673,7 +674,6 @@ Check out the categories in the right hand options menu.
     <string name="choosestickyfont">Choose sticky notes font</string>
     <string name="choosesongname">Choose a name for this song</string>
     <string name="chord_color">Chords font</string>
-    <string name="chord_convert">Use preferred chord format</string>
     <string name="chord_settings">Chord settings</string>
     <string name="chordiesearch">Online search at Chordie.com</string>
     <string name="chordline_scale">Scale chords</string>

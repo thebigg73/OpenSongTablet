@@ -74,7 +74,7 @@
     <string name="chooselyricfont">"Zvolte lyrické písmo"</string>
     <string name="choosesongname">"Zvolte název pro tuto píseň"</string>
     <string name="chord_color">"Akordy písmo"</string>
-    <string name="chord_convert">"Převést písničku do svého preferovaného formátu akordu"</string>
+    <string name="chordformat_preferred">"Převést písničku do svého preferovaného formátu akordu"</string>
     <string name="chordformat_default">"Vždy se předpokládat, písně jsou v mé preferovaného formátu akordu"</string>
     <string name="chordiesearch">"Online vyhledávání na www.chordie.com"</string>
     <string name="chordline_scale">"Měřítka akordů"</string>

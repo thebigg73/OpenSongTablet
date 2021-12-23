@@ -103,8 +103,6 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         showHideRows(myView.filters.keySearch, songListSearchByKey);
         showHideRows(myView.filters.tagSearch, songListSearchByTag);
         showHideRows(myView.filters.filterSearch, songListSearchByFilter);
-
-
     }
 
     private void setUpExposedDropDowns() {

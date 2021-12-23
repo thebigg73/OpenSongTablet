@@ -75,7 +75,7 @@
     <string name="chooselyricfont">"Wybierz czcionkę liryczny"</string>
     <string name="choosesongname">"Wybierz nazwę dla tej piosenki"</string>
     <string name="chord_color">"Czcionki akordy"</string>
-    <string name="chord_convert">"Konwersja piosenkę do mojego preferowanego formatu akordów"</string>
+    <string name="chordformat_preferred">"Konwersja piosenkę do mojego preferowanego formatu akordów"</string>
     <string name="chordformat_default">"Należy zawsze zakładać, piosenki są w moim ulubionym formacie akordów"</string>
     <string name="chordiesearch">"Wyszukiwanie online na www.chordie.com"</string>
     <string name="chordline_scale">"Akordy skale"</string>

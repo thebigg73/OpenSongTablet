@@ -74,7 +74,7 @@
     <string name="chooselyricfont">"选择歌词的字体"</string>
     <string name="choosesongname">"在这首歌中选择一个名称"</string>
     <string name="chord_color">"和弦字体"</string>
-    <string name="chord_convert">"转换歌曲到我的首选格式的和弦"</string>
+    <string name="chordformat_preferred">"转换歌曲到我的首选格式的和弦"</string>
     <string name="chordformat_default">"总是以为歌曲是我的首选格式的和弦"</string>
     <string name="chordiesearch">""在www.chordie.com网上搜索"</string>
     <string name="chordline_scale">"比例和弦"</string>

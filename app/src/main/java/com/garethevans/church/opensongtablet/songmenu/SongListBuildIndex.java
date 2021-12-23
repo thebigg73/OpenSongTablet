@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -12,6 +11,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class SongListBuildIndex {
@@ -43,6 +43,14 @@ public class SongListBuildIndex {
     }
     public boolean getIndexComplete() {
         return indexComplete;
+    }
+
+    public void buildBasicFromFiles(Context c, MainActivityInterface mainActivityInterface) {
+        // This creates a basic database from the song files
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(c,mainActivityInterface);
+        mainActivityInterface.getStorageAccess().writeSongIDFile(c,mainActivityInterface,songIds);
+        mainActivityInterface.getSQLiteHelper().resetDatabase(c);
+        mainActivityInterface.getSQLiteHelper().insertFast(c,mainActivityInterface);
     }
 
     public String fullIndex(Context c, MainActivityInterface mainActivityInterface) {

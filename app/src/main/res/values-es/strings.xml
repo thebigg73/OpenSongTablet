@@ -75,7 +75,7 @@
     <string name="chooselyricfont">"Elija la fuente lírica"</string>
     <string name="choosesongname">"Elegir un nombre para esta canción"</string>
     <string name="chord_color">"Acordes de la fuente"</string>
-    <string name="chord_convert">"Convertir canción a mi formato acorde preferida"</string>
+    <string name="chordformat_preferred">"Convertir canción a mi formato acorde preferida"</string>
     <string name="chordformat_default">"Siempre asuma canciones están en mi formato acorde preferida"</string>
     <string name="chordiesearch">"Búsqueda en línea en www.chordie.com"</string>
     <string name="chordline_scale">"Acordes de escala"</string>

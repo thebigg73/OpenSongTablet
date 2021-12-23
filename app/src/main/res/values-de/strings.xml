@@ -75,7 +75,7 @@
     <string name="chooselyricfont">"Schriftart Text wählen"</string>
     <string name="choosesongname">"Wählen Sie einen Namen für diesen Song"</string>
     <string name="chord_color">"Schrift Akkorde"</string>
-    <string name="chord_convert">"Song in mein bevorzugtes Akkord-Format konvertieren"</string>
+    <string name="chordformat_preferred">"Song in mein bevorzugtes Akkord-Format konvertieren"</string>
     <string name="chordformat_default">"Immer davon ausgehen, dass Songs in meinem bevorzugten Akkord-Format sind"</string>
     <string name="chordiesearch">"Online-Suche bei www.chordie.com"</string>
     <string name="chordline_scale">"Skalierung Akkorde"</string>

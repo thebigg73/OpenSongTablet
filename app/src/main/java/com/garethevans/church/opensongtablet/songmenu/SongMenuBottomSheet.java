@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetMenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -87,6 +88,17 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
             randomSongBottomSheet.show(requireActivity().getSupportFragmentManager(),"RandomBottomSheet");
             dismiss();
         });
+        myView.rebuildIndex.setOnClickListener(v -> {
+            if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
+                mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles(requireContext(),mainActivityInterface);
+                mainActivityInterface.indexSongs();
+                dismiss();
+            } else {
+                dismiss();
+                mainActivityInterface.getShowToast().doIt(requireContext(),
+                        getString(R.string.search_index_wait));
+            }
+        });
     }
 
     private void navigateTo(String deepLink) {
@@ -109,5 +121,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         // Now send the call to update the set menu fragment
         mainActivityInterface.updateSetList();
     }
+
 
 }

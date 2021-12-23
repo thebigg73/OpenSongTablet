@@ -75,7 +75,7 @@
     <string name="chooselyricfont">"Välj lyrisk typsnitt"</string>
     <string name="choosesongname">"Välj ett namn för den här låten"</string>
     <string name="chord_color">"Ackord typsnitt"</string>
-    <string name="chord_convert">"Konvertera sång till mitt föredragna ackordformat"</string>
+    <string name="chordformat_preferred">"Konvertera sång till mitt föredragna ackordformat"</string>
     <string name="chordformat_default">"Anta alltid att låtar finns i mitt föredragna ackordformat"</string>
     <string name="chordiesearch">"Online sökning på Chordie.com"</string>
     <string name="chordline_scale">"Skala ackord"</string>

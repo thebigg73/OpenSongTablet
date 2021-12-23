@@ -3,15 +3,19 @@ package com.garethevans.church.opensongtablet.chords;
 import android.content.Context;
 import android.util.Log;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Locale;
 
 public class Transpose {
 
     private final String TAG = "Transpose";
+    private ArrayList<String> chordFormatNames, chordFormatAppearances;
 
     //  A  A#/Bb  B/(Cb) C/(B#) C#/Db    D    D#/Eb  E/(Fb) (E#)/F   F#/Gb   G     G#/Ab
     //  A    B     H      C
@@ -31,23 +35,29 @@ public class Transpose {
     //   In effect Solbm overwrites Fm and 3 spaces
 
     // Chord to number: 'majors' and sus interfere so are protected
-    private final String [] fromChords1 =   {"maj7", "ma7", "maj9", "ma9",
-            "A#",     "B#",     "C#",     "D#",     "E#",     "F#",     "G#",
-            "Ab",     "Bb",     "Cb",     "Db",     "Eb",     "Fb",     "Gb",
-            "A",      "B",      "C",      "D",      "E",      "F",      "G",     "¬"};
-    private final String [] toChordsNums1 = {"¬aj7", "¬a7", "¬aj9", "¬a9",
-            "«├2┤",   "«├4┤",   "«├5┤",   "«├7┤",   "«├9┤",   "«├W┤",   "«├Y┤",
-            "«├Y┤",   "«├2┤",   "«├3┤",   "«├5┤",   "«├7┤",   "«├8┤",   "«├W┤",
-            "««├1┤",  "««├3┤",  "««├4┤",  "««├6┤",  "««├8┤",  "««├9┤",  "««├X┤",    "m"};
-    private final String[] fromChords2 =    {"maj7", "ma7", "maj9", "ma9",
-            "A#",     "H#",     "C#",     "D#",     "E#",     "F#",     "G#",
-            "Ab",     "B",      "Cb",     "Db",     "Eb",     "Fb",     "Gb",
-            "A",      "H",      "C",      "D",      "E",      "F",      "G",     "¬"};
-    private final String[] toChordsNums2 =  {"¬aj7", "¬a7", "¬aj9", "¬a9",
-            "«├2┤",   "«├4┤",   "«├5┤",   "«├7┤",   "«├9┤",   "«├W┤",   "«├Y┤",
-            "«├Y┤",  "««├2┤",   "«├3┤",   "«├5┤",   "«├7┤",   "«├8┤",   "«├W┤",
-            "««├1┤",  "««├3┤",  "««├4┤",  "««├6┤",  "««├8┤",  "««├9┤",  "««├X┤",    "m"};
-    private final String[] fromChords3 =    {"maj7", "ma7", "maj9", "ma9", "sus",
+
+    // Standard chord formatting = 1
+    private final String [] fromChords1 =      {"maj7",  "ma7",   "maj9",  "ma9",
+            "A#",    "B#",    "C#",    "D#",    "E#",    "F#",    "G#",
+            "Ab",    "Bb",    "Cb",    "Db",    "Eb",    "Fb",    "Gb",
+            "A",     "B",     "C",     "D",     "E",     "F",     "G",     "¬"};
+    private final String [] toChordsNums1 =    {"¬aj7",  "¬a7",   "¬aj9",  "¬a9",
+            "«├2┤",  "«├4┤",  "«├5┤",  "«├7┤",  "«├9┤",  "«├W┤",  "«├Y┤",
+            "«├Y┤",  "«├2┤",  "«├3┤",  "«├5┤",  "«├7┤",  "«├8┤",  "«├W┤",
+            "««├1┤", "««├3┤", "««├4┤", "««├6┤", "««├8┤", "««├9┤", "««├X┤", "m"};
+
+    // Euro chord formatting (B/H) = 2
+    private final String[] fromChords2 =       {"maj7",  "ma7",   "maj9",  "ma9",
+            "A#",    "H#",    "C#",    "D#",    "E#",    "F#",    "G#",
+            "Ab",    "B",     "Cb",    "Db",    "Eb",    "Fb",    "Gb",
+            "A",     "H",     "C",     "D",     "E",     "F",     "G",     "¬"};
+    private final String[] toChordsNums2 =     {"¬aj7",  "¬a7",   "¬aj9",  "¬a9",
+            "«├2┤",  "«├4┤",  "«├5┤",  "«├7┤",  "«├9┤",  "«├W┤",  "«├Y┤",
+            "«├Y┤",  "««├2┤", "«├3┤",  "«├5┤",  "«├7┤",  "«├8┤",  "«├W┤",
+            "««├1┤", "««├3┤", "««├4┤", "««├6┤", "««├8┤", "««├9┤", "««├X┤", "m"};
+
+    // Euro chord formatting full (B/H/es/is) = 3
+    private final String[] fromChords3 =       {"maj7",     "ma7",      "maj9",     "ma9",      "sus",
             " (ais",    " (his",    " (cis",    " (dis",    " (eis",    " (fis",    " (gis",
             " (as",     " (b",      " (ces",    " (des",    " (es",     " (fes",    " (ges",
             " (a",      " (h",      " (c",      " (d",      " (e",      " (f",      " (g",
@@ -59,20 +69,22 @@ public class Transpose {
             " a",       " h",       " c",       " d",       " e",       " f",       " g",
             "Ais",      "His",      "Cis",      "Dis",      "Eis",      "Fis",      "Gis",
             "As",       "B",        "Ces",      "Des",      "Es",       "Fes",      "Ges",
-            "A",        "H",        "C",        "D",        "E",        "F",        "G",    "¬us", "¬"};
-    private final String[] toChordsNums3 =  {"¬aj7", "¬a7", "¬aj9", "¬a9", "¬us",
+            "A",        "H",        "C",        "D",        "E",        "F",        "G",        "¬us", "¬"};
+    private final String[] toChordsNums3 =     {"¬aj7",     "¬a7",      "¬aj9",     "¬a9",      "¬us",
             " («├2┤m",  " («├4┤m",  " («├5┤m",  " («├7┤m",  " («├9┤m",  " («├W┤m",  " («├Y┤m",
-            " (««├Y┤m"," («««├2┤m",  " («├3┤m",  " («├5┤m", " (««├7┤m",  " («├8┤m",  " («├W┤m",
+            " (««├Y┤m", " («««├2┤m"," («├3┤m",  " («├5┤m",  " (««├7┤m", " («├8┤m",  " («├W┤m",
             " («««├1┤m"," («««├3┤m"," («««├4┤m"," («««├6┤m"," («««├8┤m"," («««├9┤m"," («««├X┤m",
             ".«├2┤m",   ".«├4┤m",   ".«├5┤m",   ".«├7┤m",   ".«├9┤m",   ".«├W┤m",   ".«├Y┤m",
-            ".««├Y┤m", ".«««├2┤m",   ".«├3┤m",   ".«├5┤m",  ".««├7┤m",   ".«├8┤m",   ".«├W┤m",
+            ".««├Y┤m",  ".«««├2┤m", ".«├3┤m",   ".«├5┤m",   ".««├7┤m",  ".«├8┤m",   ".«├W┤m",
             ".«««├1┤m", ".«««├3┤m", ".«««├4┤m", ".«««├6┤m", ".«««├8┤m", ".«««├9┤m", ".«««├X┤m",
             " «├2┤m",   " «├4┤m",   " «├5┤m",   " «├7┤m",   " «├9┤m",   " «├W┤m",   " «├Y┤m",
-            " ««├Y┤m", " «««├2┤m",   " «├3┤m",   " «├5┤m",  " ««├7┤m",   " «├8┤m",   " «├W┤m",
+            " ««├Y┤m",  " «««├2┤m", " «├3┤m",   " «├5┤m",   " ««├7┤m",  " «├8┤m",   " «├W┤m",
             " «««├1┤m", " «««├3┤m", " «««├4┤m", " «««├6┤m", " «««├8┤m", " «««├9┤m", " «««├X┤m",
             "├2┤",      "├4┤",      "├5┤",      "├7┤",      "├9┤",      "├W┤",      "├Y┤",
-            "«├Y┤",    "««├2┤",      "├3┤",      "├5┤",     "«├7┤",      "├8┤",      "├W┤",
-            "««├1┤",    "««├3┤",    "««├4┤",    "««├6┤",    "««├8┤",    "««├9┤",    "««├X┤",   "sus", "m"};
+            "«├Y┤",     "««├2┤",    "├3┤",      "├5┤",      "«├7┤",     "├8┤",      "├W┤",
+            "««├1┤",    "««├3┤",    "««├4┤",    "««├6┤",    "««├8┤",    "««├9┤",    "««├X┤",    "sus", "m"};
+
+    // Solfeggio (DoReMi) = 4
     // Also handles variations of chord name
     private final String[] fromChords4 =    {"maj7", "ma7", "maj9", "ma9",
             "la", "Ti", "ti", "si", "do", "Re", "re", "ré", "mi", "fa", "sol",
@@ -93,13 +105,13 @@ public class Transpose {
     private final String[] fromChordsNum  = "├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤".split(" ");
     private final String[] toSharpChords1 = "»A# »C# »D# »F# »G# »»A »»B »»C »»D »»E »»F »»G".split(" ");
     private final String[] toFlatChords1 =  "»Bb »Db »Eb »Gb »Ab »»A »»B »»C »»D »»E »»F »»G".split(" ");
-    private final String[] toSharpChords2 = "»A# »C# »D# »F# »G# »»A »»H »»C »»D »»E »»F »»G".split(" ");
+    private final String[] toSharpChords2 = "»»B »C# »D# »F# »G# »»A »»H »»C »»D »»E »»F »»G".split(" ");
     private final String[] toFlatChords2 =  "»»B »Db »Eb »Gb »Ab »»A »»H »»C »»D »»E »»F »»G".split(" ");
     private final String[] toSharpChords4 = "La# Do# Ré# Fa# «Sol# »La »Si »Do »Ré »Mi »Fa Sol".split(" ");
     private final String[] toFlatChords4 =  "Sib Réb Mib «Solb Lab »La »Si »Do »Ré »Mi »Fa Sol".split(" ");
     //  A trick! Minors arrive ending ┤m, the m is moved into the number to give numbers for minors. '┤ma' is treated as the start of major and is protected.
     private final String[] fromChordsNumM = "┤ma ┤m ├2m┤ ├5m┤ ├7m┤ ├Wm┤ ├Ym┤ ├1m┤ ├3m┤ ├4m┤ ├6m┤ ├8m┤ ├9m┤ ├Xm┤ ├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤ ¬".split(" ");
-    private final String[] toSharpChords3 = "┤¬a m┤ »ais »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g Ais Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
+    private final String[] toSharpChords3 = "┤¬a m┤ »»»b »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
     private final String[] toFlatChords3 =  "┤¬a m┤ »»»b »des »»es »ges »»as »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Des »Es Ges »As »»A »»H »»C »»D »»E »»F »»G m".split(" ");
     private String[] fromChordNumsNash;
     private String[] fromChordNumsNashType;
@@ -123,9 +135,16 @@ public class Transpose {
     private String transposeDirection;
     private int transposeTimes;
 
+    private final String[] format2Identifiers = new String[]{"h"};
+    private final String[] format3Identifiers = new String[]{"is","es"};
+    private final String[] format4Identifiers = new String[]{"do","re","ré","mi","fa","sol","la","si"};
+    private final String[] format5Identifiers = new String[]{"1","2","3","4","5","6","7"};
+    private final String[] format6Identifiers = new String[]{"i","ii","ii","iii","iii","iv","iv","v","vi","vii"};
+
     // The song is sent in and the song is sent back after processing (key and lyrics get changed)
     public Song doTranspose(Context c, MainActivityInterface mainActivityInterface, Song thisSong,
                      String transposeDirection, int transposeTimes, int oldChordFormat, int newChordFormat) {
+
         // Initialise the variables that might be looked up later
         this.oldChordFormat = oldChordFormat;
         this.newChordFormat = newChordFormat;
@@ -133,15 +152,19 @@ public class Transpose {
         this.transposeTimes = transposeTimes;
         fromChordNumsNash = null;
         fromChordNumsNashType = null;
+        toChordNumsNash = null;
+        toNash = null;
+        fromNash = null;
         capoKey = "";
 
         try {
             String originalkey = thisSong.getKey();
-            // Update the key number
-            if (originalkey != null && !originalkey.equals("")) {
+            // Update the key to the newly tranposed version
+            if (originalkey != null && !originalkey.isEmpty()) {
                 thisSong.setKey(numberToKey(c, mainActivityInterface, transposeNumber(keyToNumber(originalkey), transposeDirection, transposeTimes)));
             }
 
+            // Now we have the new key, we can decide if we use flats or not for any notes
             if (thisSong.getKey()!=null) {
                 usesFlats = keyUsesFlats(c, mainActivityInterface, thisSong.getKey());
             } else {
@@ -151,12 +174,17 @@ public class Transpose {
             // Transpose and write the lyrics
             thisSong.setLyrics(transposeString(thisSong));
 
+            // Change the song format
+            thisSong.setDetectedChordFormat(newChordFormat);
+            thisSong.setDesiredChordFormat(newChordFormat);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return thisSong;
     }
 
+    // Stuff for dealing with the song key
     public String getKeyBeforeCapo(int capo, String oldkey) {
         // TODO
         Log.d(TAG,"getKeyBeforeCapo() NOT DOING ANYTHING PROBABLY - NEED TO FIX OR CHECK!!!!");
@@ -170,6 +198,67 @@ public class Transpose {
         //return oldkey;
     }
 
+    public String keyToNumber(String key) {
+        // Swap the key with the chord number - use standard formatting=1
+        for (int z = 0; z < fromChords1.length; z++) key = key.replace(fromChords1[z], toChordsNums1[z]);
+        return key;
+    }
+
+    public String numberToKey(Context c, MainActivityInterface mainActivityInterface, String key) {
+        // We need to decide which key the user likes the best for each one
+        // Convert the key number into either a sharp or natural first
+        // Then we swap sharps to flats if the user prefers these
+        for (int z = 0; z < fromChordsNum.length; z++) {
+            key = key.replace(fromChordsNum[z], toSharpChords1[z]);
+        }
+
+        // Remove chord space adjustment indicators
+        key = key.replace("»","").replace("«","");
+
+        if (key.equals("G#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAb",true)) {
+            key = "Ab";
+        } else if (key.equals("G#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAbm",false)) {
+            key = "Abm";
+        } else if (key.equals("A#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBb",true)) {
+            key = "Bb";
+        } else if (key.equals("A#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBbm",true)) {
+            key = "Bbm";
+        } else if (key.equals("C#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDb",false)) {
+            key = "Db";
+        } else if (key.equals("C#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDbm",true)) {
+            key = "Dbm";
+        } else if (key.equals("D#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEb",true)) {
+            key = "Eb";
+        } else if (key.equals("D#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEbm",true)) {
+            key = "Ebm";
+        } else if (key.equals("F#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGb",false)) {
+            key = "Gb";
+        } else if (key.equals("F#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGbm",false)) {
+            key = "Gbm";
+        }
+
+        return key;
+    }
+
+    private boolean keyUsesFlats(Context c, MainActivityInterface mainActivityInterface, String testkey) {
+        return  (testkey.equals("Ab")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAb",true)) ||
+                (testkey.equals("Bb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBb",true)) ||
+                (testkey.equals("Db")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDb",false)) ||
+                (testkey.equals("Eb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEb",true)) ||
+                (testkey.equals("Gb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGb",false)) ||
+                (testkey.equals("Bbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBbm",true)) ||
+                (testkey.equals("Dbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDbm",false)) ||
+                (testkey.equals("Ebm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEbm",true)) ||
+                (testkey.equals("Gbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGbm",false)) ||
+                testkey.equals("C") ||
+                testkey.equals("F") ||
+                testkey.equals("Dm") ||
+                testkey.equals("Gm") ||
+                testkey.equals("Cm");
+    }
+
+
+
     // This is the chord transpose engine
     private String transposeString(Song thisSong) {
         try {
@@ -180,74 +269,108 @@ public class Transpose {
                 // IV - Use leading \n as we can be certain it is safe to remove later
                 sb.append("\n");
                 if (line.startsWith(".")) {
+                    Log.d(TAG,"PRETRANSPOSE LINE: "+line);
                     switch (oldChordFormat) {
                         default:
                         case 1:
-                            for (int z = 0; z < fromChords1.length; z++)
+                            for (int z = 0; z < fromChords1.length; z++) {
                                 line = line.replace(fromChords1[z], toChordsNums1[z]);
+                            }
                             break;
                         case 2:
-                            for (int z = 0; z < fromChords2.length; z++)
+                            for (int z = 0; z < fromChords2.length; z++) {
                                 line = line.replace(fromChords2[z], toChordsNums2[z]);
+                            }
                             break;
                         case 3:
-                            for (int z = 0; z < fromChords3.length; z++)
+                            for (int z = 0; z < fromChords3.length; z++) {
                                 line = line.replace(fromChords3[z], toChordsNums3[z]);
+                            }
                             break;
                         case 4:
-                            for (int z = 0; z < fromChords4.length; z++)
+                            for (int z = 0; z < fromChords4.length; z++) {
                                 line = line.replace(fromChords4[z], toChordsNums4[z]);
+                            }
                             break;
                         case 5:
                         case 6:
-                            if (fromNash == null)
-                                prepFromNashToNums(thisSong,thisSong.getDetectedChordFormat() == 6);
-                            for (int z = 0; z < fromNash.length; z++)
+                            if (fromNash == null) {
+                                prepFromNashToNums(thisSong, thisSong.getDetectedChordFormat() == 6);
+                            }
+                            for (int z = 0; z < fromNash.length; z++) {
                                 line = line.replace(fromNash[z], toChordNumsNash[z]);
+                            }
+                            break;
                     }
+                    Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
+
                     // If the old format has transposable chords - transpose
-                    if (newChordFormat < 5)
+                    if (oldChordFormat < 5) {
                         line = transposeNumber(line, transposeDirection, transposeTimes);
+                        Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
+                    }
+                    Log.d(TAG,"newChordFormat="+newChordFormat);
                     switch (newChordFormat) {
                         default:
                         case 1:
-                            if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++)
+                            if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++) {
                                 line = line.replace(fromChordsNum[z], toFlatChords1[z]);
-                            else for (int z = 0; z < fromChordsNum.length; z++)
-                                line = line.replace(fromChordsNum[z], toSharpChords1[z]);
+                            } else {
+                                for (int z = 0; z < fromChordsNum.length; z++) {
+                                    line = line.replace(fromChordsNum[z], toSharpChords1[z]);
+                                }
+                            }
                             break;
                         case 2:
-                            if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++)
+                            if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++) {
                                 line = line.replace(fromChordsNum[z], toFlatChords2[z]);
-                            else for (int z = 0; z < fromChordsNum.length; z++)
-                                line = line.replace(fromChordsNum[z], toSharpChords2[z]);
+                            } else {
+                                for (int z = 0; z < fromChordsNum.length; z++) {
+                                    line = line.replace(fromChordsNum[z], toSharpChords2[z]);
+                                }
+                            }
                             break;
                         case 3:
                             // IV - Uses the 'm' array as the target has explicit minors
-                            if (forceFlats) for (int z = 0; z < fromChordsNumM.length; z++)
+                            if (forceFlats) for (int z = 0; z < fromChordsNumM.length; z++) {
                                 line = line.replace(fromChordsNumM[z], toFlatChords3[z]);
-                            else for (int z = 0; z < fromChordsNumM.length; z++)
-                                line = line.replace(fromChordsNumM[z], toSharpChords3[z]);
+                            } else {
+                                for (int z = 0; z < fromChordsNumM.length; z++) {
+                                    line = line.replace(fromChordsNumM[z], toSharpChords3[z]);
+                                }
+                            }
                             break;
                         case 4:
-                            if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++)
+                            if (forceFlats) for (int z = 0; z < fromChordsNum.length; z++) {
                                 line = line.replace(fromChordsNum[z], toFlatChords4[z]);
-                            else for (int z = 0; z < fromChordsNum.length; z++)
-                                line = line.replace(fromChordsNum[z], toSharpChords4[z]);
+                            } else {
+                                for (int z = 0; z < fromChordsNum.length; z++) {
+                                    line = line.replace(fromChordsNum[z], toSharpChords4[z]);
+                                }
+                            }
                             break;
                         case 5:
                         case 6:
-                            if (toNash == null)
+                            if (toNash == null) {
                                 prepFromNumsToNash(thisSong, newChordFormat == 6);
-                            if (forceFlats) for (int z = 0; z < fromChordNumsNash.length; z++) {
-                                if (!fromChordNumsNashType[z].equals("#"))
-                                    line = line.replace(fromChordNumsNash[z], toNash[z]);
                             }
-                            else for (int z = 0; z < fromChordNumsNash.length; z++) {
-                                if (!fromChordNumsNashType[z].equals("b"))
-                                    line = line.replace(fromChordNumsNash[z], toNash[z]);
+                            if (forceFlats) {
+                                for (int z = 0; z < fromChordNumsNash.length; z++) {
+                                    if (!fromChordNumsNashType[z].equals("#")) {
+                                        line = line.replace(fromChordNumsNash[z], toNash[z]);
+                                    }
+                                }
+                            } else {
+                                for (int z = 0; z < fromChordNumsNash.length; z++) {
+                                    if (!fromChordNumsNashType[z].equals("b")) {
+                                        line = line.replace(fromChordNumsNash[z], toNash[z]);
+                                    }
+                                }
                             }
+                            break;
                     }
+
+                    Log.d(TAG,"NEARLY DONE LINE: "+line);
 
                     // Space adjustments: Remove patterns that cancel out
                     line = line.replace("««»»", "").replace("«»", "");
@@ -264,6 +387,8 @@ public class Transpose {
                         line = line.substring(0, myindex) + line.substring(myindex + 1).replaceFirst(" {2}", " ");
                         myindex = line.indexOf("«");
                     }
+                    Log.d(TAG,"TRANSPOSED LINE: "+line);
+
                 }
                 // Add it back up
                 sb.append(line);
@@ -399,8 +524,11 @@ public class Transpose {
             // For each item space adjustment markers are added
             for (int x = 0; x < toChordNumsNash.length; x++) {
                 diff = (fromNash[x].length() - toChordNumsNash[x].length());
-                if (diff < 0) toChordNumsNash[x] = "««««««««".substring(0, -diff) + toChordNumsNash[x];
-                else toChordNumsNash[x] = "»»»»»»»»".substring(0, diff) + toChordNumsNash[x];
+                if (diff < 0) {
+                    toChordNumsNash[x] = "««««««««".substring(0, -diff) + toChordNumsNash[x];
+                } else {
+                    toChordNumsNash[x] = "»»»»»»»»".substring(0, diff) + toChordNumsNash[x];
+                }
             }
         }
     }
@@ -493,64 +621,9 @@ public class Transpose {
         }
     }
 
-    public String keyToNumber(String key) {
-        // Swap the key with the chord number
-        for (int z = 0; z < fromChords1.length; z++) key = key.replace(fromChords1[z], toChordsNums1[z]);
-        return key;
-    }
 
-    public String numberToKey(Context c, MainActivityInterface mainActivityInterface, String key) {
-        // We need to decide which key the user likes the best for each one
-        // Convert the key number into either a sharp or natural first
-        // Then we swap sharps to flats if the user prefers these
-        for (int z = 0; z < fromChordsNum.length; z++) {
-            key = key.replace(fromChordsNum[z], toSharpChords1[z]);
-        }
 
-        // Remove chord space adjustment indicators
-        key = key.replace("»","").replace("«","");
 
-        if (key.equals("G#") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAb",true)) {
-            key = "Ab";
-        } else if (key.equals("G#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAbm",false)) {
-            key = "Abm";
-        } else if (key.equals("A#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBb",true)) {
-            key = "Bb";
-        } else if (key.equals("A#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBbm",true)) {
-            key = "Bbm";
-        } else if (key.equals("C#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDb",false)) {
-            key = "Db";
-        } else if (key.equals("C#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDbm",true)) {
-            key = "Dbm";
-        } else if (key.equals("D#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEb",true)) {
-            key = "Eb";
-        } else if (key.equals("D#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEbm",true)) {
-            key = "Ebm";
-        } else if (key.equals("F#")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGb",false)) {
-            key = "Gb";
-        } else if (key.equals("F#m") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGbm",false)) {
-            key = "Gbm";
-        }
-
-        return key;
-    }
-
-    private boolean keyUsesFlats(Context c, MainActivityInterface mainActivityInterface, String testkey) {
-        return  (testkey.equals("Ab")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyAb",true)) ||
-                (testkey.equals("Bb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBb",true)) ||
-                (testkey.equals("Db")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDb",false)) ||
-                (testkey.equals("Eb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEb",true)) ||
-                (testkey.equals("Gb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGb",false)) ||
-                (testkey.equals("Bbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyBbm",true)) ||
-                (testkey.equals("Dbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyDbm",false)) ||
-                (testkey.equals("Ebm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyEbm",true)) ||
-                (testkey.equals("Gbm") && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prefKeyGbm",false)) ||
-                testkey.equals("C") ||
-                testkey.equals("F") ||
-                testkey.equals("Dm") ||
-                testkey.equals("Gm") ||
-                testkey.equals("Cm");
-    }
 
     String capoTranspose(Context c, MainActivityInterface mainActivityInterface) {
         // StageMode sets FullscreenActivity.capokey to "" in loadSong(), first call after sets for new song
@@ -601,55 +674,50 @@ public class Transpose {
         // Check if the user is using the same chord format as the song.  Go through the chord lines and look for clues
         for (String line : thisSong.getLyrics().split("\n")) {
             if (line.startsWith(".")) {
+                Log.d(TAG,"Checking line: "+line);
                 // Remove text in brackets on chord lines as they may contain text that causes problems e.g. (Last x) contains La
                 line = line
                         // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Kept lots of escapes to be sure they work!
                         .replaceAll("\\(.*?\\)","")
                         .replaceAll("\\{.*?\\}","")
                         .replaceAll("\\[.*?\\]","");
-                // Chord line
-                if (line.contains("es") || line.contains("is") ||
-                        line.contains(" a") || line.contains(".a") ||
-                        //line.contains(" b") || line.contains(".b") || // Can't use for flat numeral chords
-                        line.contains(" h") || line.contains(".h") ||
-                        line.contains(" c") || line.contains(".c") ||
-                        line.contains(" d") || line.contains(".d") ||
-                        line.contains(" e") || line.contains(".e") ||
-                        line.contains(" f") || line.contains(".f") ||
-                        line.contains(" g") || line.contains(".g")) {
-                    contains_es_is_count = contains_es_is_count + 1;
-                } else if (line.contains(" H") || line.contains("\\H")) {
-                    contains_H_count = contains_H_count + 1;
-                } else if (line.contains(" Do") || line.contains(" Re") || line.contains(" Ré") ||
-                        line.contains(" Mi") || line.contains(" Fa") ||
-                        line.contains(" Sol") || line.contains(" La") ||
-                        line.contains(" Si") ||
-                        (line.contains(" DO") || line.contains(" RE") || line.contains(" RÉ") ||
-                                line.contains(" MI") || line.contains(" FA") ||
-                                line.contains(" SOL") || line.contains(" LA") ||
-                                line.contains(" SI"))) {
-                    contains_do_count = contains_do_count + 1;
-                } else if (line.contains(".2") || line.contains(" 2") ||
-                        line.contains(".3") || line.contains(" 3") ||
-                        line.contains(".4") || line.contains(" 4") ||
-                        line.contains(".5") || line.contains(" 5") ||
-                        line.contains(".6") || line.contains(" 6") ||
-                        line.contains(".7") || line.contains(" 7")) {
-                    contains_nash_count = contains_nash_count +1;
-                } else if (line.contains(".I") || line.contains(" I") ||
-                        line.contains(".V") || line.contains(" V") ||
-                        line.contains(".IV") || line.contains(" IV")) {
-                    contains_nashnumeral_count = contains_nashnumeral_count + 1;
+
+                // Trim out multiple whitespace and split into individual chords
+                line = line.replaceAll("\\s{2,}", " ").
+                        replace(".","").
+                        toLowerCase(Locale.ROOT).trim();
+                String[] chordsInLine = line.split(" ");
+
+                // Now go through each chord and add to the matching format
+                for (String chordInLine:chordsInLine) {
+                    Log.d(TAG,"chordInLine: "+chordInLine);
+                    if (Arrays.asList(format6Identifiers).contains(chordInLine)) {
+                        contains_nashnumeral_count ++;
+                    } else if (Arrays.asList(format5Identifiers).contains(chordInLine)) {
+                        contains_nash_count ++;
+                    } else if (Arrays.asList(format4Identifiers).contains(chordInLine)) {
+                        contains_do_count ++;
+                    } else if (chordInLine.length()>2 && Arrays.asList(format3Identifiers).contains(chordInLine.substring(chordInLine.length()-2))) {
+                        contains_es_is_count ++;
+                    } else if (Arrays.asList(format2Identifiers).contains(chordInLine)) {
+                        contains_H_count ++;
+                    }
                 }
             }
         }
 
         // Here we allow low levels of mis-identification
-        boolean contains_es_is = (contains_es_is_count > 4);
+        boolean contains_es_is = (contains_es_is_count > 1);
         boolean contains_H = (contains_H_count > 2);
         boolean contains_do = (contains_do_count > 4);
         boolean contains_nash = (contains_nash_count > 4);
         boolean contains_nashnumeral = (contains_nashnumeral_count > 4);
+
+        Log.d(TAG, "contains_es_is_count="+contains_es_is_count);
+        Log.d(TAG, "contains_H_count="+contains_H_count);
+        Log.d(TAG, "contains_do_count="+contains_do_count);
+        Log.d(TAG, "contains_nash_count="+contains_nash_count);
+        Log.d(TAG, "contains_nashnumeral_count="+contains_nashnumeral_count);
 
         // Set the chord style detected - Ok so the user chord format may not quite match the song - it might though!
         int formatNum;
@@ -668,10 +736,13 @@ public class Transpose {
             formatNum = 1;
         }
 
-        thisSong.setDesiredChordFormat(formatNum);
         thisSong.setDetectedChordFormat(formatNum);
+        thisSong.setDesiredChordFormat(formatNum);
+
         // We set the newChordFormat default to the same as detected
         newChordFormat = formatNum;
+
+        Log.d(TAG,"formatNum="+formatNum);
     }
 
 
@@ -726,6 +797,36 @@ public class Transpose {
         }
 
         return transposeTimes;
+    }
+
+
+
+
+
+    // Commonly used array for chord format names and display values
+    public ArrayList<String> getChordFormatNames(Context c) {
+        if (chordFormatNames==null) {
+            chordFormatNames = new ArrayList<>();
+            chordFormatNames.add(c.getString(R.string.chordformat_1_name));
+            chordFormatNames.add(c.getString(R.string.chordformat_2_name));
+            chordFormatNames.add(c.getString(R.string.chordformat_3_name));
+            chordFormatNames.add(c.getString(R.string.chordformat_4_name));
+            chordFormatNames.add(c.getString(R.string.chordformat_5_name));
+            chordFormatNames.add(c.getString(R.string.chordformat_6_name));
+        }
+        return chordFormatNames;
+    }
+    public ArrayList<String> getChordFormatAppearances(Context c) {
+        if (chordFormatAppearances==null) {
+            chordFormatAppearances = new ArrayList<>();
+            chordFormatAppearances.add(c.getString(R.string.chordformat_1));
+            chordFormatAppearances.add(c.getString(R.string.chordformat_2));
+            chordFormatAppearances.add(c.getString(R.string.chordformat_3));
+            chordFormatAppearances.add(c.getString(R.string.chordformat_4));
+            chordFormatAppearances.add(c.getString(R.string.chordformat_5));
+            chordFormatAppearances.add(c.getString(R.string.chordformat_6));
+        }
+        return chordFormatAppearances;
     }
 
     // -----------------------------------------------

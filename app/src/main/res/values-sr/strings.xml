@@ -119,7 +119,7 @@
     <string name="delete">"Obrisati"</string>
     <string name="export">"Izvoz"</string>
     <string name="song">"Pesma"</string>
-    <string name="chord_convert">"Prebaciti pesmu u moj omiljeni format akorda"</string>
+    <string name="chordformat_preferred">"Prebaciti pesmu u moj omiljeni format akorda"</string>
     <string name="chords_sharp">"Koristiti # akorde"</string>
     <string name="chords_flat">"Koristiti b akorde"</string>
     <string name="edit">"Izmeniti"</string>

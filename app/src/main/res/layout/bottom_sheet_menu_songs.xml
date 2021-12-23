@@ -65,6 +65,15 @@
                 android:text="@string/add_songs"
                 custom:mydrawable="@drawable/ic_database_import_white_36dp" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/rebuildIndex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_rebuild"
+                android:padding="16dp"
+                android:text="@string/refreshsongs"
+                custom:mydrawable="@drawable/ic_menu_white_36dp" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

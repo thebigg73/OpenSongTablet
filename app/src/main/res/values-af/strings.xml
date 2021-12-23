@@ -74,7 +74,7 @@
     <string name="chooselyricfont">"Kies liriek font"</string>
     <string name="choosesongname">"Kies 'n naam vir hierdie lied"</string>
     <string name="chord_color">"Akkoorde font"</string>
-    <string name="chord_convert">"Skakel lied vir my voorkeur koord formaat"</string>
+    <string name="chordformat_preferred">"Skakel lied vir my voorkeur koord formaat"</string>
     <string name="chordformat_default">"Altyd aanvaar liedjies is in my voorkeur koord formaat"</string>
     <string name="chordiesearch">"Online soek by www.chordie.com"</string>
     <string name="chordline_scale">"Skaal akkoorde"</string>

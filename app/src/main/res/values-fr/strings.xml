@@ -74,7 +74,7 @@
     <string name="chooselyricfont">"Choisissez la police des paroles"</string>
     <string name="choosesongname">"Choisissez un nom pour cette chanson"</string>
     <string name="chord_color">"Police des accords"</string>
-    <string name="chord_convert">"Convertir le chanson au format d\'accords préférés"</string>
+    <string name="chordformat_preferred">"Convertir le chanson au format d\'accords préférés"</string>
     <string name="chordformat_default">"Toujours présumer que les chansons sont dans mon format préféré d\'accords"</string>
     <string name="chordiesearch">"Recherche en ligne sur www.chordie.com"</string>
     <string name="chordline_scale">"Cordes d'échelle"</string>

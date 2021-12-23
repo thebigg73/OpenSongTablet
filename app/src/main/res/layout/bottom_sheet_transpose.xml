@@ -51,7 +51,14 @@
                 android:id="@+id/assumePreferred"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/chord_convert" />
+                android:text="@string/chordformat_preferred" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/warningFormatMatch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/chordformat_detected"/>
 
             <LinearLayout
                 android:id="@+id/chordFormat"
@@ -67,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="4dp"
-                    android:hint="@string/transpose_from"/>
+                    android:hint="@string/chordformat_detected"/>
 
                 <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
                     android:id="@+id/chordFormatTo"
@@ -75,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="4dp"
-                    android:hint="@string/transpose_to"/>
+                    android:hint="@string/chordformat_desired"/>
 
             </LinearLayout>
 
@@ -85,7 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/pref_key_text"
-                android:text="@string/chord_settings" />
+                android:text="@string/chord_settings"
+                app:mydrawable="@drawable/ic_settings_white_36dp"/>
             <TableRow style="@style/DividerLine"/>
 
 

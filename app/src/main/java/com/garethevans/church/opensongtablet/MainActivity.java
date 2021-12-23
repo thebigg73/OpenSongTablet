@@ -241,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private CastSession castSession;
     private SessionManager sessionManager;
     private SessionManagerListener<CastSession> sessionManagerListener;
+    //private MyMediaRouteFactory myMediaRouteFactory;
 
     private SongMenuFragment songMenuFragment;
     private SetMenuFragment setMenuFragment;
@@ -393,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         //myMediaRouteSelector = new MyMediaRouteSelector();
         //mediaRouteSelector = myMediaRouteSelector.getMediaRouteSelector();
         castService = new CastService(this);
+        //myMediaRouteFactory = new MyMediaRouteFactory();
     }
 
     private void setupBatteryStatus() {
@@ -1213,6 +1215,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
             MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
             MediaRouteButton mediaRouteButton = (MediaRouteButton) mediaRouteMenuItem.getActionView();
+            //mediaRouteButton.setDialogFactory(myMediaRouteFactory);
         } else {
             Log.d(TAG, "Google Play Services Not Available");
             // TODO
@@ -1386,8 +1389,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateSongMenu(Song song) {
         // This only asks for an update from the database
-        songListBuildIndex.setIndexComplete(true);
-        songListBuildIndex.setIndexRequired(false);
+        if (songListBuildIndex.getIndexComplete()) {
+            songListBuildIndex.setIndexComplete(true);
+            songListBuildIndex.setIndexRequired(false);
+        }
         if (setSongMenuFragment() && songMenuFragment!=null) {
             songMenuFragment.updateSongMenu(song);
         }

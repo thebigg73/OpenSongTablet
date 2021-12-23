@@ -75,7 +75,7 @@
     <string name="chooselyricfont">"Επιλογή γραμματοσειράς στίχων"</string>
     <string name="choosesongname">"Choose a name for this song"</string>
     <string name="chord_color">"Γραμματοσειρά συγχορδιών"</string>
-    <string name="chord_convert">"Μετατροπή τραγουδιού στην προτιμώμενη διαμόρφωση συγχορδιών"</string>
+    <string name="chordformat_preferred">"Μετατροπή τραγουδιού στην προτιμώμενη διαμόρφωση συγχορδιών"</string>
     <string name="chordformat_default">"Always assume songs are in my preferred chord format"</string>
     <string name="chordiesearch">"Online search at Chordie.com"</string>
     <string name="chordline_scale">"Χορδές κλίμακας"</string>

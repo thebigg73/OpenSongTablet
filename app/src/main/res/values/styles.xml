@@ -290,16 +290,18 @@
     </style>
 
     <style name="CastAppThemeMediaRouter" parent="Widget.MediaRouter.MediaRouteButton">
-        <item name="android:popupBackground">@color/colorSecondary</item>
+        <item name="popupMenuBackground">@drawable/popup_bg</item>
+        <item name="android:popupBackground">@drawable/popup_bg</item>
         <item name="backgroundColor">@color/colorSecondary</item>
         <item name="background">@color/colorSecondary</item>
         <item name="castBackground">@color/colorSecondary</item>
 
+        <item name="materialThemeOverlay">@style/MediaRouterOverlay</item>
         <item name="colorPrimaryDark">@color/colorAltPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/yellow</item>
     </style>
-<!--
+
     <style name="MediaRouterOverlay" parent="">
         <item name="android:popupBackground">@color/colorSecondary</item>
         <item name="castBackground">@color/colorSecondary</item>
@@ -308,7 +310,7 @@
         <item name="colorPrimary">@color/colorAltSecondary</item>
         <item name="colorOnPrimary">@color/colorAltSecondary</item>
         <item name="colorOnSurface">@color/colorSecondary</item>
-    </style>-->
+    </style>
 
     <!-- Sliders -->
     <style name="Slider" parent="Widget.MaterialComponents.Slider">
@@ -364,6 +366,8 @@
 
     <!-- Casting -->
     <style name="CustomCastMiniController" parent="CastMiniController">
+        <item name="popupMenuBackground">@drawable/popup_bg</item>
+        <item name="android:popupBackground">@drawable/popup_bg</item>
         <item name="castShowImageThumbnail">true</item>
         <item name="castTitleTextAppearance">@style/TextAppearance.AppCompat.Subhead</item>
         <item name="castSubtitleTextAppearance">@style/TextAppearance.AppCompat.Caption</item>

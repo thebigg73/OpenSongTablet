@@ -75,7 +75,7 @@
     <string name="chooselyricfont">"歌詞のフォントを選択してください"</string>
     <string name="choosesongname">"この曲の名前を選択してください"</string>
     <string name="chord_color">"和音フォント"</string>
-    <string name="chord_convert">"私の好みコード形式に曲を変換する"</string>
+    <string name="chordformat_preferred">"私の好みコード形式に曲を変換する"</string>
     <string name="chordformat_default">"常に曲は私の好み和音形式であると仮定"</string>
     <string name="chordiesearch">"www.chordie.comでオンライン検索"</string>
     <string name="chordline_scale">"スケールコード"</string>

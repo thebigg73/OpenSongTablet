@@ -75,7 +75,7 @@
     <string name="chooselyricfont">"Válassza ki a lírai font"</string>
     <string name="choosesongname">"Válasszon egy nevet a dal"</string>
     <string name="chord_color">"Chords font"</string>
-    <string name="chord_convert">"Átalakítás dal az én pÁt kell ültetnireferált akkord formátum"</string>
+    <string name="chordformat_preferred">"Átalakítás dal az én pÁt kell ültetnireferált akkord formátum"</string>
     <string name="chordformat_default">"Mindig fel- dalok vannak az általam preferált akkord formátumban"</string>
     <string name="chordiesearch">"Online keresés a www.chordie.com"</string>
     <string name="chordline_scale">"Scale akkordok"</string>

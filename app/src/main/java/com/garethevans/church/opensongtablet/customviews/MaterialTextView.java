@@ -75,6 +75,10 @@ public class MaterialTextView extends LinearLayout {
         hintView.setText(hintText);
     }
 
+    public void setHintColor(int color) {
+        hintView.setTextColor(color);
+    }
+
     public void setText(String mainText) {
         if (mainText==null || mainText.isEmpty()) {
             textView.setVisibility(View.GONE);
@@ -82,6 +86,10 @@ public class MaterialTextView extends LinearLayout {
             textView.setVisibility(View.VISIBLE);
         }
         textView.setText(mainText);
+    }
+
+    public void setTextColor(int color) {
+        textView.setTextColor(color);
     }
 
     public void showCheckMark(boolean isChecked) {

@@ -388,6 +388,7 @@ public class ThemeColors {
     private final int white = 0xffffffff;
     private final int grey = 0xff666666;
     private final int lightgrey = 0xff222222;
+    private final int vlightgrey = R.color.vlightgrey;
     private final int lightyellow = 0xffddaa00;
     private final int yellow = 0xffffff00;
     private final int darkyellow = 0xffaaaa00;;
@@ -459,6 +460,8 @@ public class ThemeColors {
             case "transparent":
                 color = transparent;
                 break;
+            case "vlightgrey":
+                color = vlightgrey;
         }
         return color;
     }

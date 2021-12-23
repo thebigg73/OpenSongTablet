@@ -76,7 +76,7 @@
     <string name="chooselyricfont">Виберіть шрифт слів пісні</string>
     <string name="choosesongname">Виберіть ім\'я для цієї пісні</string>
     <string name="chord_color">Акорди</string>
-    <string name="chord_convert">Перетворення акордів в потрібний формат</string>
+    <string name="chordformat_preferred">Перетворення акордів в потрібний формат</string>
     <string name="chordformat_default">Завжди змінювати в потрібний формат</string>
     <string name="chordiesearch">Онлайн пошук в www.chordie.com</string>
     <string name="chordline_scale">Розмір акордів</string>

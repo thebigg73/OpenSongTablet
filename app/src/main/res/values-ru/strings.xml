@@ -75,7 +75,7 @@
     <string name="chooselyricfont">"Выберите шрифт слов песни"</string>
     <string name="choosesongname">"Выберите имя для этой песни"</string>
     <string name="chord_color">"Аккорды"</string>
-    <string name="chord_convert">"Преобразование аккордов в предпочтительный формат"</string>
+    <string name="chordformat_preferred">"Преобразование аккордов в предпочтительный формат"</string>
     <string name="chordformat_default">"Всегда  изменять в предпочтительный формат"</string>
     <string name="chordiesearch">"Онлайн поиск в www.chordie.com"</string>
     <string name="chordline_scale">"Размер аккордов"</string>
