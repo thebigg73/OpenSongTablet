@@ -2132,7 +2132,8 @@ public class ProcessSong extends Activity {
                                  int lyricsPreChorusColor, int lyricsBridgeColor, int lyricsTagColor) {
 
         Transpose transpose = new Transpose();
-
+        // Added in chord format check otherwise app gets stuck with detected format
+        Transpose.checkChordFormat();
         getPreferences(c, preferences);
 
         // Decide if chords are valid to be shown
@@ -2141,8 +2142,8 @@ public class ProcessSong extends Activity {
 
         boolean doCapoChords = displayChords &&
                 ((displayCapoChords && mcapo > 0 && mcapo < 12) ||
-                (preferences.getMyPreferenceInt(c, "chordFormat", 0) > 0 &&
-                 StaticVariables.detectedChordFormat != StaticVariables.newChordFormat));
+                        (preferences.getMyPreferenceInt(c, "chordFormat", 0) > 0 &&
+                                StaticVariables.detectedChordFormat != StaticVariables.newChordFormat));
 
         boolean doNativeChords = displayChords && (!doCapoChords || displayCapoAndNativeChords);
 

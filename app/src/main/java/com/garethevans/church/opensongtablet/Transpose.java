@@ -1,8 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Locale;
 
 class Transpose {
     //  A  A#/Bb  B/(Cb) C/(B#) C#/Db    D    D#/Eb  E/(Fb) (E#)/F   F#/Gb   G     G#/Ab
@@ -85,13 +88,13 @@ class Transpose {
     private final String[] fromchordsnum  = "├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤".split(" ");
     private final String[] tosharpchords1 = "»A# »C# »D# »F# »G# »»A »»B »»C »»D »»E »»F »»G".split(" ");
     private final String[] toflatchords1 =  "»Bb »Db »Eb »Gb »Ab »»A »»B »»C »»D »»E »»F »»G".split(" ");
-    private final String[] tosharpchords2 = "»A# »C# »D# »F# »G# »»A »»H »»C »»D »»E »»F »»G".split(" ");
+    private final String[] tosharpchords2 = "»»B »C# »D# »F# »G# »»A »»H »»C »»D »»E »»F »»G".split(" ");
     private final String[] toflatchords2 =  "»»B »Db »Eb »Gb »Ab »»A »»H »»C »»D »»E »»F »»G".split(" ");
     private final String[] tosharpchords4 = "La# Do# Ré# Fa# «Sol# »La »Si »Do »Ré »Mi »Fa Sol".split(" ");
     private final String[] toflatchords4 =  "Sib Réb Mib «Solb Lab »La »Si »Do »Ré »Mi »Fa Sol".split(" ");
     //  A trick! Minors arrive ending ┤m, the m is moved into the number to give numbers for minors. '┤ma' is treated as the start of major and is protected.
     private final String[] fromchordsnumm = "┤ma ┤m ├2m┤ ├5m┤ ├7m┤ ├Wm┤ ├Ym┤ ├1m┤ ├3m┤ ├4m┤ ├6m┤ ├8m┤ ├9m┤ ├Xm┤ ├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤ ¬".split(" ");
-    private final String[] tosharpchords3 = "┤¬a m┤ »ais »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g Ais Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
+    private final String[] tosharpchords3 = "┤¬a m┤ »»»b »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
     private final String[] toflatchords3 =  "┤¬a m┤ »»»b »des »»es »ges »»as »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Des »Es Ges »As »»A »»H »»C »»D »»E »»F »»G m".split(" ");
     private String[] fromchordnumsnash;
     private String[] fromchordnumsnashtype;
@@ -106,7 +109,20 @@ class Transpose {
     private int major;
     private int root;
 
+    private static final String[] format2Identifiers = new String[]{"h"};
+    private static final String[] format3Identifiers = new String[]{"is","es"};
+    private static final String[] format4Identifiers = new String[]{"do","re","ré","mi","fa","sol","la","si"};
+    private static final String[] format5Identifiers = new String[]{"1","2","3","4","5","6","7"};
+    private static final String[] format6Identifiers = new String[]{"i","ii","ii","iii","iii","iv","iv","v","vi","vii"};
+
     void doTranspose(Context c, Preferences preferences, boolean forcesharps, boolean forceflats) {
+        // Initialise the variables that might be looked up later
+        fromchordnumsnash = null;
+        fromchordnumsnashtype = null;
+        tochordnumsnash = null;
+        tonash = null;
+        fromnash = null;
+
         try {
             String originalkey = StaticVariables.mKey;
             // Update the key number
@@ -537,48 +553,35 @@ class Transpose {
                 // Remove text in brackets on chord lines as they may contain text that causes problems e.g. (Last x) contains La
                 line = line
                         // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Kept lots of escapes to be sure they work!
-                        .replaceAll("\\(.*?\\)","")
-                        .replaceAll("\\{.*?\\}","")
-                        .replaceAll("\\[.*?\\]","");
-                // Chord line
-                if (line.contains("es") || line.contains("is") ||
-                        line.contains(" a") || line.contains(".a") ||
-                        //line.contains(" b") || line.contains(".b") || // Can't use for flat numeral chords
-                        line.contains(" h") || line.contains(".h") ||
-                        line.contains(" c") || line.contains(".c") ||
-                        line.contains(" d") || line.contains(".d") ||
-                        line.contains(" e") || line.contains(".e") ||
-                        line.contains(" f") || line.contains(".f") ||
-                        line.contains(" g") || line.contains(".g")) {
-                    contains_es_is_count = contains_es_is_count + 1;
-                } else if (line.contains(" H") || line.contains(".H") || line.contains("/H")) {
-                    contains_H_count = contains_H_count + 1;
-                } else if (line.contains(" Do") || line.contains(" Re") || line.contains(" Ré") ||
-                        line.contains(" Mi") || line.contains(" Fa") ||
-                        line.contains(" Sol") || line.contains(" La") ||
-                        line.contains(" Si") ||
-                        (line.contains(" DO") || line.contains(" RE") || line.contains(" RÉ") ||
-                        line.contains(" MI") || line.contains(" FA") ||
-                        line.contains(" SOL") || line.contains(" LA") ||
-                        line.contains(" SI"))) {
-                    contains_do_count = contains_do_count + 1;
-                } else if (line.contains(".2") || line.contains(" 2") ||
-                        line.contains(".3") || line.contains(" 3") ||
-                        line.contains(".4") || line.contains(" 4") ||
-                        line.contains(".5") || line.contains(" 5") ||
-                        line.contains(".6") || line.contains(" 6") ||
-                        line.contains(".7") || line.contains(" 7")) {
-                    contains_nash_count = contains_nash_count +1;
-                } else if (line.contains(".I") || line.contains(" I") ||
-                        line.contains(".V") || line.contains(" V") ||
-                        line.contains(".IV") || line.contains(" IV")) {
-                    contains_nashnumeral_count = contains_nashnumeral_count + 1;
+                        .replaceAll("\\(.*?\\)", "")
+                        .replaceAll("\\{.*?\\}", "")
+                        .replaceAll("\\[.*?\\]", "");
+
+                // Trim out multiple whitespace and split into individual chords
+                line = line.replaceAll("\\s{2,}", " ").
+                        replace(".", "").
+                        toLowerCase(Locale.ROOT).trim();
+                String[] chordsInLine = line.split(" ");
+
+                // Now go through each chord and add to the matching format
+                for (String chordInLine : chordsInLine) {
+                    if (Arrays.asList(format6Identifiers).contains(chordInLine)) {
+                        contains_nashnumeral_count++;
+                    } else if (Arrays.asList(format5Identifiers).contains(chordInLine)) {
+                        contains_nash_count++;
+                    } else if (Arrays.asList(format4Identifiers).contains(chordInLine)) {
+                        contains_do_count++;
+                    } else if (chordInLine.length() > 2 && Arrays.asList(format3Identifiers).contains(chordInLine.substring(chordInLine.length() - 2))) {
+                        contains_es_is_count++;
+                    } else if (Arrays.asList(format2Identifiers).contains(chordInLine)) {
+                        contains_H_count++;
+                    }
                 }
             }
         }
 
         // Here we allow low levels of mis-identification
-        boolean contains_es_is = (contains_es_is_count > 4);
+        boolean contains_es_is = (contains_es_is_count > 1);
         boolean contains_H = (contains_H_count > 2);
         boolean contains_do = (contains_do_count > 4);
         boolean contains_nash = (contains_nash_count > 4);
