@@ -814,11 +814,23 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Get the author
         authorname = getAuthorUG(resultposted,pageauthor);
 
-        // Get the lyrics and chords
-        newtext = getLyricsUG(resultposted);
+
 
         // Get the key
 
+
+        // Get rid of possible <div first line
+        StringBuilder sb2 = new StringBuilder();
+        String[] lines2 = resultposted.split("NEW_LINE_OS");
+        for (String line:lines2) {
+            if (!line.startsWith("<div")) {
+                sb2.append(line).append("NEW_LINE_OS");
+            }
+        }
+        resultposted = sb2.toString();
+
+        // Get the lyrics and chords
+        newtext = getLyricsUG(resultposted);
 
         if (!filenametosave.equals("")) {
             filename = filenametosave.trim();
@@ -1212,7 +1224,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         int end = s.indexOf("</p>",start);
         if (start>-1 && end>-1 && end>start) {
             // IV - Step over leading words
-            String ccli = "";
+            String ccli;
             ccli = s.substring(start,end).trim();
             while (ccli.contains(" ")) {
                 start = ccli.indexOf(" ");
