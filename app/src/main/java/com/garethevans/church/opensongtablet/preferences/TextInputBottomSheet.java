@@ -127,6 +127,11 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
             myView.infoText.setVisibility(View.VISIBLE);
         }
 
+        // For some views, we want monospace text
+        if (fragname.equals("SongSectionsFragment")) {
+            myView.prefEditText.setTypeface(mainActivityInterface.getMyFonts().getMonoFont());
+        }
+
         if (simpleEditText) {
             // Hide the unwanted views
             myView.textValues.setVisibility(View.GONE);
@@ -185,6 +190,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
             dialogReturnInterface.updateValue(fragment,fragname,prefName,prefVal);
             dismiss();
         });
+
         myView.prefEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // The user has clicked Enter/Done, so the keyboard has closed

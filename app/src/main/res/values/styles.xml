@@ -85,7 +85,6 @@
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeColor">?attr/colorOnSurface</item>
         <item name="boxBackgroundColor">@color/colorAltPrimary</item>
-
     </style>
     <style name="ExposedMaterialOverlay" parent="">
         <item name="colorSurface">@color/colorAltPrimary</item>
@@ -97,7 +96,8 @@
     <style name="ExposedDropDownItem" parent="Widget.AppCompat.AutoCompleteTextView">
         <!-- Disable text entry and background color -->
         <item name="android:inputType">none</item>
-        <item name="background">@null</item>
+        <!--<item name="background">@null</item>-->
+        <item name="background">@color/transparent</item>
         <!--<item name="colorSurface">@color/colorSecondary</item>-->
         <!-- The text cursor -->
         <!-- Style the text cursor and highlight colours -->

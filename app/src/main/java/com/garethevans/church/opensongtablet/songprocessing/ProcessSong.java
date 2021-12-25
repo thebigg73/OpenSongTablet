@@ -1185,7 +1185,6 @@ public class ProcessSong {
             textColor = Color.BLACK;
         }
 
-
         // This goes through processing the song
 
         // First check for multiverse/multiline formatting
@@ -1263,7 +1262,6 @@ public class ProcessSong {
 
         return sectionViews;
     }
-
 
     // Get properties for creating the views
     private Typeface getTypeface(MainActivityInterface mainActivityInterface, boolean presentation, String string) {

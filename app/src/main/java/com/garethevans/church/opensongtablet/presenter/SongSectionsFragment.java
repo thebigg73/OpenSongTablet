@@ -73,4 +73,10 @@ public class SongSectionsFragment extends Fragment {
             songSectionsAdapter.buildSongSections();
         }
     }
+
+    // From edited content via TextInputBottomSheet
+    public void updateValue(String content) {
+        Log.d(TAG,"newContent:"+content);
+        songSectionsAdapter.setSectionEdited(content);
+    }
 }

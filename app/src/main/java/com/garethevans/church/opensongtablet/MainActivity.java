@@ -112,6 +112,7 @@ import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
+import com.garethevans.church.opensongtablet.presenter.SongSectionsFragment;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
@@ -2554,6 +2555,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // TODO
     }
 
+    // Sent from bottom sheet and requires an update in calling fragment
     @Override
     public void updateValue(Fragment fragment, String fragname, String which, String value) {
         // This takes the info from the TextInputBottomSheet and passes back to the calling fragment
@@ -2574,6 +2576,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         break;
                     case "CustomChordsFragment":
                         ((CustomChordsFragment) fragment).updateValue(value);
+                        break;
+                    case "SongSectionsFragment":
+                        ((SongSectionsFragment) fragment).updateValue(value);
                         break;
                 }
             } catch (Exception e) {

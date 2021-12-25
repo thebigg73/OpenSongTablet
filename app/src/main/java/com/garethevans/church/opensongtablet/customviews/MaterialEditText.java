@@ -285,4 +285,8 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
     public void setOnFocusChangeListener(OnFocusChangeListener onFocusChangeListener) {
         editText.setOnFocusChangeListener(onFocusChangeListener);
     }
+
+    public void setTypeface(Typeface typeface) {
+        editText.setTypeface(typeface);
+    }
 }

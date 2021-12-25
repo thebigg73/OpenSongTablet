@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final SongSectionsFragment fragment;
     private final String TAG = "SongSetionsAdapter";
     private final int onColor, offColor;
-    private int selectedPosition = 0;
+    private int selectedPosition = 0, sectionEdited = -1;
 
     SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface, SongSectionsFragment fragment,
                         DisplayInterface displayInterface, RecyclerView recyclerView) {
@@ -55,47 +54,52 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         Log.d(TAG,"title: "+mainActivityInterface.getSong().getTitle());
         Log.d(TAG, "songsectionsize: "+mainActivityInterface.getSong().getSongSections().size());
         for (int x=0; x<mainActivityInterface.getSong().getSongSections().size(); x++) {
+            // bits[0] = heading, bits[1] = content - heading
+            String[] bits = splitHeadingAndContent(mainActivityInterface.getSong().getSongSections().get(x));
+
             SongSectionInfo songSectionInfo = new SongSectionInfo();
-            String content = mainActivityInterface.getSong().getSongSections().get(x);
-            String heading = "";
-
-            if (content.startsWith("[") && content.contains("]")) {
-                // Extract the heading
-                int toPos = content.indexOf("]");
-                heading = content.substring(0,toPos+1);
-                content = content.replace(heading,"").replace("[","").
-                        replace("]","").trim();
-                heading = mainActivityInterface.getProcessSong().beautifyHeading(c,mainActivityInterface,heading);
-                heading = heading.replace("[","").replace("]","").trim();
-            }
-            // Tidy up the content
-            String[] lines = content.split("\n");
-            StringBuilder newContent = new StringBuilder();
-            for (String line:lines) {
-                line = line.trim();
-                if (line.startsWith(".")) {
-                    line = line.replaceFirst(".","");
-                }
-                if (line.startsWith(";")) {
-                    line = line.replaceFirst(";","");
-                }
-                newContent.append(line).append("\n");
-            }
-            content = newContent.toString().trim();
-            heading = heading.trim();
-
-            if (!content.isEmpty() || !heading.isEmpty()) {
-            }
-            songSectionInfo.content = content;
-            songSectionInfo.heading = heading;
+            songSectionInfo.heading = bits[0];
+            songSectionInfo.content = bits[1];
             songSectionInfo.needsImage = !mainActivityInterface.getSong().getFiletype().equals("XML");
             songSectionInfo.position = x;
             songSections.add(songSectionInfo);
-            Log.d(TAG, "heading: " + heading + "\ncontent: " + content + "\nsection: " + x);
-
         }
         notifyItemRangeChanged(0,mainActivityInterface.getSong().getSongSections().size());
     }
+
+    private String[] splitHeadingAndContent(String sectionContent) {
+        String[] bits = new String[2];
+        bits[0] = "";
+        bits[1] = sectionContent;
+        if (sectionContent.startsWith("[") && sectionContent.contains("]")) {
+            // Extract the heading
+            int toPos = sectionContent.indexOf("]");
+            bits[0] = sectionContent.substring(0,toPos+1);
+            bits[1] = sectionContent.replace(bits[0],"").replace("[","").
+                    replace("]","").trim();
+            bits[0] = mainActivityInterface.getProcessSong().beautifyHeading(c,mainActivityInterface,bits[0]);
+            bits[0] = bits[0].replace("[","").replace("]","").trim();
+        }
+
+        bits[0] = bits[0].trim();
+
+        // Tidy up the content
+        String[] lines = bits[1].split("\n");
+        StringBuilder newContent = new StringBuilder();
+        for (String line:lines) {
+            line = line.trim();
+            if (line.startsWith(".")) {
+                line = line.replaceFirst(".","");
+            }
+            if (line.startsWith(";")) {
+                line = line.replaceFirst(";","");
+            }
+            newContent.append(line).append("\n");
+        }
+        bits[1] = newContent.toString();
+        return bits;
+    }
+
 
     @NonNull
     @Override
@@ -116,19 +120,23 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         if (position==selectedPosition) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.item.setBackgroundTintList(ColorStateList.valueOf(onColor));
+                holder.edit.setBackgroundTintList(ColorStateList.valueOf(offColor));
             } else {
                 holder.item.setBackgroundColor(onColor);
+                holder.edit.setBackgroundColor(offColor);
             }
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.item.setBackgroundTintList(ColorStateList.valueOf(offColor));
+                holder.edit.setBackgroundTintList(ColorStateList.valueOf(onColor));
             } else {
                 holder.item.setBackgroundColor(offColor);
+                holder.edit.setBackgroundColor(onColor);
             }
         }
         boolean needsImage = si.needsImage;
 
-        holder.content.setTypeface(Typeface.MONOSPACE);
+        holder.content.setTypeface(mainActivityInterface.getMyFonts().getMonoFont());
 
         if (heading!=null && !heading.isEmpty()) {
             holder.heading.setText(heading);
@@ -161,11 +169,22 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
         holder.itemView.setOnClickListener(view -> itemSelected(section));
         holder.itemView.setOnLongClickListener(view -> {
-            // Open up the text for this section in a bottom sheet for editing
-            TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(fragment,"SongSectionsFragment",heading,"",null,null,mainActivityInterface.getSong().getSongSections().get(section),false);
-            textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
+            bottomSheetEdit(section);
             return true;
         });
+        holder.edit.setOnClickListener(view -> bottomSheetEdit(section));
+    }
+
+    private void bottomSheetEdit(int section) {
+        // Keep a reference to this section
+        sectionEdited = section;
+        Log.d(TAG,"currentSongSection="+mainActivityInterface.getSong().getSongSections().get(section));
+
+        // Open up the text for this section in a bottom sheet for editing
+        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(fragment,"SongSectionsFragment",
+                c.getString(R.string.edit_temporary), c.getString(R.string.content),null,null,
+                mainActivityInterface.getSong().getSongSections().get(section),false);
+        textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
     }
 
     @Override
@@ -181,4 +200,27 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         Log.d(TAG,"thisPos="+thisPos);
         displayInterface.presenterShowSection(thisPos);
     }
+
+    public void setSectionEdited(String content) {
+        if (sectionEdited>-1) {
+            try {
+                // Update the song sections
+                mainActivityInterface.getSong().getSongSections().set(sectionEdited, content);
+
+                // Now edit the section card view to match
+                String[] bits = splitHeadingAndContent(content);
+                SongSectionInfo songSectionInfo = new SongSectionInfo();
+                songSectionInfo.heading = bits[0];
+                songSectionInfo.content = bits[1];
+                songSectionInfo.needsImage = !mainActivityInterface.getSong().getFiletype().equals("XML");
+                songSectionInfo.position = sectionEdited;
+                songSections.set(sectionEdited, songSectionInfo);
+                notifyItemChanged(sectionEdited);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            sectionEdited = -1;
+        }
+    }
+
 }
