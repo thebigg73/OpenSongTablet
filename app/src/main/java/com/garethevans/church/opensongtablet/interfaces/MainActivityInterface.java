@@ -45,6 +45,7 @@ import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
+import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
@@ -229,5 +230,6 @@ public interface MainActivityInterface {
     void resetOptionMenu();
     CastService getPresentationService();
     void updateDisplay(String what);
+    PresenterSettings getPresenterSettings();
 }
 

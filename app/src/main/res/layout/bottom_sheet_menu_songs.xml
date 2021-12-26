@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
                 android:hint="@string/edit_song"
                 android:padding="16dp"
                 android:text="@string/edit_song"
-                custom:mydrawable="@drawable/ic_pencil_white_36dp" />
+                app:mydrawable="@drawable/ic_pencil_white_36dp" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/songActions"
@@ -36,7 +36,7 @@
                 android:hint="@string/actions_current_song"
                 android:padding="16dp"
                 android:text="@string/actions_current_song"
-                custom:mydrawable="@drawable/ic_bullseye_white_36dp" />
+                app:mydrawable="@drawable/ic_bullseye_white_36dp" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/addToSet"
@@ -45,7 +45,7 @@
                 android:hint="@string/add_song_to_set"
                 android:padding="16dp"
                 android:text="@string/add_song_to_set"
-                custom:mydrawable="@drawable/ic_plus_white_36dp" />
+                app:mydrawable="@drawable/ic_plus_white_36dp" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/randomSong"
@@ -54,7 +54,7 @@
                 android:hint="@string/random_song_info"
                 android:padding="16dp"
                 android:text="@string/random_song"
-                custom:mydrawable="@drawable/ic_folder_search_white_36dp" />
+                app:mydrawable="@drawable/ic_folder_search_white_36dp" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/newSongs"
@@ -63,7 +63,7 @@
                 android:hint="@string/import_main"
                 android:padding="16dp"
                 android:text="@string/add_songs"
-                custom:mydrawable="@drawable/ic_database_import_white_36dp" />
+                app:mydrawable="@drawable/ic_database_import_white_36dp" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/rebuildIndex"
@@ -72,7 +72,7 @@
                 android:hint="@string/search_rebuild"
                 android:padding="16dp"
                 android:text="@string/refreshsongs"
-                custom:mydrawable="@drawable/ic_menu_white_36dp" />
+                app:mydrawable="@drawable/ic_menu_white_36dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

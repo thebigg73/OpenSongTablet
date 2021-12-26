@@ -253,6 +253,7 @@
     <string name="lyrics">Lyrics</string>
     <string name="main_song_display">Main song display</string>
     <string name="mainfoldername">MAIN</string>
+    <string name="media">Media</string>
     <string name="menu_set_info">Use this button to view and manage your sets</string>
     <string name="menu_settings">Menu settings</string>
     <string name="menu_settings_description">Change settings for the song/set menu</string>

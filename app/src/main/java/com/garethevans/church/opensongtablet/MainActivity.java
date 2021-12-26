@@ -91,6 +91,7 @@ import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
+import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
@@ -112,6 +113,7 @@ import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
+import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
 import com.garethevans.church.opensongtablet.presenter.SongSectionsFragment;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
@@ -155,6 +157,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -167,7 +170,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
-        DisplayInterface {
+        DisplayInterface, EditSongFragmentInterface {
 
     private ActivityBinding myView;
 
@@ -211,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private PerformanceGestures performanceGestures;
     private Preferences preferences;
     private PrepareFormats prepareFormats;
+    private PresenterSettings presenterSettings;
     private ProcessSong processSong;
     private ProfileActions profileActions;
     private SaveSong saveSong;
@@ -390,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         exportActions = new ExportActions();
         bible = new Bible();
         customSlide = new CustomSlide();
+        presenterSettings = new PresenterSettings();
 
         // Casting
         //myMediaRouteSelector = new MyMediaRouteSelector();
@@ -1540,6 +1545,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
 
     // Song processing
+    @Override
+    public ExtendedFloatingActionButton getSaveButton(){
+        if (editSongFragment!=null) {
+            return ((EditSongFragment)editSongFragment).getSaveButton();
+        } else {
+            return null;
+        }
+    }
 
 
     // The getters for references to the helper classes also needed in fragments
@@ -1617,6 +1630,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public CustomSlide getCustomSlide() {
         return customSlide;
+    }
+    @Override
+    public PresenterSettings getPresenterSettings() {
+        return presenterSettings;
     }
 
 

@@ -21,39 +21,37 @@ import java.util.ArrayList;
 
 public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHolder> {
 
-    private Context c;
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private ArrayList<SongSectionInfo> songSections;
-    private final RecyclerView recyclerView;
     private final SongSectionsFragment fragment;
     private final String TAG = "SongSetionsAdapter";
     private final int onColor, offColor;
     private int selectedPosition = 0, sectionEdited = -1;
 
     SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface, SongSectionsFragment fragment,
-                        DisplayInterface displayInterface, RecyclerView recyclerView) {
+                        DisplayInterface displayInterface) {
         this.c = c;
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
-        this.recyclerView = recyclerView;
         this.fragment = fragment;
         onColor = ContextCompat.getColor(c, R.color.colorSecondary);
         offColor = ContextCompat.getColor(c, R.color.colorAltPrimary);
     }
 
     public void buildSongSections() {
-        if (songSections==null) {
+        if (songSections == null) {
             songSections = new ArrayList<>();
         } else {
             int oldSize = songSections.size();
             songSections.clear();
-            notifyItemRangeRemoved(0,oldSize);
+            notifyItemRangeRemoved(0, oldSize);
         }
 
-        Log.d(TAG,"title: "+mainActivityInterface.getSong().getTitle());
-        Log.d(TAG, "songsectionsize: "+mainActivityInterface.getSong().getSongSections().size());
-        for (int x=0; x<mainActivityInterface.getSong().getSongSections().size(); x++) {
+        Log.d(TAG, "title: " + mainActivityInterface.getSong().getTitle());
+        Log.d(TAG, "songsectionsize: " + mainActivityInterface.getSong().getSongSections().size());
+        for (int x = 0; x < mainActivityInterface.getSong().getSongSections().size(); x++) {
             // bits[0] = heading, bits[1] = content - heading
             String[] bits = splitHeadingAndContent(mainActivityInterface.getSong().getSongSections().get(x));
 
@@ -64,7 +62,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             songSectionInfo.position = x;
             songSections.add(songSectionInfo);
         }
-        notifyItemRangeChanged(0,mainActivityInterface.getSong().getSongSections().size());
+        notifyItemRangeChanged(0, mainActivityInterface.getSong().getSongSections().size());
     }
 
     private String[] splitHeadingAndContent(String sectionContent) {
@@ -74,11 +72,11 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         if (sectionContent.startsWith("[") && sectionContent.contains("]")) {
             // Extract the heading
             int toPos = sectionContent.indexOf("]");
-            bits[0] = sectionContent.substring(0,toPos+1);
-            bits[1] = sectionContent.replace(bits[0],"").replace("[","").
-                    replace("]","").trim();
-            bits[0] = mainActivityInterface.getProcessSong().beautifyHeading(c,mainActivityInterface,bits[0]);
-            bits[0] = bits[0].replace("[","").replace("]","").trim();
+            bits[0] = sectionContent.substring(0, toPos + 1);
+            bits[1] = sectionContent.replace(bits[0], "").replace("[", "").
+                    replace("]", "").trim();
+            bits[0] = mainActivityInterface.getProcessSong().beautifyHeading(c, mainActivityInterface, bits[0]);
+            bits[0] = bits[0].replace("[", "").replace("]", "").trim();
         }
 
         bits[0] = bits[0].trim();
@@ -86,13 +84,13 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         // Tidy up the content
         String[] lines = bits[1].split("\n");
         StringBuilder newContent = new StringBuilder();
-        for (String line:lines) {
+        for (String line : lines) {
             line = line.trim();
             if (line.startsWith(".")) {
-                line = line.replaceFirst(".","");
+                line = line.replaceFirst(".", "");
             }
             if (line.startsWith(";")) {
-                line = line.replaceFirst(";","");
+                line = line.replaceFirst(";", "");
             }
             newContent.append(line).append("\n");
         }
@@ -117,7 +115,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         String heading = si.heading;
         String content = si.content;
         int section = si.position;
-        if (position==selectedPosition) {
+        if (position == selectedPosition) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.item.setBackgroundTintList(ColorStateList.valueOf(onColor));
                 holder.edit.setBackgroundTintList(ColorStateList.valueOf(offColor));
@@ -138,7 +136,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
         holder.content.setTypeface(mainActivityInterface.getMyFonts().getMonoFont());
 
-        if (heading!=null && !heading.isEmpty()) {
+        if (heading != null && !heading.isEmpty()) {
             holder.heading.setText(heading);
             holder.heading.setVisibility(View.VISIBLE);
         } else {
@@ -146,15 +144,12 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             holder.heading.setVisibility(View.GONE);
         }
 
-        if (content!=null && !content.isEmpty()) {
+        if (content != null && !content.isEmpty()) {
             holder.content.setText(content);
             holder.content.setVisibility(View.VISIBLE);
         } else {
             holder.content.setText("");
             holder.content.setVisibility(View.GONE);
-        }
-        if ((content==null||content.isEmpty()) && (heading==null||heading.isEmpty())) {
-            //holder.item.setVisibility(View.GONE);
         }
 
         if (needsImage) {
@@ -168,23 +163,19 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         }
 
         holder.itemView.setOnClickListener(view -> itemSelected(section));
-        holder.itemView.setOnLongClickListener(view -> {
-            bottomSheetEdit(section);
-            return true;
-        });
         holder.edit.setOnClickListener(view -> bottomSheetEdit(section));
     }
 
     private void bottomSheetEdit(int section) {
         // Keep a reference to this section
         sectionEdited = section;
-        Log.d(TAG,"currentSongSection="+mainActivityInterface.getSong().getSongSections().get(section));
+        Log.d(TAG, "currentSongSection=" + mainActivityInterface.getSong().getSongSections().get(section));
 
         // Open up the text for this section in a bottom sheet for editing
-        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(fragment,"SongSectionsFragment",
-                c.getString(R.string.edit_temporary), c.getString(R.string.content),null,null,
-                mainActivityInterface.getSong().getSongSections().get(section),false);
-        textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
+        TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(fragment, "SongSectionsFragment",
+                c.getString(R.string.edit_temporary), c.getString(R.string.content), null, null,
+                mainActivityInterface.getSong().getSongSections().get(section), false);
+        textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
     }
 
     @Override
@@ -197,12 +188,12 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         notifyItemChanged(thisPos);
         selectedPosition = thisPos;
 
-        Log.d(TAG,"thisPos="+thisPos);
+        Log.d(TAG, "thisPos=" + thisPos);
         displayInterface.presenterShowSection(thisPos);
     }
 
     public void setSectionEdited(String content) {
-        if (sectionEdited>-1) {
+        if (sectionEdited > -1) {
             try {
                 // Update the song sections
                 mainActivityInterface.getSong().getSongSections().set(sectionEdited, content);
@@ -222,5 +213,4 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             sectionEdited = -1;
         }
     }
-
 }

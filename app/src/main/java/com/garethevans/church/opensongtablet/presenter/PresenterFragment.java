@@ -86,8 +86,7 @@ public class PresenterFragment extends Fragment {
                     tab.setText(getString(R.string.song));
                     break;
                 case 1:
-                    tab.setText(getString(R.string.video));
-                    //tab.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_format_list_numbers_white_36dp, null));
+                    tab.setText(getString(R.string.media));
                     break;
                 case 2:
                     tab.setText(getString(R.string.alert));

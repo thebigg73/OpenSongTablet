@@ -52,7 +52,7 @@ public class SongSectionsFragment extends Fragment {
         myView.songInfo.minifyLayout();
 
         songSectionsAdapter = new SongSectionsAdapter(requireContext(),mainActivityInterface,this,
-                displayInterface, myView.recyclerView);
+                displayInterface);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
         myView.recyclerView.setLayoutManager(linearLayoutManager);
         myView.recyclerView.setAdapter(songSectionsAdapter);

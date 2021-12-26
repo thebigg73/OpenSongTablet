@@ -1,20 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_slideshow"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bible"
+            android:padding="8dp"/>
+
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/bibleOffline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/set_add"
+            android:padding="8dp"
+            android:text="@string/bible_browse_offline"
+            app:mydrawable="@drawable/ic_bible_white_36dp" />
+
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/bibleOnline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/set_add"
+            android:padding="8dp"
+            android:text="@string/search_biblegateway"
+            app:mydrawable="@drawable/ic_web_white_36dp" />
+
+    <TableRow style="@style/DividerLine" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/audio"
+            android:padding="8dp"/>
+
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/media_selected"
+            android:hint="@string/not_available"
+            app:mydrawable="@drawable/ic_music_note_white_36dp"
+            android:padding="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fabSize="mini"
+                    android:src="@drawable/ic_stop_white_36dp"
+                    android:contentDescription="@string/media_play"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:fabSize="mini"
+                    android:src="@drawable/ic_play_white_36dp"
+                    android:contentDescription="@string/media_play"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

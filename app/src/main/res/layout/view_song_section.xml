@@ -56,7 +56,7 @@
             app:fabSize="mini"
             android:src="@drawable/ic_pencil_white_36dp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:contentDescription="@string/edit"/>
 
     </RelativeLayout>
