@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -192,7 +192,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/startStopButton"
@@ -201,7 +201,6 @@
         android:layout_gravity="bottom|end"
         android:contentDescription="@string/start_stop_metronome"
         android:src="@drawable/ic_play_white_36dp"
-        app:useCompatPadding="true"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
+        app:useCompatPadding="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

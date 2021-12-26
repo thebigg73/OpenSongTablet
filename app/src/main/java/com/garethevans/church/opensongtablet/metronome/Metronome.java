@@ -3,7 +3,9 @@ package com.garethevans.church.opensongtablet.metronome;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Handler;
 
 import com.garethevans.church.opensongtablet.R;
@@ -20,13 +22,13 @@ public class Metronome {
     private final String TAG = "Metronome";
     private Activity activity;  // For run on UI updates
     private int beat, beats, divisions, beatTimeLength, beatsRequired, beatsRunningTotal,
-            metronomeFlashOnColor, metronomeFlashOffColor;
+            metronomeFlashOnColor, metronomeFlashOffColor, tickClip, tockClip;
     private float volumeTickLeft = 1.0f, volumeTickRight = 1.0f, volumeTockLeft = 1.0f,
             volumeTockRight = 1.0f, meterTimeDivision = 1.0f;
     private boolean visualMetronome = false, isRunning = false, validTimeSig = false,
             validTempo = false, tickPlayerReady, tockPlayerReady;
     private String tickSound, tockSound;
-    private MediaPlayer tickPlayer, tockPlayer;
+    private SoundPool soundPool;
     private Timer metronomeTimer, visualTimer;
     private TimerTask metronomeTimerTask, visualTimerTask;
     private final Handler metronomeTimerHandler = new Handler();
@@ -74,6 +76,10 @@ public class Metronome {
             visualTimer.cancel();
             visualTimer.purge();
         }
+
+        // Clean up the soundPool
+        soundPool.release();
+        soundPool = null;
     }
 
     // Set up the metronome values (tempo, time signature, user preferences, etc)
@@ -95,56 +101,52 @@ public class Metronome {
         setBarsAndBeats(c, mainActivityInterface);
     }
     private void setupPlayers(Context c, MainActivityInterface mainActivityInterface) {
-        setTickTockSounds(c,mainActivityInterface);
-        if (tickPlayer!=null) {
-            try {
-                tickPlayer.release();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (tockPlayer!=null) {
-            try {
-                tockPlayer.release();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        tickPlayer = new MediaPlayer();
-        tockPlayer = new MediaPlayer();
-        tickPlayer.setOnPreparedListener(mediaPlayer -> {
-            tickPlayerReady = true;
-            checkPlayersReady(mainActivityInterface);
-        });
-        tockPlayer.setOnPreparedListener(mediaPlayer -> {
-            tockPlayerReady = true;
-            checkPlayersReady(mainActivityInterface);
-        });
         tickPlayerReady = false;
         tockPlayerReady = false;
+
+        setTickTockSounds(c,mainActivityInterface);
+
+        setupSoundPool(mainActivityInterface);
+
         try {
             if (tickSound!=null && !tickSound.isEmpty()) {
                 AssetFileDescriptor tickFile = c.getAssets().openFd("metronome/" + tickSound + ".mp3");
-                tickPlayer.setDataSource(tickFile.getFileDescriptor(), tickFile.getStartOffset(), tickFile.getLength());
-                tickPlayer.prepareAsync();
-            } else {
-                tickPlayer = null;
+                tickClip = soundPool.load(tickFile,0);
             }
             if (tockSound!=null && !tockSound.isEmpty()) {
                 AssetFileDescriptor tockFile = c.getAssets().openFd("metronome/" + tockSound + ".mp3");
-                tockPlayer.setDataSource(tockFile.getFileDescriptor(), tockFile.getStartOffset(), tockFile.getLength());
-                tockPlayer.prepareAsync();
-            } else {
-                tockPlayer = null;
+                tockClip = soundPool.load(tockFile,0);
             }
+            soundPool.setOnLoadCompleteListener((soundPool, i, i1) -> {
+                if (i == tickClip) {
+                    tickPlayerReady = true;
+                } else if (i == tockClip) {
+                    tockPlayerReady = true;
+                }
+                checkPlayersReady(mainActivityInterface);
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     private void setTickTockSounds(Context c, MainActivityInterface mainActivityInterface) {
         tickSound = mainActivityInterface.getPreferences().getMyPreferenceString(c,"metronomeTickSound","digital_high");
         tockSound = mainActivityInterface.getPreferences().getMyPreferenceString(c,"metronomeTockSound", "digital_low");
+    }
+    private void setupSoundPool(MainActivityInterface mainActivityInterface) {
+        int maxStreams = 4;
+        if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            soundPool = new SoundPool.Builder().setMaxStreams(maxStreams)
+                    .setAudioAttributes(audioAttributes).build();
+        } else {
+            soundPool = new SoundPool(maxStreams,
+                    AudioManager.STREAM_MUSIC, 0);
+        }
     }
     public void setVisualMetronome(Context c, MainActivityInterface mainActivityInterface) {
         visualMetronome = mainActivityInterface.getPreferences().
@@ -323,22 +325,11 @@ public class Metronome {
                     if (beat>beats) {
                         beat = 1;
                     }
-                    if (tickBeats.contains(beat) && tickPlayer!=null) {
-                        tickPlayer.seekTo(0);
-                        tickPlayer.setVolume(volumeTickLeft,volumeTickRight);
-                        try {
-                            tickPlayer.start();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else if (tockPlayer!=null) {
-                        tockPlayer.seekTo(0);
-                        tockPlayer.setVolume(volumeTockLeft,volumeTockRight);
-                        try {
-                            tockPlayer.start();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    if (tickBeats.contains(beat)) {
+                        soundPool.play(tickClip, volumeTickLeft, volumeTickRight, 2, 0, 1);
+                    } else {
+                        soundPool.play(tockClip, volumeTockLeft, volumeTockRight, 1, 0, 1);
+
                     }
                     if (visualMetronome) {
                         activity.runOnUiThread(() -> mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOnColor));
