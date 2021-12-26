@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
+import com.garethevans.church.opensongtablet.customviews.ExposedDropDown;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -28,7 +29,6 @@ public class FontSetupFragment extends Fragment {
     private SettingsFontsBinding myView;
     private ArrayList<String> fontNames;
     private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky, which;
-
     private MainActivityInterface mainActivityInterface;
 
     @Override
@@ -69,7 +69,6 @@ public class FontSetupFragment extends Fragment {
             }
         }).start();
 
-
         return myView.getRoot();
     }
 
@@ -83,30 +82,28 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void setupDropDowns() {
-        ExposedDropDownArrayAdapter lyricAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.lyricFont, R.layout.view_exposed_dropdown_item, fontNames);
-        ExposedDropDownArrayAdapter chordAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.chordFont, R.layout.view_exposed_dropdown_item, fontNames);
-        ExposedDropDownArrayAdapter presoAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.presoFont, R.layout.view_exposed_dropdown_item, fontNames);
-        ExposedDropDownArrayAdapter presoInfoAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.presoInfoFont, R.layout.view_exposed_dropdown_item, fontNames);
-        ExposedDropDownArrayAdapter stickyAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.stickyFont, R.layout.view_exposed_dropdown_item, fontNames);
+        prepareExposedDropdown("fontLyric", myView.lyricFont, fontLyric);
+        prepareExposedDropdown("fontChord", myView.chordFont, fontChord);
+        prepareExposedDropdown("fontSticky", myView.presoFont, fontSticky);
+        prepareExposedDropdown("fontPreso", myView.stickyFont, fontPreso);
+        prepareExposedDropdown("fontPresoInfo", myView.presoInfoFont, fontPresoInfo);
+    }
 
-        myView.lyricFont.setAdapter(lyricAdapter);
-        myView.chordFont.setAdapter(chordAdapter);
-        myView.presoFont.setAdapter(presoAdapter);
-        myView.presoInfoFont.setAdapter(presoInfoAdapter);
-        myView.stickyFont.setAdapter(stickyAdapter);
-
-        myView.lyricFont.setText(fontLyric);
-        myView.chordFont.setText(fontChord);
-        myView.stickyFont.setText(fontSticky);
-        myView.presoFont.setText(fontPreso);
-        myView.presoInfoFont.setText(fontPresoInfo);
-
-        myView.lyricFont.addTextChangedListener(new MyTextWatcher("fontLyric"));
-        myView.chordFont.addTextChangedListener(new MyTextWatcher("fontChord"));
-        myView.stickyFont.addTextChangedListener(new MyTextWatcher("fontSticky"));
-        myView.presoFont.addTextChangedListener(new MyTextWatcher("fontPreso"));
-        myView.presoInfoFont.addTextChangedListener(new MyTextWatcher("fontPresoInfo"));
-
+    private void prepareExposedDropdown(String which, ExposedDropDown exposedDropDown, String defaultValue) {
+        if (exposedDropDown!=null && isAdded()) {
+            try {
+                exposedDropDown.post(() -> {
+                    ExposedDropDownArrayAdapter exposedDropDownArrayAdapter =
+                            new ExposedDropDownArrayAdapter(requireContext(), exposedDropDown,
+                                    R.layout.view_exposed_dropdown_item, fontNames);
+                    exposedDropDown.setAdapter(exposedDropDownArrayAdapter);
+                    exposedDropDown.setText(defaultValue);
+                    exposedDropDown.addTextChangedListener(new MyTextWatcher(which));
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setWebButtonListeners() {
@@ -118,51 +115,62 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void initialisePreviews() {
-        // Set up the song preview
-        myView.songPreview.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
-        myView.lyricPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
-        myView.chordPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
-        myView.lyricPreview.setTextSize(24.0f);
-        myView.chordPreview.setTextSize(24.0f*mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(),"scaleChords",0.8f));
+        try {
+            myView.songPreview.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+            myView.lyricPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
+            myView.chordPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
+            myView.lyricPreview.setTextSize(24.0f);
+            myView.chordPreview.setTextSize(24.0f * mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(), "scaleChords", 0.8f));
 
-        // Set the presentation preview
-        myView.presoPreview.setBackground(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.preso_default_bg,null));
-        myView.presoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoFontColor());
-        myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        myView.presoLorem.setTextSize(24.0f);
-        myView.presoInfoLorem.setTextSize(24.0f*0.5f);
-        myView.presoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"presoInfoAlign", Gravity.CENTER));
-        myView.presoInfoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(),"presoInfoAlign", Gravity.END));
+            // Set the presentation preview
+            myView.presoPreview.setBackground(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.preso_default_bg, null));
+            myView.presoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoFontColor());
+            myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+            myView.presoLorem.setTextSize(24.0f);
+            myView.presoInfoLorem.setTextSize(24.0f * 0.5f);
+            myView.presoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "presoInfoAlign", Gravity.CENTER));
+            myView.presoInfoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "presoInfoAlign", Gravity.END));
 
-        // Set the sticky preview
-        myView.stickyLorem.setBackgroundColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
-        myView.stickyLorem.setTextSize(22.0f);
-        myView.stickyLorem.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
+            // Set the sticky preview
+            myView.stickyLorem.setBackgroundColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
+            myView.stickyLorem.setTextSize(22.0f);
+            myView.stickyLorem.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
 
-        // Clicking on the previews will update them
-        myView.songPreview.setOnClickListener(v -> updatePreviews());
-        myView.presoPreview.setOnClickListener(v -> updatePreviews());
-        myView.stickyLorem.setOnClickListener(v -> updatePreviews());
+            // Clicking on the previews will update them
+            myView.songPreview.setOnClickListener(v -> updatePreviews());
+            myView.presoPreview.setOnClickListener(v -> updatePreviews());
+            myView.stickyLorem.setOnClickListener(v -> updatePreviews());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void updatePreviews() {
-        Runnable runnable = () -> requireActivity().runOnUiThread(() -> {
-            // Set up the song preview
-            myView.lyricPreview.setTypeface(mainActivityInterface.getMyFonts().getLyricFont());
-            myView.chordPreview.setTypeface(mainActivityInterface.getMyFonts().getChordFont());
 
-            // Set the presentation preview
-            myView.presoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoFont());
-            myView.presoInfoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
 
-            // Set the sticky preview
-            myView.stickyLorem.setTypeface(mainActivityInterface.getMyFonts().getStickyFont());
-        });
         // Run this now and again in about 500ms and 3 seconds (to check loading of the font has happened)
-        new Thread(runnable).start();
-        new Handler().postDelayed(runnable,500);
-        new Handler().postDelayed(runnable,3000);
+        try {
+            if (getActivity()!=null && isAdded()) {
+                Runnable runnable = (() -> {
+                    // Set up the song preview
+                    myView.lyricPreview.post(() -> myView.lyricPreview.setTypeface(mainActivityInterface.getMyFonts().getLyricFont()));
+                    myView.chordPreview.post(() -> myView.chordPreview.setTypeface(mainActivityInterface.getMyFonts().getChordFont()));
+
+                    // Set the presentation preview
+                    myView.presoLorem.post(() -> myView.presoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoFont()));
+                    myView.presoInfoLorem.post(() -> myView.presoInfoLorem.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont()));
+
+                    // Set the sticky preview
+                    myView.stickyLorem.post(() -> myView.stickyLorem.setTypeface(mainActivityInterface.getMyFonts().getStickyFont()));
+                });
+                new Thread(runnable).start();
+                new Handler().postDelayed(runnable,500);
+                new Handler().postDelayed(runnable,3000);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void openWebPreview(String which) {
@@ -203,5 +211,10 @@ public class FontSetupFragment extends Fragment {
             mainActivityInterface.getMyFonts().changeFont(getContext(),mainActivityInterface,which,s.toString(),new Handler());
             updatePreviews();
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 }

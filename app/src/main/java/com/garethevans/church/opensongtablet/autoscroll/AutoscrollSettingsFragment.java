@@ -87,6 +87,8 @@ public class AutoscrollSettingsFragment extends Fragment {
             }
         });
         myView.learnAutoscroll.setOnClickListener(v -> learnAutoscroll());
+        myView.nestedScrollView.setFabToAnimate(myView.startStopAutoscroll);
+
         myView.startStopAutoscroll.setOnClickListener(v -> startStopAutoscroll());
     }
 

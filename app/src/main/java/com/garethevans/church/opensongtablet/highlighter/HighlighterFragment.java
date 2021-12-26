@@ -84,6 +84,8 @@ public class HighlighterFragment extends Fragment {
         });
         myView.timeToDisplayHighlighter.addOnChangeListener((slider, value, fromUser) -> setHintTime(Math.round(value)));
 
+        myView.nestedScrollView.setFabToAnimate(myView.edit);
+        
         myView.edit.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.highlighterEditFragment));
     }
 

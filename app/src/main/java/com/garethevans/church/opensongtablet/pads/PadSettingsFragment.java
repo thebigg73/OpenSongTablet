@@ -51,6 +51,9 @@ public class PadSettingsFragment extends Fragment {
         myView.padSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.padDefaultsFragment));
         padPlaying = mainActivityInterface.getPad().isPadPlaying();
         changePlayIcon();
+
+        myView.nestedScrollView.setFabToAnimate(myView.startStopButton);
+        
         myView.startStopButton.setOnClickListener(v -> {
             padPlaying = mainActivityInterface.playPad();
             changePlayIcon();

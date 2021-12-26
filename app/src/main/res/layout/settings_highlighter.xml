@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
+    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -35,7 +36,7 @@
                 android:layout_marginBottom="16dp"/>
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/edit"

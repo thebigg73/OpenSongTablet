@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.EditSongFeaturesBinding;
+import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class EditSongFragmentFeatures extends Fragment {
 
     private EditSongFeaturesBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private EditSongFragmentInterface editSongFragmentInterface;
     private String whichLink = "audio";
     private final String TAG = "EditSongFeatures";
 
@@ -34,6 +36,7 @@ public class EditSongFragmentFeatures extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        editSongFragmentInterface = (EditSongFragmentInterface) context;
     }
 
     @Override
@@ -218,6 +221,9 @@ public class EditSongFragmentFeatures extends Fragment {
         myView.customChords.addTextChangedListener(new MyTextWatcher("customchords"));
         myView.linkType.addTextChangedListener(new MyTextWatcher("linktype"));
         myView.linkValue.addTextChangedListener(new MyTextWatcher("linkvalue"));
+
+        // Scroll listener
+        myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
     }
 
     private String niceTextFromPref(String prefText) {

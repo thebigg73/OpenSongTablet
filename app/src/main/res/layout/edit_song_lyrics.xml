@@ -8,7 +8,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -40,7 +41,7 @@
             android:visibility="gone"/>
 
     </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
     <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
         android:id="@+id/bottomSheetTab"

@@ -16,6 +16,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongBinding;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 // When we edit a song, we create a write the current song to tempSong in MainActivity
@@ -94,7 +95,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         }).attach();
     }
 
-
     public void showSaveAllowed(boolean showSave) {
         if (showSave) {
             myView.saveChanges.setVisibility(View.VISIBLE);
@@ -126,5 +126,9 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
+    }
+
+    public ExtendedFloatingActionButton getSaveButton() {
+        return myView.saveChanges;
     }
 }

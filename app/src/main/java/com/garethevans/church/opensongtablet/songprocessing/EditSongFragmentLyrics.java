@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongLyricsBinding;
+import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -25,6 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 public class EditSongFragmentLyrics extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    private EditSongFragmentInterface editSongFragmentInterface;
     private EditSongLyricsBinding myView;
     private final String TAG = "EditSongFragmentLyrics";
     private BottomSheetBehavior<View> bottomSheetBehavior;
@@ -36,6 +38,7 @@ public class EditSongFragmentLyrics extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        editSongFragmentInterface = (EditSongFragmentInterface) context;
     }
 
     @Override
@@ -148,6 +151,9 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.bottomSheetLayout.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
         myView.bottomSheetLayout.textSizeUp.setOnClickListener(v -> checkTextSize(+1));
         myView.bottomSheetLayout.insertSection.setOnClickListener(v -> insertSection());
+
+        // Scroll listener
+        myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
     }
 
     private void checkTextSize(int change) {

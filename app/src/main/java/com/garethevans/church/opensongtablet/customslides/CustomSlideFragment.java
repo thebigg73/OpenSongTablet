@@ -146,6 +146,8 @@ public class CustomSlideFragment extends Fragment {
         myView.title.addTextChangedListener(new MyTextWatcher("title"));
         myView.content.addTextChangedListener(new MyTextWatcher("content"));
         myView.time.addTextChangedListener(new MyTextWatcher("time"));
+
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.addToSet);
     }
 
     @SuppressLint("WrongConstant")

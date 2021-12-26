@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.EditSongTagsBinding;
+import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 public class EditSongFragmentTags extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    private EditSongFragmentInterface editSongFragmentInterface;
     private EditSongTagsBinding myView;
     private ThemesBottomSheet themesBottomSheet;
     private PresentationOrderBottomSheet presentationOrderBottomSheet;
@@ -32,6 +34,7 @@ public class EditSongFragmentTags extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        editSongFragmentInterface = (EditSongFragmentInterface) context;
     }
 
     @Override
@@ -75,7 +78,6 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private void setupListeners() {
-        //myView.tags.setOnClickListener(v -> themesBottomSheet.show(requireActivity().getSupportFragmentManager(),"ThemesBottomSheet"));
         myView.tags.setOnClickListener(v -> {
             // Only allow if indexing is complete
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
@@ -99,6 +101,8 @@ public class EditSongFragmentTags extends Fragment {
         myView.user3.addTextChangedListener(new MyTextWatcher("user3"));
         myView.hymnnum.addTextChangedListener(new MyTextWatcher("hymnnum"));
 
+        // Scroll listener
+        myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
     }
     private class MyTextWatcher implements TextWatcher {
 

@@ -168,6 +168,7 @@ public class SetManageFragment extends Fragment {
             textInputBottomSheet.show(requireActivity().getSupportFragmentManager(),"TextInputBottomSheet");
         });
 
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.loadorsaveButton);
     }
 
     // Deal with getting the sets in the folder and showing what we want

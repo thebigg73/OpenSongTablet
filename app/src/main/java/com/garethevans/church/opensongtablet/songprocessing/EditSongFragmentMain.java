@@ -18,17 +18,18 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.EditSongMainBinding;
-import com.garethevans.church.opensongtablet.interfaces.EditSongMainFragmentInterface;
+import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 import java.util.ArrayList;
 
-public class EditSongFragmentMain extends Fragment implements EditSongMainFragmentInterface  {
+public class EditSongFragmentMain extends Fragment  {
 
     // The variable used in this fragment
     private EditSongMainBinding myView;
     private MainActivityInterface mainActivityInterface;
+    private EditSongFragmentInterface editSongFragmentInterface;
     private String newFolder;
     private TextInputBottomSheet textInputBottomSheet;
     private ArrayList<String> folders;
@@ -38,6 +39,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        editSongFragmentInterface = (EditSongFragmentInterface) context;
     }
 
     @Override
@@ -94,6 +96,9 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
         myView.author.addTextChangedListener(new MyTextWatcher("author"));
         myView.copyright.addTextChangedListener(new MyTextWatcher("copyright"));
         myView.songNotes.addTextChangedListener(new MyTextWatcher("notes"));
+
+        // Scroll listener
+        myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
     }
 
     private class MyTextWatcher implements TextWatcher {

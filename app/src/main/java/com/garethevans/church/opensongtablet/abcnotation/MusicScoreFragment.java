@@ -53,6 +53,7 @@ public class MusicScoreFragment extends Fragment {
 
     private void setListeners() {
         myView.editABC.setOnClickListener(v -> doSave());
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.editABC);
     }
 
     private class JsInterface {

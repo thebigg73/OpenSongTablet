@@ -70,6 +70,7 @@ public class BackupRestoreSetsFragment extends Fragment {
             setupViews();
         }
 
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
         return myView.getRoot();
     }
 

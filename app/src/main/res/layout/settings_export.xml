@@ -23,11 +23,12 @@
         android:orientation="vertical"
         android:visibility="invisible" />
 
-    <androidx.core.widget.NestedScrollView
+    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
         android:layout_above="@+id/progressText">
 
         <LinearLayout
@@ -147,7 +148,7 @@
             </RadioGroup>
             </LinearLayout>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -163,6 +164,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
+        android:minHeight="200dp"
         android:minLines="4"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -174,6 +176,5 @@
         android:contentDescription="@string/export"
         android:src="@drawable/ic_share_variant_white_36dp"
         app:useCompatPadding="true" />
-
 
 </RelativeLayout>

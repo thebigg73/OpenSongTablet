@@ -68,6 +68,8 @@ public class ExportFragment extends Fragment {
 
         myView.shareButton.setOnClickListener(v -> prepareExport());
 
+        myView.nestedScrollView.setFabToAnimate(myView.shareButton);
+
         return myView.getRoot();
     }
 

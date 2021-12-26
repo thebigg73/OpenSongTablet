@@ -84,9 +84,10 @@ public class BackupOSBFragment extends Fragment {
                 myView.createBackupFAB.setOnClickListener(v -> doSave());
             });
 
-        }).start();    
-    }
+        }).start();
 
+        myView.nestedScrollView.setExtendedFabToAnimate(myView.createBackupFAB);
+    }
 
     private String defaultFilename() {
         // Get the date for the file
