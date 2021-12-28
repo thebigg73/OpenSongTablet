@@ -103,8 +103,8 @@ class Transpose {
     private int major;
     private int root;
 
-    private static final String[] format2Identifiers = new String[]{"H", "h"};
-    private static final String[] format3Identifiers = new String[]{"a", "h", "c", "d", "e,", "f", "g"}; // Format 3 has lowecase minors. 'b' is the 'flat' chord mordifier so not tested.
+    private static final String[] format2Identifiers = new String[]{"h"};
+    private static final String[] format3Identifiers = new String[]{"a", "c", "d", "e,", "f", "g"}; // Format 3 has lowecase minors. 'b' is 'flat', "h" is dealt with separatly so both not tested
     private static final String[] format4Identifiers = new String[]{"do","re","ré","mi","fa","sol","la","si"};
     private static final String[] format5Identifiers = new String[]{"1","2","3","4","5","6","7"};
     private static final String[] format6Identifiers = new String[]{"i","ii","ii","iii","iii","iv","iv","v","vi","vii"};
@@ -573,21 +573,22 @@ class Transpose {
             if (line.startsWith(".")) {
                 //  Split into individual chords
                 String[] chordsInLine = line.substring(1).split(" ");
-
+                String chordInLineLC;
                 // Now go through each chord and add to the matching format
                 // Case is needed as lowercase chords denotes minor chords for format 3
                 for (String chordInLine : chordsInLine) {
-                    if (Arrays.asList(format6Identifiers).contains(chordInLine)) {
+                    chordInLineLC = chordInLine.toLowerCase(Locale.ROOT);
+                    if (Arrays.asList(format6Identifiers).contains(chordInLineLC)) {
                         contains_nashnumeral_count++;
                     } else if (Arrays.asList(format5Identifiers).contains(chordInLine)) {
                         contains_nash_count++;
-                    } else if (Arrays.asList(format4Identifiers).contains(chordInLine.toLowerCase(Locale.ROOT))) {
+                    } else if (Arrays.asList(format4Identifiers).contains(chordInLineLC)) {
                         contains_do_count++;
                     // chords ending s (es, is and s ) are identifiers for format 3 as are lowercase minor chords
-                    } else if (chordInLine.length() > 1 && "s".equals(chordInLine.substring(chordInLine.length() - 1)) ||
+                    } else if (chordInLineLC.length() > 1 && "s".equals(chordInLineLC.substring(chordInLineLC.length() - 1)) ||
                             (Arrays.asList(format3Identifiers).contains(chordInLine))) {
                         contains_es_is_count++;
-                    } else if (Arrays.asList(format2Identifiers).contains(chordInLine)) {
+                    } else if (Arrays.asList(format2Identifiers).contains(chordInLineLC)) {
                         contains_H_count++;
                     }
                 }
