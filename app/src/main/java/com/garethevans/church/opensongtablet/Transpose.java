@@ -46,9 +46,6 @@ class Transpose {
                                                     " (ais",    " (his",    " (cis",    " (dis",    " (eis",    " (fis",    " (gis",
                                                     " (as",     " (b",      " (ces",    " (des",    " (es",     " (fes",    " (ges",
                                                     " (a",      " (h",      " (c",      " (d",      " (e",      " (f",      " (g",
-                                                    ".ais",     ".his",     ".cis",     ".dis",     ".eis",     ".fis",     ".gis",
-                                                    ".as",      ".b",       ".ces",     ".des",     ".es",      ".fes",     ".ges",
-                                                    ".a",       ".h",       ".c",       ".d",       ".e",       ".f",       ".g",
                                                     " ais",     " his",     " cis",     " dis",     " eis",     " fis",     " gis",
                                                     " as",      " b",       " ces",     " des",     " es",      " fes",     " ges",
                                                     " a",       " h",       " c",       " d",       " e",       " f",       " g",
@@ -59,9 +56,6 @@ class Transpose {
                                                 " («├2┤m",  " («├4┤m",  " («├5┤m",  " («├7┤m",  " («├9┤m",  " («├W┤m",  " («├Y┤m",
                                                " (««├Y┤m"," («««├2┤m",  " («├3┤m",  " («├5┤m", " (««├7┤m",  " («├8┤m",  " («├W┤m",
                                               " («««├1┤m"," («««├3┤m"," («««├4┤m"," («««├6┤m"," («««├8┤m"," («««├9┤m"," («««├X┤m",
-                                                 ".«├2┤m",   ".«├4┤m",   ".«├5┤m",   ".«├7┤m",   ".«├9┤m",   ".«├W┤m",   ".«├Y┤m",
-                                                ".««├Y┤m", ".«««├2┤m",   ".«├3┤m",   ".«├5┤m",  ".««├7┤m",   ".«├8┤m",   ".«├W┤m",
-                                               ".«««├1┤m", ".«««├3┤m", ".«««├4┤m", ".«««├6┤m", ".«««├8┤m", ".«««├9┤m", ".«««├X┤m",
                                                  " «├2┤m",   " «├4┤m",   " «├5┤m",   " «├7┤m",   " «├9┤m",   " «├W┤m",   " «├Y┤m",
                                                 " ««├Y┤m", " «««├2┤m",   " «├3┤m",   " «├5┤m",  " ««├7┤m",   " «├8┤m",   " «├W┤m",
                                                " «««├1┤m", " «««├3┤m", " «««├4┤m", " «««├6┤m", " «««├8┤m", " «««├9┤m", " «««├X┤m",
@@ -109,8 +103,8 @@ class Transpose {
     private int major;
     private int root;
 
-    private static final String[] format2Identifiers = new String[]{"h"};
-    private static final String[] format3Identifiers = new String[]{"is","es"};
+    private static final String[] format2Identifiers = new String[]{"H", "h"};
+    private static final String[] format3Identifiers = new String[]{"a", "h", "c", "d", "e,", "f", "g"}; // Format 3 has lowecase minors. 'b' is the 'flat' chord mordifier so not tested.
     private static final String[] format4Identifiers = new String[]{"do","re","ré","mi","fa","sol","la","si"};
     private static final String[] format5Identifiers = new String[]{"1","2","3","4","5","6","7"};
     private static final String[] format6Identifiers = new String[]{"i","ii","ii","iii","iii","iv","iv","v","vi","vii"};
@@ -150,6 +144,7 @@ class Transpose {
                 // IV - Use leading \n as we can be certain it is safe to remove later
                 sb.append("\n");
                 if (line.startsWith(".")) {
+                    line = line.replaceFirst("."," ");
                     switch (StaticVariables.detectedChordFormat) {
                         default:
                         case 1:
@@ -214,6 +209,7 @@ class Transpose {
                         line = line.substring(0, myindex) + line.substring(myindex + 1).replaceFirst(" {2}", " ");
                         myindex = line.indexOf("«");
                     }
+                    line = line.replaceFirst(" ",".");
                 }
                 // Add it back up
                 sb.append(line);
@@ -330,16 +326,14 @@ class Transpose {
                                 "¬" + bitsnums[root + 2] + "_" +
                                 "¬" + bitsnums[root] + "_";
 
-                // Includes protection for major chords and support for differnt 'chord follows' sequences including '<space>('
+                // Includes protection for major chords and support for different 'chord follows' sequences including '<space>('
                 fromnash = ("maj7_ma7_maj9_ma9_" +
-                        fromnashbase.replace("¬",".") +
                         fromnashbase.replace("¬"," ") +
                         fromnashbase.replace("¬","/") +
                         fromnashbase.replace("¬"," (") +
                         "¬").split("_");
 
                 tochordnumsnash = ("¬aj7_¬a7_¬aj9_¬a9_" +
-                        tochordnumsbase.replace("¬",".") +
                         tochordnumsbase.replace("¬"," ") +
                         tochordnumsbase.replace("¬","/") +
                         tochordnumsbase.replace("¬"," (") +
@@ -517,9 +511,15 @@ class Transpose {
             StaticVariables.capoforceflats = keyUsesFlats(c, preferences, FullscreenActivity.capokey);
         }
 
+        // If not showing Capo chords then 'tranpose' Capo 0 to display preferred chords
+        if (!preferences.getMyPreferenceBoolean(c, "displayCapoChords", true)) {
+            StaticVariables.transposeTimes = 0;
+        } else {
+            StaticVariables.transposeTimes = Integer.parseInt("0" + StaticVariables.mCapo);
+        }
+
         // Transpose using force, add "." for transpose and remove on return (mCapo 0 is used when displaying a song with no capo in preferred chord format)
         StaticVariables.transposeDirection = "-1";
-        StaticVariables.transposeTimes = Integer.parseInt("0" + StaticVariables.mCapo);
         return transposeString(c, preferences,"." + string, !StaticVariables.capoforceflats, StaticVariables.capoforceflats).substring(1);
     }
 
@@ -547,31 +547,45 @@ class Transpose {
         int contains_nash_count = 0;
         int contains_nashnumeral_count = 0;
 
-        // Check if the user is using the same chord format as the song.  Go through the chord lines and look for clues
-        for (String line : StaticVariables.mLyrics.split("\n")) {
-            if (line.startsWith(".")) {
-                // Remove text in brackets on chord lines as they may contain text that causes problems e.g. (Last x) contains La
-                line = line
-                        // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Kept lots of escapes to be sure they work!
-                        .replaceAll("\\(.*?\\)", "")
-                        .replaceAll("\\{.*?\\}", "")
-                        .replaceAll("\\[.*?\\]", "");
+        // Process to get chords separated by spaces
+        String mLyrics = StaticVariables.mLyrics
+                // Protect new lines
+                .replace("\n", "¬")
+                // Remove text in brackets on chord lines as they may contain text that causes problems e.g. (Repeat last x) contains La
+                // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Kept lots of escapes to be sure they work!
+                .replaceAll("\\(.*?\\)", "")
+                .replaceAll("\\{.*?\\}", "")
+                .replaceAll("\\[.*?\\]", "")
+                // Replace chord delimters/modifiers
+                .replace("|"," ")
+                .replace(":"," ")
+                .replace ("/"," ")
+                // Why ' ~'?  We split chords like 'Am7' into 'A ~7' - the ! stops thr number being detected as nashville
+                .replace ("m", " ~") // Also hadles majors
+                .replace("sus", " ~") // Rmoved as conflicts with fromat 3 tests for chord ending's'
+                .replace ("b", " ~")
+                .replace("#"," ~")
+                // Remove multiple whitespace and trim
+                .replaceAll("\\s{2,}", " ").trim();
 
-                // Trim out multiple whitespace and split into individual chords
-                line = line.replaceAll("\\s{2,}", " ").
-                        replace(".", "").
-                        toLowerCase(Locale.ROOT).trim();
-                String[] chordsInLine = line.split(" ");
+        // Check the chord format of the the song.  Go through the chord lines and look for clues
+        for (String line : mLyrics.split("¬")) {
+            if (line.startsWith(".")) {
+                //  Split into individual chords
+                String[] chordsInLine = line.substring(1).split(" ");
 
                 // Now go through each chord and add to the matching format
+                // Case is needed as lowercase chords denotes minor chords for format 3
                 for (String chordInLine : chordsInLine) {
                     if (Arrays.asList(format6Identifiers).contains(chordInLine)) {
                         contains_nashnumeral_count++;
                     } else if (Arrays.asList(format5Identifiers).contains(chordInLine)) {
                         contains_nash_count++;
-                    } else if (Arrays.asList(format4Identifiers).contains(chordInLine)) {
+                    } else if (Arrays.asList(format4Identifiers).contains(chordInLine.toLowerCase(Locale.ROOT))) {
                         contains_do_count++;
-                    } else if (chordInLine.length() > 2 && Arrays.asList(format3Identifiers).contains(chordInLine.substring(chordInLine.length() - 2))) {
+                    // chords ending s (es, is and s ) are identifiers for format 3 as are lowercase minor chords
+                    } else if (chordInLine.length() > 1 && "s".equals(chordInLine.substring(chordInLine.length() - 1)) ||
+                            (Arrays.asList(format3Identifiers).contains(chordInLine))) {
                         contains_es_is_count++;
                     } else if (Arrays.asList(format2Identifiers).contains(chordInLine)) {
                         contains_H_count++;
@@ -581,7 +595,7 @@ class Transpose {
         }
 
         // Here we allow low levels of mis-identification
-        boolean contains_es_is = (contains_es_is_count > 1);
+        boolean contains_es_is = (contains_es_is_count > 2);
         boolean contains_H = (contains_H_count > 2);
         boolean contains_do = (contains_do_count > 4);
         boolean contains_nash = (contains_nash_count > 4);
