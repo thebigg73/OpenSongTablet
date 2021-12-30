@@ -5,6 +5,9 @@ public class __TODO__ {
     // Slide in an out to be smoother.  Swipe seems to delay before slide out
     // Highlighter not gettings screenshot properly
 
+    // Still to implement pedal previous next confirm - I think!
+
+
     //TODO - still to complete
     // Anything still listed below needs work
     // Anything missing has been tested as ok

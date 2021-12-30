@@ -143,7 +143,6 @@ public class DisplayPrevNext {
         }
     }
 
-
     private void getPositions() {
         int setPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
         int songPosition = mainActivityInterface.getPositionOfSongInMenu();
