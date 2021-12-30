@@ -186,17 +186,14 @@ public class PerformanceFragment extends Fragment {
 
         // Remove old views
         myView.songSheetTitle.removeAllViews();
+        myView.songSheetTitle.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
         if (mainActivityInterface.getSongSheetTitleLayout() != null &&
                 mainActivityInterface.getSongSheetTitleLayout().getParent() != null) {
             ((LinearLayout) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
         }
         myView.pdfView.setVisibility(View.GONE);
         myView.zoomLayout.setVisibility(View.GONE);
-
-        // Get the song sheet headers
-        mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
-                mainActivityInterface, mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
-        myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
+        myView.songView.setY(0);
 
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // We populate the PDF recycler view with the pages
@@ -246,10 +243,45 @@ public class PerformanceFragment extends Fragment {
             }
         });
         for (View view:mainActivityInterface.getSectionViews()) {
+            Log.d(TAG,"numViews= "+mainActivityInterface.getSectionViews().size());
             myView.testPane.addView(view);
         }
     }
     private void songIsReadyToDisplay(){
+        // Decide if we want to show the song title header
+        // Add a listener to scale the title and resize it to move the contents down
+        // Get the song sheet headers - will be null if not required
+        mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
+                mainActivityInterface, mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
+
+        if (mainActivityInterface.getSongSheetTitleLayout()!=null) {
+            myView.songSheetTitle.setVisibility(View.INVISIBLE);
+            myView.songSheetTitle.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    // Now it is drawn, set the height
+                    try {
+                        myView.songSheetTitle.post(() -> {
+                            int height = (int)((float)myView.songSheetTitle.getMeasuredHeight());
+                            myView.songSheetTitle.getLayoutParams().height = height;
+                            //int height = (int)((float)myView.songSheetTitle.getMeasuredHeight() * scaleFactor);
+                            Log.d(TAG,"bottom: "+myView.songSheetTitle.getBottom());
+                            Log.d(TAG, "height=" + height);
+                            Log.d(TAG, "scaleFactor=" + scaleFactor);
+                            myView.songSheetTitle.setVisibility(View.VISIBLE);
+                            myView.songSheetTitle.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
+
+        } else {
+            myView.songSheetTitle.post(() -> myView.songSheetTitle.setVisibility(View.GONE));
+        }
+
         // All views have now been drawn, so measure the arraylist views
 
         for (View v:mainActivityInterface.getSectionViews())  {
@@ -371,9 +403,7 @@ public class PerformanceFragment extends Fragment {
                         }
                     } else {
                         try {
-                            if (myView.highlighterView!=null) {
-                                myView.highlighterView.setVisibility(View.GONE);
-                            }
+                            myView.highlighterView.post(() -> myView.highlighterView.setVisibility(View.GONE));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -385,14 +415,16 @@ public class PerformanceFragment extends Fragment {
                     }
                 }
             });
-            myView.pageHolder.getLayoutParams().height = h;
-            myView.highlighterView.getLayoutParams().height = h;
-            myView.highlighterView.getLayoutParams().width = w;
-            myView.highlighterView.requestLayout();
-            myView.highlighterView.invalidate();
-
+            myView.songView.post(() -> myView.songView.getLayoutParams().height = h);
+            //myView.pageHolder.post(() -> myView.pageHolder.getLayoutParams().height = h);
+            myView.highlighterView.post(() -> {
+                myView.highlighterView.getLayoutParams().height = h;
+                myView.highlighterView.getLayoutParams().width = w;
+                myView.highlighterView.requestLayout();
+                myView.highlighterView.invalidate();
+            });
         } else {
-            myView.highlighterView.setVisibility(View.GONE);
+            myView.highlighterView.post(() -> myView.highlighterView.setVisibility(View.GONE));
         }
     }
     public void dealWithStickyNotes(boolean forceShow, boolean hide) {

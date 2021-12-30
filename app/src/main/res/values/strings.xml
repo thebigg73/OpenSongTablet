@@ -1048,4 +1048,5 @@ Check out the categories in the right hand options menu.
     <string name="nashville_error">No Nashville/Numeral chord format detected</string>
     <string name="update_projector_automatically">Update projector automatically</string>
     <string name="edit_temporary">Temporary edit</string>
+    <string name="audio_source">Audio source</string>
 </resources>

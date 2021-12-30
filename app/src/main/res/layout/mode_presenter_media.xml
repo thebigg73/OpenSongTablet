@@ -45,40 +45,26 @@
             android:text="@string/audio"
             android:padding="8dp"/>
 
+        <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+            android:id="@+id/audioSource"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/audio_source"/>
+
         <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/mediaLoaded"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/media_selected"
             android:hint="@string/not_available"
             app:mydrawable="@drawable/ic_music_note_white_36dp"
-            android:padding="8dp"/>
+            android:padding="8dp" />
 
-        <LinearLayout
+        <com.garethevans.church.opensongtablet.customviews.MaterialMediaControl
+            android:id="@+id/mediaControl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:fabSize="mini"
-                    android:src="@drawable/ic_stop_white_36dp"
-                    android:contentDescription="@string/media_play"/>
-
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:fabSize="mini"
-                    android:src="@drawable/ic_play_white_36dp"
-                    android:contentDescription="@string/media_play"/>
-
-            </LinearLayout>
-        </LinearLayout>
 
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>

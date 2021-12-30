@@ -10,16 +10,17 @@
     tools:context=".performance.PerformanceFragment">
 
         <!-- The logo watermark -->
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_centerInParent="true"
-            android:alpha="0.08"
-            android:contentDescription="@string/app_name"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:src="@mipmap/ic_round_launcher"
-            android:scaleType="centerInside"/>
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        android:alpha="0.08"
+        android:contentDescription="@string/app_name"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scaleType="centerInside"
+        android:src="@mipmap/ic_round_launcher"
+        tools:ignore="ImageContrastCheck" />
 
         <!-- Where we draw the test sections to get sizes -->
         <RelativeLayout
@@ -46,7 +47,6 @@
                     android:clipToPadding="false" >
 
                     <!-- The song lyrics etc. go here -->
-
                     <LinearLayout
                         android:id="@+id/songView"
                         android:layout_width="wrap_content"
@@ -83,13 +83,15 @@
 
                     </LinearLayout>
 
+                    <!-- The song sheet title if required -->
                     <LinearLayout
                         android:id="@+id/songSheetTitle"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"/>
+                        android:layout_alignParentTop="true"
+                        android:visibility="visible"/>
 
                     <!-- This is where images go -->
                     <ImageView
@@ -115,7 +117,8 @@
                         android:clipChildren="false"
                         android:clipToPadding="false"
                         android:contentDescription="@string/image"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        tools:ignore="ImageContrastCheck" />
 
                 </RelativeLayout>
     </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>

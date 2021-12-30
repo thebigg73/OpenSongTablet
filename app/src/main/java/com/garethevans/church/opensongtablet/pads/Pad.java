@@ -100,24 +100,78 @@ public class Pad {
         }
     }
 
-    private void loadAndStart(Context c, int padNum) {
-        // To use an auto pad, we need the song key
-        String key = mainActivityInterface.getSong().getKey();
+    private String keyToFlat(String key) {
+        return key.replace("A#","Bb").replace("C#","Db")
+                .replace("D#","Eb").replace("F#","Gb")
+                .replace("G#","Ab");
+    }
 
-        // Decide what type of pad to use: auto or link
+    public boolean isAutoPad(Context c) {
+        String padFile = mainActivityInterface.getSong().getPadfile();
+        String key = mainActivityInterface.getSong().getKey();
+        return (padFile.isEmpty() || padFile.equals("auto") || padFile.equals(c.getString(R.string.pad_auto))) &&
+                key!=null && !key.isEmpty();
+    }
+
+    public boolean isCustomAutoPad(Context c) {
+        String key = mainActivityInterface.getSong().getKey();
+        String customPad = mainActivityInterface.getPreferences().getMyPreferenceString(c,"customPad"+keyToFlat(key),"");
+        return isAutoPad(c) && customPad!=null && !customPad.isEmpty();
+    }
+
+    public boolean isLinkAudio(Context c) {
         String padFile = mainActivityInterface.getSong().getPadfile();
         String linkAudio = mainActivityInterface.getSong().getLinkaudio();
-        AssetFileDescriptor assetFileDescriptor = null;
+        return (padFile.equals("link") || padFile.equals(c.getString(R.string.link_audio))) &&
+                linkAudio!=null && !linkAudio.isEmpty();
+    }
+
+    public Uri getPadUri(Context c) {
         Uri padUri = null;
+        if (isCustomAutoPad(c)) {
+            padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c,mainActivityInterface,
+                    mainActivityInterface.getPreferences().getMyPreferenceString(c,
+                            "customPad"+keyToFlat(mainActivityInterface.getSong().getKey()),""));
+        } else if (isLinkAudio(c)) {
+            padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c,mainActivityInterface,
+                    mainActivityInterface.getSong().getLinkaudio());
+        }
+        // If none of the above, we assume an auto pad if the key has been set.
+        // Since autopads are raw asset files, we use assetfiledescriptor instead.
+        // A null padUri, will trigger that
+        return padUri;
+    }
+
+    private boolean isPadValid(Context c, Uri padUri) {
+        return mainActivityInterface.getStorageAccess().uriExists(c,padUri);
+    }
+
+    private void loadAndStart(Context c, int padNum) {
+        Uri padUri = getPadUri(c);
+
+        // If the padUri is null, we likely need a default autopad assuming the key is set
+        AssetFileDescriptor assetFileDescriptor = null;
+        if (padUri==null && !mainActivityInterface.getSong().getKey().isEmpty()) {
+            assetFileDescriptor = getAssetPad(c,mainActivityInterface.getSong().getKey());
+        }
 
         // Decide if pad should loop
         boolean padLoop = mainActivityInterface.getSong().getPadloop().equals("true");
 
         // Decide if the pad is valid
-        boolean padValid = false;
-        boolean useAsset = false;
+        boolean padValid = assetFileDescriptor!=null || isPadValid(c,padUri);
 
-        Log.d(TAG,"padFile="+padFile);
+        // Prepare any error message
+        if (!padValid) {
+            if (mainActivityInterface.getSong().getKey().isEmpty()) {
+                mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_key_error));
+            } else if (isCustomAutoPad(c)) {
+                mainActivityInterface.getShowToast().doIt(c, c.getString(R.string.pad_file_error));
+            } else if (isLinkAudio(c)) {
+                mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_custom_pad_error));
+            }
+        }
+        /*
 
         if (padFile.isEmpty() || padFile.equals("auto") || padFile.equals(c.getString(R.string.pad_auto))) {
             // If we have a custom pad file, check it exists
@@ -154,7 +208,8 @@ public class Pad {
             }
         } else if (padFile.equals("off") || padFile.equals(c.getString(R.string.off))) {
             mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_off));
-        }
+        }*/
+
         if (padValid) {
             switch (padNum) {
                 case 1:
@@ -165,7 +220,7 @@ public class Pad {
                         endTimer(1);
                     });
                     pad1.setOnPreparedListener(mediaPlayer -> doPlay(mainActivityInterface,1));
-                    if (useAsset && assetFileDescriptor != null) {
+                    if (assetFileDescriptor != null) {
                         try {
                             pad1.setDataSource(assetFileDescriptor.getFileDescriptor(),
                                     assetFileDescriptor.getStartOffset(),
@@ -192,7 +247,7 @@ public class Pad {
                         endTimer(2);
                     });
                     pad2.setOnPreparedListener(mediaPlayer -> doPlay(mainActivityInterface, 2));
-                    if (useAsset && assetFileDescriptor != null) {
+                    if (assetFileDescriptor != null) {
                         try {
                             pad2.setDataSource(assetFileDescriptor.getFileDescriptor(),
                                     assetFileDescriptor.getStartOffset(),

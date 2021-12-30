@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 public class FloatWindow extends LinearLayout {
 
-
     public FloatWindow(Context context) {
         super(context);
     }

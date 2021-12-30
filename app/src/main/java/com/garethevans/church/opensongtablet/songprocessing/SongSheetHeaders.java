@@ -28,6 +28,7 @@ public class SongSheetHeaders {
                 mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songSheet",false))) {
 
             linearLayout = new LinearLayout(c);
+            linearLayout.setBackgroundColor(Color.RED);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));

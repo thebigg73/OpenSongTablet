@@ -106,7 +106,6 @@ public class PresenterFragment extends Fragment {
                 mainActivityInterface.getSong(),false));
         mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
                 mainActivityInterface.getSong(),false));
-        songSectionsFragment.showSongInfo();
 
         // Get the song views
         getSongViews();
