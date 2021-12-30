@@ -7718,9 +7718,13 @@ public class StageMode extends AppCompatActivity implements
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-                        if (!StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex)) && !isfolder) {
-                            pedalPreviousAndNextConfirm();
+                        // IV - 'Try' fix for crash
+                        try {
+                            if (!StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex)) && !isfolder) {
+                                pedalPreviousAndNextConfirm();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
