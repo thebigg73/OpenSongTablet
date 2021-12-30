@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -2448,7 +2449,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void setSongSheetTitleLayout(LinearLayout linearLayout) {
         if (songSheetTitleLayout==null) {
-            songSheetTitleLayout = new LinearLayout(this);
+            initialiseSongSheetTitleLayout();
         }
         if (linearLayout==null) {
             // Remove the views
@@ -2462,9 +2463,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public LinearLayout getSongSheetTitleLayout() {
         if (songSheetTitleLayout==null) {
-            songSheetTitleLayout = new LinearLayout(this);
+            initialiseSongSheetTitleLayout();
         }
         return songSheetTitleLayout;
+    }
+
+    private void initialiseSongSheetTitleLayout() {
+        songSheetTitleLayout = new LinearLayout(this);
+        songSheetTitleLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        songSheetTitleLayout.setOrientation(LinearLayout.VERTICAL);
     }
 
     @Override

@@ -43,6 +43,7 @@ public class PerformanceFragment extends Fragment {
     // The variables used in the fragment
     private boolean songAutoScaleColumnMaximise,
             songAutoScaleOverrideFull, songAutoScaleOverrideWidth;
+    private boolean songSheetTitleReady, songViewsReady;
     private int screenHeight;
     public int songViewWidth, songViewHeight, screenWidth, swipeMinimumDistance,
             swipeMaxDistanceYError, swipeMinimumVelocity;
@@ -153,47 +154,48 @@ public class PerformanceFragment extends Fragment {
 
         new Thread(() -> {
             // Quick fade the current page
-            requireActivity().runOnUiThread(() -> {
-                if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
-                    animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_left);
-                } else {
-                    animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
-                }
+            if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
+                animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_left);
+            } else {
+                animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
+            }
+
+            // Now reset the song
+            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
+                    mainActivityInterface.getSong(),false));
+
+            mainActivityInterface.moveToSongInSongMenu();
+
+            // Now animate out the song and after a delay start the next bit of the processing
+            myView.pdfView.post(() -> {
                 if (myView.pdfView.getVisibility()==View.VISIBLE) {
                     myView.pdfView.startAnimation(animSlideOut);
-                } else {
-                    myView.pageHolder.startAnimation(animSlideOut);
+                    myView.pdfView.postDelayed(() -> requireActivity().runOnUiThread(this::prepareSongViews),requireContext().getResources().getInteger(R.integer.slide_out_time));
                 }
+            });
 
-                // Reset the views
-                mainActivityInterface.setSectionViews(null);
-                mainActivityInterface.setSongSheetTitleLayout(null);
-
-                // Now reset the song
-                mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
-                        mainActivityInterface.getSong(),false));
-
-                mainActivityInterface.moveToSongInSongMenu();
-                prepareSongViews();
+            myView.pageHolder.post(() -> {
+                if (myView.pageHolder.getVisibility()==View.VISIBLE) {
+                    myView.pageHolder.startAnimation(animSlideOut);
+                    myView.pageHolder.postDelayed(() -> requireActivity().runOnUiThread(this::prepareSongViews),requireContext().getResources().getInteger(R.integer.slide_out_time));
+                }
             });
         }).start();
     }
     private void prepareSongViews() {
-        // This is called on UI thread above;
+        // This is called on the UI thread above
+        // Reset the song views
+        mainActivityInterface.setSectionViews(null);
+
+        // Reset the song sheet titles
+        mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
+        myView.songSheetTitle.removeAllViews();
 
         // Set the default color
         myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
 
-        // Remove old views
-        myView.songSheetTitle.removeAllViews();
-        myView.songSheetTitle.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        if (mainActivityInterface.getSongSheetTitleLayout() != null &&
-                mainActivityInterface.getSongSheetTitleLayout().getParent() != null) {
-            ((LinearLayout) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
-        }
         myView.pdfView.setVisibility(View.GONE);
         myView.zoomLayout.setVisibility(View.GONE);
-        myView.songView.setY(0);
 
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // We populate the PDF recycler view with the pages
@@ -203,18 +205,17 @@ public class PerformanceFragment extends Fragment {
                 pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface,
                         availWidth, availHeight);
 
-                myView.pdfView.post(() -> {
-                    myView.pdfView.setLayoutManager(new LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false));
-                    myView.pdfView.setAdapter(pdfPageAdapter);
-                    myView.pdfView.setVisibility(View.VISIBLE);
-                    // Set up the type of animate in
-                    if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
-                        animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
-                    } else {
-                        animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
-                    }
-                    myView.pdfView.startAnimation(animSlideIn);
-                });
+                myView.pdfView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+                myView.pdfView.setAdapter(pdfPageAdapter);
+                myView.pdfView.setVisibility(View.VISIBLE);
+
+                // Set up the type of animate in
+                if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
+                    animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+                } else {
+                    animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+                }
+                myView.pdfView.startAnimation(animSlideIn);
             }
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
@@ -222,83 +223,95 @@ public class PerformanceFragment extends Fragment {
                     setSongInLayout(requireContext(), mainActivityInterface,
                             mainActivityInterface.getSong().getLyrics(), false, false));
 
-            // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
-            setUpTestViewListener();
+            // Prepare the song sheet header if required, if not, make it null
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "songSheet", false)) {
+                mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
+                        mainActivityInterface, mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
+            } else {
+                mainActivityInterface.setSongSheetTitleLayout(null);
+            }
 
+            // We now have the views ready, we need to draw them so we can measure them
+            // Start with the song sheeet title/header
+            setUpHeaderListener();
         }
 
         // Update the toolbar with the song (null)
         mainActivityInterface.updateToolbar(null);
     }
 
+    private void setUpHeaderListener() {
+        // If we want headers, the header layout isn't null, so we can draw and listen
+        // Add the view and wait for the vto return
+        Log.d(TAG,"songSheetTitleLayout="+mainActivityInterface.getSongSheetTitleLayout());
+
+        if (mainActivityInterface.getSongSheetTitleLayout() != null) {
+
+            // Check the header isn't already attached to a view
+            if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
+                ((LinearLayout)mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
+            }
+
+            ViewTreeObserver vto = myView.testPane.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                @Override
+                public void onGlobalLayout() {
+                    Log.d(TAG,"getHeight="+myView.testPane.getHeight());
+                    Log.d(TAG,"getHeight="+mainActivityInterface.getSongSheetTitleLayout().getHeight());
+                    myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    setUpTestViewListener();
+                }
+            });
+
+            myView.testPane.addView(mainActivityInterface.getSongSheetTitleLayout());
+
+        } else {
+            // No song sheet title requested, so skip
+            Log.d(TAG,"No song sheet title required");
+            setUpTestViewListener();
+        }
+    }
+
     private void setUpTestViewListener() {
+        myView.testPane.removeAllViews();
         ViewTreeObserver testObs = myView.testPane.getViewTreeObserver();
         testObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // The views are ready so prepare to create the song page
                 songIsReadyToDisplay();
+
                 // We can now remove this listener
                 myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
-        for (View view:mainActivityInterface.getSectionViews()) {
-            Log.d(TAG,"numViews= "+mainActivityInterface.getSectionViews().size());
+        // Add the views and wait for the vto
+        for (View view : mainActivityInterface.getSectionViews()) {
+            Log.d(TAG, "numViews= " + mainActivityInterface.getSectionViews().size());
             myView.testPane.addView(view);
         }
     }
-    private void songIsReadyToDisplay(){
-        // Decide if we want to show the song title header
-        // Add a listener to scale the title and resize it to move the contents down
-        // Get the song sheet headers - will be null if not required
-        mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
-                mainActivityInterface, mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
 
-        if (mainActivityInterface.getSongSheetTitleLayout()!=null) {
-            myView.songSheetTitle.setVisibility(View.INVISIBLE);
-            myView.songSheetTitle.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    // Now it is drawn, set the height
-                    try {
-                        myView.songSheetTitle.post(() -> {
-                            int height = (int)((float)myView.songSheetTitle.getMeasuredHeight());
-                            myView.songSheetTitle.getLayoutParams().height = height;
-                            //int height = (int)((float)myView.songSheetTitle.getMeasuredHeight() * scaleFactor);
-                            Log.d(TAG,"bottom: "+myView.songSheetTitle.getBottom());
-                            Log.d(TAG, "height=" + height);
-                            Log.d(TAG, "scaleFactor=" + scaleFactor);
-                            myView.songSheetTitle.setVisibility(View.VISIBLE);
-                            myView.songSheetTitle.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            myView.songSheetTitle.addView(mainActivityInterface.getSongSheetTitleLayout());
-
-        } else {
-            myView.songSheetTitle.post(() -> myView.songSheetTitle.setVisibility(View.GONE));
-        }
-
+    private void songIsReadyToDisplay() {
         // All views have now been drawn, so measure the arraylist views
-
-        for (View v:mainActivityInterface.getSectionViews())  {
+        for (View v : mainActivityInterface.getSectionViews()) {
             int width = v.getMeasuredWidth();
             int height = v.getMeasuredHeight();
-            mainActivityInterface.addSectionSize(width,height);
+            mainActivityInterface.addSectionSize(width, height);
         }
 
         screenWidth = myView.mypage.getMeasuredWidth();
         screenHeight = myView.mypage.getMeasuredHeight();
 
         myView.zoomLayout.setVisibility(View.VISIBLE);
-        myView.zoomLayout.setPageSize(screenWidth,screenHeight);
+        myView.zoomLayout.setPageSize(screenWidth, screenHeight);
+
+        myView.testPane.removeAllViews();
 
         scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getContext(),
                 mainActivityInterface,
-                myView.testPane, myView.pageHolder, myView.songView, myView.songSheetTitle,
+                myView.pageHolder, myView.songView, myView.songSheetTitle,
                 screenWidth, screenHeight,
                 myView.col1, myView.col2, myView.col3);
 
@@ -312,49 +325,36 @@ public class PerformanceFragment extends Fragment {
             animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
         }
 
-        // Now that the view is being drawn, set a view tree observer to get the sizes once done
-        // Then we can switch on the highlighter, sticky notes, etc.
-        ViewTreeObserver songViewObs = myView.songView.getViewTreeObserver();
-        songViewObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (myView != null && mainActivityInterface!=null &&
-                        mainActivityInterface.getSectionWidths()!=null && mainActivityInterface.getSectionWidths().size()>0) {
-                    float maxWidth = 0;
-                    float totalHeight = 0;
-                    for (int x=0;x<mainActivityInterface.getSectionViews().size();x++) {
-                        maxWidth = Math.max(maxWidth,mainActivityInterface.getSectionWidths().get(x)*scaleFactor);
-                        totalHeight += mainActivityInterface.getSectionHeights().get(x)*scaleFactor;
-                    }
-                    final int w = (int)maxWidth;
-                    final int h = (int)totalHeight;
+        float maxWidth = 0;
+        float totalHeight = 0;
+        for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
+            maxWidth = Math.max(maxWidth, mainActivityInterface.getSectionWidths().get(x) * scaleFactor);
+            totalHeight += mainActivityInterface.getSectionHeights().get(x) * scaleFactor;
+        }
+        final int w = (int) maxWidth;
+        final int h = (int) totalHeight;
 
-                    myView.zoomLayout.setSongSize(w,h);
+        myView.zoomLayout.setSongSize(w, h + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor));
 
-                    // Now deal with the highlighter file
-                    dealWithHighlighterFile(w,h);
+        // Now deal with the highlighter file
+        myView.highlighterView.setY((float)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
+        dealWithHighlighterFile(w, h);
 
-                    // Load up the sticky notes if the user wants them
-                    dealWithStickyNotes(false,false);
+        // Load up the sticky notes if the user wants them
+        dealWithStickyNotes(false, false);
 
-                    // Send the autoscroll information (if required)
-                    mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h, screenHeight);
+        // Send the autoscroll information (if required)
+        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h, screenHeight);
 
-                    // Now take a screenshot (only runs is w!=0 and h!=0)
-                    // TODO rethink this as may not be attached 2 sec later!
-                    /*try {
+        myView.pageHolder.startAnimation(animSlideIn);
+
+        /*try {
                         if (getActivity()!=null && isAdded()) {
                             myView.songView.postDelayed(() -> requireActivity().runOnUiThread(() -> getScreenshot(w, h)), 2000);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }*/
-                    // Now remove this viewtree observer
-                    myView.songView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            }
-        });
-        myView.pageHolder.startAnimation(animSlideIn);
 
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getSong().getCurrentSection() < 0) {

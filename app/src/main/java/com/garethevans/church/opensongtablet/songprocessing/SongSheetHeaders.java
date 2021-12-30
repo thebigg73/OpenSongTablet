@@ -28,7 +28,6 @@ public class SongSheetHeaders {
                 mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songSheet",false))) {
 
             linearLayout = new LinearLayout(c);
-            linearLayout.setBackgroundColor(Color.RED);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
             linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -70,6 +69,11 @@ public class SongSheetHeaders {
             if (linearLayout.getChildCount()>0) {
                 linearLayout.addView(getSongSheetTexts(c,"",typeface,textColor,defFontSize*commentScaling*0.5f));
             }
+        }
+
+        Log.d(TAG,"header child count = "+linearLayout.getChildCount());
+        if (linearLayout.getChildCount()==0) {
+            linearLayout = null;
         }
 
         return linearLayout;

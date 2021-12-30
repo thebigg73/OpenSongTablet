@@ -1519,17 +1519,18 @@ public class ProcessSong {
 
 
     // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
+    // This then returns the best (largest) scaling size as a float
     public float addViewsToScreen(Context c, MainActivityInterface mainActivityInterface,
-                                  RelativeLayout testPane, RelativeLayout pageHolder,
+                                  RelativeLayout pageHolder,
                                   LinearLayout songView, LinearLayout songSheetView,
                                   int screenWidth, int screenHeight, LinearLayout column1,
                                   LinearLayout column2, LinearLayout column3) {
-        // Now we have all the sizes in, determines the best was to show the song
+        // Now we have all the sizes in, determines the best way to show the song
         // This will be single, two or three columns.  The best one will be the one
         // which gives the best scale size
 
         // Clear and reset the view's scaling
-        clearAndResetRelativeLayout(testPane, true);
+        //clearAndResetRelativeLayout(testPane, true);
         clearAndResetRelativeLayout(pageHolder, false);
         clearAndResetLinearLayout(songView, false);
         clearAndResetLinearLayout(songSheetView,false);
@@ -1546,12 +1547,13 @@ public class ProcessSong {
         int currentHeight = getTotal(mainActivityInterface.getSectionHeights(), 0, mainActivityInterface.getSectionHeights().size());
 
         // Include the songSheetView if it isn't empty
-        int ymove = 0;
-        if (songSheetView.getChildCount()>0) {
-            currentHeight = currentHeight + songSheetView.getMeasuredHeight();
-            ymove = songSheetView.getMeasuredHeight();
+        int songSheetTitleHeight = mainActivityInterface.getSongSheetTitleLayout().getHeight();
+        if (songSheetTitleHeight>0) {
+            Log.d(TAG,"songSheetTitleHeight="+songSheetTitleHeight);
+            currentHeight = currentHeight + songSheetTitleHeight;
+            songSheetView.addView(mainActivityInterface.getSongSheetTitleLayout());
         } else {
-            column1.setTop(0);
+            column1.setY(0);
         }
 
         thisAutoScale = songAutoScale;
@@ -1568,7 +1570,7 @@ public class ProcessSong {
         float scaleSize_1col = col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
 
         // Now we've used the views in measure, we need to remove them from the test pane, so we can reallocate them
-        testPane.removeAllViews();
+        //testPane.removeAllViews();
 
         // Now decide if 1,2 or 3 columns is best
         int howmany = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull);
@@ -1597,10 +1599,9 @@ public class ProcessSong {
                 setThreeColumns(c, mainActivityInterface, mainActivityInterface.getSectionViews(), column1, column2, column3, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(), scaleSize_3cols, fontSizeMax);
                 break;
         }
+        // If we need to move column1 down/up due to potential songSheet and it's scaling, do it
         setScaledView(songSheetView, scaleSize_1col, fontSizeMax);
-
-        // If we need to move column1 down due to potential songSheet, do it
-        column1.setY(scaleSize_1col*ymove);
+        column1.setY(songSheetTitleHeight*scaleSize_1col);
 
         return scaleSize_1col;
     }
@@ -1608,8 +1609,8 @@ public class ProcessSong {
 
     // 1 column stuff
     private float col1Scale(int screenWidth, int screenHeight, int viewWidth, int viewHeight) {
-        float x_scale = screenWidth / (float) viewWidth;
-        float y_scale = screenHeight / (float) viewHeight;
+        float x_scale = (float) screenWidth / (float) viewWidth;
+        float y_scale = (float) screenHeight / (float) viewHeight;
         return Math.min(x_scale, y_scale);
     }
 
