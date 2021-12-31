@@ -38,6 +38,10 @@
         <attr name="thumbRadius" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="MaterialSwitch">
+        <attr name="android:text"/>
+        <attr name="android:hint"/>
+    </declare-styleable>
 
     <declare-styleable name="BottomSheetHandle">
         <attr name="isDraggableX" format="boolean"/>

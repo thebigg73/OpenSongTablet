@@ -177,7 +177,7 @@ public class SetActions {
 
     // Get a reference string for thisSong for working with the currentSet string in preferences
     public String getSongForSetWork(Context c, Song thisSong) {
-        return itemStart + c.getString(R.string.mainfoldername) + "/" + thisSong.getFilename() +
+        return itemStart + thisSong.getFolder() + "/" + thisSong.getFilename() +
                 keyStart + thisSong.getKey() + keyEnd + itemEnd;
     }
     public String getSongForSetWork(String folder, String filename, String key) {
@@ -185,9 +185,29 @@ public class SetActions {
     }
 
     public int indexSongInSet(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+        // Because set items can be stored with or without a specified key, we search for both
         String searchText = getSongForSetWork(c,thisSong);
+        Song noKeySong = new Song();
+        noKeySong.setFolder(thisSong.getFolder());
+        noKeySong.setFilename(thisSong.getFilename());
+        noKeySong.setKey("");
+        String searchTextNoKeySpecified = getSongForSetWork(c,noKeySong);
+
         int position = mainActivityInterface.getCurrentSet().getSetItems().indexOf(searchText);
-        return position;
+        int positionNoKey = mainActivityInterface.getCurrentSet().getSetItems().indexOf(searchTextNoKeySpecified);
+
+        if (position>-1) {
+            // If a key was specified in the set and it matches this song, go to that position in the set
+            return position;
+        } else if (positionNoKey>-1) {
+            // If a key wasn't specified in the set, but the song folder/filename matches, go to that position
+            return positionNoKey;
+        } else {
+            // If a key was specified in the set, but the song clicked on in the song menu is different,
+            // stay out of the set view by returning -1 for the found position.
+            // Or simply, the song just isn't in the set
+            return -1;
+        }
     }
 
     public void shuffleSet(Context c, MainActivityInterface mainActivityInterface) {
@@ -890,7 +910,7 @@ public class SetActions {
         key = fixNull(key);
 
         mainActivityInterface.getCurrentSet().addSetValues(path, name, key);
-        mainActivityInterface.getCurrentSet().addToCurrentSet(getSongForSetWork(path, name, key));
+        mainActivityInterface.getCurrentSet().addSetItem(getSongForSetWork(path, name, key));
 
         xpp.nextTag();
     }
@@ -987,7 +1007,7 @@ public class SetActions {
         tempSong.setLyrics(scripture_text.toString().trim());
 
         // Add to the set
-        mainActivityInterface.getCurrentSet().addToCurrentSet(getSongForSetWork(
+        mainActivityInterface.getCurrentSet().addSetItem(getSongForSetWork(
                 tempSong.getFolder(), tempSong.getFilename(), ""));
         mainActivityInterface.getCurrentSet().addSetValues(tempSong.getFolder(),
                 tempSong.getFilename(),"");
@@ -1115,7 +1135,7 @@ public class SetActions {
         tempSong.setHymnnum(custom_notes);
 
         // Add the slide to the set
-        mainActivityInterface.getCurrentSet().addToCurrentSet(getSongForSetWork(
+        mainActivityInterface.getCurrentSet().addSetItem(getSongForSetWork(
                 tempSong.getFolder(), tempSong.getFilename(), ""));
         mainActivityInterface.getCurrentSet().addSetValues(tempSong.getFolder(),
                 tempSong.getFilename(),"");

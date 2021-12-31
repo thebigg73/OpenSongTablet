@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 public class __TODO__ {
 
-    // Slide in an out to be smoother.  Swipe seems to delay before slide out
+    // Connected display settings in menu and presenter mode
     // Highlighter not gettings screenshot properly
 
     // Still to implement pedal previous next confirm - I think!
@@ -14,7 +14,6 @@ public class __TODO__ {
     /*
 
 Bugs:
-scaling with songsheet header doesnt include this height
 opening a song when in the set menu doesn't scroll to it
 
 
@@ -32,7 +31,6 @@ opening a song when in the set menu doesn't scroll to it
 
     Display - song display / advanced - needs ProcessSong brought fully online
     Display - connected display (HDMI/Chromecast output) - needs SecondScreen working
-    Display - Action bar - auto hide action bar not working yet
 
     Song actions - Autoscroll predelay
     Song actions - Chords, do I need chord for H?

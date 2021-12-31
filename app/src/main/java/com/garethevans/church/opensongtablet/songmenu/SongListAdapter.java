@@ -159,8 +159,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             song.setFilename(itemFilename);
             song.setFolder(itemFolder);
             song.setKey(itemKey);
-            Log.d(TAG,"Clicked on "+itemFolder+"/"+itemFilename);
-            //mainActivityInterface.getSetActions().getSongForSetWork(c, song);
             // Since we clicked on a song in the song list, check for it in the set
             mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getSetActions().indexSongInSet(c,mainActivityInterface,song));
             if (callback != null) {
@@ -173,7 +171,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             songItemViewHolder.itemCard.setOnContextClickListener(v -> {
                 song.setFilename(itemFilename);
                 song.setFolder(itemFolder);
-                //mainActivityInterface.getSetActions().getSongForSetWork(c, song);
                 // Since we clicked on a song in the song list, check for it in the set
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(mainActivityInterface.getSetActions().indexSongInSet(c,mainActivityInterface,song));
                 if (callback != null) {
@@ -186,7 +183,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         songItemViewHolder.itemCard.setOnLongClickListener(v -> {
             song.setFilename(itemFilename);
             song.setFolder(itemFolder);
-            //mainActivityInterface.getSetActions().getSongForSetWork(c, song);
             if (callback != null) {
                 callback.onItemLongClicked(i, itemFolder, itemFilename, itemKey);
             }
@@ -197,13 +193,11 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             int adapterPosition = songItemViewHolder.getAbsoluteAdapterPosition();
             if (!checkedArray.get(adapterPosition, false)) {
                 songItemViewHolder.itemChecked.setChecked(true);
-                Log.d(TAG,"setentry: "+ setentry);
 
                 mainActivityInterface.getCurrentSet().addToCurrentSetString(setentry);
                 mainActivityInterface.getCurrentSet().addSetItem(setentry);
                 mainActivityInterface.getCurrentSet().addSetValues(itemFolder, itemFilename, itemKey);
                 checkedArray.put(adapterPosition, true);
-                Log.d(TAG,"currentSet.size()= "+mainActivityInterface.getCurrentSet().getSetItems().size());
                 mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
 
             } else {

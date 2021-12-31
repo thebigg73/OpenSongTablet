@@ -113,8 +113,8 @@ public class DisplayScalingFragment extends Fragment {
 
     private void getAutoscaleMode() {
         // Autoscale can be Y(es) W(idth) N(o)
-        boolean useAutoscale = myView.useAutoscale.isChecked();
-        boolean scaleWidth = myView.scaleWidth.isChecked();
+        boolean useAutoscale = myView.useAutoscale.getChecked();
+        boolean scaleWidth = myView.scaleWidth.getChecked();
         String val;
         if (useAutoscale && scaleWidth) {
             val = "W";

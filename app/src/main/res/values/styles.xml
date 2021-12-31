@@ -36,6 +36,7 @@
         <!-- Status bar stuff -->
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
         <item name="android:windowTranslucentStatus">true</item>
 
         <!-- For the default popup like MediaRouter, Nearby permissions -->
@@ -168,6 +169,7 @@
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="android:background">@color/colorAltPrimary</item>
         <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
 
     <!--For the Preferences windows-->

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -74,5 +75,9 @@ public class MaterialSwitch extends LinearLayout {
 
     public SwitchMaterial getSwitch() {
         return switchMaterial;
+    }
+
+    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
+        switchMaterial.setOnCheckedChangeListener(onCheckedChangeListener);
     }
 }

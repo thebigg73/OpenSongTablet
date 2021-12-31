@@ -21,7 +21,7 @@ public class MaterialSlider extends LinearLayout {
     private final float stepSize;
     public MaterialSlider(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_slider, this);
+        inflate(context, R.layout.view_material_slider, this);
 
         int[] set = new int[]{android.R.attr.text,
                 android.R.attr.hint,
@@ -54,16 +54,15 @@ public class MaterialSlider extends LinearLayout {
         titleTextView.setId(View.generateViewId());
         valueTextView.setId(View.generateViewId());
 
-        if (text!=null) {
-            titleTextView.setText(text);
-        } else {
-            titleTextView.setVisibility(View.GONE);
+        if (text==null) {
+            text = "";
         }
-        if (hint!=null) {
-            valueTextView.setText(hint);
-        } else {
-            valueTextView.setVisibility(View.GONE);
+        setText(text.toString());
+
+        if (hint==null) {
+            hint = "";
         }
+        setHint(hint.toString());
 
         Log.d("MaterialSlider","from:"+valueFrom+"  to:"+valueTo+"  step:"+stepSize);
         slider.setValueFrom(valueFrom);
@@ -149,6 +148,11 @@ public class MaterialSlider extends LinearLayout {
     }
     public void setText(String text) {
         titleTextView.setText(text);
+        if (text==null || text.isEmpty()) {
+            titleTextView.setVisibility(View.GONE);
+        } else {
+            titleTextView.setVisibility(View.VISIBLE);
+        }
     }
     public void setHintTextSize(float textSize) {
         valueTextView.setTextSize(textSize);

@@ -16,45 +16,50 @@
 
             <!--Extra info-->
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/infoText"
                 style="@style/largeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/info_text" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/songSheet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/songsheet" />
+                android:text="@string/songsheet"
+                android:hint="@string/songsheet_info"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/prevInSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:checked="false"
-                android:text="@string/show_prev_song" />
+                android:text="@string/show_prev_song"
+                android:hint="@string/page_buttons"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/nextInSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:checked="true"
-                android:text="@string/show_next_in_set" />
+                android:text="@string/show_next_in_set"
+                android:hint="@string/page_buttons"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/prevNextSongMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:checked="false"
-                android:text="@string/show_next_prev_in_song_menu" />
+                android:text="@string/show_next_prev_in_song_menu"
+                android:hint="@string/page_buttons"/>
 
             <TableRow style="@style/DividerLine" />
 
@@ -67,21 +72,14 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/song_display" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/boldChordsHeadings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/bold_chords_headings" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/hideLyricsBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/hidelyricsbox" />
+                android:text="@string/bold_chords_headings"
+                android:hint="@string/appearance_change"/>
 
             <TableRow style="@style/DividerLine" />
 
@@ -93,53 +91,39 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/song_sections" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/trimSections"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/trim_sections" />
+                android:text="@string/trim_sections"
+                android:hint="@string/trim_sections_info"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/addSectionSpace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/section_space" />
+                android:text="@string/section_space"
+                android:hint="@string/section_space_info"/>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/trimLineSpacing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/linespacing" />
+                android:text="@string/linespacing"
+                android:hint="@string/linespacing_info"/>
 
-            <LinearLayout
-                android:id="@+id/trimLineSpacingLayout"
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/trimLineSpacingSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/trimLineSpacingSeekBar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="99"
-                    android:padding="16dp" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/trimLineSpacingText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="0dp" />
-
-            </LinearLayout>
+                android:valueFrom="0"
+                android:valueTo="50"/>
 
             <TableRow style="@style/DividerLine" />
 

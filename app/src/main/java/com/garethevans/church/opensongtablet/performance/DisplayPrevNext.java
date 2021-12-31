@@ -14,13 +14,13 @@ public class DisplayPrevNext {
     // This deals with showing the previous and next song buttons and their actions
     // Even if we don't display the buttons, this sets up what to do on next/prev action (swipe, pedal, etc)
 
-    private MainActivityInterface mainActivityInterface;
-    private LinearLayout layout;
-    private ExtendedFloatingActionButton prev, next;
+    private final MainActivityInterface mainActivityInterface;
+    private final LinearLayout layout;
+    private final ExtendedFloatingActionButton prev, next;
     private boolean showPrev, prevVisible = false;
     private boolean showNext, nextVisible = false;
     private boolean prevNextSongMenu;
-    private boolean moveToSongInSet;
+    private boolean movePrevInSet, moveNextInSet, moveNextInMenu, movePrevInMenu;
     private String swipeDirection = "R2L";
     private int prevIndex, nextIndex;
     private final Runnable hideNextRunnable = new Runnable() {
@@ -96,50 +96,6 @@ public class DisplayPrevNext {
 
             // This shows the ones chosen if not empty, then hides again
             showAndHide();
-
-
-            /*if (moveToSongInSet) {
-                // We are in a set
-                if (prevIndex != -1 && showPrev) {
-                    previousText = mainActivityInterface.getCurrentSet().getFilename(prevIndex);
-                    String key = mainActivityInterface.getCurrentSet().getKey(prevIndex);
-                    if (key!=null && !key.isEmpty() && !key.equals("null")) {
-                        previousText = previousText + " (" + key + ")";
-                    }
-                    prev.setOnClickListener(v -> mainActivityInterface.loadSongFromSet(prevIndex));
-                }
-                if (nextIndex != -1 && showNext) {
-                    nextText = mainActivityInterface.getCurrentSet().getFilename(nextIndex);
-                    String key = mainActivityInterface.getCurrentSet().getKey(nextIndex);
-                    if (key!=null && !key.isEmpty() && !key.equals("null")) {
-                        nextText = nextText + " (" + key + ")";
-                    }
-                    next.setOnClickListener(v -> mainActivityInterface.loadSongFromSet(nextIndex));
-
-                }
-            } else if (prevNextSongMenu) {
-                // Not in a set, so get the index in the song menu
-                Log.d(TAG, "Not in a set");
-                if (songPosition>0 && showPrev) {
-                    previousText = mainActivityInterface.getSongInMenu(songPosition - 1).getTitle();
-                    String key = mainActivityInterface.getSongInMenu(songPosition - 1).getKey();
-                    if (key!=null && !key.isEmpty() && !key.equals("null")) {
-                        previousText = previousText + " (" + key + ")";
-                    }
-                    prev.setOnClickListener(v -> mainActivityInterface.doSongLoad(mainActivityInterface.getSongInMenu(songPosition-1).getFolder(),
-                            mainActivityInterface.getSongInMenu(songPosition-1).getFilename()));
-                }
-                if (songPosition<mainActivityInterface.getSongsInMenu().size()-1 && showNext) {
-                    nextText = mainActivityInterface.getSongInMenu(songPosition + 1).getTitle();
-                    String key = mainActivityInterface.getSongInMenu(songPosition + 1).getKey();
-                    if (key!=null && !key.isEmpty() && !key.equals("null")) {
-                        nextText = nextText + " (" + key + ")";
-                    }
-                    next.setOnClickListener(v -> mainActivityInterface.doSongLoad(mainActivityInterface.getSongInMenu(songPosition+1).getFolder(),
-                            mainActivityInterface.getSongInMenu(songPosition+1).getFilename()));
-                }
-            }*/
-
         }
     }
 
@@ -153,28 +109,40 @@ public class DisplayPrevNext {
 
     private void setIndexes(int setPosition, int songPosition) {
         if (setPosition>=0) {
-            moveToSongInSet = true;
+            moveNextInMenu = false;
+            movePrevInMenu = false;
+            //moveToSongInSet = true;
             if (setPosition>0) {
                 prevIndex = setPosition - 1;
+                movePrevInSet = true;
             } else {
                 prevIndex = -1;
+                movePrevInSet = false;
             }
             if (setPosition < mainActivityInterface.getCurrentSet().getSetItems().size() - 1) {
                 nextIndex = setPosition + 1;
+                moveNextInSet = true;
             } else {
                 nextIndex = -1;
+                moveNextInSet = false;
             }
         } else {
-            moveToSongInSet = false;
+            //moveToSongInSet = false;
+            moveNextInSet = false;
+            movePrevInSet = false;
             if (songPosition>0) {
                 prevIndex = songPosition - 1;
+                movePrevInMenu = true;
             } else {
                 prevIndex = -1;
+                movePrevInMenu = false;
             }
             if (songPosition < mainActivityInterface.getSongsInMenu().size()-1) {
                 nextIndex = songPosition + 1;
+                moveNextInMenu = true;
             } else {
                 nextIndex = -1;
+                movePrevInMenu = false;
             }
         }
     }
@@ -182,15 +150,15 @@ public class DisplayPrevNext {
     private String getTextForButton(int position) {
         String text = "";
         if (position>-1) {
-            if (moveToSongInSet) {
+            if (isSetMove(position)) {
                 if (position < mainActivityInterface.getCurrentSet().getSetItems().size()) {
-                    text = mainActivityInterface.getCurrentSet().getFilename(nextIndex);
-                    String key = mainActivityInterface.getCurrentSet().getKey(nextIndex);
+                    text = mainActivityInterface.getCurrentSet().getFilename(position);
+                    String key = mainActivityInterface.getCurrentSet().getKey(position);
                     if (key != null && !key.isEmpty() && !key.equals("null")) {
                         text = text + " (" + key + ")";
                     }
                 }
-            } else {
+            } else if (isMenuMove(position)){
                 if (position < mainActivityInterface.getSongsInMenu().size()) {
                     text = mainActivityInterface.getSongInMenu(position).getTitle();
                     String key = mainActivityInterface.getSongInMenu(position).getKey();
@@ -217,29 +185,37 @@ public class DisplayPrevNext {
     }
 
     private void doMove(int position) {
-        if (moveToSongInSet) {
+        if (isSetMove(position)) {
             mainActivityInterface.loadSongFromSet(position);
-        } else {
+        } else if (isMenuMove(position)){
             mainActivityInterface.doSongLoad(mainActivityInterface.getSongInMenu(position).getFolder(),
                     mainActivityInterface.getSongInMenu(position).getFilename(),true);
         }
     }
 
+    private boolean isSetMove(int position) {
+        return (movePrevInSet && position==prevIndex) || (moveNextInSet && position==nextIndex);
+    }
+
+    private boolean isMenuMove(int position) {
+        return (movePrevInMenu && position==prevIndex) || (moveNextInMenu && position==nextIndex);
+    }
+
     public void showAndHide() {
         // If in using song menu, don't proceed unless user has switched on this preference
         // If in a set, only show if showNext/showPrev is selected
-        if (moveToSongInSet || prevNextSongMenu) {
+        if (moveNextInSet || prevNextSongMenu) {
             if (showNext && !next.getText().toString().isEmpty() && !nextVisible) {
                 nextVisible = true;
                 next.removeCallbacks(hideNextRunnable);
                 next.show();
-                next.postDelayed(hideNextRunnable, 5000);
+                next.postDelayed(hideNextRunnable, 3000);
             }
             if (showPrev && !prev.getText().toString().isEmpty() && !prevVisible) {
                 prevVisible = true;
                 prev.removeCallbacks(hidePrevRunnable);
                 prev.show();
-                prev.postDelayed(hidePrevRunnable, 5000);
+                prev.postDelayed(hidePrevRunnable, 3000);
             }
         }
     }

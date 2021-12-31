@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -92,7 +93,6 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getAutoscroll().initialiseAutoscroll(myView.zoomLayout);
 
         mainActivityInterface.lockDrawer(false);
-        //mainActivityInterface.hideActionBar(false);
         mainActivityInterface.hideActionButton(false);
 
         //mainActivityInterface.changeActionBarVisible(false,false);
@@ -112,11 +112,8 @@ public class PerformanceFragment extends Fragment {
         setGestureListeners();
 
         // Show the actionBar and hide it after a time if that's the user's preference
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"hideActionBar",false);
-
-        mainActivityInterface.getAppActionBar().setHideActionBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
         mainActivityInterface.getAppActionBar().setPerformanceMode(true);
-        mainActivityInterface.getAppActionBar().showActionBar();
+        mainActivityInterface.showHideActionBar();
 
         // Set tutorials
         Handler h = new Handler();
@@ -243,8 +240,6 @@ public class PerformanceFragment extends Fragment {
     private void setUpHeaderListener() {
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
-        Log.d(TAG,"songSheetTitleLayout="+mainActivityInterface.getSongSheetTitleLayout());
-
         if (mainActivityInterface.getSongSheetTitleLayout() != null) {
 
             // Check the header isn't already attached to a view
@@ -257,8 +252,6 @@ public class PerformanceFragment extends Fragment {
 
                 @Override
                 public void onGlobalLayout() {
-                    Log.d(TAG,"getHeight="+myView.testPane.getHeight());
-                    Log.d(TAG,"getHeight="+mainActivityInterface.getSongSheetTitleLayout().getHeight());
                     myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     setUpTestViewListener();
                 }
@@ -268,7 +261,6 @@ public class PerformanceFragment extends Fragment {
 
         } else {
             // No song sheet title requested, so skip
-            Log.d(TAG,"No song sheet title required");
             setUpTestViewListener();
         }
     }
@@ -288,7 +280,6 @@ public class PerformanceFragment extends Fragment {
         });
         // Add the views and wait for the vto
         for (View view : mainActivityInterface.getSectionViews()) {
-            Log.d(TAG, "numViews= " + mainActivityInterface.getSectionViews().size());
             myView.testPane.addView(view);
         }
     }
@@ -301,8 +292,9 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.addSectionSize(width, height);
         }
 
-        screenWidth = myView.mypage.getMeasuredWidth();
-        screenHeight = myView.mypage.getMeasuredHeight();
+        int[] screenSizes = mainActivityInterface.getDisplayMetrics();
+        screenWidth = screenSizes[0];
+        screenHeight = screenSizes[1] - mainActivityInterface.getAppActionBar().getActionBarHeight();
 
         myView.zoomLayout.setVisibility(View.VISIBLE);
         myView.zoomLayout.setPageSize(screenWidth, screenHeight);
@@ -336,9 +328,15 @@ public class PerformanceFragment extends Fragment {
 
         myView.zoomLayout.setSongSize(w, h + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor));
 
+        // Because we might have padded the view at the top for song sheet header scaling:
+        int topPadding = 0;
+        if (myView.songView.getChildCount()>0 && myView.songView.getChildAt(0)!=null) {
+            topPadding = myView.songView.getChildAt(0).getPaddingTop();
+        }
+
         // Now deal with the highlighter file
         myView.highlighterView.setY((float)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
-        dealWithHighlighterFile(w, h);
+        dealWithHighlighterFile(w, h, topPadding);
 
         // Load up the sticky notes if the user wants them
         dealWithStickyNotes(false, false);
@@ -348,13 +346,15 @@ public class PerformanceFragment extends Fragment {
 
         myView.pageHolder.startAnimation(animSlideIn);
 
-        /*try {
-                        if (getActivity()!=null && isAdded()) {
-                            myView.songView.postDelayed(() -> requireActivity().runOnUiThread(() -> getScreenshot(w, h)), 2000);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
+        // Try to take a screenshot ready for any highlighter actions that may be called
+        int finalTopPadding = topPadding;
+        myView.songView.post(() -> {
+            try {
+                getScreenshot(w,h, finalTopPadding);
+            } catch (Exception | OutOfMemoryError e) {
+                e.printStackTrace();
+            }
+         });
 
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getSong().getCurrentSection() < 0) {
@@ -375,7 +375,7 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.updateDisplay("content");
     }
 
-    private void dealWithHighlighterFile(int w, int h) {
+    private void dealWithHighlighterFile(int w, int h, int topPadding) {
         if (!mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")) {
             // Set the highlighter image view to match
@@ -395,6 +395,7 @@ public class PerformanceFragment extends Fragment {
                         RequestOptions sizeOption = new RequestOptions().override(w,h);
                         GlideApp.with(requireContext()).load(highlighterBitmap).override(w,h).
                                 apply(scaleOption).apply(sizeOption).into(myView.highlighterView);
+                        myView.highlighterView.setY(topPadding);
                         myView.highlighterView.setScaleY(myView.zoomLayout.getScaleFactor());
                         // Hide after a certain length of time
                         int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
@@ -416,7 +417,6 @@ public class PerformanceFragment extends Fragment {
                 }
             });
             myView.songView.post(() -> myView.songView.getLayoutParams().height = h);
-            //myView.pageHolder.post(() -> myView.pageHolder.getLayoutParams().height = h);
             myView.highlighterView.post(() -> {
                 myView.highlighterView.getLayoutParams().height = h;
                 myView.highlighterView.getLayoutParams().width = w;
@@ -452,36 +452,46 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getPerformanceGestures(),swipeMinimumDistance, swipeMaxDistanceYError,swipeMinimumVelocity));
 
         // Any interaction with the screen should trigger the display prev/next (if required)
+        // It should also show the action bar
         myView.zoomLayout.setOnTouchListener((view, motionEvent) -> {
-            mainActivityInterface.getDisplayPrevNext().showAndHide();
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                mainActivityInterface.getDisplayPrevNext().showAndHide();
+                mainActivityInterface.showHideActionBar();
+            }
             return gestureDetector.onTouchEvent(motionEvent);
         });
         myView.pdfView.setOnTouchListener((view, motionEvent) -> {
-            mainActivityInterface.getDisplayPrevNext().showAndHide();
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                mainActivityInterface.getDisplayPrevNext().showAndHide();
+                mainActivityInterface.showHideActionBar();
+            }
             return gestureDetector.onTouchEvent(motionEvent);
         });
     }
 
     public void pdfScrollToPage(int pageNumber) {
         Log.d(TAG,"trying to scroll to "+pageNumber);
-        //mainActivityInterface.getSong().setPdfPageCurrent(pageNumber);
         LinearLayoutManager llm = (LinearLayoutManager) myView.pdfView.getLayoutManager();
         if (llm!=null) {
             llm.scrollToPosition(pageNumber-1);
         }
     }
 
-    private void getScreenshot(int w, int h) {
+    private void getScreenshot(int w, int h, int topPadding) {
         if (!mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")
                 && w!=0 && h!=0) {
             try {
-                Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                Log.d(TAG,"bmp" +w+" x "+h);
+                Bitmap bitmap = Bitmap.createBitmap(w, h+topPadding, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
                 if (myView != null) {
-                    myView.songView.layout(0, 0, w, h);
+                    Log.d(TAG,"topPadding="+topPadding);
+                    myView.songView.layout(0, topPadding, w, h+topPadding);
                     myView.songView.draw(canvas);
-                    mainActivityInterface.setScreenshot(bitmap);
+                    Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, topPadding, w, h);
+                    bitmap.recycle();
+                    mainActivityInterface.setScreenshot(croppedBitmap);
                 }
             } catch (Exception | OutOfMemoryError e) {
                 e.printStackTrace();

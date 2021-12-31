@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String whichMode, whattodo, importFilename;
     private Uri importUri;
     private boolean doonetimeactions = true, settingsOpen = false, nearbyOpen = false, showSetMenu,
-            pageButtonActive = true, fullIndexRequired;
+            pageButtonActive = true, fullIndexRequired, menuOpen;
     private final String TAG = "MainActivity";
     private MenuItem settingsButton;
     private Locale locale;
@@ -418,18 +418,33 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
+        Log.d(TAG,"changeActionBarVisible");
         if (!whichMode.equals("Presenter") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
             // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
             myView.fragmentView.setTop(0);
         } else {
             // Otherwise move the content below it
-            myView.fragmentView.setTop(actionBar.getHeight());
+            myView.fragmentView.setTop(appActionBar.getActionBarHeight());
         }
+        appActionBar.showActionBar(settingsOpen);
         appActionBar.toggleActionBar(wasScrolling,scrollButton,myView.drawerLayout.isOpen());
     }
+    @Override
+    public void showHideActionBar() {
+        // This moves the content depending on the actionbar height (0 if autohide)
+        if (settingsOpen) {
+            myView.fragmentView.setPadding(0,actionBar.getHeight(),0,0);
+            //myView.fragmentView.setY(actionBar.getHeight());
+        } else {
+            myView.fragmentView.setPadding(0,appActionBar.getActionBarHeight(),0,0);
+            //myView.fragmentView.setY(appActionBar.getActionBarHeight());
+        }
+        appActionBar.showActionBar(settingsOpen||menuOpen);
+    }
+
     private void setupViews() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(actionBar,myView.toolBar.getRoot(),
+        appActionBar = new AppActionBar(actionBar,
                 batteryStatus,myView.toolBar.songtitleAb,
                 myView.toolBar.songauthorAb, myView.toolBar.songkeyAb,
                 myView.toolBar.songcapoAb,myView.toolBar.batteryimage,
@@ -531,26 +546,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (!whichMode.equals("Presenter")) {
                         hideActionButton(slideOffset > initialVal);
                     }
+                    menuOpen = slideOffset>initialVal;
                     decided = true;
                 }
             }
 
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
+                menuOpen = true;
                 hideActionButton(true);
                 setWindowFlags();
                 if (setSongMenuFragment()) {
                     showTutorial("songsetMenu");
                 }
+                showHideActionBar();
             }
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
+                menuOpen = false;
                 Log.d(TAG,"whichMode from drawer="+whichMode);
                 if (!whichMode.equals("Presenter")) {
                     hideActionButton(myView.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
                 hideKeyboard();
+                showHideActionBar();
             }
 
             @Override
@@ -1091,14 +1111,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateToolbar(String what) {
         // Null titles are for the default song, author, etc.
-        // Otherwise a new title is passed as a string
+        // Otherwise a new title is passed as a string (in a settings menu)
         windowFlags.setWindowFlags();
         appActionBar.setActionBar(this,this, what);
 
-        if (what!=null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
-            // Make sure the content shows below the action bar
-            myView.fragmentView.setTop(actionBar.getHeight());
-        }
+        myView.fragmentView.setTop(appActionBar.getActionBarHeight());
     }
     @Override
     public void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible) {
@@ -1189,6 +1206,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        showHideActionBar();
         switch (item.toString()) {
             case "Settings":
                 if (settingsOpen) {
@@ -1262,14 +1280,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 settingsOpen = false;
                 myView.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
+            showHideActionBar();
         }
     }
     @Override
     public void closeDrawer(boolean close) {
         if (close) {
             myView.drawerLayout.closeDrawer(GravityCompat.START);
+            menuOpen = false;
         } else {
             myView.drawerLayout.openDrawer(GravityCompat.START);
+            menuOpen = true;
+
         }
     }
 
@@ -2741,7 +2763,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         setWindowFlags();
         if (hasFocus) {
             setWindowFlags();
-            //appActionBar.showActionBar(settingsOpen);
+            appActionBar.showActionBar(settingsOpen);
         }
     }
 

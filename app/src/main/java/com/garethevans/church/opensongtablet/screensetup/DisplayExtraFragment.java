@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsDisplayExtraBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 public class DisplayExtraFragment extends Fragment {
 
@@ -51,15 +51,14 @@ public class DisplayExtraFragment extends Fragment {
         myView.prevInSet.setChecked(getChecked("prevInSet",false));
         myView.prevNextSongMenu.setChecked(getChecked("prevNextSongMenu",false));
         myView.boldChordsHeadings.setChecked(getChecked("displayBoldChordsHeadings",false));
-        myView.hideLyricsBox.setChecked(getChecked("hideLyricsBox",true));
         myView.trimSections.setChecked(getChecked("trimSections",true));
         myView.addSectionSpace.setChecked(getChecked("addSectionSpace",true));
         myView.trimLineSpacing.setChecked(getChecked("trimLines",false));
-        visibilityByBoolean(myView.trimLineSpacingLayout,myView.trimLineSpacing.isChecked());
+        visibilityByBoolean(myView.trimLineSpacingSlider,myView.trimLineSpacing.getChecked());
         float lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"lineSpacing",0.1f);
         int percentage = (int)(lineSpacing * 100);
-        myView.trimLineSpacingSeekBar.setProgress(percentage-1);
-        progressToText(percentage-1);
+        myView.trimLineSpacingSlider.setValue(percentage);
+        sliderValToText(percentage);
         myView.filterSwitch.setChecked(getChecked("filterSections",false));
         visibilityByBoolean(myView.filterLayout,myView.filterSwitch.isChecked());
         myView.filterShow.setChecked(getChecked("filterShow",false));
@@ -77,9 +76,9 @@ public class DisplayExtraFragment extends Fragment {
             view.setVisibility(View.GONE);
         }
     }
-    private void progressToText(int progress) {
-        String string = (progress+1) + "%";
-        myView.trimLineSpacingText.setText(string);
+    private void sliderValToText(float value) {
+        String hint = ((int)value) + "%";
+        myView.trimLineSpacingSlider.setHint(hint);
     }
     private void setListeners() {
         // The switches
@@ -97,30 +96,25 @@ public class DisplayExtraFragment extends Fragment {
             mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
         });
         myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("displayBoldChordsHeadings",isChecked,null));
-        myView.hideLyricsBox.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("hideLyricsBox",isChecked,null));
         myView.trimSections.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("trimSections",isChecked,null));
         myView.addSectionSpace.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("addSectionSpace",isChecked,null));
-        myView.trimLineSpacing.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("trimLines",isChecked,myView.trimLineSpacingLayout));
+        myView.trimLineSpacing.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("trimLines",isChecked,myView.trimLineSpacingSlider));
         myView.filterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("filterSections",isChecked,myView.filterLayout));
         myView.filterShow.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("filterShow",isChecked,null));
 
-        // The seekbar
-        myView.trimLineSpacingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        // The slider
+        myView.trimLineSpacingSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressToText(progress);
-            }
+            public void onStartTrackingTouch(@NonNull Slider slider) { }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                int percentage = myView.trimLineSpacingSeekBar.getProgress()+1;
-                float val = (float)percentage/100.0f;
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),"lineSpacing",val);
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                // Save the new value
+                float percentage = slider.getValue()/100f;
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),"lineSpacing",percentage);
             }
         });
+        myView.trimLineSpacingSlider.addOnChangeListener((slider, value, fromUser) -> sliderValToText(value));
 
         // The button
         myView.filterSave.setOnClickListener(v -> {

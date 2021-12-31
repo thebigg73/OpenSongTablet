@@ -20,13 +20,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/autoscale" />
             <!--Autoscroll on/off-->
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/useAutoscale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/autoscale"/>
+                android:text="@string/autoscale"
+                android:hint="@string/autoscale_info"/>
 
             <!--Manual font size-->
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
@@ -46,21 +47,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/scaleWidth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/scale_width" />
+                    android:text="@string/scale_width"
+                    android:hint="@string/scale_width_info"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/scaleColumns"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/maximise_columns" />
+                    android:text="@string/maximise_columns"
+                    android:hint="@string/maximise_columns_info"/>
 
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider

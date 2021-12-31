@@ -10,14 +10,19 @@
         android:layout_height="match_parent">
 
         <!--The actionbar, which includes a toolbar and the songview below -->
-        <com.google.android.material.appbar.AppBarLayout
+        <!--<com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">-->
+
+        <FrameLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include
+          <!--  <include
                 android:id="@+id/toolBar"
-                layout="@layout/view_toolbar" />
+                layout="@layout/view_toolbar" />-->
 
             <!--The main fragments get loaded up here-->
             <RelativeLayout
@@ -25,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-               <androidx.fragment.app.FragmentContainerView
+                <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/nav_host_fragment"
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
@@ -67,7 +72,12 @@
                     android:layout_toStartOf="@+id/pageButtonRight" />
 
             </RelativeLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+
+            <include
+                android:id="@+id/toolBar"
+                layout="@layout/view_toolbar" />
+
+        </FrameLayout>
     </RelativeLayout>
 
     <!--The left song and set menu-->

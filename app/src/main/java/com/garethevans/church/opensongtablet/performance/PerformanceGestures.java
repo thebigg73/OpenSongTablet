@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.performance;
 // The gestures used in the app
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import com.garethevans.church.opensongtablet.tools.SoundLevelBottomSheet;
 
 public class PerformanceGestures {
 
+    private final String TAG = "PerformanceGestures";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
@@ -67,6 +69,7 @@ public class PerformanceGestures {
     public void addToSet() {
         String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(mainActivityInterface.getSong());
 
+        Log.d(TAG,"itemForSet="+itemForSet);
         // Allow the song to be added, even if it is already there
         String val = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent","") + itemForSet;
         mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",val);
@@ -78,7 +81,9 @@ public class PerformanceGestures {
         // Vibrate to let the user know something happened
         mainActivityInterface.getDoVibrate().vibrate(c, 50);
 
-        mainActivityInterface.getCurrentSet().addToCurrentSet(itemForSet);
+        mainActivityInterface.getCurrentSet().addSetItem(itemForSet);
+        mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong().getFolder(),
+                mainActivityInterface.getSong().getFilename(), mainActivityInterface.getSong().getKey());
         mainActivityInterface.updateSetList();
     }
 

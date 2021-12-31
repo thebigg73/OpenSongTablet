@@ -36,7 +36,6 @@ public class LoadSong {
         String folder = thisSong.getFolder();
         String filename = thisSong.getFilename();
 
-        Log.d(TAG,folder+"/"+filename);
         // Clear the song object then add the folder filename back
         thisSong = new Song();
         thisSong.setFolder(folder);
@@ -51,13 +50,11 @@ public class LoadSong {
             return doLoadSongFile(c, mainActivityInterface, thisSong, indexing);
         } else {
             Log.d(TAG, "Loading from the database");
-            Log.d(TAG, "folder="+thisSong.getFolder()+"  filename="+thisSong.getFilename());
             if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
                 return mainActivityInterface.getSong().showWelcomeSong(c, thisSong);
             } else {
                 thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface,
                         thisSong.getFolder(), thisSong.getFilename());
-                Log.d(TAG,"thisSong="+thisSong.getFilename());
                 sortLoadingSuccessful(c,mainActivityInterface,thisSong);
                 return thisSong;
             }

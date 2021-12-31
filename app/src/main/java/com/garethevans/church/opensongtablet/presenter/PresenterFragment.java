@@ -51,7 +51,7 @@ public class PresenterFragment extends Fragment {
 
         // Hide the main page buttons
         mainActivityInterface.getAppActionBar().setPerformanceMode(false);
-        mainActivityInterface.getAppActionBar().showActionBar();
+        mainActivityInterface.showHideActionBar();
 
         mainActivityInterface.lockDrawer(false);
         mainActivityInterface.hideActionButton(true);

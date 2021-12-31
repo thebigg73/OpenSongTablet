@@ -8,15 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 
 public class AppActionBar {
 
+    private final String TAG = "AppActionBar";
     private final ActionBar actionBar;
-    private final Toolbar toolbar;
     private final TextView title;
     private final TextView author;
     private final TextView key;
@@ -27,12 +26,12 @@ public class AppActionBar {
     private final BatteryStatus batteryStatus;
     private final Handler delayactionBarHide;
     private final Runnable hideActionBarRunnable;
-    private int colorOn, colorOff;
+    private final int autoHideTime = 1200;
 
     private boolean hideActionBar;
     private boolean performanceMode;
 
-    public AppActionBar(ActionBar actionBar, Toolbar toolbar, BatteryStatus batteryStatus, TextView title, TextView author, TextView key, TextView capo, ImageView batteryDial,
+    public AppActionBar(ActionBar actionBar, BatteryStatus batteryStatus, TextView title, TextView author, TextView key, TextView capo, ImageView batteryDial,
                         TextView batteryText, TextView clock, boolean hideActionBar) {
         if (batteryStatus == null) {
             this.batteryStatus = new BatteryStatus();
@@ -47,7 +46,6 @@ public class AppActionBar {
         this.batteryDial = batteryDial;
         this.batteryText = batteryText;
         this.clock = clock;
-        this.toolbar = toolbar;
         this.hideActionBar = hideActionBar;
         delayactionBarHide = new Handler();
         hideActionBarRunnable = () -> {
@@ -57,14 +55,15 @@ public class AppActionBar {
         };
     }
 
-
     public void setHideActionBar(boolean hideActionBar) {
         this.hideActionBar = hideActionBar;
+    }
+    public boolean getHideActionBar() {
+        return hideActionBar;
     }
     public void setActionBar(Context c, MainActivityInterface mainActivityInterface, String newtitle) {
         if (newtitle == null) {
             // We are in the Performance/Stage mode
-            //showActionBar(false);
             float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"songTitleSize",13.0f);
 
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
@@ -171,6 +170,9 @@ public class AppActionBar {
             case "songAuthorSize":
                 author.setTextSize(floatval);
                 break;
+            case "hideActionBar":
+                setHideActionBar(!isvisible);
+                break;
         }
     }
 
@@ -202,7 +204,7 @@ public class AppActionBar {
                     actionBar.show();
                     // Set a runnable to hide it after 3 seconds
                     if (hideActionBar) {
-                        delayactionBarHide.postDelayed(hideActionBarRunnable, 3000);
+                        delayactionBarHide.postDelayed(hideActionBarRunnable, autoHideTime);
                     }
                 }
             }
@@ -216,11 +218,11 @@ public class AppActionBar {
     }
 
     // Show/hide the actionbar
-    public void showActionBar() {
+    public void showActionBar(boolean menuOpen) {
         // Show the ActionBar based on the user preferences
         // If we are in performance mode (boolean set when opening/closing PerformanceFragment)
         // The we can autohide if the user preferences state that's what is wanted
-        // If we are not in performance mode, we don't set a runnable to authide them
+        // If we are not in performance mode, we don't set a runnable to autohide them
         try {
             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
         } catch (Exception e) {
@@ -231,9 +233,9 @@ public class AppActionBar {
             actionBar.show();
         }
 
-        if (hideActionBar && performanceMode) {
+        if (hideActionBar && performanceMode && !menuOpen) {
             try {
-                delayactionBarHide.postDelayed(hideActionBarRunnable, 3000);
+                delayactionBarHide.postDelayed(hideActionBarRunnable, autoHideTime);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -244,15 +246,17 @@ public class AppActionBar {
         delayactionBarHide.removeCallbacks(hideActionBarRunnable);
     }
 
-    public void overlayMode() {
-        if (hideActionBar && performanceMode) {
-            // Change the top padding of the view underneath
-        }
-    }
-
     // Flash on/off for metronome
     public void doFlash(int colorBar) {
         actionBar.setBackgroundDrawable(new ColorDrawable(colorBar));
-        //toolbar.setBackgroundDrawable(new ColorDrawable(colorBar));
+    }
+
+    // Get the actionbar height - fakes a height of 0 if autohiding
+    public int getActionBarHeight() {
+        if (hideActionBar && performanceMode) {
+            return 0;
+        } else {
+            return actionBar.getHeight();
+        }
     }
 }

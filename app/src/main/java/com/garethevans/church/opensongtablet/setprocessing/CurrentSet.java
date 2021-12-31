@@ -189,9 +189,6 @@ public class CurrentSet {
     public void setSetItems(ArrayList<String> setItems) {
         this.setItems = setItems;
     }
-    public void addToCurrentSet(String item) {
-        setItems.add(item);
-    }
     public void addToCurrentSet(int position, String item, String folder, String filename, String key) {
         setItems.add(position,item);
         setFolders.add(position,folder);

@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,8 +20,6 @@ public class SongSheetHeaders {
         // This allows on the fly processing of other songs not processed (e.g. as part of a set)
 
         LinearLayout linearLayout = null;
-
-        Log.d(TAG,"mainActivityInterface.getMode()="+mainActivityInterface.getMode());
 
         if (forPDF || (mainActivityInterface.getMode().equals("Performance") &&
                 mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songSheet",false))) {
@@ -71,7 +68,6 @@ public class SongSheetHeaders {
             }
         }
 
-        Log.d(TAG,"header child count = "+linearLayout.getChildCount());
         if (linearLayout.getChildCount()==0) {
             linearLayout = null;
         }
@@ -93,10 +89,6 @@ public class SongSheetHeaders {
         String capo = thisSong.getCapo();
         String tempo = thisSong.getTempo();
         String timesig = thisSong.getTimesig();
-
-        Log.d(TAG,"title: "+thisSong.getTitle());
-        Log.d(TAG,"key: "+key);
-        Log.d(TAG,"capo: "+capo);
 
         String keyCapoTempo = "";
 

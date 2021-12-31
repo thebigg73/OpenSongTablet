@@ -1447,9 +1447,14 @@ public class ProcessSong {
         linearLayout.setPadding(0, 0, 0, 0);
     }
 
-    private int dp2px(Context c, int size) {
+    private int dp2px(Context c, int dp) {
+        // Converts dp to px
         float scale = c.getResources().getDisplayMetrics().density;
-        return (int) (size * scale);
+        return (int) (dp * scale);
+    }
+    private int px2dp(Context c, int px) {
+        float scale = c.getResources().getDisplayMetrics().density;
+        return (int) ((float)px / scale);
     }
 
     private void setScaledView(LinearLayout innerColumn, float scaleSize, float maxFontSize) {
@@ -1553,7 +1558,7 @@ public class ProcessSong {
             currentHeight = currentHeight + songSheetTitleHeight;
             songSheetView.addView(mainActivityInterface.getSongSheetTitleLayout());
         } else {
-            column1.setY(0);
+            column1.setPadding(0,0,0,0);
         }
 
         thisAutoScale = songAutoScale;
@@ -1601,8 +1606,7 @@ public class ProcessSong {
         }
         // If we need to move column1 down/up due to potential songSheet and it's scaling, do it
         setScaledView(songSheetView, scaleSize_1col, fontSizeMax);
-        column1.setY(songSheetTitleHeight*scaleSize_1col);
-
+        column1.setPadding(0,(int)(songSheetTitleHeight*scaleSize_1col),0,0);
         return scaleSize_1col;
     }
 

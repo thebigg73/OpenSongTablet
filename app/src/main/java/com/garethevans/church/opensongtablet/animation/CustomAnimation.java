@@ -35,9 +35,7 @@ public class CustomAnimation {
         AnimationSet animation = new AnimationSet(false);
         animation.addAnimation(fader);
         animation.setFillAfter(true);
-        /*if (end==0) {
-            v.postDelayed(() -> v.setVisibility(View.INVISIBLE), time);
-        }*/
+
         v.startAnimation(animation);
 
     }
@@ -52,4 +50,5 @@ public class CustomAnimation {
     public void pulse(Context c, View v) {
         v.startAnimation(AnimationUtils.loadAnimation(c, R.anim.pulse));
     }
+
 }

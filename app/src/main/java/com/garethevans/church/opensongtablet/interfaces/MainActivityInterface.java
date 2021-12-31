@@ -77,6 +77,7 @@ public interface MainActivityInterface {
 
     void hideActionButton(boolean hide);
     void hideActionBar(boolean hide);
+    void showHideActionBar();
     void updateToolbar(String what);
     void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible);
     void showTutorial(String what);
