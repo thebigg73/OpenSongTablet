@@ -47,7 +47,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         notifyItemRangeChanged(0, mainActivityInterface.getSong().getSongSections().size());
     }
 
-
     @NonNull
     @Override
     public StageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

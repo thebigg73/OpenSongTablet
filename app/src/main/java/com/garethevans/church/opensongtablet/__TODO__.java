@@ -3,10 +3,12 @@ package com.garethevans.church.opensongtablet;
 public class __TODO__ {
 
     // Connected display settings in menu and presenter mode
-    // Highlighter not gettings screenshot properly
+
+    // Stage mode clicking on section needs to scroll to this position and update secondary display
 
     // Still to implement pedal previous next confirm - I think!
 
+    // Presenter mode - almost everything!!
 
     //TODO - still to complete
     // Anything still listed below needs work
@@ -51,10 +53,7 @@ opening a song when in the set menu doesn't scroll to it
     popup scroll settings - speed/amount - add to pedals fragment?  Don't want up/down arrow anymore
 
 
-    The 3 different modes
+}
+
      */
-
-
-    // TODO - Stuff that isn't working in emulator, but need to check on actual device
-
 }
