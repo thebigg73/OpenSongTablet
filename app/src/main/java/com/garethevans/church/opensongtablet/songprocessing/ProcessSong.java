@@ -1174,7 +1174,7 @@ public class ProcessSong {
                                            String string, boolean asPDF, boolean presentation) {
         ArrayList<View> sectionViews = new ArrayList<>();
         ArrayList<String> songSections = new ArrayList<>();
-        ArrayList<String> sectionHeaders = new ArrayList<>();
+        ArrayList<Integer> sectionColors = new ArrayList<>();
 
         int backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
         int textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
@@ -1256,9 +1256,11 @@ public class ProcessSong {
             }
 
             linearLayout.setBackgroundColor(backgroundColor);
+            sectionColors.add(backgroundColor);
             sectionViews.add(linearLayout);
         }
         mainActivityInterface.getSong().setSongSections(songSections);
+        mainActivityInterface.setSectionColors(sectionColors);
 
         return sectionViews;
     }

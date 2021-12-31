@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private MediaPlayer mediaPlayer1, mediaPlayer2;
     private ArrayList<View> sectionViews;
     private LinearLayout songSheetTitleLayout;
-    private ArrayList<Integer> sectionWidths, sectionHeights, songSheetTitleLayoutSize;
+    private ArrayList<Integer> sectionWidths, sectionHeights, songSheetTitleLayoutSize, sectionColors;
     private ArrayList<Float> sectionScale;
     private String whichMode, whattodo, importFilename;
     private Uri importUri;
@@ -2436,6 +2436,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             sectionHeights = new ArrayList<>();
             sectionScale = null;
             sectionScale = new ArrayList<>();
+            sectionColors = null;
+            sectionColors = new ArrayList<>();
         } else {
             sectionViews = views;
         }
@@ -2457,6 +2459,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public ArrayList<Integer> getSectionColors() {
+        return sectionColors;
+    }
+
+    @Override
     public void addSectionSize(int width, int height) {
         if (sectionWidths==null) {
             sectionWidths = new ArrayList<>();
@@ -2466,6 +2473,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
         sectionWidths.add(width);
         sectionHeights.add(height);
+    }
+
+    @Override
+    public void setSectionColors(ArrayList<Integer> colors) {
+        sectionColors = colors;
     }
 
     @Override

@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
@@ -29,6 +30,7 @@ import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
+import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.stickynotes.StickyPopUp;
 
 import java.util.Locale;
@@ -53,6 +55,7 @@ public class PerformanceFragment extends Fragment {
     private Animation animSlideIn, animSlideOut;
     private GestureDetector gestureDetector;
     private PDFPageAdapter pdfPageAdapter;
+    private StageSectionAdapter stageSectionAdapter;
 
     // Attaching and destroying
     @Override
@@ -127,7 +130,7 @@ public class PerformanceFragment extends Fragment {
     private void initialiseHelpers() {
         stickyPopUp = new StickyPopUp();
         mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
-        mainActivityInterface.getPerformanceGestures().setPDFRecycler(myView.pdfView);
+        mainActivityInterface.getPerformanceGestures().setPDFRecycler(myView.recyclerView);
     }
     private void loadPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
@@ -137,7 +140,14 @@ public class PerformanceFragment extends Fragment {
         swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumVelocity", 600);
         songAutoScaleOverrideWidth = false;
         songAutoScaleOverrideFull = false;
-        myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+        if (mainActivityInterface.getMode().equals("Performance")) {
+            myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
+            myView.waterMark.setVisibility(View.VISIBLE);
+        } else {
+            // Stage Mode - sections have correct colour, but the background is different - set to colorPrimary
+            myView.mypage.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            myView.waterMark.setVisibility(View.GONE);
+        }
     }
 
     // Displaying the song
@@ -164,10 +174,10 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.moveToSongInSongMenu();
 
             // Now animate out the song and after a delay start the next bit of the processing
-            myView.pdfView.post(() -> {
-                if (myView.pdfView.getVisibility()==View.VISIBLE) {
-                    myView.pdfView.startAnimation(animSlideOut);
-                    myView.pdfView.postDelayed(() -> requireActivity().runOnUiThread(this::prepareSongViews),requireContext().getResources().getInteger(R.integer.slide_out_time));
+            myView.recyclerView.post(() -> {
+                if (myView.recyclerView.getVisibility()==View.VISIBLE) {
+                    myView.recyclerView.startAnimation(animSlideOut);
+                    myView.recyclerView.postDelayed(() -> requireActivity().runOnUiThread(this::prepareSongViews),requireContext().getResources().getInteger(R.integer.slide_out_time));
                 }
             });
 
@@ -191,20 +201,20 @@ public class PerformanceFragment extends Fragment {
         // Set the default color
         myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
 
-        myView.pdfView.setVisibility(View.GONE);
+        myView.recyclerView.setVisibility(View.GONE);
         myView.zoomLayout.setVisibility(View.GONE);
 
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
-            // We populate the PDF recycler view with the pages
+            // We populate the recyclerView with the pages of the PDF
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 int availWidth = getResources().getDisplayMetrics().widthPixels;
                 int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
                 pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface,
                         availWidth, availHeight);
 
-                myView.pdfView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
-                myView.pdfView.setAdapter(pdfPageAdapter);
-                myView.pdfView.setVisibility(View.VISIBLE);
+                myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+                myView.recyclerView.setAdapter(pdfPageAdapter);
+                myView.recyclerView.setVisibility(View.VISIBLE);
 
                 // Set up the type of animate in
                 if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
@@ -212,7 +222,7 @@ public class PerformanceFragment extends Fragment {
                 } else {
                     animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
                 }
-                myView.pdfView.startAnimation(animSlideIn);
+                myView.recyclerView.startAnimation(animSlideIn);
             }
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
@@ -240,7 +250,7 @@ public class PerformanceFragment extends Fragment {
     private void setUpHeaderListener() {
         // If we want headers, the header layout isn't null, so we can draw and listen
         // Add the view and wait for the vto return
-        if (mainActivityInterface.getSongSheetTitleLayout() != null) {
+        if (mainActivityInterface.getSongSheetTitleLayout() != null && mainActivityInterface.getMode().equals("Performance")) {
 
             // Check the header isn't already attached to a view
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
@@ -296,19 +306,7 @@ public class PerformanceFragment extends Fragment {
         screenWidth = screenSizes[0];
         screenHeight = screenSizes[1] - mainActivityInterface.getAppActionBar().getActionBarHeight();
 
-        myView.zoomLayout.setVisibility(View.VISIBLE);
-        myView.zoomLayout.setPageSize(screenWidth, screenHeight);
-
         myView.testPane.removeAllViews();
-
-        scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getContext(),
-                mainActivityInterface,
-                myView.pageHolder, myView.songView, myView.songSheetTitle,
-                screenWidth, screenHeight,
-                myView.col1, myView.col2, myView.col3);
-
-        // Pass this scale factor to the zoom layout
-        myView.zoomLayout.setCurrentScale(scaleFactor);
 
         // Set up the type of animate in
         if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
@@ -317,44 +315,78 @@ public class PerformanceFragment extends Fragment {
             animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
         }
 
-        float maxWidth = 0;
-        float totalHeight = 0;
-        for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-            maxWidth = Math.max(maxWidth, mainActivityInterface.getSectionWidths().get(x) * scaleFactor);
-            totalHeight += mainActivityInterface.getSectionHeights().get(x) * scaleFactor;
+        // Decide which mode we are in to determine how the views are rendered
+        if (mainActivityInterface.getMode().equals("Stage")) {
+            // We are in stage mode, so use the recyclerView
+            stageSectionAdapter = new StageSectionAdapter(mainActivityInterface);
+
+            myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+            myView.recyclerView.setAdapter(stageSectionAdapter);
+            myView.recyclerView.setVisibility(View.VISIBLE);
+            if (myView.recyclerView.getItemAnimator()!=null) {
+                ((SimpleItemAnimator) myView.recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+            }
+            // Set up the type of animate in
+            if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
+                animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+            } else {
+                animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+            }
+            myView.recyclerView.startAnimation(animSlideIn);
+
+        } else {
+            // We are in Performance mode, so use the songView
+            myView.zoomLayout.setVisibility(View.VISIBLE);
+            myView.zoomLayout.setPageSize(screenWidth, screenHeight);
+
+            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getContext(),
+                    mainActivityInterface,
+                    myView.pageHolder, myView.songView, myView.songSheetTitle,
+                    screenWidth, screenHeight,
+                    myView.col1, myView.col2, myView.col3);
+
+            // Pass this scale factor to the zoom layout
+            myView.zoomLayout.setCurrentScale(scaleFactor);
+
+            float maxWidth = 0;
+            float totalHeight = 0;
+            for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
+                maxWidth = Math.max(maxWidth, mainActivityInterface.getSectionWidths().get(x) * scaleFactor);
+                totalHeight += mainActivityInterface.getSectionHeights().get(x) * scaleFactor;
+            }
+            final int w = (int) maxWidth;
+            final int h = (int) totalHeight;
+
+            myView.zoomLayout.setSongSize(w, h + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor));
+
+            // Because we might have padded the view at the top for song sheet header scaling:
+            int topPadding = 0;
+            if (myView.songView.getChildCount()>0 && myView.songView.getChildAt(0)!=null) {
+                topPadding = myView.songView.getChildAt(0).getPaddingTop();
+            }
+
+            // Now deal with the highlighter file
+            myView.highlighterView.setY((float)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
+            dealWithHighlighterFile(w, h, topPadding);
+
+            // Send the autoscroll information (if required)
+            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h, screenHeight);
+
+            myView.pageHolder.startAnimation(animSlideIn);
+
+            // Try to take a screenshot ready for any highlighter actions that may be called
+            int finalTopPadding = topPadding;
+            myView.songView.post(() -> {
+                try {
+                    getScreenshot(w,h, finalTopPadding);
+                } catch (Exception | OutOfMemoryError e) {
+                    e.printStackTrace();
+                }
+            });
         }
-        final int w = (int) maxWidth;
-        final int h = (int) totalHeight;
-
-        myView.zoomLayout.setSongSize(w, h + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor));
-
-        // Because we might have padded the view at the top for song sheet header scaling:
-        int topPadding = 0;
-        if (myView.songView.getChildCount()>0 && myView.songView.getChildAt(0)!=null) {
-            topPadding = myView.songView.getChildAt(0).getPaddingTop();
-        }
-
-        // Now deal with the highlighter file
-        myView.highlighterView.setY((float)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
-        dealWithHighlighterFile(w, h, topPadding);
 
         // Load up the sticky notes if the user wants them
         dealWithStickyNotes(false, false);
-
-        // Send the autoscroll information (if required)
-        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h, screenHeight);
-
-        myView.pageHolder.startAnimation(animSlideIn);
-
-        // Try to take a screenshot ready for any highlighter actions that may be called
-        int finalTopPadding = topPadding;
-        myView.songView.post(() -> {
-            try {
-                getScreenshot(w,h, finalTopPadding);
-            } catch (Exception | OutOfMemoryError e) {
-                e.printStackTrace();
-            }
-         });
 
         // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getSong().getCurrentSection() < 0) {
@@ -460,7 +492,7 @@ public class PerformanceFragment extends Fragment {
             }
             return gestureDetector.onTouchEvent(motionEvent);
         });
-        myView.pdfView.setOnTouchListener((view, motionEvent) -> {
+        myView.recyclerView.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 mainActivityInterface.getDisplayPrevNext().showAndHide();
                 mainActivityInterface.showHideActionBar();
@@ -471,7 +503,7 @@ public class PerformanceFragment extends Fragment {
 
     public void pdfScrollToPage(int pageNumber) {
         Log.d(TAG,"trying to scroll to "+pageNumber);
-        LinearLayoutManager llm = (LinearLayoutManager) myView.pdfView.getLayoutManager();
+        LinearLayoutManager llm = (LinearLayoutManager) myView.recyclerView.getLayoutManager();
         if (llm!=null) {
             llm.scrollToPosition(pageNumber-1);
         }

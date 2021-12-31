@@ -199,7 +199,9 @@ public interface MainActivityInterface {
     ArrayList<View> getSectionViews();
     ArrayList<Integer> getSectionWidths();
     ArrayList<Integer> getSectionHeights();
+    ArrayList<Integer> getSectionColors();
     void addSectionSize(int width, int height);
+    void setSectionColors(ArrayList<Integer> colors);
     void setSongSheetTitleLayout(LinearLayout linearLayout);
     LinearLayout getSongSheetTitleLayout();
     SongSheetHeaders getSongSheetHeaders();
