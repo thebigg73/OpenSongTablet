@@ -4,10 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.garethevans.church.opensongtablet.customviews.MaterialEditText;
+import com.garethevans.church.opensongtablet.customviews.MyRecyclerView;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.button.MaterialButton;
@@ -33,9 +35,14 @@ public class Autoscroll {
     private int autoscrollDefaultSongPreDelay;
     private int colorOn;
     private final int updateTime = 60;
-    private float initialScrollIncrement, scrollIncrement, scrollPosition, scrollCount, numberScrolls;
+    private float initialScrollIncrement;
+    private float scrollIncrement;
+    private float scrollPosition;
+    private float scrollCount;
     private final LinearLayout autoscrollView;
     private MyZoomLayout myZoomLayout;
+    private MyRecyclerView myRecyclerView;
+    private boolean usingZoomLayout;
     private final MaterialTextView autoscrollTimeText, autoscrollTotalTimeText;
     private Timer timer;
     private TimerTask timerTask;
@@ -59,9 +66,10 @@ public class Autoscroll {
         this.autoscrollOK = autoscrollOK;
     }
 
-    public void initialiseAutoscroll(MyZoomLayout myZoomLayout) {
+    public void initialiseAutoscroll(MyZoomLayout myZoomLayout, MyRecyclerView myRecyclerView) {
         colorOn = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         this.myZoomLayout = myZoomLayout;
+        this.myRecyclerView = myRecyclerView;
     }
 
     public void initialiseSongAutoscroll(Context c, int songHeight, int displayHeight) {
@@ -104,7 +112,7 @@ public class Autoscroll {
 
         if (songDuration>0) {
             // We have valid times, so good to go.  Calculate the autoscroll values
-            numberScrolls = ((songDuration-songDelay)*1000f)/updateTime;
+            //float numberScrolls = ((songDuration - songDelay) * 1000f) / updateTime;
 
             calculateAutoscroll();
             resetTimers();
@@ -124,7 +132,18 @@ public class Autoscroll {
     }
 
     public void startAutoscroll() {
-        myZoomLayout.setIsUserTouching(false);
+        // If we are in Performance mode using a normal OpenSong song, we scroll the ZoomLayout
+        // If we are in Stage mode, or viewing a pdf, we scroll the RecyclerView
+        usingZoomLayout = mainActivityInterface.getMode().equals("Performance") && mainActivityInterface.getSong().getFiletype().equals("XML");
+
+        if (usingZoomLayout) {
+            myZoomLayout.setIsUserTouching(false);
+            myZoomLayout.scrollTo(0,0);
+        } else {
+            myRecyclerView.setUserTouching(false);
+            myRecyclerView.scrollToTop();
+        }
+
         figureOutTimes();
 
         if (autoscrollOK) {
@@ -134,7 +153,7 @@ public class Autoscroll {
             if (timerTask==null) {
                 setupTimer(mainActivityInterface);
             }
-            myZoomLayout.scrollTo(0,0);
+            Log.d(TAG,"start stop called.  current scrollY="+myRecyclerView.getScrollY());
             isPaused = false;
             autoscrollActivated = true;
             setIsAutoscrolling(true);
@@ -187,10 +206,18 @@ public class Autoscroll {
                             autoscrollTimeText.setAlpha(0.6f);
                             autoscrollTimeText.setText(currentTimeString);
                             // Listen out for scroll changes
-                            if (scrollPosition!= myZoomLayout.getScrollPos() ||
-                                scrollCount!=myZoomLayout.getScrollPos()) {
-                                scrollPosition = myZoomLayout.getScrollPos();
-                                scrollCount = scrollPosition;
+                            if (usingZoomLayout) {
+                                if (scrollPosition != myZoomLayout.getScrollPos() ||
+                                        scrollCount != myZoomLayout.getScrollPos()) {
+                                    scrollPosition = myZoomLayout.getScrollPos();
+                                    scrollCount = scrollPosition;
+                                }
+                            } else {
+                                if (scrollPosition != myRecyclerView.getScrollY() ||
+                                scrollCount != myRecyclerView.getScrollY()) {
+                                    scrollPosition = myRecyclerView.getScrollY();
+                                    scrollCount = scrollPosition;
+                                }
                             }
                         });
                     } else {
@@ -201,7 +228,7 @@ public class Autoscroll {
                         });
 
                         // Do the scroll as long as the user isn't touching the screen
-                        if (!myZoomLayout.getIsUserTouching()) {
+                        if (usingZoomLayout && !myZoomLayout.getIsUserTouching()) {
 
                             // Rather than assume the scroll position (as it could've been manually dragged)
                             // Compare the scroll count (float) and scroll position (int).
@@ -221,13 +248,42 @@ public class Autoscroll {
                                 //myZoomLayout.smoothScrollTo(0, (int) scrollPosition, updateTime);
                                 myZoomLayout.autoscrollTo(scrollCount);
                             });
+
+                        } else if (!myRecyclerView.getIsUserTouching()){
+                            // Rather than assume the scroll position (as it could've been manually dragged)
+                            // Compare the scroll count (float) and scroll position (int).
+                            myRecyclerView.post(() -> {
+                                // Check for scaling changes
+                                calculateAutoscroll();
+                                scrollCount = scrollCount + scrollIncrement;
+                                if ((Math.max(scrollPosition,myRecyclerView.getScrollY()) -
+                                        Math.min(scrollPosition,myRecyclerView.getScrollY()))<1) {
+                                    // Don't get stuck on float rounding being compounded - use the scroll count
+                                    scrollPosition = scrollCount;
+                                } else {
+                                    // We've moved (more than 1px), so get the actual start position
+                                    scrollPosition = myRecyclerView.getScrollY() + scrollIncrement;
+                                    scrollCount = scrollPosition;
+                                }
+                                myRecyclerView.doScrollBy((int)scrollIncrement,updateTime/2);
+                            });
                         }
                     }
                     scrollTime = scrollTime + updateTime;
-                    if (Math.ceil(scrollPosition) >= ((songHeight*myZoomLayout.getScaleFactor()) - displayHeight)) {
-                        // Scrolling is done as we've reached the end
-                        endAutoscroll();
+                    float scaledHeight;
+                    if (usingZoomLayout) {
+                        scaledHeight = songHeight*myZoomLayout.getScaleFactor();
+                        if (Math.ceil(scrollPosition) >= (scaledHeight - displayHeight)) {
+                            // Scrolling is done as we've reached the end
+                            endAutoscroll();
+                        }
+                    } else {
+                        if (myRecyclerView.getScrolledToBottom())
+                            // Scrolling is done as we've reached the end
+                            endAutoscroll();
                     }
+
+
                 } else {
                     autoscrollTimeText.post(() -> {
                         if (showOn) {
@@ -257,7 +313,15 @@ public class Autoscroll {
     private void calculateAutoscroll() {
         // The total scroll amount is the height of the view - the screen height.
         // If this is less than 0, no scrolling is required.
-        int scrollHeight = (int)(songHeight * myZoomLayout.getScaleFactor()) - displayHeight;
+        int scrollHeight;
+        if (usingZoomLayout) {
+            scrollHeight = (int) (songHeight * myZoomLayout.getScaleFactor()) - displayHeight;
+        } else {
+            scrollHeight = songHeight - displayHeight;
+            myRecyclerView.setMaxScrollY(scrollHeight);
+        }
+
+        Log.d(TAG,"displayHeight="+displayHeight+"  songHeight="+songHeight+"  scrollHeight="+scrollHeight);
 
         if (scrollHeight>0) {
             // The scroll happens every 60ms (updateTime).

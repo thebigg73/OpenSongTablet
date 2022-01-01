@@ -28,6 +28,7 @@ import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
@@ -42,6 +43,7 @@ public class PerformanceFragment extends Fragment {
     private StickyPopUp stickyPopUp;
 
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
 
     // The variables used in the fragment
     private boolean songAutoScaleColumnMaximise,
@@ -62,6 +64,7 @@ public class PerformanceFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) context;
         mainActivityInterface.registerFragment(this,"Performance");
     }
     @Override
@@ -93,7 +96,7 @@ public class PerformanceFragment extends Fragment {
         initialiseHelpers();
 
         // Pass view references to the Autoscroll class
-        mainActivityInterface.getAutoscroll().initialiseAutoscroll(myView.zoomLayout);
+        mainActivityInterface.getAutoscroll().initialiseAutoscroll(myView.zoomLayout, myView.recyclerView);
 
         mainActivityInterface.lockDrawer(false);
         mainActivityInterface.hideActionButton(false);
@@ -153,6 +156,9 @@ public class PerformanceFragment extends Fragment {
     // Displaying the song
     public void doSongLoad(String folder, String filename) {
         // Loading the song is dealt with in this fragment as specific actions are required
+
+        // Stop any autoscroll if required
+        mainActivityInterface.getAutoscroll().stopAutoscroll();
 
         // During the load song call, the song is cleared
         // However if first extracts the folder and filename we've just set
@@ -318,7 +324,7 @@ public class PerformanceFragment extends Fragment {
         // Decide which mode we are in to determine how the views are rendered
         if (mainActivityInterface.getMode().equals("Stage")) {
             // We are in stage mode, so use the recyclerView
-            stageSectionAdapter = new StageSectionAdapter(mainActivityInterface);
+            stageSectionAdapter = new StageSectionAdapter(requireContext(),mainActivityInterface,displayInterface);
 
             myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             myView.recyclerView.setAdapter(stageSectionAdapter);
@@ -333,6 +339,11 @@ public class PerformanceFragment extends Fragment {
                 animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
             }
             myView.recyclerView.startAnimation(animSlideIn);
+
+            // Send the autoscroll information (if required)
+            int totalHeight = stageSectionAdapter.getTotalHeight();
+            myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
+            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
 
         } else {
             // We are in Performance mode, so use the songView
@@ -492,13 +503,13 @@ public class PerformanceFragment extends Fragment {
             }
             return gestureDetector.onTouchEvent(motionEvent);
         });
-        myView.recyclerView.setOnTouchListener((view, motionEvent) -> {
+        /*myView.recyclerView.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 mainActivityInterface.getDisplayPrevNext().showAndHide();
                 mainActivityInterface.showHideActionBar();
             }
             return gestureDetector.onTouchEvent(motionEvent);
-        });
+        });*/
     }
 
     public void pdfScrollToPage(int pageNumber) {
@@ -542,6 +553,14 @@ public class PerformanceFragment extends Fragment {
             songViewWidth = width;
         }
         songViewHeight = height;
+    }
+
+
+    // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
+    public void performanceShowSection(int position) {
+        // Scroll the recyclerView to the top of the page
+        myView.recyclerView.scrollToPosition(position);
+        // TODO send an update the the secondary display
     }
 
 }

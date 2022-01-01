@@ -232,9 +232,14 @@
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginStart">0dp</item>
         <item name="android:layout_marginEnd">0dp</item>
-        <item name="elevation">4dp</item>
+        <item name="elevation">0dp</item>
         <item name="cardBackgroundColor">@color/colorSecondary</item>
+        <item name="android:padding">0dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="cardElevation">0dp</item>
+        <item name="cardPreventCornerOverlap">false</item>
     </style>
+
     <style name="menuTabs" parent="@style/Widget.MaterialComponents.TabLayout">
         <item name="tabTextColor">@color/white</item>
         <item name="tabSelectedTextColor">@color/white</item>

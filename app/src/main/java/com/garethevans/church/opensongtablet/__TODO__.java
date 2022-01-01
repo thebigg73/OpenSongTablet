@@ -4,8 +4,6 @@ public class __TODO__ {
 
     // Connected display settings in menu and presenter mode
 
-    // Stage mode clicking on section needs to scroll to this position and update secondary display
-
     // Still to implement pedal previous next confirm - I think!
 
     // Presenter mode - almost everything!!

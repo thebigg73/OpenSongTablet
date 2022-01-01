@@ -2787,15 +2787,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public int[] getDisplayMetrics() {
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
-        int[] displayMetrics = new int[2];
+        int[] displayMetrics = new int[3];
         displayMetrics[1] = metrics.heightPixels;
         displayMetrics[0] = metrics.widthPixels;
         displayMetrics[0] = getWindow().getDecorView().getWidth();
         displayMetrics[1] = getWindow().getDecorView().getHeight();
         return displayMetrics;
     }
-
-
 
     // The secondary displays (HDMI or Cast)
     @Override
@@ -2929,5 +2927,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             hdmiPresentation.showSection(position);
         }
         Log.d(TAG,"presenterShowSection");
+    }
+
+
+    @Override
+    public void performanceShowSection(int position) {
+        // This gets a section from from the user selecting either a PDF page or a Stage Mode section
+        // Send it back to Performance Mode to deal with the outcome (scroll to, update display, etc)
+        if (performanceFragment!=null) {
+            performanceFragment.performanceShowSection(position);
+        }
     }
 }

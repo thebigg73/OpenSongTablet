@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet.stage;
 
 // This deals with displaying the song in StageMode (actually using a recyclerView in PerformanceMode)
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
@@ -23,15 +26,24 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final MainActivityInterface mainActivityInterface;
     private ArrayList<StageSectionInfo> sectionInfos;
     private int currentSection = 0;
+    private int scaledTotalHeight;
+    private int totalPadding;
+    private final DisplayInterface displayInterface;
 
-    public StageSectionAdapter(MainActivityInterface mainActivityInterface) {
+    private final float density;
+
+    public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface) {
         this.mainActivityInterface = mainActivityInterface;
+        this.displayInterface = displayInterface;
+        density = c.getResources().getDisplayMetrics().density;
         setSongInfo();
     }
 
     private void setSongInfo() {
         // Prepare the info for each section
         sectionInfos = new ArrayList<>();
+        scaledTotalHeight = 0;
+        totalPadding = 0;
         for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
             stageSectionInfo.section = x;
@@ -41,8 +53,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             stageSectionInfo.height = sectionHeight;
             float x_scale = (float)mainActivityInterface.getDisplayMetrics()[0]/(float)sectionWidth;
             float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getAppActionBar().getActionBarHeight())*0.75f/(float)sectionHeight;
-            stageSectionInfo.scale = Math.min(x_scale,y_scale);
+            float scale = Math.min(x_scale,y_scale);
+            stageSectionInfo.scale = scale;
             sectionInfos.add(stageSectionInfo);
+            scaledTotalHeight += (int)(sectionHeight*scale);
+            totalPadding += (int)Math.ceil(4f*density); // 4dp margin after each cardView.
         }
         notifyItemRangeChanged(0, mainActivityInterface.getSong().getSongSections().size());
     }
@@ -92,18 +107,30 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             holder.sectionView.addView(v);
         }
 
+        Log.d(TAG,"cardView.getMeasuredHeight()="+cardView.getMeasuredHeight());
         cardView.setOnClickListener(view -> sectionSelected(section));
+        cardView.setOnLongClickListener(view -> {
+            // Do nothing, but consume the event
+            return true;
+        });
     }
 
-    public void sectionSelected(int thisPos) {
+    public void sectionSelected(int position) {
         // Whatever the previously selected item was, change the alpha to the alphaOff value
         notifyItemChanged(currentSection);
 
+        // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
+        onTouchAction();
+
         // Now update the newly selected position
-        setSection(thisPos);
+        if (position>-1 && position<sectionInfos.size()) {
+            mainActivityInterface.getSong().setCurrentSection(position);
+            currentSection = position;
+            notifyItemChanged(position);
+        }
 
-        // Scroll to this position
-
+        // Send and update notification to Performance Fragment via the MainActivity
+        displayInterface.performanceShowSection(position);
     }
 
     @Override
@@ -111,11 +138,13 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         return mainActivityInterface.getSectionViews().size();
     }
 
-    private void setSection(int position) {
-        if (position>-1 && position<sectionInfos.size()) {
-            mainActivityInterface.getSong().setCurrentSection(position);
-            currentSection = position;
-            notifyItemChanged(position);
-        }
+    public int getTotalHeight() {
+        // Add up the height of the scaled views (for autoscroll)
+        return (int)(scaledTotalHeight+totalPadding);
+    }
+
+    private void onTouchAction() {
+        mainActivityInterface.getDisplayPrevNext().showAndHide();
+        mainActivityInterface.showHideActionBar();
     }
 }

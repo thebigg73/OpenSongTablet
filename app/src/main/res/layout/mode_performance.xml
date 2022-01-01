@@ -123,7 +123,7 @@
     </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>
 
     <!-- This is used for the pdf pages and stage mode -->
-    <androidx.recyclerview.widget.RecyclerView
+    <com.garethevans.church.opensongtablet.customviews.MyRecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
