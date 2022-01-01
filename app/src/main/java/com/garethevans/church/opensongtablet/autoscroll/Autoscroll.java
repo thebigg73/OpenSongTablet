@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -153,7 +152,6 @@ public class Autoscroll {
             if (timerTask==null) {
                 setupTimer(mainActivityInterface);
             }
-            Log.d(TAG,"start stop called.  current scrollY="+myRecyclerView.getScrollY());
             isPaused = false;
             autoscrollActivated = true;
             setIsAutoscrolling(true);
@@ -321,8 +319,6 @@ public class Autoscroll {
             myRecyclerView.setMaxScrollY(scrollHeight);
         }
 
-        Log.d(TAG,"displayHeight="+displayHeight+"  songHeight="+songHeight+"  scrollHeight="+scrollHeight);
-
         if (scrollHeight>0) {
             // The scroll happens every 60ms (updateTime).
             // The number of times this will happen is calculated as follows
@@ -365,7 +361,8 @@ public class Autoscroll {
                                 MaterialButton materialButton, MaterialEditText durationText,
                                 MaterialEditText delayText, final int delay) {
         // If link audio is set and time is valid get it and set the button action
-        if (!mainActivityInterface.getSong().getLinkaudio().isEmpty()) {
+        if (mainActivityInterface.getSong().getLinkaudio()!=null &&
+                !mainActivityInterface.getSong().getLinkaudio().isEmpty()) {
             Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c,
                     mainActivityInterface, mainActivityInterface.getSong().getLinkaudio());
             if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(c, uri)) {

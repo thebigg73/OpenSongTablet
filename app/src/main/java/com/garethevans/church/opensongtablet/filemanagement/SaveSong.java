@@ -123,7 +123,11 @@ public class SaveSong {
             }
 
             // Now save the song file and return the success!
-            return mainActivityInterface.getStorageAccess().saveSongFile(c, mainActivityInterface);
+            if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
+                return mainActivityInterface.getStorageAccess().saveSongFile(c, mainActivityInterface);
+            } else {
+                return true;
+            }
 
         } else {
             mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.error_song_not_saved));

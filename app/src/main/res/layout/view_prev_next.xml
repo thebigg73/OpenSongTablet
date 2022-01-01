@@ -32,7 +32,7 @@
             android:paddingEnd="8dp"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
     </FrameLayout>
 
     <FrameLayout
@@ -59,7 +59,7 @@
             app:iconGravity="end"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
     </FrameLayout>
 </LinearLayout>

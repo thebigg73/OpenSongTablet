@@ -8,17 +8,16 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     // All the helpers we need to access are in the MainActivity
     private final String TAG = "PDFPageAdapter";
     private final MainActivityInterface mainActivityInterface;
+    private final DisplayInterface displayInterface;
     private final Context c;
     private ArrayList<PDFPageItemInfo> pageInfos;
     private final int viewWidth, viewHeight;
@@ -38,19 +38,25 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private Uri pdfUri;
     private int totalPages;
     private int totalHeight;
+    private int totalPadding;
     private final String scaleType;
     private boolean manualDrag = false;
+    private final float density;
 
-    public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, int viewWidth, int viewHeight) {
+    public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {
         this.c = c;
         this.mainActivityInterface = mainActivityInterface;
+        this.displayInterface = displayInterface;
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
         scaleType = mainActivityInterface.getPreferences().getMyPreferenceString(c,"songAutoScale","W");
+        density = c.getResources().getDisplayMetrics().density;
         setSongInfo();
     }
 
     private void setSongInfo() {
+        totalHeight = 0;
+        totalPadding = 0;
         pdfFolder = mainActivityInterface.getSong().getFolder();
         pdfFilename = mainActivityInterface.getSong().getFilename();
         pdfUri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
@@ -71,7 +77,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             }
             mainActivityInterface.getSong().setShowstartofpdf(true);
 
-            totalHeight = 0;
             pageInfos = new ArrayList<>();
             if (pdfRenderer!=null) {
                 for (int x = 0; x < totalPages; x++) {
@@ -95,6 +100,9 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     pageInfos.add(pageInfo);
                     page.close();
 
+                    // Add up the heights
+                    totalHeight += (int) (height * scaleFactor);
+                    totalPadding += (int)Math.ceil(4f*density); // 4dp margin after each cardView.
                     // Set the song load success
                     mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
                     mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", mainActivityInterface.getSong().getFilename());
@@ -117,6 +125,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             totalPages = 0;
             totalHeight = 0;
         }
+        notifyItemRangeChanged(0, totalPages);
     }
 
     @NonNull
@@ -143,6 +152,17 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         if (pdfHighlighter!=null) {
             Glide.with(c).load(pdfHighlighter).override(width,height).into(holder.pdfPageHighlight);
         }
+        holder.pdfPageImage.setOnClickListener(view -> {
+            Log.d(TAG,"clicked on "+pageNum);
+            // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
+            onTouchAction();
+            // Send and update notification to Performance Fragment via the MainActivity
+            displayInterface.performanceShowSection(pageNum);
+        });
+        holder.pdfPageImage.setOnLongClickListener(view -> {
+            // Do nothing other than consume the long press
+            return true;
+        });
     }
 
     @Override
@@ -154,10 +174,16 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     public int getHeight() {
-        return totalHeight;
+        Log.d(TAG,"totalHeight="+totalHeight);
+        return totalHeight + totalPadding;
     }
 
-    @Override
+    private void onTouchAction() {
+        mainActivityInterface.getDisplayPrevNext().showAndHide();
+        mainActivityInterface.showHideActionBar();
+    }
+
+    /*@Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
@@ -200,6 +226,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 }
             });
         }
-    }
+    }*/
 
 }

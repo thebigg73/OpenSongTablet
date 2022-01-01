@@ -210,12 +210,16 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.setVisibility(View.GONE);
         myView.zoomLayout.setVisibility(View.GONE);
 
+        int[] screenSizes = mainActivityInterface.getDisplayMetrics();
+        screenWidth = screenSizes[0];
+        screenHeight = screenSizes[1] - mainActivityInterface.getAppActionBar().getActionBarHeight();
+
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // We populate the recyclerView with the pages of the PDF
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 int availWidth = getResources().getDisplayMetrics().widthPixels;
                 int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
-                pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface,
+                pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface, displayInterface,
                         availWidth, availHeight);
 
                 myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -229,6 +233,14 @@ public class PerformanceFragment extends Fragment {
                     animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
                 }
                 myView.recyclerView.startAnimation(animSlideIn);
+
+                // Send the autoscroll information (if required)
+                int totalHeight = pdfPageAdapter.getHeight();
+                myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
+                mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
+
+                // Get a null screenshot
+                getScreenshot(0,0,0);
             }
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
@@ -260,7 +272,11 @@ public class PerformanceFragment extends Fragment {
 
             // Check the header isn't already attached to a view
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
-                ((LinearLayout)mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
+                try {
+                    ((LinearLayout) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             ViewTreeObserver vto = myView.testPane.getViewTreeObserver();
@@ -308,10 +324,6 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.addSectionSize(width, height);
         }
 
-        int[] screenSizes = mainActivityInterface.getDisplayMetrics();
-        screenWidth = screenSizes[0];
-        screenHeight = screenSizes[1] - mainActivityInterface.getAppActionBar().getActionBarHeight();
-
         myView.testPane.removeAllViews();
 
         // Set up the type of animate in
@@ -323,7 +335,7 @@ public class PerformanceFragment extends Fragment {
 
         // Decide which mode we are in to determine how the views are rendered
         if (mainActivityInterface.getMode().equals("Stage")) {
-            // We are in stage mode, so use the recyclerView
+            // We are in Stage mode so use the recyclerView
             stageSectionAdapter = new StageSectionAdapter(requireContext(),mainActivityInterface,displayInterface);
 
             myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -344,6 +356,9 @@ public class PerformanceFragment extends Fragment {
             int totalHeight = stageSectionAdapter.getTotalHeight();
             myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
+
+            // Get a null screenshot
+            getScreenshot(0,0,0);
 
         } else {
             // We are in Performance mode, so use the songView

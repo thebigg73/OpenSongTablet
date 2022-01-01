@@ -24,11 +24,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     // All the helpers we need to access are in the MainActivity
     private final String TAG = "StageSectionAdapter";
     private final MainActivityInterface mainActivityInterface;
+    private final DisplayInterface displayInterface;
     private ArrayList<StageSectionInfo> sectionInfos;
     private int currentSection = 0;
     private int scaledTotalHeight;
     private int totalPadding;
-    private final DisplayInterface displayInterface;
 
     private final float density;
 

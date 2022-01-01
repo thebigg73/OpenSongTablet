@@ -14,6 +14,7 @@ public class __TODO__ {
     /*
 
 Bugs:
+Changing autoscroll (and probably other) values of pdf corrupts the file - likely overwriting it
 opening a song when in the set menu doesn't scroll to it
 
 
