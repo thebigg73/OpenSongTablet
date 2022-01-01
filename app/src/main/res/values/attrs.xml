@@ -8,6 +8,12 @@
         <attr name="showCheckBox" format="boolean" />
     </declare-styleable>
 
+    <declare-styleable name="MaterialRadioButtonItem">
+        <attr name="android:text" format="string"/>
+        <attr name="android:hint" format="string"/>
+        <attr name="android:checked" format="boolean"/>
+    </declare-styleable>
+
     <declare-styleable name="MaterialEditText">
         <attr name="android:text"/>
         <attr name="android:hint"/>

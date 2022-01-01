@@ -23,11 +23,11 @@
 
             <TableRow style="@style/DividerLine" />
 
-            <TextView
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/connections_connect" />
+                android:text="@string/connections_connect"
+                android:hint="@string/connections_change"/>
 
             <RadioGroup
                 android:id="@+id/connectionsMethod"
@@ -35,30 +35,32 @@
                 android:layout_height="wrap_content"
                 android:checkedButton="@+id/connectionsOff">
 
-                <androidx.appcompat.widget.AppCompatRadioButton
+                <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
                     android:id="@+id/connectionsOff"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:padding="8dp"
-                    android:text="@string/off" />
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/off"
+                    android:hint="@string/connections_off"/>
 
-                <androidx.appcompat.widget.AppCompatRadioButton
+                <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
                     android:id="@+id/connectionsHost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:padding="8dp"
-                    android:text="@string/connections_actashost" />
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/connections_actashost"
+                    android:hint="@string/connections_actashost_info"/>
 
-                <androidx.appcompat.widget.AppCompatRadioButton
+                <com.garethevans.church.opensongtablet.customviews.MaterialRadioButtonItem
                     android:id="@+id/connectionsClient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:padding="8dp"
-                    android:text="@string/connections_actasclient" />
-
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="@string/connections_actasclient"
+                    android:hint="@string/connections_actasclient_info"/>
             </RadioGroup>
 
             <TableRow style="@style/DividerLine" />
@@ -69,15 +71,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/nearbyHostMenuOnly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/nearby_host_menu_only"
-                    android:padding="8dp"/>
+                    android:hint="@string/nearby_host_menu_only_info" />
 
                 <TableRow style="@style/DividerLine" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -86,33 +87,33 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/receiveHostFiles"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/connections_receive_host"
-                    android:padding="8dp"/>
+                    android:hint="@string/connections_receive_host_info" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/keepHostFiles"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/connections_keephostsongs"
-                    android:padding="8dp"/>
+                    android:hint="@string/connections_keephostsongs_info" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/receiveHostSections"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/song_sections"
-                    android:padding="8dp"/>
+                    android:hint="@string/connections_song_sections_info" />
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                     android:id="@+id/receiveAutoscroll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/autoscroll"
-                    android:padding="8dp"/>
+                    android:hint="@string/connection_autoscroll_info" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/searchForHosts"

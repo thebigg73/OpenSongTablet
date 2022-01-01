@@ -1058,4 +1058,13 @@ Check out the categories in the right hand options menu.
     <string name="autoscale_info">The app will make the text as large as possible to fit the screen</string>
     <string name="scale_width_info">When switched on, the app zooms the text to fill the width of the screen.  You might have to scroll down to see the rest of the song.  When off, the app fits the entire song into the window.</string>
     <string name="maximise_columns_info">If a song is shown in multiple columns (e.g. when rotated to landscape), this allows each column to zoom to fill the portion of the screen it is allocated.</string>
+    <string name="connections_change">Once you have made a connection, you can change between host and client as required</string>
+    <string name="connections_off">Close any connections and stop advertising and discovering</string>
+    <string name="connections_actashost_info">Control other connected devices that are set as clients</string>
+    <string name="connections_actasclient_info">Listen for instructions from connected devices that are set as hosts</string>
+    <string name="nearby_host_menu_only_info">Connection requests will not be shown unless you are on this page</string>
+    <string name="connections_receive_host_info">View the host version of the song instead of your own</string>
+    <string name="connections_keephostsongs_info">If you do not already have the host song in your library, the app will copy if for you</string>
+    <string name="connections_song_sections_info">Listen for song section changes</string>
+    <string name="connection_autoscroll_info">Listen for autoscroll stop and start commands</string>
 </resources>
