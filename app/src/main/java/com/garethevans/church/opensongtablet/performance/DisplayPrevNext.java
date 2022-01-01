@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.performance;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -14,6 +15,7 @@ public class DisplayPrevNext {
     // This deals with showing the previous and next song buttons and their actions
     // Even if we don't display the buttons, this sets up what to do on next/prev action (swipe, pedal, etc)
 
+    private final String TAG = "DisplayPrevNext";
     private final MainActivityInterface mainActivityInterface;
     private final LinearLayout layout;
     private final ExtendedFloatingActionButton prev, next;
@@ -108,10 +110,11 @@ public class DisplayPrevNext {
     }
 
     private void setIndexes(int setPosition, int songPosition) {
+        Log.d(TAG,"setPosition="+setPosition);
+        Log.d(TAG,"songPosition="+songPosition);
         if (setPosition>=0) {
             moveNextInMenu = false;
             movePrevInMenu = false;
-            //moveToSongInSet = true;
             if (setPosition>0) {
                 prevIndex = setPosition - 1;
                 movePrevInSet = true;
@@ -127,7 +130,6 @@ public class DisplayPrevNext {
                 moveNextInSet = false;
             }
         } else {
-            //moveToSongInSet = false;
             moveNextInSet = false;
             movePrevInSet = false;
             if (songPosition>0) {
@@ -173,12 +175,14 @@ public class DisplayPrevNext {
 
     public void moveToNext() {
         swipeDirection = "R2L";
+        Log.d(TAG,"nextIndex="+nextIndex);
         if (nextIndex!=-1) {
             doMove(nextIndex);
         }
     }
     public void moveToPrev() {
         swipeDirection = "L2R";
+        Log.d(TAG,"prevIndex="+prevIndex);
         if (prevIndex!=-1) {
             doMove(prevIndex);
         }

@@ -22,6 +22,7 @@ import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -1634,6 +1635,9 @@ public class ProcessSong {
                 color = ((ColorDrawable) background).getColor();
             }
             FrameLayout frameLayout = newFrameLayout(c, color);
+            if (v.getParent()!=null) {
+                ((ViewGroup)v.getParent()).removeAllViews();
+            }
             frameLayout.addView(v);
             innerCol1.addView(frameLayout);
         }
@@ -2017,7 +2021,6 @@ public class ProcessSong {
     }
 
     public int getCurrentPage(MainActivityInterface mainActivityInterface, int page) {
-        Log.d(TAG,"page="+page);
         if (!mainActivityInterface.getSong().getShowstartofpdf()) {
             // This is to deal with swiping backwards through songs, show the last page first!
             page = mainActivityInterface.getSong().getPdfPageCount() - 1;

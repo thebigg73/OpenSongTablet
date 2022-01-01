@@ -98,7 +98,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
             } else if (mainActivityInterface.getGestures().getSwipeEnabled() &&
                     e1.getX() - e2.getX() > swipeMinimumDistance
                     && Math.abs(velocityX) > swipeMinimumVelocity) {
-                Log.i("d", "Right to Left");
+                Log.d(TAG, "Right to Left");
                 mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
                 //mainActivityInterface.getDisplayPrevNext().swipeNextCheck();
                 mainActivityInterface.getDisplayPrevNext().moveToNext();
@@ -107,7 +107,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
             } else if (mainActivityInterface.getGestures().getSwipeEnabled() &&
                     e2.getX() - e1.getX() > swipeMinimumDistance
                     && Math.abs(velocityX) > swipeMinimumVelocity) {
-                Log.i("d", "Left to Right");
+                Log.d(TAG, "Left to Right");
                 mainActivityInterface.getDisplayPrevNext().setSwipeDirection("L2R");
                 //mainActivityInterface.getDisplayPrevNext().swipePrevCheck();
                 mainActivityInterface.getDisplayPrevNext().moveToPrev();
@@ -120,4 +120,15 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         return false;
     }
 
+    public int getSwipeMinimumDistance() {
+        return swipeMinimumDistance;
+    }
+
+    public int getSwipeMaxDistanceYError() {
+        return swipeMaxDistanceYError;
+    }
+
+    public int getSwipeMinimumVelocity() {
+        return swipeMinimumVelocity;
+    }
 }

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.animation.LinearInterpolator;
 
@@ -9,19 +10,45 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+
 public class MyRecyclerView extends RecyclerView {
 
     private final String TAG = "MyRecyclerView";
+    private final MainActivityInterface mainActivityInterface;
     private boolean isUserTouching;
     private boolean scrolledToTop=true;
     private boolean scrolledToBottom=false;
     private int maxScrollY;
+    private GestureDetector gestureDetector;
 
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private int scrollPosition;
+    private ScrollListener scrollListener;
+    private ItemTouchListener itemTouchListener;
 
     public MyRecyclerView(@NonNull Context c) {
         super(c);
+        mainActivityInterface = (MainActivityInterface) c;
+        scrollListener = new ScrollListener();
+        itemTouchListener = new ItemTouchListener();
+        addOnScrollListener(scrollListener);
+        addOnItemTouchListener(itemTouchListener);
+        this.setOverScrollMode(OVER_SCROLL_ALWAYS);
+        setClipChildren(false);
+        scrollPosition = 0;
+    }
+
+    public void removeListeners() {
+        removeOnScrollListener(scrollListener);
+        scrollListener = null;
+        removeOnItemTouchListener(itemTouchListener);
+        itemTouchListener = null;
+    }
+
+    public MyRecyclerView(@NonNull Context c, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
+        super(c, attrs);
+        mainActivityInterface = (MainActivityInterface) c;
         addOnScrollListener(new ScrollListener());
         addOnItemTouchListener(new ItemTouchListener());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
@@ -29,18 +56,22 @@ public class MyRecyclerView extends RecyclerView {
         scrollPosition = 0;
     }
 
-    public MyRecyclerView(@NonNull Context c, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
-        super(c, attrs);
-        addOnScrollListener(new ScrollListener());
-        addOnItemTouchListener(new ItemTouchListener());
-        this.setOverScrollMode(OVER_SCROLL_ALWAYS);
-        setClipChildren(false);
-        scrollPosition = 0;
+    public void setGestureDetector(GestureDetector gestureDetector) {
+        this.gestureDetector = gestureDetector;
     }
 
     private class ScrollListener extends RecyclerView.OnScrollListener {
         public ScrollListener() {
             super();
+        }
+
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (isUserTouching) {
+                // User has scrolled, so check for actionbar and prev/next
+                onTouchAction();
+            }
         }
 
         @Override
@@ -52,7 +83,9 @@ public class MyRecyclerView extends RecyclerView {
         }
     }
 
+
     private class ItemTouchListener extends RecyclerView.SimpleOnItemTouchListener {
+
         public ItemTouchListener() {
             super();
         }
@@ -64,9 +97,19 @@ public class MyRecyclerView extends RecyclerView {
             } else if (e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_BUTTON_RELEASE || e.getAction() == MotionEvent.ACTION_CANCEL) {
                 isUserTouching = false;
             }
-            return super.onInterceptTouchEvent(rv, e);
 
+            // Deal with performance mode gestures
+            if (gestureDetector!=null) {
+                return gestureDetector.onTouchEvent(e);
+            } else {
+                return super.onInterceptTouchEvent(rv, e);
+            }
         }
+    }
+
+    private void onTouchAction() {
+        mainActivityInterface.getDisplayPrevNext().showAndHide();
+        mainActivityInterface.showHideActionBar();
     }
 
     public void doScrollBy(int dy, int duration) {

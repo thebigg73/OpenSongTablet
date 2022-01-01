@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -134,6 +133,7 @@ public class PerformanceFragment extends Fragment {
         stickyPopUp = new StickyPopUp();
         mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
         mainActivityInterface.getPerformanceGestures().setPDFRecycler(myView.recyclerView);
+        myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
     }
     private void loadPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
@@ -203,6 +203,7 @@ public class PerformanceFragment extends Fragment {
         // Reset the song sheet titles
         mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
         myView.songSheetTitle.removeAllViews();
+        myView.recyclerView.removeAllViews();
 
         // Set the default color
         myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
@@ -214,15 +215,23 @@ public class PerformanceFragment extends Fragment {
         screenWidth = screenSizes[0];
         screenHeight = screenSizes[1] - mainActivityInterface.getAppActionBar().getActionBarHeight();
 
+        // Remove any other adapters
+        //stageSectionAdapter = null;
+        //pdfPageAdapter = null;
+        //myView.recyclerView.setAdapter(null);
+        //myView.recyclerView.removeAllViews();
+        //myView.recyclerView.setVisibility(View.GONE);
+        //myView.recyclerView.removeListeners();
+
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // We populate the recyclerView with the pages of the PDF
+
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 int availWidth = getResources().getDisplayMetrics().widthPixels;
                 int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
                 pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface, displayInterface,
                         availWidth, availHeight);
 
-                myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
                 myView.recyclerView.setAdapter(pdfPageAdapter);
                 myView.recyclerView.setVisibility(View.VISIBLE);
 
@@ -241,6 +250,10 @@ public class PerformanceFragment extends Fragment {
 
                 // Get a null screenshot
                 getScreenshot(0,0,0);
+
+                // Set the previous/next if we want to
+                mainActivityInterface.getDisplayPrevNext().setPrevNext();
+
             }
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
@@ -272,11 +285,7 @@ public class PerformanceFragment extends Fragment {
 
             // Check the header isn't already attached to a view
             if (mainActivityInterface.getSongSheetTitleLayout().getParent()!=null) {
-                try {
-                    ((LinearLayout) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                ((ViewGroup) mainActivityInterface.getSongSheetTitleLayout().getParent()).removeAllViews();
             }
 
             ViewTreeObserver vto = myView.testPane.getViewTreeObserver();
@@ -289,7 +298,11 @@ public class PerformanceFragment extends Fragment {
                 }
             });
 
-            myView.testPane.addView(mainActivityInterface.getSongSheetTitleLayout());
+            try {
+                myView.testPane.addView(mainActivityInterface.getSongSheetTitleLayout());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } else {
             // No song sheet title requested, so skip
@@ -518,13 +531,8 @@ public class PerformanceFragment extends Fragment {
             }
             return gestureDetector.onTouchEvent(motionEvent);
         });
-        /*myView.recyclerView.setOnTouchListener((view, motionEvent) -> {
-            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                mainActivityInterface.getDisplayPrevNext().showAndHide();
-                mainActivityInterface.showHideActionBar();
-            }
-            return gestureDetector.onTouchEvent(motionEvent);
-        });*/
+
+        myView.recyclerView.setGestureDetector(gestureDetector);
     }
 
     public void pdfScrollToPage(int pageNumber) {
@@ -540,11 +548,9 @@ public class PerformanceFragment extends Fragment {
                 getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")
                 && w!=0 && h!=0) {
             try {
-                Log.d(TAG,"bmp" +w+" x "+h);
                 Bitmap bitmap = Bitmap.createBitmap(w, h+topPadding, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
                 if (myView != null) {
-                    Log.d(TAG,"topPadding="+topPadding);
                     myView.songView.layout(0, topPadding, w, h+topPadding);
                     myView.songView.draw(canvas);
                     Bitmap croppedBitmap = Bitmap.createBitmap(bitmap, 0, topPadding, w, h);
