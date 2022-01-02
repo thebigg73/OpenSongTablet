@@ -457,7 +457,8 @@ public class ProcessSong extends Activity {
             case "chord":
                 if (linenum < totallines - 1 && (nextlinetype.equals("lyric") || nextlinetype.equals("comment"))) {
                     what = "chord_then_lyric";
-                } else if (nextlinetype.equals("") || nextlinetype.equals("chord")) {
+                // IV - totallines test added to prevent crash when a 1 line section
+                } else if (totallines == 1 || nextlinetype.equals("") || nextlinetype.equals("chord")) {
                     what = "chord_only";
                 }
                 break;
@@ -2137,7 +2138,6 @@ public class ProcessSong extends Activity {
         getPreferences(c, preferences);
 
         // Decide if chords are valid to be shown
-
         int mcapo = Integer.parseInt("0" + StaticVariables.mCapo);
 
         boolean doCapoChords = displayChords &&
@@ -2179,7 +2179,12 @@ public class ProcessSong extends Activity {
             linenums = whattoprocess.length;
 
             // IV - songSectionView
-            nextLine = whattoprocess[0];
+            // IV - Handle 1 line sections
+            if (linenums == 0) {
+                nextLine = "";
+            } else {
+                    nextLine = whattoprocess[0];
+            }
             thisLineType = "";
 
             for (int y = 0; y < linenums; y++) {
@@ -2389,6 +2394,8 @@ public class ProcessSong extends Activity {
                                       int lyricsTextColor, int lyricsChordsColor,
                                       int lyricsCapoColor, int presoFontColor, int presoShadowColor) {
         Transpose transpose = new Transpose();
+        // Added in chord format check otherwise app gets stuck with detected format
+        Transpose.checkChordFormat();
 
         getPreferences(c, preferences);
 
@@ -2401,8 +2408,8 @@ public class ProcessSong extends Activity {
 
         boolean doCapoChords = presoShowChords &&
                 ((displayCapoChords && mcapo > 0 && mcapo < 12) ||
-                (preferences.getMyPreferenceInt(c, "chordFormat", 0) > 0 &&
-                 StaticVariables.detectedChordFormat != StaticVariables.newChordFormat));
+                        (preferences.getMyPreferenceInt(c, "chordFormat", 0) > 0 &&
+                                StaticVariables.detectedChordFormat != StaticVariables.newChordFormat));
 
         boolean doNativeChords = presoShowChords && (!doCapoChords || displayCapoAndNativeChords);
 
@@ -2450,10 +2457,15 @@ public class ProcessSong extends Activity {
         // projectedSectionView
         // 2 spaces added to output lines in the loop to reduce occurance of right edge overrun
         // IV - projectedContent lines need the line type character removing
-        if (presentationChordsandlyrics & whattoprocess[0].length() > 0) {
-            nextLine = whattoprocess[0].substring(1);
+        // IV - Handle 1 line sections
+        if (linenums == 0) {
+            nextLine = "";
         } else {
-            nextLine = whattoprocess[0];
+            if (presentationChordsandlyrics & whattoprocess[0].length() > 0) {
+                nextLine = whattoprocess[0].substring(1);
+            } else {
+                nextLine = whattoprocess[0];
+            }
         }
         thisLineType = "";
 

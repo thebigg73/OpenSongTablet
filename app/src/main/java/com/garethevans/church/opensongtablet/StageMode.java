@@ -7229,18 +7229,14 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
 
                 if (FullscreenActivity.isSong) {
-                    // CheckChordFormat returns the current format to both StaticVariables detectedChordFormat and newChordFormat
+                    // Note: If chordformat = 0 (detect) then chordFormatUsePreferred is false
                     try {
-                        Transpose.checkChordFormat();
-                        if (preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1) != 0) {
-                            // Override output format to preference
-                            StaticVariables.newChordFormat = preferences.getMyPreferenceInt(StageMode.this, "chordFormat", 1);
-
-                            if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
-                                StaticVariables.detectedChordFormat = StaticVariables.newChordFormat;
-                            }
+                        if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
+                            StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1);
+                            StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
                         } else {
-                           StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
+                            // CheckChordFormat returns the current format to both StaticVariables detectedChordFormat and newChordFormat
+                            Transpose.checkChordFormat();
                         }
                     } catch (Exception e) {
                         Log.d(TAG, "Error checking the chord format");
