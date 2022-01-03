@@ -6,18 +6,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.google.android.material.textview.MaterialTextView;
 
 public class SongProjectionInfo extends LinearLayout {
 
     private final Context c;
     private final LinearLayout castSongInfo, contentLayout;
-    private final MaterialTextView songTitle, songAuthor, songCopyright, songAlert;
+    private final TextView songTitle, songAuthor, songCopyright, songAlert;
     private final ImageView miniLogo;
     private final String TAG = "SongProjectionInfo";
 
@@ -55,7 +55,7 @@ public class SongProjectionInfo extends LinearLayout {
     public void setSongAlert(String alert) {
         setText(songAlert,alert);
     }
-    private void setText(MaterialTextView textView, String text) {
+    private void setText(TextView textView, String text) {
         Log.d(TAG,"text="+text);
         if (text==null || text.isEmpty()) {
             textView.setVisibility(View.GONE);
@@ -99,7 +99,7 @@ public class SongProjectionInfo extends LinearLayout {
     public void setAlign(int align) {
         songTitle.setGravity(align);
         songAuthor.setGravity(align);
-        songAuthor.setGravity(align);
+        songCopyright.setGravity(align);
     }
 
     // Used in presenter mode to display song info on device

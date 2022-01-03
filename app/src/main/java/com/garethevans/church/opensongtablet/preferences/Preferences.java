@@ -114,8 +114,6 @@ public class Preferences extends Activity {
 
 
     // Below is an alphabetical list of all the user preferences stored in the app!
-    //TODO
-    // customLogoSize is specified, but no option in the app to change it
     /*
 
     Variable name                   Type        What
@@ -132,7 +130,8 @@ public class Preferences extends Activity {
     backgroundImage2                String      The uri of the background image 2 for presentations (def: ost_bg.png)
     backgroundVideo1                String      The uri of the background video 1 for presentations (def:"")
     backgroundVideo2                String      The uri of the background video 2 for presentations (def:"")
-    backgroundToUse                 String      Which background are we using (img1, img2, vid1, vid2) (def:img1)
+    backgroundToUse                 String      Which background are we using (img1, img2, vid1, vid2, color) (def:img1)
+    backgroundColor                 int         Solid colour for presentation background (def: colorPrimary)
     backgroundTypeToUse             String      Is the background an image or a video (def:image)
     batteryDialOn                   boolean     Should the battery circle be shown in the action bar (def:true)
     batteryDialThickness            int         The thickness of the battery dial in the action bar (def:4)
@@ -202,7 +201,7 @@ public class Preferences extends Activity {
     custom2_highlightChordColor     int         The color to highlight chords (i.e. background). (def:tranparent/0x00000000)
     custom2_highlightHeadingColor   int         The color to highlight headings (i.e. background). (def:tranparent/0x00000000)
     customLogo                      String      The uri of the user logo for presentations (def:"")
-    customLogoSize                  float       Size of the custom logo (% of screen)
+    customLogoSize                  float       Size of the custom logo (% of screen) (def:0.5f)
     customPadAb                     String      Custom pad uri for the key specified
     customPadA                      String      Custom pad uri for the key specified
     customPadBb                     String      Custom pad uri for the key specified

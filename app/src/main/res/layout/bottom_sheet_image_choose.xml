@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FullscreenBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.garethevans.church.opensongtablet.customviews.DialogHeader
+        android:id="@+id/dialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/background" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/choose_background" />
+
+            <!-- Single color -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/simple_color_info"
+                    android:text="@string/simple_color" />
+
+                <FrameLayout
+                    android:id="@+id/colorBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:layout_marginStart="16dp">
+                <ImageView
+                    android:id="@+id/singleColor"
+                    android:layout_width="128dp"
+                    android:layout_height="72dp"
+                    android:contentDescription="@string/simple_color"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <TableRow style="@style/DividerLine" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TableRow>
+
+                    <FrameLayout
+                        android:id="@+id/image1Background"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:padding="4dp">
+
+                    <ImageView
+                        android:id="@+id/image1"
+                        android:layout_width="128dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="@string/choose_image2"
+                        android:src="@drawable/ic_image_white_36dp"
+                        android:layout_gravity="center"/>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/image2Background"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:padding="4dp">
+                    <ImageView
+                        android:id="@+id/image2"
+                        android:layout_width="128dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="@string/choose_image2"
+                        android:src="@drawable/ic_image_white_36dp"
+                        android:layout_gravity="center"/>
+                    </FrameLayout>
+                </TableRow>
+
+                <TableRow android:paddingBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="@string/choose_image1"
+                        android:labelFor="@id/image2"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="@string/choose_image2"
+                        android:labelFor="@id/image1"/>
+                </TableRow>
+
+                <TableRow>
+
+                    <FrameLayout
+                        android:id="@+id/video1Background"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:id="@+id/video1"
+                            android:layout_width="128dp"
+                            android:layout_height="72dp"
+                            android:src="@drawable/ic_image_white_36dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/choose_video1" />
+                    </FrameLayout>
+
+
+                    <FrameLayout
+                        android:id="@+id/video2Background"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:padding="4dp">
+
+                        <ImageView
+                            android:id="@+id/video2"
+                            android:layout_width="128dp"
+                            android:layout_height="72dp"
+                            android:src="@drawable/ic_image_white_36dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/choose_video2" />
+                    </FrameLayout>
+                </TableRow>
+
+                <TableRow android:paddingBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="@string/choose_video1"
+                        android:labelFor="@id/video1"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="@string/choose_video2"
+                        android:labelFor="@id/video2"/>
+
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

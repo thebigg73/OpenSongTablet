@@ -69,7 +69,6 @@ public class NearbyConnections implements NearbyInterface {
     private String latestfoldernamepair = "";
     private int pendingCurrentSection = 0;
 
-
     public NearbyConnections(Context c) {
         this.c = c;
         connectedEndPoints = new ArrayList<>();

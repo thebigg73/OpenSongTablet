@@ -1065,7 +1065,25 @@ public class StorageAccess {
             return false;
         }
     }
-
+    public String getUriString(Uri uri) {
+        String uriString = "";
+        if (uri!=null) {
+            uriString = uri.toString();
+            if (uriString.contains("OpenSong/")) {
+                // Localised preLollipop
+                uriString = uriString.substring(uriString.lastIndexOf("OpenSong/")+9);
+                uriString = "../" + uriString;
+            } else if (uriString.contains("OpenSong%2F")) {
+                // Localised storageAccessFramework
+                uriString = uriString.substring(uriString.lastIndexOf("OpenSong%2F")+11);
+                uriString = uriString.replace("%2F","/");
+                uriString = uriString.replace("%20"," ");
+                uriString = "../" + uriString;
+            }
+        }
+        Log.d(TAG,"uriString="+uriString);
+        return uriString;
+    }
 
     // Basic file actions (read, create, copy, delete, write)
     public boolean saveSongFile(Context c, MainActivityInterface mainActivityInterface) {

@@ -6,7 +6,6 @@ import static com.google.android.material.snackbar.Snackbar.make;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -38,14 +38,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.mediarouter.app.MediaRouteButton;
-import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -115,6 +114,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
 import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
+import com.garethevans.church.opensongtablet.presenter.SettingsFragment;
 import com.garethevans.church.opensongtablet.presenter.SongSectionsFragment;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
@@ -123,9 +123,7 @@ import com.garethevans.church.opensongtablet.screensetup.FontSetupFragment;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
-import com.garethevans.church.opensongtablet.secondarydisplay.CastService;
-import com.garethevans.church.opensongtablet.secondarydisplay.MyHDMIDisplay;
-import com.garethevans.church.opensongtablet.secondarydisplay.MySessionManagerListener;
+import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplay;
 import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
@@ -147,16 +145,12 @@ import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.tools.TimeTools;
 import com.google.android.gms.cast.CastDevice;
-import com.google.android.gms.cast.CastRemoteDisplayLocalService;
-import com.google.android.gms.cast.framework.CastButtonFactory;
-import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
 import com.google.android.gms.cast.framework.CastStateListener;
 import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.Status;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -243,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Other views/listeners/helpers
     private WindowFlags windowFlags;
     private BatteryStatus batteryStatus;
-    private CastContext castContext;
+    //private CastContext castContext;
     private CastSession castSession;
     private SessionManager sessionManager;
     private SessionManagerListener<CastSession> sessionManagerListener;
@@ -253,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SetMenuFragment setMenuFragment;
     private PerformanceFragment performanceFragment;
     private PresenterFragment presenterFragment;
+    private SettingsFragment presenterFragmentSettings;
     private BootUpFragment bootUpFragment;
     private EditSongFragment editSongFragment;
     private EditSongFragmentMain editSongFragmentMain;
@@ -265,12 +260,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private AppBarConfiguration appBarConfiguration;
     private CastStateListener castStateListener;
     private CastDevice castDevice;
-    private CastService castService;
-    private MyHDMIDisplay hdmiPresentation;
-    private MediaRouteSelector mediaRouteSelector;
+    //private CastService castService;
+    private SecondaryDisplay secondaryDisplay;
+    //private MediaRouteSelector mediaRouteSelector;
+    //private MediaRouterCallback mediaRouterCallback;
     private Display[] connectedDisplays;
     private DisplayManager displayManager;
-
+    private ImageView screenMirror;
 
     // Variables used
     private ArrayList<View> targets;
@@ -395,13 +391,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         exportActions = new ExportActions();
         bible = new Bible();
         customSlide = new CustomSlide();
-        presenterSettings = new PresenterSettings();
-
-        // Casting
-        //myMediaRouteSelector = new MyMediaRouteSelector();
-        //mediaRouteSelector = myMediaRouteSelector.getMediaRouteSelector();
-        castService = new CastService(this);
-        //myMediaRouteFactory = new MyMediaRouteFactory();
+        presenterSettings = new PresenterSettings(this);
+        //mediaRouterCallback = new MediaRouterCallback(this);
     }
 
     private void setupBatteryStatus() {
@@ -780,6 +771,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ((EditSongFragmentTags) callingFragment).removeTags(arguments);
                     break;
 
+                case "presenterFragmentSettings":
+                    ((SettingsFragment) callingFragment).updateBackground();
+                    ((SettingsFragment) callingFragment).updateLogo();
+                    break;
 
             }
         }
@@ -1011,7 +1006,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @SuppressLint("ServiceCast")
     private void setupCast() {
         try {
-            if (castContext == null) {
+            /*if (castContext == null) {
                 castContext = CastContext.getSharedInstance(this);
             }
             if (sessionManager == null) {
@@ -1019,20 +1014,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             if (sessionManagerListener == null) {
                 sessionManagerListener = new MySessionManagerListener(this);
+            }*/
+
+            /*if (mediaRouter==null) {
+                mediaRouter = MediaRouter.getInstance(this);
             }
+            if (mediaRouteSelector==null) {
+                mediaRouteSelector = new MediaRouteSelector.Builder()
+                        .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
+                        .addControlCategory(CastMediaControlIntent.categoryForCast(getString(R.string.app_id)))
+                        .build();
+            }*/
 
             // The stuff for HDMI output
-            displayManager = (DisplayManager) getSystemService(DISPLAY_SERVICE);
+            checkDisplays();
 
-
-/*
-
-            mediaRouter = MediaRouter.getInstance(this);
-            mediaRouteSelector = new MediaRouteSelector.Builder()
-                    .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO).build();
-            //mediaRouterCallback = new MediaRouterCallback(this,this);
-            mediaRouterCallback = new MediaRouterCallback(this,this);
-*/
 
         } catch (Exception e) {
             // No Google Service available
@@ -1191,7 +1187,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         super.onPrepareOptionsMenu(menu);
         settingsButton = menu.findItem(R.id.settings_menu_item);
         MenuItem alertButton = menu.findItem(R.id.alert_info_item);
-
         // Decide if an alert should be shown
         if (alertChecks.showBackup(this,
                 preferences.getMyPreferenceInt(this,"runssincebackup",0)) ||
@@ -1220,9 +1215,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
                 openDialog(alertInfoBottomSheet,"Alerts");
                 break;
+
+            case "mirror":
+                startActivity(new Intent("android.settings.CAST_SETTINGS"));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void refreshMenuItems() {
         invalidateOptionsMenu();
@@ -1236,10 +1236,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
 
+        screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
+        screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
+
         // Setup the menu item for connecting to cast devices
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
-            MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
-            MediaRouteButton mediaRouteButton = (MediaRouteButton) mediaRouteMenuItem.getActionView();
+            //CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+            //MediaRouteButton mediaRouteButton = (MediaRouteButton) mediaRouteMenuItem.getActionView();
             //mediaRouteButton.setDialogFactory(myMediaRouteFactory);
         } else {
             Log.d(TAG, "Google Play Services Not Available");
@@ -2690,10 +2693,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void onStart() {
         super.onStart();
+        /*if (mediaRouter!=null && mediaRouteSelector!=null) {
+            mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+        }*/
+            // Deal with the Cast logic
 
-
-        // Deal with the Cast logic
-        // TODO
         /*if (mediaRouter != null && mediaRouteSelector != null) {
             try {
                 mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback,
@@ -2702,8 +2706,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 e.printStackTrace();
             }
         }*/
+        // Check displays
+        checkDisplays();
+
         // Fix the page flags
         setWindowFlags();
+
     }
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -2726,13 +2734,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onResume() {
         super.onResume();
-        castSession = sessionManager.getCurrentCastSession();
-        sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
+        //castSession = sessionManager.getCurrentCastSession();
+        //sessionManager.addSessionManagerListener(sessionManagerListener, CastSession.class);
         // Listen for changes to media routes.
         //mediaRouter.addCallback(mediaRouteSelector, mediaRouterCallback, CALLBACK_FLAG_PERFORM_ACTIVE_SCAN);
 
         // Post this in a few seconds - need to ensure song is loaded first
-        myView.drawerLayout.postDelayed(this::resetHDMI,2000);
+        //myView.drawerLayout.postDelayed(this::resetHDMI,2000);
+
+        // Check displays
+        checkDisplays();
 
         // Fix the page flags
         setWindowFlags();
@@ -2740,8 +2751,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onPause() {
         super.onPause();
-        sessionManager.removeSessionManagerListener(sessionManagerListener, CastSession.class);
-        castSession = null;
+        //sessionManager.removeSessionManagerListener(sessionManagerListener, CastSession.class);
+        //castSession = null;
         // Stop listening for changes to media routes.
         //mediaRouter.removeCallback(mediaRouterCallback);
     }
@@ -2753,11 +2764,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void onStop() {
         super.onStop();
-        try {
-            //mediaRouter.removeCallback(mediaRouterCallback);
-        } catch (Exception e) {
-            Log.d("StageMode", "Problem removing mediaroutercallback");
-        }
+        /*if (mediaRouter!=null && mediaRouterCallback!=null) {
+            try {
+                mediaRouter.removeCallback(mediaRouterCallback);
+            } catch (Exception e) {
+                Log.d(TAG, "Problem removing mediaRouterCallback");
+            }
+        }*/
         if (batteryStatus!=null) {
             try {
                 this.unregisterReceiver(batteryStatus);
@@ -2799,36 +2812,86 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void updateDisplay(String what) {
         Log.d(TAG,"updateDisplay("+what+")");
-        if (castService!=null && castDevice!=null) {
+        /*if (castService!=null && castDevice!=null) {
             // TODO
-        }
-        if (hdmiPresentation!=null) {
+        }*/
+        if (secondaryDisplay!=null) {
             switch (what) {
                 case "info":
-                    hdmiPresentation.setSongInfo();
+                    secondaryDisplay.setSongInfo();
                     break;
 
                 case "content":
-                    hdmiPresentation.setSongContent();
+                    secondaryDisplay.setSongContent();
                     break;
             }
 
         }
     }
 
+    private void checkDisplays() {
+        // This checks for connected displays and adjusts the menu item if connected
+        displayManager = (DisplayManager) getSystemService(DISPLAY_SERVICE);
+        Log.d(TAG,"displayManager="+displayManager);
+        if (displayManager!= null) {
+            //connectedDisplays = displayManager.getDisplays();
+            connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+            if (screenMirror!=null) {
+                Log.d(TAG,"connectedDisplays.length="+connectedDisplays.length);
+                if (connectedDisplays.length > 0) {
+                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_mr_button_connected_30_dark));
+                } else {
+                    screenMirror.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ic_mr_button_connected_00_dark));
+                }
+            }
+            for (Display display:connectedDisplays) {
+                Log.d(TAG,"display: "+display);
+                if (display.getDisplayId()!=0) {
+                    setupDisplay(display);
+                }
+            }
+        }
+    }
     @Override
     public void setupDisplay(Display presentationDisplay) {
-        /*Log.d(TAG,"setupDisplay()");
-        Presentation presentation = new MyCastDisplay(this,presentationDisplay,this);
-        presentation.show();*/
+        Log.d(TAG,"setupDisplay()");
+        secondaryDisplay = new SecondaryDisplay(this,presentationDisplay);
+        secondaryDisplay.show();
     }
 
     @Override
     public void setupCastDevice(CastDevice castDevice) {
+        Log.d(TAG, "setupCastDevice: "+castDevice.getFriendlyName());
         this.castDevice = castDevice;
-        /*CastRemoteDisplayLocalService.NotificationSettings notificationSettings = new CastRemoteDisplayLocalService.NotificationSettings.Builder().setNotification(getNotification()).build();
-        PresentationService.startService(this, PresentationService.class , getString(R.string.app_id), castDevice, notificationSettings, (CastRemoteDisplayLocalService.Callbacks) sessionManagerListener);
+        // Get the current route and its presentation display.
+
+        /*if (mediaRouter!=null) {
+            Display presentationDisplay = mediaRouter.getSelectedRoute().getPresentationDisplay();
+            Log.d(TAG,"presentationDisplay="+presentationDisplay);
+            if (presentationDisplay != null) {
+                secondaryDisplay = new SecondaryDisplay(this, presentationDisplay);
+                secondaryDisplay.show();
+            }
+        }*/
+
+
+
+
+
+        /*MediaRouter.RouteInfo route = mMediaRouter.getSelectedRoute(
+                MediaRouter.ROUTE_TYPE_LIVE_VIDEO);
+        Display presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+
+        secondaryDisplay = new SecondaryDisplay(this,mainActivityInterface);
+        secondaryDisplay.show();
 */
+        //presentationDisplay = route != null ? route.getPresentationDisplay() : null;
+
+        //SecondaryDisplay.startService(this, PresentationService.class , getString(R.string.app_id), castDevice, notificationSettings, (CastRemoteDisplayLocalService.Callbacks) sessionManagerListener);
+
+        /*this.castDevice = castDevice;
+        *//*CastRemoteDisplayLocalService.NotificationSettings notificationSettings = new CastRemoteDisplayLocalService.NotificationSettings.Builder().setNotification(getNotification()).build();
+        *//*
         Intent intent = new Intent(this,MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent notificationPendingIntent = null;
@@ -2875,56 +2938,53 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         Log.d(TAG,"castRemoteDisplayLocalService="+castRemoteDisplayLocalService);
                     }
                 });
-
+*/
     }
 
     private void connectHDMI() {
         Log.d(TAG,"displays: "+connectedDisplays.length);
         if (connectedDisplays.length > 0) {
             Log.i(TAG, "Showing presentation on display: " + connectedDisplays[0]);
-            hdmiPresentation = new MyHDMIDisplay(this, connectedDisplays[0], this);
-            hdmiPresentation.show();
+            //secondaryDisplay = new SecondaryDisplay(this, connectedDisplays[0], this);
+            //secondaryDisplay.show();
         }
     }
 
     @Override
     public void resetHDMI() {
-        connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
-        connectHDMI();
-    }
-
-    @Override
-    public CastService getPresentationService() {
-        return castService;
+        if (displayManager!=null) {
+            connectedDisplays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+            connectHDMI();
+        }
     }
 
     @Override
     public void presenterShowLogo(boolean show) {
-        if (castService!=null && castDevice!=null) {
+        /*if (castService!=null && castDevice!=null) {
             //castService.getMyCastDisplay().showLogo(show);
-        }
-        if (hdmiPresentation!=null) {
-            hdmiPresentation.showLogo(show);
+        }*/
+        if (secondaryDisplay!=null) {
+            secondaryDisplay.showLogo(show,false);
         }
     }
 
     @Override
     public void presenterBlackScreen(boolean black) {
-        if (castService!=null && castDevice!=null) {
+        /*if (castService!=null && castDevice!=null) {
             //castService.getMyCastDisplay().showBlackScreen(black);
-        }
-        if (hdmiPresentation!=null) {
-            hdmiPresentation.showBlackScreen(black);
+        }*/
+        if (secondaryDisplay!=null) {
+            secondaryDisplay.showBlackScreen(black);
         }
     }
 
     @Override
     public void presenterShowSection(int position) {
-        if (castService!=null && castDevice!=null) {
+        /*if (castService!=null && castDevice!=null) {
             //castService.getMyCastDisplay().showSection(position);
-        }
-        if (hdmiPresentation!=null) {
-            hdmiPresentation.showSection(position);
+        }*/
+        if (secondaryDisplay!=null) {
+            secondaryDisplay.showSection(position);
         }
         Log.d(TAG,"presenterShowSection");
     }
@@ -2936,6 +2996,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Send it back to Performance Mode to deal with the outcome (scroll to, update display, etc)
         if (performanceFragment!=null) {
             performanceFragment.performanceShowSection(position);
+        }
+    }
+
+
+
+
+
+    // Secondary Display functions
+
+    @Override
+    public void changeBackgrounds() {
+        // Called from the ImageChooserBottomSheet when the user chooses or changes backgrounds or logo
+        if (secondaryDisplay!=null) {
+            secondaryDisplay.changeBackground();
         }
     }
 }

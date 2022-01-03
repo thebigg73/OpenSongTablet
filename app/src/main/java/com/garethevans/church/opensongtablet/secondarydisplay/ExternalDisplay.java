@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import android.content.Context;
@@ -75,3 +76,4 @@ public class ExternalDisplay extends CastPresentation implements MediaPlayer.OnV
 
     }
 }
+*/

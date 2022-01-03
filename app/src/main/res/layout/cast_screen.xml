@@ -56,7 +56,7 @@
             android:contentDescription="@string/app_name"
             android:visibility="invisible"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/testLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,8 +126,8 @@
 
         <ImageView
             android:id="@+id/mainLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_centerInParent="true"
             android:contentDescription="@string/app_name"
             android:padding="16dp"

@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import android.content.Context;
@@ -92,4 +93,4 @@ public class MySessionManagerListener implements SessionManagerListener<CastSess
 
     }
 
-}
+}*/

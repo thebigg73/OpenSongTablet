@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import android.content.Context;
@@ -7,13 +8,13 @@ import android.view.Display;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-public class PresentationServiceHDMI  {
+public class PresentationServiceHDMI {
 
     Context c;
     DisplayInterface displayInterface;
     MainActivityInterface mainActivityInterface;
     Display[] displays;
-    MyCastDisplay[] myCastDisplays;
+    //MyCastDisplay[] myCastDisplays;
 
     private final String TAG = "PresentationServiceHDMI";
 
@@ -36,12 +37,14 @@ public class PresentationServiceHDMI  {
         Log.d(TAG,"mainActivityInterface="+mainActivityInterface);
     }
 
-    /*@Override
+    */
+/*@Override
     public void onCreatePresentation(@NonNull Display display) {
         this.display = display;
         mainActivityInterface.getPresentationCommon().setIsPresenting(true);
         createPresentation(display);
-    }*/
+    }*//*
+
 
     public void createPresentation(Display[] displays) {
         // Do this for each display
@@ -55,7 +58,8 @@ public class PresentationServiceHDMI  {
         //myCastDisplay = new MyCastDisplay(this.getContext(), display, mainActivityInterface);
         //myCastDisplay.show();
         //this.mainActivityInterface = mainActivityInterface;
-        /*dismissPresentation();
+        */
+/*dismissPresentation();
         myCastDisplay = new MyCastDisplay(this, display, mainActivityInterface);
         try {
             myCastDisplay.show();
@@ -65,7 +69,8 @@ public class PresentationServiceHDMI  {
             ex.printStackTrace();
             dismissPresentation();
             mainActivityInterface.getPresentationCommon().setIsPresenting(false);
-        }*/
+        }*//*
+
     }
 
 //    @Override
@@ -74,7 +79,8 @@ public class PresentationServiceHDMI  {
 //        dismissPresentation();
 //    }
 
-    /*@Override
+    */
+/*@Override
     public void onDestroy() {
         if (myCastDisplay!=null) {
             try {
@@ -83,12 +89,18 @@ public class PresentationServiceHDMI  {
                 e.printStackTrace();
             }
         }
-        *//*if (mainActivityInterface!=null) {
+        *//*
+*/
+/*if (mainActivityInterface!=null) {
             mainActivityInterface.getPresentationCommon().setIsPresenting(false);
         }*//*
-    }*/
+*/
+/*
+    }*//*
 
-    private void dismissPresentation() {
+
+    */
+/*private void dismissPresentation() {
         for (MyCastDisplay myCastDisplay:myCastDisplays) {
             if (myCastDisplay!=null) {
                 myCastDisplay.dismiss();
@@ -97,7 +109,8 @@ public class PresentationServiceHDMI  {
         }
 
         //mainActivityInterface.getPresentationCommon().setIsPresenting(false);
-    }
+    }*//*
+
 
 
 }
@@ -110,6 +123,7 @@ public class PresentationServiceHDMI  {
 
 // Indent of common content kept the same across versions
 // This is the HDMI version (so cast commented out)
+*/
 /*
 
 //static class ExternalDisplay extends CastPresentation
@@ -366,3 +380,4 @@ class PresentationServiceHDMI extends Presentation
     }
 }
 */
+

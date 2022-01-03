@@ -1067,4 +1067,7 @@ Check out the categories in the right hand options menu.
     <string name="connections_keephostsongs_info">If you do not already have the host song in your library, the app will copy if for you</string>
     <string name="connections_song_sections_info">Listen for song section changes</string>
     <string name="connection_autoscroll_info">Listen for autoscroll stop and start commands</string>
+    <string name="image_change">Click on the image to change</string>
+    <string name="simple_color">Simple colour</string>
+    <string name="simple_color_info">A single colour background</string>
 </resources>

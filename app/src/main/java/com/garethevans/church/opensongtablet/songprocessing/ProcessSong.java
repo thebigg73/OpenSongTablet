@@ -1177,13 +1177,17 @@ public class ProcessSong {
         ArrayList<String> songSections = new ArrayList<>();
         ArrayList<Integer> sectionColors = new ArrayList<>();
 
-        int backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
-        int textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
+        int backgroundColor;
+        int textColor;
         if (presentation) {
+            backgroundColor = Color.TRANSPARENT;
             textColor = mainActivityInterface.getMyThemeColors().getPresoFontColor();
         } else if (asPDF) {
             backgroundColor = Color.WHITE;
             textColor = Color.BLACK;
+        } else {
+            backgroundColor = mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor();
+            textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
         }
 
         // This goes through processing the song

@@ -19,4 +19,7 @@ public interface DisplayInterface {
 
     // Performance and Stage Mode tasks
     void performanceShowSection(int position);
+
+    // Settings changes that affects displays
+    void changeBackgrounds();
 }

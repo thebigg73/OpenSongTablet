@@ -27,7 +27,7 @@
         <item name="colorOnBackground">@color/white</item>
         <item name="colorError">@color/red</item>
         <item name="colorOnError">@color/red</item>
-        <item name="colorButtonNormal">@color/red</item>
+        <item name="colorButtonNormal">@color/transparent</item>
         <item name="colorPrimaryVariant">@color/colorAltPrimary</item>
         <item name="colorSecondaryVariant">@color/colorSecondary</item>
         <item name="scrimBackground">@color/scrim</item>

@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import android.content.Context;
@@ -27,11 +28,13 @@ public class MediaRouteDialogTheme extends MediaRouteChooserDialogFragment {
         super.setRouteSelector(selector);
     }
 
-    /*@Override
+    */
+/*@Override
     public MediaRouteDynamicChooserDialog onCreateDynamicChooserDialog(Context context) {
         MediaRouteDynamicChooserDialog dialog = new MediaRouteDynamicChooserDialog(context);
         return dialog;
-    }*/
+    }*//*
+
 
     @Override
     public MediaRouteChooserDialog onCreateChooserDialog(Context context, Bundle savedInstanceState) {
@@ -51,3 +54,4 @@ public class MediaRouteDialogTheme extends MediaRouteChooserDialogFragment {
 
 }
 
+*/

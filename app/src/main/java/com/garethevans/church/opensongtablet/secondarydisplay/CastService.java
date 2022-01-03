@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.secondarydisplay;
 
 
@@ -48,7 +49,8 @@ public class CastService extends CastRemoteDisplayLocalService {
         myCastDisplay = new MyCastDisplay(this, display, mainActivityInterface);
         myCastDisplay.show();
         //this.mainActivityInterface = mainActivityInterface;
-        /*dismissPresentation();
+        */
+/*dismissPresentation();
         myCastDisplay = new MyCastDisplay(this, display, mainActivityInterface);
         try {
             myCastDisplay.show();
@@ -58,7 +60,8 @@ public class CastService extends CastRemoteDisplayLocalService {
             ex.printStackTrace();
             dismissPresentation();
             mainActivityInterface.getPresentationCommon().setIsPresenting(false);
-        }*/
+        }*//*
+
     }
 
     @Override
@@ -76,9 +79,11 @@ public class CastService extends CastRemoteDisplayLocalService {
                 e.printStackTrace();
             }
         }
-        /*if (mainActivityInterface!=null) {
+        */
+/*if (mainActivityInterface!=null) {
             mainActivityInterface.getPresentationCommon().setIsPresenting(false);
-        }*/
+        }*//*
+
     }
 
     private void dismissPresentation() {
@@ -91,3 +96,4 @@ public class CastService extends CastRemoteDisplayLocalService {
 
 
 }
+*/
