@@ -1698,6 +1698,9 @@ public class ProcessSong extends Activity {
 
             if (isPresentation) {
                 StaticVariables.songSectionsLabels[x] = getSectionHeadings(StaticVariables.songSections[x]);
+                if (!StaticVariables.songSectionsLabels[x].equals("") && (!FullscreenActivity.foundSongSections_heading.contains(StaticVariables.songSectionsLabels[x]))) {
+                    FullscreenActivity.foundSongSections_heading.add(StaticVariables.songSectionsLabels[x]);
+                }
 
                 // Now that we have generated the song, decide if we should remove lines etc.
                 // Remove tag/heading lines
@@ -1732,6 +1735,9 @@ public class ProcessSong extends Activity {
                 StaticVariables.songSections[x] = StaticVariables.songSections[x].replace("[H__1]\n", "").replace("[F__1]\n", "");
 
                 StaticVariables.songSectionsLabels[x] = getSectionHeadings(StaticVariables.songSections[x]);
+                if (!StaticVariables.songSectionsLabels[x].equals("") && (!FullscreenActivity.foundSongSections_heading.contains(StaticVariables.songSectionsLabels[x]))) {
+                    FullscreenActivity.foundSongSections_heading.add(StaticVariables.songSectionsLabels[x]);
+                }
 
                 // Split each section into lines in a string array, determine each line type and get sectionContents lines end trimmed
                 StaticVariables.sectionContents[x] = StaticVariables.songSections[x].split("\n");
@@ -1764,7 +1770,7 @@ public class ProcessSong extends Activity {
         }
         if (label.equals("")) {
             // If section is just a comment line, have no label
-            if (songsection.startsWith((";"))) {
+            if (songsection.startsWith(";") && !(songsection.contains("\n.") || songsection.contains("\n "))) {
                 label = "";
             } else if (songsection.split("\n").length < 2) {
                 label = "";
