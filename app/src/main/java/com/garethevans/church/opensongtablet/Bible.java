@@ -303,7 +303,8 @@ class Bible {
                 lines = lines.replace("_nl_","\n");
                 newimprovedscripture.add(lines);
                 if (words.startsWith(";") || words.startsWith("|") || words.startsWith("[") || words.startsWith("]")) {
-                    words = " " + words;
+                    // Protect with non breaking space (does not trim) to force display as lyric line
+                    words = "\u00A0" + words;
                 }
                 currentline = new StringBuilder(words);
             }

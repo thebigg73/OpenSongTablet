@@ -1292,10 +1292,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_dB_group.setOnClickListener(view -> dBButtonClick());
         presenter_slide_group.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "customreusable_slide";
+            // Initialise working variables on button use
+            FullscreenActivity.scripture_title = "";
+            FullscreenActivity.scripture_verse = "";
+            FullscreenActivity.customslide_title = "";
+            FullscreenActivity.customslide_content = "";
             openFragment();
         });
         presenter_scripture_group.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "customreusable_scripture";
+            // Initialise working variables on button use
+            FullscreenActivity.scripture_title = "";
+            FullscreenActivity.scripture_verse = "";
+            FullscreenActivity.customslide_title = "";
+            FullscreenActivity.customslide_content = "";
             openFragment();
         });
         presenter_display_group.setOnClickListener(view -> {

@@ -916,7 +916,7 @@ public class ProcessSong extends Activity {
         for (int x = 1; x < (chord.length()); x++) {
             thischordcharempty = chord.startsWith(" ", x);
             prevlyriccharempty = lyric.startsWith(" ", x - 1);
-            prevlyricempty = prevlyricempty & prevlyriccharempty;
+            prevlyricempty = prevlyricempty && prevlyriccharempty;
 
             // Add the start position of a chord
             if (!thischordcharempty && prevchordcharempty) {
@@ -1181,9 +1181,11 @@ public class ProcessSong extends Activity {
                     }
                     bit = sb.toString();
 
-                    // IV - Remove (....) comments when Stage or Presentation mode
+                    // IV - Remove (....) comments when Stage or Presentation mode song
                     if (!StaticVariables.whichMode.equals("Performance")) {
-                        bit = bit.replaceAll("\\(.*?\\)", "");
+                        if (!StaticVariables.whichSongFolder.startsWith("../") || StaticVariables.whichSongFolder.startsWith("../Variation")) {
+                            bit = bit.replaceAll("\\(.*?\\)", "");
+                        }
                     }
 
                     // IV - Remove typical word splits, white space and trim - beautify!
@@ -2108,9 +2110,11 @@ public class ProcessSong extends Activity {
                         // If none of the above, it's a lyrics line without leading space
                         // IV - Same logic as in ProcessSong
                         if (!displayChords) {
-                            // IV - Remove (....) comments when Stage or Presentation mode
+                            // IV - Remove (....) comments when Stage or Presentation mode song
                             if (!StaticVariables.whichMode.equals("Performance")) {
-                                StaticVariables.sectionContents[x][y] = StaticVariables.sectionContents[x][y].replaceAll("\\(.*?\\)", "");
+                                if (!StaticVariables.whichSongFolder.startsWith("../") || StaticVariables.whichSongFolder.startsWith("../Variation")) {
+                                    StaticVariables.sectionContents[x][y] = StaticVariables.sectionContents[x][y].replaceAll("\\(.*?\\)", "");
+                                }
                             }
                             // IV - Remove typical word splits, white space and trim - beautify!
                             StaticVariables.sectionContents[x][y] = StaticVariables.sectionContents[x][y].replaceAll("_", "")
@@ -2169,7 +2173,7 @@ public class ProcessSong extends Activity {
 
         if (checkForFilter(c, preferences, x)) {
             // IV - If first title is empty then do not do add to view and mark section as comment.  This helps the song details block.
-            if (x == 0 & returnvals[0].equals("")) {
+            if (x == 0 && returnvals[0].equals("")) {
                 returnvals[1] = "comment";
             } else {
                 ll.addView(titletoTextView(c, preferences, lyricsTextColor, returnvals[0], fontsize));
@@ -2442,10 +2446,12 @@ public class ProcessSong extends Activity {
         int linelength;
 
         if (isPresentation) {
-            // projectedContents have a leading linetype character that is removed later
             whattoprocess = StaticVariables.projectedContents[x];
             linetypes = StaticVariables.projectedLineTypes[x];
         } else {
+            whattoprocess = StaticVariables.sectionContents[x];
+            linetypes = StaticVariables.sectionLineTypes[x];
+
             // Identify the section type
             String[] returnvals = beautifyHeadings(StaticVariables.songSectionsLabels[x], c);
             if (x < StaticVariables.songSectionsTypes.length) {
@@ -2454,21 +2460,20 @@ public class ProcessSong extends Activity {
             if (!stagelyricsonly) {
                 ll.addView(titletoTextView(c, preferences, lyricsTextColor, returnvals[0], fontsize));
             }
-            whattoprocess = StaticVariables.sectionContents[x];
-            linetypes = StaticVariables.sectionLineTypes[x];
         }
 
         linenums = whattoprocess.length;
 
         // projectedSectionView
         // 2 spaces added to output lines in the loop to reduce occurance of right edge overrun
-        // IV - projectedContent lines need the line type character removing
         // IV - Handle 1 line sections
         if (linenums == 0) {
             nextLine = "";
         } else {
-            if (presentationChordsandlyrics & whattoprocess[0].length() > 0) {
-                nextLine = whattoprocess[0].substring(1);
+            // IV - presentation lines are processed via a preview which the user may adjust.
+            // If chords and lyric, they arrive with line type and need trim. If lyrics then they arrive trimmed.
+            if (presentationChordsandlyrics && whattoprocess[0].length() > 0 && " .;".contains(whattoprocess[0].substring(0, 1))) {
+                    nextLine = whattoprocess[0].substring(1).replaceAll("\\s+$", "");
             } else {
                 nextLine = whattoprocess[0];
             }
@@ -2482,8 +2487,8 @@ public class ProcessSong extends Activity {
             thisLineType = linetypes[y];
 
             if (y < linenums - 1) {
-                if (presentationChordsandlyrics & whattoprocess[y + 1].length() > 0) {
-                    nextLine = whattoprocess[y + 1].substring(1);
+                if (presentationChordsandlyrics && whattoprocess[y + 1].length() > 0 && " .;".contains(whattoprocess[y + 1].substring(0, 1))) {
+                    nextLine = whattoprocess[y + 1].substring(1).replaceAll("\\s+$", "");
                 } else {
                     nextLine = whattoprocess[y + 1];
                 }
