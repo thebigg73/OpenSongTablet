@@ -273,6 +273,7 @@ public class StageMode extends AppCompatActivity implements
     private RelativeLayout scrollUpButtonLayout;
     private RelativeLayout setBackButtonLayout;
     private RelativeLayout setForwardButtonLayout;
+    private ScrollView mainbuttons;
     private ScrollView extrabuttons;
     private ScrollView extrabuttons2;
     private int keyRepeatCount = 0;
@@ -1808,6 +1809,8 @@ public class StageMode extends AppCompatActivity implements
             custom2Button_ungrouped = findViewById(R.id.custom2Button_ungrouped);
             custom3Button_ungrouped = findViewById(R.id.custom3Button_ungrouped);
             custom4Button_ungrouped = findViewById(R.id.custom4Button_ungrouped);
+            mainbuttons = findViewById(R.id.mainbuttons);
+            mainbuttons.setVisibility(View.GONE);
             extrabuttons = findViewById(R.id.extrabuttons);
             extrabuttons.setVisibility(View.GONE);
             extrabuttons2 = findViewById(R.id.extrabuttons2);
@@ -2446,7 +2449,7 @@ public class StageMode extends AppCompatActivity implements
             // Get the default alpha value
             float val = preferences.getMyPreferenceFloat(StageMode.this, "pageButtonAlpha", 0.5f);
 
-            // Set the on vaule (if a popup is running)
+            // Set the on value (if a popup is running)
             float onval = val + 0.3f;
             if (onval > 1.0f) {
                 onval = 1.0f;
@@ -2469,6 +2472,7 @@ public class StageMode extends AppCompatActivity implements
             float custom3Alpha = val;
             float custom4Alpha = val;
 
+            mainbuttons.setVisibility(View.VISIBLE);
             // Check the extrabuttons and custombuttons views are hidden to start with
             extrabuttons.setVisibility(View.GONE);
             extrabuttons2.setVisibility(View.GONE);
@@ -3261,7 +3265,11 @@ public class StageMode extends AppCompatActivity implements
         if (StaticVariables.mTitle.equals("")) {
             StaticVariables.mTitle = StaticVariables.songfilename.replaceAll("\\.[^.]*$", "");
         }
-        songtitle_ab.setText(StaticVariables.mTitle);
+        if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+            songtitle_ab.setText("≡" + StaticVariables.mTitle);
+        } else {
+            songtitle_ab.setText(StaticVariables.mTitle);
+        }
         if (StaticVariables.mKey.isEmpty()) {
             songkey_ab.setText("");
         } else {
@@ -3341,7 +3349,11 @@ public class StageMode extends AppCompatActivity implements
         glideimage_HorizontalScrollView.setVisibility(View.VISIBLE);
 
         // Set the ab title to include the song info if available
-        songtitle_ab.setText(StaticVariables.mTitle);
+        if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+            songtitle_ab.setText("≡" + StaticVariables.mTitle);
+        } else {
+            songtitle_ab.setText(StaticVariables.mTitle);
+        }
         if (StaticVariables.mKey.isEmpty()) {
             songkey_ab.setText("");
         } else {
@@ -7294,7 +7306,11 @@ public class StageMode extends AppCompatActivity implements
                     setWindowFlagsAdvanced();
 
                     // Put the title of the song in the taskbar
-                    songtitle_ab.setText(processSong.getSongTitle());
+                    if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+                        songtitle_ab.setText("≡" + processSong.getSongTitle());
+                    } else {
+                        songtitle_ab.setText(processSong.getSongTitle());
+                    }
                     songkey_ab.setText(processSong.getSongKey());
                     songauthor_ab.setText(processSong.getSongAuthor());
                     songcapo_ab.setText("");

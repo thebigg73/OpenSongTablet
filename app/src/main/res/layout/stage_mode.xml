@@ -177,7 +177,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
                     android:contentDescription="@string/pageturn_up"
-                    android:src="@drawable/ic_arrow_up_white_36dp" />
+                    android:src="@drawable/ic_arrow_up_white_36dp"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -196,7 +197,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
                     android:src="@drawable/ic_arrow_down_white_36dp"
-                    android:contentDescription="@string/pageturn_down" />
+                    android:contentDescription="@string/pageturn_down"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -215,7 +217,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="30dp"
                     android:src="@drawable/ic_arrow_left_white_36dp"
-                     android:contentDescription="@string/pageturn_previous" />
+                    android:contentDescription="@string/pageturn_previous"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -236,7 +239,8 @@
                     android:contentDescription="@string/pageturn_next"
                     android:cropToPadding="false"
                     android:src="@drawable/ic_arrow_right_white_36dp"
-                    tools:ignore="RelativeOverlap" />
+                    tools:ignore="RelativeOverlap"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
