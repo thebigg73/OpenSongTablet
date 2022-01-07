@@ -8840,7 +8840,8 @@ public class StageMode extends AppCompatActivity implements
                     view2.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            if (!StaticVariables.whichSongFolder.startsWith("..") || (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals("")))) {
+                            if (!StaticVariables.whichSongFolder.startsWith("..") ||
+                                    (StaticVariables.whichSongFolder.equals("../Received") && !StaticVariables.receivedSongfilename.equals("") && !StaticVariables.receivedSongfilename.equals("ReceivedSong"))) {
                                 PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
                                 setActions.prepareSetList(StageMode.this, preferences);
                                 StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
