@@ -8846,6 +8846,7 @@ public class StageMode extends AppCompatActivity implements
                                 setActions.prepareSetList(StageMode.this, preferences);
                                 StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
                                 PopUpSetViewNew.makeVariation(StageMode.this, preferences);
+                                prepareSongMenu();
                                 loadSong();
                             } else {
                                 // Not a song
