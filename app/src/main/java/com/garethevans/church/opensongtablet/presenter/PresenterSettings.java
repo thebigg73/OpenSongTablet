@@ -14,7 +14,7 @@ public class PresenterSettings {
     // They are accessed using getters and setters
 
     private final String TAG = "PresenterSettings";
-    private boolean alertOn, logoOn, hideLogoAfterShow, blackscreenOn;
+    private boolean alertOn, logoOn, hideLogoAfterShow, blackscreenOn, blankscreenOn;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
             infoBarChangeDelay, lyricDelay, panicDelay;
@@ -43,6 +43,9 @@ public class PresenterSettings {
     }
     public void setBlackscreenOn(boolean blackscreenOn) {
         this.blackscreenOn = blackscreenOn;
+    }
+    public void setBlankscreenOn(boolean blankscreenOn) {
+        this.blankscreenOn = blankscreenOn;
     }
     public void setLogoSize(float logoSize) {
         this.logoSize = logoSize;
@@ -112,6 +115,9 @@ public class PresenterSettings {
     }
     public boolean getBlackscreenOn() {
         return blackscreenOn;
+    }
+    public boolean getBlankscreenOn() {
+        return blankscreenOn;
     }
     public float getLogoSize() {
         return logoSize;

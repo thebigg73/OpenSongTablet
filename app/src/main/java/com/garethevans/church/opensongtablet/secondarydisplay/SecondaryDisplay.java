@@ -133,7 +133,6 @@ public class SecondaryDisplay extends Presentation {
         myView.textureView1.setSurfaceTextureListener(new MySurfaceTextureAvailable(1));
         myView.textureView2.setSurfaceTextureListener(new MySurfaceTextureAvailable(2));
     }
-
     private void intialiseViewVisibity() {
         // Views that need to be measured need to be VISIBLE or INVISIBLE.
         // This is the test pane for all modes
@@ -150,7 +149,6 @@ public class SecondaryDisplay extends Presentation {
         setViewAlreadyFadedOut(myView.songProjectionInfo2);
         setViewAlreadyFadedOut(myView.alertBar);
     }
-
     private void setViewAlreadyFadedOut(View v) {
         // For a fade in animation to work, the view should be GONE and 0f alpha
         v.setVisibility(View.GONE);
@@ -167,6 +165,17 @@ public class SecondaryDisplay extends Presentation {
             myView.songContent2.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.castFrameLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
         }
+    }
+    private void moveToNextView() {
+        if (showWhich<2) {
+            showWhich = 1;
+        } else {
+            showWhich = 2;
+        }
+    }
+    private boolean canShowSong() {
+        return !mainActivityInterface.getPresenterSettings().getLogoOn() &&
+                !mainActivityInterface.getPresenterSettings().getBlankscreenOn();
     }
 
 
@@ -356,7 +365,6 @@ public class SecondaryDisplay extends Presentation {
             }
         }
     }
-
     private void crossFadeViews() {
         Log.d(TAG,"crossFadeViews()");
         mainActivityInterface.getCustomAnimation().faderAnimation(viewToFadeOut,
@@ -395,7 +403,7 @@ public class SecondaryDisplay extends Presentation {
                 start,end);
 
         // Do the opposite of the logo for the content and bottom bar
-        fadeInOutSong(!mainActivityInterface.getPresenterSettings().getLogoOn(),true,true);
+        fadeInOutSong(!mainActivityInterface.getPresenterSettings().getLogoOn(), true, true);
 
         if (mainActivityInterface.getPresenterSettings().getHideLogoAfterShow()) {
             // This will hide the logo after the logoSplashTime
@@ -411,7 +419,7 @@ public class SecondaryDisplay extends Presentation {
     }
 
 
-    // The black screen
+    // The black or blank screen
     public void showBlackScreen() {
         float start;
         float end;
@@ -425,6 +433,34 @@ public class SecondaryDisplay extends Presentation {
         mainActivityInterface.getCustomAnimation().faderAnimation(myView.pageHolder,
                 mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                 start,end);
+    }
+    public void showBlankScreen() {
+        float start;
+        float end;
+        if (mainActivityInterface.getPresenterSettings().getBlankscreenOn()) {
+            start = 1f;
+            end = 0f;
+        } else {
+            start = 0f;
+            end = 1f;
+        }
+        if ((start>end) || canShowSong()) {
+            if (showWhich < 2) {
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                        start, end);
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                        start, end);
+            } else {
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                        start, end);
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                        start, end);
+            }
+        }
     }
 
 
@@ -546,24 +582,21 @@ public class SecondaryDisplay extends Presentation {
     }
     public void showSection(final int position) {
         // Decide which view to show to
+
+        Log.d(TAG,"showSection(): position="+position);
+
         // Check the view isn't already attached to a parent
-        if (position<mainActivityInterface.getSectionViews().size()) {
+        if (position>=0 && position<mainActivityInterface.getSectionViews().size()) {
             if (mainActivityInterface.getSectionViews().get(position).getParent() != null) {
                 ((ViewGroup) mainActivityInterface.getSectionViews().get(position).getParent()).removeView(mainActivityInterface.getSectionViews().get(position));
             }
-
+            // Move to next view showWhich 1>2, 2>1
+            moveToNextView();
             // Set a listener to wait for drawing, then measure and scale
             ViewTreeObserver viewTreeObserver = myView.testLayout.getViewTreeObserver();
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    // Move to the next view
-                    if (showWhich == 2 || showWhich ==0) {
-                        showWhich = 1;
-                    } else {
-                        showWhich = 2;
-                    }
-
                     // Measure the height of the layouts
                     int width = mainActivityInterface.getSectionViews().get(position).getMeasuredWidth();
                     int height = mainActivityInterface.getSectionViews().get(position).getMeasuredHeight();
@@ -580,7 +613,6 @@ public class SecondaryDisplay extends Presentation {
                     mainActivityInterface.getSectionViews().get(position).setPivotY(0f);
                     mainActivityInterface.getSectionViews().get(position).setScaleX(best);
                     mainActivityInterface.getSectionViews().get(position).setScaleY(best);
-
                     // Remove from the test layout
                     myView.testLayout.removeAllViews();
 
@@ -588,10 +620,11 @@ public class SecondaryDisplay extends Presentation {
                     viewTreeObserver.removeOnGlobalLayoutListener(this);
 
                     // We can now prepare the new view and animate in/out the views as long as the logo is off
-                    if (showWhich == 1) {
+                    // and the blank screen isn't on
+                    if (showWhich < 2) {
                         myView.songContent1.removeAllViews();
                         myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
-                        if (!mainActivityInterface.getPresenterSettings().getLogoOn()) {
+                        if (canShowSong()) {
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     0f, 1f);
@@ -602,7 +635,7 @@ public class SecondaryDisplay extends Presentation {
                     } else {
                         myView.songContent2.removeAllViews();
                         myView.songContent2.addView(mainActivityInterface.getSectionViews().get(position));
-                        if (!mainActivityInterface.getPresenterSettings().getLogoOn()) {
+                        if (canShowSong()) {
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     0f,1f);
@@ -707,31 +740,33 @@ public class SecondaryDisplay extends Presentation {
             start = 1f;
             end = 0f;
         }
-        if (showWhich==1 && content) {
-            mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-        } else if (showWhich==2 && content) {
-            mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-        }
+        if (!fadeIn || canShowSong()) {
+            if (showWhich < 2 && content) {
 
-        if (showWhichInfo==1 && bottomBar) {
-            myView.songProjectionInfo1.setInfoBarRequired(infoBarRequired,
-                    mainActivityInterface.getPresenterSettings().getAlertOn());
-            mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-            mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),start, end);
-        } else if (showWhichInfo==2 && bottomBar) {
-            myView.songProjectionInfo2.setInfoBarRequired(infoBarRequired,
-                    mainActivityInterface.getPresenterSettings().getAlertOn());
-            mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-            mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),start, end);
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
+            } else if (content) {
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
+            }
+
+            if (showWhichInfo < 2 && bottomBar) {
+                myView.songProjectionInfo1.setInfoBarRequired(infoBarRequired,
+                        mainActivityInterface.getPresenterSettings().getAlertOn());
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
+            } else if (bottomBar) {
+                myView.songProjectionInfo2.setInfoBarRequired(infoBarRequired,
+                        mainActivityInterface.getPresenterSettings().getAlertOn());
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
+                mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
+                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
+            }
         }
     }
-
 
     // Video
     private class MySurfaceTextureAvailable implements TextureView.SurfaceTextureListener {
@@ -775,7 +810,6 @@ public class SecondaryDisplay extends Presentation {
         public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surfaceTexture) {
         }
     }
-
     // Load the video ready to play
     private void loadVideo() {
         Uri uri;
@@ -809,7 +843,6 @@ public class SecondaryDisplay extends Presentation {
             }
         }
     }
-
     private class MyPreparedListener implements MediaPlayer.OnPreparedListener {
         @Override
         public void onPrepared(MediaPlayer mp) {

@@ -114,6 +114,15 @@ public class PresenterFragment extends Fragment {
 
         // Update the recyclerView with the song sections
         songSectionsFragment.showSongInfo();
+
+        // Show the first section if we are in Performance/Stage mode
+        // In Presenter mode, only do this if we are a client and are connected in Nearby
+        if (!mainActivityInterface.getMode().equals("Presenter")) {
+            displayInterface.presenterShowSection(0);
+        } else if (mainActivityInterface.getNearbyConnections().isConnected &&
+            !mainActivityInterface.getNearbyConnections().isHost) {
+            displayInterface.presenterShowSection(0);
+        }
     }
 
     private void getPreferences() {
@@ -148,10 +157,14 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(false);
             displayInterface.updateDisplay("showLogo");
         });
-        myView.blackScreen.setOnCheckedChangeListener(((compoundButton, b) -> {
+        myView.blackScreen.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPresenterSettings().setBlackscreenOn(b);
             displayInterface.updateDisplay("showBlackscreen");
-        }));
+        });
+        myView.blankScreen.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPresenterSettings().setBlankscreenOn(b);
+            displayInterface.updateDisplay("showBlankscreen");
+        });
         myView.updateProjector.setOnClickListener(view -> displayInterface.checkDisplays());
     }
 }

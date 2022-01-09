@@ -27,7 +27,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final SongSectionsFragment fragment;
     private final String TAG = "SongSetionsAdapter";
     private final int onColor, offColor;
-    private int selectedPosition = 0, sectionEdited = -1;
+    private int selectedPosition = -1, sectionEdited = -1;
 
     SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface, SongSectionsFragment fragment,
                         DisplayInterface displayInterface) {
@@ -212,5 +212,12 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             }
             sectionEdited = -1;
         }
+    }
+
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
+    public void setSelectedPosition(int selectedPosition) {
+        this.selectedPosition = selectedPosition;
     }
 }

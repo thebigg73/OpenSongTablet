@@ -2632,6 +2632,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         case "showBlackscreen":
                             secondaryDisplay.showBlackScreen();
                             break;
+
+                        case "showBlankscreen":
+                            secondaryDisplay.showBlankScreen();
+                            break;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -52,6 +52,14 @@
                 android:padding="0dp"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/blankScreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/blank_screen"
+                android:padding="0dp"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/blackScreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
