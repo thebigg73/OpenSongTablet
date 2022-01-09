@@ -165,6 +165,9 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().setBlankscreenOn(b);
             displayInterface.updateDisplay("showBlankscreen");
         });
-        myView.updateProjector.setOnClickListener(view -> displayInterface.checkDisplays());
+        myView.updateProjector.setOnClickListener(view -> {
+            myView.showLogo.setChecked(true);
+            displayInterface.checkDisplays();
+        });
     }
 }

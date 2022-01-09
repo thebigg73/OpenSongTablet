@@ -168,9 +168,9 @@ public class SecondaryDisplay extends Presentation {
     }
     private void moveToNextView() {
         if (showWhich<2) {
-            showWhich = 1;
-        } else {
             showWhich = 2;
+        } else {
+            showWhich = 1;
         }
     }
     private boolean canShowSong() {
@@ -621,28 +621,33 @@ public class SecondaryDisplay extends Presentation {
 
                     // We can now prepare the new view and animate in/out the views as long as the logo is off
                     // and the blank screen isn't on
+                    Log.d(TAG,"showWhich="+showWhich+"  canShowSong()="+canShowSong());
                     if (showWhich < 2) {
                         myView.songContent1.removeAllViews();
-                        myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
+
+                            myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
                         if (canShowSong()) {
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     0f, 1f);
+                        }
+
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     1f,0f);
-                        }
+
                     } else {
                         myView.songContent2.removeAllViews();
                         myView.songContent2.addView(mainActivityInterface.getSectionViews().get(position));
                         if (canShowSong()) {
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                                    0f,1f);
+                                    0f, 1f);
+                        }
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     1f,0f);
-                        }
+
                     }
                 }
             });
@@ -742,7 +747,6 @@ public class SecondaryDisplay extends Presentation {
         }
         if (!fadeIn || canShowSong()) {
             if (showWhich < 2 && content) {
-
                 mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
                         mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
             } else if (content) {
