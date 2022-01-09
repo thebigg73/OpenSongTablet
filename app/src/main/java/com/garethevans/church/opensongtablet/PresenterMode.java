@@ -3559,6 +3559,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // IV - Store song details
+            preferences.setMyPreferenceString(PresenterMode.this, "songfilename",StaticVariables.songfilename);
+            preferences.setMyPreferenceString(PresenterMode.this,"whichSongFolder",StaticVariables.whichSongFolder);
+
             FullscreenActivity.alreadyloading = false;
         }
     }

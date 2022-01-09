@@ -492,11 +492,11 @@
     <string name="scrollbuttons_toggle">Toggle scroll buttons</string>
     <string name="search">Search</string>
     <string name="search_biblegateway">Search BibleGateway.com</string>
-    <string name="search_index_end">All songs have been fully indexed</string>
-    <string name="search_index_error">There was an error building your search database</string>
-    <string name="search_index_start">Building your song database</string>
+    <string name="search_index_end">Song index completed</string>
+    <string name="search_index_error">There was an error building the song index</string>
+    <string name="search_index_start">Building the song index</string>
     <string name="search_log">Check the search database error log</string>
-    <string name="search_rebuild">Rebuild song database</string>
+    <string name="search_rebuild">Rebuild song index</string>
     <string name="section_space">Add section space</string>
     <string name="select_item_variation">Select the song to create a set variation</string>
     <string name="sendtoprojector">Project</string>
