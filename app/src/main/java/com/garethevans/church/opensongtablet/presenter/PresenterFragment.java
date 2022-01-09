@@ -62,6 +62,9 @@ public class PresenterFragment extends Fragment {
         // Set up the the pager
         setupPager();
 
+        // Set up any connected displays with the correct background
+        displayInterface.updateDisplay("changeBackground");
+
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
@@ -79,7 +82,6 @@ public class PresenterFragment extends Fragment {
         alertFragment = (AlertFragment) pageAdapter.createFragment(2);
         settingsFragment = (SettingsFragment) pageAdapter.createFragment(3);
         myView.viewPager.setAdapter(pageAdapter);
-
         new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
             switch (position) {
                 case 0:
@@ -116,6 +118,7 @@ public class PresenterFragment extends Fragment {
 
     private void getPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(), mainActivityInterface);
+        mainActivityInterface.getPresenterSettings().getAllPreferences(requireContext(),mainActivityInterface);
     }
 
     public void getSongViews() {
@@ -140,11 +143,15 @@ public class PresenterFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.showLogo.setOnCheckedChangeListener((compoundButton, b) -> displayInterface.presenterShowLogo(b));
-        myView.blackScreen.setOnCheckedChangeListener(((compoundButton, b) -> displayInterface.presenterBlackScreen(b)));
-        myView.updateProjector.setOnClickListener(view -> {
-            displayInterface.resetHDMI();
-            //displayInterface.updateDisplay("info");
+        myView.showLogo.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPresenterSettings().setLogoOn(b);
+            mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(false);
+            displayInterface.updateDisplay("showLogo");
         });
+        myView.blackScreen.setOnCheckedChangeListener(((compoundButton, b) -> {
+            mainActivityInterface.getPresenterSettings().setBlackscreenOn(b);
+            displayInterface.updateDisplay("showBlackscreen");
+        }));
+        myView.updateProjector.setOnClickListener(view -> displayInterface.checkDisplays());
     }
 }

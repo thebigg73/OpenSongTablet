@@ -397,8 +397,8 @@
     <string name="set_new">"Oczyścić"</string>
     <string name="sethasbeendeleted">"zostało usunięte z folderu 'ustawia."</string>
     <string name="song_menu_checkboxes">"Pokaż zaznaczone pola wyboru w menu piosenki"</string>
-    <string name="setxmargins">"Wielkość marginesu poziomego"</string>
-    <string name="setymargins">"Pionowy rozmiar margines"</string>
+    <string name="set_x_margin">"Wielkość marginesu poziomego"</string>
+    <string name="set_y_margin">"Pionowy rozmiar margines"</string>
     <string name="show_general_advanced">"Przełącz pola ogólne / zaawansowany"</string>
     <string name="show_capo">"akordy Pokaż capo"</string>
     <string name="show_chords">"Pokaż akordy"</string>

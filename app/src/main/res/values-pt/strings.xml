@@ -397,8 +397,8 @@
     <string name="set_new">"Esvaziar"</string>
     <string name="sethasbeendeleted">"foi excluído da sua pasta de \"conjuntos\"."</string>
     <string name="song_menu_checkboxes">"Mostrar caixas de seleção no menu de músicas"</string>
-    <string name="setxmargins">"Tamanho da margem horizontal"</string>
-    <string name="setymargins">"Tamanho da margem vertical"</string>
+    <string name="set_x_margin">"Tamanho da margem horizontal"</string>
+    <string name="set_y_margin">"Tamanho da margem vertical"</string>
     <string name="show_general_advanced">"Campos gerais / avançado Alternar"</string>
     <string name="show_capo">"acordes Mostrar capo"</string>
     <string name="show_chords">"Mostrar acordes"</string>

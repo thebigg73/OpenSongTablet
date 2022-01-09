@@ -379,6 +379,8 @@
     <string name="set_share_info">Share or export a set with others</string>
     <string name="set_shuffle">Shuffle set</string>
     <string name="set_shuffle_info">Randomise the order of songs in the set</string>
+    <string name="set_x_margin">Horizontal margin size</string>
+    <string name="set_y_margin">Vertical margin size</string>
     <string name="settings">Settings</string>
     <string name="share">Share</string>
     <string name="show">Show</string>
@@ -877,8 +879,6 @@ Check out the categories in the right hand options menu.
     <string name="set_manage_click">Click on an item in the set to view it</string>
     <string name="set_manage_swipe">Swipe to remove an item from your set list</string>
     <string name="sethasbeendeleted">has been deleted from your \'Sets\' folder.</string>
-    <string name="setxmargins">Horizontal margin size</string>
-    <string name="setymargins">Vertical margin size</string>
     <string name="show_general_advanced">Toggle general/advanced fields</string>
     <string name="show_next_in_set">Show next song in set</string>
     <string name="simple_note">Simple note / placeholder</string>

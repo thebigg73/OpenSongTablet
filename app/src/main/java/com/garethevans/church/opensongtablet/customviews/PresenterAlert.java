@@ -1,0 +1,70 @@
+package com.garethevans.church.opensongtablet.customviews;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
+
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.textview.MaterialTextView;
+
+public class PresenterAlert extends MaterialTextView {
+
+    private final String TAG = "PresenterAlert";
+
+    public PresenterAlert(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public void updateAlertSettings(MainActivityInterface mainActivityInterface) {
+        setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+        setTextSize(mainActivityInterface.getPresenterSettings().getPresoAlertTextSize());
+        setTextColor(mainActivityInterface.getMyThemeColors().getPresoAlertColor());
+        setGravity(mainActivityInterface.getPresenterSettings().getPresoInfoAlign());
+        setBackgroundColor(ColorUtils.setAlphaComponent(
+                mainActivityInterface.getMyThemeColors().getPresoShadowColor(),
+                (int)(mainActivityInterface.getPresenterSettings().getPresoInfoBarAlpha()*255)));
+    }
+
+    public void showAlert(MainActivityInterface mainActivityInterface) {
+        String text = mainActivityInterface.getPresenterSettings().getPresoAlertText();
+        boolean show = mainActivityInterface.getPresenterSettings().getAlertOn();
+
+        setText(text);
+        if (text==null || text.isEmpty()) {
+            show = false;
+        }
+
+        Log.d(TAG,"show:"+show);
+        Log.d(TAG,"text: "+text);
+
+        updateAlertSettings(mainActivityInterface);
+        boolean isVisible = getVisibility()==View.VISIBLE;
+        boolean isInvisible = getVisibility()==View.INVISIBLE;
+        boolean isGone = getVisibility()==View.GONE;
+        float alpha = getAlpha();
+
+        Log.d(TAG,"isVisible: "+isVisible+"  isInvisible: "+isInvisible+"  isGone:"+isGone+"  alpha:"+alpha);
+
+
+        if ((show && (getVisibility()==View.INVISIBLE||getVisibility()==View.GONE||getAlpha()==0)) ||
+                (!show && (getVisibility()==View.VISIBLE)||getAlpha()==1)) {
+            float start;
+            float end;
+            if (show) {
+                start = 0f;
+                end = 1f;
+            } else {
+                start = 1f;
+                end = 0f;
+            }
+            mainActivityInterface.getCustomAnimation().faderAnimation(this,
+                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),start,end);
+        }
+    }
+
+}

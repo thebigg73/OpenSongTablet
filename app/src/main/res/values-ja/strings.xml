@@ -397,8 +397,8 @@
     <string name="set_new">"引き払う"</string>
     <string name="sethasbeendeleted">"あなたの「設定」フォルダから削除されています。"</string>
     <string name="song_menu_checkboxes">"ソングメニューで設定したチェックボックスを表示する"</string>
-    <string name="setxmargins">"水平余白サイズ"</string>
-    <string name="setymargins">"垂直余白サイズ"</string>
+    <string name="set_x_margin">"水平余白サイズ"</string>
+    <string name="set_y_margin">"垂直余白サイズ"</string>
     <string name="show_general_advanced">"先進的/一般的なフィールドを切り替える"</string>
     <string name="show_capo">"表示カポ和音"</string>
     <string name="show_chords">"ショー和音"</string>

@@ -103,11 +103,11 @@ public class ThemeSetupFragment extends Fragment {
         updateButtons();
     }
 
-    private void updateColors() {
+    public void updateColors() {
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(), mainActivityInterface);
     }
 
-    private void updateButtons() {
+    public void updateButtons() {
         myView.pageButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor(), PorterDuff.Mode.SRC_IN));
         myView.lyricsButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsTextColor(), PorterDuff.Mode.SRC_IN));
         myView.chordsButton.getIcon().setColorFilter(new PorterDuffColorFilter(mainActivityInterface.getMyThemeColors().getLyricsChordsColor(), PorterDuff.Mode.SRC_IN));
@@ -163,9 +163,9 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     private void chooseColor(String which) {
-        // This moves to the color chooser fragment
-        mainActivityInterface.setWhattodo(which);
-        mainActivityInterface.navigateToFragment(null,R.id.chooseColorFragment);
+        // This moves to the color chooser bottom sheet dialog fragment
+        ChooseColorBottomSheet chooseColorBottomSheet = new ChooseColorBottomSheet(this,"themeSetupFragment",which);
+        chooseColorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ChooseColorBottomSheet");
     }
 
     @Override

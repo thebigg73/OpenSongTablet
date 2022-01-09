@@ -256,20 +256,17 @@
                 android:name="com.garethevans.church.opensongtablet.screensetup.ThemeSetupFragment"
                 android:label="settings_theme"
                 tools:layout="@layout/settings_theme">
-                <action
-                    android:id="@+id/action_themeSetupFragment_to_chooseColorFragment"
-                    app:destination="@id/chooseColorFragment" />
                 <deepLink
                     android:id="@+id/deepLink11"
                     app:uri="opensongapp://settings/display/theme" />
             </fragment>
 
             <!-- Colour chooser -->
-            <fragment
-                android:id="@+id/chooseColorFragment"
-                android:name="com.garethevans.church.opensongtablet.screensetup.ChooseColorFragment"
+            <dialog
+                android:id="@+id/chooseColorBottomSheet"
+                android:name="com.garethevans.church.opensongtablet.screensetup.ChooseColorBottomSheet"
                 android:label="display_color_settings"
-                tools:layout="@layout/settings_color_choose" />
+                tools:layout="@layout/bottom_sheet_choose_color" />
 
             <!-- Font chooser -->
             <fragment

@@ -13,17 +13,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.databinding.ModePresenterAlertBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.slider.Slider;
 
 public class AlertFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
     private ModePresenterAlertBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) context;
     }
 
     @Nullable
@@ -42,6 +46,8 @@ public class AlertFragment extends Fragment {
     private void setValues() {
         myView.alertText.setText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"presoAlertText",""));
         myView.alertSwitch.setChecked(mainActivityInterface.getPresenterSettings().getAlertOn());
+        myView.presoAlertTextSize.setValue((int)mainActivityInterface.getPresenterSettings().getPresoAlertTextSize());
+        myView.presoAlertTextSize.setHint((int)mainActivityInterface.getPresenterSettings().getPresoAlertTextSize() + "sp");
     }
 
     private void setListeners() {
@@ -54,13 +60,31 @@ public class AlertFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "presoAlertText",editable.toString());
-                mainActivityInterface.updateDisplay("alert");
+                String text = "";
+                if (editable!=null) {
+                    text = editable.toString();
+                }
+                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "presoAlertText",text);
+                mainActivityInterface.getPresenterSettings().setPresoAlertText(text);
+                displayInterface.updateDisplay("updateAlert");
             }
         });
         myView.alertSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPresenterSettings().setAlertOn(b);
-            mainActivityInterface.updateDisplay("alert");
+            displayInterface.updateDisplay("showAlert");
         });
+        myView.presoAlertTextSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) { }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                        "presoAlertTextSize",slider.getValue());
+                mainActivityInterface.getPresenterSettings().setPresoAlertTextSize(slider.getValue());
+                displayInterface.updateDisplay("updateAlert");
+            }
+        });
+        myView.presoAlertTextSize.addOnChangeListener((slider, value, fromUser) -> myView.presoAlertTextSize.setHint((int)slider.getValue() + "sp"));
     }
 }

@@ -56,6 +56,15 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/presoBackgroundAlpha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/preso_alpha"
+                android:valueFrom="0"
+                android:valueTo="100"/>
+            <TableRow style="@style/DividerLine"/>
+
             <!-- Logo -->
             <LinearLayout
                 android:id="@+id/logoLayout"
@@ -77,6 +86,15 @@
                     android:layout_marginStart="16dp" />
             </LinearLayout>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/logoSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/size"
+                android:valueFrom="10"
+                android:valueTo="100"
+                app:stepSize="1"/>
+
             <TableRow style="@style/DividerLine" />
 
 
@@ -85,9 +103,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/crossfade_time"
-                android:valueFrom="0.2"
-                android:valueTo="2.5"
-                app:stepSize="0.1" />
+                android:valueFrom="200"
+                android:valueTo="3000"
+                app:stepSize="200" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/rotateDisplay"
@@ -97,6 +115,24 @@
                 android:valueFrom="0"
                 android:valueTo="270"
                 app:stepSize="90" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/horizontalMargin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_x_margin"
+                android:valueFrom="-50"
+                android:valueTo="50"
+                app:stepSize="1" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/verticalMargin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/set_y_margin"
+                android:valueFrom="-50"
+                android:valueTo="50"
+                app:stepSize="1" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

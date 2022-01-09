@@ -1,14 +1,11 @@
 package com.garethevans.church.opensongtablet.animation;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 
 import com.garethevans.church.opensongtablet.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -17,27 +14,60 @@ public class CustomAnimation {
 
     private final String TAG = "CustomAnimation";
 
-    public void faderAnimation(View v, int time, boolean fadeIn) {
-        float start = 1;
-        float end = 0;
-        if (fadeIn) {
-            start = 0;
-            end = 1;
+    public void faderAnimation(View v, int time, float startAlpha, float endAlpha) {
+        if (v!=null) {
+            int finalVisibility;
+            AnimatorListenerAdapter animatorListenerAdapter;
+            if (endAlpha==0) {
+                finalVisibility = View.GONE;
+                animatorListenerAdapter = new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        v.setVisibility(View.GONE);
+                    }
+                };
+            } else {
+                finalVisibility = View.VISIBLE;
+                animatorListenerAdapter = null;
+            }
+
+            boolean fadeIn = endAlpha>startAlpha;
+
+            // Remove any current animations/animation listeners
+            // This means it was in the middle of an animation
+            // Get the current alpha as our new start position
+            if (v.animate() != null) {
+                startAlpha = v.getAlpha();
+                v.animate().cancel();
+            }
+
+            // For a correct fade in, the view should already be in the faded out state:
+            // - The initial visibility should already be GONE or INVISIBLE
+            // - ideally alpha 0 (completely faded out), but certainly less than 1 (partially faded out)
+            boolean fadeInOk = fadeIn && (v.getVisibility() == View.INVISIBLE || v.getVisibility() == View.GONE) && v.getAlpha() < 1;
+
+            // For a correct fade out, the view should already be in the faded in state:
+            // - The initial visibility should already be VISIBLE
+            // - The alpha should already be 1f (completely faded in), but certainly more than 0;
+            boolean fadeOutOk = !fadeIn && v.getVisibility() == View.VISIBLE && v.getAlpha() > 0;
+
+            // If either of these are true, we can animate, but if not, just move to the final state
+            if (fadeInOk || fadeOutOk) {
+                // Good to go - set the initial alpha and visibility to VISIBLE so we see the animation
+                v.setAlpha(startAlpha);
+                v.setVisibility(View.VISIBLE);
+
+                // Animate the content view to the end alpha
+                // For fade out, the final step is also to add the listener to change visibility to GONE at the end
+                v.animate().alpha(endAlpha).setDuration(time).setListener(animatorListenerAdapter).start();
+
+            } else {
+                // Just set the alpha and visibility as the end (without animation)
+                v.setAlpha(endAlpha);
+                v.setVisibility(finalVisibility);
+            }
         }
-        v.setVisibility(View.VISIBLE);
-
-        Animation fader = new AlphaAnimation(start, end);
-        fader.setInterpolator(new LinearInterpolator());
-        fader.setDuration(time);
-        
-        Log.d(TAG,"v="+v.getId()+"  start="+start+"  end="+end);
-
-        AnimationSet animation = new AnimationSet(false);
-        animation.addAnimation(fader);
-        animation.setFillAfter(true);
-
-        v.startAnimation(animation);
-
     }
 
     public void fadeActionButton(FloatingActionButton fab, float fadeTo) {

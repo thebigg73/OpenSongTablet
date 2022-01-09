@@ -397,8 +397,8 @@
     <string name="set_new">"Pulisci"</string>
     <string name="sethasbeendeleted">"è stato eliminato dalla cartella tua 'Set'."</string>
     <string name="song_menu_checkboxes">"Mostra le caselle di controllo nel menu song"</string>
-    <string name="setxmargins">"Dimensione del margine orizzontale"</string>
-    <string name="setymargins">"Dimensione del margine verticale"</string>
+    <string name="set_x_margin">"Dimensione del margine orizzontale"</string>
+    <string name="set_y_margin">"Dimensione del margine verticale"</string>
     <string name="show_general_advanced">"Aree generali / avanzato Toggle"</string>
     <string name="show_capo">"accordi Visualizza Capo"</string>
     <string name="show_chords">"Mostra corde"</string>

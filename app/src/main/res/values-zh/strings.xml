@@ -396,8 +396,8 @@
     <string name="set_new">"明确"</string>
     <string name="sethasbeendeleted">"从你的“设置”文件夹已被删除。"</string>
     <string name="song_menu_checkboxes">"在歌曲菜单中显示设置复选框"</string>
-    <string name="setxmargins">"水平边距大小"</string>
-    <string name="setymargins">"垂直边距大小"</string>
+    <string name="set_x_margin">"水平边距大小"</string>
+    <string name="set_y_margin">"垂直边距大小"</string>
     <string name="show_general_advanced">"切换普通/高级领域"</string>
     <string name="show_capo">"投诉警察课显示和弦"</string>
     <string name="show_chords">"显示和弦"</string>

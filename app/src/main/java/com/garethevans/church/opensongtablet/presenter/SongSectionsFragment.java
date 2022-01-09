@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,7 @@ public class SongSectionsFragment extends Fragment {
         myView = ModePresenterSongSectionsBinding.inflate(inflater,container,false);
 
         // Set up song info layout to only show minimal info in simple format
-        myView.songInfo.minifyLayout();
+        myView.songInfo.minifyLayout(false);
 
         songSectionsAdapter = new SongSectionsAdapter(requireContext(),mainActivityInterface,this,
                 displayInterface);
@@ -64,9 +63,6 @@ public class SongSectionsFragment extends Fragment {
 
     public void showSongInfo() {
         if (myView!=null) {
-            Log.d(TAG, "showSongInfo() called");
-            Log.d(TAG,"folder: "+mainActivityInterface.getSong().getFolder());
-            Log.d(TAG, "filename: "+mainActivityInterface.getSong().getFilename());
             myView.songInfo.setSongTitle(mainActivityInterface.getSong().getTitle());
             myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             myView.songInfo.setSongCopyright(mainActivityInterface.getSong().getCopyright());
@@ -76,7 +72,6 @@ public class SongSectionsFragment extends Fragment {
 
     // From edited content via TextInputBottomSheet
     public void updateValue(String content) {
-        Log.d(TAG,"newContent:"+content);
         songSectionsAdapter.setSectionEdited(content);
     }
 }

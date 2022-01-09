@@ -442,8 +442,8 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getMidi().buildSongMidiMessages();
 
         // Update the secondary display (if present)
-        mainActivityInterface.updateDisplay("info");
-        mainActivityInterface.updateDisplay("content");
+        displayInterface.updateDisplay("info");
+        displayInterface.updateDisplay("content");
     }
 
     private void dealWithHighlighterFile(int w, int h, int topPadding) {

@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.presenter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +48,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             notifyItemRangeRemoved(0, oldSize);
         }
 
-        Log.d(TAG, "title: " + mainActivityInterface.getSong().getTitle());
-        Log.d(TAG, "songsectionsize: " + mainActivityInterface.getSong().getSongSections().size());
         for (int x = 0; x < mainActivityInterface.getSong().getSongSections().size(); x++) {
             // bits[0] = heading, bits[1] = content - heading
             String[] bits = splitHeadingAndContent(mainActivityInterface.getSong().getSongSections().get(x));
@@ -162,6 +159,11 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             holder.content.setVisibility(View.VISIBLE);
         }
 
+        // Disable the click sound as it might interfere with cast audio!
+        holder.item.setSoundEffectsEnabled(false);
+        holder.edit.setSoundEffectsEnabled(false);
+
+        // Set the listeners
         holder.itemView.setOnClickListener(view -> itemSelected(section));
         holder.edit.setOnClickListener(view -> bottomSheetEdit(section));
     }
@@ -169,7 +171,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private void bottomSheetEdit(int section) {
         // Keep a reference to this section
         sectionEdited = section;
-        Log.d(TAG, "currentSongSection=" + mainActivityInterface.getSong().getSongSections().get(section));
 
         // Open up the text for this section in a bottom sheet for editing
         TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(fragment, "SongSectionsFragment",
@@ -188,7 +189,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         notifyItemChanged(thisPos);
         selectedPosition = thisPos;
 
-        Log.d(TAG, "thisPos=" + thisPos);
         displayInterface.presenterShowSection(thisPos);
     }
 

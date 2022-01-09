@@ -3,42 +3,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
+    android:padding="0dp"
+    android:layout_margin="0dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <RelativeLayout
         android:id="@+id/pageHolder"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="UselessParent">
+        tools:ignore="UselessParent"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <ImageView
-            android:id="@+id/backgroundImage"
+            android:id="@+id/backgroundImage1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"
             android:contentDescription="@string/app_name"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
-        <SurfaceView
-            android:id="@+id/surfaceView1"
+        <ImageView
+            android:id="@+id/backgroundImage2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/app_name"
+            android:visibility="gone"/>
+
+        <TextureView
+            android:id="@+id/textureView1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
-        <SurfaceView
-            android:id="@+id/surfaceView2"
+        <TextureView
+            android:id="@+id/textureView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:layout_margin="0dp"
             android:padding="0dp"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageView1"
@@ -46,7 +60,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:contentDescription="@string/app_name"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/imageView2"
@@ -54,7 +68,7 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:contentDescription="@string/app_name"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/testLayout"
@@ -93,36 +107,45 @@
         <FrameLayout
             android:id="@+id/bottomBarBackground"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@+id/bottomBit"
-            android:background="@color/red"/>
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/bottomBit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/alertBar">
 
             <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
                 android:id="@+id/songProjectionInfo1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:visibility="visible"/>
+                android:padding="0dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"/>
 
             <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
                 android:id="@+id/songProjectionInfo2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:visibility="invisible" />
+                android:padding="0dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
 
         </RelativeLayout>
+
+        <com.garethevans.church.opensongtablet.customviews.PresenterAlert
+            android:id="@+id/alertBar"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/mainLogo"
@@ -133,7 +156,7 @@
             android:padding="16dp"
             android:layout_margin="16dp"
             android:src="@drawable/ost_logo"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
     </RelativeLayout>
 </FrameLayout>

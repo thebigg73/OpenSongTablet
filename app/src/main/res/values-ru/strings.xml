@@ -397,8 +397,8 @@
     <string name="set_new">"Новый / Очистка текущего"</string>
     <string name="sethasbeendeleted">"Удалено из папки \"Sets\"."</string>
     <string name="song_menu_checkboxes">"Показывать установленные флажки в меню песен"</string>
-    <string name="setxmargins">"Горизонтальный отступ"</string>
-    <string name="setymargins">"Вертикальный отступ"</string>
+    <string name="set_x_margin">"Горизонтальный отступ"</string>
+    <string name="set_y_margin">"Вертикальный отступ"</string>
     <string name="show_general_advanced">"Переключение Общие / расширенные поля"</string>
     <string name="show_capo">"Показ аккордов с каподастром"</string>
     <string name="show_chords">"Показ аккордов"</string>

@@ -397,8 +397,8 @@
     <string name="set_new">"Νέα σειρά"</string>
     <string name="sethasbeendeleted">"διαγράφηκε απο τον φάκελο\'Sets\'."</string>
     <string name="song_menu_checkboxes">"Εμφάνιση των πλαισίων ελέγχου στο μενού τραγουδιών"</string>
-    <string name="setxmargins">"Μέγεθος οριζόντιου περιθωρίου"</string>
-    <string name="setymargins">"Μέγεθος κάθετου περιθωρίου"</string>
+    <string name="set_x_margin">"Μέγεθος οριζόντιου περιθωρίου"</string>
+    <string name="set_y_margin">"Μέγεθος κάθετου περιθωρίου"</string>
     <string name="show_general_advanced">"Toggle general/advanced fields"</string>
     <string name="show_capo">"συγχορδίες Εμφάνιση capo"</string>
     <string name="show_chords">"Εμφάνιση χορδές"</string>

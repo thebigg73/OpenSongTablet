@@ -5,10 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,13 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetImageChooseBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.screensetup.ChooseColorBottomSheet;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -79,7 +81,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeading.setClose(this);
 
         // Update our preferences in case they have changed
-        mainActivityInterface.getPresenterSettings().getPreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getPresenterSettings().getImagePreferences(requireContext(),mainActivityInterface);
 
         // Update with our chosen values
         pickThis = mainActivityInterface.getPresenterSettings().getBackgroundToUse();
@@ -101,13 +103,17 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
     private void updatePreview(ImageView view, Uri uri, boolean isColor) {
         RequestOptions options = new RequestOptions().override(128, 72).centerInside();
         if (isColor) {
-            Glide.with(requireContext()).load(ContextCompat.getDrawable(requireContext(), R.drawable.rectangle)).apply(options).into(view);
-            view.setColorFilter(mainActivityInterface.getPresenterSettings().getBackgroundColor(), android.graphics.PorterDuff.Mode.SRC_IN);
+            Drawable drawable = ContextCompat.getDrawable(requireContext(),R.drawable.simple_rectangle);
+            if (drawable!=null) {
+                GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
+                gradientDrawable.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
+                GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(view);
+            }
         } else {
             if (uri==null) {
-                Glide.with(requireContext()).load(ContextCompat.getDrawable(requireContext(),R.drawable.ic_image_white_36dp)).apply(options).into(view);
+                GlideApp.with(requireContext()).load(ContextCompat.getDrawable(requireContext(),R.drawable.ic_image_white_36dp)).apply(options).into(view);
             } else {
-                Glide.with(requireContext()).load(uri).apply(options).into(view);
+                GlideApp.with(requireContext()).load(uri).apply(options).into(view);
             }
         }
     }
@@ -124,7 +130,9 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION|Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
         myView.singleColor.setOnLongClickListener(view -> {
-            // TODO get colour picker bottom sheet
+            ChooseColorBottomSheet chooseColorBottomSheet = new ChooseColorBottomSheet(callingFragment,fragName,"backgroundColor");
+            chooseColorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ChooseColorBottomSheet");
+            dismiss();
             return true;
         });
         myView.image1.setOnLongClickListener(view -> {
@@ -186,20 +194,17 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
                 "backgroundToUse",whichToUse);
         setSelectedBackgroundHighlight();
-        // Send a call back to the main activity to update any connected displays
-        // Also, if we are in presenter mode, update the 'Settings' tab previews(
-        Log.d(TAG,"mode="+mainActivityInterface.getMode());
-        Log.d(TAG,"fragName="+fragName);
 
+        // Also, if we are in presenter mode, update the 'Settings' tab previews(
         if (mainActivityInterface.getMode().equals("Presenter") && fragName.equals("presenterFragmentSettings")) {
+            mainActivityInterface.getPresenterSettings().getImagePreferences(requireContext(),mainActivityInterface);
             mainActivityInterface.updateFragment(fragName,callingFragment,null);
-            mainActivityInterface.getPresenterSettings().getPreferences(requireContext(),mainActivityInterface);
         }
-        displayInterface.changeBackgrounds();
+        displayInterface.updateDisplay("changeBackground");
+        // Updating the fragment behind also calls a displayInterface update in the background
     }
 
     private void setSelectedBackgroundHighlight() {
-        Log.d(TAG,"pickThis="+pickThis);
         int colorSelected = ContextCompat.getColor(requireContext(),R.color.colorSecondary);
         int colorUnselected = Color.TRANSPARENT;
         myView.colorBackground.setBackgroundColor(colorUnselected);
@@ -236,15 +241,16 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
                         // Handle the Intent
-                        Log.d(TAG,"intent="+intent);
                         if (intent!=null) {
                             Uri uri = intent.getData();
                             if (uri!=null) {
                                 // Get permissions!
-                                requireContext().getContentResolver().takePersistableUriPermission(
-                                        uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                if (!mainActivityInterface.getStorageAccess().fixUriToLocal(uri).startsWith("../OpenSong/")) {
+                                    // Only need to take permission if it isn't in the OpenSong folder
+                                    requireContext().getContentResolver().takePersistableUriPermission(
+                                            uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                }
 
-                                Log.d(TAG,"uri="+uri);
                                 switch (pickThis) {
                                     case "img1":
                                         mainActivityInterface.getPresenterSettings().setBackgroundImage1(uri);

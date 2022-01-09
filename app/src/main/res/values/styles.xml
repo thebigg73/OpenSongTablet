@@ -71,6 +71,9 @@
         <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
         <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+
+        // Disable click sounds since we are performing or presenting!
+        <item name="android:soundEffectsEnabled">false</item>
     </style>
 
     <!-- Override styles for custom views -->

@@ -210,7 +210,7 @@ public class MetronomeFragment extends Fragment {
         myView.startStopButton.setOnClickListener(button -> {
             // Change the button based on what the metronome wasn't doing as it will be in a mo!
             setStartStopIcon(!mainActivityInterface.getMetronome().getIsRunning());
-            mainActivityInterface.getMetronome().startMetronome(mainActivityInterface.getActivity(),requireContext(),mainActivityInterface);
+            mainActivityInterface.getMetronome().startMetronome(requireActivity(),requireContext(),mainActivityInterface);
         });
         myView.visualMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"metronomeShowVisual",isChecked);
@@ -282,7 +282,7 @@ public class MetronomeFragment extends Fragment {
     private void restartMetronome() {
         if (mainActivityInterface.getMetronome().getIsRunning()) {
             mainActivityInterface.getMetronome().stopMetronome(mainActivityInterface);
-            mainActivityInterface.getMetronome().startMetronome(mainActivityInterface.getActivity(),requireContext(),mainActivityInterface);
+            mainActivityInterface.getMetronome().startMetronome(requireActivity(),requireContext(),mainActivityInterface);
         }
     }
 

@@ -397,8 +397,8 @@
     <string name="set_new">Новий / Очищення поточного</string>
     <string name="sethasbeendeleted">Вилучено з папки \" Sets \ ".</string>
     <string name="setquickcheck">Показувати встановлені прапорці в меню пісень</string>
-    <string name="setxmargins">Горизонтальний відступ</string>
-    <string name="setymargins">Вертикальний відступ</string>
+    <string name="set_x_margin">Горизонтальний відступ</string>
+    <string name="set_y_margin">Вертикальний відступ</string>
     <string name="show_general_advanced">Перемикання Загальні / розширені поля</string>
     <string name="showcapo">Показ акордів з Каподастр</string>
     <string name="showchords">Показ акордів</string>

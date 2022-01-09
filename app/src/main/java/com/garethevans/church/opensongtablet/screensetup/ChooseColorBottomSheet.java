@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,20 +10,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.SettingsColorChooseBinding;
+import com.garethevans.church.opensongtablet.databinding.BottomSheetChooseColorBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.slider.Slider;
 
-public class ChooseColorFragment extends Fragment {
+public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
-    private SettingsColorChooseBinding myView;
+    private BottomSheetChooseColorBinding myView;
 
     private String newColorHex;
     private String alphaHex;
@@ -30,22 +35,46 @@ public class ChooseColorFragment extends Fragment {
     private String greenHex;
     private String blueHex;
     private String themePrefix;
+    private final String whichColor;
     private int newColorInt;
     private boolean sliding = false, typing = false;
+    private final Fragment callingFragment;
+    private final String fragName;
+
+    public ChooseColorBottomSheet(Fragment callingFragment, String fragName, String whichColor) {
+        this.callingFragment = callingFragment;
+        this.fragName = fragName;
+        this.whichColor = whichColor;
+    }
 
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialog1 -> {
+            FrameLayout bottomSheet = ((BottomSheetDialog) dialog1).findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+        return dialog;
+    }
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = SettingsColorChooseBinding.inflate(inflater,container,false);
+        myView = BottomSheetChooseColorBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(getName());
+        myView.dialogHeading.setText(getName());
+        myView.dialogHeading.setClose(this);
 
         // Set up colour
-        setupOriginalColor(mainActivityInterface.getWhattodo());
+        setupOriginalColor();
 
         // Set the sliders to the correct positions
         setSliderValues();
@@ -122,17 +151,21 @@ public class ChooseColorFragment extends Fragment {
                 typing = false;
             }
         });
-        myView.saveColor.setOnClickListener(v -> doSave(mainActivityInterface.getWhattodo()));
+        myView.saveColor.setOnClickListener(v -> doSave());
     }
 
-    private void setupOriginalColor(String which) {
+    private void setupOriginalColor() {
         themePrefix = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "appTheme", "dark");
 
         // Load the chosen colours up
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
         int oldColorInt;
         try {
-            oldColorInt = mainActivityInterface.getMyThemeColors().getValue(which);
+            if (whichColor.equals("backgroundColor")) {
+                oldColorInt = mainActivityInterface.getPresenterSettings().getBackgroundColor();
+            } else {
+                oldColorInt = mainActivityInterface.getMyThemeColors().getValue(whichColor);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             oldColorInt = -1;
@@ -251,29 +284,37 @@ public class ChooseColorFragment extends Fragment {
             updateColors();
         }
     }
-    private void doSave(String which) {
+    private void doSave() {
         // Set the preference
-        mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),themePrefix+"_"+which,newColorInt);
+        if (whichColor.equals("backgroundColor")) {
+            // Presenter settings
+            mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),whichColor,newColorInt);
+            mainActivityInterface.getPresenterSettings().setBackgroundColor(newColorInt);
+        } else {
+            mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(), themePrefix + "_" + whichColor, newColorInt);
+        }
 
         // If we changed the page button color...
-        if (which.equals("pageButtonsColor")) {
+        if (whichColor.equals("pageButtonsColor")) {
             mainActivityInterface.getMyThemeColors().setPageButtonsColor(newColorInt);
             mainActivityInterface.getMyThemeColors().splitPageButtonsColorAndAlpha(mainActivityInterface);
-        } else if (which.equals("extraInfoTextColor")) {
+        } else if (whichColor.equals("extraInfoTextColor")) {
             mainActivityInterface.getMyThemeColors().setExtraInfoTextColor(newColorInt);
             mainActivityInterface.getMyThemeColors().splitPageButtonsColorAndAlpha(mainActivityInterface);
         }
 
+        // Update the theme color on the fragment behind
+        mainActivityInterface.updateFragment(fragName,callingFragment,null);
+
         // Navigate back
-        mainActivityInterface.popTheBackStack(R.id.themeSetupFragment,true);
-        mainActivityInterface.navigateToFragment(null,R.id.themeSetupFragment);
+        dismiss();
+        //mainActivityInterface.popTheBackStack(R.id.themeSetupFragment,true);
+        //mainActivityInterface.navigateToFragment(null,R.id.themeSetupFragment);
     }
 
     private String getName() {
         String title="";
-        // Get the name of the property from the whatToDo
-        Log.d("ChooseColor","what="+mainActivityInterface.getWhattodo());
-        switch (mainActivityInterface.getWhattodo()) {
+        switch (whichColor) {
             case "lyricsTextColor":
                 title = getString(R.string.lyrics_color);
                 break;
@@ -286,6 +327,7 @@ public class ChooseColorFragment extends Fragment {
             case "lyricsBackgroundColor":
             case "stickyBackgroundColor":
             case "extraInfoBgColor":
+            case "backgroundColor":
                 title = getString(R.string.background);
                 break;
             case "lyricsVerseColor":
@@ -345,3 +387,4 @@ public class ChooseColorFragment extends Fragment {
         myView = null;
     }
 }
+

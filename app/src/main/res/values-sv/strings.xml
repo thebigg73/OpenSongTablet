@@ -397,8 +397,8 @@
     <string name="set_new">"Skapa en ny uppsättning"</string>
     <string name="sethasbeendeleted">"Har tagits bort från mappen \"Sets\"."</string>
     <string name="song_menu_checkboxes">"Visa inställda kryssrutor i låtmenyn"</string>
-    <string name="setxmargins">"Horisontell marginalstorlek"</string>
-    <string name="setymargins">"Vertikal marginalstorlek"</string>
+    <string name="set_x_margin">"Horisontell marginalstorlek"</string>
+    <string name="set_y_margin">"Vertikal marginalstorlek"</string>
     <string name="show_general_advanced">"Växla allmänna / avancerade fält"</string>
     <string name="show_capo">"Visa capo ackord"</string>
     <string name="show_chords">"Visa ackord"</string>

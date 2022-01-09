@@ -397,8 +397,8 @@
     <string name="set_new">"Vámkezeltet"</string>
     <string name="sethasbeendeleted">"törölték a \"készletek\" mappába."</string>
     <string name="song_menu_checkboxes">"Itt található készlet jelölőnégyzetet dal menü"</string>
-    <string name="setxmargins">"Vízszintes margó"</string>
-    <string name="setymargins">"Függőleges margó"</string>
+    <string name="set_x_margin">"Vízszintes margó"</string>
+    <string name="set_y_margin">"Függőleges margó"</string>
     <string name="show_general_advanced">"Váltás általános / speciális területek"</string>
     <string name="show_capo">"Mutatása capo akkordok"</string>
     <string name="show_chords">"mutatása akkordok"</string>

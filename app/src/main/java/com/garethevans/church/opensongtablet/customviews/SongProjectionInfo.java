@@ -17,21 +17,20 @@ public class SongProjectionInfo extends LinearLayout {
 
     private final Context c;
     private final LinearLayout castSongInfo, contentLayout;
-    private final TextView songTitle, songAuthor, songCopyright, songAlert;
+    private final TextView songTitle, songAuthor, songCopyright;
     private final ImageView miniLogo;
     private final String TAG = "SongProjectionInfo";
 
     public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         c = context;
-        inflate(context, R.layout.cast_song_info, this);
+        inflate(context, R.layout.view_song_info, this);
 
         castSongInfo = findViewById(R.id.castSongInfo);
         contentLayout = findViewById(R.id.contentLayout);
         songTitle = findViewById(R.id.songTitle);
         songAuthor = findViewById(R.id.songAuthor);
         songCopyright = findViewById(R.id.songCopyright);
-        songAlert = findViewById(R.id.songAlert);
         miniLogo = findViewById(R.id.miniLogo);
 
         castSongInfo.setId(View.generateViewId());
@@ -39,7 +38,6 @@ public class SongProjectionInfo extends LinearLayout {
         songTitle.setId(View.generateViewId());
         songAuthor.setId(View.generateViewId());
         songCopyright.setId(View.generateViewId());
-        songAlert.setId(View.generateViewId());
         miniLogo.setId(View.generateViewId());
     }
 
@@ -52,11 +50,7 @@ public class SongProjectionInfo extends LinearLayout {
     public void setSongCopyright(String copyright) {
         setText(songCopyright,copyright);
     }
-    public void setSongAlert(String alert) {
-        setText(songAlert,alert);
-    }
     private void setText(TextView textView, String text) {
-        Log.d(TAG,"text="+text);
         if (text==null || text.isEmpty()) {
             textView.setVisibility(View.GONE);
         } else {
@@ -75,17 +69,14 @@ public class SongProjectionInfo extends LinearLayout {
         songTitle.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
-        songAlert.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
 
         songTitle.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoTitleTextSize", 14f));
         songAuthor.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAuthorTextSize", 12f));
         songCopyright.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoCopyrightTextSize", 12f));
-        songAlert.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAlertTextSize", 12f));
 
         songTitle.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songCopyright.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
-        songAlert.setTextColor(mainActivityInterface.getMyThemeColors().getPresoAlertColor());
     }
 
     public String getSongTitle() {
@@ -103,15 +94,43 @@ public class SongProjectionInfo extends LinearLayout {
     }
 
     // Used in presenter mode to display song info on device
-    public void minifyLayout() {
+    public void minifyLayout(boolean miniLogoOn) {
+        showMiniLogo(miniLogoOn);
         songTitle.setTextSize(18);
         songAuthor.setTextSize(16);
         songCopyright.setTextSize(16);
         songAuthor.setTextColor(c.getResources().getColor(R.color.vlightgrey));
         songCopyright.setTextColor(c.getResources().getColor(R.color.vlightgrey));
-        songAlert.setText(null);
-        songAlert.setVisibility(View.GONE);
-        contentLayout.setPadding(0,0,0,0);
-        showMiniLogo(false);
+        if (miniLogoOn) {
+            contentLayout.setPadding(8,8,8,8);
+        } else {
+            contentLayout.setPadding(0,0,0,0);
+        }
+    }
+
+    // Decide if the full info is still required in presenter mode
+    public void setInfoBarRequired(boolean infoBarRequired, boolean alertRequired) {
+        if (infoBarRequired) {
+            if (songTitle.getText()!=null && !songTitle.getText().toString().isEmpty()) {
+                songTitle.setVisibility(View.VISIBLE);
+            } else {
+                songTitle.setVisibility(View.GONE);
+            }
+            if (songAuthor.getText()!=null && !songAuthor.getText().toString().isEmpty()) {
+                songAuthor.setVisibility(View.VISIBLE);
+            } else {
+                songAuthor.setVisibility(View.GONE);
+            }
+            if (songCopyright.getText()!=null && !songCopyright.getText().toString().isEmpty()) {
+                songCopyright.setVisibility(View.VISIBLE);
+            } else {
+                songCopyright.setVisibility(View.GONE);
+            }
+        } else {
+            songTitle.setVisibility(View.GONE);
+            songAuthor.setVisibility(View.GONE);
+            songCopyright.setVisibility(View.GONE);
+        }
+
     }
 }

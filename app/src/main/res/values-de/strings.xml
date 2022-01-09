@@ -397,8 +397,8 @@
     <string name="set_new">"Zurücksetzen"</string>
     <string name="sethasbeendeleted">"wurde aus Ihrem Ordner 'Sets' gelöscht."</string>
     <string name="song_menu_checkboxes">"Set-Kontrollkästchen im Liedmenü anzeigen"</string>
-    <string name="setxmargins">"Horizontale Randgröße"</string>
-    <string name="setymargins">"Vertikale Randgröße"</string>
+    <string name="set_x_margin">"Horizontale Randgröße"</string>
+    <string name="set_y_margin">"Vertikale Randgröße"</string>
     <string name="show_general_advanced">"Standard / erweiterte Felder"</string>
     <string name="show_capo">"Capo-Akkorde anzeigen"</string>
     <string name="show_chords">"Akkorde anzeigen"</string>

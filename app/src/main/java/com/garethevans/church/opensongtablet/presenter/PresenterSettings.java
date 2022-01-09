@@ -14,16 +14,18 @@ public class PresenterSettings {
     // They are accessed using getters and setters
 
     private final String TAG = "PresenterSettings";
-    private boolean alertOn;
+    private boolean alertOn, logoOn, hideLogoAfterShow, blackscreenOn;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
             infoBarChangeDelay, lyricDelay, panicDelay;
-    private String backgroundToUse;
-    private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax;
+    private String backgroundToUse, presoAlertText;
+    private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
+            presoBackgroundAlpha;
+
 
     public PresenterSettings(Context c) {
-        // Get the preferences on instantiation
-        getPreferences(c,(MainActivityInterface) c);
+        // Get all of the preferences on instantiation
+        getAllPreferences(c,(MainActivityInterface) c);
     }
 
     // The setters
@@ -32,6 +34,15 @@ public class PresenterSettings {
     }
     public void setLogo(Uri logo) {
         this.logo = logo;
+    }
+    public void setLogoOn(boolean logoOn) {
+        this.logoOn = logoOn;
+    }
+    public void setHideLogoAfterShow(boolean hideLogoAfterShow) {
+        this.hideLogoAfterShow = hideLogoAfterShow;
+    }
+    public void setBlackscreenOn(boolean blackscreenOn) {
+        this.blackscreenOn = blackscreenOn;
     }
     public void setLogoSize(float logoSize) {
         this.logoSize = logoSize;
@@ -75,6 +86,15 @@ public class PresenterSettings {
     public void setFontSizePresoMax(float fontSizePresoMax) {
         this.fontSizePresoMax = fontSizePresoMax;
     }
+    public void setPresoAlertTextSize(float presoAlertTextSize) {
+        this.presoAlertTextSize = presoAlertTextSize;
+    }
+    public void setPresoAlertText(String presoAlertText) {
+        this.presoAlertText = presoAlertText;
+    }
+    public void setPresoBackgroundAlpha(float presoBackgroundAlpha) {
+        this.presoBackgroundAlpha = presoBackgroundAlpha;
+    }
 
 
     // The getters
@@ -83,6 +103,15 @@ public class PresenterSettings {
     }
     public Uri getLogo() {
         return logo;
+    }
+    public boolean getLogoOn() {
+        return logoOn;
+    }
+    public boolean getHideLogoAfterShow() {
+        return hideLogoAfterShow;
+    }
+    public boolean getBlackscreenOn() {
+        return blackscreenOn;
     }
     public float getLogoSize() {
         return logoSize;
@@ -141,10 +170,27 @@ public class PresenterSettings {
     public float getFontSizePresoMax() {
         return fontSizePresoMax;
     }
+    public float getPresoAlertTextSize() {
+        return presoAlertTextSize;
+    }
+    public String getPresoAlertText() {
+        return presoAlertText;
+    }
+    public float getPresoBackgroundAlpha() {
+        return presoBackgroundAlpha;
+    }
+
 
 
     // The helpers for this class
-    public void getPreferences(Context c, MainActivityInterface mainActivityInterface) {
+    public void getAllPreferences(Context c, MainActivityInterface mainActivityInterface) {
+        // This calls all preference groups
+        getImagePreferences(c, mainActivityInterface);
+        getScreenSetupPreferences(c, mainActivityInterface);
+        getAlertPreferences(c, mainActivityInterface);
+    }
+
+    public void getImagePreferences(Context c, MainActivityInterface mainActivityInterface) {
         setLogo(getUriFromString(c,mainActivityInterface,mainActivityInterface.
                         getPreferences().getMyPreferenceString(c,"customLogo",""),
                 "ost_logo.png"));
@@ -164,14 +210,23 @@ public class PresenterSettings {
         setBackgroundToUse(mainActivityInterface.getPreferences().
                 getMyPreferenceString(c, "backgroundToUse","img1"));
         setBackgroundColor(mainActivityInterface.getPreferences().
-                getMyPreferenceInt(c,"backgroundColor", ContextCompat.getColor(c,R.color.colorPrimary)));
+                getMyPreferenceInt(c,"backgroundColor", ContextCompat.getColor(c,R.color.red)));
+        setPresoBackgroundAlpha(mainActivityInterface.getPreferences().
+                getMyPreferenceFloat(c,"presoBackgroundAlpha",1f));
+    }
+    public void getScreenSetupPreferences(Context c, MainActivityInterface mainActivityInterface) {
         setPresoTransitionTime(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoTransitionTime", 800));
         setCastRotation(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"castRotation",0.0f));
-        setPresoXMargin(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoXMargin",20));
-        setPresoYMargin(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoYMargin",10));
+        setPresoXMargin(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoXMargin",0));
+        setPresoYMargin(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoYMargin",0));
         setPresoInfoAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f));
         setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizePresoMax", 40f));
+    }
+
+    public void getAlertPreferences(Context c, MainActivityInterface mainActivityInterface) {
+        setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString(c,"presoAlertText",""));
+        setPresoAlertTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAlertTextSize", 12f));
     }
 
     private Uri getUriFromString(Context c, MainActivityInterface mainActivityInterface,

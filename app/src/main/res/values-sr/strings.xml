@@ -155,8 +155,8 @@
     <string name="lastsong">"Prikazivanje poslednje stavke na set listi"</string>
     <string name="set_help">"Prevlačite pesme da bi promenili redosled na set listi"</string>
     <string name="set_current">"Trenutna set lista"</string>
-    <string name="setxmargins">"Horizontalna margina"</string>
-    <string name="setymargins">"Vertikalna margina"</string>
+    <string name="set_x_margin">"Horizontalna margina"</string>
+    <string name="set_y_margin">"Vertikalna margina"</string>
     <string name="update_projector">"Ažuriranje\nprojektora"</string>
     <string name="black_screen">"Crni ekran"</string>
     <string name="choose_image1">"Odabrati pozadinsku sliku 1"</string>

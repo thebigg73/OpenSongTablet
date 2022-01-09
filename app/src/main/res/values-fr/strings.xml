@@ -396,8 +396,8 @@
     <string name="set_new">"Vider"</string>
     <string name="sethasbeendeleted">"a été supprimé de votre dossier \'Sets\'."</string>
     <string name="song_menu_checkboxes">"Afficher les cases à cocher dans le menu de la chanson"</string>
-    <string name="setxmargins">"Taille de la marge horizontale"</string>
-    <string name="setymargins">"Taille de la marge verticale"</string>
+    <string name="set_x_margin">"Taille de la marge horizontale"</string>
+    <string name="set_y_margin">"Taille de la marge verticale"</string>
     <string name="show_general_advanced">"Afficher/masquer les données avancé"</string>
     <string name="show_capo">"accords Afficher capo"</string>
     <string name="show_chords">"Afficher les accords"</string>
