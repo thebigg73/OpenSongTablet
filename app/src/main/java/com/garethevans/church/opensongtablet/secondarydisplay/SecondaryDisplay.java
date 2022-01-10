@@ -1,4 +1,8 @@
 package com.garethevans.church.opensongtablet.secondarydisplay;
+// TODO
+// Info bar not working
+// Clicking on the first section crossfades with a blank view?
+// Clicking on a section when logo is on shouldn't start the timer, but a logo off with content should
 
 import android.app.Presentation;
 import android.content.Context;
@@ -55,29 +59,20 @@ public class SecondaryDisplay extends Presentation {
 
     private Timer waitUntilTimer;
     private TimerTask waitUntilTimerTask;
-    private long infoBarUntilTime, lyricAfterTime;
     private int showWhich = 0;
     private int showWhichInfo = 0;
     private int showWhichBackground = 0;  //0=not set, 1=image1, 2=image2, 3=surface1, 4=surface2
     private int showWhichVideo = 0;
-    private final int logoSplashTime = 3000, panicTimeExtra = 1000, untilTimeWait=10000;
+    private final int logoSplashTime = 3000;
 
-    boolean infoBarRequired;
+    boolean infoBarRequiredTime=false, infoBarRequireInitial=true;
     boolean infoBarChangeRequired;
     boolean forceCastUpdate;
-    boolean panicRequired;
-    boolean doUpdateActive;
-    boolean infoBarAlertState;
-    boolean animateOutActive;
-    boolean isVideo;
-    boolean isPresenting;
     boolean waitForVideo;
 
     MediaPlayer mediaPlayer1=new MediaPlayer(), mediaPlayer2=new MediaPlayer();
-    View viewToFadeIn, viewToFadeOut;
-    SurfaceTexture surfaceTexture1, surfaceTexture2;
+    View backgroundToFadeIn, backgroundToFadeOut;
     Surface surface1, surface2;
-    Uri vidUri, uriToLoad;
 
     public SecondaryDisplay(Context c, Display display) {
         super(c, display);
@@ -140,11 +135,13 @@ public class SecondaryDisplay extends Presentation {
 
         // All other views (backgroundImage1/2, surfaceTexture1/2, logo, songProjectionInfo1/2, alertBar)
         // need to start in the faded out state - GONE and alpha 0.0f
+        setViewAlreadyFadedOut(myView.allContent);
         setViewAlreadyFadedOut(myView.backgroundImage1);
         setViewAlreadyFadedOut(myView.backgroundImage2);
         setViewAlreadyFadedOut(myView.textureView1);
         setViewAlreadyFadedOut(myView.textureView1);
         setViewAlreadyFadedOut(myView.mainLogo);
+        setViewAlreadyFadedOut(myView.bottomBarBackground);
         setViewAlreadyFadedOut(myView.songProjectionInfo1);
         setViewAlreadyFadedOut(myView.songProjectionInfo2);
         setViewAlreadyFadedOut(myView.alertBar);
@@ -166,11 +163,18 @@ public class SecondaryDisplay extends Presentation {
             myView.castFrameLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
         }
     }
-    private void moveToNextView() {
+    private void moveToNextSongView() {
         if (showWhich<2) {
             showWhich = 2;
         } else {
             showWhich = 1;
+        }
+    }
+    private void moveToNextSongInfoView() {
+        if (showWhichInfo<2) {
+            showWhichInfo = 2;
+        } else {
+            showWhichInfo = 1;
         }
     }
     private boolean canShowSong() {
@@ -289,36 +293,36 @@ public class SecondaryDisplay extends Presentation {
             // We decide which isn't null
             // Get the current background to fade out and set the background to the next
             Log.d(TAG,"Fade out: showWhichBackground="+showWhichBackground);
-            viewToFadeOut = null;
+            backgroundToFadeOut = null;
             if (showWhichBackground==1) {
-                viewToFadeOut = myView.backgroundImage1;
+                backgroundToFadeOut = myView.backgroundImage1;
             } else if (showWhichBackground==2) {
-                viewToFadeOut = myView.backgroundImage2;
+                backgroundToFadeOut = myView.backgroundImage2;
             } else if (showWhichBackground==3) {
-                viewToFadeOut = myView.textureView1;
+                backgroundToFadeOut = myView.textureView1;
             } else if (showWhichBackground==4) {
-                viewToFadeOut = myView.textureView2;
+                backgroundToFadeOut = myView.textureView2;
             }
 
             // If this is the first time, showWhichBackground==0
-            viewToFadeIn = null;
+            backgroundToFadeIn = null;
             waitForVideo = false;
             if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img") ||
                     mainActivityInterface.getPresenterSettings().getBackgroundToUse().equals("color")) {
                 if (showWhichBackground == 1) {
                     showWhichBackground = 2;
-                    viewToFadeIn = myView.backgroundImage2;
+                    backgroundToFadeIn = myView.backgroundImage2;
                 } else {
                     showWhichBackground = 1;
-                    viewToFadeIn = myView.backgroundImage1;
+                    backgroundToFadeIn = myView.backgroundImage1;
                 }
             } else if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("vid")) {
                 if (showWhichBackground == 3) {
                     showWhichBackground = 4;
-                    viewToFadeIn = myView.textureView2;
+                    backgroundToFadeIn = myView.textureView2;
                 } else {
                     showWhichBackground = 3;
-                    viewToFadeIn = myView.textureView1;
+                    backgroundToFadeIn = myView.textureView1;
                 }
             }
             Log.d(TAG,"Fade in: showWhichBackground="+showWhichBackground);
@@ -331,22 +335,22 @@ public class SecondaryDisplay extends Presentation {
             if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().equals("color") ||
                     (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img") && background == null)) {
                 // Use a solid background color
-                assert viewToFadeIn instanceof ImageView;
+                assert backgroundToFadeIn instanceof ImageView;
                 Drawable drawable = ContextCompat.getDrawable(c, R.drawable.simple_rectangle);
                 if (drawable != null) {
                     GradientDrawable solidColor = (GradientDrawable) drawable.mutate();
                     solidColor.setSize(availableScreenWidth, availableScreenHeight);
                     solidColor.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
-                    GlideApp.with(c).load(solidColor).apply(requestOptions).into((ImageView) viewToFadeIn);
+                    GlideApp.with(c).load(solidColor).apply(requestOptions).into((ImageView) backgroundToFadeIn);
                 }
             } else if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img")) {
                 // Use a static image
-                assert viewToFadeIn instanceof ImageView;
+                assert backgroundToFadeIn instanceof ImageView;
                 if (background.toString().endsWith("ost_bg.png")) {
                     Drawable defaultImage = ResourcesCompat.getDrawable(c.getResources(), R.drawable.preso_default_bg, null);
-                    GlideApp.with(c).load(defaultImage).apply(requestOptions).into((ImageView) viewToFadeIn);
+                    GlideApp.with(c).load(defaultImage).apply(requestOptions).into((ImageView) backgroundToFadeIn);
                 } else {
-                    GlideApp.with(c).load(background).apply(requestOptions).into((ImageView) viewToFadeIn);
+                    GlideApp.with(c).load(background).apply(requestOptions).into((ImageView) backgroundToFadeIn);
                 }
             } else if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("vid")) {
                 waitForVideo = true;
@@ -354,26 +358,25 @@ public class SecondaryDisplay extends Presentation {
 
             // Now send the animations to fade out the current (if not waiting for a video)
             if (!waitForVideo) {
-                crossFadeViews();
+                crossFadeBackgrounds();
             } else {
                 if (showWhichVideo < 2) {
-                    viewToFadeIn = myView.textureView1;
+                    backgroundToFadeIn = myView.textureView1;
                 } else {
-                    viewToFadeIn = myView.textureView2;
+                    backgroundToFadeIn = myView.textureView2;
                 }
                 loadVideo();
             }
         }
     }
-    private void crossFadeViews() {
-        Log.d(TAG,"crossFadeViews()");
-        mainActivityInterface.getCustomAnimation().faderAnimation(viewToFadeOut,
+    private void crossFadeBackgrounds() {
+        Log.d(TAG,"crossFadeBackgrounds()");
+        mainActivityInterface.getCustomAnimation().faderAnimation(backgroundToFadeOut,
                 mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                 mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha(), 0f);
-        mainActivityInterface.getCustomAnimation().faderAnimation(viewToFadeIn,
+        mainActivityInterface.getCustomAnimation().faderAnimation(backgroundToFadeIn,
                 mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                 0f, mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha());
-
     }
 
     // The logo
@@ -389,31 +392,21 @@ public class SecondaryDisplay extends Presentation {
     }
     public void showLogo() {
         // Fade in/out the logo based on the setting
-        float start;
-        float end;
         if (mainActivityInterface.getPresenterSettings().getLogoOn()) {
-            start = 0f;
-            end = 1f;
+            crossFadeContent(myView.allContent,myView.mainLogo);
         } else {
-            start = 1f;
-            end = 0f;
+            crossFadeContent(myView.mainLogo,myView.allContent);
         }
-        mainActivityInterface.getCustomAnimation().faderAnimation(myView.mainLogo,
-                mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                start,end);
 
-        // Do the opposite of the logo for the content and bottom bar
-        fadeInOutSong(!mainActivityInterface.getPresenterSettings().getLogoOn(), true, true);
-
+        // Check for the song info
+        checkSongInfoShowHide();
         if (mainActivityInterface.getPresenterSettings().getHideLogoAfterShow()) {
             // This will hide the logo after the logoSplashTime
             myView.mainLogo.postDelayed(() -> {
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.mainLogo,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),1f,0f);
-                fadeInOutSong(true,true,true);
-                Log.d(TAG,"timed hiding of logo");
                 mainActivityInterface.getPresenterSettings().setLogoOn(false);
                 mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(false);
+                crossFadeContent(myView.mainLogo,myView.allContent);
+                Log.d(TAG,"timed hiding of logo");
             },logoSplashTime);
         }
     }
@@ -470,21 +463,24 @@ public class SecondaryDisplay extends Presentation {
     // - For at least the untilWaitTime has elapsed since first presented
     // - The alert view can still override if required
     private void setupTimers() {
+        infoBarRequiredTime = true;
         waitUntilTimer = new Timer();
         waitUntilTimerTask = new TimerTask() {
             @Override
             public void run() {
-                // Switch off the requirement for the infoBar and cancel the timer
-                infoBarRequired = false;
+                // Switch off the requirement for the infoBarRequiredTime and cancel the timer
+                infoBarRequiredTime = false;
                 try {
                     waitUntilTimer.cancel();
                     waitUntilTimerTask.cancel();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                Log.d(TAG,"timer over - infoBarRequiredTime="+infoBarRequiredTime);
             }
         };
-        waitUntilTimer.schedule(waitUntilTimerTask,untilTimeWait);
+        int untilTimeWait = 10000;
+        waitUntilTimer.schedule(waitUntilTimerTask, untilTimeWait);
     }
     private void setInfoBarToMode() {
         // For Performance/Stage mode, we want the small logo to be on in the bottom bar always
@@ -509,7 +505,8 @@ public class SecondaryDisplay extends Presentation {
             waitUntilTimerTask.cancel();
             waitUntilTimerTask = null;
         }
-        infoBarRequired = true;
+        infoBarRequireInitial = false;
+        infoBarRequiredTime = true;
     }
     public void updateInfoBarColor() {
         int colorWithAlpha;
@@ -534,23 +531,73 @@ public class SecondaryDisplay extends Presentation {
         myView.songProjectionInfo2.setAlign(mainActivityInterface.getPresenterSettings().getPresoInfoAlign());
     }
     public void setSongInfo() {
-        // Change the current showInfo
-        if (showWhichInfo==1) {
-            showWhichInfo = 2;
+        String title = mainActivityInterface.getSong().getTitle();
+        String author = mainActivityInterface.getSong().getAuthor();
+        String copyright = mainActivityInterface.getSong().getCopyright();
+        if (title==null || title.isEmpty()) {
+            title = mainActivityInterface.getSong().getFilename();
+        }
+        Log.d(TAG,"setSongInfo()  title="+title);
+        // All info should be shown if available
+        if (showWhichInfo<2) {
+            myView.songProjectionInfo1.setSongTitle(title);
+            myView.songProjectionInfo1.setSongAuthor(author);
+            myView.songProjectionInfo1.setSongCopyright(copyright);
+
         } else {
-            showWhichInfo = 1;
+            myView.songProjectionInfo2.setSongTitle(title);
+            myView.songProjectionInfo2.setSongAuthor(author);
+            myView.songProjectionInfo2.setSongCopyright(copyright);
         }
 
-        // All info should be shown if available
-        if (showWhichInfo==1) {
-            myView.songProjectionInfo1.setSongTitle(mainActivityInterface.getSong().getTitle());
-            myView.songProjectionInfo1.setSongAuthor(mainActivityInterface.getSong().getAuthor());
-            myView.songProjectionInfo1.setSongCopyright(mainActivityInterface.getSong().getCopyright());
-
+    }
+    public void initialiseInfoBarRequired() {
+        // This sets the info bar as being required for first time shown
+        // Once we fade in a section for the first time, we swap these booleans and start the timer
+        infoBarRequireInitial = true;
+        infoBarRequiredTime = false;
+    }
+    private void checkSongInfoShowHide() {
+        if (showWhichInfo<2) {
+            songInfoShowCheck(myView.songProjectionInfo1);
+            songInfoHideCheck(myView.songProjectionInfo1);
         } else {
-            myView.songProjectionInfo2.setSongTitle(mainActivityInterface.getSong().getTitle());
-            myView.songProjectionInfo2.setSongAuthor(mainActivityInterface.getSong().getAuthor());
-            myView.songProjectionInfo2.setSongCopyright(mainActivityInterface.getSong().getCopyright());
+            songInfoShowCheck(myView.songProjectionInfo2);
+            songInfoHideCheck(myView.songProjectionInfo2);
+        }
+    }
+    private void songInfoHideCheck(View songInfoView) {
+        Log.d(TAG,"songInfoHideCheck()");
+        // Fade out can only happen if we no longer require the song info bar
+        if (!infoBarRequireInitial && !infoBarRequiredTime) {
+            Log.d(TAG,"Should hide view:"+songInfoView+" 1:"+myView.songProjectionInfo1+" 2:"+myView.songProjectionInfo2);
+            mainActivityInterface.getCustomAnimation().faderAnimation(songInfoView,
+                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                    songInfoView.getAlpha(), 0f);
+            mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
+                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                    mainActivityInterface.getPresenterSettings().getPresoInfoBarAlpha(),0f);
+        }
+        Log.d(TAG,"bottomTitle1:"+myView.songProjectionInfo1.getSongTitle());
+        Log.d(TAG,"bottomTitle2:"+myView.songProjectionInfo2.getSongTitle());
+    }
+    private void songInfoShowCheck(View songInfoView) {
+        Log.d(TAG,"songInfoShowCheck()");
+        // If required (new song loaded and not already showing), show the info bar
+        if (canShowSong() && infoBarRequireInitial) {
+            Log.d(TAG,"Should show view:"+songInfoView+" 1:"+myView.songProjectionInfo1+" 2:"+myView.songProjectionInfo2);
+            mainActivityInterface.getCustomAnimation().faderAnimation(songInfoView,
+                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                    0f,1f);
+            mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
+                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                    0f,mainActivityInterface.getPresenterSettings().getPresoInfoBarAlpha());
+
+            // Now remove the requirement for an inital view
+            infoBarRequireInitial = false;
+
+            // Set a timer required though for minimum display time
+            setupTimers();
         }
     }
 
@@ -591,7 +638,7 @@ public class SecondaryDisplay extends Presentation {
                 ((ViewGroup) mainActivityInterface.getSectionViews().get(position).getParent()).removeView(mainActivityInterface.getSectionViews().get(position));
             }
             // Move to next view showWhich 1>2, 2>1
-            moveToNextView();
+            moveToNextSongView();
             // Set a listener to wait for drawing, then measure and scale
             ViewTreeObserver viewTreeObserver = myView.testLayout.getViewTreeObserver();
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -622,11 +669,12 @@ public class SecondaryDisplay extends Presentation {
                     // We can now prepare the new view and animate in/out the views as long as the logo is off
                     // and the blank screen isn't on
                     Log.d(TAG,"showWhich="+showWhich+"  canShowSong()="+canShowSong());
+
                     if (showWhich < 2) {
                         myView.songContent1.removeAllViews();
-
-                            myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
-                        if (canShowSong()) {
+                        myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
+                        crossFadeContent(myView.songContent2, myView.songContent1);
+                        /*if (canShowSong()) {
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     0f, 1f);
@@ -635,11 +683,12 @@ public class SecondaryDisplay extends Presentation {
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     1f,0f);
-
+*/
                     } else {
                         myView.songContent2.removeAllViews();
                         myView.songContent2.addView(mainActivityInterface.getSectionViews().get(position));
-                        if (canShowSong()) {
+                        crossFadeContent(myView.songContent1, myView.songContent2);
+                        /*if (canShowSong()) {
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     0f, 1f);
@@ -647,8 +696,11 @@ public class SecondaryDisplay extends Presentation {
                             mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
                                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                                     1f,0f);
-
+*/
                     }
+
+                    // Check the song info status
+                    checkSongInfoShowHide();
                 }
             });
             myView.testLayout.addView(mainActivityInterface.getSectionViews().get(position));
@@ -730,47 +782,25 @@ public class SecondaryDisplay extends Presentation {
     public void showPresenterContent() {
 
     }
-    private void fadeInOutSong(boolean fadeIn, boolean content, boolean bottomBar) {
-        if (content && (waitUntilTimer==null || waitUntilTimerTask==null)) {
-            // We are showing the content for the first time.
-            // Create the timer which counts down how long the info bar is required for
-            setupTimers();
+    private void crossFadeContent(View contentToFadeOut, View contentToFadeIn) {
+        Log.d(TAG,"crossFadeContent()");
+        // Fade out is always fine, so do it
+        if (contentToFadeOut!=null) {
+            Log.d(TAG,"Fading out view");
+            mainActivityInterface.getCustomAnimation().faderAnimation(contentToFadeOut,
+                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                    contentToFadeOut.getAlpha(), 0f);
         }
-        float start;
-        float end;
-        if (fadeIn) {
-            start = 0f;
-            end = 1f;
-        } else {
-            start = 1f;
-            end = 0f;
-        }
-        if (!fadeIn || canShowSong()) {
-            if (showWhich < 2 && content) {
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-            } else if (content) {
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-            }
 
-            if (showWhichInfo < 2 && bottomBar) {
-                myView.songProjectionInfo1.setInfoBarRequired(infoBarRequired,
-                        mainActivityInterface.getPresenterSettings().getAlertOn());
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-            } else if (bottomBar) {
-                myView.songProjectionInfo2.setInfoBarRequired(infoBarRequired,
-                        mainActivityInterface.getPresenterSettings().getAlertOn());
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(), start, end);
-            }
+        // Fade in of a content is fine
+        if (contentToFadeIn!=null || contentToFadeIn==myView.mainLogo) {
+            Log.d(TAG, "Fading in view");
+            mainActivityInterface.getCustomAnimation().faderAnimation(contentToFadeIn,
+                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                    0f, 1f);
         }
     }
+
 
     // Video
     private class MySurfaceTextureAvailable implements TextureView.SurfaceTextureListener {
@@ -832,12 +862,20 @@ public class SecondaryDisplay extends Presentation {
                 if (showWhichVideo<2) {
                     if (mediaPlayer1 != null) {
                         mediaPlayer1.reset();
+                    } else {
+                        mediaPlayer1 = new MediaPlayer();
+                        mediaPlayer1.setLooping(true);
+                        mediaPlayer1.setOnPreparedListener(new MyPreparedListener());
                     }
                     mediaPlayer1.setDataSource(c, uri);
                     mediaPlayer1.prepareAsync();
                 } else {
                     if (mediaPlayer2!=null) {
                         mediaPlayer2.reset();
+                    } else {
+                        mediaPlayer2 = new MediaPlayer();
+                        mediaPlayer2.setLooping(true);
+                        mediaPlayer2.setOnPreparedListener(new MyPreparedListener());
                     }
                     mediaPlayer2.setDataSource(c, uri);
                     mediaPlayer2.prepareAsync();
@@ -875,7 +913,7 @@ public class SecondaryDisplay extends Presentation {
                 }, mainActivityInterface.getPresenterSettings().getPresoTransitionTime());
                 showWhichVideo = 1;
             }
-            crossFadeViews();
+            crossFadeBackgrounds();
         }
     }
 }

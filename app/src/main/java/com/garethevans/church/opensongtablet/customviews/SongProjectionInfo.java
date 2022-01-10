@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,7 +15,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class SongProjectionInfo extends LinearLayout {
 
     private final Context c;
-    private final LinearLayout castSongInfo, contentLayout;
+    private final LinearLayout contentLayout;
     private final TextView songTitle, songAuthor, songCopyright;
     private final ImageView miniLogo;
     private final String TAG = "SongProjectionInfo";
@@ -26,7 +25,7 @@ public class SongProjectionInfo extends LinearLayout {
         c = context;
         inflate(context, R.layout.view_song_info, this);
 
-        castSongInfo = findViewById(R.id.castSongInfo);
+        LinearLayout castSongInfo = findViewById(R.id.castSongInfo);
         contentLayout = findViewById(R.id.contentLayout);
         songTitle = findViewById(R.id.songTitle);
         songAuthor = findViewById(R.id.songAuthor);
@@ -108,29 +107,4 @@ public class SongProjectionInfo extends LinearLayout {
         }
     }
 
-    // Decide if the full info is still required in presenter mode
-    public void setInfoBarRequired(boolean infoBarRequired, boolean alertRequired) {
-        if (infoBarRequired) {
-            if (songTitle.getText()!=null && !songTitle.getText().toString().isEmpty()) {
-                songTitle.setVisibility(View.VISIBLE);
-            } else {
-                songTitle.setVisibility(View.GONE);
-            }
-            if (songAuthor.getText()!=null && !songAuthor.getText().toString().isEmpty()) {
-                songAuthor.setVisibility(View.VISIBLE);
-            } else {
-                songAuthor.setVisibility(View.GONE);
-            }
-            if (songCopyright.getText()!=null && !songCopyright.getText().toString().isEmpty()) {
-                songCopyright.setVisibility(View.VISIBLE);
-            } else {
-                songCopyright.setVisibility(View.GONE);
-            }
-        } else {
-            songTitle.setVisibility(View.GONE);
-            songAuthor.setVisibility(View.GONE);
-            songCopyright.setVisibility(View.GONE);
-        }
-
-    }
 }

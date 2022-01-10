@@ -2636,6 +2636,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         case "showBlankscreen":
                             secondaryDisplay.showBlankScreen();
                             break;
+
+                        case "initialiseInfoBarRequired":
+                            secondaryDisplay.initialiseInfoBarRequired();
+                            break;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

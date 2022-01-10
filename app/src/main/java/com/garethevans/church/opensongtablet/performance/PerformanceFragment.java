@@ -86,7 +86,6 @@ public class PerformanceFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         myView = ModePerformanceBinding.inflate(inflater, container, false);
-        View root = myView.getRoot();
 
         // Register this fragment
         mainActivityInterface.registerFragment(this,"Performance");
@@ -125,7 +124,7 @@ public class PerformanceFragment extends Fragment {
         Runnable r = () -> mainActivityInterface.showTutorial("performanceView");
         h.postDelayed(r,1000);
 
-        return root;
+        return myView.getRoot();
     }
 
     // Getting the preferences and helpers ready
