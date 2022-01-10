@@ -75,6 +75,9 @@ class MenuHandlers {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else {
+                    StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
+                    ShowToast.showToast(c);
                 }
                 break;
         }

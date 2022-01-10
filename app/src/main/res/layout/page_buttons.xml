@@ -10,7 +10,8 @@
     <ScrollView
         android:id="@+id/extrabuttons2"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -86,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toEndOf="@id/extrabuttons2"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -195,8 +196,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="end|top"
         android:layout_toEndOf="@id/extrabuttons"
-        android:visibility="visible"
-        tools:ignore="UselessParent">
+        tools:ignore="UselessParent"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"

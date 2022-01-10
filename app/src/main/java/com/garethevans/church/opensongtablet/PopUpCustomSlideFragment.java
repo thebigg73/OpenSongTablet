@@ -610,13 +610,35 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             }
 
             Log.d("CustomSlideFragment","newbit="+newbit);
-            newbit = newbit.replace("<p>", "\n");
-            newbit = newbit.replace("</p>", "");
-            newbit = newbit.replaceAll("<.*?>", "");
-            newbit = newbit.replaceAll("\\([A-Z]\\)","");
+            // Try to remove the footnotes
+            if (newbit.contains("<div class=\"footnotes\">")) {
+                newbit = newbit.substring(0, newbit.lastIndexOf("<div class=\"footnotes\">"));
+            }
+
+            newbit = newbit
+                    // Any headings are removed <h3>Heading</h3>
+                    .replaceAll("\\<h3.*?h3\\>", " ")
+                    .replace("<p>", "\n")
+                    .replaceAll("\\<.*?\\>", " ")
+                    // remove bracketed references like (A), [a]
+                    .replaceAll("\\( [A-Z] \\)","")
+                    .replaceAll("\\( [A-Z][A-Z] \\)","")
+                    .replaceAll("\\[ [a-z] \\]","")
+                    .replaceAll("\\[ [a-z][a-z] \\]","")
+                    // Convert non breaking space to space
+                    .replace("\u00A0"," ")
+                    .replace("&nbsp;", " ")
+                    // Make sure of space after line endings
+                    .replace("?", "? ")
+                    .replace("!", "! ")
+                    // Reduce runs of spaces to one
+                    .replaceAll("\\s{2,}", " ")
+                    // Handle space before ending quote
+                    .replace(" \u201D ", "\u201D ")
+                    .trim();
+
             newbit = Html.fromHtml(newbit).toString();
             Log.d("CustomSlideFragment","newbit="+newbit);
-
 
             // Split into lines and trim them
             StringBuilder nl = new StringBuilder();
@@ -703,7 +725,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                     slideTitleEditText.setText(FullscreenActivity.customslide_title);
                     slideContentEditText.setText(FullscreenActivity.customslide_content);
                     if (FullscreenActivity.scripture_title != null && FullscreenActivity.scripture_verse != null) {
-                        slideTitleEditText.setText(FullscreenActivity.scripture_verse);
+                        slideTitleEditText.setText(FullscreenActivity.scripture_title);
                         slideContentEditText.setText(FullscreenActivity.scripture_verse);
                         addScripture();
                     }

@@ -273,6 +273,7 @@ public class StageMode extends AppCompatActivity implements
     private RelativeLayout scrollUpButtonLayout;
     private RelativeLayout setBackButtonLayout;
     private RelativeLayout setForwardButtonLayout;
+    private ScrollView mainbuttons;
     private ScrollView extrabuttons;
     private ScrollView extrabuttons2;
     private int keyRepeatCount = 0;
@@ -817,8 +818,7 @@ public class StageMode extends AppCompatActivity implements
         });
         // Enable the song and author section to link to edit song
         songandauthor.setOnLongClickListener(view -> {
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
+            doEdit();
             return true;
         });
         batteryholder.setOnClickListener(view -> {
@@ -1808,6 +1808,8 @@ public class StageMode extends AppCompatActivity implements
             custom2Button_ungrouped = findViewById(R.id.custom2Button_ungrouped);
             custom3Button_ungrouped = findViewById(R.id.custom3Button_ungrouped);
             custom4Button_ungrouped = findViewById(R.id.custom4Button_ungrouped);
+            mainbuttons = findViewById(R.id.mainbuttons);
+            mainbuttons.setVisibility(View.GONE);
             extrabuttons = findViewById(R.id.extrabuttons);
             extrabuttons.setVisibility(View.GONE);
             extrabuttons2 = findViewById(R.id.extrabuttons2);
@@ -2446,7 +2448,7 @@ public class StageMode extends AppCompatActivity implements
             // Get the default alpha value
             float val = preferences.getMyPreferenceFloat(StageMode.this, "pageButtonAlpha", 0.5f);
 
-            // Set the on vaule (if a popup is running)
+            // Set the on value (if a popup is running)
             float onval = val + 0.3f;
             if (onval > 1.0f) {
                 onval = 1.0f;
@@ -2469,6 +2471,7 @@ public class StageMode extends AppCompatActivity implements
             float custom3Alpha = val;
             float custom4Alpha = val;
 
+            mainbuttons.setVisibility(View.VISIBLE);
             // Check the extrabuttons and custombuttons views are hidden to start with
             extrabuttons.setVisibility(View.GONE);
             extrabuttons2.setVisibility(View.GONE);
@@ -2905,7 +2908,12 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void doEdit() {
         FullscreenActivity.whattodo = "editsong";
-        openFragment();
+        if (FullscreenActivity.myXML.contains("<aka>ERROR!</aka>")) {
+            StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+            ShowToast.showToast(StageMode.this);
+        } else {
+            openFragment();
+        }
     }
 
     @Override
@@ -3261,7 +3269,11 @@ public class StageMode extends AppCompatActivity implements
         if (StaticVariables.mTitle.equals("")) {
             StaticVariables.mTitle = StaticVariables.songfilename.replaceAll("\\.[^.]*$", "");
         }
-        songtitle_ab.setText(StaticVariables.mTitle);
+        if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+            songtitle_ab.setText("≡" + StaticVariables.mTitle);
+        } else {
+            songtitle_ab.setText(StaticVariables.mTitle);
+        }
         if (StaticVariables.mKey.isEmpty()) {
             songkey_ab.setText("");
         } else {
@@ -3341,7 +3353,11 @@ public class StageMode extends AppCompatActivity implements
         glideimage_HorizontalScrollView.setVisibility(View.VISIBLE);
 
         // Set the ab title to include the song info if available
-        songtitle_ab.setText(StaticVariables.mTitle);
+        if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+            songtitle_ab.setText("≡" + StaticVariables.mTitle);
+        } else {
+            songtitle_ab.setText(StaticVariables.mTitle);
+        }
         if (StaticVariables.mKey.isEmpty()) {
             songkey_ab.setText("");
         } else {
@@ -7229,18 +7245,14 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
 
                 if (FullscreenActivity.isSong) {
-                    // CheckChordFormat returns the current format to both StaticVariables detectedChordFormat and newChordFormat
+                    // Note: If chordformat = 0 (detect) then chordFormatUsePreferred is false
                     try {
-                        Transpose.checkChordFormat();
-                        if (preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1) != 0) {
-                            // Override output format to preference
-                            StaticVariables.newChordFormat = preferences.getMyPreferenceInt(StageMode.this, "chordFormat", 1);
-
-                            if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
-                                StaticVariables.detectedChordFormat = StaticVariables.newChordFormat;
-                            }
+                        if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
+                            StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1);
+                            StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
                         } else {
-                           StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
+                            // CheckChordFormat returns the current format to both StaticVariables detectedChordFormat and newChordFormat
+                            Transpose.checkChordFormat();
                         }
                     } catch (Exception e) {
                         Log.d(TAG, "Error checking the chord format");
@@ -7298,7 +7310,11 @@ public class StageMode extends AppCompatActivity implements
                     setWindowFlagsAdvanced();
 
                     // Put the title of the song in the taskbar
-                    songtitle_ab.setText(processSong.getSongTitle());
+                    if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+                        songtitle_ab.setText("≡" + processSong.getSongTitle());
+                    } else {
+                        songtitle_ab.setText(processSong.getSongTitle());
+                    }
                     songkey_ab.setText(processSong.getSongKey());
                     songauthor_ab.setText(processSong.getSongAuthor());
                     songcapo_ab.setText("");
@@ -8149,8 +8165,7 @@ public class StageMode extends AppCompatActivity implements
     // Edit song
     private void gesture2() {
         // Edit the song
-        FullscreenActivity.whattodo = "editsong";
-        openFragment();
+        doEdit();
     }
 
     // Add to set
@@ -8828,11 +8843,13 @@ public class StageMode extends AppCompatActivity implements
                     view2.setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {
-                            if (!StaticVariables.whichSongFolder.startsWith("..") || (StaticVariables.whichSongFolder.equals("../Received") && (!StaticVariables.receivedSongfilename.equals("")))) {
+                            if (!StaticVariables.whichSongFolder.startsWith("..") ||
+                                    (StaticVariables.whichSongFolder.equals("../Received") && !StaticVariables.receivedSongfilename.equals("") && !StaticVariables.receivedSongfilename.equals("ReceivedSong"))) {
                                 PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
                                 setActions.prepareSetList(StageMode.this, preferences);
                                 StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
                                 PopUpSetViewNew.makeVariation(StageMode.this, preferences);
+                                prepareSongMenu();
                                 loadSong();
                             } else {
                                 // Not a song

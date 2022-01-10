@@ -294,8 +294,8 @@ public class LoadXML extends Activity {
         FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<title>Welcome to OpenSongApp</title>\n" +
                 "<author>Gareth Evans</author>\n<lyrics>" +
+                "<aka>ERROR!</aka>" +
                 StaticVariables.mLyrics + "</lyrics>";
-        FullscreenActivity.myLyrics = "ERROR!";
         StaticVariables.currentSection = 0;
         FullscreenActivity.pdfPageCurrent = 0;
     }
@@ -314,8 +314,8 @@ public class LoadXML extends Activity {
         FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<title>Welcome to OpenSongApp</title>\n" +
                 "<author>Gareth Evans</author>\n<lyrics>" +
+                "<aka>ERROR!</aka>" +
                 StaticVariables.mLyrics + "</lyrics>";
-        FullscreenActivity.myLyrics = "ERROR!";
         StaticVariables.currentSection = 0;
         FullscreenActivity.pdfPageCurrent = 0;
     }

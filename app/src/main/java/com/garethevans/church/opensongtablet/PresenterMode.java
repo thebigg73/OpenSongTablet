@@ -1236,8 +1236,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         });
         // Enable the song and author section to link to edit song
         songandauthor.setOnLongClickListener(view -> {
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
+            doEdit();
             return true;
         });
         batteryholder.setOnClickListener(view -> {
@@ -1263,8 +1262,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 StaticVariables.myToastMessage = getString(R.string.pdf_functionnotavailable);
                 ShowToast.showToast(PresenterMode.this);
             } else if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "editsong";
-                openFragment();
+                doEdit();
             }
         });
         nav_prevsong.setOnClickListener(view -> {
@@ -1292,10 +1290,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_dB_group.setOnClickListener(view -> dBButtonClick());
         presenter_slide_group.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "customreusable_slide";
+            // Initialise working variables on button use
+            FullscreenActivity.scripture_title = "";
+            FullscreenActivity.scripture_verse = "";
+            FullscreenActivity.customslide_title = "";
+            FullscreenActivity.customslide_content = "";
             openFragment();
         });
         presenter_scripture_group.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "customreusable_scripture";
+            // Initialise working variables on button use
+            FullscreenActivity.scripture_title = "";
+            FullscreenActivity.scripture_verse = "";
+            FullscreenActivity.customslide_title = "";
+            FullscreenActivity.customslide_content = "";
             openFragment();
         });
         presenter_display_group.setOnClickListener(view -> {
@@ -2210,7 +2218,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         } catch (Exception e) {
             e.printStackTrace();
         }
-        s = new StringBuilder(s.toString().trim());
+        // IV - a trim() has been removed as sections can start with a lyric line with a leading space
+        s = new StringBuilder(s.toString());
 
         // And write it
         presenter_lyrics.setText(s.toString());
@@ -2385,9 +2394,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void doEdit() {
-        // IV - Was "extractPDF" for PDF which crashed(!), all now get editsong
         FullscreenActivity.whattodo = "editsong";
-        openFragment();
+        if (FullscreenActivity.myXML.contains("<aka>ERROR!</aka>")) {
+            StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+            ShowToast.showToast(PresenterMode.this);
+        } else {
+            openFragment();
+        }
     }
     @Override
     public void openFragment() {
@@ -3432,18 +3445,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     FullscreenActivity.myLyrics = "";
                 }
 
-                // CheckChordFormat returns the detected current format to both StaticVariables detectedChordFormat and newChordFormat
+                // Note: If chordformat = 0 (detect) then chordFormatUsePreferred is false
                 try {
-                    Transpose.checkChordFormat();
-                    if (preferences.getMyPreferenceInt(PresenterMode.this,"chordFormat",1) != 0) {
-                        // Override output format to preference
-                        StaticVariables.newChordFormat = preferences.getMyPreferenceInt(PresenterMode.this, "chordFormat", 1);
-
-                        if (preferences.getMyPreferenceBoolean(PresenterMode.this,"chordFormatUsePreferred",true)) {
-                            StaticVariables.detectedChordFormat = StaticVariables.newChordFormat;
-                        }
-                    } else {
+                    if (preferences.getMyPreferenceBoolean(PresenterMode.this,"chordFormatUsePreferred",true)) {
+                        StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(PresenterMode.this,"chordFormat",1);
                         StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
+                    } else {
+                        // CheckChordFormat returns the current format to both StaticVariables detectedChordFormat and newChordFormat
+                        Transpose.checkChordFormat();
                     }
                 } catch (Exception e) {
                     Log.d(TAG, "Error checking the chord format");
@@ -3552,6 +3561,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // IV - Store song details
+            preferences.setMyPreferenceString(PresenterMode.this, "songfilename",StaticVariables.songfilename);
+            preferences.setMyPreferenceString(PresenterMode.this,"whichSongFolder",StaticVariables.whichSongFolder);
+
             FullscreenActivity.alreadyloading = false;
         }
     }
