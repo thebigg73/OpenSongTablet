@@ -1236,8 +1236,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         });
         // Enable the song and author section to link to edit song
         songandauthor.setOnLongClickListener(view -> {
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
+            doEdit();
             return true;
         });
         batteryholder.setOnClickListener(view -> {
@@ -1263,8 +1262,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 StaticVariables.myToastMessage = getString(R.string.pdf_functionnotavailable);
                 ShowToast.showToast(PresenterMode.this);
             } else if (FullscreenActivity.isSong) {
-                FullscreenActivity.whattodo = "editsong";
-                openFragment();
+                doEdit();
             }
         });
         nav_prevsong.setOnClickListener(view -> {
@@ -2396,9 +2394,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void doEdit() {
-        // IV - Was "extractPDF" for PDF which crashed(!), all now get editsong
         FullscreenActivity.whattodo = "editsong";
-        openFragment();
+        if (FullscreenActivity.myXML.contains("<aka>ERROR!</aka>")) {
+            StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+            ShowToast.showToast(PresenterMode.this);
+        } else {
+            openFragment();
+        }
     }
     @Override
     public void openFragment() {

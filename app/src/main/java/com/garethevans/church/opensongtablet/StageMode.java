@@ -818,8 +818,7 @@ public class StageMode extends AppCompatActivity implements
         });
         // Enable the song and author section to link to edit song
         songandauthor.setOnLongClickListener(view -> {
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
+            doEdit();
             return true;
         });
         batteryholder.setOnClickListener(view -> {
@@ -2909,7 +2908,12 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void doEdit() {
         FullscreenActivity.whattodo = "editsong";
-        openFragment();
+        if (FullscreenActivity.myXML.contains("<aka>ERROR!</aka>")) {
+            StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+            ShowToast.showToast(StageMode.this);
+        } else {
+            openFragment();
+        }
     }
 
     @Override
@@ -8161,8 +8165,7 @@ public class StageMode extends AppCompatActivity implements
     // Edit song
     private void gesture2() {
         // Edit the song
-        FullscreenActivity.whattodo = "editsong";
-        openFragment();
+        doEdit();
     }
 
     // Add to set
