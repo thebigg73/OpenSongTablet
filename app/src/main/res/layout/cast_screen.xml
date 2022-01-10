@@ -1,40 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/castFrameLayout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/castFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    android:padding="0dp"
     android:layout_margin="0dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/black"
     android:clipChildren="false"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    android:padding="0dp">
 
     <RelativeLayout
         android:id="@+id/pageHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="UselessParent"
         android:clipChildren="false"
         android:clipToPadding="false">
+
+        <RelativeLayout
+            android:id="@+id/testLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/backgroundImage1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:scaleType="centerCrop"
             android:contentDescription="@string/app_name"
-            android:visibility="gone"/>
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/backgroundImage2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:scaleType="centerCrop"
             android:contentDescription="@string/app_name"
-            android:visibility="gone"/>
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
 
         <TextureView
             android:id="@+id/textureView1"
@@ -54,109 +61,105 @@
             android:padding="0dp"
             android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/app_name"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/app_name"
-            android:visibility="gone"/>
-
         <RelativeLayout
-            android:id="@+id/testLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bottomBit"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical"
-            android:visibility="invisible" />
-
-        <LinearLayout
-            android:id="@+id/songContent1"
+            android:id="@+id/allContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/bottomBit"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="0dp"
-            android:padding="0dp"
-            android:orientation="vertical"
-            android:visibility="gone" />
+            android:layout_above="@+id/alertBar"
+            android:visibility="visible">
 
-        <LinearLayout
-            android:id="@+id/songContent2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/bottomBit"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="0dp"
-            android:padding="0dp"
-            android:orientation="vertical"
-            android:visibility="gone" />
-
-        <FrameLayout
-            android:id="@+id/bottomBarBackground"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/bottomBit"
-            android:visibility="gone"/>
-
-        <RelativeLayout
-            android:id="@+id/bottomBit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_above="@+id/alertBar">
-
-            <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
-                android:id="@+id/songProjectionInfo1"
+            <ImageView
+                android:id="@+id/imageView1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="0dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"/>
-
-            <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
-                android:id="@+id/songProjectionInfo2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="0dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/app_name"
                 android:visibility="gone" />
 
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/app_name"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/songContent1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottomBit"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="0dp"
+                android:orientation="vertical"
+                android:padding="0dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/songContent2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottomBit"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="0dp"
+                android:orientation="vertical"
+                android:padding="0dp"
+                android:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/bottomBarBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/bottomBit"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/bottomBit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true">
+
+                <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
+                    android:id="@+id/songProjectionInfo1"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/red"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:visibility="visible" />
+
+                <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
+                    android:id="@+id/songProjectionInfo2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:visibility="gone" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <com.garethevans.church.opensongtablet.customviews.PresenterAlert
             android:id="@+id/alertBar"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/mainLogo"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_centerInParent="true"
-            android:contentDescription="@string/app_name"
-            android:padding="16dp"
-            android:layout_margin="16dp"
-            android:src="@drawable/ost_logo"
-            android:visibility="gone"/>
-
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone" />
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/mainLogo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/app_name"
+        android:padding="16dp"
+        android:src="@drawable/ost_logo"
+        android:visibility="gone" />
 </FrameLayout>

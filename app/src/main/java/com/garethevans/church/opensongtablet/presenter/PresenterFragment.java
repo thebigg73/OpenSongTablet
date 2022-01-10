@@ -49,6 +49,9 @@ public class PresenterFragment extends Fragment {
         myView = ModePresenterBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.presenter_mode));
 
+        // Register this fragment
+        mainActivityInterface.registerFragment(this,"Presenter");
+
         // Hide the main page buttons
         mainActivityInterface.getAppActionBar().setPerformanceMode(false);
         mainActivityInterface.showHideActionBar();
@@ -58,6 +61,12 @@ public class PresenterFragment extends Fragment {
 
         // Get preferences
         getPreferences();
+
+        // Prepare the song menu (will be called again after indexing from the main activity index songs)
+        if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
+                !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
+            mainActivityInterface.fullIndex();
+        }
 
         // Set up the the pager
         setupPager();
@@ -106,11 +115,13 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.getSong().setFilename(filename);
         mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
                 mainActivityInterface.getSong(),false));
-        mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
-                mainActivityInterface.getSong(),false));
 
         // Get the song views
         getSongViews();
+
+        // Initialise the requirement for the song info bar to be shown
+        displayInterface.updateDisplay("initialiseInfoBarRequired");
+        displayInterface.updateDisplay("info");
 
         // Update the recyclerView with the song sections
         songSectionsFragment.showSongInfo();

@@ -679,7 +679,7 @@ public class Transpose {
         String lyrics = thisSong.getLyrics()
                 // Protect new lines
                 .replace("\n", "¬")
-                // Remove text in brackets on chord lines as they may contain text that causes problems e.g. (Repeat last x) contains La
+                // Remove text in brackets on chord lines as they may contain text that causes problems e.g. (Repeat last x) contains La.
                 // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Kept lots of escapes to be sure they work!
                 .replaceAll("\\(.*?\\)", "")
                 .replaceAll("\\{.*?\\}", "")
@@ -688,9 +688,9 @@ public class Transpose {
                 .replace("|"," ")
                 .replace(":"," ")
                 .replace ("/"," ")
-                // Why ' ~'?  We split chords like 'Am7' into 'A ~7' - the ! stops the number being detected as nashville
+                // Why ' ~'?  We split chords like 'Am7' into 'A ~7' - the ~ stops the number being detected as nashville
                 .replace ("m", " ~") // Also hadles majors
-                .replace("sus", " ~") // Rmoved as conflicts with fromat 3 tests for chord ending's'
+                .replace("sus", " ~") // Removed as conflicts with format 3 tests for chord ending's'
                 .replace ("b", " ~")
                 .replace("#"," ~")
                 // Remove multiple whitespace and trim

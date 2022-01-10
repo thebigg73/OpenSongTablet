@@ -338,7 +338,7 @@ public class ProcessSong {
             case "chord":
                 if (linenum < totallines - 1 && (nextlinetype.equals("lyric") || nextlinetype.equals("comment"))) {
                     what = "chord_then_lyric";
-                } else if (nextlinetype.equals("") || nextlinetype.equals("chord")) {
+                } else if (totallines == 1 || nextlinetype.equals("") || nextlinetype.equals("chord")) {
                     what = "chord_only";
                 }
                 break;
@@ -431,7 +431,7 @@ public class ProcessSong {
         for (int x = 1; x < (chord.length()); x++) {
             thischordcharempty = chord.startsWith(" ", x);
             prevlyriccharempty = lyric.startsWith(" ", x - 1);
-            prevlyricempty = prevlyricempty & prevlyriccharempty;
+            prevlyricempty = prevlyricempty && prevlyriccharempty;
 
             // Add the start position of a chord
             if (!thischordcharempty && prevchordcharempty) {

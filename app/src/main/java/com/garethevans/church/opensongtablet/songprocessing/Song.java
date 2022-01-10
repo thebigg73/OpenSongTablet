@@ -432,6 +432,7 @@ public class Song {
         thisSong.setKey("G");
         thisSong.setLinkweb("https://www.opensongapp.com");
         thisSong.setFiletype("XML");
+        thisSong.setAka("Error!");
         return thisSong;
     }
 
