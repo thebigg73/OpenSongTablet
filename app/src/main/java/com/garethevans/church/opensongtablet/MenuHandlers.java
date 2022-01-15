@@ -17,6 +17,7 @@ class MenuHandlers {
         void openMyDrawers(String what);
         void openFragment();
         void prepareOptionMenu();
+        void fixSet();
     }
 
     static void actOnClicks(Context c, Preferences preferences, int menuitem) {
@@ -52,15 +53,7 @@ class MenuHandlers {
 
             case setadd:
                 if (!StaticVariables.whichSongFolder.startsWith("..")) {
-                    if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
-                            StaticVariables.whichSongFolder.equals("MAIN") ||
-                            StaticVariables.whichSongFolder.equals("")) {
-                        StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
-                    } else {
-                        StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"
-                                + StaticVariables.songfilename + "_**$";
-                    }
-                    // Allow the song to be added, even if it is already there
+                    // Add to end of set
                     String newval = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
                     preferences.setMyPreferenceString(c,"setCurrent",newval);
                     // Tell the user that the song has been added.
@@ -72,6 +65,7 @@ class MenuHandlers {
 
                     try {
                         mListener.prepareOptionMenu();
+                        mListener.fixSet();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

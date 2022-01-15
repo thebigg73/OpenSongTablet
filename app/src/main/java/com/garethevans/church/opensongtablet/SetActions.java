@@ -190,11 +190,14 @@ class SetActions {
     }
 
     void indexSongInSet() {
+        // Index using StaticVariables.whatsongforsetwork set during loadsong
+        String whatSongInSet;
         try {
             if (StaticVariables.mSet!=null && StaticVariables.mSetList!=null && StaticVariables.whatsongforsetwork!=null) {
+                whatSongInSet = StaticVariables.whatsongforsetwork.replace("$**_","").replace("_**$","");
                 boolean alreadythere = false;
                 if (StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < StaticVariables.mSetList.length) {
-                    if (StaticVariables.mSetList[StaticVariables.indexSongInSet].contains(StaticVariables.whatsongforsetwork)) {
+                    if (StaticVariables.mSetList[StaticVariables.indexSongInSet].contains(whatSongInSet)) {
                         alreadythere = true;
                     }
                 }
@@ -225,9 +228,10 @@ class SetActions {
                 StaticVariables.mSet = StaticVariables.mSetList.clone();
 
                 if (!alreadythere) {
+                    StaticVariables.indexSongInSet = -1;
                     for (int x = 0; x < StaticVariables.setSize; x++) {
-                        if (StaticVariables.mSet[x].contains(StaticVariables.whatsongforsetwork) ||
-                                StaticVariables.mSet[x].contains("**" + StaticVariables.whatsongforsetwork)) {
+                        if (StaticVariables.mSet[x].contains(whatSongInSet) ||
+                                StaticVariables.mSet[x].contains(whatSongInSet)) {
                             StaticVariables.indexSongInSet = x;
                             if (x > 0) {
                                 StaticVariables.previousSongInSet = StaticVariables.mSet[x - 1];
@@ -312,26 +316,26 @@ class SetActions {
     }
 
     String getSongForSetWork(Context c) {
+        // IV - Now prepare a set entry for the song - includes handing of custom folders
         String val;
         if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
                 StaticVariables.whichSongFolder.equals("")) {
             val = StaticVariables.songfilename;
         } else if (StaticVariables.whichSongFolder.contains("Scripture/_cache")) {
-            val = c.getResources().getString(R.string.scripture) + "/" + StaticVariables.songfilename;
+            val = "**" + c.getResources().getString(R.string.scripture) + "/" + StaticVariables.songfilename;
         } else if (StaticVariables.whichSongFolder.contains("Slides/_cache")) {
-            val = c.getResources().getString(R.string.slide) + "/" + StaticVariables.songfilename;
+            val = "**" + c.getResources().getString(R.string.slide) + "/" + StaticVariables.songfilename;
         } else if (StaticVariables.whichSongFolder.contains("Notes/_cache")) {
-            val = c.getResources().getString(R.string.note) + "/" + StaticVariables.songfilename;
+            val = "**" + c.getResources().getString(R.string.note) + "/" + StaticVariables.songfilename;
         } else if (StaticVariables.whichSongFolder.contains("Images/_cache")) {
-            val = c.getResources().getString(R.string.image) + "/" + StaticVariables.songfilename;
+            val = "**" + c.getResources().getString(R.string.image) + "/" + StaticVariables.songfilename;
         } else if (StaticVariables.whichSongFolder.contains("Variations")) {
-            val = c.getResources().getString(R.string.variation) + "/" + StaticVariables.songfilename;
+            val = "**" + c.getResources().getString(R.string.variation) + "/" + StaticVariables.songfilename;
         } else {
             val = StaticVariables.whichSongFolder + "/"
                     + StaticVariables.songfilename;
         }
-        StaticVariables.whatsongforsetwork = val;
-        return val;
+        return "$**_" + val + "_**$";
     }
 
     String whatToLookFor(Context c, String folder, String filename) {
@@ -368,11 +372,7 @@ class SetActions {
         if (StaticVariables.setSize > 0) {
             // Get the name of the song to look for (including folders if need be)
             String songforsetwork;
-            if (isCustomSlide(StaticVariables.whichSongFolder)) {
-                songforsetwork = "$**_**" + getSongForSetWork(c) + "_**$";
-            } else {
-                songforsetwork ="$**_" + getSongForSetWork(c) + "_**$";
-            }
+            songforsetwork = getSongForSetWork(c);
             songforsetwork = fixIsInSetSearch(songforsetwork);
             String currset = preferences.getMyPreferenceString(c,"setCurrent","");
 
@@ -896,10 +896,7 @@ class SetActions {
     void prepareFirstItem(Context c,Preferences preferences) {
         // If we have just loaded a set, and it isn't empty,  load the first item
         if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
-            StaticVariables.whatsongforsetwork = StaticVariables.mSetList[0];
             StaticVariables.setView = true;
-
-            //Log.d("SetActions","whatsongforsetwork="+StaticVariables.whatsongforsetwork);
             FullscreenActivity.linkclicked = StaticVariables.mSetList[0];
             FullscreenActivity.pdfPageCurrent = 0;
 
@@ -1026,10 +1023,8 @@ class SetActions {
                 if (StaticVariables.indexSongInSet>0) {
                     StaticVariables.indexSongInSet -= 1;
                     FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
                     if (FullscreenActivity.linkclicked == null) {
                         FullscreenActivity.linkclicked = "";
-                        StaticVariables.whatsongforsetwork = "";
                     }
                 }
 
@@ -1037,10 +1032,8 @@ class SetActions {
                 if (StaticVariables.indexSongInSet< StaticVariables.mSetList.length-1) {
                     StaticVariables.indexSongInSet += 1;
                     FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
                     if (FullscreenActivity.linkclicked == null) {
                         FullscreenActivity.linkclicked = "";
-                        StaticVariables.whatsongforsetwork = "";
                     }
                 }
             }

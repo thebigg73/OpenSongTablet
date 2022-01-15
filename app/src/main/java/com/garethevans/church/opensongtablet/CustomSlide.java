@@ -83,11 +83,8 @@ class CustomSlide {
             FullscreenActivity.customreusable = false;
         }
 
-        // Add to set
-        StaticVariables.whatsongforsetwork = "$**_**" + templocator + "/" + filetitle + "_**$";
-
-        // Allow the song to be added, even if it is already there
-        String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
+        // Add to end of set
+        String val = preferences.getMyPreferenceString(c,"setCurrent","") + "$**_**" + templocator + "/" + filetitle + "_**$";
         preferences.setMyPreferenceString(c,"setCurrent",val);
 
         // Show the current set

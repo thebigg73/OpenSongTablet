@@ -448,7 +448,6 @@ public class PopUpFullSearchFragment extends DialogFragment {
             ListView.OnItemLongClickListener {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            // Each song is saved in the set string as $**_Love everlasting_**$
             // Vibrate to indicate that something has happened.
             DoVibrate.vibrate(requireActivity(),50);
 
@@ -457,15 +456,17 @@ public class PopUpFullSearchFragment extends DialogFragment {
             String tsong = mFilename.getText().toString();
             String tfolder = mFoldername.getText().toString();
 
+            // Each song is saved in the set string as $**_Love everlasting_**$
+            String whatsongforsetwork;
             // We need to figure out the file name and the folder (if any) it is in
             if (tfolder.equals(getString(R.string.mainfoldername)) || tfolder.equals("MAIN") || tfolder.equals("")) {
-                StaticVariables.whatsongforsetwork = "$**_" + tsong + "_**$";
+                whatsongforsetwork = "$**_" + tsong + "_**$";
             } else {
-                StaticVariables.whatsongforsetwork = "$**_" + tfolder + "/"	+ tsong + "_**$";
+                whatsongforsetwork = "$**_" + tfolder + "/"	+ tsong + "_**$";
             }
 
-            // Allow the song to be added, even if it is already there
-            String val = preferences.getMyPreferenceString(getContext(),"setCurrent","") + StaticVariables.whatsongforsetwork;
+            // Add to end of set
+            String val = preferences.getMyPreferenceString(getContext(),"setCurrent","") + whatsongforsetwork;
             preferences.setMyPreferenceString(getContext(),"setCurrent",val);
             // Tell the user that the song has been added.
             StaticVariables.myToastMessage = "\"" + tsong + "\" " + getString(R.string.addedtoset);

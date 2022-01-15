@@ -3269,7 +3269,7 @@ public class StageMode extends AppCompatActivity implements
         if (StaticVariables.mTitle.equals("")) {
             StaticVariables.mTitle = StaticVariables.songfilename.replaceAll("\\.[^.]*$", "");
         }
-        if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+        if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
             songtitle_ab.setText("≡" + StaticVariables.mTitle);
         } else {
             songtitle_ab.setText(StaticVariables.mTitle);
@@ -3353,7 +3353,7 @@ public class StageMode extends AppCompatActivity implements
         glideimage_HorizontalScrollView.setVisibility(View.VISIBLE);
 
         // Set the ab title to include the song info if available
-        if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+        if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
             songtitle_ab.setText("≡" + StaticVariables.mTitle);
         } else {
             songtitle_ab.setText(StaticVariables.mTitle);
@@ -3844,6 +3844,11 @@ public class StageMode extends AppCompatActivity implements
                 runOnUiThread(() -> {
                     ShowToast.showToast(StageMode.this);
                     loadStartUpVariables();
+                    if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
+                        hideActionBar();
+                    } else {
+                        showActionBar();
+                    }
                     refreshAll();
                 }
                 );
@@ -3946,15 +3951,18 @@ public class StageMode extends AppCompatActivity implements
                 songbit.setScaleY(1.0f);
                 highlightNotes.setScaleX(1.0f);
                 highlightNotes.setScaleY(1.0f);
-                // Scroll to show this view at the top of the page unless we are autoscrolling
-                try {
-                    FullscreenActivity.sectionviews[StaticVariables.currentSection].setAlpha(1.0f);
-                    if (!StaticVariables.isautoscrolling &&
-                            (proposedCurrentSection == StaticVariables.currentSection)) {
-                        songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[StaticVariables.currentSection].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
+
+               if (StaticVariables.whichMode == "Stage") {
+                    // Smooth scroll to show this view at the top of the page unless we are autoscrolling
+                    try {
+                        FullscreenActivity.sectionviews[StaticVariables.currentSection].setAlpha(1.0f);
+                        if (!StaticVariables.isautoscrolling &&
+                                (proposedCurrentSection == StaticVariables.currentSection)) {
+                            songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[StaticVariables.currentSection].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
+                        }
+                    } catch (Exception e) {
+                        Log.d(TAG, "Section not found");
                     }
-                } catch (Exception e) {
-                    Log.d(TAG, "Section not found");
                 }
             }, 1000);
         }
@@ -4229,18 +4237,20 @@ public class StageMode extends AppCompatActivity implements
                 whichone = 0;
             }
 
-            // Smooth scroll to show this view at the top of the page unless we are autoscrolling
-            try {
-                if (FullscreenActivity.sectionviews[whichone] == null) {
-                    Log.d("StageMode","Had to reset section to 0");
+            if (StaticVariables.whichMode == "Stage") {
+                // Smooth scroll to show this view at the top of the page unless we are autoscrolling
+                try {
+                    if (FullscreenActivity.sectionviews[whichone] == null) {
+                        Log.d("StageMode", "Had to reset section to 0");
+                        whichone = 0;
+                    }
+                    if (!StaticVariables.isautoscrolling) {
+                        songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
+                    }
+                } catch (Exception e) {
                     whichone = 0;
+                    Log.d(TAG, "Section not found");
                 }
-                if (!StaticVariables.isautoscrolling) {
-                    songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
-                }
-            } catch (Exception e) {
-                whichone = 0;
-                Log.d(TAG, "Section not found");
             }
 
             try {
@@ -5313,8 +5323,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void songLongClick() {
-        // Rebuild the set list as we've just added a song
-        setActions.prepareSetList(StageMode.this,preferences);
+        // IV - prepareOptionMenu also prepares the set list
         prepareOptionMenu();
         prepareSongMenu();
         closeMyDrawers("song");
@@ -5392,10 +5401,8 @@ public class StageMode extends AppCompatActivity implements
         showToastMessage("\"" + tempSong + "\" "
                 + getResources().getString(R.string.removedfromset));
 
-        //Check to see if our set list is still valid
-        setActions.prepareSetList(StageMode.this,preferences);
+        // IV - prepareOptionMenu also prepares the set list
         prepareOptionMenu();
-
         closeMyDrawers("option");
     }
 
@@ -6955,10 +6962,8 @@ public class StageMode extends AppCompatActivity implements
                 if (StaticVariables.mSetList != null && StaticVariables.indexSongInSet > -1 &&
                         StaticVariables.mSetList.length > StaticVariables.indexSongInSet) {
                     FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
                 } else {
                     FullscreenActivity.linkclicked = "";
-                    StaticVariables.whatsongforsetwork = "";
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -7231,8 +7236,7 @@ public class StageMode extends AppCompatActivity implements
                 }
 
                 // If we are in a set, try to get the appropriate indexes
-
-                setActions.getSongForSetWork(StageMode.this);
+                StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(StageMode.this);
                 setActions.indexSongInSet();
 
                 if (StaticVariables.mLyrics != null) {
@@ -7310,7 +7314,7 @@ public class StageMode extends AppCompatActivity implements
                     setWindowFlagsAdvanced();
 
                     // Put the title of the song in the taskbar
-                    if (StaticVariables.whichSongFolder.startsWith("../Variation")) {
+                    if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
                         songtitle_ab.setText("≡" + processSong.getSongTitle());
                     } else {
                         songtitle_ab.setText(processSong.getSongTitle());
@@ -8170,24 +8174,16 @@ public class StageMode extends AppCompatActivity implements
 
     // Add to set
     private void gesture3() {
-        if (StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
-                StaticVariables.whichSongFolder.equals("")) {
-            StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
-        } else {
-            StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"
-                    + StaticVariables.songfilename + "_**$";
-        }
-
-        // Allow the song to be added, even if it is already there
-        String val = preferences.getMyPreferenceString(StageMode.this,"setCurrent","") + StaticVariables.whatsongforsetwork;
-        preferences.setMyPreferenceString(StageMode.this,"setCurrent",val);
+        // Add to end of set
+        String newval = preferences.getMyPreferenceString(StageMode.this,"setCurrent","") + StaticVariables.whatsongforsetwork;
+        preferences.setMyPreferenceString(StageMode.this,"setCurrent",newval);
         // Tell the user that the song has been added.
         showToastMessage("\"" + StaticVariables.songfilename + "\" "
                 + getResources().getString(R.string.addedtoset));
-        // Vibrate to let the user know something happened
+        // Vibrate to indicate something has happened
         DoVibrate.vibrate(StageMode.this, 50);
 
-        setActions.prepareSetList(StageMode.this,preferences);
+        // IV - prepareOptionMenu also prepares the set list
         prepareOptionMenu();
     }
 
