@@ -152,6 +152,7 @@ class SetActions {
         try {
             StaticVariables.mSet = null;
             StaticVariables.mSetList = null;
+            StaticVariables.mTempSetList = null;
 
             // Remove any blank set entries that shouldn't be there
             String setparse = preferences.getMyPreferenceString(c,"setCurrent","");
@@ -161,28 +162,32 @@ class SetActions {
             setparse = setparse.replace("_**$$**_", "_**$%%%$**_");
 
             // Break the saved set up into a new String[]
-            StaticVariables.mSet = setparse.split("%%%");
+            if (!setparse.equals("")) {
+                StaticVariables.mSet = setparse.split("%%%");
 
-            // Fix any MAIN folder saved in set
-            for (int s=0; s<StaticVariables.mSet.length; s++) {
-                StaticVariables.mSet[s] = StaticVariables.mSet[s].replace("MAIN/","");
-                StaticVariables.mSet[s] = StaticVariables.mSet[s].replace(c.getString(R.string.mainfoldername)+"/","");
+                // Fix any MAIN folder saved in set
+                for (int s=0; s<StaticVariables.mSet.length; s++) {
+                    StaticVariables.mSet[s] = StaticVariables.mSet[s].replace("MAIN/","");
+                    StaticVariables.mSet[s] = StaticVariables.mSet[s].replace(c.getString(R.string.mainfoldername)+"/","");
+                }
+
+                StaticVariables.mSetList = StaticVariables.mSet.clone();
+
+                StaticVariables.setSize = StaticVariables.mSetList.length;
+
+                // Get rid of tags before and after folder/filenames
+                for (int x = 0; x < StaticVariables.mSetList.length; x++) {
+                    StaticVariables.mSetList[x] = StaticVariables.mSetList[x].
+                            replace("$**_", "").
+                            replace("_**$", "");
+                }
+
+                StaticVariables.mTempSetList = new ArrayList<>();
+                StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
+            } else {
+                StaticVariables.mSetList = null;
+                StaticVariables.setSize = 0;
             }
-
-            StaticVariables.mSetList = StaticVariables.mSet.clone();
-
-            StaticVariables.setSize = StaticVariables.mSetList.length;
-
-            // Get rid of tags before and after folder/filenames
-            for (int x = 0; x < StaticVariables.mSetList.length; x++) {
-                StaticVariables.mSetList[x] = StaticVariables.mSetList[x]
-                        .replace("$**_", "");
-                StaticVariables.mSetList[x] = StaticVariables.mSetList[x]
-                        .replace("_**$", "");
-            }
-
-            StaticVariables.mTempSetList = new ArrayList<>();
-            StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -191,56 +196,34 @@ class SetActions {
 
     void indexSongInSet() {
         // Index using StaticVariables.whatsongforsetwork set during loadsong
-        String whatSongInSet;
         try {
-            if (StaticVariables.mSet!=null && StaticVariables.mSetList!=null && StaticVariables.whatsongforsetwork!=null) {
-                whatSongInSet = StaticVariables.whatsongforsetwork.replace("$**_","").replace("_**$","");
-                boolean alreadythere = false;
-                if (StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < StaticVariables.mSetList.length) {
-                    if (StaticVariables.mSetList[StaticVariables.indexSongInSet].contains(whatSongInSet)) {
-                        alreadythere = true;
-                    }
-                }
-
-                StaticVariables.setSize = StaticVariables.mSetList.length;
-
-                if (alreadythere) {
-                    if (StaticVariables.indexSongInSet > 0) {
-                        StaticVariables.previousSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet - 1];
-                    } else {
-                        StaticVariables.previousSongInSet = "";
-                    }
-                    if (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) {
-                        StaticVariables.nextSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet + 1];
-                    } else {
-                        StaticVariables.nextSongInSet = "";
-                    }
-
+            if (StaticVariables.mSet != null && StaticVariables.whatsongforsetwork != null) {
+                // Search backwards through the setlist - useful for duplicate items as it returns the last occurrence
+                // If the current index is valid force it as the found item, this ensures all finds go through the same code
+                int end;
+                if (StaticVariables.indexSongInSet > -1 &&
+                        StaticVariables.indexSongInSet < StaticVariables.mSet.length &&
+                        StaticVariables.mSet[StaticVariables.indexSongInSet].contains(StaticVariables.whatsongforsetwork)) {
+                    end = StaticVariables.indexSongInSet;
                 } else {
-                    StaticVariables.previousSongInSet = "";
-                    StaticVariables.nextSongInSet = "";
+                    end = StaticVariables.setSize - 1;
                 }
 
-                // Go backwards through the setlist - this finishes with the first occurrence
-                // Useful for duplicate items, otherwise it returns the last occurrence
-                // Not yet tested, so left
-
-                StaticVariables.mSet = StaticVariables.mSetList.clone();
-
-                if (!alreadythere) {
-                    StaticVariables.indexSongInSet = -1;
-                    for (int x = 0; x < StaticVariables.setSize; x++) {
-                        if (StaticVariables.mSet[x].contains(whatSongInSet) ||
-                                StaticVariables.mSet[x].contains(whatSongInSet)) {
-                            StaticVariables.indexSongInSet = x;
-                            if (x > 0) {
-                                StaticVariables.previousSongInSet = StaticVariables.mSet[x - 1];
-                            }
-                            if (x != StaticVariables.setSize - 1) {
-                                StaticVariables.nextSongInSet = StaticVariables.mSet[x + 1];
-                            }
-
+                StaticVariables.indexSongInSet = -1;
+                StaticVariables.previousSongInSet = "";
+                StaticVariables.nextSongInSet = "";
+                StaticVariables.setSize = StaticVariables.mSet.length;
+                for (int x = end; x > -1; x--) {
+                    if (StaticVariables.mSet[x].contains(StaticVariables.whatsongforsetwork)) {
+                        StaticVariables.indexSongInSet = x;
+                        if (x > 0) {
+                            StaticVariables.previousSongInSet = StaticVariables.mSet[x - 1];
                         }
+                        if (x != StaticVariables.setSize - 1) {
+                            StaticVariables.nextSongInSet = StaticVariables.mSet[x + 1];
+                        }
+                        // Found - so end the loop
+                        x = -1;
                     }
                 }
             } else {
@@ -252,23 +235,6 @@ class SetActions {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    void songIndexClickInSet() {
-        if (StaticVariables.indexSongInSet == 0) {
-            // Already first item
-            StaticVariables.previousSongInSet = "";
-        } else {
-            StaticVariables.previousSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet - 1];
-        }
-
-        if (StaticVariables.indexSongInSet == (StaticVariables.setSize - 1)) {
-            // Last item
-            StaticVariables.nextSongInSet = "";
-        } else {
-            StaticVariables.nextSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet + 1];
-        }
-        FullscreenActivity.whichDirection = "R2L";
     }
 
     void saveSetMessage(Context c, Preferences preferences,
@@ -358,14 +324,6 @@ class SetActions {
             whattolookfor = "$**_" + folder + "/" + filename + "_**$";
         }
         return whattolookfor;
-    }
-
-    private boolean isCustomSlide(String folder) {
-        return folder.startsWith("Notes/") || folder.startsWith("Note/") || folder.startsWith("..") ||
-                folder.startsWith("Slides/") || folder.startsWith("Slide/") ||
-                folder.startsWith("Images/") || folder.startsWith("Image/") ||
-                folder.startsWith("Scriptures/") || folder.startsWith("Scripture/") ||
-                folder.startsWith("Variations/") || folder.startsWith("Variation/");
     }
 
     boolean isSongInSet(Context c, Preferences preferences) {

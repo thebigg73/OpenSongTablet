@@ -187,7 +187,6 @@ public class PopUpSetViewNew extends DialogFragment {
             tempmySet.append("$**_").append(tempItem).append("_**$");
         }
         preferences.setMyPreferenceString(getContext(),"setCurrent",tempmySet.toString());
-        StaticVariables.mTempSetList = null;
         setActions.prepareSetList(getContext(),preferences);
         StaticVariables.myToastMessage = getString(R.string.currentset) +
                 " - " + getString(R.string.ok);
@@ -307,7 +306,9 @@ public class PopUpSetViewNew extends DialogFragment {
             Log.d("d", "We've shuffled the set list");
         } else {
             StaticVariables.mTempSetList = new ArrayList<>();
-            StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
+            if (StaticVariables.mSetList != null) {
+                StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
+            }
         }
 
         extractSongsAndFolders();
