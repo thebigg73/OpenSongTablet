@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetChooseColorBinding;
+import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -27,6 +28,7 @@ import com.google.android.material.slider.Slider;
 public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
+    private DisplayInterface displayInterface;
     private BottomSheetChooseColorBinding myView;
 
     private String newColorHex;
@@ -50,6 +52,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        displayInterface = (DisplayInterface) context;
     }
 
     @NonNull
@@ -305,6 +308,12 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
 
         // Update the theme color on the fragment behind
         mainActivityInterface.updateFragment(fragName,callingFragment,null);
+
+        // These changes should call an update to any secondary displays as well
+        if (whichColor.equals("presoShadowColor")) {
+            mainActivityInterface.getMyThemeColors().setPresoShadowColor(newColorInt);
+            displayInterface.updateDisplay("setInfoStyles");
+        }
 
         // Navigate back
         dismiss();

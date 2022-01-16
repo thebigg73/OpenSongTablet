@@ -124,6 +124,13 @@ public class PerformanceFragment extends Fragment {
         Runnable r = () -> mainActivityInterface.showTutorial("performanceView");
         h.postDelayed(r,1000);
 
+        // MainActivity initialisation has firstRun set as true.
+        // Check for connected displays now we have loaded preferences, etc
+        if (mainActivityInterface.getFirstRun()) {
+            displayInterface.checkDisplays();
+            mainActivityInterface.setFirstRun(false);
+        }
+
         return myView.getRoot();
     }
 
@@ -441,8 +448,8 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getMidi().buildSongMidiMessages();
 
         // Update the secondary display (if present)
-        displayInterface.updateDisplay("info");
-        displayInterface.updateDisplay("content");
+        displayInterface.updateDisplay("setSongInfo");
+        displayInterface.updateDisplay("setSongContent");
     }
 
     private void dealWithHighlighterFile(int w, int h, int topPadding) {

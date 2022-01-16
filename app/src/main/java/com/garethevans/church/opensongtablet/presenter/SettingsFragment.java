@@ -179,7 +179,7 @@ public class SettingsFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
                             prefName, slider.getValue());
                     mainActivityInterface.getPresenterSettings().setCastRotation(slider.getValue());
-                    displayInterface.updateDisplay("screenSizes");
+                    displayInterface.updateDisplay("setScreenSizes");
                     break;
                 case "presoXMargin":
                 case "presoYMargin":
@@ -191,7 +191,7 @@ public class SettingsFragment extends Fragment {
                     } else {
                         mainActivityInterface.getPresenterSettings().setPresoYMargin((int)slider.getValue());
                     }
-                    displayInterface.updateDisplay("screenSizes");
+                    displayInterface.updateDisplay("setScreenSizes");
                     break;
                 case "presoBackgroundAlpha":
                     // The slider goes from 0 to 100

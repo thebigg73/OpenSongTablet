@@ -1,7 +1,9 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +18,7 @@ public class SongProjectionInfo extends LinearLayout {
 
     private final Context c;
     private final LinearLayout contentLayout;
+    private final LinearLayout castSongInfo;
     private final TextView songTitle, songAuthor, songCopyright;
     private final ImageView miniLogo;
     private final String TAG = "SongProjectionInfo";
@@ -25,7 +28,7 @@ public class SongProjectionInfo extends LinearLayout {
         c = context;
         inflate(context, R.layout.view_song_info, this);
 
-        LinearLayout castSongInfo = findViewById(R.id.castSongInfo);
+        castSongInfo = findViewById(R.id.castSongInfo);
         contentLayout = findViewById(R.id.contentLayout);
         songTitle = findViewById(R.id.songTitle);
         songAuthor = findViewById(R.id.songAuthor);
@@ -40,6 +43,28 @@ public class SongProjectionInfo extends LinearLayout {
         miniLogo.setId(View.generateViewId());
     }
 
+    // Adjust the layout depending on what is needed
+    public void setupLayout(Context c, MainActivityInterface mainActivityInterface, boolean miniInfo) {
+        // Set up the text info bar fonts
+        setupFonts(c, mainActivityInterface);
+
+        // Set the background color, logo and alignment based on mode
+        if (miniInfo) {
+            // We just want the text
+            showMiniLogo(false);
+            castSongInfo.setBackgroundColor(Color.TRANSPARENT);
+        } else if (mainActivityInterface.getMode().equals("Presenter")) {
+            // The bottom bar for the secondary display in Presenter mode
+            showMiniLogo(false);
+            castSongInfo.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
+        } else {
+            // Performance / Stage mode
+            showMiniLogo(true);
+            castSongInfo.setBackgroundColor(Color.TRANSPARENT);
+        }
+    }
+
+    // Updating the text in the view
     public void setSongTitle(String title) {
         setText(songTitle,title);
     }
@@ -56,15 +81,18 @@ public class SongProjectionInfo extends LinearLayout {
             textView.setVisibility(View.VISIBLE);
         }
         textView.setText(text);
+        Log.d(TAG,"text:"+text+"  view:"+textView);
     }
-    public void showMiniLogo(boolean show) {
+
+
+    private void showMiniLogo(boolean show) {
         if (show) {
             miniLogo.setVisibility(View.VISIBLE);
         } else {
             miniLogo.setVisibility(View.GONE);
         }
     }
-    public void setupFonts(Context c, MainActivityInterface mainActivityInterface) {
+    private void setupFonts(Context c, MainActivityInterface mainActivityInterface) {
         songTitle.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
@@ -90,21 +118,6 @@ public class SongProjectionInfo extends LinearLayout {
         songTitle.setGravity(align);
         songAuthor.setGravity(align);
         songCopyright.setGravity(align);
-    }
-
-    // Used in presenter mode to display song info on device
-    public void minifyLayout(boolean miniLogoOn) {
-        showMiniLogo(miniLogoOn);
-        songTitle.setTextSize(18);
-        songAuthor.setTextSize(16);
-        songCopyright.setTextSize(16);
-        songAuthor.setTextColor(c.getResources().getColor(R.color.vlightgrey));
-        songCopyright.setTextColor(c.getResources().getColor(R.color.vlightgrey));
-        if (miniLogoOn) {
-            contentLayout.setPadding(8,8,8,8);
-        } else {
-            contentLayout.setPadding(0,0,0,0);
-        }
     }
 
 }

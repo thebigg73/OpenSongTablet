@@ -77,6 +77,8 @@ public interface MainActivityInterface {
     VersionNumber getVersionNumber();
     String getMode();
     void setMode(String whichMode);
+    void setFirstRun(boolean firstRun);
+    boolean getFirstRun();
 
     // Preferences and settings
     Preferences getPreferences();

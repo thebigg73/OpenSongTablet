@@ -23,11 +23,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.ColorUtils;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
@@ -100,21 +101,17 @@ public class SecondaryDisplay extends Presentation {
         // Initialise view visibilities
         intialiseViewVisibity();
 
-        // Change the bottom bar set up to match the mode
-        setInfoBarToMode();
+        // Set the info bars to match the mode
+        setInfoStyles();
+        changeInfoAlignment();
 
         // Set the page background color based on the mode
         updatePageBackgroundColor();
 
-        // Set the info bar background colour (a separate layer) based on the mode
-        updateInfoBarColor();
-
-        // Set the bottom bar font and alignment
-        setInfoStyles();
-        changeInfoAlignment();
-
         // Now we can test the song layout and measure what we need
         // Once this is done in the next function, the viewTreeObserver notifies the next steps
+        mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(!mainActivityInterface.getMode().equals("Presenter"));
+        mainActivityInterface.getPresenterSettings().setLogoOn(true);
         setScreenSizes();
     }
 
@@ -141,7 +138,6 @@ public class SecondaryDisplay extends Presentation {
         setViewAlreadyFadedOut(myView.textureView1);
         setViewAlreadyFadedOut(myView.textureView1);
         setViewAlreadyFadedOut(myView.mainLogo);
-        setViewAlreadyFadedOut(myView.bottomBarBackground);
         setViewAlreadyFadedOut(myView.songProjectionInfo1);
         setViewAlreadyFadedOut(myView.songProjectionInfo2);
         setViewAlreadyFadedOut(myView.alertBar);
@@ -188,14 +184,14 @@ public class SecondaryDisplay extends Presentation {
         DisplayMetrics metrics = new DisplayMetrics();
         display.getRealMetrics(metrics);
 
-        // We need to wait until the view is prepared before flipping
+        // We need to wait until the view is prepared before flipping if required
         ViewTreeObserver viewTreeObserver = myView.pageHolder.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 myView.pageHolder.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
                 myView.pageHolder.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
+                myView.mainLogo.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
                 if (mainActivityInterface.getPresenterSettings().getCastRotation() == 90.0f ||
                         mainActivityInterface.getPresenterSettings().getCastRotation() == 270.0f) {
                     // Switch width for height and vice versa
@@ -217,8 +213,6 @@ public class SecondaryDisplay extends Presentation {
                 // These bits are dependent on the screen size
                 changeMargins();
                 changeLogo();
-                mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(!mainActivityInterface.getMode().equals("Presenter"));
-                mainActivityInterface.getPresenterSettings().setLogoOn(true);
                 showLogo();
                 matchPresentationToMode();
 
@@ -479,21 +473,10 @@ public class SecondaryDisplay extends Presentation {
                 Log.d(TAG,"timer over - infoBarRequiredTime="+infoBarRequiredTime);
             }
         };
-        int untilTimeWait = 10000;
+        int untilTimeWait = 20000;
         waitUntilTimer.schedule(waitUntilTimerTask, untilTimeWait);
     }
-    private void setInfoBarToMode() {
-        // For Performance/Stage mode, we want the small logo to be on in the bottom bar always
-        // The alignment of the information should be left and default padding is on
-        // Presenter mode can change the alignment and the small logo in the bottom bar is removed
-        if (mainActivityInterface.getMode().equals("Presenter")) {
-            myView.songProjectionInfo1.minifyLayout(false);
-            myView.songProjectionInfo2.minifyLayout(false);
-        } else {
-            myView.songProjectionInfo1.minifyLayout(true);
-            myView.songProjectionInfo2.minifyLayout(true);
-        }
-    }
+
     public void setInfoBarRequired() {
         // This is called when a new song is loaded in the Presenter Mode
         // Once a view is displayed (fadeInOutSong), the timer starts and resets this to false after untilWaitTime
@@ -508,23 +491,10 @@ public class SecondaryDisplay extends Presentation {
         infoBarRequireInitial = false;
         infoBarRequiredTime = true;
     }
-    public void updateInfoBarColor() {
-        int colorWithAlpha;
-        if (mainActivityInterface.getMode().equals("Presenter")) {
-            // Presenter mode uses the user preference, but with an adjustable alpha value
-            // Convert the color to an colour including the alpha component
-            colorWithAlpha = ColorUtils.setAlphaComponent(
-                    mainActivityInterface.getMyThemeColors().getPresoShadowColor(),
-                    (int) (mainActivityInterface.getPresenterSettings().getPresoInfoBarAlpha() * 255));
-        } else {
-            // Performance/Stage mode has an invisible bottom bar
-            colorWithAlpha = 0x00ffffff;
-        }
-        myView.bottomBarBackground.setBackgroundColor(colorWithAlpha);
-    }
+
     public void setInfoStyles() {
-        myView.songProjectionInfo1.setupFonts(c, mainActivityInterface);
-        myView.songProjectionInfo2.setupFonts(c, mainActivityInterface);
+        myView.songProjectionInfo1.setupLayout(c,mainActivityInterface,false);
+        myView.songProjectionInfo2.setupLayout(c,mainActivityInterface,false);
     }
     public void changeInfoAlignment() {
         myView.songProjectionInfo1.setAlign(mainActivityInterface.getPresenterSettings().getPresoInfoAlign());
@@ -574,9 +544,6 @@ public class SecondaryDisplay extends Presentation {
             mainActivityInterface.getCustomAnimation().faderAnimation(songInfoView,
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                     songInfoView.getAlpha(), 0f);
-            mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                    mainActivityInterface.getPresenterSettings().getPresoInfoBarAlpha(),0f);
         }
         Log.d(TAG,"bottomTitle1:"+myView.songProjectionInfo1.getSongTitle());
         Log.d(TAG,"bottomTitle2:"+myView.songProjectionInfo2.getSongTitle());
@@ -584,14 +551,11 @@ public class SecondaryDisplay extends Presentation {
     private void songInfoShowCheck(View songInfoView) {
         Log.d(TAG,"songInfoShowCheck()");
         // If required (new song loaded and not already showing), show the info bar
-        if (canShowSong() && infoBarRequireInitial) {
+        if (canShowSong() && infoBarRequireInitial && (myView.songContent1.getVisibility()==View.VISIBLE || myView.songContent2.getVisibility()==View.VISIBLE)) {
             Log.d(TAG,"Should show view:"+songInfoView+" 1:"+myView.songProjectionInfo1+" 2:"+myView.songProjectionInfo2);
             mainActivityInterface.getCustomAnimation().faderAnimation(songInfoView,
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                     0f,1f);
-            mainActivityInterface.getCustomAnimation().faderAnimation(myView.bottomBarBackground,
-                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                    0f,mainActivityInterface.getPresenterSettings().getPresoInfoBarAlpha());
 
             // Now remove the requirement for an inital view
             infoBarRequireInitial = false;
@@ -604,7 +568,6 @@ public class SecondaryDisplay extends Presentation {
 
     // The song content
     public void setSongContent() {
-
         // Just like we do with the song processing, we draw the sections to the test layout
         // Then measure them, work out the best orientation and scaling
         // Then remove from the test layout and reattach to the song layout.
@@ -669,34 +632,18 @@ public class SecondaryDisplay extends Presentation {
                     // We can now prepare the new view and animate in/out the views as long as the logo is off
                     // and the blank screen isn't on
                     Log.d(TAG,"showWhich="+showWhich+"  canShowSong()="+canShowSong());
+                    removeViewFromParent(mainActivityInterface.getSectionViews().get(position));
 
                     if (showWhich < 2) {
                         myView.songContent1.removeAllViews();
                         myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
                         crossFadeContent(myView.songContent2, myView.songContent1);
-                        /*if (canShowSong()) {
-                            mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
-                                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                                    0f, 1f);
-                        }
 
-                            mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
-                                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                                    1f,0f);
-*/
                     } else {
                         myView.songContent2.removeAllViews();
                         myView.songContent2.addView(mainActivityInterface.getSectionViews().get(position));
                         crossFadeContent(myView.songContent1, myView.songContent2);
-                        /*if (canShowSong()) {
-                            mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
-                                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                                    0f, 1f);
-                        }
-                            mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
-                                    mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                                    1f,0f);
-*/
+
                     }
 
                     // Check the song info status
@@ -743,13 +690,6 @@ public class SecondaryDisplay extends Presentation {
                     }
                 }
 
-                if (showWhich==0) {
-                    // First run, so set the first view
-                    if (mainActivityInterface.getSectionViews().size()>0) {
-                        showSection(0);
-                    }
-                }
-
                 // We can now remove the views from the test layout and remove this listener
                 myView.testLayout.removeAllViews();
                 myView.testLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -761,7 +701,17 @@ public class SecondaryDisplay extends Presentation {
         }
 
     }
+    private void removeViewFromParent(View view) {
+        if (view.getParent()!=null) {
+            String name = view.getParent().getClass().getName();
 
+            if (name.contains("RelativeLayout")) {
+                ((RelativeLayout) view.getParent()).removeAllViews();
+            } else if (name.contains("LinearLayout")) {
+                ((LinearLayout) view.getParent()).removeAllViews();
+            }
+        }
+    }
 
     // The alert bar
     public void showAlert() {
@@ -793,7 +743,7 @@ public class SecondaryDisplay extends Presentation {
         }
 
         // Fade in of a content is fine
-        if (contentToFadeIn!=null || contentToFadeIn==myView.mainLogo) {
+        if (contentToFadeIn!=null) {
             Log.d(TAG, "Fading in view");
             mainActivityInterface.getCustomAnimation().faderAnimation(contentToFadeIn,
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),

@@ -235,7 +235,7 @@ public class ThemeColors {
         setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoFontColor",               white));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoInfoFontColor",       white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoAlertColor",             red));
-        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoShadowColor",           grey));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_presoShadowColor",           translucentDark));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_highlightChordColor",     transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_highlightHeadingColor", transparent));
     }
@@ -260,7 +260,7 @@ public class ThemeColors {
         setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_presoFontColor",               white));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_presoInfoFontColor",      white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_presoAlertColor",            red));
-        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_presoShadowColor",          grey));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_presoShadowColor",          translucentLight));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_highlightChordColor",    transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "light_highlightHeadingColor",transparent));
     }
@@ -285,7 +285,7 @@ public class ThemeColors {
         setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_presoFontColor",             white));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_presoInfoFontColor",    white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_presoAlertColor",          red));
-        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_presoShadowColor",        grey));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_presoShadowColor",        translucentDark));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_highlightChordColor",  transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom1_highlightHeadingColor",transparent));
 
@@ -311,7 +311,7 @@ public class ThemeColors {
         setPresoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_presoFontColor",             white));
         setPresoInfoFontColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_presoInfoFontColor",    white));
         setPresoAlertColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_presoAlertColor",          red));
-        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_presoShadowColor",        grey));
+        setPresoShadowColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_presoShadowColor",        translucentLight));
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_highlightChordColor",  transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "custom2_highlightHeadingColor",transparent));
     }
@@ -387,6 +387,8 @@ public class ThemeColors {
     private final int black = 0xff000000;
     private final int white = 0xffffffff;
     private final int grey = 0xff666666;
+    private final int translucentDark = 0xdd000000;
+    private final int translucentLight = 0xddffffff;
     private final int lightgrey = 0xff222222;
     private final int vlightgrey = R.color.vlightgrey;
     private final int lightyellow = 0xffddaa00;

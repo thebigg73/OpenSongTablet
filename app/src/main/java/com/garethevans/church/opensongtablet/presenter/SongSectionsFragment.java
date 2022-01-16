@@ -48,7 +48,7 @@ public class SongSectionsFragment extends Fragment {
         myView = ModePresenterSongSectionsBinding.inflate(inflater,container,false);
 
         // Set up song info layout to only show minimal info in simple format
-        myView.songInfo.minifyLayout(false);
+        myView.songInfo.setupLayout(requireContext(),mainActivityInterface,true);
 
         songSectionsAdapter = new SongSectionsAdapter(requireContext(),mainActivityInterface,this,
                 displayInterface);

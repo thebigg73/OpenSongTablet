@@ -71,14 +71,20 @@ public class PresenterFragment extends Fragment {
         // Set up the the pager
         setupPager();
 
-        // Set up any connected displays with the correct background
-        displayInterface.updateDisplay("changeBackground");
-
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
         // Set up the main action listeners
         setupListeners();
+
+        // Set up any connected displays with the correct background
+        // MainActivity initialisation has firstRun set as true.
+        // Check for connected displays now we have loaded preferences, etc
+        if (mainActivityInterface.getFirstRun()) {
+            displayInterface.checkDisplays();
+            displayInterface.updateDisplay("changeBackground");
+            mainActivityInterface.setFirstRun(false);
+        }
 
         return myView.getRoot();
     }
@@ -121,7 +127,7 @@ public class PresenterFragment extends Fragment {
 
         // Initialise the requirement for the song info bar to be shown
         displayInterface.updateDisplay("initialiseInfoBarRequired");
-        displayInterface.updateDisplay("info");
+        displayInterface.updateDisplay("setSongInfo");
 
         // Update the recyclerView with the song sections
         songSectionsFragment.showSongInfo();
@@ -139,6 +145,7 @@ public class PresenterFragment extends Fragment {
     private void getPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(), mainActivityInterface);
         mainActivityInterface.getPresenterSettings().getAllPreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
     }
 
     public void getSongViews() {

@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private String whichMode, whattodo, importFilename;
     private Uri importUri;
     private boolean doonetimeactions = true, settingsOpen = false, nearbyOpen = false, showSetMenu,
-            pageButtonActive = true, fullIndexRequired, menuOpen;
+            pageButtonActive = true, fullIndexRequired, menuOpen, firstRun=true;
     private final String TAG = "MainActivity";
     private MenuItem settingsButton;
     private Locale locale;
@@ -424,6 +424,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (bootUpFragment!=null && bootUpFragment.isAdded()) {
             bootUpFragment.startOrSetUp();
         }
+    }
+    @Override
+    public void setFirstRun(boolean firstRun) {
+        this.firstRun = firstRun;
+    }
+    @Override
+    public boolean getFirstRun() {
+        return firstRun;
     }
     @Override
     public void initialiseActivity() {
@@ -2494,8 +2502,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onResume() {
         super.onResume();
-        // Check displays
-        checkDisplays();
 
         // Fix the page flags
         setWindowFlags();
@@ -2593,56 +2599,63 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void updateDisplay(String what) {
-        for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
-            if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
-                try {
-                    switch (what) {
-                        case "info":
-                            secondaryDisplay.setSongInfo();
-                            break;
+        if (secondaryDisplays!=null) {
+            for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
+                if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
+                    try {
+                        switch (what) {
+                            // The song info bar
+                            case "initialiseInfoBarRequired":
+                                secondaryDisplay.initialiseInfoBarRequired();
+                                break;
+                            case "setSongInfo":
+                                secondaryDisplay.setSongInfo();
+                                break;
+                            case "setInfoStyles":
+                                secondaryDisplay.setInfoStyles();
+                                break;
 
-                        case "content":
-                            secondaryDisplay.setSongContent();
-                            break;
+                            // Song content
+                            case "setSongContent":
+                                secondaryDisplay.setSongContent();
+                                break;
 
-                        case "showAlert":
-                            secondaryDisplay.showAlert();
-                            break;
+                            // The alert bar
+                            case "showAlert":
+                                secondaryDisplay.showAlert();
+                                break;
+                            case "updateAlert":
+                                secondaryDisplay.updateAlert();
+                                break;
 
-                        case "updateAlert":
-                            secondaryDisplay.updateAlert();
-                            break;
+                            // The screen setup
+                            case "setScreenSizes":
+                                secondaryDisplay.setScreenSizes();
+                                break;
+                            case "changeBackground":
+                                secondaryDisplay.changeBackground();
+                                break;
 
-                        case "screenSizes":
-                            secondaryDisplay.setScreenSizes();
-                            break;
+                            // The logo
+                            case "changeLogo":
+                                secondaryDisplay.changeLogo();
+                                break;
+                            case "showLogo":
+                                secondaryDisplay.showLogo();
+                                break;
 
-                        case "changeBackground":
-                            secondaryDisplay.changeBackground();
-                            break;
+                            // Black and blank screen
+                            case "showBlackscreen":
+                                secondaryDisplay.showBlackScreen();
+                                break;
+                            case "showBlankscreen":
+                                secondaryDisplay.showBlankScreen();
+                                break;
 
-                        case "changeLogo":
-                            secondaryDisplay.changeLogo();
-                            break;
-
-                        case "showLogo":
-                            secondaryDisplay.showLogo();
-                            break;
-
-                        case "showBlackscreen":
-                            secondaryDisplay.showBlackScreen();
-                            break;
-
-                        case "showBlankscreen":
-                            secondaryDisplay.showBlankScreen();
-                            break;
-
-                        case "initialiseInfoBarRequired":
-                            secondaryDisplay.initialiseInfoBarRequired();
-                            break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }
