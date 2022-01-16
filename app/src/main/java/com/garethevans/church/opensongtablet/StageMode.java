@@ -3952,7 +3952,7 @@ public class StageMode extends AppCompatActivity implements
                 highlightNotes.setScaleX(1.0f);
                 highlightNotes.setScaleY(1.0f);
 
-               if (StaticVariables.whichMode == "Stage") {
+               if (StaticVariables.whichMode.equals("Stage")) {
                     // Smooth scroll to show this view at the top of the page unless we are autoscrolling
                     try {
                         FullscreenActivity.sectionviews[StaticVariables.currentSection].setAlpha(1.0f);
@@ -4237,7 +4237,7 @@ public class StageMode extends AppCompatActivity implements
                 whichone = 0;
             }
 
-            if (StaticVariables.whichMode == "Stage") {
+            if (StaticVariables.whichMode.equals("Stage")) {
                 // Smooth scroll to show this view at the top of the page unless we are autoscrolling
                 try {
                     if (FullscreenActivity.sectionviews[whichone] == null) {
