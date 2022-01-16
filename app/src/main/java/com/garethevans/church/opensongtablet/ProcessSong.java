@@ -1629,13 +1629,25 @@ public class ProcessSong extends Activity {
                 .replace("§§", "§")
                 .split("§");
 
-        // 4. Put into presentation order when required
+        // 4. Extract the section headings before presentation order
+        // Initialise working variable for previous song section name used by getSectionHeadings
+        StaticVariables.songSection_holder = "";
+
+        String label;
+        for (int x = 0; x < currsections.length; x++) {
+            label = getSectionHeadings(currsections[x]);
+            if (!label.equals("") && !label.equals("H__1") && !label.equals("F__1") && !FullscreenActivity.foundSongSections_heading.contains(label)) {
+                FullscreenActivity.foundSongSections_heading.add(label);
+            }
+        }
+
+        // 5. Put into presentation order when required
         if (preferences.getMyPreferenceBoolean(c, "usePresentationOrder", false) &&
                 !StaticVariables.mPresentation.equals("")) {
             currsections = matchPresentationOrder(currsections);
         }
 
-        // 5. Deal with null sections (ignore) and section splits (handle chords when split by a section split)
+        // 6. Deal with null sections (ignore) and section splits (handle chords when split by a section split)
         ArrayList<String> newbits = new ArrayList<>();
         String [] thissection;
 
@@ -1674,7 +1686,7 @@ public class ProcessSong extends Activity {
             newbits.add("");
         }
 
-        // 6. Get the section labels/types and section line contents/types (we are after any presentation order)
+        // 7. Get the section labels/types and section line contents/types (we are after any presentation order)
         int songSectionsLength = newbits.size();
         StaticVariables.songSections       = new String[songSectionsLength];
         StaticVariables.songSectionsLabels = new String[songSectionsLength];
@@ -1700,9 +1712,6 @@ public class ProcessSong extends Activity {
 
             if (isPresentation) {
                 StaticVariables.songSectionsLabels[x] = getSectionHeadings(StaticVariables.songSections[x]);
-                if (!StaticVariables.songSectionsLabels[x].equals("") && (!FullscreenActivity.foundSongSections_heading.contains(StaticVariables.songSectionsLabels[x]))) {
-                    FullscreenActivity.foundSongSections_heading.add(StaticVariables.songSectionsLabels[x]);
-                }
 
                 // Now that we have generated the song, decide if we should remove lines etc.
                 // Remove tag/heading lines
@@ -1737,9 +1746,6 @@ public class ProcessSong extends Activity {
                 StaticVariables.songSections[x] = StaticVariables.songSections[x].replace("[H__1]\n", "").replace("[F__1]\n", "");
 
                 StaticVariables.songSectionsLabels[x] = getSectionHeadings(StaticVariables.songSections[x]);
-                if (!StaticVariables.songSectionsLabels[x].equals("") && (!FullscreenActivity.foundSongSections_heading.contains(StaticVariables.songSectionsLabels[x]))) {
-                    FullscreenActivity.foundSongSections_heading.add(StaticVariables.songSectionsLabels[x]);
-                }
 
                 // Split each section into lines in a string array, determine each line type and get sectionContents lines end trimmed
                 StaticVariables.sectionContents[x] = StaticVariables.songSections[x].split("\n");
