@@ -52,12 +52,7 @@ public class SecondaryDisplay extends Presentation {
     private final String TAG = "SecondaryDisplay";
 
     // Default variables
-    private boolean trimLines, trimSections, addSectionSpace, boldChordHeading, displayChords;
     private float scaleChords, scaleHeadings, scaleComments, lineSpacing;
-
-    private int defaultPadding, availableScreenWidth, availableScreenHeight, horizontalSize, verticalSize,
-            availableWidth_1col, availableWidth_2col, availableWidth_3col;
-
     private Timer waitUntilTimer;
     private TimerTask waitUntilTimerTask;
     private int showWhich = 0;
@@ -65,11 +60,12 @@ public class SecondaryDisplay extends Presentation {
     private int showWhichBackground = 0;  //0=not set, 1=image1, 2=image2, 3=surface1, 4=surface2
     private int showWhichVideo = 0;
     private final int logoSplashTime = 3000;
+    private int defaultPadding, availableScreenWidth, availableScreenHeight, horizontalSize, verticalSize,
+            availableWidth_1col, availableWidth_2col, availableWidth_3col;
 
-    boolean infoBarRequiredTime=false, infoBarRequireInitial=true;
-    boolean infoBarChangeRequired;
-    boolean forceCastUpdate;
-    boolean waitForVideo;
+    private boolean firstRun = true, waitForVideo, forceCastUpdate, infoBarChangeRequired,
+            infoBarRequiredTime=false, infoBarRequireInitial=true, trimLines, trimSections,
+            addSectionSpace, boldChordHeading, displayChords;
 
     MediaPlayer mediaPlayer1=new MediaPlayer(), mediaPlayer2=new MediaPlayer();
     View backgroundToFadeIn, backgroundToFadeOut;
@@ -160,6 +156,8 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     private void moveToNextSongView() {
+        // This allows cross fading of views by getting a reference to the next view
+        // These are songContent1 or songContent2
         if (showWhich<2) {
             showWhich = 2;
         } else {
@@ -167,6 +165,8 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     private void moveToNextSongInfoView() {
+        // This allows cross fading of bottom bar info by getting a reference to the next view
+        // These are songProjectionInfo1 or songProjectionInfo2
         if (showWhichInfo<2) {
             showWhichInfo = 2;
         } else {
@@ -174,55 +174,56 @@ public class SecondaryDisplay extends Presentation {
         }
     }
     private boolean canShowSong() {
+        // Determines if we are allows to fade in content (no logo or blankscreen)
         return !mainActivityInterface.getPresenterSettings().getLogoOn() &&
-                !mainActivityInterface.getPresenterSettings().getBlankscreenOn();
+                !mainActivityInterface.getPresenterSettings().getBlankscreenOn() &&
+                !mainActivityInterface.getPresenterSettings().getBlackscreenOn();
     }
 
 
     // Now the screen settings
     public void setScreenSizes() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        display.getRealMetrics(metrics);
-
-        // We need to wait until the view is prepared before flipping if required
+        // We need to wait until the view is prepared before rotating and measuring if required
         ViewTreeObserver viewTreeObserver = myView.pageHolder.getViewTreeObserver();
         viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 myView.pageHolder.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                myView.pageHolder.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
-                myView.mainLogo.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
-                if (mainActivityInterface.getPresenterSettings().getCastRotation() == 90.0f ||
-                        mainActivityInterface.getPresenterSettings().getCastRotation() == 270.0f) {
-                    // Switch width for height and vice versa
-                    horizontalSize = metrics.heightPixels;
-                    verticalSize = metrics.widthPixels;
-                } else {
-                    horizontalSize = metrics.widthPixels;
-                    verticalSize = metrics.heightPixels;
-                }
-
-                // Available size has to take into consideration any padding
-                availableScreenWidth = horizontalSize - (2*mainActivityInterface.getPresenterSettings().getPresoXMargin());
-                availableScreenHeight = verticalSize - (2*mainActivityInterface.getPresenterSettings().getPresoYMargin());
-
-                availableWidth_1col = availableScreenWidth;
-                availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f);
-                availableWidth_3col = (int) ((float) availableScreenWidth / 3.0f);
-
-                // These bits are dependent on the screen size
-                changeMargins();
-                changeLogo();
-                showLogo();
-                matchPresentationToMode();
-
-                setInitialView();
-                setSongInfo();
-                setSongContent();
+                changeRotation();
             }
         });
+    }
+    public void changeRotation() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getRealMetrics(metrics);
         myView.pageHolder.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
-        setContentView(myView.getRoot());
+        myView.mainLogo.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
+        if (mainActivityInterface.getPresenterSettings().getCastRotation() == 90.0f ||
+                mainActivityInterface.getPresenterSettings().getCastRotation() == 270.0f) {
+            // Switch width for height and vice versa
+            horizontalSize = metrics.heightPixels;
+            verticalSize = metrics.widthPixels;
+        } else {
+            horizontalSize = metrics.widthPixels;
+            verticalSize = metrics.heightPixels;
+        }
+
+        // Available size has to take into consideration any padding
+        availableScreenWidth = horizontalSize - (2 * mainActivityInterface.getPresenterSettings().getPresoXMargin());
+        availableScreenHeight = verticalSize - (2 * mainActivityInterface.getPresenterSettings().getPresoYMargin());
+
+        availableWidth_1col = availableScreenWidth;
+        availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f);
+        availableWidth_3col = (int) ((float) availableScreenWidth / 3.0f);
+
+        // These bits are dependent on the screen size, so are called here initially
+        changeMargins();
+        changeLogo();
+        showLogo();
+        matchPresentationToMode();
+        checkHideLogo();
+        setSongInfo();
+        setSongContent();
     }
     private void changeMargins() {
         myView.pageHolder.setPadding(mainActivityInterface.getPresenterSettings().getPresoXMargin(),
@@ -234,12 +235,7 @@ public class SecondaryDisplay extends Presentation {
 
     // Set views depending on mode
     public void matchPresentationToMode() {
-        trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "trimLines", false);
-        trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "trimSections", false);
-        addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "addSectionSpace", true);
-        scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scaleChords", 0.8f);
-        lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "lineSpacing", 0.1f);
-
+        // Get the settings that are appropriate.  This is called on first run
         switch (mainActivityInterface.getMode()) {
             case "Stage":
             case "Performance":
@@ -260,20 +256,6 @@ public class SecondaryDisplay extends Presentation {
         infoBarChangeRequired = true;
         forceCastUpdate = false;
     }
-    public void setInitialView() {
-        // If we are in Performance or Stage mode, hide the logo after the splash time
-        switch (mainActivityInterface.getMode()) {
-            case "Performance":
-            case "Stage":
-                myView.mainLogo.postDelayed(() -> {
-                    mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(false);
-                    mainActivityInterface.getPresenterSettings().setLogoOn(false);
-                    showLogo();
-                    mainActivityInterface.getPresenterSettings().setLogoOn(false);
-                }, logoSplashTime);
-                break;
-        }
-    }
 
 
     // The screen background
@@ -282,13 +264,11 @@ public class SecondaryDisplay extends Presentation {
         // (already updated in PresenterSettings)
         // This only runs in PresenterMode!  Performance/Stage Mode reflect the device theme
         if (mainActivityInterface.getMode().equals("Presenter")) {
-            Log.d(TAG,"changeBackground()");
             // We can use either a drawable (for a solid colour) or a uri (for an image)
-            // We decide which isn't null
             // Get the current background to fade out and set the background to the next
             Log.d(TAG,"Fade out: showWhichBackground="+showWhichBackground);
             backgroundToFadeOut = null;
-            if (showWhichBackground==1) {
+            if (showWhichBackground<2) {
                 backgroundToFadeOut = myView.backgroundImage1;
             } else if (showWhichBackground==2) {
                 backgroundToFadeOut = myView.backgroundImage2;
@@ -303,7 +283,7 @@ public class SecondaryDisplay extends Presentation {
             waitForVideo = false;
             if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img") ||
                     mainActivityInterface.getPresenterSettings().getBackgroundToUse().equals("color")) {
-                if (showWhichBackground == 1) {
+                if (showWhichBackground < 2) {
                     showWhichBackground = 2;
                     backgroundToFadeIn = myView.backgroundImage2;
                 } else {
@@ -319,8 +299,6 @@ public class SecondaryDisplay extends Presentation {
                     backgroundToFadeIn = myView.textureView1;
                 }
             }
-            Log.d(TAG,"Fade in: showWhichBackground="+showWhichBackground);
-
 
             // Set the current background to the new one
             Uri background = mainActivityInterface.getPresenterSettings().getChosenBackground();
@@ -347,6 +325,7 @@ public class SecondaryDisplay extends Presentation {
                     GlideApp.with(c).load(background).apply(requestOptions).into((ImageView) backgroundToFadeIn);
                 }
             } else if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("vid")) {
+                // We need to wait for the video to be prepared
                 waitForVideo = true;
             }
 
@@ -354,6 +333,7 @@ public class SecondaryDisplay extends Presentation {
             if (!waitForVideo) {
                 crossFadeBackgrounds();
             } else {
+                // Prepare the video background
                 if (showWhichVideo < 2) {
                     backgroundToFadeIn = myView.textureView1;
                 } else {
@@ -374,6 +354,20 @@ public class SecondaryDisplay extends Presentation {
     }
 
     // The logo
+    private void checkHideLogo() {
+        // If we are in Performance or Stage mode, hide the logo after the splash time
+        switch (mainActivityInterface.getMode()) {
+            case "Performance":
+            case "Stage":
+                myView.mainLogo.postDelayed(() -> {
+                    mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(false);
+                    mainActivityInterface.getPresenterSettings().setLogoOn(false);
+                    showLogo();
+                    mainActivityInterface.getPresenterSettings().setLogoOn(false);
+                }, logoSplashTime);
+                break;
+        }
+    }
     public void changeLogo() {
         // There may have been an update to the user's logo.  Called from change Background in this
         int size = (int)(mainActivityInterface.getPresenterSettings().getLogoSize() * availableScreenWidth);

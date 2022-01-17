@@ -17,7 +17,7 @@ public class PresenterSettings {
     private boolean alertOn, logoOn, hideLogoAfterShow, blackscreenOn, blankscreenOn;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
-            infoBarChangeDelay, lyricDelay, panicDelay;
+        presoLyricsAlign, presoLyricsVAlign, infoBarChangeDelay, lyricDelay, panicDelay;
     private String backgroundToUse, presoAlertText;
     private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
             presoBackgroundAlpha;
@@ -82,6 +82,12 @@ public class PresenterSettings {
     }
     public void setPresoInfoAlign(int presoInfoAlign) {
         this.presoInfoAlign = presoInfoAlign;
+    }
+    public void setPresoLyricsAlign(int presoLyricsAlign) {
+        this.presoLyricsAlign = presoLyricsAlign;
+    }
+    public void setPresoLyricsVAlign(int presoLyricsVAlign) {
+        this.presoLyricsVAlign = presoLyricsVAlign;
     }
     public void setPresoInfoBarAlpha(float presoInfoBarAlpha) {
         this.presoInfoBarAlpha = presoInfoBarAlpha;
@@ -170,6 +176,12 @@ public class PresenterSettings {
     public int getPresoInfoAlign() {
         return presoInfoAlign;
     }
+    public int getPresoLyricsAlign() {
+        return presoLyricsAlign;
+    }
+    public int getPresoLyricsVAlign() {
+        return presoLyricsVAlign;
+    }
     public float getPresoInfoBarAlpha() {
         return presoInfoBarAlpha;
     }
@@ -185,7 +197,6 @@ public class PresenterSettings {
     public float getPresoBackgroundAlpha() {
         return presoBackgroundAlpha;
     }
-
 
 
     // The helpers for this class
@@ -226,6 +237,8 @@ public class PresenterSettings {
         setPresoXMargin(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoXMargin",0));
         setPresoYMargin(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoYMargin",0));
         setPresoInfoAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
+        setPresoLyricsAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoLyricsAlign", Gravity.CENTER_HORIZONTAL));
+        setPresoLyricsVAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoLyricsVAlign", Gravity.CENTER_VERTICAL));
         setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f));
         setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizePresoMax", 40f));
     }

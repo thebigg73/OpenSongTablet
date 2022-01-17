@@ -1,10 +1,12 @@
 package com.garethevans.church.opensongtablet.presenter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +44,11 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = ModePresenterSettingsBinding.inflate(inflater,container,false);
 
-        // Update the currently chosen logo and background
+        // Update the currently chosen logo and backgrounds
         mainActivityInterface.getPresenterSettings().getAllPreferences(requireContext(),mainActivityInterface);
         updateLogo();
         updateBackground();
+        updateInfoBackground();
 
         // Set initial views
         setViews();
@@ -65,7 +68,6 @@ public class SettingsFragment extends Fragment {
     }
 
     public void updateBackground() {
-        Log.d(TAG,"updateBackground()");
         // Get the current backgrounds and update the chosen one into the button
         RequestOptions options = new RequestOptions().override(128, 72).centerInside();
         switch (mainActivityInterface.getPresenterSettings().getBackgroundToUse()) {
@@ -97,6 +99,17 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    public void updateInfoBackground() {
+        // Update the info bar background colour
+        RequestOptions options = new RequestOptions().override(128, 72).centerInside();
+        Drawable drawable = ContextCompat.getDrawable(requireContext(),R.drawable.simple_rectangle);
+        if (drawable!=null) {
+            GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
+            gradientDrawable.setColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
+            GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(myView.currentInfoBackground);
+        }
+    }
+
 
     private void setViews() {
         myView.presoBackgroundAlpha.setValue((int)(mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha()*100));
@@ -115,6 +128,11 @@ public class SettingsFragment extends Fragment {
         myView.horizontalMargin.setHint((int)mainActivityInterface.getPresenterSettings().getPresoXMargin()+"px");
         myView.verticalMargin.setValue(mainActivityInterface.getPresenterSettings().getPresoYMargin());
         myView.verticalMargin.setHint((int)mainActivityInterface.getPresenterSettings().getPresoYMargin()+"px");
+
+        myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
+        myView.contentHorizontalAlign.setSliderPos(gravityToSliderPosition(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign())));
+        myView.contentVerticalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()));
+
     }
     private void setListeners() {
         myView.currentBackground.setOnClickListener(view -> {
@@ -139,12 +157,56 @@ public class SettingsFragment extends Fragment {
 
         myView.verticalMargin.addOnSliderTouchListener(new SliderTouchListener("presoYMargin"));
         myView.verticalMargin.addOnChangeListener(new SliderChangeListener("presoYMargin"));
+
+        myView.infoAlign.addOnSliderTouchListener(new SliderTouchListener("presoInfoAlign"));
+        myView.infoAlign.addOnChangeListener(new SliderChangeListener("presoInfoAlign"));
     }
 
     private float floatToDecPlaces(float floatNum, int decPlaces) {
         floatNum = floatNum * (float)Math.pow(10,decPlaces);
         floatNum = Math.round(floatNum);
         return floatNum / (float)Math.pow(10,decPlaces);
+    }
+    @SuppressLint("RtlHardcoded")
+    private int gravityToSliderPosition(int gravity) {
+        switch (gravity) {
+            case Gravity.START:
+            case Gravity.LEFT:
+            case Gravity.TOP:
+                return 0;
+            case Gravity.CENTER:
+            case Gravity.CENTER_HORIZONTAL:
+            case Gravity.CENTER_VERTICAL:
+            default:
+                return 1;
+            case Gravity.END:
+            case Gravity.RIGHT:
+            case Gravity.BOTTOM:
+                return 2;
+        }
+    }
+    private int sliderPositionToGravity(boolean vertical, int position) {
+        switch (position) {
+            case 0:
+                if (vertical) {
+                    return Gravity.TOP;
+                } else {
+                    return Gravity.START;
+                }
+            case 1:
+            default:
+                if (vertical) {
+                    return Gravity.CENTER_VERTICAL;
+                } else {
+                    return Gravity.CENTER_HORIZONTAL;
+                }
+            case 2:
+                if (vertical) {
+                    return Gravity.BOTTOM;
+                } else {
+                    return Gravity.END;
+                }
+        }
     }
 
     private class SliderTouchListener implements Slider.OnSliderTouchListener {
@@ -179,7 +241,7 @@ public class SettingsFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
                             prefName, slider.getValue());
                     mainActivityInterface.getPresenterSettings().setCastRotation(slider.getValue());
-                    displayInterface.updateDisplay("setScreenSizes");
+                    displayInterface.updateDisplay("changeRotation");
                     break;
                 case "presoXMargin":
                 case "presoYMargin":
@@ -199,6 +261,14 @@ public class SettingsFragment extends Fragment {
                             "presoBackgroundAlpha", slider.getValue()/100f);
                     mainActivityInterface.getPresenterSettings().setPresoBackgroundAlpha(slider.getValue()/100f);
                     displayInterface.updateDisplay("changeBackground");
+                    break;
+                case "presoInfoAlign":
+                    // The slider goes from 0 to 2.  We need to look up the gravity
+                    int gravity = sliderPositionToGravity(false,(int)slider.getValue());
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                            "presoInfoAlign",gravity);
+                    mainActivityInterface.getPresenterSettings().setPresoInfoAlign(gravity);
+                    displayInterface.updateDisplay("changeInfoAlignment");
                     break;
             }
 

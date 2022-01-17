@@ -2614,6 +2614,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             case "setInfoStyles":
                                 secondaryDisplay.setInfoStyles();
                                 break;
+                            case "changeInfoAlignment":
+                                secondaryDisplay.changeInfoAlignment();
+                                break;
 
                             // Song content
                             case "setSongContent":
@@ -2634,6 +2637,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 break;
                             case "changeBackground":
                                 secondaryDisplay.changeBackground();
+                                break;
+                            case "changeRotation":
+                                secondaryDisplay.changeRotation();
                                 break;
 
                             // The logo

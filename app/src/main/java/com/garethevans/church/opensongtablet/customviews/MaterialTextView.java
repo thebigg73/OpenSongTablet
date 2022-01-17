@@ -2,8 +2,12 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
@@ -13,15 +17,17 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 
 public class MaterialTextView extends LinearLayout {
 
     private final TextView textView;
     private final TextView hintView;
-    private final ImageView checkMark;
+    private final ImageView checkMark, imageView;
     private final CheckBox checkBox;
     private final FrameLayout checkBoxHolder;
+    private final String TAG = "MaterialTextView";
 
     public MaterialTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -29,7 +35,7 @@ public class MaterialTextView extends LinearLayout {
 
         textView = findViewById(R.id.textView);
         hintView = findViewById(R.id.hintView);
-        ImageView imageView = findViewById(R.id.imageView);
+        imageView = findViewById(R.id.imageView);
         checkMark = findViewById(R.id.checkMark);
         checkBox = findViewById(R.id.checkBox);
         checkBoxHolder = findViewById(R.id.checkBoxHolder);
@@ -54,10 +60,8 @@ public class MaterialTextView extends LinearLayout {
         String hintText = typedArray.getString(1);
         hintView.setText(hintText);
 
-        if (drawable!=null) {
-            imageView.setImageDrawable(drawable);
-            imageView.setVisibility(View.VISIBLE);
-        }
+        // Default colour is white, but it can be overriden programmatically
+        setImageView(drawable, context.getResources().getColor(R.color.white));
 
         showCheckMark(isChecked);
         showCheckBox(isCheckBox);
@@ -122,5 +126,33 @@ public class MaterialTextView extends LinearLayout {
 
     public CharSequence getHint() {
         return hintView.getText();
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(Drawable drawable, int tintColor) {
+        RequestOptions requestOptions = new RequestOptions().override(64, 64).centerInside();
+        Log.d(TAG,"drawable="+drawable);
+        if (drawable!=null) {
+            // Clone the drawable
+            Drawable cloneDrawable = drawable.mutate();
+            // Setup color filter for tinting
+            ColorFilter colorFilter = new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
+            if (cloneDrawable != null) {
+                cloneDrawable.setColorFilter(colorFilter);
+                GlideApp.with(this).load(cloneDrawable).apply(requestOptions).into(imageView);
+            }
+            imageView.setVisibility(View.VISIBLE);
+        } else {
+            imageView.setVisibility(View.GONE);
+        }
+    }
+
+
+    public void setMyGravity(int gravity) {
+        textView.setGravity(gravity);
+        hintView.setGravity(gravity);
     }
 }

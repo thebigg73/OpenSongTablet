@@ -64,6 +64,9 @@ public class ModeFragment extends Fragment {
 
     private void updatePreference(String which) {
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"whichMode",which);
+        // Because we are switching modes, we need to let the new fragment know that this is a first run
+        // This means it will refresh settings and connected displays when it triggers
+        mainActivityInterface.setFirstRun(true);
         mainActivityInterface.navHome();
     }
 

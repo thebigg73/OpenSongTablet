@@ -66,6 +66,9 @@
         <attr name="textR" format="string"/>
         <attr name="chosen" format="integer"/>
         <attr name="label" format="string"/>
+        <attr name="drawableL" format="reference"/>
+        <attr name="drawableR" format="reference"/>
+        <attr name="drawableC" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="DialogHeader">

@@ -395,6 +395,8 @@
     <string name="song">Song</string>
     <string name="song_actions">Song actions</string>
     <string name="song_actions_description">Adjust settings for song actions</string>
+    <string name="song_alignment_content">Song content alignment</string>
+    <string name="song_alignment_information">Song information alignment</string>
     <string name="song_features">Song features</string>
     <string name="song_menu_checkboxes">Show set checkboxes in song menu</string>
     <string name="song_notes">Song sticky notes</string>
@@ -1071,4 +1073,5 @@ Check out the categories in the right hand options menu.
     <string name="image_change">Click on the image to change</string>
     <string name="simple_color">Simple colour</string>
     <string name="simple_color_info">A single colour background</string>
+    <string name="info_text_background">Background for information bar</string>
 </resources>
