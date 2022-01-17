@@ -14,10 +14,10 @@ public class PresenterSettings {
     // They are accessed using getters and setters
 
     private final String TAG = "PresenterSettings";
-    private boolean alertOn, logoOn, hideLogoAfterShow, blackscreenOn, blankscreenOn;
+    private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
-        presoLyricsAlign, presoLyricsVAlign, infoBarChangeDelay, lyricDelay, panicDelay;
+        presoLyricsAlign, presoLyricsVAlign, infoBarChangeDelay, lyricDelay, panicDelay, currentSection;
     private String backgroundToUse, presoAlertText;
     private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
             presoBackgroundAlpha;
@@ -37,9 +37,6 @@ public class PresenterSettings {
     }
     public void setLogoOn(boolean logoOn) {
         this.logoOn = logoOn;
-    }
-    public void setHideLogoAfterShow(boolean hideLogoAfterShow) {
-        this.hideLogoAfterShow = hideLogoAfterShow;
     }
     public void setBlackscreenOn(boolean blackscreenOn) {
         this.blackscreenOn = blackscreenOn;
@@ -104,6 +101,12 @@ public class PresenterSettings {
     public void setPresoBackgroundAlpha(float presoBackgroundAlpha) {
         this.presoBackgroundAlpha = presoBackgroundAlpha;
     }
+    public void setHideInfoBar(boolean hideInfoBar) {
+        this.hideInfoBar = hideInfoBar;
+    }
+    public void setCurrentSection(int currentSection) {
+        this.currentSection = currentSection;
+    }
 
 
     // The getters
@@ -115,9 +118,6 @@ public class PresenterSettings {
     }
     public boolean getLogoOn() {
         return logoOn;
-    }
-    public boolean getHideLogoAfterShow() {
-        return hideLogoAfterShow;
     }
     public boolean getBlackscreenOn() {
         return blackscreenOn;
@@ -197,6 +197,12 @@ public class PresenterSettings {
     public float getPresoBackgroundAlpha() {
         return presoBackgroundAlpha;
     }
+    public boolean getHideInfoBar() {
+        return hideInfoBar;
+    }
+    public int getCurrentSection() {
+        return currentSection;
+    }
 
 
     // The helpers for this class
@@ -241,6 +247,7 @@ public class PresenterSettings {
         setPresoLyricsVAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoLyricsVAlign", Gravity.CENTER_VERTICAL));
         setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f));
         setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizePresoMax", 40f));
+        setHideInfoBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"hideInfoBar",true));
     }
 
     public void getAlertPreferences(Context c, MainActivityInterface mainActivityInterface) {

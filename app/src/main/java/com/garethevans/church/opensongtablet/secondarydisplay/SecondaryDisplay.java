@@ -106,8 +106,7 @@ public class SecondaryDisplay extends Presentation {
 
         // Now we can test the song layout and measure what we need
         // Once this is done in the next function, the viewTreeObserver notifies the next steps
-        mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(!mainActivityInterface.getMode().equals("Presenter"));
-        mainActivityInterface.getPresenterSettings().setLogoOn(true);
+
         setScreenSizes();
     }
 
@@ -219,11 +218,50 @@ public class SecondaryDisplay extends Presentation {
         // These bits are dependent on the screen size, so are called here initially
         changeMargins();
         changeLogo();
-        showLogo();
         matchPresentationToMode();
-        checkHideLogo();
         setSongInfo();
         setSongContent();
+        changeBackground();
+
+        // Decide what to do about the logo
+        // For PresenterMode, we should show it to show initially on this new display
+        // If the logo is switched on, then leave it on, otherwise hide it
+        if (firstRun) {
+            boolean timedHide = true;
+            if (mainActivityInterface.getMode().equals("Presenter")) {
+                // If the user has the logo switched on, so leave it on (no timedHide)
+                if (mainActivityInterface.getPresenterSettings().getLogoOn()) {
+                    timedHide = false;
+                }
+                // If the user is showing a blank screen and no logo (before this display connected)
+                // Show it after the splash time
+                if (!mainActivityInterface.getPresenterSettings().getLogoOn() &&
+                        mainActivityInterface.getPresenterSettings().getBlankscreenOn()) {
+                    showBlankScreen();
+                }
+
+                // If the user is showing a section (not logo), then show it after the splash time
+                if (!mainActivityInterface.getPresenterSettings().getLogoOn() &&
+                    mainActivityInterface.getPresenterSettings().getCurrentSection()>-1) {
+                    new Handler().postDelayed(()-> showSection(mainActivityInterface.getPresenterSettings().getCurrentSection()),logoSplashTime);
+                }
+
+                // If the user is already showing a black screen (before this display connected)
+                // Then trigger the black screen after the splash time too
+                // This overrides anything other than the logo showing
+                if (mainActivityInterface.getPresenterSettings().getBlackscreenOn()) {
+                    new Handler().postDelayed(this::showBlackScreen,logoSplashTime);
+                }
+
+            } else {
+                // Prepare the current section 0 ready for the logo hiding after splash
+                new Handler().postDelayed(()-> showSection(0),logoSplashTime);
+            }
+
+            // The logo always gets shown on first run
+            firstRun = false;
+            showLogo(true, timedHide);
+        }
     }
     private void changeMargins() {
         myView.pageHolder.setPadding(mainActivityInterface.getPresenterSettings().getPresoXMargin(),
@@ -260,6 +298,7 @@ public class SecondaryDisplay extends Presentation {
 
     // The screen background
     public void changeBackground() {
+        Log.d(TAG,"changeBackground()");
         // There has been an update to the user's background or logo, so pull them in from preferences
         // (already updated in PresenterSettings)
         // This only runs in PresenterMode!  Performance/Stage Mode reflect the device theme
@@ -307,6 +346,8 @@ public class SecondaryDisplay extends Presentation {
             if (mainActivityInterface.getPresenterSettings().getBackgroundToUse().equals("color") ||
                     (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img") && background == null)) {
                 // Use a solid background color
+                Log.d(TAG,"changeBackground() - solid color");
+
                 assert backgroundToFadeIn instanceof ImageView;
                 Drawable drawable = ContextCompat.getDrawable(c, R.drawable.simple_rectangle);
                 if (drawable != null) {
@@ -354,20 +395,6 @@ public class SecondaryDisplay extends Presentation {
     }
 
     // The logo
-    private void checkHideLogo() {
-        // If we are in Performance or Stage mode, hide the logo after the splash time
-        switch (mainActivityInterface.getMode()) {
-            case "Performance":
-            case "Stage":
-                myView.mainLogo.postDelayed(() -> {
-                    mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(false);
-                    mainActivityInterface.getPresenterSettings().setLogoOn(false);
-                    showLogo();
-                    mainActivityInterface.getPresenterSettings().setLogoOn(false);
-                }, logoSplashTime);
-                break;
-        }
-    }
     public void changeLogo() {
         // There may have been an update to the user's logo.  Called from change Background in this
         int size = (int)(mainActivityInterface.getPresenterSettings().getLogoSize() * availableScreenWidth);
@@ -378,9 +405,9 @@ public class SecondaryDisplay extends Presentation {
         RequestOptions requestOptions = new RequestOptions().fitCenter().override(size,size);
         GlideApp.with(c).load(mainActivityInterface.getPresenterSettings().getLogo()).apply(requestOptions).into(myView.mainLogo);
     }
-    public void showLogo() {
+    public void showLogo(boolean show, boolean timedHide) {
         // Fade in/out the logo based on the setting
-        if (mainActivityInterface.getPresenterSettings().getLogoOn()) {
+        if (show) {
             crossFadeContent(myView.allContent,myView.mainLogo);
         } else {
             crossFadeContent(myView.mainLogo,myView.allContent);
@@ -388,11 +415,11 @@ public class SecondaryDisplay extends Presentation {
 
         // Check for the song info
         checkSongInfoShowHide();
-        if (mainActivityInterface.getPresenterSettings().getHideLogoAfterShow()) {
+
+        if (timedHide) {
             // This will hide the logo after the logoSplashTime
             myView.mainLogo.postDelayed(() -> {
                 mainActivityInterface.getPresenterSettings().setLogoOn(false);
-                mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(false);
                 crossFadeContent(myView.mainLogo,myView.allContent);
                 Log.d(TAG,"timed hiding of logo");
             },logoSplashTime);
@@ -425,21 +452,30 @@ public class SecondaryDisplay extends Presentation {
             start = 0f;
             end = 1f;
         }
+        // If we are fading out, or fading in and can show the song, do it!
         if ((start>end) || canShowSong()) {
             if (showWhich < 2) {
                 mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent1,
                         mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                         start, end);
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                        start, end);
+
             } else {
                 mainActivityInterface.getCustomAnimation().faderAnimation(myView.songContent2,
                         mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                         start, end);
-                mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2,
-                        mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
-                        start, end);
+            }
+
+            // If we are fading out, or fading in but should show the info bar, do it
+            if (start>end || infoBarRequireInitial || infoBarRequiredTime) {
+                if (showWhichInfo < 2) {
+                    mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo1,
+                            mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                            start, end);
+                } else {
+                    mainActivityInterface.getCustomAnimation().faderAnimation(myView.songProjectionInfo2,
+                            mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
+                            start, end);
+                }
             }
         }
     }
@@ -457,14 +493,16 @@ public class SecondaryDisplay extends Presentation {
             @Override
             public void run() {
                 // Switch off the requirement for the infoBarRequiredTime and cancel the timer
-                infoBarRequiredTime = false;
-                try {
-                    waitUntilTimer.cancel();
-                    waitUntilTimerTask.cancel();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (mainActivityInterface.getPresenterSettings().getHideInfoBar()) {
+                    infoBarRequiredTime = false;
+                    try {
+                        waitUntilTimer.cancel();
+                        waitUntilTimerTask.cancel();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Log.d(TAG, "timer over - infoBarRequiredTime=" + infoBarRequiredTime);
                 }
-                Log.d(TAG,"timer over - infoBarRequiredTime="+infoBarRequiredTime);
             }
         };
         int untilTimeWait = 20000;
@@ -521,7 +559,7 @@ public class SecondaryDisplay extends Presentation {
         infoBarRequireInitial = true;
         infoBarRequiredTime = false;
     }
-    private void checkSongInfoShowHide() {
+    public void checkSongInfoShowHide() {
         if (showWhichInfo<2) {
             songInfoShowCheck(myView.songProjectionInfo1);
             songInfoHideCheck(myView.songProjectionInfo1);
@@ -755,23 +793,13 @@ public class SecondaryDisplay extends Presentation {
         @Override
         public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int width, int height) {
             if (mainActivityInterface.getMode().equals("Presenter")) {
-                //Surface surface = new Surface(surfaceTexture);
                 if (which==1) {
-                //if (surfaceTexture == myView.textureView1.getSurfaceTexture()) {
-                    Log.d(TAG, "textureView1: 1");
                     surface1 = new Surface(surfaceTexture);
                     mediaPlayer1.setSurface(surface1);
                 } else {
-                    Log.d(TAG, "textureView2: 2");
                     surface2 = new Surface(surfaceTexture);
                     mediaPlayer2.setSurface(surface2);
                 }
-            }
-            Log.d(TAG, "surface1:" + myView.textureView1.getSurfaceTexture());
-            Log.d(TAG, "surface2:" + myView.textureView2.getSurfaceTexture());
-            if (surface1 != null && surface2 != null) {
-                // Now update the background
-                changeBackground();
             }
         }
 

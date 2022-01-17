@@ -306,14 +306,14 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.getMyThemeColors().splitPageButtonsColorAndAlpha(mainActivityInterface);
         }
 
-        // Update the theme color on the fragment behind
-        mainActivityInterface.updateFragment(fragName,callingFragment,null);
-
         // These changes should call an update to any secondary displays as well
         if (whichColor.equals("presoShadowColor")) {
             mainActivityInterface.getMyThemeColors().setPresoShadowColor(newColorInt);
             displayInterface.updateDisplay("setInfoStyles");
         }
+
+        // Update the theme color on the fragment behind
+        mainActivityInterface.updateFragment(fragName,callingFragment,null);
 
         // Navigate back
         dismiss();

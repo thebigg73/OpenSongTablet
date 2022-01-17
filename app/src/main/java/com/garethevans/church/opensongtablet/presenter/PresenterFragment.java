@@ -172,7 +172,6 @@ public class PresenterFragment extends Fragment {
     private void setupListeners() {
         myView.showLogo.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPresenterSettings().setLogoOn(b);
-            mainActivityInterface.getPresenterSettings().setHideLogoAfterShow(false);
             displayInterface.updateDisplay("showLogo");
         });
         myView.blackScreen.setOnCheckedChangeListener((compoundButton, b) -> {

@@ -1262,6 +1262,7 @@ public class ProcessSong {
 
             linearLayout.setBackgroundColor(backgroundColor);
             sectionColors.add(backgroundColor);
+
             sectionViews.add(linearLayout);
         }
         mainActivityInterface.getSong().setSongSections(songSections);

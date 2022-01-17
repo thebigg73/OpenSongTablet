@@ -748,6 +748,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "presenterFragmentSettings":
                     ((SettingsFragment) callingFragment).updateBackground();
+                    ((SettingsFragment) callingFragment).updateInfoBackground();
                     ((SettingsFragment) callingFragment).updateLogo();
                     break;
 
@@ -2617,6 +2618,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             case "changeInfoAlignment":
                                 secondaryDisplay.changeInfoAlignment();
                                 break;
+                            case "checkSongInfoShowHide":
+                                secondaryDisplay.checkSongInfoShowHide();
+                                break;
 
                             // Song content
                             case "setSongContent":
@@ -2647,7 +2651,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                                 secondaryDisplay.changeLogo();
                                 break;
                             case "showLogo":
-                                secondaryDisplay.showLogo();
+                                secondaryDisplay.showLogo(getPresenterSettings().getLogoOn(), false);
                                 break;
 
                             // Black and blank screen

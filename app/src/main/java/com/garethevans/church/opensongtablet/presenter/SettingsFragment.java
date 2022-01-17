@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterSettingsBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.screensetup.ChooseColorBottomSheet;
 import com.google.android.material.slider.Slider;
 
 public class SettingsFragment extends Fragment {
@@ -69,23 +70,28 @@ public class SettingsFragment extends Fragment {
 
     public void updateBackground() {
         // Get the current backgrounds and update the chosen one into the button
+        // Do this for the info background preview too
         RequestOptions options = new RequestOptions().override(128, 72).centerInside();
         switch (mainActivityInterface.getPresenterSettings().getBackgroundToUse()) {
             case "img1":
                 GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.currentBackground);
+                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage1()).apply(options).into(myView.infoBackgroundColor);
                 myView.videoBackgroundIcon.hide();
                 Log.d(TAG,"should update to img1");
                 break;
             case "img2":
                 GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.currentBackground);
+                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundImage2()).apply(options).into(myView.infoBackgroundColor);
                 myView.videoBackgroundIcon.hide();
                 break;
             case "vid1":
                 GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.currentBackground);
+                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo1()).apply(options).into(myView.infoBackgroundColor);
                 myView.videoBackgroundIcon.show();
                 break;
             case "vid2":
                 GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.currentBackground);
+                GlideApp.with(requireContext()).load(mainActivityInterface.getPresenterSettings().getBackgroundVideo2()).apply(options).into(myView.infoBackgroundColor);
                 myView.videoBackgroundIcon.show();
                 break;
             case "color":
@@ -94,6 +100,7 @@ public class SettingsFragment extends Fragment {
                     GradientDrawable gradientDrawable = (GradientDrawable) drawable.mutate();
                     gradientDrawable.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
                     GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(myView.currentBackground);
+                    GlideApp.with(requireContext()).load(gradientDrawable).apply(options).into(myView.infoBackgroundColor);
                 }
                 myView.videoBackgroundIcon.hide();
         }
@@ -125,11 +132,13 @@ public class SettingsFragment extends Fragment {
         myView.rotateDisplay.setHint((int)mainActivityInterface.getPresenterSettings().getCastRotation()+"°");
 
         myView.horizontalMargin.setValue(mainActivityInterface.getPresenterSettings().getPresoXMargin());
-        myView.horizontalMargin.setHint((int)mainActivityInterface.getPresenterSettings().getPresoXMargin()+"px");
+        myView.horizontalMargin.setHint(mainActivityInterface.getPresenterSettings().getPresoXMargin() +"px");
         myView.verticalMargin.setValue(mainActivityInterface.getPresenterSettings().getPresoYMargin());
-        myView.verticalMargin.setHint((int)mainActivityInterface.getPresenterSettings().getPresoYMargin()+"px");
+        myView.verticalMargin.setHint(mainActivityInterface.getPresenterSettings().getPresoYMargin() +"px");
 
         myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
+        myView.hideInfoBar.setChecked(mainActivityInterface.getPresenterSettings().getHideInfoBar());
+
         myView.contentHorizontalAlign.setSliderPos(gravityToSliderPosition(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign())));
         myView.contentVerticalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()));
 
@@ -138,6 +147,10 @@ public class SettingsFragment extends Fragment {
         myView.currentBackground.setOnClickListener(view -> {
             ImageChooserBottomSheet imageChooserBottomSheet = new ImageChooserBottomSheet(this,"presenterFragmentSettings");
             imageChooserBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ImageChooserBottomSheet");
+        });
+        myView.currentInfoBackground.setOnClickListener(view -> {
+            ChooseColorBottomSheet chooseColorBottomSheet = new ChooseColorBottomSheet(this, "presenterFragmentSettings", "presoShadowColor");
+            chooseColorBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"ChooseColorBottomSheet");
         });
 
         myView.presoBackgroundAlpha.addOnSliderTouchListener(new SliderTouchListener("presoBackgroundAlpha"));
@@ -158,8 +171,19 @@ public class SettingsFragment extends Fragment {
         myView.verticalMargin.addOnSliderTouchListener(new SliderTouchListener("presoYMargin"));
         myView.verticalMargin.addOnChangeListener(new SliderChangeListener("presoYMargin"));
 
-        myView.infoAlign.addOnSliderTouchListener(new SliderTouchListener("presoInfoAlign"));
         myView.infoAlign.addOnChangeListener(new SliderChangeListener("presoInfoAlign"));
+        myView.hideInfoBar.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+                    "hideInfoBar",b);
+            mainActivityInterface.getPresenterSettings().setHideInfoBar(b);
+            displayInterface.updateDisplay("initialiseInfoBarRequired");
+            displayInterface.updateDisplay("checkSongInfoShowHide");
+        });
+
+        myView.contentHorizontalAlign.addOnSliderTouchListener(new SliderTouchListener("presoLyricsAlign"));
+        myView.contentHorizontalAlign.addOnChangeListener(new SliderChangeListener("presoLyricsAlign"));
+        myView.contentVerticalAlign.addOnSliderTouchListener(new SliderTouchListener("presoLyricsVAlign"));
+        myView.contentVerticalAlign.addOnChangeListener(new SliderChangeListener("presoLyricsVAlign"));
     }
 
     private float floatToDecPlaces(float floatNum, int decPlaces) {
@@ -189,21 +213,27 @@ public class SettingsFragment extends Fragment {
         switch (position) {
             case 0:
                 if (vertical) {
+                    Log.d(TAG,"top");
                     return Gravity.TOP;
                 } else {
+                    Log.d(TAG,"start");
                     return Gravity.START;
                 }
             case 1:
             default:
                 if (vertical) {
+                    Log.d(TAG,"center vertical");
                     return Gravity.CENTER_VERTICAL;
                 } else {
+                    Log.d(TAG,"center horizontal");
                     return Gravity.CENTER_HORIZONTAL;
                 }
             case 2:
                 if (vertical) {
+                    Log.d(TAG,"bottom");
                     return Gravity.BOTTOM;
                 } else {
+                    Log.d(TAG,"end");
                     return Gravity.END;
                 }
         }
@@ -262,22 +292,14 @@ public class SettingsFragment extends Fragment {
                     mainActivityInterface.getPresenterSettings().setPresoBackgroundAlpha(slider.getValue()/100f);
                     displayInterface.updateDisplay("changeBackground");
                     break;
-                case "presoInfoAlign":
-                    // The slider goes from 0 to 2.  We need to look up the gravity
-                    int gravity = sliderPositionToGravity(false,(int)slider.getValue());
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
-                            "presoInfoAlign",gravity);
-                    mainActivityInterface.getPresenterSettings().setPresoInfoAlign(gravity);
-                    displayInterface.updateDisplay("changeInfoAlignment");
-                    break;
             }
-
         }
     }
 
     private class SliderChangeListener implements Slider.OnChangeListener {
 
         private final String prefName;
+        private int gravity;
         SliderChangeListener(String prefName) {
             this.prefName = prefName;
         }
@@ -306,6 +328,30 @@ public class SettingsFragment extends Fragment {
                     break;
                 case "presoBackgroundAlpha":
                     myView.presoBackgroundAlpha.setHint((int)slider.getValue() + "%");
+                    break;
+                case "presoInfoAlign":
+                    // The slider goes from 0 to 2.  We need to look up the gravity
+                    gravity = sliderPositionToGravity(false,(int)slider.getValue());
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                            "presoInfoAlign",gravity);
+                    mainActivityInterface.getPresenterSettings().setPresoInfoAlign(gravity);
+                    displayInterface.updateDisplay("changeInfoAlignment");
+                    break;
+                case "presoLyricsAlign":
+                    // The slider goes from 0 to 2.  We need to look up the gravity
+                    gravity = sliderPositionToGravity(false,(int)slider.getValue());
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                            "presoLyricsAlign",gravity);
+                    mainActivityInterface.getPresenterSettings().setPresoLyricsAlign(gravity);
+                    displayInterface.updateDisplay("setSongContent");
+                    break;
+                case "presoLyricsVAlign":
+                    // The slider goes from 0 to 2.  We need to look up the gravity
+                    gravity = sliderPositionToGravity(true,(int)slider.getValue());
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                            "presoLyricsVAlign",gravity);
+                    mainActivityInterface.getPresenterSettings().setPresoLyricsVAlign(gravity);
+                    displayInterface.updateDisplay("setSongContent");
                     break;
             }
         }

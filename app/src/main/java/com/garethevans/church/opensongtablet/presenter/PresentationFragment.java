@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
@@ -45,7 +46,8 @@ public class PresentationFragment extends Fragment {
 
     // Displaying the song
     public void doSongLoad(String folder,String filename) {
-        new Thread(() -> {/*
+        new Thread(() -> {*/
+/*
             // Quick fade the current page
             Objects.requireNonNull(getActivity()).runOnUiThread(() -> customAnimation.faderAnimation(myView.pageHolder,100,false));
             // Load up the song
@@ -64,7 +66,8 @@ public class PresentationFragment extends Fragment {
 
                 // Update the toolbar
                 mListener.updateToolbar();
-            });*/
+            });*//*
+
         }).start();
     }
 
@@ -74,3 +77,4 @@ public class PresentationFragment extends Fragment {
         //myView = null;
     }
 }
+*/

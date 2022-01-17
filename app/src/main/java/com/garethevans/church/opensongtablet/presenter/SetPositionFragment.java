@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
@@ -18,3 +19,4 @@ public class SetPositionFragment extends Fragment {
     }
 
 }
+*/

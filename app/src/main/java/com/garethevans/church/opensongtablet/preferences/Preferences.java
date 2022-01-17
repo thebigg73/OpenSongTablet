@@ -289,6 +289,7 @@ public class Preferences extends Activity {
     gestureScreenDoubleTap          int         The action for double tapping on the song screen (def 2 = edit song - based on menu position)
     gestureScreenLongPress          int         The action for long pressing on the song screen (def 3 = add song to set - based on menu position)
     hideActionBar                   boolean     Should the action bar auto hide (def:false)
+    hideInfoBar                     boolean     Should the info bar (Presenter mode only) autohide after initial display + minimum time (def: true)
     hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
     keyRepeatCount                  int         The number of key repeats to count as a long press for AirTurn pedals (def:20)
     keyRepeatTime                   int         The time set by the airTurn pedal (def:400)

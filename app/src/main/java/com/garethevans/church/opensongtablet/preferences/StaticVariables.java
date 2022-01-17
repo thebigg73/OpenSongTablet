@@ -11,7 +11,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
-import com.garethevans.church.opensongtablet.presenter.PresentationFragment;
 
 import java.util.ArrayList;
 
@@ -44,7 +43,6 @@ public class StaticVariables {
     public static ArrayList<String> songsInList = new ArrayList<>();
 
     public static PerformanceFragment performanceFragment;
-    public static PresentationFragment presentationFragment;
 
     // Set stuff
     public static String previousSongInSet = "";

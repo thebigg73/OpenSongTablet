@@ -32,9 +32,15 @@
                     android:text="@string/background" />
 
                 <RelativeLayout
-                    android:layout_width="128dp"
-                    android:layout_height="72dp"
-                    android:layout_marginStart="16dp">
+                    android:layout_width="136dp"
+                    android:layout_height="80dp"
+                    android:padding="4dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/colorAltSecondary">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary">
                 <ImageView
                     android:id="@+id/currentBackground"
                     android:layout_width="128dp"
@@ -54,6 +60,7 @@
                         android:enabled="false"
                         android:padding="0dp"
                         android:contentDescription="@string/media" />
+                </RelativeLayout>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -157,11 +164,27 @@
                     android:hint="@string/image_change"
                     android:text="@string/info_text_background" />
 
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:background="@color/colorAltSecondary">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary">
+                    <ImageView
+                        android:id="@+id/infoBackgroundColor"
+                        android:layout_width="128dp"
+                        android:layout_height="72dp"
+                        android:contentDescription="@string/info_text_background" />
                 <ImageView
                     android:id="@+id/currentInfoBackground"
                     android:layout_width="128dp"
                     android:layout_height="72dp"
                     android:contentDescription="@string/background" />
+                </RelativeLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
@@ -171,7 +194,14 @@
                 app:drawableC="@drawable/ic_format_align_center_white_36dp"
                 app:label="@string/song_alignment_information"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/hideInfoBar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/info_text_autohide"
+                android:hint="@string/info_text_autohide_info"
                 android:layout_marginBottom="16dp"/>
             <TableRow style="@style/DividerLine"/>
 
