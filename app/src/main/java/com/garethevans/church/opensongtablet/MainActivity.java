@@ -2626,6 +2626,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             case "setSongContent":
                                 secondaryDisplay.setSongContent();
                                 break;
+                            case "showSection":
+                                secondaryDisplay.showSection(getPresenterSettings().getCurrentSection());
+                                break;
 
                             // The alert bar
                             case "showAlert":

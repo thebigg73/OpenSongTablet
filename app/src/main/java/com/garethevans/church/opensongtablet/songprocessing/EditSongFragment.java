@@ -95,13 +95,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         }).attach();
     }
 
-    public void showSaveAllowed(boolean showSave) {
-        if (showSave) {
-            myView.saveChanges.setVisibility(View.VISIBLE);
-        } else {
-            myView.saveChanges.setVisibility(View.GONE);
-        }
-    }
 
     public void enableSwipe(boolean canSwipe) {
         Log.d(TAG,"canSwipe: "+canSwipe);

@@ -14,7 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:layout_margin="0dp"
+        android:padding="0dp">
 
         <RelativeLayout
             android:id="@+id/testLayout"
@@ -66,6 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/alertBar"
+            android:padding="0dp"
+            android:layout_margin="0dp"
             android:visibility="visible">
 
             <ImageView
@@ -113,13 +117,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentBottom="true">
+                android:layout_alignParentBottom="true"
+                android:padding="0dp"
+                android:layout_margin="0dp">
 
                 <com.garethevans.church.opensongtablet.customviews.SongProjectionInfo
                     android:id="@+id/songProjectionInfo1"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_margin="0dp"
                     android:gravity="center"
                     android:padding="0dp"
                     android:visibility="gone" />
@@ -128,7 +134,7 @@
                     android:id="@+id/songProjectionInfo2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_margin="0dp"
                     android:gravity="center"
                     android:padding="0dp"
                     android:visibility="gone" />
@@ -141,7 +147,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
+            android:layout_margin="0dp"
+            android:padding="0dp"
             android:visibility="gone" />
+
     </RelativeLayout>
 
     <ImageView

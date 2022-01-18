@@ -15,9 +15,11 @@ import com.google.android.material.textview.MaterialTextView;
 public class PresenterAlert extends MaterialTextView {
 
     private final String TAG = "PresenterAlert";
+    private int viewHeight = 0;
 
     public PresenterAlert(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
         super(context, attrs);
+        setPadding(0,0, 0,0);
     }
 
     public void updateAlertSettings(MainActivityInterface mainActivityInterface) {
@@ -67,4 +69,13 @@ public class PresenterAlert extends MaterialTextView {
         }
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        viewHeight = h;
+    }
+
+    public int getViewHeight() {
+        return viewHeight;
+    }
 }

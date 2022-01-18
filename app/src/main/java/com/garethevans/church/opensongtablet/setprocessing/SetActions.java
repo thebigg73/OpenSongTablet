@@ -193,8 +193,19 @@ public class SetActions {
         noKeySong.setKey("");
         String searchTextNoKeySpecified = getSongForSetWork(c,noKeySong);
 
-        int position = mainActivityInterface.getCurrentSet().getSetItems().indexOf(searchText);
-        int positionNoKey = mainActivityInterface.getCurrentSet().getSetItems().indexOf(searchTextNoKeySpecified);
+        int position = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchText);
+        int positionNoKey = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchTextNoKeySpecified);
+
+        // If we have a current set index position and it matches this song, use the existing position
+        int currentSetPosition = mainActivityInterface.getCurrentSet().getIndexSongInSet();
+        if (currentSetPosition>-1 && mainActivityInterface.getCurrentSet().getSetItems().size()>currentSetPosition) {
+            String currSetItem = mainActivityInterface.getCurrentSet().getSetItems().get(currentSetPosition);
+            if (currSetItem.equals(searchText)) {
+                position = currentSetPosition;
+            } else if (currSetItem.equals(searchTextNoKeySpecified)) {
+                positionNoKey = currentSetPosition;
+            }
+        }
 
         if (position>-1) {
             // If a key was specified in the set and it matches this song, go to that position in the set

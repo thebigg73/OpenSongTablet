@@ -57,6 +57,12 @@ public class SettingsFragment extends Fragment {
         // Set the listeners
         setListeners();
 
+        Log.d(TAG,"start: "+Gravity.START+"  center_horizontal: "+Gravity.CENTER_HORIZONTAL+"  end:"+Gravity.END);
+        Log.d(TAG,"top: "+Gravity.TOP+"  center_horizontal: "+Gravity.CENTER_VERTICAL+"  end:"+Gravity.BOTTOM);
+        Log.d(TAG,"presoLyricsAlign: "+mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"presoLyricsAlign",Gravity.CENTER_HORIZONTAL));
+        Log.d(TAG,"presoLyricsVAlign: "+mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL));
+        Log.d(TAG, "presentersettings align: "+mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()+"  valign: "+mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign());
+
         return myView.getRoot();
     }
 
@@ -139,7 +145,7 @@ public class SettingsFragment extends Fragment {
         myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
         myView.hideInfoBar.setChecked(mainActivityInterface.getPresenterSettings().getHideInfoBar());
 
-        myView.contentHorizontalAlign.setSliderPos(gravityToSliderPosition(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign())));
+        myView.contentHorizontalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()));
         myView.contentVerticalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()));
 
     }
@@ -210,6 +216,8 @@ public class SettingsFragment extends Fragment {
         }
     }
     private int sliderPositionToGravity(boolean vertical, int position) {
+
+
         switch (position) {
             case 0:
                 if (vertical) {
@@ -344,6 +352,7 @@ public class SettingsFragment extends Fragment {
                             "presoLyricsAlign",gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsAlign(gravity);
                     displayInterface.updateDisplay("setSongContent");
+                    displayInterface.updateDisplay("showSection");
                     break;
                 case "presoLyricsVAlign":
                     // The slider goes from 0 to 2.  We need to look up the gravity
@@ -352,6 +361,7 @@ public class SettingsFragment extends Fragment {
                             "presoLyricsVAlign",gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsVAlign(gravity);
                     displayInterface.updateDisplay("setSongContent");
+                    displayInterface.updateDisplay("showSection");
                     break;
             }
         }

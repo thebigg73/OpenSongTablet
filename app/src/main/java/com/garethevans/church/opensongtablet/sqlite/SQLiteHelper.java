@@ -28,7 +28,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
 
         // Create tables again
         onCreate(db);
@@ -49,7 +49,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         // This drops the table if it exists (wipes it ready to start again)
         if (db!=null) {
             try {
-                db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME);
+                db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
             } catch (OutOfMemoryError | Exception e) {
                 e.printStackTrace();
             }

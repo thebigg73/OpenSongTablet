@@ -68,7 +68,15 @@ public class SongSectionsFragment extends Fragment {
             myView.songInfo.setSongCopyright(mainActivityInterface.getSong().getCopyright());
             songSectionsAdapter.setSelectedPosition(-1);
             songSectionsAdapter.buildSongSections();
+            myView.songInfo.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);
+                    return false;
+                }
+            });
         }
+
     }
 
     // From edited content via TextInputBottomSheet

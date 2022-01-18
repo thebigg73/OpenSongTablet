@@ -218,14 +218,10 @@
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/contentVerticalAlign"
                 app:drawableL="@drawable/ic_format_vertical_align_top_white_36dp"
-                app:drawableR="@drawable/ic_format_vertical_align_center_white_36dp"
-                app:drawableC="@drawable/ic_format_vertical_align_bottom_white_36dp"
+                app:drawableC="@drawable/ic_format_vertical_align_center_white_36dp"
+                app:drawableR="@drawable/ic_format_vertical_align_bottom_white_36dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-
-
-
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

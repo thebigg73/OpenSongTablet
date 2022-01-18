@@ -41,6 +41,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db2, int oldVersion, int newVersion) {
         // Do nothing here as we manually update the table to match
+        db2.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
     }
     public void initialise(Context c, MainActivityInterface mainActivityInterface) {
         // If the database doesn't exist, create it
@@ -135,4 +136,6 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     // TODO Flush entries that aren't in the filesystem, or alert the user to issues (perhaps asking to update the entry?
 
+
+    // TODO Allow user to backup this database.  After opening, copy to the OpenSong/ folder (out of the system storage)?
 }

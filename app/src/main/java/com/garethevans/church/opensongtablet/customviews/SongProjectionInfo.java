@@ -22,6 +22,7 @@ public class SongProjectionInfo extends LinearLayout {
     private final TextView songTitle, songAuthor, songCopyright;
     private final ImageView miniLogo;
     private final String TAG = "SongProjectionInfo";
+    private int viewHeight = 0;
 
     public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -118,6 +119,16 @@ public class SongProjectionInfo extends LinearLayout {
         songTitle.setGravity(align);
         songAuthor.setGravity(align);
         songCopyright.setGravity(align);
+    }
+
+    @Override
+    protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld){
+        super.onSizeChanged(xNew, yNew, xOld, yOld);
+        viewHeight = yNew;
+    }
+
+    public int getViewHeight() {
+        return viewHeight;
     }
 
 }

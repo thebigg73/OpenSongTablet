@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -106,8 +107,9 @@ public class SecondaryDisplay extends Presentation {
 
         // Now we can test the song layout and measure what we need
         // Once this is done in the next function, the viewTreeObserver notifies the next steps
-
         setScreenSizes();
+
+
     }
 
     // Initialise views and settings
@@ -394,6 +396,7 @@ public class SecondaryDisplay extends Presentation {
                 0f, mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha());
     }
 
+
     // The logo
     public void changeLogo() {
         // There may have been an update to the user's logo.  Called from change Background in this
@@ -624,9 +627,6 @@ public class SecondaryDisplay extends Presentation {
     }
     public void showSection(final int position) {
         // Decide which view to show to
-
-        Log.d(TAG,"showSection(): position="+position);
-
         // Check the view isn't already attached to a parent
         if (position>=0 && position<mainActivityInterface.getSectionViews().size()) {
             if (mainActivityInterface.getSectionViews().get(position).getParent() != null) {
@@ -643,8 +643,17 @@ public class SecondaryDisplay extends Presentation {
                     int width = mainActivityInterface.getSectionViews().get(position).getMeasuredWidth();
                     int height = mainActivityInterface.getSectionViews().get(position).getMeasuredHeight();
 
+                    // Get the measured height of the song info bar
+                    int infoHeight;
+                    if (showWhichInfo<2) {
+                        infoHeight = myView.songProjectionInfo1.getViewHeight();
+                    } else {
+                        infoHeight = myView.songProjectionInfo2.getViewHeight();
+                    }
+                    int alertHeight = myView.alertBar.getViewHeight();
+
                     float max_x = (float) availableScreenWidth / (float) width;
-                    float max_y = (float) availableScreenHeight / (float) height;
+                    float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
 
                     float best = Math.min(max_x, max_y);
                     if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f)) {
@@ -655,6 +664,7 @@ public class SecondaryDisplay extends Presentation {
                     mainActivityInterface.getSectionViews().get(position).setPivotY(0f);
                     mainActivityInterface.getSectionViews().get(position).setScaleX(best);
                     mainActivityInterface.getSectionViews().get(position).setScaleY(best);
+
                     // Remove from the test layout
                     myView.testLayout.removeAllViews();
 
@@ -665,6 +675,11 @@ public class SecondaryDisplay extends Presentation {
                     // and the blank screen isn't on
                     Log.d(TAG,"showWhich="+showWhich+"  canShowSong()="+canShowSong());
                     removeViewFromParent(mainActivityInterface.getSectionViews().get(position));
+
+                    // Translate the scaled views based on the alignment
+                    int newWidth = (int)(width * best);
+                    int newHeight = (int)(height * best);
+                    translateView(mainActivityInterface.getSectionViews().get(position), newWidth, newHeight, infoHeight, alertHeight);
 
                     if (showWhich < 2) {
                         myView.songContent1.removeAllViews();
@@ -742,6 +757,41 @@ public class SecondaryDisplay extends Presentation {
             } else if (name.contains("LinearLayout")) {
                 ((LinearLayout) view.getParent()).removeAllViews();
             }
+        }
+    }
+    private void translateView(View view, int newWidth, int newHeight, int infoHeight, int alertHeight) {
+        Log.d(TAG,"infoHeight="+infoHeight+"  alertHeight="+alertHeight);
+        switch (mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()) {
+            case Gravity.START:
+            case Gravity.LEFT:
+                Log.d(TAG,"Start");
+                view.setTranslationX(0);
+                break;
+            case Gravity.END:
+            case Gravity.RIGHT:
+                Log.d(TAG,"End");
+                view.setTranslationX(availableScreenWidth-newWidth);
+                break;
+            case Gravity.CENTER:
+            case Gravity.CENTER_HORIZONTAL:
+                Log.d(TAG,"Center horizontal");
+                view.setTranslationX((int)((availableScreenWidth-newWidth)/2f));
+                break;
+        }
+        switch (mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()) {
+            case Gravity.TOP:
+                Log.d(TAG,"Top");
+                view.setTranslationY(0);
+                break;
+            case Gravity.BOTTOM:
+                Log.d(TAG,"Bottom");
+                view.setTranslationY(availableScreenHeight-infoHeight-alertHeight-newHeight);
+                break;
+            case Gravity.CENTER_VERTICAL:
+            case Gravity.CENTER:
+                Log.d(TAG,"Center vertical");
+                view.setTranslationY((int)((availableScreenHeight-infoHeight-alertHeight-newHeight)/2f));
+                break;
         }
     }
 

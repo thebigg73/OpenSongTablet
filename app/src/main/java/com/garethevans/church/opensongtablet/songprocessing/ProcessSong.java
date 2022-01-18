@@ -46,12 +46,13 @@ import java.util.Locale;
 public class ProcessSong {
 
     // The variables used for repeated song processing
+    // TODO If the user updates these in the app, check they get updated here as well as the saved preferences!
     private final String TAG = "ProcessSong";
     private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
             displayCapoChords, displayCapoAndNativeChords, displayChords, displayLyrics,
             highlightChords, highlightHeadings, songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
             songAutoScaleOverrideWidth, trimLines, trimSections;
-    private float blockShadowAlpha, fontSize, fontSizeMax, fontSizeMin, fontSizePreso, fontSizePresoMax,
+    private float fontSize, fontSizeMax, fontSizeMin, fontSizePreso, fontSizePresoMax,
             lineSpacing, scaleHeadings, scaleChords, scaleComments;
     private String songAutoScale;
 
@@ -74,7 +75,6 @@ public class ProcessSong {
         trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"trimLines",true);
         trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"trimSections",true);
 
-        blockShadowAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "blockShadowAlpha", 0.7f);
         fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSize", 20f);
         fontSizeMax = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizeMax", 50f);
         fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizeMin", 8f);
@@ -811,6 +811,7 @@ public class ProcessSong {
                                    String string, int lyricColor, int chordColor,
                                    int highlightChordColor, boolean presentation) {
         TableLayout tableLayout = newTableLayout(c);
+
         // Split the group into lines
         String[] lines = string.split("____groupline____");
 
@@ -853,6 +854,9 @@ public class ProcessSong {
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
         for (int t = 0; t < lines.length; t++) {
             TableRow tableRow = newTableRow(c);
+            if (presentation) {
+                tableRow.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
+            }
             linetype = getLineType(lines[t]);
 
             // IV - Add back a quirk of the older layout engine that rendered a comment line following a chord line as a lyric line;
@@ -1208,10 +1212,13 @@ public class ProcessSong {
             if (trimSections) {
                 section = section.trim();
             }
-            if (addSectionSpace && sect != (sections.length - 1)) { // Don't do for last section
+            if (!presentation && addSectionSpace && sect != (sections.length - 1)) { // Don't do for last section
                 section = section + "\n ";
             }
             LinearLayout linearLayout = newLinearLayout(c); // transparent color
+            if (presentation) {
+                linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
+            }
 
             // Add this section to the array (so it can be called later for presentation)
             songSections.add(section.replace("____groupline____","\n"));
@@ -1221,6 +1228,10 @@ public class ProcessSong {
             for (String line : lines) {
                 // Get the text stylings
                 String linetype = getLineType(line);
+                if (presentation && linetype.equals("heading")) {
+                    // Don't need this for the presentation view
+                    line = "";
+                }
                 if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
                     backgroundColor = getBGColor(c, mainActivityInterface, line);
                 }
@@ -1251,7 +1262,7 @@ public class ProcessSong {
                         linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
                                 size, textColor, Color.TRANSPARENT, Color.TRANSPARENT));
 
-                    } else {
+                    } else if (!presentation || !line.isEmpty()) {
                         linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
                                 size, textColor,
                                 mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
