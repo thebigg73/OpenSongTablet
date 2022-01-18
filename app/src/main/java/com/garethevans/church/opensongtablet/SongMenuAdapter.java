@@ -145,6 +145,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 // Get the values for this song
                 final SongMenuViewItems song = songList.get(position);
                 final String item_filename = song.getFilename();
+                final String whichSongFolder = StaticVariables.whichSongFolder;
                 String item_author = song.getAuthor();
                 String item_key = song.getKey();
                 String temp_title;
@@ -245,16 +246,24 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                     // IV - Consume the click - Do nothing
                     });
 
-                    viewHolder.lblListCheck.setOnClickListener(v -> {
+                   viewHolder.lblListCheck.setOnClickListener(v -> {
                         int position1 = (Integer) v.getTag();
                         // Create the text to add to the set (sets FullscreenActivity.whatsongforsetwork
-                        convertSongToSetItemText(c, item_filename);
+                        String whatsongforsetwork;
+
+                        // Set the appropriate song filename
+                        if (whichSongFolder.equals(c.getString(R.string.mainfoldername)) || whichSongFolder.equals("MAIN") ||
+                                whichSongFolder.equals("")) {
+                            whatsongforsetwork = "$**_" + item_filename + "_**$";
+                        } else {
+                            whatsongforsetwork = "$**_" + whichSongFolder + "/" + item_filename + "_**$";
+                        }
 
                         // If it was checked already, uncheck it and remove it from the set
                         if (songList.get(position1).getInSet()) {
                             viewHolder.isTicked = false;
                             songList.get(position1).setInSet(false);
-                            String val = preferences.getMyPreferenceString(c,"setCurrent","").replace(StaticVariables.whatsongforsetwork,"");
+                            String val = preferences.getMyPreferenceString(c,"setCurrent","").replace(whatsongforsetwork,"");
                             preferences.setMyPreferenceString(c,"setCurrent",val);
                             SetActions setActions = new SetActions();
                             setActions.prepareSetList(c,preferences);
@@ -287,15 +296,15 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                                 if (preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
                                     // Now we need to get the song info quickly to log it correctly
                                     // as this might not be the song loaded
-                                    String[] vals = LoadXML.getCCLILogInfo(c, preferences, StaticVariables.whichSongFolder, item_filename);
+                                    String[] vals = LoadXML.getCCLILogInfo(c, preferences, whichSongFolder, item_filename);
                                     if (vals.length == 4 && vals[0] != null && vals[1] != null && vals[2] != null && vals[3] != null) {
-                                        PopUpCCLIFragment.addUsageEntryToLog(c, preferences, StaticVariables.whichSongFolder + "/" + item_filename,
+                                        PopUpCCLIFragment.addUsageEntryToLog(c, preferences, whichSongFolder + "/" + item_filename,
                                                 vals[0], vals[1], vals[2], vals[3], "6"); // Printed
                                     }
                                 }
 
                                 // Add the song
-                                String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
+                                String val = preferences.getMyPreferenceString(c,"setCurrent","") + whatsongforsetwork;
                                 preferences.setMyPreferenceString(c,"setCurrent",val);
                                 SetActions setActions = new SetActions();
                                 setActions.prepareSetList(c,preferences);
@@ -338,16 +347,6 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
         filename = filename.toLowerCase(StaticVariables.locale);
 
         return filename.endsWith(".doc") || filename.endsWith(".docx");
-    }
-
-    private void convertSongToSetItemText(Context c, String filename) {
-        // Set the appropriate song filename
-        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
-                StaticVariables.whichSongFolder.equals("")) {
-            StaticVariables.whatsongforsetwork = "$**_" + filename + "_**$";
-        } else {
-            StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/" + filename + "_**$";
-        }
     }
 
     public int getPositionForSection(int section) {

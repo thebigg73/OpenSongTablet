@@ -93,11 +93,6 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
         final int item = getitemnum;
         setitemViewHolder.vCard.setOnClickListener(v -> {
             StaticVariables.songfilename = songname;
-            if (songfolder.equals(c.getString(R.string.mainfoldername)) || songfolder.equals("MAIN") || songfolder.equals("")) {
-                StaticVariables.whatsongforsetwork = "$**_" + songname + "_**$";
-            } else {
-                StaticVariables.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
-            }
             StaticVariables.whichSongFolder = songfolder;
             StaticVariables.indexSongInSet = item;
             StaticVariables.nextSongInSet = "";

@@ -95,7 +95,6 @@ public class PopUpSetViewNew extends DialogFragment {
         // Fix the song name and folder for loading
         StaticVariables.songfilename = storageAccess.safeFilename(newsongname.toString());
         StaticVariables.whichSongFolder = "../Variations";
-        StaticVariables.whatsongforsetwork = "\"$**_**" + c.getResources().getString(R.string.variation) + "/" + storageAccess.safeFilename(newsongname.toString()) + "_**$";
 
         // Replace the set item with the variation
         StaticVariables.mSetList[StaticVariables.indexSongInSet] = "**" + c.getResources().getString(R.string.variation) + "/" + storageAccess.safeFilename(newsongname.toString());
@@ -183,11 +182,11 @@ public class PopUpSetViewNew extends DialogFragment {
             StaticVariables.mTempSetList = new ArrayList<>();
         }
         for (int z = 0; z < StaticVariables.mTempSetList.size(); z++) {
-            tempItem = StaticVariables.mTempSetList.get(z);
+            // IV - Use displayed info as is in the desired order
+            tempItem = mFolderName.get(z) + "/" + mSongName.get(z);
             tempmySet.append("$**_").append(tempItem).append("_**$");
         }
         preferences.setMyPreferenceString(getContext(),"setCurrent",tempmySet.toString());
-        StaticVariables.mTempSetList = null;
         setActions.prepareSetList(getContext(),preferences);
         StaticVariables.myToastMessage = getString(R.string.currentset) +
                 " - " + getString(R.string.ok);
@@ -307,7 +306,9 @@ public class PopUpSetViewNew extends DialogFragment {
             Log.d("d", "We've shuffled the set list");
         } else {
             StaticVariables.mTempSetList = new ArrayList<>();
-            StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
+            if (StaticVariables.mSetList != null) {
+                StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
+            }
         }
 
         extractSongsAndFolders();

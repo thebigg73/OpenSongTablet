@@ -295,6 +295,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         buttonInTransition = false;
     };
 
+    private final Handler fixSetHandler = new Handler();
+    private final Runnable fixSetRunnable = () -> {
+        setupSetButtons();
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -851,7 +856,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         FullscreenActivity.whattodo = "songlongpress";
         StaticVariables.songfilename = clickedfile;
         StaticVariables.whichSongFolder = clickedfolder;
-        // Short click the song as well!
+        // Short click the song as well!  Required for fragment actions to work
         songShortClick(clickedfile,clickedfolder,i);
         openFragment();
     }
@@ -871,11 +876,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void songLongClick() {
-        // Rebuild the set list as we've just added a song
-        setActions.prepareSetList(PresenterMode.this,preferences);
         prepareOptionMenu();
         fixSet();
-        closeMyDrawers("song");
     }
     @Override
     public void prepareOptionMenu() {
@@ -1336,7 +1338,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
     private void setupSetButtons() {
-        // Create a new button for each song in the Set
+        // Create a new button for each song in the Set, index and refresh nav buttons
         setActions.prepareSetList(PresenterMode.this,preferences);
         presenter_set_buttonsListView.removeAllViews();
         try {
@@ -1348,9 +1350,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     presenter_set_buttonsListView.addView(newSetButton);
                 }
             }
+            // Index the current song
+            setActions.indexSongInSet();
+            if (StaticVariables.indexSongInSet > -1) {
+                // Change the background colour of indexed button to show it is active
+                processSong.highlightPresenterSetButton((Button) presenter_set_buttonsListView.getChildAt(StaticVariables.indexSongInSet));
+                StaticVariables.setView = true;
+            } else {
+                StaticVariables.setView = false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Refresh the navigtion buttons
+        fixNavButtons();
     }
     private class SetButtonClickListener implements View.OnClickListener {
         int which = 0;
@@ -1387,7 +1400,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Identify our new position in the set
             StaticVariables.indexSongInSet = which;
             if (StaticVariables.mSetList != null && StaticVariables.mSetList.length > which) {
-                StaticVariables.whatsongforsetwork = StaticVariables.mSetList[which];
                 FullscreenActivity.linkclicked = StaticVariables.mSetList[which];
                 if (which < 1) {
                     StaticVariables.previousSongInSet = "";
@@ -2239,9 +2251,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void fixSet() {
-        closeMyDrawers("song");
-        setupSetButtons();
+        // Prevent multiple running calls
+        fixSetHandler.removeCallbacks(fixSetRunnable);
+        fixSetHandler.postDelayed(fixSetRunnable, 100);
     }
+
     @Override
     public void callIntent(String what, Intent i) {
         switch (what) {
@@ -2526,7 +2540,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void shuffleSongsInSet() {
-        setActions.indexSongInSet();
         fixSet();
         newFragment = PopUpSetViewNew.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -2674,12 +2687,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         showToastMessage("\"" + tempSong + "\" "
                 + getResources().getString(R.string.removedfromset));
 
-        //Check to see if our set list is still valid
-        setActions.prepareSetList(PresenterMode.this,preferences);
         prepareOptionMenu();
         fixSet();
-
-        closeMyDrawers("option");
     }
     @Override
     public void changePDFPage(int page, String direction) {
@@ -2836,11 +2845,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_set_buttonsListView.removeAllViews();
         presenter_song_buttonsListView.removeAllViews();
         presenter_lyrics.setText("");
-        setupSetButtons();
-
-        prepareOptionMenu();
         prepareSongMenu();
         setupPageButtons();
+        prepareOptionMenu();
+        fixSet();
 
         // IV - Update second screen theme
         if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
@@ -3007,7 +3015,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Vibrate to let the user know something happened
                     DoVibrate.vibrate(PresenterMode.this, 50);
 
-                    //invalidateOptionsMenu();
                     prepareOptionMenu();
                     fixSet();
                     closeMyDrawers("option_delayed");
@@ -3493,11 +3500,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Get the current orientation
                     FullscreenActivity.mScreenOrientation = getResources().getConfiguration().orientation;
 
-                    setActions.indexSongInSet();
-                    if (!StaticVariables.setView) {
-                        // Unhighlight the set buttons
-                        unhighlightAllSetButtons();
-                    }
+                    // Handle the current set
+                    StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(PresenterMode.this);
+                    fixSet();
+
                     showCorrectViews();
 
                     // IV - Consume any later pending client section change received from Host (-ve value)
@@ -3702,7 +3708,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 if (!cancelled) {
                     // Get the next set positions and song
                     FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
                     StaticVariables.setMoveDirection = ""; // Expects back or forward for Stage/Performance, but not here
                     setActions.doMoveInSet(PresenterMode.this, preferences);
 

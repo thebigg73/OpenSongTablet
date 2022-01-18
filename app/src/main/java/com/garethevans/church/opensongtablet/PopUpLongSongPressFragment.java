@@ -27,6 +27,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         void openFragment();
         void shareSong();
         void songLongClick();
+        void prepareSongMenu();
     }
 
     private MyInterface mListener;
@@ -89,25 +90,15 @@ public class PopUpLongSongPressFragment extends DialogFragment {
                 }
             }
 
-            // Set the appropriate song filename
-            if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
-                    StaticVariables.whichSongFolder.equals("MAIN") ||
-                    StaticVariables.whichSongFolder.equals("")) {
-                StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
-            } else {
-                StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "_**$";
-            }
-
-            // Allow the song to be added, even if it is already there
+            // Add to end of set
             String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
             preferences.setMyPreferenceString(c,"setCurrent",val);
-
+            // Tell the user that the song has been added.
             // For a received song (which is about to become a variation) use the stored received song filename
             if (StaticVariables.songfilename.equals("ReceivedSong")) {
                 StaticVariables.myToastMessage = "\"" + StaticVariables.receivedSongfilename + "\" " +
                         c.getResources().getString(R.string.addedtoset);
             } else {
-                // Tell the user that the song has been added.
                 StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" " +
                         c.getResources().getString(R.string.addedtoset);
             }
@@ -200,5 +191,12 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
+    }
+    @Override
+    public void onDismiss(@NonNull final DialogInterface dialog) {
+        // IV - Update the song menu
+        if (mListener!=null) {
+            mListener.prepareSongMenu();
+        }
     }
 }
