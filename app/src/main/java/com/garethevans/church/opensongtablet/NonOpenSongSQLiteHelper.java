@@ -41,7 +41,7 @@ class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + NonOpenSongSQLite.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + NonOpenSongSQLite.TABLE_NAME + ";");
 
         // Create tables again
         onCreate(db);
@@ -132,7 +132,7 @@ class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             try {
                 if (db != null) {
                     db.insert(NonOpenSongSQLite.TABLE_NAME, null, values);
-                    db.close();
+                    closeAndCopyDBToStorage(c, storageAccess, preferences, db);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -179,6 +179,7 @@ class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
             if (db != null) {
                 db.update(NonOpenSongSQLite.TABLE_NAME, values, NonOpenSongSQLite.COLUMN_ID + "=?", new String[]{String.valueOf(sqLite.getId())});
+                closeAndCopyDBToStorage(c, storageAccess, preferences, db);
             }
 
         } catch (Exception e) {
@@ -320,6 +321,7 @@ class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             if (db!=null) {
                 db.delete(NonOpenSongSQLite.TABLE_NAME, NonOpenSongSQLite.COLUMN_SONGID + " = ?",
                         new String[]{String.valueOf(escapedSQL(songId))});
+                closeAndCopyDBToStorage(c, storageAccess, preferences, db);
             }
         }
     }
