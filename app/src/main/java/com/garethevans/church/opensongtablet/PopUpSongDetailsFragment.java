@@ -83,9 +83,6 @@ public class PopUpSongDetailsFragment extends DialogFragment {
             mListener.doEdit();
             dismiss();
         });
-        TextView t_mAuthor = V.findViewById(R.id.t_mAuthor);
-        TextView t_mKey = V.findViewById(R.id.t_mKey);
-        TextView t_mCopyright = V.findViewById(R.id.t_mCopyright);
         TextView t_mPresentation = V.findViewById(R.id.t_mPresentation);
         TextView t_mHymnNumber = V.findViewById(R.id.t_mHymnNumber);
         TextView t_mCCLI = V.findViewById(R.id.t_mCCLI);
@@ -101,23 +98,51 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         TextView v_mNotes = V.findViewById(R.id.v_mNotes);
         TextView v_mLyrics = V.findViewById(R.id.v_mLyrics);
 
-        String k = processSong.getSongKey();
-        // Fix the key text
-        k = k.replace(" (","");
-        k = k.replace(")","");
+        // IV - Try to generate a capo/key/tempo/time line
+        StringBuilder songInformation = new StringBuilder();
+        String sprefix = "";
 
-        // Get the capo key if it exitst
-        String ck = processSong.getCapoInfo(getContext(), preferences);
-        if (!ck.equals("")) {
-            ck = " (" + getString(R.string.edit_song_capo) + " " + ck + ")";
-            k += ck;
+        if (!StaticVariables.mCapo.equals("") && !StaticVariables.mCapo.equals("0")) {
+            // If we are using a capo, add the capo display
+
+            songInformation.append(sprefix).append("Capo: ");
+            sprefix = " | ";
+            int mcapo;
+            try {
+                mcapo = Integer.parseInt("0" + StaticVariables.mCapo);
+            } catch (Exception e) {
+                mcapo = -1;
+            }
+            if ((mcapo > 0) && (preferences.getMyPreferenceBoolean(getContext(), "capoInfoAsNumerals", false))) {
+                songInformation.append(numberToNumeral(mcapo));
+            } else {
+                songInformation.append("").append(mcapo);
+            }
+
+            Transpose transpose = new Transpose();
+            if (!StaticVariables.mKey.equals("")) {
+                songInformation.append(" (").append(transpose.capoTranspose(getContext(), preferences, StaticVariables.mKey)).append(")");
+            }
+        }
+
+        if (!StaticVariables.mKey.equals("")) {
+            songInformation.append(sprefix).append(getContext().getResources().getString(R.string.edit_song_key)).append(": ").append(StaticVariables.mKey);
+            sprefix = " | ";
+        }
+        if (!StaticVariables.mTempo.equals("")) {
+            songInformation.append(sprefix).append(getContext().getResources().getString(R.string.edit_song_tempo)).append(": ").append(StaticVariables.mTempo);
+            sprefix = " | ";
+        }
+        if (!StaticVariables.mTimeSig.equals("")) {
+            songInformation.append(sprefix).append(getContext().getResources().getString(R.string.edit_song_timesig)).append(": ").append(StaticVariables.mTimeSig);
+            sprefix = " | ";
         }
 
         // Decide what should or should be shown
         v_mTitle.setText(StaticVariables.mTitle);
-        setContentInfo(t_mAuthor,v_mAuthor, StaticVariables.mAuthor);
-        setContentInfo(t_mKey,v_mKey, k);
-        setContentInfo(t_mCopyright,v_mCopyright, StaticVariables.mCopyright);
+        setContentInfo(null,v_mAuthor, StaticVariables.mAuthor);
+        setContentInfo(null,v_mCopyright, StaticVariables.mCopyright);
+        setContentInfo(null,v_mKey, songInformation.toString());
         setContentInfo(t_mCCLI,v_mCCLI, StaticVariables.mCCLI);
         setContentInfo(t_mPresentation,v_mPresentation, StaticVariables.mPresentation);
         setContentInfo(t_mHymnNumber,v_mHymnNumber, StaticVariables.mHymnNumber);
@@ -139,17 +164,67 @@ public class PopUpSongDetailsFragment extends DialogFragment {
 
     private void setContentInfo(TextView tv_t, TextView tv_v, String s) {
         if (s!=null && !s.equals("")) {
-            tv_t.setVisibility(View.VISIBLE);
+            if (tv_t != null) {
+                tv_t.setVisibility(View.VISIBLE);
+            }
             tv_v.setVisibility(View.VISIBLE);
             tv_v.setText(s);
         } else {
-            tv_t.setVisibility(View.GONE);
+            if (tv_t != null) {
+                tv_t.setVisibility(View.GONE);
+            }
             tv_v.setVisibility(View.GONE);
         }
     }
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
+    }
+
+    private String numberToNumeral(int num) {
+        String s;
+        switch (num) {
+            default:
+                s = "";
+                break;
+            case 1:
+                s = "I";
+                break;
+            case 2:
+                s = "II";
+                break;
+            case 3:
+                s = "III";
+                break;
+            case 4:
+                s = "IV";
+                break;
+            case 5:
+                s = "V";
+                break;
+            case 6:
+                s = "VI";
+                break;
+            case 7:
+                s = "VII";
+                break;
+            case 8:
+                s = "VIII";
+                break;
+            case 9:
+                s = "IX";
+                break;
+            case 10:
+                s = "X";
+                break;
+            case 11:
+                s = "XI";
+                break;
+            case 12:
+                s = "XII";
+                break;
+        }
+        return s;
     }
 
 }

@@ -33,35 +33,27 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_title" />
+                android:text="@string/title" />
 
             <TextView
                 android:id="@+id/v_mTitle"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-
-            <TextView
-                android:id="@+id/t_mAuthor"
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_song_author" />
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/v_mAuthor"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
+                android:layout_height="wrap_content" />
+
 
             <TextView
-                android:id="@+id/t_mKey"
-                style="@style/MyHeadingText"
+                android:id="@+id/v_mCopyright"
+                style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_song_key" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/v_mKey"
@@ -71,14 +63,14 @@
                 android:layout_marginBottom="16dp" />
 
             <TextView
-                android:id="@+id/t_mCopyright"
+                android:id="@+id/t_mNotes"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_copyright" />
+                android:text="@string/stickynotes" />
 
             <TextView
-                android:id="@+id/v_mCopyright"
+                android:id="@+id/v_mNotes"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,20 +113,6 @@
 
             <TextView
                 android:id="@+id/v_mHymnNumber"
-                style="@style/MyInfoText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-
-            <TextView
-                android:id="@+id/t_mNotes"
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/stickynotes" />
-
-            <TextView
-                android:id="@+id/v_mNotes"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
