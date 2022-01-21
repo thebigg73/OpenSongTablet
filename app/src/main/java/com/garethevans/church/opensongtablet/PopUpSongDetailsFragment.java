@@ -138,10 +138,15 @@ public class PopUpSongDetailsFragment extends DialogFragment {
             sprefix = " | ";
         }
 
+        String copyright = "";
+        if (!StaticVariables.mCopyright.equals("")) {
+            copyright = "© " + StaticVariables.mCopyright;
+        }
+
         // Decide what should or should be shown
         v_mTitle.setText(StaticVariables.mTitle);
         setContentInfo(null,v_mAuthor, StaticVariables.mAuthor);
-        setContentInfo(null,v_mCopyright, StaticVariables.mCopyright);
+        setContentInfo(null,v_mCopyright, copyright);
         setContentInfo(null,v_mKey, songInformation.toString());
         setContentInfo(t_mCCLI,v_mCCLI, StaticVariables.mCCLI);
         setContentInfo(t_mPresentation,v_mPresentation, StaticVariables.mPresentation);
