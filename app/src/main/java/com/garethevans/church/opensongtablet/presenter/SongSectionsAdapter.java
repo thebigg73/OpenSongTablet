@@ -24,12 +24,12 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private ArrayList<SongSectionInfo> songSections;
-    private final SongSectionsFragment fragment;
+    private final PresenterFragment fragment;
     private final String TAG = "SongSetionsAdapter";
     private final int onColor, offColor;
-    private int selectedPosition = -1, sectionEdited = -1;
+    private int sectionEdited = -1;
 
-    SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface, SongSectionsFragment fragment,
+    SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface, PresenterFragment fragment,
                         DisplayInterface displayInterface) {
         this.c = c;
         this.mainActivityInterface = mainActivityInterface;
@@ -112,7 +112,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         String heading = si.heading;
         String content = si.content;
         int section = si.position;
-        if (position == selectedPosition) {
+        if (position == mainActivityInterface.getPresenterSettings().getCurrentSection()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 holder.item.setBackgroundTintList(ColorStateList.valueOf(onColor));
                 holder.edit.setBackgroundTintList(ColorStateList.valueOf(offColor));
@@ -181,14 +181,17 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
 
     @Override
     public int getItemCount() {
-        return songSections.size();
+        if (songSections==null) {
+            return 0;
+        } else {
+            return songSections.size();
+        }
     }
 
     private void itemSelected(int thisPos) {
-        notifyItemChanged(selectedPosition);
+        notifyItemChanged(mainActivityInterface.getPresenterSettings().getCurrentSection());
         notifyItemChanged(thisPos);
-        selectedPosition = thisPos;
-
+        mainActivityInterface.getPresenterSettings().setCurrentSection(thisPos);
         displayInterface.presenterShowSection(thisPos);
     }
 
@@ -215,9 +218,9 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     }
 
     public int getSelectedPosition() {
-        return selectedPosition;
+        return mainActivityInterface.getPresenterSettings().getCurrentSection();
     }
     public void setSelectedPosition(int selectedPosition) {
-        this.selectedPosition = selectedPosition;
+        mainActivityInterface.getPresenterSettings().setCurrentSection(selectedPosition);
     }
 }

@@ -466,7 +466,7 @@ public class Preferences extends Activity {
     trimLines                       boolean     Should the lines be trimmed (using the lineSpacing) value (def:false)
     uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent) (def:"")
     uriTreeHome                     String      A string representation of the user home location (The OpenSong folder) (def:"")
-    usePresentationOrder            boolean     Should the song be parsed into the specified presentation order
+    usePresentationOrder            boolean     Should the song be parsed into the specified presentation order (def:false)
     whichSetCategory                String      Which set category are we browsing (category___setname) (def:c.getString(R.string.mainfoldername))
     whichMode                       String      Which app mode - Stage, Performance, Presentation (def:Performance)
     whichSongFolder                 String      The song folder we are currently in (def:c.getString(R.string.mainfoldername))

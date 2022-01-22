@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.secondarydisplay;
 // Clicking on the first section crossfades with a blank view?
 // Clicking on a section when logo is on shouldn't start the timer, but a logo off with content should
 
+import android.annotation.SuppressLint;
 import android.app.Presentation;
 import android.content.Context;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -66,7 +68,7 @@ public class SecondaryDisplay extends Presentation {
 
     private boolean firstRun = true, waitForVideo, forceCastUpdate, infoBarChangeRequired,
             infoBarRequiredTime=false, infoBarRequireInitial=true, trimLines, trimSections,
-            addSectionSpace, boldChordHeading, displayChords;
+            addSectionSpace, boldChordHeading, displayChords, invertXY;
 
     MediaPlayer mediaPlayer1=new MediaPlayer(), mediaPlayer2=new MediaPlayer();
     View backgroundToFadeIn, backgroundToFadeOut;
@@ -92,6 +94,9 @@ public class SecondaryDisplay extends Presentation {
         myView = CastScreenBinding.inflate(getLayoutInflater(),null,false);
         setContentView(myView.getRoot());
 
+        invertXY = mainActivityInterface.getPresenterSettings().getCastRotation()==90f ||
+                mainActivityInterface.getPresenterSettings().getCastRotation()==270f;
+
         // Initialise the video surfaces
         initialiseVideoSurfaces();
 
@@ -108,8 +113,6 @@ public class SecondaryDisplay extends Presentation {
         // Now we can test the song layout and measure what we need
         // Once this is done in the next function, the viewTreeObserver notifies the next steps
         setScreenSizes();
-
-
     }
 
     // Initialise views and settings
@@ -132,6 +135,8 @@ public class SecondaryDisplay extends Presentation {
         setViewAlreadyFadedOut(myView.allContent);
         setViewAlreadyFadedOut(myView.backgroundImage1);
         setViewAlreadyFadedOut(myView.backgroundImage2);
+        setViewAlreadyFadedOut(myView.songContent1);
+        setViewAlreadyFadedOut(myView.songContent2);
         setViewAlreadyFadedOut(myView.textureView1);
         setViewAlreadyFadedOut(myView.textureView1);
         setViewAlreadyFadedOut(myView.mainLogo);
@@ -197,10 +202,9 @@ public class SecondaryDisplay extends Presentation {
     public void changeRotation() {
         DisplayMetrics metrics = new DisplayMetrics();
         display.getRealMetrics(metrics);
-        myView.pageHolder.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
-        myView.mainLogo.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
-        if (mainActivityInterface.getPresenterSettings().getCastRotation() == 90.0f ||
-                mainActivityInterface.getPresenterSettings().getCastRotation() == 270.0f) {
+        invertXY = mainActivityInterface.getPresenterSettings().getCastRotation() == 90.0f ||
+                mainActivityInterface.getPresenterSettings().getCastRotation() == 270.0f;
+        if (invertXY) {
             // Switch width for height and vice versa
             horizontalSize = metrics.heightPixels;
             verticalSize = metrics.widthPixels;
@@ -208,10 +212,39 @@ public class SecondaryDisplay extends Presentation {
             horizontalSize = metrics.widthPixels;
             verticalSize = metrics.heightPixels;
         }
+        myView.pageHolder.setPivotX(0);
+        myView.pageHolder.setPivotY(0);
+        myView.pageHolder.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
+        myView.pageHolder.setX(0);
+        myView.pageHolder.setY(0);
+        if (mainActivityInterface.getPresenterSettings().getCastRotation()==90f) {
+            myView.pageHolder.setTranslationX(metrics.widthPixels);
+            myView.pageHolder.setTranslationY(0f);
+        } else if (mainActivityInterface.getPresenterSettings().getCastRotation()==180f) {
+            myView.pageHolder.setTranslationX(metrics.widthPixels);
+            myView.pageHolder.setTranslationY(metrics.heightPixels);
+        } else if (mainActivityInterface.getPresenterSettings().getCastRotation()==270f) {
+            myView.pageHolder.setTranslationX(0f);
+            myView.pageHolder.setTranslationY(metrics.heightPixels);
+        } else {
+            myView.pageHolder.setTranslationX(0f);
+            myView.pageHolder.setTranslationY(0);
+        }
+
+        myView.mainLogo.setRotation(mainActivityInterface.getPresenterSettings().getCastRotation());
 
         // Available size has to take into consideration any padding
+
         availableScreenWidth = horizontalSize - (2 * mainActivityInterface.getPresenterSettings().getPresoXMargin());
         availableScreenHeight = verticalSize - (2 * mainActivityInterface.getPresenterSettings().getPresoYMargin());
+
+        updateViewSizes(myView.pageHolder);
+        /*updateViewSizes(myView.songContent1);
+        updateViewSizes(myView.songContent2);
+        updateViewSizes(myView.backgroundImage1);
+        updateViewSizes(myView.backgroundImage1);
+        updateViewSizes(myView.textureView1);
+        updateViewSizes(myView.textureView2);*/
 
         availableWidth_1col = availableScreenWidth;
         availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f);
@@ -270,6 +303,15 @@ public class SecondaryDisplay extends Presentation {
                 mainActivityInterface.getPresenterSettings().getPresoYMargin(),
                 mainActivityInterface.getPresenterSettings().getPresoXMargin(),
                 mainActivityInterface.getPresenterSettings().getPresoYMargin());
+    }
+
+    private void updateViewSizes(View view) {
+        if (view == myView.pageHolder) {
+            FrameLayout.LayoutParams fllp = (FrameLayout.LayoutParams)view.getLayoutParams();
+            fllp.width = availableScreenWidth;
+            fllp.height = availableScreenHeight;
+            view.setLayoutParams(fllp);
+        }
     }
 
 
@@ -349,10 +391,11 @@ public class SecondaryDisplay extends Presentation {
                     (mainActivityInterface.getPresenterSettings().getBackgroundToUse().startsWith("img") && background == null)) {
                 // Use a solid background color
                 Log.d(TAG,"changeBackground() - solid color");
-
+                Log.d(TAG,"invertXY: "+invertXY+ " available width: "+availableScreenWidth);
                 assert backgroundToFadeIn instanceof ImageView;
                 Drawable drawable = ContextCompat.getDrawable(c, R.drawable.simple_rectangle);
                 if (drawable != null) {
+                    Log.d(TAG,"view width="+backgroundToFadeIn.getLayoutParams().width);
                     GradientDrawable solidColor = (GradientDrawable) drawable.mutate();
                     solidColor.setSize(availableScreenWidth, availableScreenHeight);
                     solidColor.setColor(mainActivityInterface.getPresenterSettings().getBackgroundColor());
@@ -511,7 +554,6 @@ public class SecondaryDisplay extends Presentation {
         int untilTimeWait = 20000;
         waitUntilTimer.schedule(waitUntilTimerTask, untilTimeWait);
     }
-
     public void setInfoBarRequired() {
         // This is called when a new song is loaded in the Presenter Mode
         // Once a view is displayed (fadeInOutSong), the timer starts and resets this to false after untilWaitTime
@@ -526,8 +568,8 @@ public class SecondaryDisplay extends Presentation {
         infoBarRequireInitial = false;
         infoBarRequiredTime = true;
     }
-
     public void setInfoStyles() {
+        myView.testSongInfo.setupLayout(c,mainActivityInterface,false);
         myView.songProjectionInfo1.setupLayout(c,mainActivityInterface,false);
         myView.songProjectionInfo2.setupLayout(c,mainActivityInterface,false);
     }
@@ -539,22 +581,42 @@ public class SecondaryDisplay extends Presentation {
         String title = mainActivityInterface.getSong().getTitle();
         String author = mainActivityInterface.getSong().getAuthor();
         String copyright = mainActivityInterface.getSong().getCopyright();
-        if (title==null || title.isEmpty()) {
+        if (title == null || title.isEmpty()) {
             title = mainActivityInterface.getSong().getFilename();
         }
-        Log.d(TAG,"setSongInfo()  title="+title);
+        String finalTitle = title;
+
+        Log.d(TAG, "setSongInfo()  title=" + finalTitle);
+
+        // Draw the test song info bar so we can measure it with a VTO
+        myView.testSongInfo.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // Measure the view
+                int height = myView.testSongInfo.getMeasuredHeight();
+
+                // Now we can remove this VTO
+                myView.testSongInfo.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                // Now write the actual song info and set the determined height
+                if (showWhichInfo < 2) {
+                    myView.songProjectionInfo1.setSongTitle(finalTitle);
+                    myView.songProjectionInfo1.setSongAuthor(author);
+                    myView.songProjectionInfo1.setSongCopyright(copyright);
+                    myView.songProjectionInfo1.setViewHeight(height);
+                } else {
+                    myView.songProjectionInfo2.setSongTitle(finalTitle);
+                    myView.songProjectionInfo2.setSongAuthor(author);
+                    myView.songProjectionInfo2.setSongCopyright(copyright);
+                    myView.songProjectionInfo2.setViewHeight(height);
+
+                }
+            }
+        });
         // All info should be shown if available
-        if (showWhichInfo<2) {
-            myView.songProjectionInfo1.setSongTitle(title);
-            myView.songProjectionInfo1.setSongAuthor(author);
-            myView.songProjectionInfo1.setSongCopyright(copyright);
-
-        } else {
-            myView.songProjectionInfo2.setSongTitle(title);
-            myView.songProjectionInfo2.setSongAuthor(author);
-            myView.songProjectionInfo2.setSongCopyright(copyright);
-        }
-
+        myView.testSongInfo.setSongTitle(title);
+        myView.testSongInfo.setSongAuthor(author);
+        myView.testSongInfo.setSongCopyright(copyright);
     }
     public void initialiseInfoBarRequired() {
         // This sets the info bar as being required for first time shown
@@ -580,14 +642,14 @@ public class SecondaryDisplay extends Presentation {
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                     songInfoView.getAlpha(), 0f);
         }
-        Log.d(TAG,"bottomTitle1:"+myView.songProjectionInfo1.getSongTitle());
-        Log.d(TAG,"bottomTitle2:"+myView.songProjectionInfo2.getSongTitle());
     }
     private void songInfoShowCheck(View songInfoView) {
         Log.d(TAG,"songInfoShowCheck()");
         // If required (new song loaded and not already showing), show the info bar
-        if (canShowSong() && infoBarRequireInitial && (myView.songContent1.getVisibility()==View.VISIBLE || myView.songContent2.getVisibility()==View.VISIBLE)) {
-            Log.d(TAG,"Should show view:"+songInfoView+" 1:"+myView.songProjectionInfo1+" 2:"+myView.songProjectionInfo2);
+        Log.d(TAG,"info1: "+(songInfoView==myView.songProjectionInfo1) + "  info2: "+(songInfoView==myView.songProjectionInfo2));
+
+        if (canShowSong() && infoBarRequireInitial && mainActivityInterface.getPresenterSettings().getCurrentSection()>-1) {
+            moveToNextSongInfoView();
             mainActivityInterface.getCustomAnimation().faderAnimation(songInfoView,
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                     0f,1f);
@@ -597,6 +659,8 @@ public class SecondaryDisplay extends Presentation {
 
             // Set a timer required though for minimum display time
             setupTimers();
+
+
         }
     }
 
@@ -625,83 +689,7 @@ public class SecondaryDisplay extends Presentation {
         boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "boldChordHeading", false);
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scaleChords", 0.8f);
     }
-    public void showSection(final int position) {
-        // Decide which view to show to
-        // Check the view isn't already attached to a parent
-        if (position>=0 && position<mainActivityInterface.getSectionViews().size()) {
-            if (mainActivityInterface.getSectionViews().get(position).getParent() != null) {
-                ((ViewGroup) mainActivityInterface.getSectionViews().get(position).getParent()).removeView(mainActivityInterface.getSectionViews().get(position));
-            }
-            // Move to next view showWhich 1>2, 2>1
-            moveToNextSongView();
-            // Set a listener to wait for drawing, then measure and scale
-            ViewTreeObserver viewTreeObserver = myView.testLayout.getViewTreeObserver();
-            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                @Override
-                public void onGlobalLayout() {
-                    // Measure the height of the layouts
-                    int width = mainActivityInterface.getSectionViews().get(position).getMeasuredWidth();
-                    int height = mainActivityInterface.getSectionViews().get(position).getMeasuredHeight();
-
-                    // Get the measured height of the song info bar
-                    int infoHeight;
-                    if (showWhichInfo<2) {
-                        infoHeight = myView.songProjectionInfo1.getViewHeight();
-                    } else {
-                        infoHeight = myView.songProjectionInfo2.getViewHeight();
-                    }
-                    int alertHeight = myView.alertBar.getViewHeight();
-
-                    float max_x = (float) availableScreenWidth / (float) width;
-                    float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
-
-                    float best = Math.min(max_x, max_y);
-                    if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f)) {
-                        best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
-                    }
-
-                    mainActivityInterface.getSectionViews().get(position).setPivotX(0f);
-                    mainActivityInterface.getSectionViews().get(position).setPivotY(0f);
-                    mainActivityInterface.getSectionViews().get(position).setScaleX(best);
-                    mainActivityInterface.getSectionViews().get(position).setScaleY(best);
-
-                    // Remove from the test layout
-                    myView.testLayout.removeAllViews();
-
-                    // Remove this listener
-                    viewTreeObserver.removeOnGlobalLayoutListener(this);
-
-                    // We can now prepare the new view and animate in/out the views as long as the logo is off
-                    // and the blank screen isn't on
-                    Log.d(TAG,"showWhich="+showWhich+"  canShowSong()="+canShowSong());
-                    removeViewFromParent(mainActivityInterface.getSectionViews().get(position));
-
-                    // Translate the scaled views based on the alignment
-                    int newWidth = (int)(width * best);
-                    int newHeight = (int)(height * best);
-                    translateView(mainActivityInterface.getSectionViews().get(position), newWidth, newHeight, infoHeight, alertHeight);
-
-                    if (showWhich < 2) {
-                        myView.songContent1.removeAllViews();
-                        myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
-                        crossFadeContent(myView.songContent2, myView.songContent1);
-
-                    } else {
-                        myView.songContent2.removeAllViews();
-                        myView.songContent2.addView(mainActivityInterface.getSectionViews().get(position));
-                        crossFadeContent(myView.songContent1, myView.songContent2);
-
-                    }
-
-                    // Check the song info status
-                    checkSongInfoShowHide();
-                }
-            });
-            myView.testLayout.addView(mainActivityInterface.getSectionViews().get(position));
-        }
-    }
     private void setSectionViews() {
-
         mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
                 setSongInLayout(c, mainActivityInterface, mainActivityInterface.getSong().getLyrics(),
                         false, true));
@@ -712,10 +700,10 @@ public class SecondaryDisplay extends Presentation {
             @Override
             public void onGlobalLayout() {
                 // The views are ready so prepare to create the song page
-                for (View v:mainActivityInterface.getSectionViews())  {
-                    int width = v.getMeasuredWidth();
-                    int height = v.getMeasuredHeight();
-                    mainActivityInterface.addSectionSize(width,height);
+                for (int x=0; x<mainActivityInterface.getSectionViews().size();x++) {
+                    int width = mainActivityInterface.getSectionViews().get(x).getMeasuredWidth();
+                    int height = mainActivityInterface.getSectionViews().get(x).getMeasuredHeight();
+                    mainActivityInterface.addSectionSize(x,width,height);
                 }
 
                 // Calculate the scale factor for each section individually
@@ -739,6 +727,11 @@ public class SecondaryDisplay extends Presentation {
 
                 // We can now remove the views from the test layout and remove this listener
                 myView.testLayout.removeAllViews();
+
+                // Show the current view if not -1 (just loaded)
+                if (mainActivityInterface.getPresenterSettings().getCurrentSection()>-1) {
+                    showSection(mainActivityInterface.getPresenterSettings().getCurrentSection());
+                }
                 myView.testLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
             }
@@ -748,10 +741,76 @@ public class SecondaryDisplay extends Presentation {
         }
 
     }
+    public void showSection(final int position) {
+        // Decide which view to show to
+        mainActivityInterface.getPresenterSettings().setCurrentSection(position);
+        // Check the view isn't already attached to a parent
+        if (position>=0 && position<mainActivityInterface.getSectionViews().size()) {
+
+            // Check the song info status first
+            checkSongInfoShowHide();
+
+            // Remove the view from any parent it might be attached to already (can only have 1)
+            removeViewFromParent(mainActivityInterface.getSectionViews().get(position));
+
+            // Move to next view showWhich 1>2, 2>1
+            moveToNextSongView();
+
+            // Measure the size of the view
+            int width = mainActivityInterface.getSectionWidths().get(position);
+            int height = mainActivityInterface.getSectionHeights().get(position);
+
+            // Get the measured height of the song info bar
+            int infoHeight;
+            if (showWhichInfo<2) {
+                infoHeight = myView.songProjectionInfo1.getViewHeight();
+            } else {
+                infoHeight = myView.songProjectionInfo2.getViewHeight();
+            }
+            if (infoHeight==0) {
+                infoHeight = myView.testSongInfo.getViewHeight();
+            }
+            int alertHeight = myView.alertBar.getViewHeight();
+
+            float max_x = (float) availableScreenWidth / (float) width;
+            float max_y = (float) (availableScreenHeight - infoHeight - alertHeight) / (float) height;
+
+            float best = Math.min(max_x, max_y);
+            if (best > (mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f)) {
+                best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
+            }
+
+            mainActivityInterface.getSectionViews().get(position).setPivotX(0f);
+            mainActivityInterface.getSectionViews().get(position).setPivotY(0f);
+            mainActivityInterface.getSectionViews().get(position).setScaleX(best);
+            mainActivityInterface.getSectionViews().get(position).setScaleY(best);
+
+            // We can now prepare the new view and animate in/out the views as long as the logo is off
+            // and the blank screen isn't on
+            Log.d(TAG,"showWhich="+showWhich+"  canShowSong()="+canShowSong());
+            removeViewFromParent(mainActivityInterface.getSectionViews().get(position));
+
+            // Translate the scaled views based on the alignment
+            int newWidth = (int)(width * best);
+            int newHeight = (int)(height * best);
+            translateView(mainActivityInterface.getSectionViews().get(position), newWidth, newHeight, infoHeight, alertHeight);
+
+            if (showWhich < 2) {
+                myView.songContent1.removeAllViews();
+                myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
+                crossFadeContent(myView.songContent2, myView.songContent1);
+
+            } else {
+                myView.songContent2.removeAllViews();
+                myView.songContent2.addView(mainActivityInterface.getSectionViews().get(position));
+                crossFadeContent(myView.songContent1, myView.songContent2);
+
+            }
+        }
+    }
     private void removeViewFromParent(View view) {
         if (view.getParent()!=null) {
             String name = view.getParent().getClass().getName();
-
             if (name.contains("RelativeLayout")) {
                 ((RelativeLayout) view.getParent()).removeAllViews();
             } else if (name.contains("LinearLayout")) {
@@ -759,41 +818,43 @@ public class SecondaryDisplay extends Presentation {
             }
         }
     }
+    @SuppressLint("RtlHardcoded")
     private void translateView(View view, int newWidth, int newHeight, int infoHeight, int alertHeight) {
         Log.d(TAG,"infoHeight="+infoHeight+"  alertHeight="+alertHeight);
+        Log.d(TAG,"availableWidth: "+availableScreenWidth+"  newWidth: "+newWidth);
+        Log.d(TAG, "availableHeight: " + availableScreenHeight+"  newHeight: "+newHeight);
+        Log.d(TAG,"invertXY: "+invertXY);
         switch (mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()) {
             case Gravity.START:
             case Gravity.LEFT:
-                Log.d(TAG,"Start");
                 view.setTranslationX(0);
                 break;
             case Gravity.END:
             case Gravity.RIGHT:
-                Log.d(TAG,"End");
-                view.setTranslationX(availableScreenWidth-newWidth);
+                view.setTranslationX(availableScreenWidth - newWidth);
                 break;
             case Gravity.CENTER:
             case Gravity.CENTER_HORIZONTAL:
-                Log.d(TAG,"Center horizontal");
-                view.setTranslationX((int)((availableScreenWidth-newWidth)/2f));
+            default:
+                view.setTranslationX((int)((availableScreenWidth - newWidth) / 2f));
                 break;
         }
         switch (mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()) {
             case Gravity.TOP:
-                Log.d(TAG,"Top");
                 view.setTranslationY(0);
                 break;
             case Gravity.BOTTOM:
-                Log.d(TAG,"Bottom");
-                view.setTranslationY(availableScreenHeight-infoHeight-alertHeight-newHeight);
+                view.setTranslationY(availableScreenHeight - infoHeight - alertHeight - newHeight);
                 break;
             case Gravity.CENTER_VERTICAL:
             case Gravity.CENTER:
-                Log.d(TAG,"Center vertical");
-                view.setTranslationY((int)((availableScreenHeight-infoHeight-alertHeight-newHeight)/2f));
+                view.setTranslationY((int) ((availableScreenHeight - infoHeight - alertHeight - newHeight) / 2f));
                 break;
         }
+        Log.d(TAG,"translationX="+view.getTranslationX()+"  translationY="+view.getTranslationY());
+
     }
+
 
     // The alert bar
     public void showAlert() {
@@ -815,10 +876,8 @@ public class SecondaryDisplay extends Presentation {
 
     }
     private void crossFadeContent(View contentToFadeOut, View contentToFadeIn) {
-        Log.d(TAG,"crossFadeContent()");
         // Fade out is always fine, so do it
         if (contentToFadeOut!=null) {
-            Log.d(TAG,"Fading out view");
             mainActivityInterface.getCustomAnimation().faderAnimation(contentToFadeOut,
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                     contentToFadeOut.getAlpha(), 0f);
@@ -826,7 +885,6 @@ public class SecondaryDisplay extends Presentation {
 
         // Fade in of a content is fine
         if (contentToFadeIn!=null) {
-            Log.d(TAG, "Fading in view");
             mainActivityInterface.getCustomAnimation().faderAnimation(contentToFadeIn,
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                     0f, 1f);

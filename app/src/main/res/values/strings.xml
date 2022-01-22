@@ -1076,4 +1076,5 @@ Check out the categories in the right hand options menu.
     <string name="info_text_background">Background for information bar</string>
     <string name="info_text_autohide">Automatically hide information bar</string>
     <string name="info_text_autohide_info">Hide once the information has been displayed and a minimum time has elapsed</string>
+    <string name="show_chords_info">Display chords found in the song.</string>
 </resources>

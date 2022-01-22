@@ -47,6 +47,7 @@
     <declare-styleable name="MaterialSwitch">
         <attr name="android:text"/>
         <attr name="android:hint"/>
+        <attr name="smallText" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="BottomSheetHandle">

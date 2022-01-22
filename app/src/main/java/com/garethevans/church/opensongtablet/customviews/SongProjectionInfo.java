@@ -53,14 +53,17 @@ public class SongProjectionInfo extends LinearLayout {
         if (miniInfo) {
             // We just want the text
             showMiniLogo(false);
+            smallText(mainActivityInterface, true);
             castSongInfo.setBackgroundColor(Color.TRANSPARENT);
         } else if (mainActivityInterface.getMode().equals("Presenter")) {
             // The bottom bar for the secondary display in Presenter mode
             showMiniLogo(false);
+            smallText(mainActivityInterface, false);
             castSongInfo.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
         } else {
             // Performance / Stage mode
             showMiniLogo(true);
+            smallText(mainActivityInterface, true);
             castSongInfo.setBackgroundColor(Color.TRANSPARENT);
         }
     }
@@ -82,7 +85,6 @@ public class SongProjectionInfo extends LinearLayout {
             textView.setVisibility(View.VISIBLE);
         }
         textView.setText(text);
-        Log.d(TAG,"text:"+text+"  view:"+textView);
     }
 
 
@@ -97,10 +99,6 @@ public class SongProjectionInfo extends LinearLayout {
         songTitle.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
-
-        songTitle.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoTitleTextSize", 14f));
-        songAuthor.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAuthorTextSize", 12f));
-        songCopyright.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoCopyrightTextSize", 12f));
 
         songTitle.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
@@ -128,7 +126,28 @@ public class SongProjectionInfo extends LinearLayout {
     }
 
     public int getViewHeight() {
+        if (viewHeight==0) {
+            viewHeight = getMeasuredHeight();
+        }
         return viewHeight;
     }
 
+    public void setViewHeight(int viewHeight) {
+        Log.d(TAG,"set height to "+viewHeight);
+        if (viewHeight!=0) {
+            this.viewHeight = viewHeight;
+        }
+    }
+
+    private void smallText(MainActivityInterface mainActivityInterface, boolean smallText) {
+        if (smallText) {
+            songTitle.setTextSize(14f);
+            songAuthor.setTextSize(12f);
+            songCopyright.setTextSize(12f);
+        } else {
+            songTitle.setTextSize(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
+            songAuthor.setTextSize(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
+            songCopyright.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
+        }
+    }
 }

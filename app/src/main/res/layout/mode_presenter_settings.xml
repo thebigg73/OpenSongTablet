@@ -205,6 +205,23 @@
                 android:layout_marginBottom="16dp"/>
             <TableRow style="@style/DividerLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/maxFontSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:valueFrom="10"
+                android:valueTo="100"
+                android:text="@string/maxfontsize" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/showChords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/show_chords"
+                android:hint="@string/show_chords_info"/>
+
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/contentHorizontalAlign"
                 app:drawableL="@drawable/ic_format_align_left_white_36dp"
@@ -212,8 +229,7 @@
                 app:drawableC="@drawable/ic_format_align_center_white_36dp"
                 app:label="@string/song_alignment_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"/>
+                android:layout_height="wrap_content" />
 
             <com.garethevans.church.opensongtablet.customviews.TextThreeSlider
                 android:id="@+id/contentVerticalAlign"

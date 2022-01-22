@@ -145,6 +145,11 @@ public class SettingsFragment extends Fragment {
         myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
         myView.hideInfoBar.setChecked(mainActivityInterface.getPresenterSettings().getHideInfoBar());
 
+        myView.maxFontSize.setValue(mainActivityInterface.getPresenterSettings().getFontSizePresoMax());
+        myView.maxFontSize.setHint(((int)mainActivityInterface.getPresenterSettings().getFontSizePresoMax())+"sp");
+
+        myView.showChords.setChecked(mainActivityInterface.getPresenterSettings().getPresoShowChords());
+
         myView.contentHorizontalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()));
         myView.contentVerticalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()));
 
@@ -186,6 +191,20 @@ public class SettingsFragment extends Fragment {
             displayInterface.updateDisplay("checkSongInfoShowHide");
         });
 
+        myView.maxFontSize.addOnSliderTouchListener(new SliderTouchListener("fontSizePresoMax"));
+        myView.maxFontSize.addOnChangeListener(new SliderChangeListener("fontSizePresoMax"));
+
+        myView.showChords.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+                        "presoShowChords",b);
+                mainActivityInterface.getPresenterSettings().setPresoShowChords(b);
+                mainActivityInterface.updateFragment("presenterFragmentSongSections",null,null);
+                displayInterface.updateDisplay("setSongContent");
+                if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>0) {
+                    mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemRangeChanged(0,
+                            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount());
+                }
+        });
         myView.contentHorizontalAlign.addOnSliderTouchListener(new SliderTouchListener("presoLyricsAlign"));
         myView.contentHorizontalAlign.addOnChangeListener(new SliderChangeListener("presoLyricsAlign"));
         myView.contentVerticalAlign.addOnSliderTouchListener(new SliderTouchListener("presoLyricsVAlign"));
@@ -291,7 +310,7 @@ public class SettingsFragment extends Fragment {
                     } else {
                         mainActivityInterface.getPresenterSettings().setPresoYMargin((int)slider.getValue());
                     }
-                    displayInterface.updateDisplay("setScreenSizes");
+                    displayInterface.updateDisplay("changeRotation");
                     break;
                 case "presoBackgroundAlpha":
                     // The slider goes from 0 to 100
@@ -299,6 +318,13 @@ public class SettingsFragment extends Fragment {
                             "presoBackgroundAlpha", slider.getValue()/100f);
                     mainActivityInterface.getPresenterSettings().setPresoBackgroundAlpha(slider.getValue()/100f);
                     displayInterface.updateDisplay("changeBackground");
+                    break;
+                case "fontSizePresoMax":
+                    // The slider goes from 10 to 100
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                            "fontSizePresoMax", slider.getValue());
+                    mainActivityInterface.getPresenterSettings().setFontSizePresoMax(slider.getValue());
+                    displayInterface.updateDisplay("setSongContent");
                     break;
             }
         }
@@ -352,7 +378,6 @@ public class SettingsFragment extends Fragment {
                             "presoLyricsAlign",gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsAlign(gravity);
                     displayInterface.updateDisplay("setSongContent");
-                    displayInterface.updateDisplay("showSection");
                     break;
                 case "presoLyricsVAlign":
                     // The slider goes from 0 to 2.  We need to look up the gravity
@@ -361,7 +386,10 @@ public class SettingsFragment extends Fragment {
                             "presoLyricsVAlign",gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsVAlign(gravity);
                     displayInterface.updateDisplay("setSongContent");
-                    displayInterface.updateDisplay("showSection");
+                    break;
+                case "fontSizePresoMax":
+                    // The slider goes from 10 to 100 as the font size
+                    myView.maxFontSize.setHint(((int)slider.getValue())+"sp");
                     break;
             }
         }

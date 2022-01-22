@@ -752,6 +752,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ((SettingsFragment) callingFragment).updateLogo();
                     break;
 
+                case "presenterFragmentSongSections":
+                    if (presenterFragment!=null) {
+                        Log.d(TAG,"presenterFragmentSongSections");
+                        presenterFragment.getSongViews();
+                        presenterFragment.updateButtons();
+                    }
+                    break;
+
                 case "themeSetupFragment":
                     ((ThemeSetupFragment) callingFragment).updateColors();
                     ((ThemeSetupFragment) callingFragment).updateButtons();
@@ -2270,15 +2278,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void addSectionSize(int width, int height) {
+    public void addSectionSize(int position, int width, int height) {
         if (sectionWidths==null) {
             sectionWidths = new ArrayList<>();
         }
         if (sectionHeights==null) {
             sectionHeights = new ArrayList<>();
         }
-        sectionWidths.add(width);
-        sectionHeights.add(height);
+        sectionWidths.add(position,width);
+        sectionHeights.add(position,height);
     }
 
     @Override
@@ -2676,12 +2684,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void presenterShowSection(int position) {
-        for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
-            if (secondaryDisplay != null && secondaryDisplay.isShowing()) {
-                try {
-                    secondaryDisplay.showSection(position);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (secondaryDisplays!=null) {
+            for (SecondaryDisplay secondaryDisplay : secondaryDisplays) {
+                if (secondaryDisplay != null && secondaryDisplay.isShowing() &&
+                        position < getSong().getSongSections().size()) {
+                    try {
+                        secondaryDisplay.showSection(position);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

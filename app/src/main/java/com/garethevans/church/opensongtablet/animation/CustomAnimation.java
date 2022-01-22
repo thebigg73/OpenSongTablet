@@ -14,7 +14,7 @@ public class CustomAnimation {
 
     private final String TAG = "CustomAnimation";
 
-    public void faderAnimation(View v, int time, float startAlpha, float endAlpha) {
+    public void faderAnimation(final View v, int time, float startAlpha, final float endAlpha) {
         if (v!=null) {
             int finalVisibility;
             AnimatorListenerAdapter animatorListenerAdapter;
@@ -45,12 +45,12 @@ public class CustomAnimation {
             // For a correct fade in, the view should already be in the faded out state:
             // - The initial visibility should already be GONE or INVISIBLE
             // - ideally alpha 0 (completely faded out), but certainly less than 1 (partially faded out)
-            boolean fadeInOk = fadeIn && (v.getVisibility() == View.INVISIBLE || v.getVisibility() == View.GONE) && v.getAlpha() < 1;
+            boolean fadeInOk = fadeIn && (v.getVisibility()==View.GONE || v.getVisibility()==View.INVISIBLE) && v.getAlpha() < 1;
 
             // For a correct fade out, the view should already be in the faded in state:
             // - The initial visibility should already be VISIBLE
             // - The alpha should already be 1f (completely faded in), but certainly more than 0;
-            boolean fadeOutOk = !fadeIn && v.getVisibility() == View.VISIBLE && v.getAlpha() > 0;
+            boolean fadeOutOk = !fadeIn && (v.getVisibility()==View.VISIBLE) && v.getAlpha() > 0;
 
             // If either of these are true, we can animate, but if not, just move to the final state
             if (fadeInOk || fadeOutOk) {
@@ -67,6 +67,23 @@ public class CustomAnimation {
                 v.setAlpha(endAlpha);
                 v.setVisibility(finalVisibility);
             }
+
+            // Set a panic for a short time after animation end
+            final Runnable runnable = () -> {
+                if (v.getAlpha()!=endAlpha) {
+                    v.setAlpha(endAlpha);
+                }
+                if (v.getVisibility()!=finalVisibility) {
+                    v.setVisibility(finalVisibility);
+                }
+            };
+
+            try {
+                v.removeCallbacks(runnable);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            v.postDelayed(runnable,(int)(time));
         }
     }
 

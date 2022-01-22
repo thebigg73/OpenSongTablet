@@ -76,6 +76,9 @@ public class PresenterAlert extends MaterialTextView {
     }
 
     public int getViewHeight() {
+        if (viewHeight==0) {
+            viewHeight = getMeasuredHeight();
+        }
         return viewHeight;
     }
 }

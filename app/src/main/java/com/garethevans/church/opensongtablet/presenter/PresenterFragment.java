@@ -23,6 +23,7 @@ public class PresenterFragment extends Fragment {
     private DisplayInterface displayInterface;
     private ModePresenterBinding myView;
     private SongSectionsFragment songSectionsFragment;
+    private SongSectionsAdapter songSectionsAdapter;
     private MediaFragment mediaFragment;
     private AlertFragment alertFragment;
     private SettingsFragment settingsFragment;
@@ -62,17 +63,19 @@ public class PresenterFragment extends Fragment {
         // Get preferences
         getPreferences();
 
+        // Set up the the pager
+        setupPager();
+
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
+                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
+
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
                 !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
             mainActivityInterface.fullIndex();
         }
 
-        // Set up the the pager
-        setupPager();
 
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
-                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
 
         // Set up the main action listeners
         setupListeners();
@@ -96,6 +99,9 @@ public class PresenterFragment extends Fragment {
         mediaFragment = (MediaFragment) pageAdapter.createFragment(1);
         alertFragment = (AlertFragment) pageAdapter.createFragment(2);
         settingsFragment = (SettingsFragment) pageAdapter.createFragment(3);
+
+        mainActivityInterface.getPresenterSettings().setSongSectionsAdapter(new SongSectionsAdapter(requireContext(),mainActivityInterface,this,displayInterface));
+
         myView.viewPager.setAdapter(pageAdapter);
         new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
             switch (position) {
@@ -113,6 +119,7 @@ public class PresenterFragment extends Fragment {
                     break;
             }
         }).attach();
+
     }
 
     public void doSongLoad(String folder, String filename) {
@@ -129,17 +136,19 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("initialiseInfoBarRequired");
         displayInterface.updateDisplay("setSongInfo");
 
-        // Update the recyclerView with the song sections
+        // If we are a client and connected to someone else, we move to their section
+        if (mainActivityInterface.getNearbyConnections().isConnected &&
+                !mainActivityInterface.getNearbyConnections().isHost &&
+                mainActivityInterface.getNearbyConnections().getReceiveHostSongSections() &&
+                mainActivityInterface.getNearbyConnections().getHostSection()<mainActivityInterface.getSong().getSongSections().size()) {
+            mainActivityInterface.getPresenterSettings().setCurrentSection(mainActivityInterface.getNearbyConnections().getHostSection());
+        } else {
+            mainActivityInterface.getPresenterSettings().setCurrentSection(-1);
+        }
+
+        displayInterface.updateDisplay("setSongContent");
         songSectionsFragment.showSongInfo();
 
-        // Show the first section if we are in Performance/Stage mode
-        // In Presenter mode, only do this if we are a client and are connected in Nearby
-        if (!mainActivityInterface.getMode().equals("Presenter")) {
-            displayInterface.presenterShowSection(0);
-        } else if (mainActivityInterface.getNearbyConnections().isConnected &&
-            !mainActivityInterface.getNearbyConnections().isHost) {
-            displayInterface.presenterShowSection(0);
-        }
     }
 
     private void getPreferences() {
@@ -169,6 +178,10 @@ public class PresenterFragment extends Fragment {
         }
     }
 
+    public void updateButtons() {
+        songSectionsFragment.updateAllButtons();
+    }
+
     private void setupListeners() {
         myView.showLogo.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPresenterSettings().setLogoOn(b);
@@ -187,4 +200,5 @@ public class PresenterFragment extends Fragment {
             displayInterface.checkDisplays();
         });
     }
+
 }

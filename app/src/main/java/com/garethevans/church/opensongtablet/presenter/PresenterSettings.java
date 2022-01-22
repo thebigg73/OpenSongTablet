@@ -14,13 +14,15 @@ public class PresenterSettings {
     // They are accessed using getters and setters
 
     private final String TAG = "PresenterSettings";
-    private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar;
+    private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,
+            usePresentationOrder;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
-        presoLyricsAlign, presoLyricsVAlign, infoBarChangeDelay, lyricDelay, panicDelay, currentSection;
+        presoLyricsAlign, presoLyricsVAlign, infoBarChangeDelay, lyricDelay, panicDelay, currentSection=-1;
     private String backgroundToUse, presoAlertText;
     private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
-            presoBackgroundAlpha;
+            presoBackgroundAlpha, presoTitleTextSize, presoAuthorTextSize, presoCopyrightTextSize;
+    private SongSectionsAdapter songSectionsAdapter;
 
 
     public PresenterSettings(Context c) {
@@ -101,13 +103,30 @@ public class PresenterSettings {
     public void setPresoBackgroundAlpha(float presoBackgroundAlpha) {
         this.presoBackgroundAlpha = presoBackgroundAlpha;
     }
+    public void setPresoShowChords(boolean presoShowChords) {
+        this.presoShowChords = presoShowChords;
+    }
+    public void setUsePresentationOrder(boolean usePresentationOrder) {
+        this.usePresentationOrder = usePresentationOrder;
+    }
     public void setHideInfoBar(boolean hideInfoBar) {
         this.hideInfoBar = hideInfoBar;
+    }
+    public void setPresoTitleTextSize(float presoTitleTextSize) {
+        this.presoTitleTextSize = presoTitleTextSize;
+    }
+    public void setPresoAuthorTextSize(float presoAuthorTextSize) {
+        this.presoAuthorTextSize = presoAuthorTextSize;
+    }
+    public void setPresoCopyrightTextSize(float presoCopyrightTextSize) {
+        this.presoCopyrightTextSize = presoCopyrightTextSize;
     }
     public void setCurrentSection(int currentSection) {
         this.currentSection = currentSection;
     }
-
+    public void setSongSectionsAdapter(SongSectionsAdapter songSectionsAdapter) {
+        this.songSectionsAdapter = songSectionsAdapter;
+    }
 
     // The getters
     public boolean getAlertOn() {
@@ -197,11 +216,29 @@ public class PresenterSettings {
     public float getPresoBackgroundAlpha() {
         return presoBackgroundAlpha;
     }
+    public boolean getPresoShowChords() {
+        return presoShowChords;
+    }
+    public boolean getUsePresentationOrder() {
+        return usePresentationOrder;
+    }
     public boolean getHideInfoBar() {
         return hideInfoBar;
     }
+    public float getPresoTitleTextSize() {
+        return presoTitleTextSize;
+    }
+    public float getPresoAuthorTextSize() {
+        return presoAuthorTextSize;
+    }
+    public float getPresoCopyrightTextSize() {
+        return presoCopyrightTextSize;
+    }
     public int getCurrentSection() {
         return currentSection;
+    }
+    public SongSectionsAdapter getSongSectionsAdapter() {
+        return songSectionsAdapter;
     }
 
 
@@ -210,6 +247,7 @@ public class PresenterSettings {
         // This calls all preference groups
         getImagePreferences(c, mainActivityInterface);
         getScreenSetupPreferences(c, mainActivityInterface);
+        getInfoPreferences(c, mainActivityInterface);
         getAlertPreferences(c, mainActivityInterface);
     }
 
@@ -245,11 +283,18 @@ public class PresenterSettings {
         setPresoInfoAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         setPresoLyricsAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoLyricsAlign", Gravity.CENTER_HORIZONTAL));
         setPresoLyricsVAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoLyricsVAlign", Gravity.CENTER_VERTICAL));
-        setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f));
+        setPresoShowChords(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "presoShowChords", false));
         setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizePresoMax", 40f));
-        setHideInfoBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"hideInfoBar",true));
+        setUsePresentationOrder(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "usePresentationOrder", false));
     }
+    public void getInfoPreferences(Context c, MainActivityInterface mainActivityInterface) {
+        setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f));
+        setHideInfoBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"hideInfoBar",true));
+        setPresoTitleTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoTitleTextSize",14f));
+        setPresoAuthorTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAuthorTextSize",12f));
+        setPresoCopyrightTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoCopyrightTextSize",12f));
 
+    }
     public void getAlertPreferences(Context c, MainActivityInterface mainActivityInterface) {
         setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString(c,"presoAlertText",""));
         setPresoAlertTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAlertTextSize", 12f));

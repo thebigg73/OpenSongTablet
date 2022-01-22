@@ -337,10 +337,10 @@ public class PerformanceFragment extends Fragment {
 
     private void songIsReadyToDisplay() {
         // All views have now been drawn, so measure the arraylist views
-        for (View v : mainActivityInterface.getSectionViews()) {
-            int width = v.getMeasuredWidth();
-            int height = v.getMeasuredHeight();
-            mainActivityInterface.addSectionSize(width, height);
+        for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
+            int width = mainActivityInterface.getSectionViews().get(x).getMeasuredWidth();
+            int height = mainActivityInterface.getSectionViews().get(x).getMeasuredHeight();
+            mainActivityInterface.addSectionSize(x, width, height);
         }
 
         myView.testPane.removeAllViews();

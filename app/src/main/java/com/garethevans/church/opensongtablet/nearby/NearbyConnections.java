@@ -64,7 +64,7 @@ public class NearbyConnections implements NearbyInterface {
     private final String serviceId = "com.garethevans.church.opensongtablet";
     private String receivedSongFilename;
     private MainActivityInterface mainActivityInterface;
-
+    private int hostSection = 0;
     private String payLoadTransferIds = "";
     private String latestfoldernamepair = "";
     private int pendingCurrentSection = 0;
@@ -817,6 +817,9 @@ public class NearbyConnections implements NearbyInterface {
         // Don't need to save the device name unless the user edits it to make it custom
         return deviceId = mainActivityInterface.getPreferences().getMyPreferenceString(c, "deviceId", model);
     }
+    public int getHostSection() {
+        return hostSection;
+    }
 
     // The setters
     public void setNearbyHostMenuOnly(Context c, MainActivityInterface mainActivityInterface, boolean nearbyHostMenuOnly) {
@@ -835,5 +838,11 @@ public class NearbyConnections implements NearbyInterface {
     public void setReceiveHostSongSections(boolean receiveHostSongSections) {
         this.receiveHostSongSections = receiveHostSongSections;
     }
+    public void setHostSection(int hostSection) {
+        this.hostSection = hostSection;
+    }
+
+    // TODO what happens if we are using nearby and presentation order - the section numbers won't match
+    // Nearby should looks for matching section names
 
 }

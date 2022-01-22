@@ -254,7 +254,7 @@ public interface MainActivityInterface {
     ArrayList<Integer> getSectionWidths();
     ArrayList<Integer> getSectionHeights();
     ArrayList<Integer> getSectionColors();
-    void addSectionSize(int width, int height);
+    void addSectionSize(int position, int width, int height);
     void setSectionColors(ArrayList<Integer> colors);
 
     // Song sheet titles

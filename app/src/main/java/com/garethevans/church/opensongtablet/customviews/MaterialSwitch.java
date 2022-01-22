@@ -32,7 +32,7 @@ public class MaterialSwitch extends LinearLayout {
         hintView.setId(View.generateViewId());
         switchMaterial.setId(View.generateViewId());
 
-        int[] set = new int[] {android.R.attr.text, android.R.attr.hint, android.R.attr.checked};
+        int[] set = new int[] {android.R.attr.text, android.R.attr.hint, android.R.attr.checked, R.attr.smallText};
         TypedArray typedArray = context.obtainStyledAttributes(attrs,set);
 
         String mainText = typedArray.getString(0);
@@ -44,7 +44,12 @@ public class MaterialSwitch extends LinearLayout {
         boolean isSwitched = typedArray.getBoolean(2,false);
         setChecked(isSwitched);
 
+        boolean smallText = typedArray.getBoolean(3, false);
+        setSmallText(smallText);
+
         typedArray.recycle();
+
+
     }
 
     public void setText(String text) {
@@ -94,5 +99,12 @@ public class MaterialSwitch extends LinearLayout {
         textView.setAlpha(alpha);
         hintView.setAlpha(alpha);
         switchMaterial.setAlpha(alpha);
+    }
+
+    public void setSmallText(boolean smallText) {
+        if (smallText) {
+            textView.setTextSize(14f);
+            hintView.setTextSize(12f);
+        }
     }
 }
