@@ -2734,11 +2734,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     StaticVariables.mMidi = StaticVariables.mMidi.replace(",", "\n");
                     StaticVariables.mMidi = StaticVariables.mMidi.replace("\n\n", "\n");
                     String[] midilines = StaticVariables.mMidi.trim().split("\n");
+                    int midiDelay = preferences.getMyPreferenceInt(this,"midiDelay",100);
+                    int thisDelay = midiDelay;
                     for (String ml : midilines) {
-                        Log.d(TAG, "Sending "+ml);
-                        if (midi!=null) {
-                            midi.sendMidi(midi.returnBytesFromHexText(ml));
-                        }
+                        // Send each bit of code with a buffer delay (user pref)
+                        new Handler().postDelayed(() -> {
+                            if (midi != null) {
+                                Log.d(TAG, "Sending message: " + ml);
+                                midi.sendMidi(midi.returnBytesFromHexText(ml));
+                            }
+                        }, thisDelay);
+                        // Prepare the delay for the next message
+                        thisDelay = thisDelay + midiDelay;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -33,7 +34,8 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     private Spinner midiCommandsSpinner;
     private Spinner midiValuesSpinner;
     private Spinner midiValue2Spinner;
-    private TextView valueOrVelocity, noteOrValue, midiMessage;
+    private SeekBar midiDelay;
+    private TextView valueOrVelocity, noteOrValue, midiMessage, midiDelay_Text;
     private ListView midiActionList;
     private String action = "PC";
     private int channel = 1;
@@ -104,6 +106,8 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         noteOrValue = V.findViewById(R.id.noteorvalue);
         midiMessage = V.findViewById(R.id.midiMessage);
         midiActionList = V.findViewById(R.id.midiActionList);
+        midiDelay = V.findViewById(R.id.midiDelay);
+        midiDelay_Text = V.findViewById(R.id.midiDelay_Text);
         Button testMidiMessage = V.findViewById(R.id.midiTest);
         Button addMidiMessage = V.findViewById(R.id.midiAdd);
 
@@ -154,7 +158,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
 
         setUpMidiValues();
         setUpMidiNotes();
-
+        setUpMidiDelay();
         showCorrectValues();
 
         midiValuesSpinner.setAdapter(midiValuesAdapter);
@@ -266,6 +270,33 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         midiNotesAdapter = new ArrayAdapter<>(requireContext(),R.layout.my_spinner, midiNotes);
     }
 
+    private void setUpMidiDelay() {
+        int myDelay = preferences.getMyPreferenceInt(getContext(),"midiDelay",100);
+        int pos = myDelay/100;
+        // The seekbar goes from 0 to 5, with each value being 100 (so 0 to 500);
+        midiDelay.setMax(5);
+        midiDelay.setProgress(pos);
+        String text = myDelay + "ms";
+        midiDelay_Text.setText(text);
+        midiDelay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                // Update the text
+                String text = (i*100) + "ms";
+                midiDelay_Text.setText(text);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Save the preference
+                int pos = seekBar.getProgress();
+                preferences.setMyPreferenceInt(getContext(),"midiDelay",pos*100);
+            }
+        });
+    }
     private void showCorrectValues() {
         String valorvel = getString(R.string.midi_value);
         String noteorval = getString(R.string.midi_value);

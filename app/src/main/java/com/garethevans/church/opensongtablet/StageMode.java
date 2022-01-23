@@ -3270,7 +3270,8 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.mTitle = StaticVariables.songfilename.replaceAll("\\.[^.]*$", "");
         }
         if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
-            songtitle_ab.setText("≡" + StaticVariables.mTitle);
+            String text = "≡" + StaticVariables.mTitle;
+            songtitle_ab.setText(text);
         } else {
             songtitle_ab.setText(StaticVariables.mTitle);
         }
@@ -3354,7 +3355,8 @@ public class StageMode extends AppCompatActivity implements
 
         // Set the ab title to include the song info if available
         if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
-            songtitle_ab.setText("≡" + StaticVariables.mTitle);
+            String text = "≡" + StaticVariables.mTitle;
+            songtitle_ab.setText(text);
         } else {
             songtitle_ab.setText(StaticVariables.mTitle);
         }
@@ -3593,10 +3595,18 @@ public class StageMode extends AppCompatActivity implements
                     StaticVariables.mMidi = StaticVariables.mMidi.replace(",", "\n");
                     StaticVariables.mMidi = StaticVariables.mMidi.replace("\n\n", "\n");
                     String[] midilines = StaticVariables.mMidi.trim().split("\n");
+                    int midiDelay = preferences.getMyPreferenceInt(this,"midiDelay",100);
+                    int thisDelay = midiDelay;
                     for (String ml : midilines) {
-                        if (midi!=null) {
-                            midi.sendMidi(midi.returnBytesFromHexText(ml));
-                        }
+                        // Send each bit of code with a buffer delay (user pref)
+                        new Handler().postDelayed(() -> {
+                            if (midi != null) {
+                                Log.d(TAG, "Sending message: " + ml);
+                                midi.sendMidi(midi.returnBytesFromHexText(ml));
+                            }
+                        }, thisDelay);
+                        // Prepare the delay for the next message
+                        thisDelay = thisDelay + midiDelay;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
