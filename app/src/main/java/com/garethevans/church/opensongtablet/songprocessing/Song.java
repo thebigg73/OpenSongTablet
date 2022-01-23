@@ -58,6 +58,8 @@ public class Song {
     private ArrayList<String> songSections;
     private ArrayList<String> songSectionHeadings;
     private ArrayList<String> songSectionTypes;
+    private ArrayList<String> presoOrderSongSections;
+    private ArrayList<String> presoOrderSongHeadings;
     private int currentSection =0;
     private boolean isImageSlide;
     private int pdfPageCurrent = 0;
@@ -160,6 +162,20 @@ public class Song {
     public ArrayList<String> getSongSectionHeadings() {
         if (songSectionHeadings!=null) {
             return songSectionHeadings;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+    public ArrayList<String> getPresoOrderSongSections() {
+        if (presoOrderSongSections!=null) {
+            return presoOrderSongSections;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+    public ArrayList<String> getPresoOrderSongHeadings() {
+        if (presoOrderSongHeadings!=null) {
+            return presoOrderSongHeadings;
         } else {
             return new ArrayList<>();
         }
@@ -289,6 +305,12 @@ public class Song {
     public void setSongSectionHeadings(ArrayList<String> songSectionHeadings) {
         this.songSectionHeadings = songSectionHeadings;
     }
+    public void setPresoOrderSongSections(ArrayList<String> presoOrderSongSections) {
+        this.presoOrderSongSections = presoOrderSongSections;
+    }
+    public void setPresoOrderSongHeadings(ArrayList<String> presoOrderSongHeadings) {
+        this.presoOrderSongHeadings = presoOrderSongHeadings;
+    }
     public void setIsImageSlide(boolean isImageSlide) {this.isImageSlide = isImageSlide;}
     public void setPdfPageCurrent(int pdfPageCurrent) {this.pdfPageCurrent = pdfPageCurrent;}
     public void setPdfPageCount(int pdfPageCount) {
@@ -377,6 +399,8 @@ public class Song {
         this.songSections = toCopy.songSections;
         this.songSectionHeadings = toCopy.songSectionHeadings;
         this.songSectionTypes = toCopy.songSectionTypes;
+        this.presoOrderSongSections = toCopy.presoOrderSongSections;
+        this.presoOrderSongHeadings = toCopy.presoOrderSongHeadings;
         this.currentSection = toCopy.currentSection;
         this.isImageSlide = toCopy.isImageSlide;
         this.pdfPageCurrent = toCopy.pdfPageCurrent;
@@ -390,38 +414,6 @@ public class Song {
         this.scalingFiguredOut = toCopy.scalingFiguredOut;
         this.alreadyLoading = toCopy.alreadyLoading;
     }
-
-    // This is used when comparing song objects for changes (when editing a song)
-    /*@Override
-    public boolean equals(Object obj) {
-        if (obj == null || getClass() != obj.getClass()) {
-            Log.d(TAG,"different objects");
-            return false; // Different object types or null
-        } else {
-            Song song = (Song) obj;
-            try {
-                return id == song.id && songid.equals(song.songid) && filename.equals(song.filename) &&
-                        folder.equals(song.folder) && title.equals(song.title) && author.equals(song.author) &&
-                        copyright.equals(song.copyright) && lyrics.equals(song.lyrics) && hymnnum.equals(song.hymnnum) &&
-                        ccli.equals(song.ccli) && theme.equals(song.theme) && alttheme.equals(song.alttheme) &&
-                        user1.equals(song.user1) && user2.equals(song.user2) && user3.equals(song.user3) &&
-                        key.equals(song.key) && timesig.equals(song.timesig) && aka.equals(song.aka) &&
-                        autoscrolldelay.equals(song.autoscrolldelay) && autoscrolllength.equals(song.autoscrolllength) &&
-                        tempo.equals(song.tempo) && padfile.equals(song.padfile) &&
-                        padloop.equals(song.padloop) && midi.equals(song.midi) && midiindex.equals(song.midiindex) &&
-                        capo.equals(song.capo) && capoprint.equals(song.capoprint) && customchords.equals(song.customchords) &&
-                        notes.equals(song.notes) && abc.equals(song.abc) && linkyoutube.equals(song.linkyoutube) &&
-                        linkweb.equals(song.linkweb) && linkaudio.equals(song.linkaudio) &&
-                        linkother.equals(song.linkother) && presentationorder.equals(song.presentationorder) &&
-                        filetype.equals(song.filetype);
-            } catch (Exception e) {
-                // Something was null / not set, so we want to be able to save with blanks!
-                e.printStackTrace();
-                return false;
-            }
-        }
-    }*/
-
 
     // The welcome song if there is a problem
     public Song showWelcomeSong(Context c, Song thisSong) {

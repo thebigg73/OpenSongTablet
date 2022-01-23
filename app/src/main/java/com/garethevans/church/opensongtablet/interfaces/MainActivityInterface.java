@@ -171,7 +171,7 @@ public interface MainActivityInterface {
 
     // Showcase
     ShowCase getShowCase();
-    void showTutorial(String what);
+    void showTutorial(String what,ArrayList<View> viewsToHighlight);
 
     // File work
     StorageAccess getStorageAccess();

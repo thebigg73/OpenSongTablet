@@ -48,9 +48,12 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             notifyItemRangeRemoved(0, oldSize);
         }
 
-        for (int x = 0; x < mainActivityInterface.getSong().getSongSections().size(); x++) {
+        // Because we could be using presentation order, we need to get a temp song section for the buttons
+
+
+        for (int x = 0; x < mainActivityInterface.getSong().getPresoOrderSongSections().size(); x++) {
             // bits[0] = heading, bits[1] = content - heading
-            String[] bits = splitHeadingAndContent(mainActivityInterface.getSong().getSongSections().get(x));
+            String[] bits = splitHeadingAndContent(mainActivityInterface.getSong().getPresoOrderSongSections().get(x));
 
             SongSectionInfo songSectionInfo = new SongSectionInfo();
             songSectionInfo.heading = bits[0];
@@ -59,7 +62,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             songSectionInfo.position = x;
             songSections.add(songSectionInfo);
         }
-        notifyItemRangeChanged(0, mainActivityInterface.getSong().getSongSections().size());
+        notifyItemRangeChanged(0, mainActivityInterface.getSong().getPresoOrderSongSections().size());
     }
 
     private String[] splitHeadingAndContent(String sectionContent) {
@@ -175,7 +178,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         // Open up the text for this section in a bottom sheet for editing
         TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(fragment, "SongSectionsFragment",
                 c.getString(R.string.edit_temporary), c.getString(R.string.content), null, null,
-                mainActivityInterface.getSong().getSongSections().get(section), false);
+                mainActivityInterface.getSong().getPresoOrderSongSections().get(section), false);
         textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
     }
 
@@ -199,7 +202,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         if (sectionEdited > -1) {
             try {
                 // Update the song sections
-                mainActivityInterface.getSong().getSongSections().set(sectionEdited, content);
+                mainActivityInterface.getSong().getPresoOrderSongSections().set(sectionEdited, content);
 
                 // Now edit the section card view to match
                 String[] bits = splitHeadingAndContent(content);

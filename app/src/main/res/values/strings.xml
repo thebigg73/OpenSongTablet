@@ -778,7 +778,7 @@ Check out the categories in the right hand options menu.
     <string name="importnewset">Import a set</string>
     <string name="initialisesongs_start">Initialising \'Songs\' folder -</string>
     <string name="instrument">Instrument</string>
-    <string name="intro_app">OpenSongApp uses songs created in OpenSong and displays them on your tablet screen.</string>
+    <string name="intro_app">OpenSongApp uses songs created in OpenSong and displays them on your device screen.</string>
     <string name="keepmultiline">Keep multiline compact</string>
 
 
@@ -1077,4 +1077,9 @@ Check out the categories in the right hand options menu.
     <string name="info_text_autohide">Automatically hide information bar</string>
     <string name="info_text_autohide_info">Hide once the information has been displayed and a minimum time has elapsed</string>
     <string name="show_chords_info">Display chords found in the song.</string>
+    <string name="song_sections_project">Click on a song section to send it to the connected displays</string>
+    <string name="logo_info">Toggle between the logo and the song content</string>
+    <string name="blank_screen_info">Fade in/out song content over the background</string>
+    <string name="black_screen_info">Fade in/out all views (except logo)</string>
+    <string name="project_panic">Click here to reset any connected displays</string>
 </resources>

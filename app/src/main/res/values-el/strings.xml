@@ -25,7 +25,6 @@
     <string name="autoshow_highlight">"Αυτόματη εμφάνιση σημειώσεων σήμανσης"</string>
     <string name="autostart_autoscroll">"Αύτοματη έναρξη αυτόματης κύλισης"</string>
     <string name="autostartmetronome">"Autostart μετρονόμος"</string>
-    <string name="pad_cross_fade">"Υποδοχή αυτόματης εκκίνησης"</string>
     <string name="average">"Μέσος όρος"</string>
     <string name="back">"Back"</string>
     <string name="backing_track">"Choose backing track"</string>

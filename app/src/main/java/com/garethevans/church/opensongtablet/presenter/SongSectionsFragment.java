@@ -19,11 +19,14 @@ import com.garethevans.church.opensongtablet.databinding.ModePresenterSongSectio
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.ArrayList;
+
 public class SongSectionsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private ModePresenterSongSectionsBinding myView;
+    private PresenterFragment presenterFragment;
     private final String TAG = "SongSectionsFragment";
 
     @Override
@@ -67,6 +70,8 @@ public class SongSectionsFragment extends Fragment {
         myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
 
         showSongInfo();
+
+        mainActivityInterface.updateFragment("presenterFragment_showCase",null,null);
 
         return myView.getRoot();
     }
@@ -118,4 +123,18 @@ public class SongSectionsFragment extends Fragment {
     public void updateValue(String content) {
         mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(content);
     }
+
+
+
+    public void showTutorial(ArrayList<View> viewsToHighlight) {
+        // The presenter fragment has sent the main parent views
+        // Add these ones and showcase
+        Log.d(TAG,"showTutorial");
+        if (myView!=null) {
+            viewsToHighlight.add(myView.songInfo);
+            viewsToHighlight.add(myView.recyclerView);
+            mainActivityInterface.showTutorial("presenterSongs", viewsToHighlight);
+        }
+    }
+
 }

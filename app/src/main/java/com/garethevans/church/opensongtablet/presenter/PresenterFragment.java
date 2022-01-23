@@ -17,11 +17,14 @@ import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
+
 public class PresenterFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private ModePresenterBinding myView;
+    private PageAdapter pageAdapter;
     private SongSectionsFragment songSectionsFragment;
     private SongSectionsAdapter songSectionsAdapter;
     private MediaFragment mediaFragment;
@@ -66,16 +69,19 @@ public class PresenterFragment extends Fragment {
         // Set up the the pager
         setupPager();
 
+        // Load the song
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
+        // Because we have loaded the song, figure out any presentation order requirements
+        mainActivityInterface.getSong().setPresoOrderSongSections(null);
+        mainActivityInterface.getProcessSong().matchPresentationOrder(requireContext(),
+                mainActivityInterface,mainActivityInterface.getSong());
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
                 !mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing()) {
             mainActivityInterface.fullIndex();
         }
-
-
 
         // Set up the main action listeners
         setupListeners();
@@ -89,11 +95,14 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.setFirstRun(false);
         }
 
+        // Show any showcase instructions required
+        doShowcase();
+
         return myView.getRoot();
     }
 
     private void setupPager() {
-        PageAdapter pageAdapter = new PageAdapter(mainActivityInterface.getMyFragmentManager(), this.getLifecycle());
+        pageAdapter = new PageAdapter(mainActivityInterface.getMyFragmentManager(), this.getLifecycle());
         pageAdapter.createFragment(0);
         songSectionsFragment = (SongSectionsFragment) pageAdapter.menuFragments[0];
         mediaFragment = (MediaFragment) pageAdapter.createFragment(1);
@@ -120,6 +129,8 @@ public class PresenterFragment extends Fragment {
             }
         }).attach();
 
+        showTutorial();
+
     }
 
     public void doSongLoad(String folder, String filename) {
@@ -128,6 +139,11 @@ public class PresenterFragment extends Fragment {
         mainActivityInterface.getSong().setFilename(filename);
         mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
                 mainActivityInterface.getSong(),false));
+
+        // Because we have loaded the song, figure out any presentation order requirements
+        mainActivityInterface.getSong().setPresoOrderSongSections(null);
+        mainActivityInterface.getProcessSong().matchPresentationOrder(requireContext(),
+                mainActivityInterface,mainActivityInterface.getSong());
 
         // Get the song views
         getSongViews();
@@ -148,13 +164,16 @@ public class PresenterFragment extends Fragment {
 
         displayInterface.updateDisplay("setSongContent");
         songSectionsFragment.showSongInfo();
-
     }
 
     private void getPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(), mainActivityInterface);
         mainActivityInterface.getPresenterSettings().getAllPreferences(requireContext(),mainActivityInterface);
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
+    }
+
+    private void doShowcase() {
+
     }
 
     public void getSongViews() {
@@ -174,7 +193,7 @@ public class PresenterFragment extends Fragment {
         } else {
             // A standard XML file
             mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(requireContext(), mainActivityInterface,
-                    mainActivityInterface.getSong().getLyrics(), false, true));
+                    mainActivityInterface.getSong(), false, true));
         }
     }
 
@@ -201,4 +220,13 @@ public class PresenterFragment extends Fragment {
         });
     }
 
+    public void showTutorial() {
+        // Send these views to the song sections layout so we can highlight them
+        ArrayList<View> viewsToHighlight = new ArrayList<>();
+        viewsToHighlight.add(myView.showLogo);
+        viewsToHighlight.add(myView.blankScreen);
+        viewsToHighlight.add(myView.blackScreen);
+        viewsToHighlight.add(myView.updateProjector);
+        songSectionsFragment.showTutorial(viewsToHighlight);
+    }
 }

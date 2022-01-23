@@ -429,7 +429,6 @@
     <string name="action">"Radnja"</string>
     <string name="activated">"Aktivirano / radi"</string>
     <string name="autostartmetronome">"Auto pokretanje metronoma"</string>
-    <string name="pad_cross_fade">"Auto pokretanje pada"</string>
     <string name="ccli_automatic">"Auto snimanje statistike korišćenja CCLI"</string>
     <string name="ccli_church">"Ime crkve"</string>
     <string name="ccli_licence">"Broj CCLI licence"</string>

@@ -121,7 +121,7 @@ public class PerformanceFragment extends Fragment {
 
         // Set tutorials
         Handler h = new Handler();
-        Runnable r = () -> mainActivityInterface.showTutorial("performanceView");
+        Runnable r = () -> mainActivityInterface.showTutorial("performanceView",null);
         h.postDelayed(r,1000);
 
         // MainActivity initialisation has firstRun set as true.
@@ -183,6 +183,11 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
                     mainActivityInterface.getSong(),false));
 
+            // Because we have loaded the song, figure out any presentation order requirements
+            mainActivityInterface.getSong().setPresoOrderSongSections(null);
+            mainActivityInterface.getProcessSong().matchPresentationOrder(requireContext(),
+                    mainActivityInterface,mainActivityInterface.getSong());
+
             mainActivityInterface.moveToSongInSongMenu();
 
             // Now animate out the song and after a delay start the next bit of the processing
@@ -210,7 +215,6 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
         myView.songSheetTitle.removeAllViews();
         myView.recyclerView.removeAllViews();
-
         // Set the default color
         myView.pageHolder.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
 
@@ -220,14 +224,6 @@ public class PerformanceFragment extends Fragment {
         int[] screenSizes = mainActivityInterface.getDisplayMetrics();
         screenWidth = screenSizes[0];
         screenHeight = screenSizes[1] - mainActivityInterface.getAppActionBar().getActionBarHeight();
-
-        // Remove any other adapters
-        //stageSectionAdapter = null;
-        //pdfPageAdapter = null;
-        //myView.recyclerView.setAdapter(null);
-        //myView.recyclerView.removeAllViews();
-        //myView.recyclerView.setVisibility(View.GONE);
-        //myView.recyclerView.removeListeners();
 
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // We populate the recyclerView with the pages of the PDF
@@ -265,7 +261,7 @@ public class PerformanceFragment extends Fragment {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
             mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
                     setSongInLayout(requireContext(), mainActivityInterface,
-                            mainActivityInterface.getSong().getLyrics(), false, false));
+                            mainActivityInterface.getSong(), false, false));
 
             // Prepare the song sheet header if required, if not, make it null
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "songSheet", false)) {

@@ -25,7 +25,6 @@
     <string name="autoshow_highlight">"Автопоказ заметок маркером"</string>
     <string name="autostart_autoscroll">Автозапуск автопрокрутки</string>
     <string name="autostartmetronome">"Автозапуск метронома"</string>
-    <string name="pad_cross_fade">"Автозапуск подложки"</string>
     <string name="average">"В среднем"</string>
     <string name="back">"Назад"</string>
     <string name="backing_track">"Выберите бэк-трек"</string>

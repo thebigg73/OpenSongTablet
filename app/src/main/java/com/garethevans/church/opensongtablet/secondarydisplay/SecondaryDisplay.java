@@ -691,7 +691,7 @@ public class SecondaryDisplay extends Presentation {
     }
     private void setSectionViews() {
         mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
-                setSongInLayout(c, mainActivityInterface, mainActivityInterface.getSong().getLyrics(),
+                setSongInLayout(c, mainActivityInterface, mainActivityInterface.getSong(),
                         false, true));
 
         // Draw them to the screen test layout for measuring

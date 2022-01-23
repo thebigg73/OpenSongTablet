@@ -474,7 +474,7 @@ public class ExportFragment extends Fragment {
 
         // Create the content for the section views.
         sectionViewsPDF = mainActivityInterface.getProcessSong().
-                setSongInLayout(c,mainActivityInterface,thisSong.getLyrics(),true, false);
+                setSongInLayout(c,mainActivityInterface,thisSong,true, false);
 
         // Now we have the views, add them to the temp layout and set up a view tree listener to measure
         ViewTreeObserver sectionsVTO = myView.hiddenSections.getViewTreeObserver();

@@ -1108,84 +1108,98 @@ public class ProcessSong {
     }
 
 
-    private String[] matchPresentationOrder(Context c, MainActivityInterface mainActivityInterface, String[] currentSections) {
+    public void matchPresentationOrder(Context c, MainActivityInterface mainActivityInterface, Song song) {
         // presentationOrder probably looks like "Intro V1 V2 C V3 C C Guitar Solo C Outro"
         // We need to identify the sections in the song that are in here
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
         // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
 
-        StringBuilder tempPresentationOrder = new StringBuilder(mainActivityInterface.getSong().
-                getPresentationorder() + " ");
+        // If we've already done this processing, don't do it again.
+        if (song.getPresoOrderSongSections()==null || song.getPresoOrderSongSections().size()==0) {
 
-        // Get the currentSectionLabels - these will change after we reorder the song
-        getSectionHeadings(mainActivityInterface.getSong());
+            if (mainActivityInterface.getPresenterSettings().getUsePresentationOrder() &&
+                    song.getPresentationorder() != null && !song.getPresentationorder().isEmpty()) {
+                // Update to match the presentation order
+                ArrayList<String> newSections = new ArrayList<>();
+                ArrayList<String> newHeaders = new ArrayList<>();
 
-        StringBuilder errors = new StringBuilder();
+                StringBuilder tempPresentationOrder = new StringBuilder(song.getPresentationorder() + " ");
+                StringBuilder errors = new StringBuilder();
 
-        // Go through each tag in the song
-        for (String tag : mainActivityInterface.getSong().getSongSectionHeadings()) {
-            if (tag.equals("") || tag.equals(" ")) {
-                Log.d(TAG, "Empty search");
-            } else if (tempPresentationOrder.toString().contains(tag)) {
-                tempPresentationOrder = new StringBuilder(tempPresentationOrder.toString().
-                        replace(tag + " ", "<__" + tag + "__>"));
+                // Go through each tag in the song
+                for (String tag : song.getSongSectionHeadings()) {
+                    Log.d(TAG, "PresentationOrder:tag=" + tag);
+                    if (tag.equals("") || tag.equals(" ")) {
+                        Log.d(TAG, "Empty search");
+                    } else if (tempPresentationOrder.toString().contains(tag)) {
+                        tempPresentationOrder = new StringBuilder(tempPresentationOrder.toString().
+                                replace(tag + " ", "<__" + tag + "__>"));
+                    } else {
+                        // IV - this logic avoids a trailing new line
+                        if (errors.length() > 0) {
+                            errors.append(("\n"));
+                        }
+                        errors.append(tag).append(" - not found in presentation order");
+                    }
+                }
+                Log.d(TAG, "PresentationOrder: tempPresentationOrder=" + tempPresentationOrder);
+                // tempPresentationOrder now looks like "Intro <__V1__>V2 <__C__><__V3__><__C__><__C__><__Guitar Solo__><__C__>Outro "
+                // Assuming V2 and Outro aren't in the song anymore
+                // Split the string by <__
+                String[] tempPresOrderArray = tempPresentationOrder.toString().split("<__");
+                // tempPresOrderArray now looks like "Intro ", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
+                // So, if entry doesn't contain __> it isn't in the song
+                // Also, anything after __> isn't in the song
+                for (int d = 0; d < tempPresOrderArray.length; d++) {
+                    if (!tempPresOrderArray[d].contains("__>")) {
+                        if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
+                            if (errors.length() > 0) {
+                                errors.append(("\n"));
+                            }
+                            errors.append(tempPresOrderArray[d]).append(" - not found in song");
+                        }
+                        tempPresOrderArray[d] = "";
+                        // tempPresOrderArray now looks like "", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
+                    } else {
+                        String goodbit = tempPresOrderArray[d].substring(0, tempPresOrderArray[d].indexOf("__>"));
+                        String badbit = tempPresOrderArray[d].replace(goodbit + "__>", "");
+                        tempPresOrderArray[d] = goodbit;
+                        if (!badbit.equals("") && !badbit.equals(" ")) {
+                            if (errors.length() > 0) {
+                                errors.append(("\n"));
+                            }
+                            errors.append(badbit).append(" - not found in song");
+                        }
+                        // tempPresOrderArray now looks like "", "V1", "C", "V3", "C", "C", "Guitar Solo", "C"
+                    }
+                }
+
+                for (String bit : tempPresOrderArray) {
+                    Log.d(TAG, "PresentationOrder: tempPresOrderArray[bit]=" + bit);
+                }
+
+                // Go through the tempPresOrderArray and add the sections back together
+                for (String aTempPresOrderArray : tempPresOrderArray) {
+                    if (!aTempPresOrderArray.equals("")) {
+                        for (int a = 0; a < song.getSongSectionHeadings().size(); a++) {
+                            if (song.getSongSectionHeadings().get(a).trim().equals(aTempPresOrderArray.trim())) {
+                                newSections.add(song.getSongSections().get(a));
+                                newHeaders.add(song.getSongSectionHeadings().get(a));
+                            }
+                        }
+                    }
+                }
+
+                // Display any errors
+                mainActivityInterface.getShowToast().doIt(c, errors.toString());
+                song.setPresoOrderSongSections(newSections);
+                song.setPresoOrderSongHeadings(newHeaders);
             } else {
-                // IV - this logic avoids a trailing new line
-                if (errors.length() > 0) {
-                    errors.append(("\n"));
-                }
-                errors.append(tag).append(" - not found in presentation order");
+                // Not using presentation order, so just return what we have
+                song.setPresoOrderSongSections(song.getSongSections());
+                song.setPresoOrderSongHeadings(song.getSongSectionHeadings());
             }
         }
-
-        // tempPresentationOrder now looks like "Intro <__V1__>V2 <__C__><__V3__><__C__><__C__><__Guitar Solo__><__C__>Outro "
-        // Assuming V2 and Outro aren't in the song anymore
-        // Split the string by <__
-        String[] tempPresOrderArray = tempPresentationOrder.toString().split("<__");
-        // tempPresOrderArray now looks like "Intro ", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
-        // So, if entry doesn't contain __> it isn't in the song
-        // Also, anything after __> isn't in the song
-        for (int d = 0; d < tempPresOrderArray.length; d++) {
-            if (!tempPresOrderArray[d].contains("__>")) {
-                if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
-                    if (errors.length() > 0) {
-                        errors.append(("\n"));
-                    }
-                    errors.append(tempPresOrderArray[d]).append(" - not found in song");
-                }
-                tempPresOrderArray[d] = "";
-                // tempPresOrderArray now looks like "", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
-            } else {
-                String goodbit = tempPresOrderArray[d].substring(0, tempPresOrderArray[d].indexOf("__>"));
-                String badbit = tempPresOrderArray[d].replace(goodbit + "__>", "");
-                tempPresOrderArray[d] = goodbit;
-                if (!badbit.equals("") && !badbit.equals(" ")) {
-                    if (errors.length() > 0) {
-                        errors.append(("\n"));
-                    }
-                    errors.append(badbit).append(" - not found in song");
-                }
-                // tempPresOrderArray now looks like "", "V1", "C", "V3", "C", "C", "Guitar Solo", "C"
-            }
-        }
-
-        // Go through the tempPresOrderArray and add the sections back together
-        ArrayList<String> presentationSectionsList = new ArrayList<>();
-        for (String aTempPresOrderArray : tempPresOrderArray) {
-            if (!aTempPresOrderArray.equals("")) {
-                for (int a = 0; a < mainActivityInterface.getSong().getSongSectionHeadings().size(); a++) {
-                    if (mainActivityInterface.getSong().getSongSectionHeadings().get(a).trim().equals(aTempPresOrderArray.trim())) {
-                        presentationSectionsList.add(currentSections[a]);
-                    }
-                }
-            }
-        }
-        String[] presentationSections = new String[presentationSectionsList.size()];
-        presentationSectionsList.toArray(presentationSections);
-
-        // Display any errors
-        mainActivityInterface.getShowToast().doIt(c,errors.toString());
-        return presentationSections;
     }
 
 
@@ -1257,12 +1271,99 @@ public class ProcessSong {
         }
     }
 
-    public ArrayList<View> setSongInLayout(Context c, MainActivityInterface mainActivityInterface,
-                                           String string, boolean asPDF, boolean presentation) {
-        ArrayList<View> sectionViews = new ArrayList<>();
+    private void processSongIntoSections(Context c, MainActivityInterface mainActivityInterface,
+                                         Song song, boolean presentation) {
+        // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
+        // 1. Get a temporary version of the lyrics (as we are going to process them)
+        String lyrics = song.getLyrics();
+
+        // 2. Check for multiline verse formatting e.g. [V] 1. 2. etc.
+        lyrics = fixMultiLineFormat(c, mainActivityInterface, lyrics);
+
+        // 3. Go through the song lyrics and get any section headers.  These get added to the song object
+        song.setSongSectionHeadings(getSectionHeadings(lyrics));
+
+        // 4. Prepare for line splits: | are relevant to Presenter mode only without chord display
+        String lineSplit = " ";
+        if (presentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords()) {
+            lineSplit = "\n";
+        }
+
+        // 5. Prepare for section splits: || are relevant to presentation and Stage mode.
+        // If sectionSplit is ║ is used to test for further processing later.
+        String sectionSplit = "";
+        if (presentation || mainActivityInterface.getMode().equals("Stage")) {
+            sectionSplit = "║";
+        }
+
+        // 6. Prepare for double new line:  We split at \n\n but not for scripture
+        String doubleNewlineSplit = "\n\n";
+        if (!mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture))) {
+            doubleNewlineSplit = "§";
+        }
+
+        // 7. Process || and | split markers on lyric lines
+        // Add a trailing ¶ to force a split behaviour that copes with a trailing new line!
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String line : (lyrics+"¶").split("\n")) {
+            // IV - Use leading \n as we can be certain it is safe to remove later
+            stringBuilder.append("\n");
+            if (line.startsWith(" ")) {
+                line = line
+                        .replace("||", sectionSplit)
+                        .replace("|", lineSplit);
+            }
+            // Add it back up
+            stringBuilder.append(line);
+        }
+        lyrics = stringBuilder.toString()
+                .replace("-!!", "")
+                // --- Process new section markers
+                .replace("\n ---","\n[]")
+                .replace("\n---","\n[]")
+                .substring(1).replace("¶", "")
+                // Prevent empty lines
+                .replace("\n\n", doubleNewlineSplit)
+                .replace("\n[", "§[")
+                .replace("§\n", "§")
+                .replace("\n§", "§")
+                .replace("§ §", "§")
+                .replace("§§", "§");
+        //.split("§");
+
+        // Next up we go through the lyrics and group lines that should be in a table for alignment purposes
+        if (presentation) {
+            lyrics = makeGroups(lyrics, mainActivityInterface.getPresenterSettings().getPresoShowChords());
+        } else {
+            lyrics = makeGroups(lyrics, displayChords);
+        }
+        // Next we generate the split points for sections
+        lyrics = makeSections(lyrics);
+
+        // Split into sections and process each separately
+        String[] sections = lyrics.split("____SPLIT____");
+
+        // Build the songSections for later recall
+        // The song sections are not the views (which can have sections repeated using presentationOrder
         ArrayList<String> songSections = new ArrayList<>();
+        for (String thisSection:sections) {
+            thisSection = thisSection.replace("____groupline____","\n");
+            if (!thisSection.trim().isEmpty()) {
+                songSections.add(thisSection);
+            }
+        }
+        song.setSongSections(songSections);
+    }
+
+    public ArrayList<View> setSongInLayout(Context c, MainActivityInterface mainActivityInterface,
+                                           Song song, boolean asPDF, boolean presentation) {
+        ArrayList<View> sectionViews = new ArrayList<>();
         ArrayList<Integer> sectionColors = new ArrayList<>();
 
+        // First we process the song (could be the loaded song, or a temp song - that's why we take a reference)
+        processSongIntoSections(c,mainActivityInterface,song,presentation);
+
+        // Now we deal with creating the views from the available sections
         int backgroundColor;
         int textColor;
         if (presentation) {
@@ -1276,156 +1377,84 @@ public class ProcessSong {
             textColor = mainActivityInterface.getMyThemeColors().getLyricsTextColor();
         }
 
-        // This goes through processing the song
+        // We also consider any presentation order that is set
+        matchPresentationOrder(c,mainActivityInterface,song);
 
-        // First check for multiverse/multiline formatting
-        string = fixMultiLineFormat(c, mainActivityInterface, string);
-
-        // Deal with line splits.  Line splits | are relevant to presentation
-        String lineSplit = " ";
-        if (presentation && !mainActivityInterface.getPresenterSettings().getPresoShowChords()) {
-            lineSplit = "\n";
-        }
-
-        // Sections splits || are relevant to presentation and Stage mode.
-        // If sectionSplit is ║ is used to test for further processing later.
-        String sectionSplit = "";
-        if (presentation || mainActivityInterface.getMode().equals("Stage")) {
-            sectionSplit = "║";
-        }
-
-        // We split at \n\n but not for scripture
-        String doubleNewlineSplit = "\n\n";
-        if (!mainActivityInterface.getSong().getFolder().contains(c.getResources().getString(R.string.scripture))) {
-            doubleNewlineSplit = "§";
-        }
-
-        // Process || and | split markers on lyric lines
-        // Add a trailing ¶ to force a split behaviour that copes with a trailing new line!
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String line : (string+"¶").split("\n")) {
-            // IV - Use leading \n as we can be certain it is safe to remove later
-            stringBuilder.append("\n");
-            if (line.startsWith(" ")) {
-                line = line
-                        .replace("||", sectionSplit)
-                        .replace("|", lineSplit);
-            }
-            // Add it back up
-            stringBuilder.append(line);
-        }
-
-        string = stringBuilder.toString()
-                .replace("-!!", "")
-                // --- Process new section markers
-                .replace("\n ---","\n[]")
-                .replace("\n---","\n[]")
-                .substring(1).replace("¶", "")
-                // Prevent empty lines
-                .replace("\n\n", doubleNewlineSplit)
-                .replace("\n[", "§[")
-                .replace("§\n", "§")
-                .replace("\n§", "§")
-                .replace("§ §", "§")
-                .replace("§§", "§");
-                //.split("§");
-
-
-        // Next up we go through the lyrics and group lines that should be in a table for alignment purposes
-        if (presentation) {
-            string = makeGroups(string, mainActivityInterface.getPresenterSettings().getPresoShowChords());
-        } else {
-            string = makeGroups(string, displayChords);
-        }
-        // Next we generate the split points for sections
-        string = makeSections(string);
-
-        // Split into sections and process each separately
-        String[] sections = string.split("____SPLIT____");
-
-        // Now we have the sections, check them against any presentation order
-        if (mainActivityInterface.getPresenterSettings().getUsePresentationOrder() &&
-                mainActivityInterface.getSong().getPresentationorder()!=null &&
-            !mainActivityInterface.getSong().getPresentationorder().isEmpty()) {
-            sections = matchPresentationOrder(c,mainActivityInterface,sections);
-        }
-
-        for (int sect = 0; sect < sections.length; sect++) {
-            String section = sections[sect];
-            if (trimSections) {
-                section = section.trim();
-            }
-            if (!presentation && addSectionSpace && sect != (sections.length - 1)) { // Don't do for last section
-                section = section + "\n ";
-            }
-            LinearLayout linearLayout = newLinearLayout(c); // transparent color
-            if (presentation) {
-                linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
-            }
-
-            // Add this section to the array (so it can be called later for presentation)
-            String sectionText = section.replace("____groupline____","\n");
-            if (!sectionText.trim().isEmpty()) {
-                Log.d(TAG, "section:" + section.replace("____groupline____", "\n"));
-                songSections.add(sectionText);
-
-                // Now split by line
-                String[] lines = section.split("\n");
-                for (String line : lines) {
-                    // Get the text stylings
-                    String linetype = getLineType(line);
-                    if (presentation && linetype.equals("heading")) {
-                        // Don't need this for the presentation view
-                        line = "";
-                    }
-                    if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
-                        backgroundColor = getBGColor(c, mainActivityInterface, line);
-                    }
-                    Typeface typeface = getTypeface(mainActivityInterface, presentation, linetype);
-                    float size = getFontSize(linetype);
-                    if (!asPDF && !presentation) {
-                        textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
-                                getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
-                    }
-
-                    if (line.contains("____groupline____")) {
-                        if (asPDF) {
-                            linearLayout.addView(groupTable(c, mainActivityInterface, line, Color.BLACK, Color.BLACK,
-                                    Color.TRANSPARENT, false));
-                        } else if (presentation) {
-                            linearLayout.addView(groupTable(c, mainActivityInterface, line,
-                                    mainActivityInterface.getMyThemeColors().getPresoFontColor(),
-                                    mainActivityInterface.getMyThemeColors().getPresoFontColor(),
-                                    mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
-                        } else {
-                            linearLayout.addView(groupTable(c, mainActivityInterface, line,
-                                    mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
-                                    mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
-                                    mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false));
-                        }
-                    } else {
-                        if (asPDF) {
-                            linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
-                                    size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
-
-                        } else if (!presentation || !line.isEmpty()) {
-                            linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
-                                    size, textColor,
-                                    mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
-                                    mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation));
-                        }
-                    }
+        for (int sect = 0; sect < song.getPresoOrderSongSections().size(); sect++) {
+            String section = song.getPresoOrderSongSections().get(sect);
+            section = section.replace("____groupline____","\n");
+            Log.d(TAG,"section to process view: "+section);
+            if (!section.isEmpty()) {
+                if (trimSections) {
+                    section = section.trim();
+                }
+                if (!presentation && addSectionSpace && sect != (song.getPresoOrderSongSections().size() - 1)) { // Don't do for last section
+                    section = section + "\n ";
+                }
+                LinearLayout linearLayout = newLinearLayout(c); // transparent color
+                if (presentation) {
+                    linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
                 }
 
-                linearLayout.setBackgroundColor(backgroundColor);
-                sectionColors.add(backgroundColor);
+                // Add this section to the array (so it can be called later for presentation)
+                if (!section.trim().isEmpty()) {
+                    // Now split by line
+                    String[] lines = section.split("\n");
+                    for (String line : lines) {
+                        // Get the text stylings
+                        String linetype = getLineType(line);
+                        if (presentation && linetype.equals("heading")) {
+                            // Don't need this for the presentation view
+                            line = "";
+                        }
+                        if (!asPDF && !presentation && (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab"))) {
+                            backgroundColor = getBGColor(c, mainActivityInterface, line);
+                        }
+                        Typeface typeface = getTypeface(mainActivityInterface, presentation, linetype);
+                        float size = getFontSize(linetype);
+                        if (!asPDF && !presentation) {
+                            textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
+                                    getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
+                        }
 
-                sectionViews.add(linearLayout);
+                        if (line.contains("____groupline____")) {
+                            if (asPDF) {
+                                linearLayout.addView(groupTable(c, mainActivityInterface, line, Color.BLACK, Color.BLACK,
+                                        Color.TRANSPARENT, false));
+                            } else if (presentation) {
+                                linearLayout.addView(groupTable(c, mainActivityInterface, line,
+                                        mainActivityInterface.getMyThemeColors().getPresoFontColor(),
+                                        mainActivityInterface.getMyThemeColors().getPresoFontColor(),
+                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
+                            } else {
+                                linearLayout.addView(groupTable(c, mainActivityInterface, line,
+                                        mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
+                                        mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
+                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false));
+                            }
+                        } else {
+                            if (asPDF) {
+                                linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
+                                        size, textColor, Color.TRANSPARENT, Color.TRANSPARENT, presentation));
+
+                            } else if (!presentation || !line.isEmpty()) {
+                                linearLayout.addView(lineText(c, mainActivityInterface, linetype, line, typeface,
+                                        size, textColor,
+                                        mainActivityInterface.getMyThemeColors().getHighlightHeadingColor(),
+                                        mainActivityInterface.getMyThemeColors().getHighlightChordColor(), presentation));
+                            }
+                        }
+                    }
+
+                    linearLayout.setBackgroundColor(backgroundColor);
+                    sectionColors.add(backgroundColor);
+
+                    sectionViews.add(linearLayout);
+                }
             }
         }
-        mainActivityInterface.getSong().setSongSections(songSections);
-        mainActivityInterface.setSectionColors(sectionColors);
 
+        mainActivityInterface.setSectionColors(sectionColors);
         return sectionViews;
     }
 
@@ -2592,11 +2621,12 @@ public class ProcessSong {
         return themeString;
     }
 
-    public void getSectionHeadings(Song thisSong) {
+    public ArrayList<String> getSectionHeadings(String lyrics) {
         // Get any named section headings i.e. [...]
         // These are used to create buttons in the edit song tags section
+        // All sections are obtained regardless if the user doesn't want them in presentationOrder
         String nums = "0123456789";
-        String[] bits = thisSong.getLyrics().split("\\[");
+        String[] bits = lyrics.split("\\[");
         ArrayList<String> sections = new ArrayList<>();
         boolean groupSections = false;
         for (String bit:bits) {
@@ -2618,6 +2648,6 @@ public class ProcessSong {
                 }
             }
         }
-        thisSong.setSongSectionHeadings(sections);
+        return sections;
     }
 }

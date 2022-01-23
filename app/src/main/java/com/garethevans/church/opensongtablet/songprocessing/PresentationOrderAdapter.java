@@ -41,8 +41,11 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         recyclerInterface = (RecyclerInterface) bottomSheet;
 
         // Process the song and get for any existing tags to choose from
-        mainActivityInterface.getProcessSong().getSectionHeadings(
-                        mainActivityInterface.getTempSong());
+        if (mainActivityInterface.getTempSong().getPresoOrderSongSections()==null ||
+        mainActivityInterface.getTempSong().getPresoOrderSongSections().isEmpty()) {
+            mainActivityInterface.getTempSong().setSongSectionHeadings(mainActivityInterface.getProcessSong().getSectionHeadings(
+                    mainActivityInterface.getTempSong().getLyrics()));
+        }
 
         // If tags are duplicated, warn the user
         Set<String> check = new HashSet<>(mainActivityInterface.getTempSong().getSongSectionHeadings());
@@ -61,8 +64,6 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
             }
         }
     }
-
-
 
     @NonNull
     @Override

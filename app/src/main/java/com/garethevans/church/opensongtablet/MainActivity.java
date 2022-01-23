@@ -155,6 +155,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
@@ -523,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 hideActionButton(true);
                 setWindowFlags();
                 if (setSongMenuFragment()) {
-                    showTutorial("songsetMenu");
+                    showTutorial("songsetMenu",null);
                 }
                 showHideActionBar();
             }
@@ -744,6 +746,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "confirmed_EditSongFragmentTags":
                     ((EditSongFragmentTags) callingFragment).removeTags(arguments);
+                    break;
+
+                case "presenterFragment_showCase":
+                    if (presenterFragment!=null) {
+                        presenterFragment.showTutorial();
+                    }
                     break;
 
                 case "presenterFragmentSettings":
@@ -996,43 +1004,103 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         appActionBar.updateActionBarSettings(this,this,prefName,intval,floatval,isvisible);
     }
     @Override
-    public void showTutorial(String what) {
+    public void showTutorial(String what, ArrayList<View> viewsToHighlight) {
+        MaterialShowcaseView.resetAll(this);
         if (settingsButton==null) {
             invalidateOptionsMenu();
         }
         initialiseArrayLists();
+
+        String whichShowcase;
         switch (what) {
             case "performanceView":
-                // Try to get the hamburger icon
+            default:
+                whichShowcase = "performanceMode";
+                // The hamburger (song/set menu)
                 if (myView.toolBar.getRoot().getChildCount() > 2) {
                     final View view = myView.toolBar.getRoot().getChildAt(2);
                     targets.add(view);
                     infos.add("Open the menu to view and manage your songs and sets");
-                }
-
-                for (int i = 0; i < myView.toolBar.getRoot().getChildCount(); ++i) {
-                    final View child = myView.toolBar.getRoot().getChildAt(i);
-                    if (child != null && child.getClass().toString().contains("ImageView")) {
-                        targets.add(child);
-                        infos.add("Open the menu to view and manage your songs and sets");
+                } else {
+                    for (int i = 0; i < myView.toolBar.getRoot().getChildCount(); ++i) {
+                        final View child = myView.toolBar.getRoot().getChildAt(i);
+                        if (child != null && child.getClass().toString().contains("ImageView")) {
+                            targets.add(child);
+                            infos.add("Open the menu to view and manage your songs and sets");
+                        }
                     }
                 }
 
                 targets.add(findViewById(R.id.menuSettings));
                 infos.add(getString(R.string.extra_settings));
+                dismisses.add(null);
+                dismisses.add(null);
+                rects.add(false);
+                rects.add(false);
                 targets.add(myView.pageButtonRight.actionFAB);
                 infos.add(getString(R.string.action_button_info));
                 dismisses.add(null);
-                dismisses.add(null);
-                dismisses.add(null);
                 rects.add(false);
-                rects.add(false);
-                rects.add(false);
-                showCase.sequenceShowCase(this, targets, dismisses, infos, rects, "performanceMode");
+                break;
 
+            case "presenterSongs":
+                whichShowcase = "presenterSongs";
+                // The hamburger (song/set menu)
+                if (myView.toolBar.getRoot().getChildCount() > 2) {
+                    final View view = myView.toolBar.getRoot().getChildAt(2);
+                    targets.add(view);
+                    infos.add("Open the menu to view and manage your songs and sets");
+                } else {
+                    for (int i = 0; i < myView.toolBar.getRoot().getChildCount(); ++i) {
+                        final View child = myView.toolBar.getRoot().getChildAt(i);
+                        if (child != null && child.getClass().toString().contains("ImageView")) {
+                            Log.d(TAG,"child.getClass()="+child.getClass());
+                            targets.add(child);
+                            infos.add("Open the menu to view and manage your songs and sets");
+                        }
+                    }
+                }
+                targets.add(findViewById(R.id.menuSettings));
+                infos.add(getString(R.string.extra_settings));
+                dismisses.add(null);
+                dismisses.add(null);
+                rects.add(false);
+                rects.add(false);
+                // This relies on views having been sent
+                if (viewsToHighlight!=null && viewsToHighlight.size()>6) {
+                    targets.add(viewsToHighlight.get(0));
+                    infos.add(getString(R.string.song_sections));
+                    dismisses.add(null);
+                    rects.add(true);
+                    targets.add(viewsToHighlight.get(1));
+                    infos.add(getString(R.string.logo_info));
+                    dismisses.add(null);
+                    rects.add(true);
+                    targets.add(viewsToHighlight.get(2));
+                    infos.add(getString(R.string.blank_screen_info));
+                    dismisses.add(null);
+                    rects.add(true);
+                    targets.add(viewsToHighlight.get(3));
+                    infos.add(getString(R.string.black_screen_info));
+                    dismisses.add(null);
+                    rects.add(true);
+                    targets.add(viewsToHighlight.get(4));
+                    infos.add(getString(R.string.project_panic));
+                    dismisses.add(null);
+                    rects.add(true);
+                    targets.add(viewsToHighlight.get(5));
+                    infos.add(getString(R.string.song_title)+"\n"+getString(R.string.long_press)+" = "+getString(R.string.edit_song));
+                    dismisses.add(null);
+                    rects.add(true);
+                    targets.add(viewsToHighlight.get(6));
+                    infos.add(getString(R.string.song_sections_project));
+                    dismisses.add(null);
+                    rects.add(true);
+                }
                 break;
             case "songsetMenu":
                 // Initialise the arraylists
+                whichShowcase = "songsetMenu";
                 initialiseArrayLists();
                 targets.add(Objects.requireNonNull(myView.menuTop.tabs.getTabAt(0)).view);
                 targets.add(Objects.requireNonNull(myView.menuTop.tabs.getTabAt(1)).view);
@@ -1046,8 +1114,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 rects.add(true);
                 rects.add(true);
                 rects.add(false);
-                showCase.sequenceShowCase(this, targets, dismisses, infos, rects, "songSetMenu");
+                break;
+
         }
+
+        showCase.sequenceShowCase(this, targets, dismisses, infos, rects, whichShowcase);
+
     }
     private void initialiseArrayLists() {
         targets = new ArrayList<>();
