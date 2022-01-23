@@ -532,4 +532,5 @@
     <string name="information_bar_opacity">Nieprzezroczystość paska informacyjnego</string>
     <string name="presoShowBackground">Tło</string>
     <string name="nearby_large_file">Udostępniam ten duży plik utworu</string>
+    <string name="midi_delay">Bufor opóźnienia MIDI</string>
 </resources>

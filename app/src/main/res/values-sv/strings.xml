@@ -532,4 +532,5 @@
     <string name="autorepeat_time">Autorepeat-tid (från pedalinställningar)</string>
     <string name="presoShowBackground">Bakgrund</string>
     <string name="nearby_large_file">Denna stora låtfil delas</string>
+    <string name="midi_delay">MIDI fördröjningsbuffert</string>
 </resources>

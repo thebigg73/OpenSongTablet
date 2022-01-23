@@ -532,4 +532,5 @@
     <string name="information_bar_opacity">Opacidade da barra de informações</string>
     <string name="presoShowBackground">Fundo</string>
     <string name="nearby_large_file">Este grande arquivo de música está sendo compartilhado</string>
+    <string name="midi_delay">Buffer de atraso MIDI</string>
 </resources>

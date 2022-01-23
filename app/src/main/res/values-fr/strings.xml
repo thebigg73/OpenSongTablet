@@ -532,4 +532,5 @@
     <string name="information_bar_opacity">Opacité de la barre d\'informations</string>
     <string name="presoShowBackground">Fon</string>
     <string name="nearby_large_file">Ce gros fichier de chanson est en cours de partage</string>
+    <string name="midi_delay">Tampon de retard MIDI</string>
 </resources>

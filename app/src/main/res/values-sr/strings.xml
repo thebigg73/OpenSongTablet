@@ -532,4 +532,5 @@
     <string name="autorepeat_time">Vreme automatskog ponavljanja (iz podešavanja pedale)</string>
     <string name="presoShowBackground">Pozadina</string>
     <string name="nearby_large_file">" Ова велика датотека песме се дели"</string>
+    <string name="midi_delay">MIDI bafer kašnjenja</string>
 </resources>

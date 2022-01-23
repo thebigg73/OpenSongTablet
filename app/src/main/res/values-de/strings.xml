@@ -532,4 +532,5 @@
     <string name="information_bar_opacity">Deckkraft der Informationsleiste</string>
     <string name="presoShowBackground">Hintergrund</string>
     <string name="nearby_large_file">Diese große Songdatei wird geteilt</string>
+    <string name="midi_delay">MIDI-Verzögerungspuffer</string>
 </resources>

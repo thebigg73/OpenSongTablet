@@ -532,4 +532,5 @@
     <string name="autorepeat_time">Tempo di ripetizione automatica (dalle impostazioni del pedale)</string>
     <string name="presoShowBackground">Sfon</string>
     <string name="nearby_large_file">Questo file di grandi dimensioni è stato condiviso</string>
+    <string name="midi_delay">Buffer di ritardo MIDI</string>
 </resources>

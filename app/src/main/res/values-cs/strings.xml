@@ -532,4 +532,5 @@
     <string name="autorepeat_time">Čas automatického opakování (z nastavení pedálu)</string>
     <string name="presoShowBackground">Pozadí</string>
     <string name="nearby_large_file">Tento velký soubor písní je sdílen</string>
+    <string name="midi_delay">MIDI delay buffer</string>
 </resources>
