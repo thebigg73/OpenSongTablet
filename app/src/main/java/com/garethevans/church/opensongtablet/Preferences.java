@@ -279,6 +279,7 @@ public class Preferences extends Activity {
     metronomePan                    String      The panning of the metronome sound L, C, R (def:C)
     metronomeVol                    float       The volume of the metronome (def:0.5f)
     metronomeShowVisual             boolean     Should the metronome be visual (flash action bar) (def:false)
+    midiDelay                       int         The delay buffer before and between sending song midi commmands in ms (def:100)
     midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically (def:false)
     multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact (def:false)
     nearbyHostMenuOnly              boolean     Should the host device only accept new client connections when the Connect menu is open (def:true)

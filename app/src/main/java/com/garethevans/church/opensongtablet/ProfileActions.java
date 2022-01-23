@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
+import static android.provider.DocumentsContract.EXTRA_INITIAL_URI;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -18,8 +20,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import static android.provider.DocumentsContract.EXTRA_INITIAL_URI;
 
 class ProfileActions {
 
@@ -1192,6 +1192,11 @@ class ProfileActions {
                         case "visualmetronome":            // Old preference
                             //metronomeShowVisual             boolean     Should the metronome be visual (flash action bar)
                             preferences.setMyPreferenceBoolean(c,"metronomeShowVisual",getBooleanValue(xppValue,false));
+                            break;
+
+                        case "midiDelay":           // New preference
+                            //midiDelay                       int         The delay buffer before and between sending song midi commmands in ms (def:100)
+                            preferences.setMyPreferenceInt(c, "midiDelay", getIntegerValue(xppValue, 100));
                             break;
 
                         case "midiSendAuto":        // New preference
