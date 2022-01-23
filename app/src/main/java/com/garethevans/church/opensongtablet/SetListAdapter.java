@@ -100,12 +100,12 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             // Get set position
             boolean issue = false;
             if (item > 0 && StaticVariables.mSet.length >= item - 1) {
-                StaticVariables.previousSongInSet = StaticVariables.mSet[item - 1];
+                StaticVariables.previousSongInSet = StaticVariables.mSetList[item - 1];
             } else {
                 issue = true;
             }
-            if (item != StaticVariables.setSize - 1 && StaticVariables.mSet.length>(item+1)) {
-                StaticVariables.nextSongInSet = StaticVariables.mSet[item + 1];
+            if (item != StaticVariables.setSize - 1 && StaticVariables.mSetList.length > (item + 1)) {
+                StaticVariables.nextSongInSet = StaticVariables.mSetList[item + 1];
             } else {
                 issue = true;
             }

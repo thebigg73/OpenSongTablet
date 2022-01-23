@@ -14,7 +14,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PopUpCustomPadsFragment extends DialogFragment {
 
@@ -87,6 +89,13 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         preferences = new Preferences();
 
         padfiles = storageAccess.listFilesInFolder(getContext(), preferences, "Pads", "");
+        try {
+            Collator coll = Collator.getInstance(StaticVariables.locale);
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(padfiles, coll);
+        } catch (Exception e) {
+            // Error sorting
+        }
         padfiles.add(0,getString(R.string.pad_auto));
         ArrayAdapter<String> aa = new ArrayAdapter<>(requireContext(),R.layout.my_spinner,padfiles);
         padAb.setAdapter(aa);

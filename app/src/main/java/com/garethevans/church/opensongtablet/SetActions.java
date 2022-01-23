@@ -217,10 +217,10 @@ class SetActions {
                     if (StaticVariables.mSet[x].contains(StaticVariables.whatsongforsetwork)) {
                         StaticVariables.indexSongInSet = x;
                         if (x > 0) {
-                            StaticVariables.previousSongInSet = StaticVariables.mSet[x - 1];
+                            StaticVariables.previousSongInSet = StaticVariables.mSetList[x - 1];
                         }
                         if (x != StaticVariables.setSize - 1) {
-                            StaticVariables.nextSongInSet = StaticVariables.mSet[x + 1];
+                            StaticVariables.nextSongInSet = StaticVariables.mSetList[x + 1];
                         }
                         // Found - so end the loop
                         x = -1;
