@@ -119,9 +119,9 @@ public class PopUpSongDetailsFragment extends DialogFragment {
                 songInformation.append("").append(mcapo);
             }
 
-            Transpose transpose = new Transpose();
-            if (!StaticVariables.mKey.equals("")) {
-                songInformation.append(" (").append(transpose.capoTranspose(getContext(), preferences, StaticVariables.mKey)).append(")");
+            if (!StaticVariables.mCapo.equals("") && !StaticVariables.mKey.equals("") &&
+                    !FullscreenActivity.capokey.equals("")) {
+                songInformation.append(" (").append(FullscreenActivity.capokey).append(")");
             }
         }
 

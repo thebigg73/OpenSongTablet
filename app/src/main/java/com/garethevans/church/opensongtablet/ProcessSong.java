@@ -3031,7 +3031,7 @@ public class ProcessSong extends Activity {
             // IV - Try to generate a capo/key/tempo/time line
             String sprefix = ";";
 
-            if (displayCapoChords) {
+            if (preferences.getMyPreferenceBoolean(c, "displayCapoChords", true)) {
                 if (!StaticVariables.mCapo.equals("") && !StaticVariables.mCapo.equals("0")) {
                     // If we are using a capo, add the capo display
                     songInformation.append(sprefix).append("Capo: ");
@@ -3048,9 +3048,10 @@ public class ProcessSong extends Activity {
                         songInformation.append("").append(mcapo);
                     }
 
-                    Transpose transpose = new Transpose();
                     if (!StaticVariables.mKey.equals("")) {
-                        songInformation.append(" (").append(transpose.capoTranspose(c, preferences, StaticVariables.mKey)).append(")");
+                        Transpose transpose = new Transpose();
+                        transpose.capoKeyTranspose(c, preferences);
+                        songInformation.append(" (").append(FullscreenActivity.capokey).append(")");
                     }
                 }
             }
