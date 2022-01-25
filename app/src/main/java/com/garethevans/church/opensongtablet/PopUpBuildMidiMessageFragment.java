@@ -11,7 +11,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,16 +27,14 @@ import java.util.ArrayList;
 public class PopUpBuildMidiMessageFragment extends DialogFragment {
 
     private Midi m;
-    private ArrayList<String> songMidiMessages;
-    private ArrayList<String> songMidiMessagesToSave;
-    private ArrayAdapter<String> midiCommandsAdapter, midiNotesAdapter, midiMessagesAdapter;
+    private ArrayAdapter<String> midiCommandsAdapter, midiNotesAdapter;
     private ArrayAdapter<Integer> midiChannelsAdapter, midiValuesAdapter;
     private Spinner midiCommandsSpinner;
     private Spinner midiValuesSpinner;
     private Spinner midiValue2Spinner;
     private SeekBar midiDelay;
     private TextView valueOrVelocity, noteOrValue, midiMessage, midiDelay_Text;
-    private ListView midiActionList;
+    private LinearLayout midiActionList;
     private String action = "PC";
     private int channel = 1;
     private int byte2 = 0;
@@ -200,13 +198,17 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         try {
             // Get a string representation of the midi commands
             StringBuilder s = new StringBuilder();
-            for (String c:songMidiMessagesToSave) {
-                c = c.trim();
-                if (!c.isEmpty()) {
-                    s.append(c).append("\n");
+            for (int x=0; x<midiActionList.getChildCount(); x++) {
+                if (midiActionList.getChildAt(x).getTag()!=null) {
+                    String tag = midiActionList.getChildAt(x).getTag().toString().trim();
+                    if (!tag.isEmpty()) {
+                        s.append(tag).append("\n");
+                    }
                 }
             }
-            s = new StringBuilder(s.toString().trim()); // Get rid of extra line breaks
+            // Get rid of extra linebreak
+            s = new StringBuilder(s.toString().trim());
+
             Log.d("d","s="+s);
             StaticVariables.mMidi = s.toString();
             PopUpEditSongFragment.prepareSongXML();
@@ -351,38 +353,41 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initialiseCurrentMessages() {
-        songMidiMessages = new ArrayList<>();
-        songMidiMessagesToSave = new ArrayList<>();
+        midiActionList.removeAllViews();
         // Add what is there already
         String[] bits = StaticVariables.mMidi.trim().split("\n");
-        for (String s : bits) {
-            if (s!=null && !s.equals("") && !s.isEmpty() && getActivity()!=null) {
+        for (String midiMessage : bits) {
+            if (midiMessage != null && !midiMessage.equals("") && !midiMessage.isEmpty() && getActivity() != null) {
                 // Get a human readable version of the midi code
-                String hr = m.getReadableStringFromHex(s,getActivity());
-                String message = hr + "\n" + "(" + s + ")";
-                songMidiMessages.add(message);
-                songMidiMessagesToSave.add(s);
+                String hr = m.getReadableStringFromHex(midiMessage, getActivity());
+                String message = hr + "\n" + "(" + midiMessage + ")";
+                midiActionList.addView(getNewTextView(message, midiMessage));
             }
         }
-        midiMessagesAdapter = new ArrayAdapter<>(requireContext(),R.layout.my_spinner,songMidiMessages);
-        midiMessagesAdapter.notifyDataSetChanged();
-        midiActionList.setAdapter(midiMessagesAdapter);
-        midiActionList.setOnItemClickListener((adapterView, view, i, l) -> sendMidiFromList(i));
-        midiActionList.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            deleteMidiFromList(i);
-            return true;
-        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void updateCurrentMessages() {
-        midiMessagesAdapter.notifyDataSetChanged();
-        midiActionList.setAdapter(midiMessagesAdapter);
-        midiActionList.setOnItemClickListener((adapterView, view, i, l) -> sendMidiFromList(i));
-        midiActionList.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            deleteMidiFromList(i);
+    private TextView getNewTextView(String text, String midiMessage) {
+        TextView textView = (TextView)getLayoutInflater().inflate(R.layout.my_spinner,null);
+        textView.setId(View.generateViewId());
+        textView.setText(text);
+        textView.setTag(midiMessage);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.bottomMargin = 8;
+        textView.setLayoutParams(layoutParams);
+        textView.setOnClickListener(view -> {
+            String tag = view.getTag().toString();
+            sendMidiFromList(tag);
+        });
+        textView.setOnLongClickListener(view -> {
+            for (int x=0; x<midiActionList.getChildCount(); x++) {
+                if (midiActionList.getChildAt(x)==view) {
+                    midiActionList.removeView(view);
+                }
+            }
             return true;
         });
+        return textView;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -392,9 +397,8 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
                 String s = midiMessage.getText().toString();
                 String hr = m.getReadableStringFromHex(s, getActivity());
                 String message = hr + "\n" + "(" + s + ")";
-                songMidiMessagesToSave.add(s);
-                songMidiMessages.add(message);
-                updateCurrentMessages();
+                // Get the current number of messages
+                midiActionList.addView(getNewTextView(message,s));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -402,20 +406,10 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private void deleteMidiFromList(int i) {
-        try {
-            songMidiMessages.remove(i);
-            songMidiMessagesToSave.remove(i);
-            updateCurrentMessages();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void sendMidiFromList(int i) {
-        String s = songMidiMessagesToSave.get(i);
-        testTheMidiMessage(s);
+    private void sendMidiFromList(String midiMessage) {
+        Log.d("MidiFragment","message:"+midiMessage);
+        //String s = songMidiMessagesToSave.get(i);
+        testTheMidiMessage(midiMessage);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
