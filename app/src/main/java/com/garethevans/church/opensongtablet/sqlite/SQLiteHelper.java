@@ -23,7 +23,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // If the table doesn't exist, create it.
-        db.execSQL(SQLite.CREATE_TABLE);
+        if (db!=null) {
+            try {
+                db.execSQL(SQLite.CREATE_TABLE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
