@@ -169,7 +169,7 @@ public class PopUpTransposeFragment extends DialogFragment {
 
         tranposeCapo_SwitchCompat.setText(getString(R.string.transpose) + " " + getString(R.string.edit_song_capo));
         capoChange_TextView.setText(getString(R.string.transpose) + " " + getString(R.string.edit_song_capo));
-        tranposeCapo_SwitchCompat.setChecked(true);
+        tranposeCapo_SwitchCompat.setChecked(false);
     }
 
     private void setListeners() {
