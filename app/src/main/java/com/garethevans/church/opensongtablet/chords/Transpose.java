@@ -87,8 +87,8 @@ public class Transpose {
             "Lab",    "Sib",    "Dob",    "Réb",    "Mib",    "Fab",    "Solb",
             "La",     "Si",     "Do",     "Ré",     "Mi",     "Fa",     "Sol",   "¬"};
     private final String[] toChordsNums4 =  {"¬aj7", "¬a7", "¬aj9", "¬a9",
-            "La", "Si", "Si", "Si", "Do", "Ré", "Ré", "Ré", "Mi", "Fa", "Sol",
-            "La", "Si", "Do", "Ré", "Ré", "Mi", "Fa", "Sol",
+            "La", "Si", "Si", "Si", "Do", "Re", "Re", "Re", "Mi", "Fa", "Sol",
+            "La", "Si", "Do", "Re", "Re", "Mi", "Fa", "Sol",
             "├2┤",    "├4┤",    "├5┤",    "├7┤",    "├9┤",    "├W┤",   "»├Y┤",
             "├Y┤",    "├2┤",    "├3┤",    "├5┤",    "├7┤",    "├8┤",   "»├W┤",
             "«├1┤",   "«├3┤",   "«├4┤",   "«├6┤",   "«├8┤",   "«├9┤",    "├X┤",    "m"};
@@ -101,8 +101,8 @@ public class Transpose {
     private final String[] toFlatChords1 =  "»Bb »Db »Eb »Gb »Ab »»A »»B »»C »»D »»E »»F »»G".split(" ");
     private final String[] toSharpChords2 = "»»B »C# »D# »F# »G# »»A »»H »»C »»D »»E »»F »»G".split(" ");
     private final String[] toFlatChords2 =  "»»B »Db »Eb »Gb »Ab »»A »»H »»C »»D »»E »»F »»G".split(" ");
-    private final String[] toSharpChords4 = "La# Do# Ré# Fa# «Sol# »La »Si »Do »Ré »Mi »Fa Sol".split(" ");
-    private final String[] toFlatChords4 =  "Sib Réb Mib «Solb Lab »La »Si »Do »Ré »Mi »Fa Sol".split(" ");
+    private final String[] toSharpChords4 = "La# Do# Re# Fa# «Sol# »La »Si »Do »Re »Mi »Fa Sol".split(" ");
+    private final String[] toFlatChords4 =  "Sib Reb Mib «Solb Lab »La »Si »Do »Re »Mi »Fa Sol".split(" ");
     //  A trick! Minors arrive ending ┤m, the m is moved into the number to give numbers for minors. '┤ma' is treated as the start of major and is protected.
     private final String[] fromChordsNumM = "┤ma ┤m ├2m┤ ├5m┤ ├7m┤ ├Wm┤ ├Ym┤ ├1m┤ ├3m┤ ├4m┤ ├6m┤ ├8m┤ ├9m┤ ├Xm┤ ├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤ ¬".split(" ");
     private final String[] toSharpChords3 = "┤¬a m┤ »»»b »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
