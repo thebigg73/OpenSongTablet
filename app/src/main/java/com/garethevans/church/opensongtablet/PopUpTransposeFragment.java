@@ -48,7 +48,7 @@ public class PopUpTransposeFragment extends DialogFragment {
     private TextView transposeValTextView, keyChange_TextView, capoChange_TextView, detectedChordFormatText;
     private RadioButton chordFormat1Radio, chordFormat2Radio, chordFormat3Radio, chordFormat4Radio,
             chordFormat5Radio, chordFormat6Radio;
-    private SwitchCompat tranposeCapo_SwitchCompat;
+    private SwitchCompat transposeCapo_SwitchCompat;
     private SwitchCompat assumePreferred_SwitchCompat;
     private Preferences preferences;
     private Transpose transpose;
@@ -122,7 +122,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         chordFormat4Radio = V.findViewById(R.id.chordFormat4Radio);
         chordFormat5Radio = V.findViewById(R.id.chordFormat5Radio);
         chordFormat6Radio = V.findViewById(R.id.chordFormat6Radio);
-        tranposeCapo_SwitchCompat = V.findViewById(R.id.transposeCapo_SwitchCompat);
+        transposeCapo_SwitchCompat = V.findViewById(R.id.transposeCapo_SwitchCompat);
         assumePreferred_SwitchCompat = V.findViewById(R.id.assumePreferred_SwitchCompat);
         detectedChordFormatText = V.findViewById(R.id.detectedChordFormatText);
     }
@@ -167,9 +167,17 @@ public class PopUpTransposeFragment extends DialogFragment {
                 break;
         }
 
-        tranposeCapo_SwitchCompat.setText(getString(R.string.transpose) + " " + getString(R.string.edit_song_capo));
-        capoChange_TextView.setText(getString(R.string.transpose) + " " + getString(R.string.edit_song_capo));
-        tranposeCapo_SwitchCompat.setChecked(false);
+        String transpCapoFret = getString(R.string.transpose) + " " + getString(R.string.edit_song_capo);
+
+        transposeCapo_SwitchCompat.setText(transpCapoFret);
+
+        // By default hide the hint text under the transpose slider
+        // Invisible rather than gone to avoid the views below jumping up/down
+        capoChange_TextView.setVisibility(View.INVISIBLE);
+        capoChange_TextView.setText(transpCapoFret);
+
+        // Set the switch for capo transpose off
+        transposeCapo_SwitchCompat.setChecked(false);
     }
 
     private void setListeners() {
@@ -221,11 +229,11 @@ public class PopUpTransposeFragment extends DialogFragment {
             // IV -  Set of preference removed - we now use preference only as an aid to selecting
             usePreferredChordFormat(isChecked);
         });
-        tranposeCapo_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        transposeCapo_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                capoChange_TextView.setText(getString(R.string.transpose) + " " + getString(R.string.edit_song_capo));
+                capoChange_TextView.setVisibility(View.VISIBLE);
             } else {
-                capoChange_TextView.setText("");
+                capoChange_TextView.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -320,7 +328,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         // Do the transpose
         try {
             // If requested transpose the capo fret number
-            if (tranposeCapo_SwitchCompat.isChecked()) {
+            if (transposeCapo_SwitchCompat.isChecked()) {
                 StaticVariables.mCapo = String.valueOf(((Integer.parseInt("0" + StaticVariables.mCapo) + 12 + (StaticVariables.transposeTimes * Integer.parseInt(StaticVariables.transposeDirection))) % 12));
                 if (StaticVariables.mCapo.equals("0")) {
                     StaticVariables.mCapo = "";

@@ -359,9 +359,9 @@ public class StageMode extends AppCompatActivity implements
     private final Handler startAutoscrollHandler = new Handler();
     private final Runnable startAutoscrollRunnable = this::gesture5;
     private final Handler showStickyHandler = new Handler();
-    private final Runnable showStickyRunnable  = this::showSticky;
+    private final Runnable showStickyRunnable = this::showSticky;
     private final Handler startCapoAnimationHandler = new Handler();
-    private final Runnable startCapoAnimationRunnable = () -> CustomAnimations.highlightAction(capoInfo,StageMode.this);
+    private final Runnable startCapoAnimationRunnable = () -> CustomAnimations.highlightAction(capoInfo, StageMode.this);
     private final Handler startMetronomeHandler = new Handler();
     private final Runnable startMetronomeRunnable = this::gesture7;
 
@@ -471,7 +471,7 @@ public class StageMode extends AppCompatActivity implements
         profileActions = new ProfileActions();
         makePDF = new MakePDF();
         OptionMenuListeners optionMenuListeners = new OptionMenuListeners(this);
-        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong, optionMenuListeners, sqLiteHelper);
+        nearbyConnections = new NearbyConnections(this, preferences, storageAccess, processSong, optionMenuListeners, sqLiteHelper);
 
         // IV - Index at start of session
         if (FullscreenActivity.doonetimeactions) {
@@ -480,8 +480,8 @@ public class StageMode extends AppCompatActivity implements
                     StaticVariables.myToastMessage = getString(R.string.search_index_start);
                     ShowToast.showToast(StageMode.this);
                 });
-                indexSongs.fullIndex(StageMode.this,preferences,storageAccess,sqLiteHelper,songXML,
-                        chordProConvert,onSongConvert,textSongConvert,usrConvert);
+                indexSongs.fullIndex(StageMode.this, preferences, storageAccess, sqLiteHelper, songXML,
+                        chordProConvert, onSongConvert, textSongConvert, usrConvert);
                 runOnUiThread(() -> {
                     StaticVariables.myToastMessage = getString(R.string.search_index_end);
                     ShowToast.showToast(StageMode.this);
@@ -492,7 +492,7 @@ public class StageMode extends AppCompatActivity implements
         }
 
         // Get the language
-        FixLocale.fixLocale(StageMode.this,preferences);
+        FixLocale.fixLocale(StageMode.this, preferences);
 
         // Initialise the font handlers
         lyrichandler = new Handler();
@@ -542,7 +542,7 @@ public class StageMode extends AppCompatActivity implements
             runOnUiThread(() -> {
                 // Set up the gesture detector
                 scaleGestureDetector = new ScaleGestureDetector(StageMode.this, new simpleOnScaleGestureListener());
-                gestureDetector = new GestureDetector(StageMode.this,new SwipeDetector());
+                gestureDetector = new GestureDetector(StageMode.this, new SwipeDetector());
 
                 // Set up the toolbar and views
                 setUpToolbar();
@@ -563,7 +563,7 @@ public class StageMode extends AppCompatActivity implements
 
                 // IV - RefreshAll calls setupButtons, prepareOptionsMenu and setupSongButtons
                 // Start with MAIN option menu
-                StaticVariables.whichOptionMenu="MAIN";
+                StaticVariables.whichOptionMenu = "MAIN";
 
                 // Load the song and get started
                 refreshAll();
@@ -653,6 +653,7 @@ public class StageMode extends AppCompatActivity implements
     private int defstickybgcolor;
     private int defextrainfobgcolor;
     private int defextrainfotextcolor;
+
     private void getDefaultColors() {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
@@ -670,6 +671,7 @@ public class StageMode extends AppCompatActivity implements
                 break;
         }
     }
+
     private void setThemeDark() {
         defmetronomecolor = preferences.getMyPreferenceInt(StageMode.this, "dark_metronomeColor", StaticVariables.darkishred);
         defpagebuttoncolor = preferences.getMyPreferenceInt(StageMode.this, "dark_pageButtonsColor", StaticVariables.purplyblue);
@@ -691,67 +693,70 @@ public class StageMode extends AppCompatActivity implements
         presoFontColor = preferences.getMyPreferenceInt(StageMode.this, "dark_presoFontColor", StaticVariables.white);
 //      presoShadowColor = preferences.getMyPreferenceInt(StageMode.this, "dark_presoShadowColor", StaticVariables.black);
     }
+
     private void setThemeLight() {
-        defmetronomecolor       = preferences.getMyPreferenceInt(StageMode.this,"light_metronomeColor",         StaticVariables.darkishred);
-        defpagebuttoncolor      = preferences.getMyPreferenceInt(StageMode.this,"light_pageButtonsColor",       StaticVariables.purplyblue);
-        defstickytextcolor      = preferences.getMyPreferenceInt(StageMode.this,"light_stickyTextColor",        StaticVariables.black);
-        defstickybgcolor        = preferences.getMyPreferenceInt(StageMode.this,"light_stickyBackgroundColor",  StaticVariables.lightyellow);
-        defextrainfobgcolor     = preferences.getMyPreferenceInt(StageMode.this,"light_extraInfoBgColor",       StaticVariables.grey);
-        defextrainfotextcolor   = preferences.getMyPreferenceInt(StageMode.this,"light_extraInfoTextColor",     StaticVariables.white);
-        lyricsTextColor         = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsTextColor",        StaticVariables.black);
-        lyricsCapoColor         = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsCapoColor",        StaticVariables.red);
-        lyricsBackgroundColor   = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsBackgoundColour",  StaticVariables.white);
-        lyricsVerseColor        = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsVerseColor",       StaticVariables.white);
-        lyricsChorusColor       = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsChorusColor",      StaticVariables.vlightpurple);
-        lyricsBridgeColor       = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsBridgeColor",      StaticVariables.vlightcyan);
-        lyricsCommentColor      = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsCommentColor",     StaticVariables.vlightblue);
-        lyricsPreChorusColor    = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsPreChorusColor",   StaticVariables.lightgreen);
-        lyricsTagColor          = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsTagColor",         StaticVariables.vlightgreen);
-        lyricsChordsColor       = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsChordsColor",      StaticVariables.darkblue);
-        lyricsCustomColor       = preferences.getMyPreferenceInt(StageMode.this,"light_lyricsCustomColor",      StaticVariables.lightishcyan);
-        presoFontColor          = preferences.getMyPreferenceInt(StageMode.this,"light_presoFontColor",         StaticVariables.white);
+        defmetronomecolor = preferences.getMyPreferenceInt(StageMode.this, "light_metronomeColor", StaticVariables.darkishred);
+        defpagebuttoncolor = preferences.getMyPreferenceInt(StageMode.this, "light_pageButtonsColor", StaticVariables.purplyblue);
+        defstickytextcolor = preferences.getMyPreferenceInt(StageMode.this, "light_stickyTextColor", StaticVariables.black);
+        defstickybgcolor = preferences.getMyPreferenceInt(StageMode.this, "light_stickyBackgroundColor", StaticVariables.lightyellow);
+        defextrainfobgcolor = preferences.getMyPreferenceInt(StageMode.this, "light_extraInfoBgColor", StaticVariables.grey);
+        defextrainfotextcolor = preferences.getMyPreferenceInt(StageMode.this, "light_extraInfoTextColor", StaticVariables.white);
+        lyricsTextColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsTextColor", StaticVariables.black);
+        lyricsCapoColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsCapoColor", StaticVariables.red);
+        lyricsBackgroundColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsBackgoundColour", StaticVariables.white);
+        lyricsVerseColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsVerseColor", StaticVariables.white);
+        lyricsChorusColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsChorusColor", StaticVariables.vlightpurple);
+        lyricsBridgeColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsBridgeColor", StaticVariables.vlightcyan);
+        lyricsCommentColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsCommentColor", StaticVariables.vlightblue);
+        lyricsPreChorusColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsPreChorusColor", StaticVariables.lightgreen);
+        lyricsTagColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsTagColor", StaticVariables.vlightgreen);
+        lyricsChordsColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsChordsColor", StaticVariables.darkblue);
+        lyricsCustomColor = preferences.getMyPreferenceInt(StageMode.this, "light_lyricsCustomColor", StaticVariables.lightishcyan);
+        presoFontColor = preferences.getMyPreferenceInt(StageMode.this, "light_presoFontColor", StaticVariables.white);
 //      presoShadowColor        = preferences.getMyPreferenceInt(StageMode.this,"light_presoShadowColor",       StaticVariables.black);
     }
+
     private void setThemeCustom1() {
-        defmetronomecolor       = preferences.getMyPreferenceInt(StageMode.this,"custom1_metronomeColor",       StaticVariables.darkishred);
-        defpagebuttoncolor      = preferences.getMyPreferenceInt(StageMode.this,"custom1_pageButtonsColor",     StaticVariables.purplyblue);
-        defstickytextcolor      = preferences.getMyPreferenceInt(StageMode.this,"custom1_stickyTextColor",      StaticVariables.black);
-        defstickybgcolor        = preferences.getMyPreferenceInt(StageMode.this,"custom1_stickyBackgroundColor",StaticVariables.lightyellow);
-        defextrainfobgcolor     = preferences.getMyPreferenceInt(StageMode.this,"custom1_extraInfoBgColor",     StaticVariables.grey);
-        defextrainfotextcolor   = preferences.getMyPreferenceInt(StageMode.this, "custom1_extraInfoTextColor",  StaticVariables.white);
-        lyricsTextColor         = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsTextColor",      StaticVariables.white);
-        lyricsCapoColor         = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsCapoColor",      StaticVariables.red);
-        lyricsBackgroundColor   = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsBackgoundColour",StaticVariables.black);
-        lyricsVerseColor        = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsVerseColor",     StaticVariables.black);
-        lyricsChorusColor       = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsChorusColor",    StaticVariables.black);
-        lyricsBridgeColor       = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsBridgeColor",    StaticVariables.black);
-        lyricsCommentColor      = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsCommentColor",   StaticVariables.black);
-        lyricsPreChorusColor    = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsPreChorusColor", StaticVariables.black);
-        lyricsTagColor          = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsTagColor",       StaticVariables.black);
-        lyricsChordsColor       = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsChordsColor",    StaticVariables.yellow);
-        lyricsCustomColor       = preferences.getMyPreferenceInt(StageMode.this,"custom1_lyricsCustomColor",    StaticVariables.black);
-        presoFontColor          = preferences.getMyPreferenceInt(StageMode.this,"custom1_presoFontColor",       StaticVariables.white);
+        defmetronomecolor = preferences.getMyPreferenceInt(StageMode.this, "custom1_metronomeColor", StaticVariables.darkishred);
+        defpagebuttoncolor = preferences.getMyPreferenceInt(StageMode.this, "custom1_pageButtonsColor", StaticVariables.purplyblue);
+        defstickytextcolor = preferences.getMyPreferenceInt(StageMode.this, "custom1_stickyTextColor", StaticVariables.black);
+        defstickybgcolor = preferences.getMyPreferenceInt(StageMode.this, "custom1_stickyBackgroundColor", StaticVariables.lightyellow);
+        defextrainfobgcolor = preferences.getMyPreferenceInt(StageMode.this, "custom1_extraInfoBgColor", StaticVariables.grey);
+        defextrainfotextcolor = preferences.getMyPreferenceInt(StageMode.this, "custom1_extraInfoTextColor", StaticVariables.white);
+        lyricsTextColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsTextColor", StaticVariables.white);
+        lyricsCapoColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsCapoColor", StaticVariables.red);
+        lyricsBackgroundColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsBackgoundColour", StaticVariables.black);
+        lyricsVerseColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsVerseColor", StaticVariables.black);
+        lyricsChorusColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsChorusColor", StaticVariables.black);
+        lyricsBridgeColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsBridgeColor", StaticVariables.black);
+        lyricsCommentColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsCommentColor", StaticVariables.black);
+        lyricsPreChorusColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsPreChorusColor", StaticVariables.black);
+        lyricsTagColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsTagColor", StaticVariables.black);
+        lyricsChordsColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsChordsColor", StaticVariables.yellow);
+        lyricsCustomColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_lyricsCustomColor", StaticVariables.black);
+        presoFontColor = preferences.getMyPreferenceInt(StageMode.this, "custom1_presoFontColor", StaticVariables.white);
 //      presoShadowColor        = preferences.getMyPreferenceInt(StageMode.this,"custom1_presoShadowColor",     StaticVariables.black);
     }
+
     private void setThemeCustom2() {
-        defmetronomecolor       = preferences.getMyPreferenceInt(StageMode.this,"custom2_metronomeColor",       StaticVariables.darkishred);
-        defpagebuttoncolor      = preferences.getMyPreferenceInt(StageMode.this,"custom2_pageButtonsColor",     StaticVariables.purplyblue);
-        defstickytextcolor      = preferences.getMyPreferenceInt(StageMode.this,"custom2_stickyTextColor",      StaticVariables.black);
-        defstickybgcolor        = preferences.getMyPreferenceInt(StageMode.this,"custom2_stickyBackgroundColor",StaticVariables.lightyellow);
-        defextrainfobgcolor     = preferences.getMyPreferenceInt(StageMode.this,"custom2_extraInfoBgColor",     StaticVariables.grey);
-        defextrainfotextcolor   = preferences.getMyPreferenceInt(StageMode.this,"custom2_extraInfoTextColor",   StaticVariables.white);
-        lyricsTextColor         = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsTextColor",      StaticVariables.black);
-        lyricsCapoColor         = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsCapoColor",      StaticVariables.red);
-        lyricsBackgroundColor   = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsBackgoundColour",StaticVariables.white);
-        lyricsVerseColor        = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsVerseColor",     StaticVariables.white);
-        lyricsChorusColor       = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsChorusColor",    StaticVariables.white);
-        lyricsBridgeColor       = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsBridgeColor",    StaticVariables.white);
-        lyricsCommentColor      = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsCommentColor",   StaticVariables.white);
-        lyricsPreChorusColor    = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsPreChorusColor", StaticVariables.white);
-        lyricsTagColor          = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsTagColor",       StaticVariables.white);
-        lyricsChordsColor       = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsChordsColor",    StaticVariables.darkblue);
-        lyricsCustomColor       = preferences.getMyPreferenceInt(StageMode.this,"custom2_lyricsCustomColor",    StaticVariables.white);
-        presoFontColor          = preferences.getMyPreferenceInt(StageMode.this,"custom2_presoFontColor",       StaticVariables.white);
+        defmetronomecolor = preferences.getMyPreferenceInt(StageMode.this, "custom2_metronomeColor", StaticVariables.darkishred);
+        defpagebuttoncolor = preferences.getMyPreferenceInt(StageMode.this, "custom2_pageButtonsColor", StaticVariables.purplyblue);
+        defstickytextcolor = preferences.getMyPreferenceInt(StageMode.this, "custom2_stickyTextColor", StaticVariables.black);
+        defstickybgcolor = preferences.getMyPreferenceInt(StageMode.this, "custom2_stickyBackgroundColor", StaticVariables.lightyellow);
+        defextrainfobgcolor = preferences.getMyPreferenceInt(StageMode.this, "custom2_extraInfoBgColor", StaticVariables.grey);
+        defextrainfotextcolor = preferences.getMyPreferenceInt(StageMode.this, "custom2_extraInfoTextColor", StaticVariables.white);
+        lyricsTextColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsTextColor", StaticVariables.black);
+        lyricsCapoColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsCapoColor", StaticVariables.red);
+        lyricsBackgroundColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsBackgoundColour", StaticVariables.white);
+        lyricsVerseColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsVerseColor", StaticVariables.white);
+        lyricsChorusColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsChorusColor", StaticVariables.white);
+        lyricsBridgeColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsBridgeColor", StaticVariables.white);
+        lyricsCommentColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsCommentColor", StaticVariables.white);
+        lyricsPreChorusColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsPreChorusColor", StaticVariables.white);
+        lyricsTagColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsTagColor", StaticVariables.white);
+        lyricsChordsColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsChordsColor", StaticVariables.darkblue);
+        lyricsCustomColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_lyricsCustomColor", StaticVariables.white);
+        presoFontColor = preferences.getMyPreferenceInt(StageMode.this, "custom2_presoFontColor", StaticVariables.white);
 //      presoShadowColor        = preferences.getMyPreferenceInt(StageMode.this,"custom2_presoShadowColor",     StaticVariables.black);
     }
 
@@ -851,11 +856,20 @@ public class StageMode extends AppCompatActivity implements
 
     private void getBluetoothName() {
         try {
-            if(FullscreenActivity.mBluetoothAdapter == null){
+            if (FullscreenActivity.mBluetoothAdapter == null) {
                 FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             }
-            FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
-            if(FullscreenActivity.mBluetoothName == null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.BLUETOOTH_CONNECT}, 488);
+                    return;
+                } else {
+                    FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
+                }
+            } else {
+                FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
+            }
+            if (FullscreenActivity.mBluetoothName == null){
                 FullscreenActivity.mBluetoothName = "Unknown";
             }
         } catch (Exception e) {
@@ -5732,6 +5746,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -5748,6 +5763,12 @@ public class StageMode extends AppCompatActivity implements
                 case 404:
                     // Access fine location, so can open the menu at 'Connect devices'
                     Log.d(TAG, "FINE LOCATION granted!");
+                    break;
+
+                case 488:
+                    // Android S - allow Bluetooth name
+                    Log.d(TAG, "Bluetooth connect allowed");
+                    FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothAdapter.getName();
                     break;
             }
         }
@@ -7325,7 +7346,8 @@ public class StageMode extends AppCompatActivity implements
 
                     // Put the title of the song in the taskbar
                     if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
-                        songtitle_ab.setText("≡" + processSong.getSongTitle());
+                        String text = "≡" + processSong.getSongTitle();
+                        songtitle_ab.setText(text);
                     } else {
                         songtitle_ab.setText(processSong.getSongTitle());
                     }
@@ -8781,7 +8803,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void selectAFileUri(String s) {
-        // Replace the FolderPicker class for Lollopop+
+        // Replace the FolderPicker class for Lollipop+
         Intent intent;
         // Start location
         Uri uri = storageAccess.getUriForItem(StageMode.this,preferences,"","","");
@@ -8828,42 +8850,36 @@ public class StageMode extends AppCompatActivity implements
                 // Not there yet! Try again.
                 menuButtonLongPressActions();
             } else {
-                view.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        if (FullscreenActivity.isSong) {
-                            FullscreenActivity.whattodo = "transpose";
-                            openFragment();
-                        } else {
-                            StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                            ShowToast.showToast(StageMode.this);
-                        }
-                        return true;
+                view.setOnLongClickListener(v -> {
+                    if (FullscreenActivity.isSong) {
+                        FullscreenActivity.whattodo = "transpose";
+                        openFragment();
+                    } else {
+                        StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                        ShowToast.showToast(StageMode.this);
                     }
+                    return true;
                 });
 
                 // IV - Support long press of '+' icon to directly add the song to the end of the set as a variation
                 final View view2 = findViewById(R.id.set_add);
 
                 if (view2 != null) {
-                    view2.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            if (!StaticVariables.whichSongFolder.startsWith("..") ||
-                                    (StaticVariables.whichSongFolder.equals("../Received") && !StaticVariables.receivedSongfilename.equals("") && !StaticVariables.receivedSongfilename.equals("ReceivedSong"))) {
-                                PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
-                                setActions.prepareSetList(StageMode.this, preferences);
-                                StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
-                                PopUpSetViewNew.makeVariation(StageMode.this, preferences);
-                                prepareSongMenu();
-                                loadSong();
-                            } else {
-                                // Not a song
-                                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                                ShowToast.showToast(StageMode.this);
-                            }
-                            return true;
+                    view2.setOnLongClickListener(v -> {
+                        if (!StaticVariables.whichSongFolder.startsWith("..") ||
+                                (StaticVariables.whichSongFolder.equals("../Received") && !StaticVariables.receivedSongfilename.equals("") && !StaticVariables.receivedSongfilename.equals("ReceivedSong"))) {
+                            PopUpLongSongPressFragment.addtoSet(StageMode.this, preferences);
+                            setActions.prepareSetList(StageMode.this, preferences);
+                            StaticVariables.indexSongInSet = StaticVariables.mSetList.length - 1;
+                            PopUpSetViewNew.makeVariation(StageMode.this, preferences);
+                            prepareSongMenu();
+                            loadSong();
+                        } else {
+                            // Not a song
+                            StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                            ShowToast.showToast(StageMode.this);
                         }
+                        return true;
                     });
                 }
             }
