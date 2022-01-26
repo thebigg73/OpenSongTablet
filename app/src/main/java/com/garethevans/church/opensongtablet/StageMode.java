@@ -5265,7 +5265,7 @@ public class StageMode extends AppCompatActivity implements
             for (String index : indexList) {
                 textView = (TextView) View.inflate(StageMode.this,R.layout.leftmenu, null);
                 textView.setTextSize(preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f));
-                int i = (int) ((int) preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f) * 2f);
+                int i = (int) ((int) preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f) * 2.0f);
                 textView.setPadding(i+4,i,i-12,i);
                 textView.setMinimumWidth(48);
                 textView.setMinimumHeight(48);
