@@ -2767,8 +2767,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             List<String> indexList = new ArrayList<>(setString);
             for (String index : indexList) {
                 textView = (TextView) View.inflate(PresenterMode.this,R.layout.leftmenu, null);
-                textView.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize", 4.0f));
-                int i = (int) preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f) *2;
+                textView.setTextSize(preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f));
+                int i = (int) ((int) preferences.getMyPreferenceFloat(PresenterMode.this,"songMenuAlphaIndexSize",14.0f) * 2.0f);
                 textView.setPadding(i+4,i,i-12,i);
                 textView.setMinimumWidth(48);
                 textView.setMinimumHeight(48);
