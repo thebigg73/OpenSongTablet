@@ -327,8 +327,7 @@ public class Midi {
                 pedalMidiReceiver = null;
             }
         } else {
-            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.midi_error));
-
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.midi_error));
         }
     }
 

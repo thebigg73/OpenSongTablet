@@ -216,7 +216,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
                 break;
         }
         if (mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface)) {
-            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
         }
         mainActivityInterface.updateFragment(fragName, callingFragment, null);
     }
@@ -279,13 +279,13 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
 
     private void noLink () {
         // Empty - so put the cursor there to alert the user
-        mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.nothing_selected));
+        mainActivityInterface.getShowToast().doIt(getString(R.string.nothing_selected));
         myView.linkLocation.requestFocus();
     }
 
     private void badLink() {
         // Link threw an error (likely invalid)
-        mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.link_error));
+        mainActivityInterface.getShowToast().doIt(getString(R.string.link_error));
         myView.linkLocation.requestFocus();
     }
 

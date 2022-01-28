@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
@@ -58,6 +59,7 @@ import com.garethevans.church.opensongtablet.appdata.BootUpFragment;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.appdata.SoftKeyboard;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
@@ -155,8 +157,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
-
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
@@ -208,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private SetTypeFace setTypeFace;
     private ShowCase showCase;
     private ShowToast showToast;
+    private SoftKeyboard softKeyboard;
     private Song song, tempSong, indexingSong;
     private SongListBuildIndex songListBuildIndex;
     private SongSheetHeaders songSheetHeaders;
@@ -266,6 +267,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
         myView = ActivityBinding.inflate(getLayoutInflater());
         setContentView(myView.getRoot());
 
@@ -289,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private void setupHelpers() {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
+        softKeyboard = new SoftKeyboard();
 
         // The song stuff
         songListBuildIndex = new SongListBuildIndex();
@@ -637,8 +641,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-
-
+    @Override
+    public SoftKeyboard getSoftKeyboard() {
+        return softKeyboard;
+    }
 
     // Navigation logic
     private void setupNavigation() {
@@ -698,7 +704,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
                         } else {
-                            showToast.doIt(this,getString(R.string.error));
+                            showToast.doIt(getString(R.string.error));
                         }
                     }
                     break;
@@ -711,7 +717,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
                             doSongLoad(song.getFolder(),song.getFilename(),false);
                         } else {
-                            showToast.doIt(this,getString(R.string.error));
+                            showToast.doIt(getString(R.string.error));
                         }
                     }
                     break;
@@ -1005,7 +1011,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void showTutorial(String what, ArrayList<View> viewsToHighlight) {
-        MaterialShowcaseView.resetAll(this);
+        //MaterialShowcaseView.resetAll(this);
         if (settingsButton==null) {
             invalidateOptionsMenu();
         }
@@ -1301,13 +1307,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void indexSongs() {
         new Thread(() -> {
-            runOnUiThread(() -> showToast.doIt(this,getString(R.string.search_index_start)));
+            runOnUiThread(() -> showToast.doIt(getString(R.string.search_index_start)));
             songListBuildIndex.setIndexComplete(false);
             songListBuildIndex.fullIndex(this,this);
             runOnUiThread(() -> {
                 songListBuildIndex.setIndexRequired(false);
                 songListBuildIndex.setIndexComplete(true);
-                showToast.doIt(this,getString(R.string.search_index_end));
+                showToast.doIt(getString(R.string.search_index_end));
                 updateSongMenu(song);
                 updateFragment("set_updateKeys",null,null);
             });
@@ -1814,9 +1820,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             }
             if (allowToast && result) {
                 // Don't show toast for exit, but other successful actions
-                showToast.doIt(this,getString(R.string.success));
+                showToast.doIt(getString(R.string.success));
             } else if (allowToast){
-                showToast.doIt(this,getString(R.string.error));
+                showToast.doIt(getString(R.string.error));
             }
         }
     }
@@ -1935,7 +1941,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void fullIndex() {
         if (fullIndexRequired) {
-            showToast.doIt(this,getString(R.string.search_index_start));
+            showToast.doIt(getString(R.string.search_index_start));
             new Thread(() -> {
                 String outcome = songListBuildIndex.fullIndex(this,this);
                 if (songMenuFragment!=null) {
@@ -1947,7 +1953,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 }
                 runOnUiThread(() -> {
                     if (!outcome.isEmpty()) {
-                        showToast.doIt(this,outcome.trim());
+                        showToast.doIt(outcome.trim());
                     }
                     updateFragment("set_updateKeys",null,null);
                 });
@@ -2301,7 +2307,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             startActivity(intent);
         } catch (ActivityNotFoundException nf) {
             // No suitable application to open the document
-            showToast.doIt(this,getString(R.string.no_suitable_application));
+            showToast.doIt(getString(R.string.no_suitable_application));
             nf.printStackTrace();
 
         } catch (Exception e) {

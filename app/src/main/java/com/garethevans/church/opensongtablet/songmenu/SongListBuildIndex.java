@@ -146,7 +146,7 @@ public class SongListBuildIndex {
             e.printStackTrace();
             returnString.append(c.getString(R.string.search_index_error)).append("\n");
         } catch (OutOfMemoryError oom) {
-            mainActivityInterface.getShowToast().doIt(c, "Out of memory: " +
+            mainActivityInterface.getShowToast().doIt("Out of memory: " +
                     mainActivityInterface.getIndexingSong().getFolder() + "/" +
                     mainActivityInterface.getIndexingSong().getFilename());
             returnString.append(c.getString(R.string.search_index_error)).append(": ").

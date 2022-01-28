@@ -50,7 +50,7 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         // If tags are duplicated, warn the user
         Set<String> check = new HashSet<>(mainActivityInterface.getTempSong().getSongSectionHeadings());
         if (check.size() < mainActivityInterface.getTempSong().getSongSectionHeadings().size()){
-            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.duplicate_sections));
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.duplicate_sections));
         }
 
         // Set up the current order

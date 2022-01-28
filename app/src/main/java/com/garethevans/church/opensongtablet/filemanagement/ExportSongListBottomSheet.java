@@ -85,7 +85,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
             if (!selectedFolders.isEmpty()) {
                 doExport();
             } else {
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.nothing_selected));
+                mainActivityInterface.getShowToast().doIt(getString(R.string.nothing_selected));
             }
         });
     }

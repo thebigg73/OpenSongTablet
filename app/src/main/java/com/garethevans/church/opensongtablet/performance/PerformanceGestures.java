@@ -75,7 +75,7 @@ public class PerformanceGestures {
         mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",val);
 
         // Tell the user that the song has been added.
-        mainActivityInterface.getShowToast().doIt(c,"\"" + mainActivityInterface.getSong().getFilename() + "\" " +
+        mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
                 c.getString(R.string.addedtoset));
 
         // Vibrate to let the user know something happened

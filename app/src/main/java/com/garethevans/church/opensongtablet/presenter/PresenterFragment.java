@@ -1,11 +1,15 @@
 package com.garethevans.church.opensongtablet.presenter;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +35,7 @@ public class PresenterFragment extends Fragment {
     private AlertFragment alertFragment;
     private SettingsFragment settingsFragment;
     private final String TAG = "PresenterFragment";
+    private boolean landscape;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,6 +57,10 @@ public class PresenterFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = ModePresenterBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.presenter_mode));
+
+        // Get the orientation
+        landscape = this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+        setPortraitLandscape();
 
         // Register this fragment
         mainActivityInterface.registerFragment(this,"Presenter");
@@ -83,7 +92,7 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.fullIndex();
         }
 
-        // Set up the main action listeners
+        // Set up the main action listeners for the switches
         setupListeners();
 
         // Set up any connected displays with the correct background
@@ -95,41 +104,72 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.setFirstRun(false);
         }
 
-        // Show any showcase instructions required
-        doShowcase();
+
 
         return myView.getRoot();
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Change the new orientation views (before we declare the orientation has changed)
+        // Doing this first means that the listeners of the new views aren't called
+        if (landscape) {
+            myView.showLogoSide.setChecked(mainActivityInterface.getPresenterSettings().getLogoOn());
+            myView.blankScreenSide.setChecked(mainActivityInterface.getPresenterSettings().getBlankscreenOn());
+            myView.blackScreenSide.setChecked(mainActivityInterface.getPresenterSettings().getBlackscreenOn());
+        } else {
+            myView.showLogo.setChecked(mainActivityInterface.getPresenterSettings().getLogoOn());
+            myView.blankScreen.setChecked(mainActivityInterface.getPresenterSettings().getBlankscreenOn());
+            myView.blackScreen.setChecked(mainActivityInterface.getPresenterSettings().getBlackscreenOn());
+        }
+        // Now register the new orientation so the oncheckchanged listeners work
+        landscape = newConfig.orientation==Configuration.ORIENTATION_LANDSCAPE;
+        // Show and hide the correct views
+        setPortraitLandscape();
+    }
+
+    private void setPortraitLandscape() {
+        if (landscape) {
+            myView.bottomBit.setVisibility(View.GONE);
+            myView.sideBit.setVisibility(View.VISIBLE);
+        } else {
+            myView.sideBit.setVisibility(View.GONE);
+            myView.bottomBit.setVisibility(View.VISIBLE);
+        }
+    }
     private void setupPager() {
-        pageAdapter = new PageAdapter(mainActivityInterface.getMyFragmentManager(), this.getLifecycle());
-        pageAdapter.createFragment(0);
-        songSectionsFragment = (SongSectionsFragment) pageAdapter.menuFragments[0];
-        mediaFragment = (MediaFragment) pageAdapter.createFragment(1);
-        alertFragment = (AlertFragment) pageAdapter.createFragment(2);
-        settingsFragment = (SettingsFragment) pageAdapter.createFragment(3);
+        new Handler(Looper.getMainLooper()).post(() -> {
+            pageAdapter = new PageAdapter(mainActivityInterface.getMyFragmentManager(), this.getLifecycle());
+            pageAdapter.createFragment(0);
+            songSectionsFragment = (SongSectionsFragment) pageAdapter.menuFragments[0];
+            mediaFragment = (MediaFragment) pageAdapter.createFragment(1);
+            alertFragment = (AlertFragment) pageAdapter.createFragment(2);
+            settingsFragment = (SettingsFragment) pageAdapter.createFragment(3);
 
-        mainActivityInterface.getPresenterSettings().setSongSectionsAdapter(new SongSectionsAdapter(requireContext(),mainActivityInterface,this,displayInterface));
+            mainActivityInterface.getPresenterSettings().setSongSectionsAdapter(new SongSectionsAdapter(requireContext(),mainActivityInterface,this,displayInterface));
 
-        myView.viewPager.setAdapter(pageAdapter);
-        new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
-            switch (position) {
-                case 0:
-                    tab.setText(getString(R.string.song));
-                    break;
-                case 1:
-                    tab.setText(getString(R.string.media));
-                    break;
-                case 2:
-                    tab.setText(getString(R.string.alert));
-                    break;
-                case 3:
-                    tab.setText(getString(R.string.settings));
-                    break;
-            }
-        }).attach();
+            myView.viewPager.setAdapter(pageAdapter);
+            new TabLayoutMediator(myView.presenterTabs, myView.viewPager, (tab, position) -> {
+                switch (position) {
+                    case 0:
+                        tab.setText(getString(R.string.song));
+                        break;
+                    case 1:
+                        tab.setText(getString(R.string.media));
+                        break;
+                    case 2:
+                        tab.setText(getString(R.string.alert));
+                        break;
+                    case 3:
+                        tab.setText(getString(R.string.settings));
+                        break;
+                }
+            }).attach();
 
-        showTutorial();
+            // Show any showcase instructions required
+            showTutorial();
+        });
 
     }
 
@@ -163,17 +203,15 @@ public class PresenterFragment extends Fragment {
         }
 
         displayInterface.updateDisplay("setSongContent");
-        songSectionsFragment.showSongInfo();
+        if (songSectionsFragment!=null) {
+            songSectionsFragment.showSongInfo();
+        }
     }
 
     private void getPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(), mainActivityInterface);
         mainActivityInterface.getPresenterSettings().getAllPreferences(requireContext(),mainActivityInterface);
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
-    }
-
-    private void doShowcase() {
-
     }
 
     public void getSongViews() {
@@ -206,15 +244,19 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.getPresenterSettings().setLogoOn(b);
             displayInterface.updateDisplay("showLogo");
         });
-        myView.blackScreen.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPresenterSettings().setBlackscreenOn(b);
-            displayInterface.updateDisplay("showBlackscreen");
+        myView.showLogoSide.setOnCheckedChangeListener((compoundButton, b) -> {
+
         });
-        myView.blankScreen.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPresenterSettings().setBlankscreenOn(b);
-            displayInterface.updateDisplay("showBlankscreen");
+        myView.blackScreen.setOnCheckedChangeListener(new MyCheckChangeListener());
+        myView.blackScreenSide.setOnCheckedChangeListener(new MyCheckChangeListener());
+        myView.blankScreen.setOnCheckedChangeListener(new MyCheckChangeListener());
+        myView.blankScreenSide.setOnCheckedChangeListener(new MyCheckChangeListener());
+
+        myView.panicBottom.setOnClickListener(view -> {
+            myView.showLogo.setChecked(true);
+            displayInterface.checkDisplays();
         });
-        myView.updateProjector.setOnClickListener(view -> {
+        myView.panicSide.setOnClickListener(view -> {
             myView.showLogo.setChecked(true);
             displayInterface.checkDisplays();
         });
@@ -226,7 +268,26 @@ public class PresenterFragment extends Fragment {
         viewsToHighlight.add(myView.showLogo);
         viewsToHighlight.add(myView.blankScreen);
         viewsToHighlight.add(myView.blackScreen);
-        viewsToHighlight.add(myView.updateProjector);
-        songSectionsFragment.showTutorial(viewsToHighlight);
+        viewsToHighlight.add(myView.panicBottom);
+        if (songSectionsFragment!=null) {
+            songSectionsFragment.showTutorial(viewsToHighlight);
+        }
+    }
+
+    private class MyCheckChangeListener implements CompoundButton.OnCheckedChangeListener {
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if ((landscape && compoundButton==myView.showLogoSide) || compoundButton==myView.showLogo) {
+                mainActivityInterface.getPresenterSettings().setLogoOn(b);
+                displayInterface.updateDisplay("showLogo");
+            } else if ((landscape && compoundButton==myView.blankScreenSide) || compoundButton==myView.blankScreen) {
+                mainActivityInterface.getPresenterSettings().setBlankscreenOn(b);
+                displayInterface.updateDisplay("showBlankscreen");
+            } else if ((landscape && compoundButton==myView.blackScreenSide) || compoundButton==myView.blackScreen) {
+                mainActivityInterface.getPresenterSettings().setBlackscreenOn(b);
+                displayInterface.updateDisplay("showBlackscreen");
+            }
+        }
     }
 }

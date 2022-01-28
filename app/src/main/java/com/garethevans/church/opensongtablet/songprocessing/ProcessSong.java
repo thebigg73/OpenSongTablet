@@ -1191,7 +1191,7 @@ public class ProcessSong {
                 }
 
                 // Display any errors
-                mainActivityInterface.getShowToast().doIt(c, errors.toString());
+                mainActivityInterface.getShowToast().doIt(errors.toString());
                 song.setPresoOrderSongSections(newSections);
                 song.setPresoOrderSongHeadings(newHeaders);
             } else {

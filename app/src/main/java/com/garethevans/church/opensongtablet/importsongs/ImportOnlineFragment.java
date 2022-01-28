@@ -509,12 +509,12 @@ public class ImportOnlineFragment extends Fragment {
             }
 
             // Let the user know and show the song
-            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
             mainActivityInterface.navHome();
 
         } catch (Exception e) {
             e.printStackTrace();
-            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
         }
     }
 
@@ -552,11 +552,11 @@ public class ImportOnlineFragment extends Fragment {
 
             // Send an instruction to update the song menu (no need for full reindex)
             mainActivityInterface.updateSongMenu(newSong);
-            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
 
             mainActivityInterface.navHome();
         } else {
-            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
         }
     }
 

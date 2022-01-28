@@ -75,9 +75,9 @@ public class ProfileFragment extends Fragment {
             }
         }
         if (success) {
-            mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
         } else {
-            mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
         }
     }
 

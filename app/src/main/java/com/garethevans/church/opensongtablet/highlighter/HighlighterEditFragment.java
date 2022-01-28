@@ -377,15 +377,15 @@ public class HighlighterEditFragment extends Fragment {
             Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, "Highlighter", "",
                     mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
             if (mainActivityInterface.getStorageAccess().deleteFile(requireContext(), uri)) {
-                mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.success));
+                mainActivityInterface.getShowToast().doIt(getString(R.string.success));
             } else {
-                mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.not_saved));
+                mainActivityInterface.getShowToast().doIt(getString(R.string.not_saved));
             }
             mainActivityInterface.getDrawNotes().delete();
             checkUndos();
             checkRedos();
         } else {
-            mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.cancel));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.cancel));
         }
     }
 
@@ -442,9 +442,9 @@ public class HighlighterEditFragment extends Fragment {
                     OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), uri);
                     Log.d(TAG, "outputStream=" + outputStream);
                     mainActivityInterface.getStorageAccess().writeImage(outputStream, bitmap);
-                    mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.success));
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
                 } else {
-                    mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.error));
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.error));
                 }
             });
         }).start();

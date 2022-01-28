@@ -95,8 +95,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
                 dismiss();
             } else {
                 dismiss();
-                mainActivityInterface.getShowToast().doIt(requireContext(),
-                        getString(R.string.search_index_wait));
+                mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
             }
         });
     }

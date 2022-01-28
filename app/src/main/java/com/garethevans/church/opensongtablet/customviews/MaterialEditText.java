@@ -23,7 +23,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -50,26 +49,26 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
                 android.R.attr.imeOptions,
                 android.R.attr.inputType,
                 android.R.attr.saveEnabled,
-                R.attr.endIconMode,
+                com.google.android.material.R.attr.endIconMode,
                 R.attr.useMonospace,
-                R.attr.suffixText,
-                R.attr.helperText,
+                com.google.android.material.R.attr.suffixText,
+                androidx.navigation.ui.R.attr.helperText,
                 android.R.attr.layout_gravity};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
         CharSequence hint = a.getText(1);
         CharSequence digits = a.getText(2);
-        int lines = a.getInt(3,1);
-        int minLines = a.getInt(4,1);
-        int maxLines = a.getInt(5,1);
+        int lines = a.getInt(3, 1);
+        int minLines = a.getInt(4, 1);
+        int maxLines = a.getInt(5, 1);
         int imeOptions = a.getInt(6, EditorInfo.IME_ACTION_DONE);
         int inputType = a.getInt(7, InputType.TYPE_CLASS_TEXT);
-        restoreState = a.getBoolean(8,true);
+        restoreState = a.getBoolean(8, true);
         int endIconMode = a.getInt(9, TextInputLayout.END_ICON_NONE);
         boolean useMonospace = a.getBoolean(10, false);
         CharSequence suffixText = a.getText(11);
         CharSequence helperText = a.getText(12);
-        int gravity = a.getInt(13,Gravity.TOP);
+        int gravity = a.getInt(13, Gravity.TOP);
 
         editText = findViewById(R.id.editText);
         textInputLayout = findViewById(R.id.holderLayout);
@@ -92,22 +91,22 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
             editText.setKeyListener(DigitsKeyListener.getInstance(digits.toString()));
         }
 
-        if (lines>minLines) {
+        if (lines > minLines) {
             minLines = lines;
-        } else if (minLines>lines) {
+        } else if (minLines > lines) {
             lines = minLines;
         }
         editText.setLines(lines);
         editText.setMinLines(minLines);
-        if (maxLines>1) {
+        if (maxLines > 1) {
             editText.setMaxLines(maxLines);
         }
 
         // Now figure out the inputType to use
-        if (inputType==InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
+        if (inputType == InputType.TYPE_TEXT_FLAG_MULTI_LINE) {
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
             editText.setImeOptions(EditorInfo.IME_ACTION_NONE);
-        } else if (inputType==InputType.TYPE_CLASS_NUMBER){
+        } else if (inputType == InputType.TYPE_CLASS_NUMBER) {
             editText.setInputType(inputType);
         } else {
             editText.setInputType(inputType);
@@ -115,25 +114,26 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
             editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if(actionId==EditorInfo.IME_ACTION_DONE){
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
 
                         //Clear focus here from edittext
                         editText.clearFocus();
-                        MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
-                        mainActivityInterface.setWindowFlags();
+                        //MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
+                        //mainActivityInterface.setWindowFlags();
                     }
                     return false;
                 }
             });
-        };
+        }
+        ;
 
         if (useMonospace) {
             editText.setTypeface(Typeface.MONOSPACE);
         }
-        if (suffixText!=null) {
+        if (suffixText != null) {
             textInputLayout.setSuffixText(suffixText);
         }
-        if (helperText!=null) {
+        if (helperText != null) {
             textInputLayout.setHelperTextEnabled(true);
             textInputLayout.setHelperText(helperText);
         }
@@ -149,14 +149,14 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
     }
 
     public void setText(String text) {
-        if (text==null || text.isEmpty()) {
+        if (text == null || text.isEmpty()) {
             editText.setText(null);
         }
         editText.setText(text);
     }
 
     public Editable getText() {
-        if (editText.getText()==null) {
+        if (editText.getText() == null) {
             editText.setText("");
         }
         return editText.getText();
@@ -240,26 +240,33 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
     public int getInputType() {
         return editText.getInputType();
     }
+
     public int getImeOptions() {
         return editText.getImeOptions();
     }
+
     public void setInputType(int inputType) {
         editText.setInputType(inputType);
     }
+
     public void setImeOptions(int imeOptions) {
         editText.setImeOptions(imeOptions);
     }
+
     public void setHorizontallyScrolling(boolean horizontallyScrolling) {
         editText.setHorizontallyScrolling(horizontallyScrolling);
     }
+
     public void setAutoSizeTextTypeUniformWithConfiguration(int minTextSize, int maxTextSize, int stepSize) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            editText.setAutoSizeTextTypeUniformWithConfiguration(minTextSize,maxTextSize,stepSize, TypedValue.COMPLEX_UNIT_SP);
+            editText.setAutoSizeTextTypeUniformWithConfiguration(minTextSize, maxTextSize, stepSize, TypedValue.COMPLEX_UNIT_SP);
         }
     }
+
     public void setTextSize(float textSize) {
         editText.setTextSize(textSize);
     }
+
     public void setSelected(boolean selected) {
         editText.setSelected(selected);
     }
@@ -267,9 +274,11 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
     public void setKeyListener(KeyListener keyListener) {
         editText.setKeyListener(keyListener);
     }
+
     public void setEnabled(boolean enabled) {
         editText.setEnabled(enabled);
     }
+
     public void setFocusable(boolean focusable) {
         editText.setClickable(!focusable);
         editText.setFocusable(focusable);
@@ -282,6 +291,7 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         textInputLayout.setOnClickListener(onClickListener);
         editText.setOnClickListener(onClickListener);
     }
+
     public void setOnFocusChangeListener(OnFocusChangeListener onFocusChangeListener) {
         editText.setOnFocusChangeListener(onFocusChangeListener);
     }

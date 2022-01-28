@@ -123,18 +123,18 @@ public class BibleDownloadFragment extends Fragment {
                         Uri uri = Uri.parse(downloadInfo[1]);
                         // Now we need to extract the xmm file from the zip file
                         if (extractBibleZipFile(uri)) {
-                            requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success)));
+                            requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.success)));
                         } else {
-                            requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error)));
+                            requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.error)));
                         }
                     } else {
-                        requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(requireContext(),downloadInfo[0]));
+                        requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(downloadInfo[0]));
                     }
                 }
                 requireActivity().runOnUiThread(() -> progressBar(false));
                 }).start();
         } else {
-            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.requires_internet));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.requires_internet));
             progressBar(false);
         }
     }

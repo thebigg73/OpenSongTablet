@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.stickynotes;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -78,18 +79,20 @@ public class StickyNotesFragment extends Fragment {
             if (myView.stickyNotes.getText()!=null) {
                 mainActivityInterface.getSong().setNotes(myView.stickyNotes.getText().toString());
                 if (mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface)) {
-                    mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.success));
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
                 } else {
-                    mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.error_song_not_saved));
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.error_song_not_saved));
                 }
             } else {
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
+                mainActivityInterface.getShowToast().doIt(getString(R.string.error));
             }
         });
         myView.alphaSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
@@ -98,9 +101,12 @@ public class StickyNotesFragment extends Fragment {
         });
         myView.alphaSlider.addOnChangeListener((slider, value, fromUser) -> setAlphaHint(value));
         myView.timeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {}
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),

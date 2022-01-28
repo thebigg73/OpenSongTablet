@@ -110,7 +110,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
                 requireActivity().runOnUiThread(() -> mainActivityInterface.navHome());
             } else {
-                mainActivityInterface.getShowToast().doIt(getActivity(),requireContext().getResources().getString(R.string.not_saved));
+                mainActivityInterface.getShowToast().doIt(requireContext().getString(R.string.not_saved));
             }
         }).start();
     }

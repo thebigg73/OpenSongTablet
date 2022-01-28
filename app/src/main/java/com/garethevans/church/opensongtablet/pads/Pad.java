@@ -164,11 +164,11 @@ public class Pad {
         // Prepare any error message
         if (!padValid) {
             if (mainActivityInterface.getSong().getKey().isEmpty()) {
-                mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_key_error));
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_key_error));
             } else if (isCustomAutoPad(c)) {
-                mainActivityInterface.getShowToast().doIt(c, c.getString(R.string.pad_file_error));
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_file_error));
             } else if (isLinkAudio(c)) {
-                mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_custom_pad_error));
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_custom_pad_error));
             }
         }
         /*

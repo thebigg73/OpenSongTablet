@@ -466,6 +466,8 @@
         <item>1/4</item>
     </string-array><string name="title">Title</string>
     <string name="transpose">Transpose</string>
+    <string name="transpose_capo">Transpose by capo fret change</string>
+    <string name="transpose_capo_info">Keep the chords the same, but change the position of the capo</string>
     <string name="unknown">Unknown</string>
     <string name="update_projector">Update\nprojector</string>
     <string name="user_guide">User guide</string>

@@ -254,7 +254,7 @@ public class PerformanceFragment extends Fragment {
                 getScreenshot(0,0,0);
 
                 // Set the previous/next if we want to
-                mainActivityInterface.getDisplayPrevNext().setPrevNext();
+                mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
 
             }
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
@@ -435,7 +435,7 @@ public class PerformanceFragment extends Fragment {
         }
 
         // Set the previous/next if we want to
-        mainActivityInterface.getDisplayPrevNext().setPrevNext();
+        mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
 
         // Start the pad (if the pads are activated and the pad is valid)
         mainActivityInterface.getPad().autoStartPad(requireContext());

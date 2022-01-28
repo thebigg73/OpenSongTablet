@@ -143,6 +143,8 @@
         <!-- The box -->
         <item name="boxStrokeColor">@color/vlightgrey</item>
         <item name="boxStrokeWidth">1dp</item>
+
+        <item name="materialThemeOverlay">@style/TextInputOverlay</item>
     </style>
     <style name="EditTextLayout" parent="">
         <!-- Max lines = 1 and set Enter to complete entry-->
@@ -153,18 +155,22 @@
         <item name="android:scrollbarStyle">insideInset</item>
         <item name="android:scrollbars">vertical</item>
         <item name="android:layout_gravity">top</item>
+        <item name="android:background">@color/transparent</item>
 
         <!-- The text position thumb and trailing icon colours -->
         <item name="colorPrimary">@color/colorSecondary</item>
         <item name="colorOnSurface">@color/colorSecondary</item>
 
-        <!-- Style the text cursor and highlight colours -->
-        <item name="materialThemeOverlay">@style/TextInputOverlay</item>
     </style>
     <style name="TextInputOverlay" parent="">
+        <item name="android:background">@color/transparent</item>
         <item name="colorControlActivated">@color/colorAltSecondary</item>
+        <item name="colorControlNormal">@color/colorAltSecondary</item>
         <item name="colorOnSurface">@color/colorAltSecondary</item>
-        <item name="android:popupBackground">@null</item>
+        <item name="android:popupBackground">@color/transparent</item>
+
+
+
     </style>
 
     <!-- The ActionBar -->

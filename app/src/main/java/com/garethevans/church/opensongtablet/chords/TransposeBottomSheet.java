@@ -118,9 +118,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
         usePreferredChordFormat(myView.assumePreferred.getChecked());
 
-
-        myView.transposeCapo.setText(getString(R.string.transpose) + " " + getString(R.string.capo));
-        myView.capoChange.setText(getString(R.string.transpose) + " " + getString(R.string.capo));
+        myView.capoChange.setVisibility(View.GONE);
         myView.transposeCapo.setChecked(false);
     }
 
@@ -188,9 +186,9 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
         myView.transposeCapo.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                myView.capoChange.setText(getString(R.string.transpose) + " " + getString(R.string.capo));
+                myView.capoChange.setVisibility(View.VISIBLE);
             } else {
-                myView.capoChange.setText("");
+                myView.capoChange.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -261,17 +259,16 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             transposeTimes = Math.abs(transposeTimes);
 
             // TODO - Check this code from IV #142
-            // If requested transpose the capo fret number
-            /*if (myView.transposeCapo.isSelected()) {
+            //If requested transpose the capo fret number
+            if (myView.transposeCapo.isSelected()) {
                 String capo = mainActivityInterface.getSong().getCapo();
-                String value = String.valueOf(((Integer.parseInt("0" + capo) + 12 + (transposeTimes * Integer.parseInt(transposeDirection))) % 12));
-                Log.d(TAG,"value="+value);
-                if (value.equals("0")) {
-                    //mainActivityInterface.getSong().setCapo("");
+                mainActivityInterface.getSong().setCapo(String.valueOf(((Integer.parseInt("0" + capo) + 12 + (transposeTimes * Integer.parseInt(transposeDirection))) % 12)));
+                if (mainActivityInterface.getSong().getCapo().equals("0")) {
+                    mainActivityInterface.getSong().setCapo("");
                 }
             }
             // doTranspose will write the song including any transposed capo
-*/
+
             // Do the transpose (song and key)
             mainActivityInterface.getTranspose().doTranspose(requireContext(),mainActivityInterface,mainActivityInterface.getSong(),
                     transposeDirection, transposeTimes, fromFormat, toFormat);

@@ -29,6 +29,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private int currentSection = 0;
     private int scaledTotalHeight;
     private int totalPadding;
+    private float maxFontSize;
 
     private final float density;
 
@@ -36,6 +37,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
         density = c.getResources().getDisplayMetrics().density;
+        maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"fontSizeMax",50f);
         setSongInfo();
     }
 
@@ -51,9 +53,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             int sectionHeight = mainActivityInterface.getSectionHeights().get(x);
             stageSectionInfo.width = sectionWidth;
             stageSectionInfo.height = sectionHeight;
-            float x_scale = (float)mainActivityInterface.getDisplayMetrics()[0]/(float)sectionWidth;
+            float x_scale = (float)(mainActivityInterface.getDisplayMetrics()[0]-16f)/(float)sectionWidth;
             float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getAppActionBar().getActionBarHeight())*0.75f/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
+            // Check the scale isn't bigger than the maximum font size
+            scale = Math.min(scale,(maxFontSize/14f));
             stageSectionInfo.scale = scale;
             sectionInfos.add(stageSectionInfo);
             scaledTotalHeight += (int)(sectionHeight*scale);

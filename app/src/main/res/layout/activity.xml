@@ -5,70 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:id="@+id/appBarLayout"
+        <!--The main fragments get loaded up here-->
+        <RelativeLayout
+            android:id="@+id/fragmentView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <!--The main fragments get loaded up here-->
-            <RelativeLayout
-                android:id="@+id/fragmentView"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.fragment.app.FragmentContainerView
-                    android:id="@+id/nav_host_fragment"
-                    android:name="androidx.navigation.fragment.NavHostFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:defaultNavHost="true"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:navGraph="@navigation/navigation" />
-
-                <include
-                    android:id="@+id/onScreenInfo"
-                    layout="@layout/view_on_screen_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"/>
-
-                <!-- The page buttons -->
-                <include
-                    android:id="@+id/pageButtonRight"
-                    layout="@layout/view_page_buttons"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/onScreenInfo"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:clipChildren="true"
-                    android:clipToPadding="true" />
-
-                <!-- The previous and next info -->
-                <include
-                    android:id="@+id/nextPrevInfo"
-                    layout="@layout/view_prev_next"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="16dp"
-                    android:layout_toStartOf="@+id/pageButtonRight" />
-
-            </RelativeLayout>
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navGraph="@navigation/navigation" />
 
             <include
-                android:id="@+id/toolBar"
-                layout="@layout/view_toolbar" />
+                android:id="@+id/onScreenInfo"
+                layout="@layout/view_on_screen_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true" />
 
-        </FrameLayout>
-    </RelativeLayout>
+            <!-- The page buttons -->
+            <include
+                android:id="@+id/pageButtonRight"
+                layout="@layout/view_page_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/onScreenInfo"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:clipChildren="true"
+                android:clipToPadding="true" />
+
+            <!-- The previous and next info -->
+            <include
+                android:id="@+id/nextPrevInfo"
+                layout="@layout/view_prev_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="16dp"
+                android:layout_toStartOf="@+id/pageButtonRight" />
+        </RelativeLayout>
+
+        <include
+            android:id="@+id/toolBar"
+            layout="@layout/view_toolbar" />
+    </FrameLayout>
 
     <!--The left song and set menu-->
     <LinearLayout
@@ -76,10 +69,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorAltPrimary"
-        android:orientation="vertical"
         android:clickable="true"
         android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/menu_top"

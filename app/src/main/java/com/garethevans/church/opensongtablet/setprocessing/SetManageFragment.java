@@ -264,7 +264,7 @@ public class SetManageFragment extends Fragment {
 
             if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),uri) &&
                 !myView.overWrite.isChecked()) {
-                mainActivityInterface.getShowToast().doIt(requireContext(),
+                mainActivityInterface.getShowToast().doIt(
                         getString(R.string.file_exists));
             } else {
                 mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
@@ -281,12 +281,10 @@ public class SetManageFragment extends Fragment {
                     mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
                             "setCurrentBeforeEdits",
                             mainActivityInterface.getCurrentSet().getCurrentSetString());
-                    mainActivityInterface.getShowToast().doIt(requireContext(),
-                            getString(R.string.set_current) + " - " +
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.set_current) + " - " +
                                     getString(R.string.success));
                 } else {
-                    mainActivityInterface.getShowToast().doIt(requireContext(),
-                            getString(R.string.error));
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.error));
                 }
             }
         }
@@ -313,9 +311,9 @@ public class SetManageFragment extends Fragment {
             }
         }
         if (success) {
-            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.success));
         } else {
-            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.error));
         }
 
         // Hide the progress bar
@@ -331,7 +329,7 @@ public class SetManageFragment extends Fragment {
             mainActivityInterface.setWhattodo("exportset:" + chosenSets);
             mainActivityInterface.navigateToFragment("opensongapp://settings/actions/export", 0);
         } else {
-            mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.search_index_wait));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
         }
     }
 

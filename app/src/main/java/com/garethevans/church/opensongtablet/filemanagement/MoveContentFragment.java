@@ -257,7 +257,7 @@ public class MoveContentFragment extends Fragment {
                 requireActivity().runOnUiThread(() -> {
                     myView.progressText.setVisibility(View.GONE);
                     myView.doMove.setVisibility(View.VISIBLE);
-                    mainActivityInterface.getShowToast().doIt(requireContext(), getString(R.string.success));
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
 
                     // Now reload the folder contents
                     listFilesInFolder();

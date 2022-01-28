@@ -125,16 +125,18 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void setFolders() {
         new Thread(() -> {
             foundFolders = mainActivityInterface.getSQLiteHelper().getFolders(getContext(), mainActivityInterface);
-            folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, foundFolders);
-            requireActivity().runOnUiThread(() -> {
-                myView.filters.folderSearch.setAdapter(folderArrayAdapter);
-                // folderSearchVal = mainActivityInterface.getSong().getFolder();
-                myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
-                int pos = foundFolders.indexOf(mainActivityInterface.getSong().getFolder());
-                if (pos >= 0) {
-                    myView.filters.folderSearch.setText(foundFolders.get(pos));
-                }
-            });
+            if (getActivity()!=null) {
+                requireActivity().runOnUiThread(() -> {
+                    folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, foundFolders);
+                    myView.filters.folderSearch.setAdapter(folderArrayAdapter);
+                    // folderSearchVal = mainActivityInterface.getSong().getFolder();
+                    myView.filters.folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
+                    int pos = foundFolders.indexOf(mainActivityInterface.getSong().getFolder());
+                    if (pos >= 0) {
+                        myView.filters.folderSearch.setText(foundFolders.get(pos));
+                    }
+                });
+            }
         }).start();
     }
 
@@ -311,9 +313,9 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
             textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(), "songMenuAlphaIndexSize", 14.0f));
             int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(), "songMenuAlphaIndexSize", 14.0f) * 2;
-            textView.setPadding(i+4,i,i-12,i);
-            textView.setMinimumWidth(48);
-            textView.setMinimumHeight(48);
+            textView.setPadding(i,i,i,i);
+            textView.setMinimumWidth(16);
+            textView.setMinimumHeight(16);
             textView.setText(index);
             textView.setOnClickListener(view -> {
                 TextView selectedIndex = (TextView) view;

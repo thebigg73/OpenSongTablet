@@ -753,7 +753,7 @@ public class CustomChordsFragment extends Fragment {
                 }
             }
             if (alreadyExists) {
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.custom_chord_exists));
+                mainActivityInterface.getShowToast().doIt(getString(R.string.custom_chord_exists));
             } else {
                 // Build a default chord
                 String defaultCode;

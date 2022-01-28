@@ -73,7 +73,7 @@ public class DisplayPrevNext {
         return showNext;
     }
 
-    public void setPrevNext() {
+    public void setPrevNext(Context c) {
         next.hide();
         prev.hide();
         nextVisible = false;
@@ -84,8 +84,8 @@ public class DisplayPrevNext {
         if (showNext || showPrev) {
             // Get the text from either the set or song menu
             // Decode the text which for non-songs may be Uri encoded for safety
-            String previousText = Uri.decode(getTextForButton(prevIndex));
-            String nextText = Uri.decode(getTextForButton(nextIndex));
+            String previousText = Uri.decode(getTextForButton(c,prevIndex));
+            String nextText = Uri.decode(getTextForButton(c,nextIndex));
 
             // Set the listeners
             // Use the text as it is for the filename (might be Uri encoded)
@@ -149,13 +149,22 @@ public class DisplayPrevNext {
         }
     }
 
-    private String getTextForButton(int position) {
+    private String getTextForButton(Context c, int position) {
         String text = "";
         if (position>-1) {
             if (isSetMove(position)) {
                 if (position < mainActivityInterface.getCurrentSet().getSetItems().size()) {
                     text = mainActivityInterface.getCurrentSet().getFilename(position);
+
+                    // Look for the key in the set (it might be specified)
                     String key = mainActivityInterface.getCurrentSet().getKey(position);
+                    // If it isn't there, for the song key from the user database instead
+                    if (key==null || key.isEmpty()) {
+                        key = mainActivityInterface.getSQLiteHelper().getKey(c,mainActivityInterface,
+                                mainActivityInterface.getCurrentSet().getFolder(position),
+                                mainActivityInterface.getCurrentSet().getFilename(position));
+                    }
+
                     if (key != null && !key.isEmpty() && !key.equals("null")) {
                         text = text + " (" + key + ")";
                     }

@@ -47,8 +47,18 @@ public class SettingsCCLI extends Fragment {
 
     private void setCurrentValues() {
         myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "ccliAutomaticLogging", false));
-        myView.ccliChurch.setHint(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliChurchName", ""));
-        myView.ccliLicence.setHint(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliLicence", ""));
+
+        String notSet = getString(R.string.not_set);
+        String ccliChurchName = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliChurchName","");
+        String ccliLicence = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliLicence","");
+        if (ccliChurchName.isEmpty()) {
+            ccliChurchName = notSet;
+        }
+        if (ccliLicence.isEmpty()) {
+            ccliLicence = notSet;
+        }
+        myView.ccliChurch.setHint(ccliChurchName);
+        myView.ccliLicence.setHint(ccliLicence);
     }
 
     private void setListeners() {

@@ -136,11 +136,11 @@ public class CustomSlide {
             //mainActivityInterface.updateSetList();
             mainActivityInterface.refreshSetList();
 
-            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.success));
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.success));
 
         } else {
             // Incorrect folder/filename
-            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.error));
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.error));
         }
     }
 

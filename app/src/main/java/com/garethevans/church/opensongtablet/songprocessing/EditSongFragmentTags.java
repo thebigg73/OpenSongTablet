@@ -85,7 +85,7 @@ public class EditSongFragmentTags extends Fragment {
                     themesBottomSheet.show(requireActivity().getSupportFragmentManager(), "ThemesBottomSheet");
                 }
             } else {
-                mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.search_index_wait));
+                mainActivityInterface.getShowToast().doIt(getString(R.string.search_index_wait));
             }
 
         });

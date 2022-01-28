@@ -16,6 +16,7 @@ import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.appdata.SoftKeyboard;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
@@ -79,6 +80,7 @@ public interface MainActivityInterface {
     void setMode(String whichMode);
     void setFirstRun(boolean firstRun);
     boolean getFirstRun();
+    SoftKeyboard getSoftKeyboard();
 
     // Preferences and settings
     Preferences getPreferences();

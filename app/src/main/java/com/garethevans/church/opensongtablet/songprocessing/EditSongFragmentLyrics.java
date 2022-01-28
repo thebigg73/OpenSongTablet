@@ -72,6 +72,9 @@ public class EditSongFragmentLyrics extends Fragment {
         // Set up the bottomSheet
         bottomSheetBar();
 
+        myView.lyrics.clearFocus();
+        myView.lyrics.requestFocus();
+
         myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"editTextSize",14);
@@ -140,7 +143,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
+                //mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
             }
 
             @Override

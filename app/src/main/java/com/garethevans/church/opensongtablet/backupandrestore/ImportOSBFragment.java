@@ -478,7 +478,7 @@ public class ImportOSBFragment extends Fragment {
             }
             if (messages[1]==null) {
                 // There was a problem
-                mainActivityInterface.getShowToast().doIt(getContext(),messages[0]);
+                mainActivityInterface.getShowToast().doIt(messages[0]);
                 requireActivity().runOnUiThread(() -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
 
             } else {

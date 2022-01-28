@@ -71,7 +71,7 @@ public class MaterialTextView extends LinearLayout {
     }
 
     public void setHint(String hintText) {
-        if (hintText==null || hintText.isEmpty()) {
+        if (hintText==null) {
             hintView.setVisibility(View.GONE);
         } else {
             hintView.setVisibility(View.VISIBLE);
@@ -84,7 +84,7 @@ public class MaterialTextView extends LinearLayout {
     }
 
     public void setText(String mainText) {
-        if (mainText==null || mainText.isEmpty()) {
+        if (mainText==null) {
             textView.setVisibility(View.GONE);
         } else {
             textView.setVisibility(View.VISIBLE);

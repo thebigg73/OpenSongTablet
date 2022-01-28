@@ -386,7 +386,7 @@ public class SetStorageLocationFragment extends Fragment {
     private void notWriteable() {
         uriTree = null;
         uriTreeHome = null;
-        mainActivityInterface.getShowToast().doIt(requireActivity(), getString(R.string.storage_notwritable));
+        mainActivityInterface.getShowToast().doIt(getString(R.string.storage_notwritable));
         showStorageLocation();
     }
 

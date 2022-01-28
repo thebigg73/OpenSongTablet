@@ -118,7 +118,7 @@ public class SetActionsFragment extends Fragment {
                             mainActivityInterface.setWhattodo("loadset:"+importFilename);
                             mainActivityInterface.navigateToFragment("opensongapp://settings/sets/manage", 0);
                         } else {
-                            mainActivityInterface.getShowToast().doIt(requireContext(),getString(R.string.file_type)+" "+getString(R.string.unknown));
+                            mainActivityInterface.getShowToast().doIt(getString(R.string.file_type)+" "+getString(R.string.unknown));
                         }
                     }
                 } catch (Exception e) {

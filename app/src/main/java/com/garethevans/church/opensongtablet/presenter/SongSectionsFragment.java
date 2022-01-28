@@ -77,7 +77,8 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void showSongInfo() {
-        if (myView!=null) {
+        if (myView!=null && mainActivityInterface!=null && mainActivityInterface.getPresenterSettings()!=null &&
+        mainActivityInterface.getPresenterSettings().getSongSectionsAdapter()!=null) {
             myView.songInfo.setSongTitle(mainActivityInterface.getSong().getTitle());
             myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             myView.songInfo.setSongCopyright(mainActivityInterface.getSong().getCopyright());

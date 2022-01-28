@@ -94,7 +94,7 @@ public class SaveSong {
             return saveSuccessful;
 
         } else {
-            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.error_song_not_saved));
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.error_song_not_saved));
             return false;
         }
     }
@@ -130,7 +130,7 @@ public class SaveSong {
             }
 
         } else {
-            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.error_song_not_saved));
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.error_song_not_saved));
             return false; //Welcome song, so no saving!
         }
     }

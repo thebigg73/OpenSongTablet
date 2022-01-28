@@ -28,7 +28,7 @@ public class ShowToast {
         textToast = view.findViewById(R.id.textToast);
     }
 
-    public void doIt(Context c, String message) {
+    public void doIt(String message) {
         try {
 
             // Toasts with custom layouts are deprecated and look ugly!
@@ -36,8 +36,8 @@ public class ShowToast {
             //toast.show();
 
             // Use a more customisable popup window
-            LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.view_toast,null,false);
+            //LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            //View view = inflater.inflate(R.layout.view_toast,null,false);
             textToast.setText(message);
             popupWindow.showAtLocation(anchor, Gravity.CENTER,0,0);
             Runnable r = popupWindow::dismiss;

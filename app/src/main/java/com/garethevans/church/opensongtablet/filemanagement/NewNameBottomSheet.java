@@ -160,7 +160,7 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
                 }
             }
         }
-        mainActivityInterface.getShowToast().doIt(requireContext(),message);
+        mainActivityInterface.getShowToast().doIt(message);
         if (message.equals(success)) {
             ArrayList<String> result = new ArrayList<>();
             result.add("success");

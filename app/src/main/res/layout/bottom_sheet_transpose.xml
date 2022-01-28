@@ -47,6 +47,15 @@
                 android:text="@string/key"
                 android:textSize="24sp" />
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/capoChange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/transpose_capo"
+                android:visibility="invisible"/>
+
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/assumePreferred"
                 android:layout_width="match_parent"
@@ -96,28 +105,17 @@
                 app:mydrawable="@drawable/ic_settings_white_36dp"/>
             <TableRow style="@style/DividerLine"/>
 
-
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/capoChange"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_horizontal" />
-
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/transposeCapo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="@string/transpose_capo"
+                android:hint="@string/transpose_capo_info"/>
             
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
-
-    <!--TODO From IV - not sure why yet! -->
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/doTransposeButton"

@@ -1,84 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DefaultView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/DefaultView"
-    android:padding="0dp">
+    android:padding="0dp"
+    android:orientation="vertical">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/presenterTabs"
+        style="@style/menuTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAltPrimary"
-        style="@style/menuTabs"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:soundEffectsEnabled="false"/>
+        android:soundEffectsEnabled="false" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBit"
-        android:layout_below="@+id/presenterTabs"
-        android:layout_alignParentStart="true"
-        android:soundEffectsEnabled="false"/>
+        android:soundEffectsEnabled="false"
+        tools:ignore="NestedWeights" />
+
+    <LinearLayout
+        android:id="@+id/sideBit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/colorAltPrimary"
+        android:layout_marginStart="8dp"
+        android:padding="8dp">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/showLogoSide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:padding="0dp"
+            android:text="@string/show_logo" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/blankScreenSide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:padding="0dp"
+            android:text="@string/blank_screen" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/blackScreenSide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:padding="0dp"
+            android:text="@string/black_screen" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/panicSide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:contentDescription="@string/project"
+                android:gravity="center"
+                android:padding="16dp"
+                android:layout_margin="8dp"
+                android:soundEffectsEnabled="false"
+                android:text="@string/panic"
+                app:icon="@drawable/ic_projector_white_36dp"
+                app:iconGravity="top" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottomBit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorAltPrimary"
         android:layout_marginTop="8dp"
+        android:background="@color/colorAltPrimary"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/showLogo"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/show_logo"
-                android:padding="0dp"/>
+                android:orientation="vertical">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/blankScreen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/blank_screen"
-                android:padding="0dp"/>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/showLogo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:padding="0dp"
+                    android:text="@string/show_logo" />
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/blackScreen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/black_screen"
-                android:padding="0dp"/>
-        </LinearLayout>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/blankScreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:padding="0dp"
+                    android:text="@string/blank_screen" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/blackScreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:padding="0dp"
+                    android:text="@string/black_screen" />
+
+
+            </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/updateProjector"
+            android:id="@+id/panicBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/project"
-            android:padding="16dp"
-            app:icon="@drawable/ic_projector_white_36dp"
-            app:iconGravity="top"
-            android:text="@string/panic"
             android:gravity="center"
-            android:soundEffectsEnabled="false"/>
+            android:padding="16dp"
+            android:layout_margin="8dp"
+            android:soundEffectsEnabled="false"
+            android:text="@string/panic"
+            app:icon="@drawable/ic_projector_white_36dp"
+            app:iconGravity="top" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
