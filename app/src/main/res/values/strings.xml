@@ -109,7 +109,7 @@
     <string name="chordFormat1" translatable="false">C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab  A  A#/Bb  B</string>
     <string name="chordFormat2" translatable="false">C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab  A  B   H</string>
     <string name="chordFormat3" translatable="false">C  Cis/Des  D  Dis/Es  E  F  Fis/Ges  G  Gis/As  A  B  H</string>
-    <string name="chordFormat4" translatable="false">Do  Do#/Reb  Re  Re#/Mib  Mi  Fa  Fa#/Solb  Sol  Sol#/Lab  La  La#/Sib Si</string>
+    <string name="chordFormat4" translatable="false">DO  DO#/REb  RE  RE#/MIb  MI  FA  FA#/SOLb  SOL  SOL#/LAb  LA  LA#/SIb SI</string>
     <string name="chordFormat5" translatable="false">1  2  3  4  5  6  7  8  9  10  11  12</string>
     <string name="chordFormat6" translatable="false">I  II  III  IV  V  VI  VII  VIII  IX  X  XI  XII</string>
     <string name="chord_color">Chords font</string>

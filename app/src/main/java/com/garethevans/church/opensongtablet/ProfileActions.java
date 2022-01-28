@@ -315,10 +315,10 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"chordInstrument",getTextValue(xppValue,"g"));
                             break;
 
-                        case "chosenstorage":        // New preference only
+                        /*case "chosenstorage":        // New preference only
                             //chosenstorage                   String      The uri of the document tree (Storage Access Framework)
                             preferences.setMyPreferenceString(c,"chosenstorage",getTextValue(xppValue,null));
-                            break;
+                            break;*/
 
                         case "clock24hFormat":        // New preference only
                         case "timeFormat24h":
@@ -1034,10 +1034,10 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"language",getTextValue(xppValue,"en"));
                             break;
 
-                        case "lastUsedVersion":        // New preference
+                        /*case "lastUsedVersion":        // New preference
                             //lastUsedVersion                 int         The app version number the last time the app ran
                             preferences.setMyPreferenceInt(c,"lastUsedVersion",getIntegerValue(xppValue,0));
-                            break;
+                            break;*/
 
                         case "light_lyricsBackgroundColor":        // New preference only
                             //light_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
@@ -1772,10 +1772,10 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"randomSongFolderChoice",getTextValue(xppValue,""));
                             break;
 
-                        case "runswithoutbackup":        // New preference
+                        /*case "runswithoutbackup":        // New preference
                             //runswithoutbackup               int         The number of times the app has opened without backup (prompt the user after 10)
                             preferences.setMyPreferenceInt(c,"runswithoutbackup",getIntegerValue(xppValue,0));
-                            break;
+                            break;*/
 
                         case "scaleChords":        // New preference
                         case "chordfontscalesize":        // Old preference
@@ -1875,7 +1875,7 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"searchUser3",getBooleanValue(xppValue,true));
                             break;
 
-                        case "setCurrent":        // New preference
+                        /*case "setCurrent":        // New preference
                         case "mySet":        // Old preference
                             //setCurrent                      String      The current set (each item enclosed in $**_folder/song_**$) - gets parsed on loading app
                             preferences.setMyPreferenceString(c,"setCurrent",getTextValue(xppValue,""));
@@ -1890,7 +1890,7 @@ class ProfileActions {
                         case "lastSetName":        // Old preference
                             //setCurrentLastName              String      The last name used when saving or loading a set
                             preferences.setMyPreferenceString(c,"setCurrentLastName",getTextValue(xppValue,""));
-                            break;
+                            break;*/
 
                         case "songAuthorSize":        // New preference
                         case "ab_authorSize":
@@ -1920,16 +1920,15 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"songAutoScaleOverrideWidth",getBooleanValue(xppValue,false));
                             break;
 
-                            // Don't include the songfilename
-                       /* case "songfilename":        // New preference
+                        /*case "songfilename":        // New preference
                             //songfilename                    String      The name of the current song file
                             preferences.setMyPreferenceString(c,"songfilename",getTextValue(xppValue,""));
-                            break;*/
+                            break;
 
                         case "songLoadSuccess":        // New preference
                             //songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed)
                             preferences.setMyPreferenceBoolean(c,"songLoadSuccess",getBooleanValue(xppValue,false));
-                            break;
+                            break;*/
 
                         case "songMenuAlphaIndexShow":        // New preference
                         case "showAlphabeticalIndexInSongMenu":        // Old preference
@@ -2060,7 +2059,6 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"trimLines",getBooleanValue(xppValue,true));
                             break;
 
-                            // Don't include the old storage!!!!!
                         /*case "uriTree":        // New preference
                             //uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent)
                             preferences.setMyPreferenceString(c,"uriTree",getTextValue(xppValue,""));
@@ -2086,7 +2084,6 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"whichMode",getTextValue(xppValue,"Performance"));
                             break;
 
-                            // Don't include the song folder
                         /*case "whichSongFolder":        // New preference
                             //whichSongFolder                 String      The song folder we are currently in
                             preferences.setMyPreferenceString(c,"whichSongFolder",getTextValue(xppValue,c.getString(R.string.mainfoldername)));
