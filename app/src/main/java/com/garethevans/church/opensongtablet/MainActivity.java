@@ -23,7 +23,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
@@ -35,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
-        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        supportRequestWindowFeature(AppCompatDelegate.FEATURE_ACTION_MODE_OVERLAY);
 
         myView = ActivityBinding.inflate(getLayoutInflater());
         setContentView(myView.getRoot());

@@ -7,7 +7,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
@@ -134,7 +133,6 @@ public class MaterialTextView extends LinearLayout {
 
     public void setImageView(Drawable drawable, int tintColor) {
         RequestOptions requestOptions = new RequestOptions().override(64, 64).centerInside();
-        Log.d(TAG,"drawable="+drawable);
         if (drawable!=null) {
             // Clone the drawable
             Drawable cloneDrawable = drawable.mutate();

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -95,23 +96,44 @@ public class DisplayExtraFragment extends Fragment {
             updateBooleanPreference("prevNextSongMenu", isChecked, null);
             mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
         });
-        myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("displayBoldChordsHeadings",isChecked,null));
-        myView.trimSections.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("trimSections",isChecked,null));
-        myView.addSectionSpace.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("addSectionSpace",isChecked,null));
-        myView.trimLineSpacing.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("trimLines",isChecked,myView.trimLineSpacingSlider));
-        myView.filterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("filterSections",isChecked,myView.filterLayout));
-        myView.filterShow.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("filterShow",isChecked,null));
+        myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("displayBoldChordsHeadings",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.trimSections.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("trimSections",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.addSectionSpace.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("addSectionSpace",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.trimLineSpacing.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("trimLines",isChecked,myView.trimLineSpacingSlider);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.filterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("filterSections",isChecked,myView.filterLayout);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.filterShow.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("filterShow",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
 
         // The slider
         myView.trimLineSpacingSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 // Save the new value
                 float percentage = slider.getValue()/100f;
                 mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),"lineSpacing",percentage);
+                mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
             }
         });
         myView.trimLineSpacingSlider.addOnChangeListener((slider, value, fromUser) -> sliderValToText(value));
@@ -141,6 +163,7 @@ public class DisplayExtraFragment extends Fragment {
 
     private void updateBooleanPreference(String prefName, boolean isChecked, View viewToShowHide) {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),prefName,isChecked);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
         if (viewToShowHide!=null) {
             visibilityByBoolean(viewToShowHide,isChecked);
         }
