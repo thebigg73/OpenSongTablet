@@ -306,11 +306,9 @@ public class SettingsFragment extends Fragment {
             this.prefName = prefName;
         }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) {}
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the preference and update the screen
@@ -379,7 +377,6 @@ public class SettingsFragment extends Fragment {
             this.prefName = prefName;
         }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             // Don't save the preference, but update the text

@@ -90,11 +90,10 @@ public class StickyNotesFragment extends Fragment {
             }
         });
         myView.alphaSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
-            @SuppressLint("RestrictedApi")
+
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
@@ -104,11 +103,9 @@ public class StickyNotesFragment extends Fragment {
         myView.alphaSlider.addOnChangeListener((slider, value, fromUser) -> setAlphaHint(value));
         myView.timeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
 
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {}
 
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),

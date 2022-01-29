@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -204,11 +203,9 @@ public class DisplayScalingFragment extends Fragment {
             this.unit = unit;
             this.multiplier = multiplier;
         }
-        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) { }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             updateSlider(materialSlider,pref, multiplier,unit);
@@ -226,7 +223,6 @@ public class DisplayScalingFragment extends Fragment {
             this.materialSlider = materialSlider;
             this.unit = unit;
         }
-        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             updateHint(materialSlider,value,unit);

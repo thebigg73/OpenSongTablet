@@ -76,11 +76,9 @@ public class AlertFragment extends Fragment {
             displayInterface.updateDisplay("showAlert");
         });
         myView.presoAlertTextSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),

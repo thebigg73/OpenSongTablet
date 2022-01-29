@@ -99,11 +99,9 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
         });
         myView.maxvolrange.addOnChangeListener((slider, value, fromUser) -> changeRange((int) value));
         myView.maxvolrange.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),

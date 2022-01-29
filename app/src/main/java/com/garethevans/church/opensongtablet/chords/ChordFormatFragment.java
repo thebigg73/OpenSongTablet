@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.chords;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -202,7 +201,6 @@ public class ChordFormatFragment extends Fragment {
             this.prefName = prefName;
         }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),

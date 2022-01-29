@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -258,13 +257,11 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
 
     private class MySliderTouchListener implements Slider.OnSliderTouchListener {
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) {
             sliding = true;
         }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             sliding = false;
@@ -273,7 +270,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
 
     private class MySliderChangeListener implements Slider.OnChangeListener {
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             if (slider==myView.alphaSlider.getSlider()) {

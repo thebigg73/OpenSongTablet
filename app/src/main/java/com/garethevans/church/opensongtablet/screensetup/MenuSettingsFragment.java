@@ -71,11 +71,9 @@ public class MenuSettingsFragment extends Fragment {
             mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
         });
         myView.songAlphabeticalSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
-            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 float myVal = myView.songAlphabeticalSize.getValue();

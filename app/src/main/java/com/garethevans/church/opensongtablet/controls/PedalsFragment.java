@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.controls;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -383,11 +382,9 @@ public class PedalsFragment extends Fragment {
             this.prefName = prefName;
         }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) { }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the value via the gestures fragment
@@ -404,7 +401,6 @@ public class PedalsFragment extends Fragment {
             this.prefName = prefName;
         }
 
-        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             // Update the helper text

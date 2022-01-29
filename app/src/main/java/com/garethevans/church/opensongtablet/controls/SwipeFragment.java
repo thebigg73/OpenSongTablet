@@ -109,11 +109,9 @@ public class SwipeFragment extends Fragment {
         // Create listeners
         if (createListener) {
             slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
-                @SuppressLint("RestrictedApi")
                 @Override
                 public void onStartTrackingTouch(@NonNull Slider slider) {}
 
-                @SuppressLint("RestrictedApi")
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     // Update the preference
