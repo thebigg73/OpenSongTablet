@@ -103,6 +103,7 @@ public class SwipeFragment extends Fragment {
             myval = max;
         }
         slider.setValue(myval);
+        slider.setLabelFormatter(value -> ((int)value)+unit);
         slider.setHint(Math.round(myval)+unit);
 
         // Create listeners

@@ -175,6 +175,9 @@ public class MetronomeFragment extends Fragment {
         myView.tickVolume.setHint(getVolPercentage(tickVol*100.0f));
         myView.tockVolume.setHint(getVolPercentage(tockVol*100.0f));
 
+        myView.tickVolume.setLabelFormatter(value -> ((int)value)+"%");
+        myView.tockVolume.setLabelFormatter(value -> ((int)value)+"%");
+
         // Set the stop or start icon
         setStartStopIcon(mainActivityInterface.getMetronome().getIsRunning());
     }

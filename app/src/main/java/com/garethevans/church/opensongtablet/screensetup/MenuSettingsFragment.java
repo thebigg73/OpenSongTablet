@@ -51,7 +51,8 @@ public class MenuSettingsFragment extends Fragment {
 
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
         myView.songAlphabeticalSize.setValue(fontSize);
-        myView.songAlphabeticalSize.setHint(fontSize+"px");
+        myView.songAlphabeticalSize.setHint(fontSize+"sp");
+        myView.songAlphabeticalSize.setLabelFormatter(value -> ((int)value)+"sp");
         myView.songMenuCheckboxes.setChecked(showTickBoxes);
 
         showHideSize(showAlphabetical);
@@ -83,7 +84,7 @@ public class MenuSettingsFragment extends Fragment {
                 mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
             }
         });
-        myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> myView.songAlphabeticalSize.setHint(value+"px"));
+        myView.songAlphabeticalSize.addOnChangeListener((slider, value, fromUser) -> myView.songAlphabeticalSize.setHint(value+"sp"));
     }
 
     private void showHideSize(boolean show) {

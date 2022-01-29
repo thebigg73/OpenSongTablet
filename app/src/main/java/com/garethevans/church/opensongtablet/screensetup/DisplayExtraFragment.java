@@ -61,6 +61,7 @@ public class DisplayExtraFragment extends Fragment {
         float lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"lineSpacing",0.1f);
         int percentage = (int)(lineSpacing * 100);
         myView.trimLineSpacingSlider.setValue(percentage);
+        myView.trimLineSpacingSlider.setLabelFormatter(value -> ((int)value)+"%");
         sliderValToText(percentage);
         myView.filterSwitch.setChecked(getChecked("filterSections",false));
         visibilityByBoolean(myView.filterLayout,myView.filterSwitch.isChecked());

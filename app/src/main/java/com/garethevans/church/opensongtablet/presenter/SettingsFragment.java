@@ -142,26 +142,33 @@ public class SettingsFragment extends Fragment {
 
         myView.presoBackgroundAlpha.setValue((int)(mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha()*100));
         myView.presoBackgroundAlpha.setHint((int)(mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha()*100)+"%");
+        myView.presoBackgroundAlpha.setLabelFormatter(value -> ((int)value)+"%");
 
         myView.logoSize.setValue((int)(mainActivityInterface.getPresenterSettings().getLogoSize()*100));
         myView.logoSize.setHint((int)(mainActivityInterface.getPresenterSettings().getLogoSize()*100) + "%");
+        myView.logoSize.setLabelFormatter(value -> ((int)value)+"%");
 
         myView.crossFadeTime.setValue(mainActivityInterface.getPresenterSettings().getPresoTransitionTime());
         myView.crossFadeTime.setHint(mainActivityInterface.getPresenterSettings().getPresoTransitionTime() + "ms");
+        myView.crossFadeTime.setLabelFormatter(value -> ((int)value)+"ms");
 
         myView.rotateDisplay.setValue(mainActivityInterface.getPresenterSettings().getCastRotation());
         myView.rotateDisplay.setHint((int)mainActivityInterface.getPresenterSettings().getCastRotation()+"°");
+        myView.rotateDisplay.setLabelFormatter(value -> ((int)value)+"°");
 
         myView.horizontalMargin.setValue(mainActivityInterface.getPresenterSettings().getPresoXMargin());
         myView.horizontalMargin.setHint(mainActivityInterface.getPresenterSettings().getPresoXMargin() +"px");
+        myView.horizontalMargin.setLabelFormatter(value -> ((int)value)+"px");
         myView.verticalMargin.setValue(mainActivityInterface.getPresenterSettings().getPresoYMargin());
         myView.verticalMargin.setHint(mainActivityInterface.getPresenterSettings().getPresoYMargin() +"px");
+        myView.verticalMargin.setLabelFormatter(value -> ((int)value)+"px");
 
         myView.infoAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoInfoAlign()));
         myView.hideInfoBar.setChecked(mainActivityInterface.getPresenterSettings().getHideInfoBar());
 
         myView.maxFontSize.setValue(mainActivityInterface.getPresenterSettings().getFontSizePresoMax());
         myView.maxFontSize.setHint(((int)mainActivityInterface.getPresenterSettings().getFontSizePresoMax())+"sp");
+        myView.maxFontSize.setLabelFormatter(value -> ((int)value)+"sp");
 
         myView.showChords.setChecked(mainActivityInterface.getPresenterSettings().getPresoShowChords());
 
@@ -171,6 +178,7 @@ public class SettingsFragment extends Fragment {
         myView.blockShadow.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"blockShadow",false));
         myView.blockShadowAlpha.setValue((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"blockShadowAlpha",0.5f)));
         myView.blockShadowAlpha.setHint((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"blockShadowAlpha",0.5f)) + "%");
+        myView.blockShadowAlpha.setLabelFormatter(value -> ((int)value)+"%");
     }
     private void setListeners() {
         myView.currentBackground.setOnClickListener(view -> {

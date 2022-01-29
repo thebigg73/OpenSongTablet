@@ -47,6 +47,7 @@ public class PadDefaultsFragment extends Fragment {
         float padVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"padVol",1.0f);
         myView.padVolume.setValue(padVol*100f);
         myView.padVolume.setHint((int)(padVol*100f)+"%");
+        myView.padVolume.setLabelFormatter(value -> ((int)value)+"%");
 
         String padPan = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"padPan","C");
         switch (padPan) {
@@ -73,6 +74,7 @@ public class PadDefaultsFragment extends Fragment {
         int padCrossFadeTime = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"padCrossFadeTime",8000);
         myView.crossFadeTime.setValue(padCrossFadeTime/1000f);
         myView.crossFadeTime.setHint((padCrossFadeTime/1000f)+"ms");
+        myView.crossFadeTime.setLabelFormatter(value -> value+"ms");
     }
 
     private void setupListeners() {

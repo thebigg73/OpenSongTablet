@@ -55,13 +55,17 @@ public class ActionBarSettingsFragment extends Fragment {
         int batteryDialSize = (int)checkMin(mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"batteryDialThickness", 4),1);
 
         myView.titleTextSize.setValue(titleTextSize);
-        myView.titleTextSize.setHint(timeTextSize+"px");
+        myView.titleTextSize.setHint(timeTextSize+"sp");
+        myView.titleTextSize.setLabelFormatter(value -> ((int)value)+"sp");
         myView.titleTextSize.setHintTextSize(titleTextSize);
         myView.authorTextSize.setValue(authorTextSize);
-        myView.authorTextSize.setHint(authorTextSize+"px");
+        myView.authorTextSize.setHint(authorTextSize+"sp");
+        myView.authorTextSize.setLabelFormatter(value -> ((int)value)+"sp");
         myView.authorTextSize.setHintTextSize(authorTextSize);
         myView.batteryDialSize.setValue((int)batteryDialSize);
+        myView.batteryDialSize.setLabelFormatter(value -> ((int)value)+"px");
         myView.batteryTextSize.setValue(batteryTextSize);
+        myView.batteryTextSize.setLabelFormatter(value -> ((int)value)+"px");
 
         // The switches
         myView.autohideActionBar.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
@@ -140,10 +144,10 @@ public class ActionBarSettingsFragment extends Fragment {
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             if (isfloat) {
                 if (prefName.equals("songTitleSize")) {
-                    myView.titleTextSize.setHint(value + "px");
+                    myView.titleTextSize.setHint((int)value + "sp");
                     myView.titleTextSize.setHintTextSize(value);
                 } else if (prefName.equals("songAuthorSize")) {
-                    myView.authorTextSize.setHint(value + "px");
+                    myView.authorTextSize.setHint((int)value + "sp");
                     myView.authorTextSize.setHintTextSize(value);
                 } else {
                     updateActionBar(prefName, -1, value, false);

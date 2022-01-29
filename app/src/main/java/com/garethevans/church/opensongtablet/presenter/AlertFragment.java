@@ -49,6 +49,7 @@ public class AlertFragment extends Fragment {
         myView.alertSwitch.setChecked(mainActivityInterface.getPresenterSettings().getAlertOn());
         myView.presoAlertTextSize.setValue((int)mainActivityInterface.getPresenterSettings().getPresoAlertTextSize());
         myView.presoAlertTextSize.setHint((int)mainActivityInterface.getPresenterSettings().getPresoAlertTextSize() + "sp");
+        myView.presoAlertTextSize.setLabelFormatter(value -> ((int)value)+"sp");
     }
 
     private void setListeners() {

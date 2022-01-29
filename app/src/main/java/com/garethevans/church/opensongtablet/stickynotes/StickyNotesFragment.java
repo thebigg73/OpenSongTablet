@@ -51,11 +51,13 @@ public class StickyNotesFragment extends Fragment {
         int time = mainActivityInterface.getPreferences().
                 getMyPreferenceInt(requireContext(),"timeToDisplaySticky",0);
         myView.timeSlider.setValue((float)time);
+        myView.timeSlider.setLabelFormatter(value -> ((int)value)+"s");
         setTimeHint(time);
         float alpha = mainActivityInterface.getPreferences().
                 getMyPreferenceFloat(requireContext(),"stickyAlpha",0.8f);
         myView.alphaSlider.setValue(alpha*100.0f);
         setAlphaHint(alpha*100.0f);
+        myView.alphaSlider.setLabelFormatter(value -> ((int)value)+"%");
     }
 
     private void setTimeHint(int time) {

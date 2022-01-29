@@ -51,12 +51,19 @@ public class DisplayScalingFragment extends Fragment {
         myView.overrideWidthSwitch.setChecked(getChecked("songAutoScaleOverrideWidth",false));
 
         // The seekbars
-        setSliderValue(myView.manualFontSize,"fontSize",20.0f,1,"px");
-        setSliderValue(myView.minFontSize,"fontSizeMin",10.0f,1,"px");
-        setSliderValue(myView.maxFontSize,"fontSizeMax",50.0f,1,"px");
+        setSliderValue(myView.manualFontSize,"fontSize",20.0f,1,"sp");
+        setSliderValue(myView.minFontSize,"fontSizeMin",10.0f,1,"sp");
+        setSliderValue(myView.maxFontSize,"fontSizeMax",50.0f,1,"sp");
         setSliderValue(myView.scaleHeading,"scaleHeadings",0.6f,100,"%");
         setSliderValue(myView.scaleChords,"scaleChords",0.8f,100,"%");
         setSliderValue(myView.scaleComments,"scaleChords",0.8f,100,"%");
+
+        myView.manualFontSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.minFontSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.maxFontSize.setLabelFormatter(value -> ((int)value)+"sp");
+        myView.scaleHeading.setLabelFormatter(value -> ((int)value)+"%");
+        myView.scaleChords.setLabelFormatter(value -> ((int)value)+"%");
+        myView.scaleComments.setLabelFormatter(value -> ((int)value)+"%");
     }
 
     private void setAutoscaleMode() {
@@ -105,7 +112,7 @@ public class DisplayScalingFragment extends Fragment {
     }
 
     private void updateHint(MaterialSlider slider, float size, String unit) {
-        if (unit.equals("px")) {
+        if (unit.equals("sp")) {
             slider.setHintTextSize(size);
         }
         String hint = (int)size + unit;
