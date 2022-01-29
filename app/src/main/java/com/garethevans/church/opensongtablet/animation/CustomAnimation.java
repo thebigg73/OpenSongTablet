@@ -12,8 +12,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class CustomAnimation {
 
-    private final String TAG = "CustomAnimation";
-
     public void faderAnimation(final View v, int time, float startAlpha, final float endAlpha) {
         if (v!=null) {
             int finalVisibility;

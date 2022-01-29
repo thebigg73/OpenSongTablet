@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.metronome;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -421,9 +422,11 @@ public class MetronomeFragment extends Fragment {
             this.preference = preference;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             switch (preference) {
@@ -450,6 +453,7 @@ public class MetronomeFragment extends Fragment {
             this.preference = preference;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             switch (preference) {

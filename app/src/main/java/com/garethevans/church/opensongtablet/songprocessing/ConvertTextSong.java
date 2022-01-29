@@ -15,6 +15,8 @@ import java.util.Locale;
 
 public class ConvertTextSong {
 
+    private final String TAG = "ConvertTextSong";
+
     // This class is called when indexing text songs (ending in .txt or files that aren't xml, onsong or chordpro
     public String convertText(Context c, String oldtext) {
         StringBuilder newtext = new StringBuilder();
@@ -153,7 +155,7 @@ public class ConvertTextSong {
     private String fixTabLines(String l) {
         // Look for tab lines
         if (l.contains("|") && l.contains("-")) {
-            Log.d("d", "Could be a tab line = " + l);
+            Log.d(TAG, "Could be a tab line = " + l);
 
             // Does line start with string tuning?
             String b = l.trim().replaceFirst(";","");
@@ -162,7 +164,7 @@ public class ConvertTextSong {
 
             boolean isdrum = b.startsWith("Bd") || b.startsWith("BD") || b.startsWith("Sn") || b.startsWith("SN") ||
                     b.startsWith("CC") || b.startsWith("HH") || b.startsWith("Rd") || b.startsWith("T1") ||
-                    b.startsWith("T2") || b.startsWith("T2") || b.startsWith("FT") || b.startsWith("Hf") ||
+                    b.startsWith("T2") || b.startsWith("T3") || b.startsWith("FT") || b.startsWith("Hf") ||
                     b.startsWith("FH");
 
             if (l.startsWith(";")) {
@@ -189,8 +191,8 @@ public class ConvertTextSong {
                 if (!gstring.startsWith(";")) {
                     gstring = ";" + gstring;
                 }
-                Log.d("d", "gstring = " + gstring);
-                Log.d("d", "tab = " + tab);
+                Log.d(TAG, "gstring = " + gstring);
+                Log.d(TAG, "tab = " + tab);
 
                 l = gstring + tab;
             }

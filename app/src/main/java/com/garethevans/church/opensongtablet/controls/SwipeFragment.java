@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.controls;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Path;
 import android.os.Bundle;
@@ -107,9 +108,11 @@ public class SwipeFragment extends Fragment {
         // Create listeners
         if (createListener) {
             slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                @SuppressLint("RestrictedApi")
                 @Override
                 public void onStartTrackingTouch(@NonNull Slider slider) {}
 
+                @SuppressLint("RestrictedApi")
                 @Override
                 public void onStopTrackingTouch(@NonNull Slider slider) {
                     // Update the preference

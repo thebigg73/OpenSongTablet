@@ -19,7 +19,7 @@ public class PresenterSettings {
             usePresentationOrder;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
-        presoLyricsAlign, presoLyricsVAlign, infoBarChangeDelay, lyricDelay, panicDelay, currentSection=-1;
+        presoLyricsAlign, presoLyricsVAlign, currentSection=-1;
     private String backgroundToUse, presoAlertText;
     private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
             presoBackgroundAlpha, presoTitleTextSize, presoAuthorTextSize, presoCopyrightTextSize;

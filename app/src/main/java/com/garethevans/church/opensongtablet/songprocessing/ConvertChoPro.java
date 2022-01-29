@@ -11,6 +11,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class ConvertChoPro {
+
+    private final String TAG = "ConvertChoPro";
+
     // Declare the variables;
     private String title;
     private String author;
@@ -375,12 +378,12 @@ public class ConvertChoPro {
 
             // IV - Return lines end trimmed which keeps any intended leading spaces
             if (tempchordline.toString().trim().equals("")) {
-                return (" " + templyricline.toString()).replaceAll("\\s+$", "");
+                return (" " + templyricline).replaceAll("\\s+$", "");
             } else {
                 if (templyricline.toString().trim().equals("")) {
-                    return ("." + tempchordline.toString()).replaceAll("\\s+$", "");
+                    return ("." + tempchordline).replaceAll("\\s+$", "");
                 } else {
-                    return ("." + tempchordline.toString()).replaceAll("\\s+$", "") + "\n" + (" " + templyricline.toString()).replaceAll("\\s+$", "");
+                    return ("." + tempchordline).replaceAll("\\s+$", "") + "\n" + (" " + templyricline).replaceAll("\\s+$", "");
                 }
             }
         }
@@ -479,7 +482,7 @@ public class ConvertChoPro {
             newSongFileName = newSongFileName + "_";
             n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", songSubFolder, newSongFileName);
             attempts = attempts + 1;
-            Log.d("d", "attempt:" + attempts + " newSongFileName=" + newSongFileName);
+            Log.d(TAG, "attempt:" + attempts + " newSongFileName=" + newSongFileName);
         }
         return n;
     }
@@ -551,24 +554,24 @@ public class ConvertChoPro {
 
         newSongFileName = nsf;
         // Only do this for songs that exist!
-        Log.d("ChordProConvert","oldSongFileName="+oldSongFileName);
-        Log.d("ChordProConvert","newSongFileName="+newSongFileName);
-        Log.d("ChordProConvert","oldUri="+oldUri);
-        Log.d("ChordProConvert","newUri="+newUri);
-        Log.d("ChordProConvert","storageAccess.uriExists(c, oldUri)="+mainActivityInterface.getStorageAccess().uriExists(c, oldUri));
+        Log.d(TAG,"oldSongFileName="+oldSongFileName);
+        Log.d(TAG,"newSongFileName="+newSongFileName);
+        Log.d(TAG,"oldUri="+oldUri);
+        Log.d(TAG,"newUri="+newUri);
+        Log.d(TAG,"storageAccess.uriExists(c, oldUri)="+mainActivityInterface.getStorageAccess().uriExists(c, oldUri));
 
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(c, oldUri)) {
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,newUri,null,"Songs",songSubFolder,newSongFileName);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newUri);
 
-            Log.d("ChordProConvert","outputStream="+outputStream);
+            Log.d(TAG,"outputStream="+outputStream);
 
             if (outputStream != null) {
                 // Change the songId (references to the uri)
                 // Now remove the old chordpro file
                 mainActivityInterface.getStorageAccess().writeFileFromString(newXML, outputStream);
-                Log.d("ChordProConvert","attempt to deletefile="+mainActivityInterface.getStorageAccess().deleteFile(c, oldUri));
+                Log.d(TAG,"attempt to deletefile="+mainActivityInterface.getStorageAccess().deleteFile(c, oldUri));
 
                 // Remove old song from database
                 mainActivityInterface.getSQLiteHelper().deleteSong(c,mainActivityInterface,songSubFolder,oldSongFileName);

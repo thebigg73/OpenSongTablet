@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -28,13 +27,14 @@ public class MakePDF {
     private PdfDocument.Page page;
     private float sectionScaling;
     private Canvas pageCanvas;
+    private final String TAG = "MakePDF";
 
-    public Uri createTextPDF(Context c, MainActivityInterface mainActivityInterface, Song thisSong,
-                         ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
-                         ArrayList<Integer> sectionHeights, LinearLayout headerLayout,
-                         int headerLayoutWidth, int headerLayoutHeight, String exportFilename) {
+    public Uri createTextPDF(Context c, MainActivityInterface mainActivityInterface,
+                             ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
+                             ArrayList<Integer> sectionHeights, LinearLayout headerLayout,
+                             int headerLayoutWidth, int headerLayoutHeight, String exportFilename) {
 
-        Log.d("d","exportFilename="+exportFilename);
+        Log.d(TAG,"exportFilename="+exportFilename);
 
         // Set the paint values
         setPaintDefaults(mainActivityInterface);
@@ -275,7 +275,7 @@ public class MakePDF {
             view.layout(0, 0, width, height);
 
         } else {
-            Log.d("MakePDF","View was null for scaling");
+            Log.d(TAG,"View was null for scaling");
         }
     }
 

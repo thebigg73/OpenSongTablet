@@ -80,7 +80,7 @@ public class MidiItemTouchHelper extends ItemTouchHelper.Callback {
     }
 
     public void startDrag(RecyclerView.ViewHolder v) {
-
+        Log.d(TAG,"Drag v="+v);
     }
 
 }

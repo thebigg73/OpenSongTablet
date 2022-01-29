@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -69,9 +70,11 @@ public class MenuSettingsFragment extends Fragment {
             mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
         });
         myView.songAlphabeticalSize.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 float myVal = myView.songAlphabeticalSize.getValue();

@@ -65,10 +65,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
 
         holder.vMidiReadable.setText(readableCommand);
         holder.vMidiCommand.setText(midiCommand);
-        /*holder.vCard.setOnClickListener(v -> {
-            Log.d(TAG, "clicked");
-            mainActivityInterface.getMidi().sendMidi(position);
-        });*/
+
     }
 
     @NonNull

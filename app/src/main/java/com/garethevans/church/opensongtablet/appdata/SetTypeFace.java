@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 public class SetTypeFace {
 
+    private final String TAG = "SetTypeFace";
+
     // The fonts used in the app
     private Typeface lyricFont;
     private Typeface chordFont;
@@ -209,7 +211,7 @@ public class SetTypeFace {
                 urlConnection.disconnect();
             }
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
+            Log.e(TAG, e.getMessage(), e);
         }
 
         fontNames = new ArrayList<>();

@@ -27,6 +27,7 @@ import java.util.Calendar;
 public class BatteryStatus extends BroadcastReceiver {
 
     private boolean isCharging;
+    private final String TAG = "BatteryStatus";
 
     public interface MyInterface {
         void setUpBatteryMonitor();
@@ -84,7 +85,7 @@ public class BatteryStatus extends BroadcastReceiver {
                 mListener.setUpBatteryMonitor();
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("BatteryMonitor", "Problem setting up the battery monitor");
+                Log.d(TAG, "Problem setting up the battery monitor");
             }
         }
     }

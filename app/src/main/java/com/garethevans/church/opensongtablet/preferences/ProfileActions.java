@@ -17,10 +17,11 @@ import java.io.OutputStream;
 
 public class ProfileActions {
 
+    private final String TAG = "ProfileActions";
+
     // Deal with loading and saving the profiles
     public boolean loadProfile(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
         // This is uses to copy the external file on top of the application preferences
-        boolean result = true;
 
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,uri);
 
@@ -75,7 +76,7 @@ public class ProfileActions {
                                 Float.parseFloat(value);
                                 type = "float";
                             } catch (Exception e) {
-                                Log.d("ProfileActions", key+" isn't a float!");
+                                Log.d(TAG, key+" isn't a float!");
                             }
                         } else {
                             // Could be an int
@@ -83,7 +84,7 @@ public class ProfileActions {
                                 Integer.parseInt(value);
                                 type = "int";
                             } catch (Exception e) {
-                                Log.d("ProfileActions", key+" isn't a int!");
+                                Log.d(TAG, key+" isn't a int!");
                             }
                         }
                     }
@@ -127,7 +128,7 @@ public class ProfileActions {
                 try {
                     eventType = xpp.next();
                 } catch (Exception e) {
-                    Log.d("ProfileActions","Finished");
+                    Log.d(TAG,"Finished");
                 }
             }
             inputStream.close();
@@ -135,7 +136,7 @@ public class ProfileActions {
             e.printStackTrace();
         }
 
-        return result;
+        return true;
     }
 
     public boolean saveProfile(Context c, MainActivityInterface mainActivityInterface, Uri uri) {

@@ -23,6 +23,7 @@ public class NearbyConnectionsFragment extends Fragment {
     private SettingsNearbyconnectionsBinding myView;
     private MainActivityInterface mainActivityInterface;
     private NearbyReturnActionsInterface nearbyReturnActionsInterface;
+    private final String TAG = "NearbyConnectionsFrag";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -205,7 +206,7 @@ public class NearbyConnectionsFragment extends Fragment {
                         myView.searchForHosts.setText(getString(R.string.connections_discover));
                         myView.searchForHosts.setEnabled(true);
                     } catch (Exception e) {
-                        Log.d("OptionMenu","Lost reference to discovery button");
+                        Log.d(TAG,"Lost reference to discovery button");
                     }
                 },10000);
             }

@@ -23,6 +23,7 @@ public class MyJSInterface {
     private final MainActivityInterface mainActivityInterface;
     private final Uri saveFile;
     private final Fragment fragment;
+    private final String TAG = "MyJSInterface";
 
     public MyJSInterface(Context context, MainActivityInterface mainActivityInterface, Fragment fragment) {
         this.context = context;
@@ -60,20 +61,14 @@ public class MyJSInterface {
     }
 
     private void convertBase64StringToPdfAndStoreIt(String base64PDf) throws IOException {
-        Log.e("BASE 64", base64PDf);
-        //final int notificationId = 1;
-        //String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
-        //final File dwldsPath = new File(context.getExternalFilesDir("Downloads"), "SongSelect.pdf");
-        /*final File dwldsPath = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS) + "/YourFileName_" + currentDateTime + "_.pdf");
-        */
+        Log.d(TAG, base64PDf);
         byte[] pdfAsBytes = Base64.decode(base64PDf.replaceFirst("^data:application/pdf;base64,", ""), 0);
-        Log.d("d", "saveFile=" + saveFile);
+        Log.d(TAG, "saveFile=" + saveFile);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(context, saveFile);
         outputStream.write(pdfAsBytes);
         outputStream.flush();
 
-        Log.d("d", "Download blob complete");
+        Log.d(TAG, "Download blob complete");
 
         mainActivityInterface.songSelectDownloadPDF(fragment, R.id.importOnlineFragment,saveFile);
     }
@@ -86,7 +81,7 @@ public class MyJSInterface {
     public void getHTML(String html) {
         String[] lines = html.split("\n");
         for (String line:lines) {
-            Log.d("getHTML",line);
+            Log.d(TAG,line);
         }
     }
 
@@ -100,11 +95,8 @@ public class MyJSInterface {
 
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-        //request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,myName);
 
         request.setDestinationUri(saveFile);
-        //File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
-        //downloadedFile = Uri.fromFile(file);
         DownloadManager dm = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         request.addRequestHeader("Cookie", cookie);
         if (dm != null) {

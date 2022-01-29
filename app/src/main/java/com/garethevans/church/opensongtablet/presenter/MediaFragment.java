@@ -25,6 +25,8 @@ import java.util.ArrayList;
 
 public class MediaFragment extends Fragment {
 
+    // TODO GET THIS WORKING
+
     private final String TAG = "MediaFragment";
     private MainActivityInterface mainActivityInterface;
     private ModePresenterMediaBinding myView;

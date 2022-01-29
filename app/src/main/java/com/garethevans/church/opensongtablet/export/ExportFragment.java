@@ -261,7 +261,7 @@ public class ExportFragment extends Fragment {
                                     listen.observe(getViewLifecycleOwner(), isDone -> {
                                         if (isDone) {
                                             uris.add(mainActivityInterface.getMakePDF().createTextPDF(requireContext(), mainActivityInterface,
-                                                    song, sectionViewsPDF, sectionViewWidthsPDF,
+                                                    sectionViewsPDF, sectionViewWidthsPDF,
                                                     sectionViewHeightsPDF, headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, location[1] + ".pdf"));
                                             listen.removeObservers(getViewLifecycleOwner());
                                             songsProcessed++;
@@ -350,8 +350,8 @@ public class ExportFragment extends Fragment {
 
                 // Create a PDF on the fly
                 uri = mainActivityInterface.getMakePDF().createTextPDF(requireContext(), mainActivityInterface,
-                        mainActivityInterface.getSong(), sectionViewsPDF, sectionViewWidthsPDF,
-                        sectionViewHeightsPDF, headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, exportFilename);
+                        sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF, headerLayoutPDF,
+                        headerLayoutWidth, headerLayoutHeight, exportFilename);
 
             } else if (type.equals("text/xml") && myView.openSongApp.isChecked()) {
                 // Make a copy of the file as an .ost
@@ -459,7 +459,7 @@ public class ExportFragment extends Fragment {
                 headerLayoutWidth = myView.hiddenHeader.getMeasuredWidth();
                 headerLayoutHeight = myView.hiddenHeader.getMeasuredHeight();
                 myView.hiddenHeader.removeAllViews();
-                createOnTheFlySections(c,mainActivityInterface,thisSong,scaleComments);
+                createOnTheFlySections(c,mainActivityInterface,thisSong);
             }
         });
 
@@ -468,7 +468,7 @@ public class ExportFragment extends Fragment {
                 scaleComments,true);
         myView.hiddenHeader.addView(headerLayoutPDF);
     }
-    private void createOnTheFlySections(Context c, MainActivityInterface mainActivityInterface, Song thisSong, float scaleComments) {
+    private void createOnTheFlySections(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
 
         mainActivityInterface.getProcessSong().updateProcessingPreferences(c, mainActivityInterface);
 

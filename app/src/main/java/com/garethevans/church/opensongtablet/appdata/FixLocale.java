@@ -10,7 +10,6 @@ import java.util.Locale;
 public class FixLocale {
 
     private Locale userLocale;
-    private final String TAG = "FixLocale";
 
     public Locale getLocale() {
         return userLocale;

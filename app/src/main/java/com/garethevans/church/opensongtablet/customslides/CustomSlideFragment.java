@@ -261,7 +261,7 @@ public class CustomSlideFragment extends Fragment {
                 // Prepare the tag - use the file name and base 64 encode it to make it safe
                 byte[] data = uri.getPath().getBytes(StandardCharsets.UTF_8);
                 String tag = Base64.encodeToString(data, Base64.DEFAULT);
-                TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.view_slide_image_row,null,false);
+                @SuppressLint("InflateParams") TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.view_slide_image_row,null,false);
                 row.setTag(tag);
                 TextView filename = row.findViewById(R.id.uriEncoded);
                 filename.setText(uri.toString());

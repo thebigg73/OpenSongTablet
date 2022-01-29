@@ -44,7 +44,7 @@ public class PageButtons {
     private ArrayList<Drawable> pageButtonDrawable;
     private ArrayList<Boolean> pageButtonVisibility;
 
-    private int translateY;
+    private final int translateY;
 
     public PageButtons(Context c) {
         // Set up the return interface for sending instructions back to the main activity
@@ -100,7 +100,7 @@ public class PageButtons {
     }
     private final OvershootInterpolator interpolator = new OvershootInterpolator(1.0f);
 
-    public void animatePageButton(Context c, MainActivityInterface mainActivityInterface, boolean open) {
+    public void animatePageButton(Context c, boolean open) {
         if (open) {
             ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();

@@ -13,14 +13,14 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ABCNotation {
 
+    private final String TAG = "ABCNotation";
+
     @SuppressLint("SetJavaScriptEnabled")
     public void setWebView(WebView webView, MainActivityInterface mainActivityInterface,
                            boolean edit) {
         webView.post(new Runnable() {
             @Override
             public void run() {
-                //String newUA = "Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0";
-                //webView.getSettings().setUserAgentString(newUA);
                 webView.getSettings().getJavaScriptEnabled();
                 webView.getSettings().setJavaScriptEnabled(true);
                 webView.getSettings().setDomStorageEnabled(true);
@@ -34,9 +34,6 @@ public class ABCNotation {
                 webView.setWebChromeClient(new WebChromeClient() {
                     @Override
                     public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                        Log.d("MyApplication", consoleMessage.message() + " -- From line "
-                                + consoleMessage.lineNumber() + " of "
-                                + consoleMessage.sourceId());
                         return super.onConsoleMessage(consoleMessage);
                     }
                 });
@@ -98,9 +95,9 @@ public class ABCNotation {
         try {
             newContent = Uri.encode(newContent, "UTF-8");
         } catch  (Exception e) {
-            Log.d("d","Error encoding");
+            Log.d(TAG,"Error encoding");
         }
-        Log.d("d","newContent="+newContent);
+        Log.d(TAG,"newContent="+newContent);
         webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
         if (edit) {
             webView.loadUrl("javascript:displayOnly();");

@@ -6,7 +6,6 @@ package com.garethevans.church.opensongtablet.preferences;
 // These are the ones that are frequently accessed, so easier just to be static
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
@@ -14,6 +13,7 @@ import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 
 import java.util.ArrayList;
 
+// TODO REMOVE THIS ABOMINATION!!!
 public class StaticVariables {
 
 
@@ -211,17 +211,6 @@ public class StaticVariables {
     static final int REQUEST_PROFILE_LOAD = 4567;
     static final int REQUEST_PROFILE_SAVE = 5678;
 
-    // PresentationService(HDMI) variables
-    static int cast_padding, cast_screenWidth, cast_availableScreenWidth, cast_screenHeight, cast_availableScreenHeight,
-        cast_availableWidth_1col, cast_availableWidth_2col, cast_availableWidth_3col,
-            cast_lyricsCapoColor, cast_lyricsChordsColor, cast_presoFontColor, cast_lyricsBackgroundColor,
-            cast_lyricsTextColor, cast_presoInfoColor, cast_presoAlertColor, cast_presoShadowColor, cast_lyricsVerseColor,
-            cast_lyricsChorusColor, cast_lyricsPreChorusColor, cast_lyricsBridgeColor, cast_lyricsTagColor,
-            cast_lyricsCommentColor, cast_lyricsCustomColor;
-    static Drawable cast_defimage;
-    static boolean forcecastupdate;
-    static Uri cast_vidUri;
-    static MediaPlayer cast_mediaPlayer;
     public static Activity activity;
 
 }

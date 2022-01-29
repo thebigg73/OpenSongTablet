@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.Locale;
 
 // TODO Line and section breaks | and ||
+// TODO Tidy up
 
 public class ProcessSong {
 

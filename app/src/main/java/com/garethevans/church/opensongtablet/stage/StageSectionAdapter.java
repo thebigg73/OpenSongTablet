@@ -29,7 +29,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private int currentSection = 0;
     private int scaledTotalHeight;
     private int totalPadding;
-    private float maxFontSize;
+    private final float maxFontSize;
 
     private final float density;
 

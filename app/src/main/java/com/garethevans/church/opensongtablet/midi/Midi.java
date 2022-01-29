@@ -220,7 +220,7 @@ public class Midi {
     }
 
     String buildMidiString(String action, int channel, int byte2, int byte3) {
-        Log.d("buildMidSitring()","action="+action+"  channel:"+channel+"  byte2="+byte2+"  byte3="+byte3);
+        Log.d(TAG,"action="+action+"  channel:"+channel+"  byte2="+byte2+"  byte3="+byte3);
         String s = "";
         String b1 =  "0x";                               // This initialises the hex numbering convention
         String b2 = " 0x" + Integer.toHexString(byte2).toUpperCase(Locale.ROOT); // Convert numbers 0-127 to hex

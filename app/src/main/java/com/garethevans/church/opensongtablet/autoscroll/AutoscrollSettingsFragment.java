@@ -77,13 +77,13 @@ public class AutoscrollSettingsFragment extends Fragment {
         myView.autoscrollPrompt.setOnCheckedChangeListener((compoundButton, b) -> {
             if (!b) {
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
-                        "autoscrollUseDefaultTime",b);
+                        "autoscrollUseDefaultTime", false);
             }
         });
         myView.autoscrollDefault.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
-                        "autoscrollUseDefaultTime",b);
+                        "autoscrollUseDefaultTime", true);
             }
         });
         myView.learnAutoscroll.setOnClickListener(v -> learnAutoscroll());

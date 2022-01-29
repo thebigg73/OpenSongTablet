@@ -171,44 +171,6 @@ public class Pad {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_custom_pad_error));
             }
         }
-        /*
-
-        if (padFile.isEmpty() || padFile.equals("auto") || padFile.equals(c.getString(R.string.pad_auto))) {
-            // If we have a custom pad file, check it exists
-            if (!key.isEmpty()) {
-                String customPad = mainActivityInterface.getPreferences().getMyPreferenceString(c,"customPad"+key,"");
-                if (!customPad.isEmpty()) {
-                    padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c, mainActivityInterface, customPad);
-                    padValid = mainActivityInterface.getStorageAccess().uriExists(c, padUri);
-                    if (!padValid) {
-                        mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_custom_pad_error));
-                    }
-                } else {
-                    try {
-                        Log.d(TAG,"key="+key);
-                        assetFileDescriptor = getAssetPad(c,key);
-                        useAsset = true;
-                        padValid = true;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_key_error));
-            }
-        } else if ((padFile.equals("link") || padFile.equals(c.getString(R.string.link_audio)))) {
-            if (!linkAudio.isEmpty()) {
-                padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c, mainActivityInterface, linkAudio);
-                padValid = mainActivityInterface.getStorageAccess().uriExists(c, padUri);
-                if (!padValid) {
-                    mainActivityInterface.getShowToast().doIt(c, c.getString(R.string.pad_file_error));
-                }
-            } else {
-                mainActivityInterface.getShowToast().doIt(c, c.getString(R.string.pad_file_error));
-            }
-        } else if (padFile.equals("off") || padFile.equals(c.getString(R.string.off))) {
-            mainActivityInterface.getShowToast().doIt(c,c.getString(R.string.pad_off));
-        }*/
 
         if (padValid) {
             switch (padNum) {

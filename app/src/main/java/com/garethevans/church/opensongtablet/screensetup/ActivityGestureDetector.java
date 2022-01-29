@@ -6,6 +6,8 @@ import android.view.MotionEvent;
 
 public class ActivityGestureDetector extends GestureDetector.SimpleOnGestureListener {
 
+    // TODO Not sure if this is used or set up
+
     @Override
     public boolean onDown(MotionEvent e) {
         Log.d("ActivityGestureDetector","onDown()");

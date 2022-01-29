@@ -18,7 +18,6 @@ public class CheckInternet {
 
     private String searchPhrase;
     private String searchSite = "UltimateGuitar";
-    private static final String TAG = "CheckInternet";
 
     public boolean isNetworkConnected(Context c, MainActivityInterface mainActivityInterface) {
         boolean onlyUseWiFi = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"downloadWiFiOnly",true);

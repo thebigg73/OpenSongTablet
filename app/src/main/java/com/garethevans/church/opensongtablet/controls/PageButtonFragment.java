@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -163,20 +162,6 @@ public class PageButtonFragment extends Fragment {
         exposedDropDowns.get(pos).setAdapter(arrayAdapter);
         exposedDropDowns.get(pos).setText(mainActivityInterface.getPageButtons().getPageButtonText(pos));
         arrayAdapter.keepSelectionPosition(exposedDropDowns.get(pos),mainActivityInterface.getPageButtons().getPageButtonAvailableText());
-        /*autoCompleteTextViews.get(pos).setOnClickListener(new View.OnClickListener() {
-            boolean showing = false;
-            @Override
-            public void onClick(View v) {
-                if (showing) {
-                    autoCompleteTextViews.get(pos).dismissDropDown();
-                    showing = false;
-                } else {
-                    showing = true;
-                    autoCompleteTextViews.get(pos).showDropDown();
-                    autoCompleteTextViews.get(pos).setListSelection(pageButtons.getPositionFromText(pageButtons.getPageButtonText(pos)));
-                }
-            }
-        });*/
         exposedDropDowns.get(pos).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -209,7 +194,6 @@ public class PageButtonFragment extends Fragment {
     private void saveDropDownChoice(int x, String text) {
         // x tells us the button we are dealing with and action is, well, the action
         int foundpos = mainActivityInterface.getPageButtons().getPositionFromText(text);
-        Log.d("saveDropDownChoice","x:"+x+"  text="+text+"  foundpos="+foundpos);
         mainActivityInterface.getPageButtons().setPageButtonAction(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonText(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonShortText(x,foundpos);

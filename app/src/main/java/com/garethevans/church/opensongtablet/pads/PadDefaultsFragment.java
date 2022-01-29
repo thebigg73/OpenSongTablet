@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.pads;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -98,9 +99,11 @@ public class PadDefaultsFragment extends Fragment {
             this.prefName = prefName;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) {}
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the value
@@ -123,6 +126,7 @@ public class PadDefaultsFragment extends Fragment {
             this.prefName = prefName;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             switch (prefName) {

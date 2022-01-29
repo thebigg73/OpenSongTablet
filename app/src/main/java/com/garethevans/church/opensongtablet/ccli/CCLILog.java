@@ -66,6 +66,7 @@ public class CCLILog {
 
     private String thisdate;
     private String thistime;
+    private final String TAG = "CCLILog";
 
     private ArrayList<String> songfile, title, author, copyright, ccli, date, time, action;
 
@@ -74,9 +75,9 @@ public class CCLILog {
         // Check if the log exists or if we need to create it
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Settings", "", "ActivityLog.xml");
         if (!mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
-            Log.d("d", "Creating blankXML=" + createBlankXML(c, mainActivityInterface, uri));
+            Log.d(TAG, "Creating blankXML=" + createBlankXML(c, mainActivityInterface, uri));
         } else {
-            Log.d("d", uri + " exists");
+            Log.d(TAG, uri + " exists");
         }
 
         // Set the date and time
@@ -153,7 +154,7 @@ public class CCLILog {
             try {
                 i = Integer.parseInt(last.replaceAll("[\\D]", "")) + 1;
             } catch (Exception e) {
-                Log.d("d","No integer found, so will use 1");
+                Log.d(TAG,"No integer found, so will use 1");
                 i = 1;
             }
 
@@ -206,7 +207,7 @@ public class CCLILog {
                 StreamResult result = new StreamResult(outputStream);
                 transformer.transform(source, result);
             } else {
-                Log.d("CCLI", "document was null");
+                Log.d(TAG, "document was null");
             }
 
         } catch (Exception e) {

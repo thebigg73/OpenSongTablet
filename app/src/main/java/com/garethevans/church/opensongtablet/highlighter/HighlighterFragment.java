@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.highlighter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -74,9 +75,11 @@ public class HighlighterFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",isChecked);
         });
         myView.timeToDisplayHighlighter.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",Math.round(myView.timeToDisplayHighlighter.getValue()));

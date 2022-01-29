@@ -24,6 +24,7 @@ import java.util.Locale;
 
 public class SetActions {
 
+    // TODO TIDY UP and check transpose bit works
     private final String itemStart = "$**_", itemEnd = "_**$",
             keyStart = "_***", keyEnd = "***_", setCategorySeparator = "__",
             folderVariations = "Variations", folderNotes = "Notes", folderSlides="Slides",

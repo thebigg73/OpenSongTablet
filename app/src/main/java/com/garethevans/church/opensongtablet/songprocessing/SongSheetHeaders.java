@@ -68,7 +68,7 @@ public class SongSheetHeaders {
             }
         }
 
-        if (linearLayout.getChildCount()==0) {
+        if (linearLayout!=null && linearLayout.getChildCount()==0) {
             linearLayout = null;
         }
 

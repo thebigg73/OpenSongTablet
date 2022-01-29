@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
@@ -16,12 +17,13 @@ public class ShowToast {
     private final View anchor;
     private final PopupWindow popupWindow;
     private final MaterialTextView textToast;
+    private final String TAG = "ShowToast";
 
     public ShowToast(Context c, View anchor) {
         this.anchor = anchor;
         popupWindow = new PopupWindow(c);
         LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.view_toast,null,false);
+        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.view_toast,null,false);
         popupWindow.setContentView(view);
         popupWindow.setFocusable(false);
         popupWindow.setBackgroundDrawable(null);
@@ -44,7 +46,7 @@ public class ShowToast {
             new Handler().postDelayed(r, 2000);
 
         } catch (Exception e) {
-            Log.d("d","Error showing toast message");
+            Log.d(TAG,"Error showing toast message");
             e.printStackTrace();
         }
     }

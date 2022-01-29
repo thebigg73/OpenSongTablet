@@ -1,12 +1,10 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 
@@ -43,8 +41,6 @@ public class ExposedDropDown extends TextInputLayout {
         textInputLayout.setBoxBackgroundColor(getResources().getColor(R.color.transparent));
         textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE);
         textInputLayout.setPadding(0,0,0,0);
-        //((LinearLayout.LayoutParams)textInputLayout.getLayoutParams()).setMargins(0,0,0,getPxFromDp(context, -16));
-        //textInputLayout.setTranslationY(getPxFromDp(context, -16));
         a.recycle();
     }
 
@@ -56,13 +52,6 @@ public class ExposedDropDown extends TextInputLayout {
         textInputLayout.setId(View.generateViewId());
     }
 
-    private int getPxFromDp(Context c, int dp) {
-        Resources r = c.getResources();
-        return (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                r.getDisplayMetrics());
-    }
     public Editable getText() {
         // Check for null
         if (autoCompleteTextView.getText()==null) {

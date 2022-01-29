@@ -165,15 +165,10 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
 
     private void searchFile(String mimeType) {
         // Try to open at the default OpenSong location
-        //Uri uri = mainActivityInterface.getStorageAccess();
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType(mimeType);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        // intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        // Intent intent = Intent.createChooser(data, getString(R.string.link_choose));
-        // data.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        // data.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         activityResultLauncher.launch(intent);
     }
 

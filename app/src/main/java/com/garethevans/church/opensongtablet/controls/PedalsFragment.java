@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.controls;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -93,17 +93,15 @@ public class PedalsFragment extends Fragment {
 
     private void midiPedalAllowed() {
         String midiDevice = mainActivityInterface.getMidi().getMidiDeviceName();
+        Log.d(TAG,"midiDevice: "+midiDevice);
         Log.d(TAG,"getMidiDevice: "+mainActivityInterface.getMidi().getMidiDevice());
         Log.d(TAG,"getMidiAsPedal: "+mainActivityInterface.getPedalActions().getMidiAsPedal());
 
         myView.midiAsPedal.setChecked(mainActivityInterface.getPedalActions().getMidiAsPedal());
-        myView.midiAsPedal.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"midiAsPedal",b);
-                mainActivityInterface.getPedalActions().setMidiAsPedal(b);
-                midiPedalAllowed();
-            }
+        myView.midiAsPedal.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"midiAsPedal",b);
+            mainActivityInterface.getPedalActions().setMidiAsPedal(b);
+            midiPedalAllowed();
         });
         if (mainActivityInterface.getMidi() != null && mainActivityInterface.getMidi().getMidiDevice() != null &&
                 mainActivityInterface.getPedalActions().getMidiAsPedal()) {
@@ -174,9 +172,9 @@ public class PedalsFragment extends Fragment {
     }
 
     private String getActionFromActionCode(String s) {
-        Log.d("d", "s=" + s);
+        Log.d(TAG, "s=" + s);
         int val = actionCodes.indexOf(s);
-        Log.d("d", "val=" + val);
+        Log.d(TAG, "val=" + val);
         if (val > -1 && actions.size() >= val) {
             return actions.get(actionCodes.indexOf(s));
         } else {
@@ -241,6 +239,7 @@ public class PedalsFragment extends Fragment {
         myView.autoRepeatCountSlider.addOnChangeListener(new MySliderChangeListener("keyRepeatCount"));
         int keyRepeatTime = mainActivityInterface.getPedalActions().getKeyRepeatTime();
         myView.autoRepeatTimeSlider.setValue(keyRepeatTime);
+        myView.autoRepeatTimeSlider.setLabelFormatter(value -> ((int)value)+"ms");
         myView.autoRepeatTimeSlider.setHint(keyRepeatTime + "ms");
         myView.autoRepeatTimeSlider.addOnSliderTouchListener(new MySliderTouchListener("keyRepeatTime"));
         myView.autoRepeatTimeSlider.addOnChangeListener(new MySliderChangeListener("keyRepeatTime"));
@@ -384,14 +383,17 @@ public class PedalsFragment extends Fragment {
             this.prefName = prefName;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the value via the gestures fragment
             mainActivityInterface.getPedalActions().setPreferences(requireContext(),mainActivityInterface,prefName,(int) slider.getValue());
         }
+
     }
 
     private class MySliderChangeListener implements Slider.OnChangeListener {
@@ -402,6 +404,7 @@ public class PedalsFragment extends Fragment {
             this.prefName = prefName;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             // Update the helper text

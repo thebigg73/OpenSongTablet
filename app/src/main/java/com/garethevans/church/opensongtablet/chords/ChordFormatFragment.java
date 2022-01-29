@@ -146,10 +146,8 @@ public class ChordFormatFragment extends Fragment {
             showHideView(myView.chooseFormatLinearLayout,b);
             showHideView(myView.autoChange,b);
         });
-        myView.autoChange.getSwitch().setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(
-                    requireContext(), "chordFormatAutoChange", b);
-        });
+        myView.autoChange.getSwitch().setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(
+                requireContext(), "chordFormatAutoChange", b));
         myView.choosePreferredFormat.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }

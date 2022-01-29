@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -30,6 +31,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private BottomSheetChooseColorBinding myView;
+    private final String TAG = "ChooseColorBS";
 
     private String newColorHex;
     private String alphaHex;
@@ -174,7 +176,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             oldColorInt = -1;
         }
 
-        Log.d("d", "oldColorInt="+oldColorInt);
+        Log.d(TAG, "oldColorInt="+oldColorInt);
         String oldColorHex = String.format("%08X", (oldColorInt));
         newColorHex = String.format("%08X",(oldColorInt));
         newColorInt = oldColorInt;
@@ -256,11 +258,13 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
 
     private class MySliderTouchListener implements Slider.OnSliderTouchListener {
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) {
             sliding = true;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             sliding = false;
@@ -269,6 +273,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
 
     private class MySliderChangeListener implements Slider.OnChangeListener {
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             if (slider==myView.alphaSlider.getSlider()) {
@@ -317,8 +322,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
 
         // Navigate back
         dismiss();
-        //mainActivityInterface.popTheBackStack(R.id.themeSetupFragment,true);
-        //mainActivityInterface.navigateToFragment(null,R.id.themeSetupFragment);
     }
 
     private String getName() {

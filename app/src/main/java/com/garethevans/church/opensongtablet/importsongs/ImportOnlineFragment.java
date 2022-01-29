@@ -40,6 +40,7 @@ public class ImportOnlineFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
     private SettingsImportOnlineBinding myView;
+    private final String TAG = "ImportOnline";
     private final String[] sources = new String[]{"UltimateGuitar", "Chordie", "SongSelect", "WorshipTogether", "UkuTabs", "HolyChords"};
     private final String[] address = new String[]{"https://www.ultimate-guitar.com/search.php?search_type=title&value=",
             "https://www.chordie.com/results.php?q=", "https://songselect.ccli.com/Search/Results?SearchText=",
@@ -142,7 +143,7 @@ public class ImportOnlineFragment extends Fragment {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Log.d("MyApplication", consoleMessage.message() + " -- From line " +
+                Log.d(TAG, consoleMessage.message() + " -- From line " +
                         consoleMessage.lineNumber() + " of " + consoleMessage.sourceId());
                 return true;
             }
@@ -169,7 +170,7 @@ public class ImportOnlineFragment extends Fragment {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
-                Log.d("WebView", "error");
+                Log.d(TAG, "error");
             }
 
             @Override
@@ -182,7 +183,7 @@ public class ImportOnlineFragment extends Fragment {
         });
         if (userAgentDefault==null) {
             userAgentDefault = webView.getSettings().getUserAgentString();
-            Log.d("ImportOnline","userAgentString="+userAgentDefault);
+            Log.d(TAG,"userAgentString="+userAgentDefault);
         }
         webView.getSettings().getJavaScriptEnabled();
         webView.getSettings().setJavaScriptEnabled(true);
@@ -227,7 +228,7 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     public void isConnected(boolean connected) {
-        Log.d("d", "connected=" + connected);
+        Log.d(TAG, "connected=" + connected);
         // Received back from the MainActivity after being told if we have a valid internet connection or not
         if (connected) {
             // Get the search string and build the web address
@@ -258,13 +259,13 @@ public class ImportOnlineFragment extends Fragment {
                 changeLayouts(false, true, false);
                 webSearchFull = webAddress + mainActivityInterface.getCheckInternet().getSearchPhrase() + extra;
                 webView.post(() -> webView.loadUrl(webSearchFull));
-                Log.d("d", webSearchFull);
+                Log.d(TAG, webSearchFull);
             }
         }
     }
 
     private void extractContent() {
-        Log.d("g", "Extract content");
+        Log.d(TAG, "Extract content");
         try {
             showDownloadProgress(true);
         } catch (Exception e) {
@@ -299,11 +300,6 @@ public class ImportOnlineFragment extends Fragment {
                 e.printStackTrace();
             }
             webString = webString.replace("\r","\n");
-            String[] lines = webString.split("\n");
-            // TODO Remove this once we're happy it all works
-            for (String line:lines) {
-                Log.d("d", "line:" + line);
-            }
             showSaveButton();
         }
     };
@@ -359,64 +355,30 @@ public class ImportOnlineFragment extends Fragment {
     }
 
     private void processContent() {
-        Log.d("ImportOnline","getting here");
+        Log.d(TAG,"getting here");
         showDownloadProgress(true);
         newSong = new Song();
 
         switch (source) {
             case "UltimateGuitar":
-                Log.d("ImportOnline","getting here");
+                Log.d(TAG,"getting here");
                 newSong = ultimateGuitar.processContent(requireContext(),mainActivityInterface,newSong,webString);
-                Log.d("ImportOnline","title="+newSong.getTitle());
-                Log.d("ImportOnline","author="+newSong.getAuthor());
-                Log.d("ImportOnline","key="+newSong.getKey());
-                Log.d("ImportOnline","capo="+newSong.getCapo());
-                Log.d("ImportOnline","lyrics="+newSong.getLyrics());
                 break;
             case "Chordie":
-                Log.d("ImportOnline","getting here");
+                Log.d(TAG,"getting here");
                 newSong = chordie.processContent(requireContext(),mainActivityInterface,newSong,webString);
-                Log.d("ImportOnline","title="+newSong.getTitle());
-                Log.d("ImportOnline","author="+newSong.getAuthor());
-                Log.d("ImportOnline","key="+newSong.getKey());
-                Log.d("ImportOnline","capo="+newSong.getCapo());
-                Log.d("ImportOnline","lyrics="+newSong.getLyrics());
                 break;
             case "SongSelect":
-                Log.d("ImportOnline","getting here SongSelect");
+                Log.d(TAG,"getting here SongSelect");
                 newSong = songSelect.processContent(mainActivityInterface,newSong,webString);
-                Log.d("ImportOnline","title="+newSong.getTitle());
-                Log.d("ImportOnline","author="+newSong.getAuthor());
-                Log.d("ImportOnline","key="+newSong.getKey());
-                Log.d("ImportOnline","copyright="+newSong.getCopyright());
-                Log.d("ImportOnline","tempo="+newSong.getTempo());
-                Log.d("ImportOnline","timesig="+newSong.getTimesig());
-                Log.d("ImportOnline","ccli="+newSong.getCcli());
-                Log.d("ImportOnline","lyrics="+newSong.getLyrics());
                 break;
             case "UkuTabs":
                 Log.d("ImportOnline", "getting here UkuTabs");
                 newSong = ukuTabs.processContent(newSong,webString);
-                Log.d("ImportOnline","title="+newSong.getTitle());
-                Log.d("ImportOnline","author="+newSong.getAuthor());
-                Log.d("ImportOnline","key="+newSong.getKey());
-                Log.d("ImportOnline","copyright="+newSong.getCopyright());
-                Log.d("ImportOnline","tempo="+newSong.getTempo());
-                Log.d("ImportOnline","timesig="+newSong.getTimesig());
-                Log.d("ImportOnline","ccli="+newSong.getCcli());
-                Log.d("ImportOnline","lyrics="+newSong.getLyrics());
                 break;
             case "HolyChords":
-                Log.d("ImportOnline", "getting here HolyChords");
+                Log.d(TAG, "getting here HolyChords");
                 newSong = holyChords.processContent(newSong,webString);
-                Log.d("ImportOnline","title="+newSong.getTitle());
-                Log.d("ImportOnline","author="+newSong.getAuthor());
-                Log.d("ImportOnline","key="+newSong.getKey());
-                Log.d("ImportOnline","copyright="+newSong.getCopyright());
-                Log.d("ImportOnline","tempo="+newSong.getTempo());
-                Log.d("ImportOnline","timesig="+newSong.getTimesig());
-                Log.d("ImportOnline","ccli="+newSong.getCcli());
-                Log.d("ImportOnline","lyrics="+newSong.getLyrics());
                 break;
         }
         showDownloadProgress(false);
@@ -560,79 +522,6 @@ public class ImportOnlineFragment extends Fragment {
         }
     }
 
-/*
-    @SuppressLint("StaticFieldLeak")
-    private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
-
-
-        @Override
-        protected void onPostExecute(String result) {
-*/
-            // Split the result into lines
-            //Now look to see if the webcontent has the ChordPro text in it
-            // Check we aren't trying to use the tab-pro page!
-            /*try {
-                String address = webresults_WebView.getUrl();
-                // Fix the foreign characters
-                if (result!=null) {
-                    result = fixForeignLanguageHTML(result);
-                }
-
-                if (address != null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
-                    StaticVariables.myToastMessage = requireActivity().getResources().getText(R.string.not_allowed).toString();
-                    ShowToast.showToast(getActivity());
-                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
-                } else if (result != null && (result.contains("<textarea id=\"chordproContent\"") ||
-                        result.contains("<h1 class=\"titleLeft\""))) {
-                    // Using Chordie
-                    fixChordieContent(result);
-                    setFileNameAndFolder();
-
-                } else if (result != null && (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar"))) {
-                    // Using UG
-                    fixUGContent(result);
-                    setFileNameAndFolder();
-
-                } else if (result !=null && result.contains("http://worship-songs-resources.worshiptogether.com/")) {
-                    // Using WorshipTogether
-                    fixWTContent(result);
-                    setFileNameAndFolder();
-
-                } else if (result !=null && result.contains("UkuTabs")) {
-                    // Using UkuTabs.com
-                    fixUkutabsContent(result);
-                    setFileNameAndFolder();
-
-                } else if (result!=null && result.contains("CCLI")) {
-                    // Using SongSelect chord page
-                    webresults_WebView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-
-                } else if (result!=null && result.contains("<div id=\"LyricsText\"")) {
-                    // Using SongSelect USR page
-                    webresults_WebView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-
-                } else if (result!=null && result.contains("holychords.com")) {
-                    // Using Holychords page
-                    fixHolyChordsContent(result);
-                    setFileNameAndFolder();
-
-                } else {
-                    StaticVariables.myToastMessage = requireActivity().getResources().getText(R.string.chordpro_false).toString();
-                    ShowToast.showToast(getActivity());
-                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
-                }
-            } catch (Exception | OutOfMemoryError e) {
-                e.printStackTrace();
-                if (getActivity()!=null) {
-                    StaticVariables.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
-                    ShowToast.showToast(getActivity());
-                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
-                }
-            }*/
-/*
-        }
-    }
-*/
     private void grabchordpro(String content) {
         // Need to run a async task to grab html text
 

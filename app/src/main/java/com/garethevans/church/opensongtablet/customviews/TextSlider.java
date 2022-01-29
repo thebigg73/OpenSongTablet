@@ -88,7 +88,7 @@ public class TextSlider extends LinearLayout {
         slider.addOnSliderTouchListener(onSliderTouchListener);
     }
     public void setHeading(String headingText) {
-        if (headingText==null || headingText.toString().isEmpty()) {
+        if (headingText==null || headingText.isEmpty()) {
             heading.setVisibility(View.GONE);
         } else {
             heading.setVisibility(View.VISIBLE);

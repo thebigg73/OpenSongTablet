@@ -157,6 +157,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
+// TODO TIDY UP
 public class MainActivity extends AppCompatActivity implements MainActivityInterface,
         ActionInterface, NearbyInterface, NearbyReturnActionsInterface, DialogReturnInterface,
         MidiAdapterInterface, SwipeDrawingInterface, BatteryStatus.MyInterface,
@@ -422,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
                 myView.pageButtonRight.custom4Button,myView.pageButtonRight.custom5Button,
                 myView.pageButtonRight.custom6Button,myView.pageButtonRight.bottomButtons);
-        pageButtons.animatePageButton(this,this,false);
+        pageButtons.animatePageButton(this, false);
     }
     private void startBoot() {
         // The BootCheckFragment has already started and displayed the splash logo
@@ -1142,10 +1143,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         settingsButton = menu.findItem(R.id.settings_menu_item);
         MenuItem alertButton = menu.findItem(R.id.alert_info_item);
         // Decide if an alert should be shown
-        if (alertChecks.showBackup(this,
+        if (alertChecks.showBackup(
                 preferences.getMyPreferenceInt(this,"runssincebackup",0)) ||
                 alertChecks.showPlayServicesAlert(this) ||
-                alertChecks.showUpdateInfo(this,versionNumber.getVersionCode(),
+                alertChecks.showUpdateInfo(versionNumber.getVersionCode(),
                         preferences.getMyPreferenceInt(this,"lastUsedVersion",0))) {
             alertButton.setVisible(true);
         } else if (alertButton!=null){
@@ -1405,13 +1406,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Page buttons
     private void animatePageButtons() {
         float rotation = myView.pageButtonRight.actionFAB.getRotation();
-        pageButtons.animatePageButton(this,this, rotation == 0);
+        pageButtons.animatePageButton(this, rotation == 0);
     }
     @Override
     public void updatePageButtonLayout() {
         // We have changed something about the page buttons (or initialising them
         if (myView.pageButtonRight.actionFAB.getRotation()!=0) {
-            pageButtons.animatePageButton(this, this,false);
+            pageButtons.animatePageButton(this, false);
         }
         pageButtons.updateColors(this);
         pageButtons.setPageButton(this, myView.pageButtonRight.actionFAB, -1, false);

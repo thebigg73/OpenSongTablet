@@ -37,6 +37,7 @@ import java.util.Locale;
 
 public class PerformanceFragment extends Fragment {
 
+    // TODO TIDY UP
     private final String TAG = "PerformanceFragment";
     // Helper classes for the heavy lifting
     private StickyPopUp stickyPopUp;

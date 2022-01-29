@@ -57,6 +57,7 @@ import java.util.Objects;
 
 public class StorageAccess {
 
+    // TODO TIDY UP
     public final String appFolder = "OpenSong";
     private final String TAG = "StorageAccess";
     private final String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
@@ -199,7 +200,7 @@ public class StorageAccess {
             File nf = new File(rootFolder, folder);
             if (!nf.exists()) {
                 if (!nf.mkdirs()) {
-                    Log.d("d", "Error creating folder: " + folder);
+                    Log.d(TAG, "Error creating folder: " + folder);
                 }
             }
         }
@@ -209,7 +210,7 @@ public class StorageAccess {
             File nf = new File(rootFolder, subfolder);
             if (!nf.exists()) {
                 if (!nf.mkdirs()) {
-                    Log.d("d", "Error creating subfolder: " + subfolder);
+                    Log.d(TAG, "Error creating subfolder: " + subfolder);
                 }
             }
         }
@@ -241,7 +242,7 @@ public class StorageAccess {
                     DocumentsContract.createDocument(c.getContentResolver(), uriTreeHome, DocumentsContract.Document.MIME_TYPE_DIR, folder);
                 }
             } catch (Exception e) {
-                Log.d("d", folder + " error creating");
+                Log.d(TAG, folder + " error creating");
             }
         }
 
@@ -259,7 +260,7 @@ public class StorageAccess {
                     }
                 }
             } catch (Exception e2) {
-                Log.d("d", "Error creating cache: " + folder);
+                Log.d(TAG, "Error creating cache: " + folder);
             }
         }
 
@@ -593,7 +594,7 @@ public class StorageAccess {
             is = getInputStream(c, uri);
             utf = getBOMEncoding(is);
         } catch (Exception e) {
-            Log.d("d", "Unable to get encoding for " + uri);
+            Log.d(TAG, "Unable to get encoding for " + uri);
         }
         try {
             if (is != null) {

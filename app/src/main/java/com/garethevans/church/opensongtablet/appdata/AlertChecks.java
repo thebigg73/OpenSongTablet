@@ -13,14 +13,14 @@ public class AlertChecks {
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) != ConnectionResult.SUCCESS;
     }
 
-    public boolean showUpdateInfo(Context c, int lastUsedVersion, int currentVersion) {
+    public boolean showUpdateInfo(int lastUsedVersion, int currentVersion) {
         // Decide if the current app version is newer than the previous version.
         // If so, we want the user to be notified of changed
 
         return currentVersion > lastUsedVersion;
     }
 
-    public boolean showBackup(Context c, int runssincebackup) {
+    public boolean showBackup(int runssincebackup) {
         // Check for the number of times the app has run without the user backing up their songs
         // If this is 10 (or more) show the backup prompt window.
         return runssincebackup >=10;

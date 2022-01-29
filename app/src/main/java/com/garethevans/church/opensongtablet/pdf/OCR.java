@@ -21,6 +21,7 @@ public class OCR {
     private int pageCount;
     private String filename = null;
     private MainActivityInterface mainActivityInterface;
+    private final String TAG = "OCR";
 
     public void getTextFromPDF(Context c, MainActivityInterface mainActivityInterface,
                                String folder, String filename) {
@@ -45,15 +46,15 @@ public class OCR {
         // Get the page count
         pageCount = mainActivityInterface.getProcessSong().getPDFPageCount(pdfRenderer);
 
-        Log.d("d","uri"+uri);
-        Log.d("d","parcelFileDescriptor="+parcelFileDescriptor);
-        Log.d("d","pdfRenderer="+pdfRenderer);
-        Log.d("d","pageCount="+pageCount);
+        Log.d(TAG,"uri"+uri);
+        Log.d(TAG,"parcelFileDescriptor="+parcelFileDescriptor);
+        Log.d(TAG,"pdfRenderer="+pdfRenderer);
+        Log.d(TAG,"pageCount="+pageCount);
 
         if (parcelFileDescriptor!=null && pdfRenderer!=null && pageCount>0) {
             // Good to continue!
 
-            Log.d("d","not null!");
+            Log.d(TAG,"not null!");
             PdfRenderer.Page currentPage;
             Bitmap bmp;
 
@@ -67,8 +68,8 @@ public class OCR {
                 // Get a scaled Bitmap size
                 ArrayList<Integer> bmpSize = mainActivityInterface.getProcessSong().getBitmapScaledSize(pdfSize,1200,1600,"Y");
 
-                Log.d("d","bmpWidth="+bmpSize.get(0));
-                Log.d("d","bmpHeight="+bmpSize.get(1));
+                Log.d(TAG,"bmpWidth="+bmpSize.get(0));
+                Log.d(TAG,"bmpHeight="+bmpSize.get(1));
 
                 // Get a scaled bitmap for these sizes
                 bmp = mainActivityInterface.getProcessSong().createBitmapFromPage(bmpSize,currentPage,false);
@@ -115,7 +116,7 @@ public class OCR {
                             }
                         }).addOnFailureListener(e -> {
                             pdfPages.add(currpage,"");
-                            Log.d("d","Error on page "+currpage);
+                            Log.d(TAG,"Error on page "+currpage);
                             if (pdfPages.size()==pageCount) {
                                 // We're done
                                 runCompleteTask();

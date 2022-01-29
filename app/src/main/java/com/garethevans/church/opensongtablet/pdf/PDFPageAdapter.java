@@ -183,49 +183,4 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         mainActivityInterface.showHideActionBar();
     }
 
-    /*@Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                if (e.getAction()==MotionEvent.ACTION_DOWN) {
-                    manualDrag = true;
-                } else if (e.getAction()==MotionEvent.ACTION_CANCEL ||
-                e.getAction()==MotionEvent.ACTION_UP) {
-                    manualDrag = false;
-                }
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        if(manager != null && getItemCount() > 0) {
-            LinearLayoutManager llm = (LinearLayoutManager) manager;
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                }
-
-                @Override
-                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    int visiblePosition = llm.findFirstVisibleItemPosition();
-                    if (visiblePosition > -1 && manualDrag) {
-                        mainActivityInterface.getSong().setPdfPageCurrent(visiblePosition);
-                    }
-                }
-            });
-        }
-    }*/
-
 }

@@ -14,7 +14,6 @@ import android.view.View;
 
 public class ColorChooserView extends View {
         private Paint paint;
-        private Shader luar;
         private ComposeShader shader;
         private final float[] color = { 1.f, 1.f, 1.f };
 
@@ -32,7 +31,7 @@ public class ColorChooserView extends View {
 
         private void initialise() {
                 int rgb = Color.HSVToColor(color);
-                luar = new LinearGradient(0.f, 0.f, 0.f, this.getMeasuredHeight(), 0xffffffff, 0xff000000, TileMode.CLAMP);
+                Shader luar = new LinearGradient(0.f, 0.f, 0.f, this.getMeasuredHeight(), 0xffffffff, 0xff000000, TileMode.CLAMP);
                 Shader dalam = new LinearGradient(0.f, 0.f, this.getMeasuredWidth(), 0.f, 0xffffffff, rgb, TileMode.CLAMP);
                 shader = new ComposeShader(luar, dalam, PorterDuff.Mode.MULTIPLY);
         }
@@ -56,7 +55,7 @@ public class ColorChooserView extends View {
                 return false;
         }
 
-        void setHue(float hue) {
+        public void setHue(float hue) {
                 color[0] = hue;
                 invalidate();
         }

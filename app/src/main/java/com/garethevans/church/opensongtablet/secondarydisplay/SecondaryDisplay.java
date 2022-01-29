@@ -46,6 +46,7 @@ import java.util.TimerTask;
 // All common preferences are stored in the PresentationSettings class
 // Colors are stored in ThemeColors class
 
+// TODO TIDY UP
 public class SecondaryDisplay extends Presentation {
 
     private final Context c;
@@ -569,9 +570,9 @@ public class SecondaryDisplay extends Presentation {
         infoBarRequiredTime = true;
     }
     public void setInfoStyles() {
-        myView.testSongInfo.setupLayout(c,mainActivityInterface,false);
-        myView.songProjectionInfo1.setupLayout(c,mainActivityInterface,false);
-        myView.songProjectionInfo2.setupLayout(c,mainActivityInterface,false);
+        myView.testSongInfo.setupLayout(mainActivityInterface,false);
+        myView.songProjectionInfo1.setupLayout(mainActivityInterface,false);
+        myView.songProjectionInfo2.setupLayout(mainActivityInterface,false);
     }
     public void changeInfoAlignment() {
         myView.songProjectionInfo1.setAlign(mainActivityInterface.getPresenterSettings().getPresoInfoAlign());

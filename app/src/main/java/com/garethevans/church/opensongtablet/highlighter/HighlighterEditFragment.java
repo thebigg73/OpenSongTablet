@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.highlighter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -307,10 +308,12 @@ public class HighlighterEditFragment extends Fragment {
             myView.bottomSheet.sizeSlider.setHint(value + "");
         });
         myView.bottomSheet.sizeSlider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
             }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 // Save the value

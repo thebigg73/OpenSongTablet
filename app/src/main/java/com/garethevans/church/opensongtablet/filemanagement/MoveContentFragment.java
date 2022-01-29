@@ -34,6 +34,7 @@ public class MoveContentFragment extends Fragment {
     private String subfolder, newFolder;
     private ArrayList<String> files, filesChosen;
     private ArrayList<Uri> uris;
+    private final String TAG = "MoveContentsFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -150,7 +151,7 @@ public class MoveContentFragment extends Fragment {
         for (int x = 0; x < files.size(); x++) {
             if (((CheckBox) myView.folderContentsLayout.getChildAt(x)).isChecked()) {
                 filesChosen.add(files.get(x));
-                Log.d("MoveContents", "Adding " + files.get(x));
+                Log.d(TAG, "Adding " + files.get(x));
             }
         }
 
@@ -178,7 +179,7 @@ public class MoveContentFragment extends Fragment {
                 OutputStream outputStream;
                 Song tempSong = new Song(); // Just for location to get highlighter name
 
-                Log.d("MoveContents", "filesChosen.size()=" + filesChosen.size());
+                Log.d(TAG, "filesChosen.size()=" + filesChosen.size());
                 try {
                     for (int x = 0; x < filesChosen.size(); x++) {
                         outputFile = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, "Songs", newFolder, filesChosen.get(x));
@@ -199,7 +200,7 @@ public class MoveContentFragment extends Fragment {
                                         "whichSongFolder",newFolder);
                             }
                         } else {
-                            Log.d("d", "error copying " + finalMessage);
+                            Log.d(TAG, "error copying " + finalMessage);
                         }
 
                         // Sort the databases.

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 
 public class MaterialSlider extends LinearLayout {
@@ -162,6 +163,9 @@ public class MaterialSlider extends LinearLayout {
     }
     public void addOnChangeListener(Slider.OnChangeListener onChangeListener){
         slider.addOnChangeListener(onChangeListener);
+    }
+    public void setLabelFormatter(LabelFormatter labelFormatter) {
+        slider.setLabelFormatter(labelFormatter);
     }
 
 }

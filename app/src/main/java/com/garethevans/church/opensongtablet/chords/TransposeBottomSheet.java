@@ -258,7 +258,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
             transposeTimes = Math.abs(transposeTimes);
 
-            // TODO - Check this code from IV #142
             //If requested transpose the capo fret number
             if (myView.transposeCapo.isSelected()) {
                 String capo = mainActivityInterface.getSong().getCapo();

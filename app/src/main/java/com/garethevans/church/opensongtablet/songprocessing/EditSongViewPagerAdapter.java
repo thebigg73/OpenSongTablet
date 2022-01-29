@@ -24,12 +24,4 @@ public class EditSongViewPagerAdapter extends FragmentStateAdapter {
         return menuFragments.length;
     }
 
-    /*@Override
-    public int getViewTypeHeight(RecyclerView recyclerView, @Nullable RecyclerView.ViewHolder viewHolder, int viewType) {
-        if (viewHolder!=null) {
-            return viewHolder.itemView.getMeasuredHeight();
-        } else {
-            return 0;
-        }
-    }*/
 }

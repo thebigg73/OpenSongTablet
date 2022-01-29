@@ -53,7 +53,6 @@ public class MidiFragment extends Fragment {
 
     private SettingsMidiBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private MidiAdapterInterface midiAdapterInterface;
 
     private final Handler selected = new Handler();
     private final Runnable runnable = this::displayCurrentDevice;
@@ -73,7 +72,7 @@ public class MidiFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        midiAdapterInterface = (MidiAdapterInterface) context;
+        MidiAdapterInterface midiAdapterInterface = (MidiAdapterInterface) context;
     }
 
     @Override
@@ -701,7 +700,6 @@ public class MidiFragment extends Fragment {
         mainActivityInterface.getMidi().updateSongMessages();
     }
 
-
     // Process song midi messages
     private void setupAdapter() {
         midiMessagesAdapter = new MidiMessagesAdapter(mainActivityInterface,false);
@@ -736,34 +734,6 @@ public class MidiFragment extends Fragment {
             myView.recyclerView.setVisibility(View.VISIBLE);
         });
     }
-
-/*
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void initialiseCurrentMessages() {
-        songMidiMessages = new ArrayList<>();
-        songMidiMessagesToSave = new ArrayList<>();
-
-        // Add what is there already
-        String[] bits = mainActivityInterface.getSong().getMidi().trim().split("\n");
-        for (String s : bits) {
-            if (s!=null && !s.equals("") && !s.isEmpty() && getActivity()!=null) {
-                // Get a human readable version of the midi code
-                String hr = mainActivityInterface.getMidi().getReadableStringFromHex(s,getActivity());
-                songMidiMessages.add(hr);
-                songMidiMessagesToSave.add(s);
-            }
-        }
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        myView.recyclerView.setLayoutManager(linearLayoutManager);
-
-        // specify an adapter (see also next example)
-        midiMessagesAdapter = new MidiMessagesAdapter(mainActivityInterface, true);
-        myView.recyclerView.setAdapter(midiMessagesAdapter);
-
-    }
-*/
 
     // Save the song messages
     private void saveSongMessages() {

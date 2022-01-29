@@ -39,6 +39,7 @@ the Performance/Presenter fragment.
 
 public class BootUpFragment extends Fragment {
 
+    private final String TAG = "BootUpFragment";
     private String message;
     private String uriTreeString;
     private Uri uriTree;
@@ -171,7 +172,7 @@ public class BootUpFragment extends Fragment {
 
                 } else {
                     // There was a problem with the folders, so restart the app!
-                    Log.d("BootUpFragment", "Problem with app folders - restarting");
+                    Log.d(TAG, "Problem with app folders - restarting");
                     requireActivity().recreate();
                 }
             }).start();

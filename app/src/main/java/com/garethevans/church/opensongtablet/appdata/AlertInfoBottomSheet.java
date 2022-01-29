@@ -32,12 +32,11 @@ This file shows the user any appropriate warnings.  These can be
 public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
-    private static final String TAG = "AlertInfoBottomSheet";
     private BottomSheetAlertInfoBinding myView;
+    private final String TAG = "AlertInfoBottomSheet";
 
     @Override
     public void onAttach(@NonNull Context context) {
-        Log.d(TAG, "onattach(): ");
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
     }
@@ -72,7 +71,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
     private void whatAlerts() {
         // This decides which alerts are appropriate
         // Check for app updates
-        boolean updateInfo = mainActivityInterface.getAlertChecks().showUpdateInfo(requireContext(),
+        boolean updateInfo = mainActivityInterface.getAlertChecks().showUpdateInfo(
                 mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "lastUsedVersion", 0),
                 mainActivityInterface.getVersionNumber().getVersionCode());
         if (!updateInfo) {
@@ -88,7 +87,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Check for backup status
-        if (mainActivityInterface.getAlertChecks().showBackup(requireContext(),
+        if (mainActivityInterface.getAlertChecks().showBackup(
                 mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"runssincebackup",0))) {
             myView.timeToBackup.setVisibility(View.VISIBLE);
             String s = requireContext().getString(R.string.promptbackup).
@@ -105,7 +104,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
 
         // Check for Google Play Service error
         if (mainActivityInterface.getAlertChecks().showPlayServicesAlert(requireContext())) {
-            Log.d("StageMode", "onresume()  Play store isn't installed");
+            Log.d(TAG, "onresume()  Play store isn't installed");
             myView.playServices.setVisibility(View.VISIBLE);
             myView.playServicesInfo.setOnClickListener(b -> webLink(getString(R.string.play_services_help)));
         } else {
@@ -119,7 +118,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         try {
             startActivity(i);
         } catch (Exception e) {
-            Log.d("AlertDialogFragment", "Error showing webView");
+            Log.d(TAG, "Error showing webView");
         }
     }
 

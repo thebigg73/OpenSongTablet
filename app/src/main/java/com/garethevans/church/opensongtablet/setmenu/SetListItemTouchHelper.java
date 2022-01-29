@@ -80,7 +80,7 @@ public class SetListItemTouchHelper extends ItemTouchHelper.Callback {
     }
 
     public void startDrag(RecyclerView.ViewHolder v) {
-
+        Log.d(TAG,"startDrag v="+v);
     }
 
 }

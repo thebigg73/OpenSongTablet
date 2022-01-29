@@ -12,6 +12,7 @@ import java.util.TimerTask;
 
 public class PedalActions {
 
+    // TODO Airturn
     private final String TAG = "PedalActions";
     private final MainActivityInterface mainActivityInterface;
     private ArrayList<String> actions, actionCodes;
@@ -28,7 +29,7 @@ public class PedalActions {
     private int keyRepeatCount;
     private int keyRepeatTime;
     private boolean airTurnMode, airTurnPaused, pedalScrollBeforeMove, pedalShowWarningBeforeMove, midiAsPedal;
-    private Runnable releaseAirTurn = new Runnable() {
+    private final Runnable releaseAirTurn = new Runnable() {
         @Override
         public void run() {
             airTurnPaused = false;
@@ -151,7 +152,7 @@ public class PedalActions {
             desiredAction = "";
         }
 
-        Log.d("PedalActions","pedal="+pedal+"  desiredAction="+desiredAction);
+        Log.d(TAG,"pedal="+pedal+"  desiredAction="+desiredAction);
         switch (desiredAction) {
             case "prev":
                 mainActivityInterface.getPerformanceGestures().prevSong();

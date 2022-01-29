@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -134,6 +135,7 @@ public class ActionBarSettingsFragment extends Fragment {
             this.isfloat = isfloat;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             if (isfloat) {
@@ -161,9 +163,11 @@ public class ActionBarSettingsFragment extends Fragment {
             this.isfloat = isfloat;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the preference

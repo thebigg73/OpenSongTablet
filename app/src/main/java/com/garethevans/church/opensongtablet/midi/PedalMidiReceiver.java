@@ -28,16 +28,16 @@ public class PedalMidiReceiver extends MidiReceiver {
 
     @Override
     public void onSend(byte[] msg, int offset, int count, long timestamp) {
-        Log.d("PedalMidiReceiver","msg="+ Arrays.toString(msg));
-        Log.d("PedalMidiReceiver","msg.length="+ msg.length);
+        Log.d(TAG,"msg="+ Arrays.toString(msg));
+        Log.d(TAG,"msg.length="+ msg.length);
         if (msg.length>=4) {
             int byte1 = msg[1] & 0xFF;  // This determines action and channel
             int byte2 = msg[2] & 0xFF;  // This is the note
             int byte3 = msg[3] & 0xFF;  // This is the velocity - if 0 then action up
 
-            Log.d("d","byte1="+byte1);
-            Log.d("d","byte2="+byte2);
-            Log.d("d","byte3="+byte3);
+            Log.d(TAG,"byte1="+byte1);
+            Log.d(TAG,"byte2="+byte2);
+            Log.d(TAG,"byte3="+byte3);
 
             boolean actionDown = false;
             boolean actionUp = false;
@@ -63,7 +63,7 @@ public class PedalMidiReceiver extends MidiReceiver {
                 }
             } else if (byte1>=128 && byte1<=143) {
                 // This is a note off.  Don't need this
-                Log.d("d","Note off channel="+((byte1-128)+1));
+                Log.d(TAG,"Note off channel="+((byte1-128)+1));
                 upTime = System.currentTimeMillis();
                 actionDown = false;
                 actionUp = true;
@@ -71,8 +71,8 @@ public class PedalMidiReceiver extends MidiReceiver {
             }
 
             String note = midi.getNoteFromInt(byte2);
-            Log.d("d","Note="+byte2);
-            Log.d("d","Velocity="+byte3);
+            Log.d(TAG,"Note="+byte2);
+            Log.d(TAG,"Velocity="+byte3);
 
             String b0 = Integer.toString(msg[0],16);
             String b1 = Integer.toString(msg[1],16);

@@ -16,8 +16,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class SongProjectionInfo extends LinearLayout {
 
-    private final Context c;
-    private final LinearLayout contentLayout;
     private final LinearLayout castSongInfo;
     private final TextView songTitle, songAuthor, songCopyright;
     private final ImageView miniLogo;
@@ -26,11 +24,10 @@ public class SongProjectionInfo extends LinearLayout {
 
     public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        c = context;
         inflate(context, R.layout.view_song_info, this);
 
         castSongInfo = findViewById(R.id.castSongInfo);
-        contentLayout = findViewById(R.id.contentLayout);
+        LinearLayout contentLayout = findViewById(R.id.contentLayout);
         songTitle = findViewById(R.id.songTitle);
         songAuthor = findViewById(R.id.songAuthor);
         songCopyright = findViewById(R.id.songCopyright);
@@ -45,9 +42,9 @@ public class SongProjectionInfo extends LinearLayout {
     }
 
     // Adjust the layout depending on what is needed
-    public void setupLayout(Context c, MainActivityInterface mainActivityInterface, boolean miniInfo) {
+    public void setupLayout(MainActivityInterface mainActivityInterface, boolean miniInfo) {
         // Set up the text info bar fonts
-        setupFonts(c, mainActivityInterface);
+        setupFonts(mainActivityInterface);
 
         // Set the background color, logo and alignment based on mode
         if (miniInfo) {
@@ -95,7 +92,7 @@ public class SongProjectionInfo extends LinearLayout {
             miniLogo.setVisibility(View.GONE);
         }
     }
-    private void setupFonts(Context c, MainActivityInterface mainActivityInterface) {
+    private void setupFonts(MainActivityInterface mainActivityInterface) {
         songTitle.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());

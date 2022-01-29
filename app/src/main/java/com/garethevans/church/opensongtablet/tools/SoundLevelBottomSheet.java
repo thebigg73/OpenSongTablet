@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.tools;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -98,9 +99,11 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
         });
         myView.maxvolrange.addOnChangeListener((slider, value, fromUser) -> changeRange((int) value));
         myView.maxvolrange.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+            @SuppressLint("RestrictedApi")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
