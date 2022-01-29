@@ -7,6 +7,8 @@ import android.util.Log;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class ChordProConvert {
 
@@ -42,7 +44,7 @@ class ChordProConvert {
         lyrics = makeTagsCommon(lyrics);
 
         // Fix content we recognise
-        lyrics = fixRecognisedContent(lyrics);
+        lyrics = fixRecognisedContent(c, lyrics);
 
         // Now that we have the basics in place, we will go back through the song and extract headings
         // We have to do this separately as [] were previously identifying chords, not tags.
@@ -229,7 +231,7 @@ class ChordProConvert {
         return s;
     }
 
-    private String fixRecognisedContent(String l) {
+    private String fixRecognisedContent(Context c, String l) {
         // Break the filecontents into lines
         lines = l.split("\n");
 
@@ -282,6 +284,21 @@ class ChordProConvert {
             } else if (line.contains("{key:")) {
                 // Extract the key
                 key = removeTags(line, "{key:");
+                // Key may be from import of a Solfege SongSelect song, transpose any Solfege key just in case
+                final String[] fromSongSelectSolfege =  "LA SI DO RE MI FA SOL".split(" ");
+                final String[] toStandard =  "A B C D E F G".split(" ");
+                for (int z = 0; z < fromSongSelectSolfege.length; z++) key = key.replace(fromSongSelectSolfege[z], toStandard[z]);
+                // Check the key is a Standard key - if not set no key
+                int index = -1;
+                List<String> key_choice = Arrays.asList(c.getResources().getStringArray(R.array.key_choice));
+                for (int w = 0; w < key_choice.size();w++) {
+                    if (key.equals(key_choice.get(w))) {
+                        index = w;
+                    }
+                }
+                if (index == -1) {
+                    key = "";
+                }
                 line = "";
 
             } else if (line.contains("{tempo:")) {
