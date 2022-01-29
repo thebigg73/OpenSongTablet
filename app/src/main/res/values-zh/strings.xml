@@ -489,7 +489,7 @@
     <string name="duplicate">重复</string>
     <string name="storage_warning">请勿选择“Songs”文件夹作为存储位置。 您应该选择父“OpenSong”文件夹位置。</string>
     <string name="choosestickyfont">选择便签字体</string>
-    <string name="block_shadow_opacity">不透明度</string>
+    <string name="opacity">不透明度</string>
     <string name="block_text_shadow">阻止文字阴影</string>
     <string name="continuous">连续</string>
     <string name="metronome_duration">节拍器持续时间（巴）</string>

@@ -490,7 +490,7 @@
     <string name="duplicate">Αντίγραφο</string>
     <string name="storage_warning">Μην επιλέξετε το φάκελο \"Τραγούδια\" ως τη θέση αποθήκευσης. Πρέπει να επιλέξετε αντί για τη θέση του γονικού αρχείου \"OpenSong\".</string>
     <string name="choosestickyfont">Επιλέξτε γραμματοσειρά κολλητικών σημειώσεων</string>
-    <string name="block_shadow_opacity">Αδιαφάνεια</string>
+    <string name="opacity">Αδιαφάνεια</string>
     <string name="block_text_shadow">Αποκλεισμός σκιάς κειμένου</string>
     <string name="continuous">Συνεχής</string>
     <string name="metronome_duration">Διάρκεια μετρονόμου (bars)</string>

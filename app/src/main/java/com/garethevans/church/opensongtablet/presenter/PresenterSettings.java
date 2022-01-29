@@ -12,6 +12,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class PresenterSettings {
     // This holds variables used during presentations
     // They are accessed using getters and setters
+    // Anything that ProcessSong needs for creating layouts goes there instead
 
     private final String TAG = "PresenterSettings";
     private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,

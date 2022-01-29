@@ -139,6 +139,7 @@ public class Preferences extends Activity {
     batteryTextSize                 float       The size of the battery text (def:9.0f)
     bibleCurrentFile                String      The last used local bible XML file (def:"")
     blockShadow                     boolean     Should second screen text be displayed on block shadowed text boxes.  The color/alpha is set the same as presoShadowColor(def:false)
+    blockShadowAlpha                float       The alpha of the blockShadow behind Stage/Presenter text (def:0.5f)
     capoInfoAsNumerals              boolean     Should the capo info bar use Roman numerals (def:false)
     capoLargeFontInfoBar            boolean     The text size of the floating capo info bar (def:true is 20.0f false is 14.0f)
     castRotation                    float       The rotation of the cast display 0, 90, 180, 270.  (def:0.0f)

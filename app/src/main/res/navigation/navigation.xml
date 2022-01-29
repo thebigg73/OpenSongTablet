@@ -316,9 +316,9 @@
             <!-- Connected display -->
             <fragment
                 android:id="@+id/connectedDisplayFragment"
-                android:name="com.garethevans.church.opensongtablet.screensetup.ConnectedDisplayFragment"
+                android:name="com.garethevans.church.opensongtablet.presenter.SettingsFragment"
                 android:label="settings_connected_display"
-                tools:layout="@layout/settings_connected_display" />
+                tools:layout="@layout/mode_presenter_settings" />
 
         </navigation>
 

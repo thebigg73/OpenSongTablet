@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -134,6 +135,7 @@ public class DisplayScalingFragment extends Fragment {
             visibilityByBoolean(myView.autoFontSizeLayout,false);
         }
         mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"songAutoScale",val);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
     }
 
     private boolean getChecked(String prefName, boolean fallback) {
@@ -168,12 +170,14 @@ public class DisplayScalingFragment extends Fragment {
 
     private void updateBooleanPreference(String prefName, boolean isChecked) {
         mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),prefName,isChecked);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
     }
 
     private void updateSlider(MaterialSlider slider, String prefName, float multiplier, String unit) {
         // The float to store could be out of 100, or 1.  Use the multiplier to convert
         float sliderVal = slider.getValue();
         mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName, sliderVal/multiplier);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
         updateHint(slider, sliderVal, unit);
     }
 
@@ -193,9 +197,11 @@ public class DisplayScalingFragment extends Fragment {
             this.unit = unit;
             this.multiplier = multiplier;
         }
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) { }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             updateSlider(materialSlider,pref, multiplier,unit);
@@ -213,6 +219,7 @@ public class DisplayScalingFragment extends Fragment {
             this.materialSlider = materialSlider;
             this.unit = unit;
         }
+        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             updateHint(materialSlider,value,unit);

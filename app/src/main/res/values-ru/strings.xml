@@ -490,7 +490,7 @@
     <string name="duplicate">дублировать</string>
     <string name="storage_warning">Пожалуйста, не выбирайте папку «Песни» в качестве места хранения. Вместо этого вы должны выбрать родительскую папку «OpenSong».</string>
     <string name="choosestickyfont">Выберите шрифт для заметок</string>
-    <string name="block_shadow_opacity">помутнение</string>
+    <string name="opacity">помутнение</string>
     <string name="block_text_shadow">Блок текстовой тени</string>
     <string name="continuous">непрерывный</string>
     <string name="metronome_duration">Продолжительность метронома (бары)</string>

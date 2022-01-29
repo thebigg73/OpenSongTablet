@@ -185,8 +185,7 @@ public class PerformanceFragment extends Fragment {
 
             // Because we have loaded the song, figure out any presentation order requirements
             mainActivityInterface.getSong().setPresoOrderSongSections(null);
-            mainActivityInterface.getProcessSong().matchPresentationOrder(requireContext(),
-                    mainActivityInterface,mainActivityInterface.getSong());
+            mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface,mainActivityInterface.getSong());
 
             mainActivityInterface.moveToSongInSongMenu();
 

@@ -125,6 +125,21 @@ public class SettingsFragment extends Fragment {
 
 
     private void setViews() {
+        // These settings can be called from any mode, hide what we don't need
+        switch (mainActivityInterface.getMode()) {
+            case "Performance":
+                myView.backgroundLayout.setVisibility(View.GONE);
+                myView.logoLayout.setVisibility(View.GONE);
+                myView.contentHorizontalAlign.setVisibility(View.GONE);
+                myView.contentVerticalAlign.setVisibility(View.GONE);
+                myView.blockShadow.setVisibility(View.GONE);
+                myView.blockShadowAlpha.setVisibility(View.GONE);
+                break;
+            case "Stage":
+                myView.logoLayout.setVisibility(View.GONE);
+                break;
+        }
+
         myView.presoBackgroundAlpha.setValue((int)(mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha()*100));
         myView.presoBackgroundAlpha.setHint((int)(mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha()*100)+"%");
 
@@ -153,6 +168,9 @@ public class SettingsFragment extends Fragment {
         myView.contentHorizontalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()));
         myView.contentVerticalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()));
 
+        myView.blockShadow.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"blockShadow",false));
+        myView.blockShadowAlpha.setValue((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"blockShadowAlpha",0.5f)));
+        myView.blockShadowAlpha.setHint((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"blockShadowAlpha",0.5f)) + "%");
     }
     private void setListeners() {
         myView.currentBackground.setOnClickListener(view -> {
@@ -209,12 +227,18 @@ public class SettingsFragment extends Fragment {
         myView.contentHorizontalAlign.addOnChangeListener(new SliderChangeListener("presoLyricsAlign"));
         myView.contentVerticalAlign.addOnSliderTouchListener(new SliderTouchListener("presoLyricsVAlign"));
         myView.contentVerticalAlign.addOnChangeListener(new SliderChangeListener("presoLyricsVAlign"));
+
+        myView.blockShadow.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"blockShadow",b);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.blockShadowAlpha.addOnChangeListener(new SliderChangeListener("blockShadowAlpha"));
     }
 
-    private float floatToDecPlaces(float floatNum, int decPlaces) {
-        floatNum = floatNum * (float)Math.pow(10,decPlaces);
+    private float floatToDecPlaces(float floatNum) {
+        floatNum = floatNum * (float)Math.pow(10, 2);
         floatNum = Math.round(floatNum);
-        return floatNum / (float)Math.pow(10,decPlaces);
+        return floatNum / (float)Math.pow(10, 2);
     }
     @SuppressLint("RtlHardcoded")
     private int gravityToSliderPosition(int gravity) {
@@ -274,17 +298,19 @@ public class SettingsFragment extends Fragment {
             this.prefName = prefName;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStartTrackingTouch(@NonNull Slider slider) {}
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the preference and update the screen
             switch (prefName) {
                 case "logoSize":
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
-                            prefName, floatToDecPlaces(slider.getValue()/100f,2));
-                    mainActivityInterface.getPresenterSettings().setLogoSize(floatToDecPlaces(slider.getValue()/100f,2));
+                            prefName, floatToDecPlaces(slider.getValue()/100f));
+                    mainActivityInterface.getPresenterSettings().setLogoSize(floatToDecPlaces(slider.getValue()/100f));
                     displayInterface.updateDisplay("changeLogo");
                     break;
                 case "presoTransitionTime":
@@ -326,6 +352,13 @@ public class SettingsFragment extends Fragment {
                     mainActivityInterface.getPresenterSettings().setFontSizePresoMax(slider.getValue());
                     displayInterface.updateDisplay("setSongContent");
                     break;
+                case "blockShadowAlpha":
+                    // The slider goes from 0 to 100
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                            "blockShadowAlpha", slider.getValue()/100f);
+                    mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),
+                            mainActivityInterface);
+                    break;
             }
         }
     }
@@ -333,14 +366,16 @@ public class SettingsFragment extends Fragment {
     private class SliderChangeListener implements Slider.OnChangeListener {
 
         private final String prefName;
-        private int gravity;
+
         SliderChangeListener(String prefName) {
             this.prefName = prefName;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             // Don't save the preference, but update the text
+            int gravity;
             switch (prefName) {
                 case "logoSize":
                     myView.logoSize.setHint((int)value + "%");
@@ -365,9 +400,9 @@ public class SettingsFragment extends Fragment {
                     break;
                 case "presoInfoAlign":
                     // The slider goes from 0 to 2.  We need to look up the gravity
-                    gravity = sliderPositionToGravity(false,(int)slider.getValue());
+                    gravity = sliderPositionToGravity(false, (int) slider.getValue());
                     mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
-                            "presoInfoAlign",gravity);
+                            "presoInfoAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoInfoAlign(gravity);
                     displayInterface.updateDisplay("changeInfoAlignment");
                     break;
@@ -375,7 +410,7 @@ public class SettingsFragment extends Fragment {
                     // The slider goes from 0 to 2.  We need to look up the gravity
                     gravity = sliderPositionToGravity(false,(int)slider.getValue());
                     mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
-                            "presoLyricsAlign",gravity);
+                            "presoLyricsAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsAlign(gravity);
                     displayInterface.updateDisplay("setSongContent");
                     break;
@@ -383,13 +418,17 @@ public class SettingsFragment extends Fragment {
                     // The slider goes from 0 to 2.  We need to look up the gravity
                     gravity = sliderPositionToGravity(true,(int)slider.getValue());
                     mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
-                            "presoLyricsVAlign",gravity);
+                            "presoLyricsVAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsVAlign(gravity);
                     displayInterface.updateDisplay("setSongContent");
                     break;
                 case "fontSizePresoMax":
                     // The slider goes from 10 to 100 as the font size
                     myView.maxFontSize.setHint(((int)slider.getValue())+"sp");
+                    break;
+                case "blockShadowAlpha":
+                    // The slider goes from 0 to 100
+                    myView.blockShadowAlpha.setHint(((int)slider.getValue())+"%");
                     break;
             }
         }

@@ -49,10 +49,10 @@ public class ProcessSong {
     // TODO If the user updates these in the app, check they get updated here as well as the saved preferences!
     private final String TAG = "ProcessSong";
     private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
-            displayCapoChords, displayCapoAndNativeChords, displayChords, displayLyrics,
-            highlightChords, highlightHeadings, songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
+            displayChords, displayLyrics,
+            songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
             songAutoScaleOverrideWidth, trimLines, trimSections;
-    private float fontSize, fontSizeMax, fontSizeMin,
+    private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha,
             lineSpacing, scaleHeadings, scaleChords, scaleComments;
     private String songAutoScale;
 
@@ -60,14 +60,12 @@ public class ProcessSong {
     public void updateProcessingPreferences(Context c, MainActivityInterface mainActivityInterface) {
         addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "addSectionSpace", true);
         blockShadow = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "blockShadow", false);
-        displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayBoldChordsHeadings", false);
-        displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoChords", true);
-        displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
+        blockShadowAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "blockShadowAlpha", 0.7f);
+        //displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoChords", true);
+        //displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
         displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayChords", true);
         displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayLyrics", true);
         displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayBoldChordsHeadings", false);
-        highlightChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"highlightChords",false);
-        highlightHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"highlightHeadings",false);
         songAutoScale = mainActivityInterface.getPreferences().getMyPreferenceString(c,"songAutoScale","W");
         songAutoScaleColumnMaximise = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songAutoScaleColumnMaximise",true);
         songAutoScaleOverrideFull = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songAutoScaleOverrideFull",true);
@@ -83,6 +81,7 @@ public class ProcessSong {
         scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleChords",0.8f);
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"scaleComments",0.8f);
     }
+
     // Get some preferences back
     public float getScaleComments() {
         return scaleComments;
@@ -626,7 +625,6 @@ public class ProcessSong {
     }
 
     public String beautifyHeading(Context c, MainActivityInterface mainActivityInterface, String line) {
-        String section = "";
         boolean annotated = line.contains("-]");
 
         if (line.equals("")) {
@@ -763,7 +761,7 @@ public class ProcessSong {
                 lines[i] = lines[i].trim().replace("_","");
                 lines[i] = " " + lines[i];
                 sb.append("\n").append(lines[i]);
-            } else if (!lines[i].startsWith(".")) {
+            } else if (displayLyrics && !lines[i].startsWith(".")) {
                 sb.append("\n").append(lines[i]);
             }
             i++;
@@ -1108,7 +1106,7 @@ public class ProcessSong {
     }
 
 
-    public void matchPresentationOrder(Context c, MainActivityInterface mainActivityInterface, Song song) {
+    public void matchPresentationOrder(MainActivityInterface mainActivityInterface, Song song) {
         // presentationOrder probably looks like "Intro V1 V2 C V3 C C Guitar Solo C Outro"
         // We need to identify the sections in the song that are in here
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
@@ -1243,11 +1241,8 @@ public class ProcessSong {
         }
     }
 
-    private void clearAndResetRelativeLayout(RelativeLayout relativeLayout, boolean removeViews) {
+    private void resetRelativeLayout(RelativeLayout relativeLayout) {
         if (relativeLayout != null) {
-            if (removeViews) {
-                relativeLayout.removeAllViews();
-            }
             relativeLayout.setScaleX(1.0f);
             relativeLayout.setScaleY(1.0f);
         }
@@ -1378,7 +1373,7 @@ public class ProcessSong {
         }
 
         // We also consider any presentation order that is set
-        matchPresentationOrder(c,mainActivityInterface,song);
+        matchPresentationOrder(mainActivityInterface,song);
 
         for (int sect = 0; sect < song.getPresoOrderSongSections().size(); sect++) {
             String section = song.getPresoOrderSongSections().get(sect);
@@ -1394,6 +1389,12 @@ public class ProcessSong {
                 LinearLayout linearLayout = newLinearLayout(c); // transparent color
                 if (presentation) {
                     linearLayout.setGravity(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign());
+                }
+
+                if (!mainActivityInterface.getMode().equals("Performance") && blockShadow) {
+                    linearLayout.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPresoShadowColor());
+                    linearLayout.setBackgroundColor(getColorWithAlpha(mainActivityInterface.
+                            getMyThemeColors().getPresoShadowColor(), blockShadowAlpha));
                 }
 
                 // Add this section to the array (so it can be called later for presentation)
@@ -1642,16 +1643,6 @@ public class ProcessSong {
         linearLayout.setPadding(0, 0, 0, 0);
     }
 
-    private int dp2px(Context c, int dp) {
-        // Converts dp to px
-        float scale = c.getResources().getDisplayMetrics().density;
-        return (int) (dp * scale);
-    }
-    private int px2dp(Context c, int px) {
-        float scale = c.getResources().getDisplayMetrics().density;
-        return (int) ((float)px / scale);
-    }
-
     private void setScaledView(LinearLayout innerColumn, float scaleSize, float maxFontSize) {
         innerColumn.setPivotX(0);
         innerColumn.setPivotY(0);
@@ -1679,6 +1670,9 @@ public class ProcessSong {
             return 1;
         }
 
+        Log.d(TAG,"col1:" + col1 + "  col2[0]:" + col2[0] + "  col2[1]:" + col2[1] +
+                "  col3[0]:" + col3[0] + "  col3[1]:" + col3[1] + "  col3[2]:" + col3[2]);
+
         float col2best = Math.min(col2[0], col2[1]);
         float col3best = Math.min(col3[0], Math.min(col3[1], col3[2]));
         int best;
@@ -1693,12 +1687,17 @@ public class ProcessSong {
                 best = 3;
             }
         }
+        Log.d(TAG,"best="+best);
+        Log.d(TAG,"col2[2]="+col2[2]);
         // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
         if (best == 2) {
             if (col2[2] == 0) {
                 return 1;
             }
             float newFontSize2Col = defFontSize * col2best;
+            Log.d(TAG,"defFontSize="+defFontSize+"  col2Best="+col2best+"  newFontSize2Col="+newFontSize2Col);
+            Log.d(TAG,"songAutoScaleOverrideFull="+songAutoScaleOverrideFull+"  fontSizeMin="+fontSizeMin+"  newFontSize2Col="+newFontSize2Col);
+
             if (songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
                 thisAutoScale = "W";
                 return 1;
@@ -1714,6 +1713,7 @@ public class ProcessSong {
                 return 1;
             }
         }
+
         return best;
     }
 
@@ -1730,8 +1730,7 @@ public class ProcessSong {
         // which gives the best scale size
 
         // Clear and reset the view's scaling
-        //clearAndResetRelativeLayout(testPane, true);
-        clearAndResetRelativeLayout(pageHolder, false);
+        resetRelativeLayout(pageHolder);
         clearAndResetLinearLayout(songView, false);
         clearAndResetLinearLayout(songSheetView,false);
         pageHolder.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.WRAP_CONTENT, ScrollView.LayoutParams.WRAP_CONTENT));
@@ -1741,7 +1740,8 @@ public class ProcessSong {
         clearAndResetLinearLayout(column3, true);
 
         // Set the padding and boxpadding from dp to px
-        padding = dp2px(c,8);
+        float scale = c.getResources().getDisplayMetrics().density;
+        padding = (int) (8 * scale);
 
         int currentWidth = getMaxValue(mainActivityInterface.getSectionWidths(), 0, mainActivityInterface.getSectionWidths().size());
         int currentHeight = getTotal(mainActivityInterface.getSectionHeights(), 0, mainActivityInterface.getSectionHeights().size());
@@ -1864,6 +1864,9 @@ public class ProcessSong {
             i++;
         }
 
+        Log.d(TAG,"preHalfway="+preHalfWay+"  postHalfway="+postHalfWay);
+        Log.d(TAG,"col1Height="+col1Height+"  col2Height="+col2Height);
+
         // Get the max width for pre halfway split column 1
         int maxWidth_preHalfWay1 = getMaxValue(viewWidth, 0, preHalfWay);
         int maxWidth_preHalfWay2 = getMaxValue(viewWidth, preHalfWay, viewWidth.size());
@@ -1894,6 +1897,7 @@ public class ProcessSong {
         float preScaleTotal = preCol1Scale + preCol2Scale;
         float postScaleTotal = postCol1Scale + postCol2Scale;
 
+        Log.d(TAG,"preScaleTotal="+preScaleTotal + "  postScaleTotal="+postScaleTotal);
         if (preScaleTotal >= postScaleTotal) {
             colscale[0] = preCol1Scale;
             colscale[1] = preCol2Scale;
@@ -2322,7 +2326,7 @@ public class ProcessSong {
     }
 
     // Not working yet
-    public Bitmap trimBitmap(Bitmap bmp) {
+    /*public Bitmap trimBitmap(Bitmap bmp) {
         int imgHeight = bmp.getHeight();
         int imgWidth = bmp.getWidth();
 
@@ -2391,7 +2395,7 @@ public class ProcessSong {
         );
         //bmp.recycle();
         return resizedBitmap;
-    }
+    }*/
 
     // These functions deal with nearby navigations
     public int getNearbySection(String incoming) {
@@ -2423,7 +2427,6 @@ public class ProcessSong {
     public ArrayList<String> getInfoFromHighlighterFilename (String filename) {
         ArrayList<String> bits = new ArrayList<>();
         String[] filebits = filename.split("_");
-        String folder = "";
         int namepos=1;
         for (int x=0;x<filebits.length;x++) {
             if (filebits[x].equals("p") || filebits[x].equals("l")) {
@@ -2628,7 +2631,6 @@ public class ProcessSong {
         String nums = "0123456789";
         String[] bits = lyrics.split("\\[");
         ArrayList<String> sections = new ArrayList<>();
-        boolean groupSections = false;
         for (String bit:bits) {
             if (bit.contains("]") && bit.indexOf("]")<20) {
                 String section = bit.substring(0,bit.indexOf("]"));

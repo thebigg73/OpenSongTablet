@@ -635,7 +635,7 @@ Check out the categories in the right hand options menu.
     <string name="bibleXML">OpenSong XML Bible</string>
     <string name="bible_translation">Bible version code (e.g. NIV, MSG)</string>
     <string name="block_text_shadow">Block text shadow</string>
-    <string name="block_shadow_opacity">Opacity</string>
+    <string name="opacity">Opacity</string>
     <string name="book">Book</string>
     <string name="bottom">Bottom</string>
     <string name="bpm" translatable="false">bpm</string>
@@ -1084,4 +1084,6 @@ Check out the categories in the right hand options menu.
     <string name="blank_screen_info">Fade in/out song content over the background</string>
     <string name="black_screen_info">Fade in/out all views (except logo)</string>
     <string name="project_panic">Click here to reset any connected displays</string>
+    <string name="block_text_shadow_info">Apply a background shadow to the lyrics to improve readability</string>
+    <string name="show_lyrics_info">Display lyrics found in the song</string>
 </resources>

@@ -490,7 +490,7 @@
     <string name="duplicate">Duplicare</string>
     <string name="storage_warning">Non selezionare la cartella \"Songs\" come posizione di archiviazione. È invece necessario selezionare il percorso della cartella \'OpenSong\' padre.</string>
     <string name="choosestickyfont">Scegli il carattere delle note adesive</string>
-    <string name="block_shadow_opacity">Opacità</string>
+    <string name="opacity">Opacità</string>
     <string name="block_text_shadow">Blocca l\'ombra del testo</string>
     <string name="continuous">Continuo</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)…</string>

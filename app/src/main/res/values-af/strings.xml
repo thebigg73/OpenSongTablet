@@ -489,7 +489,7 @@
     <string name="duplicate">Dupliseer</string>
     <string name="storage_warning">Moenie die \'Songs\'-lêergids as u stoorplek kies nie. In plaas daarvan moet u die \'OpenSong\'-lêergidslêer kies.</string>
     <string name="choosestickyfont">Kies \'n lettertjie vir kleefnotas</string>
-    <string name="block_shadow_opacity">Ondeursigtigheid</string>
+    <string name="opacity">Ondeursigtigheid</string>
     <string name="block_text_shadow">Blokkeer teksskadu</string>
     <string name="continuous">Deurlopende</string>
     <string name="metronome_duration">Metronoomduur (mate)</string>

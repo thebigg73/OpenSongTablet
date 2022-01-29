@@ -489,7 +489,7 @@
     <string name="duplicate">Duplikát</string>
     <string name="storage_warning">Nevyberejte jako místo úložiště složku „Songs“. Místo toho byste měli vybrat umístění nadřazené složky „OpenSong“.</string>
     <string name="choosestickyfont">Vyberte písmo s poznámkami</string>
-    <string name="block_shadow_opacity">Neprůhlednost</string>
+    <string name="opacity">Neprůhlednost</string>
     <string name="block_text_shadow">Blokovat textový stín</string>
     <string name="continuous">Kontinuální</string>
     <string name="metronome_duration">Trvání metronomu (bary)</string>

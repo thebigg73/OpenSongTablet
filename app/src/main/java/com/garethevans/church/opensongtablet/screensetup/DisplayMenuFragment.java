@@ -68,13 +68,7 @@ public class DisplayMenuFragment extends Fragment {
         myView.connectedDisplay.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.connectedDisplayFragment));
         myView.actionBarSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.actionBarSettingsFragment));
         myView.menuSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.menuSettingsFragment));
-
-        // Only show scaling when in performance/stage mode
-        if (mainActivityInterface.getMode().equals("Presenter")) {
-            myView.scalingButton.setVisibility(View.GONE);
-        } else {
-            myView.scalingButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.displayScalingFragment));
-        }
+        myView.scalingButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.displayScalingFragment));
     }
 
     @Override

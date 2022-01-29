@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.chords;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -7,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,7 +107,10 @@ public class ChordFormatFragment extends Fragment {
         myView.displayChords.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
                     "displayChords", b);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),
+                    mainActivityInterface);
             showHideView(myView.capoChords,b);
+            showHideView(myView.capoStyle,b);
         });
         myView.capoChords.addOnChangeListener((slider, value, fromUser) -> {
             if (value==2) {
@@ -201,26 +204,11 @@ public class ChordFormatFragment extends Fragment {
             this.prefName = prefName;
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
                     prefName, slider.getValue()==0);
-        }
-    }
-
-    private class MyRadioListener implements CompoundButton.OnCheckedChangeListener {
-
-        private final int chordFormat;
-
-        MyRadioListener(int chordFormat) {
-            this.chordFormat = chordFormat;
-        }
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            if (b) {
-                mainActivityInterface.getPreferences().setMyPreferenceInt(
-                        requireContext(),"chordFormat", chordFormat);
-            }
         }
     }
 }

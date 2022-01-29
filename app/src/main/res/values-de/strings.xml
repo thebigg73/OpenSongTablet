@@ -490,7 +490,7 @@
     <string name="duplicate">Duplikat</string>
     <string name="storage_warning">Bitte wählen Sie nicht den Ordner \'Songs\' als Speicherort. Sie sollten stattdessen den übergeordneten Ordner \"OpenSong\" auswählen.</string>
     <string name="choosestickyfont">Wählen Sie die Schriftart für Haftnotizen</string>
-    <string name="block_shadow_opacity">Opazität</string>
+    <string name="opacity">Opazität</string>
     <string name="block_text_shadow">Blockieren Sie Textschatten</string>
     <string name="continuous">Kontinuierlich</string>
     <string name="metronome_duration">Metronomdauer (Takte)</string>

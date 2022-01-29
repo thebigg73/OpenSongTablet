@@ -52,6 +52,8 @@ public class DisplayExtraFragment extends Fragment {
         myView.prevInSet.setChecked(getChecked("prevInSet",false));
         myView.prevNextSongMenu.setChecked(getChecked("prevNextSongMenu",false));
         myView.boldChordsHeadings.setChecked(getChecked("displayBoldChordsHeadings",false));
+        myView.showChords.setChecked(getChecked("displayChords",true));
+        myView.showLyrics.setChecked(getChecked("displayLyrics",true));
         myView.trimSections.setChecked(getChecked("trimSections",true));
         myView.addSectionSpace.setChecked(getChecked("addSectionSpace",true));
         myView.trimLineSpacing.setChecked(getChecked("trimLines",false));
@@ -98,6 +100,14 @@ public class DisplayExtraFragment extends Fragment {
         });
         myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayBoldChordsHeadings",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.showChords.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("displayChords",isChecked,null);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.showLyrics.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("displayLyrics",isChecked,null);
             mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
         });
         myView.trimSections.setOnCheckedChangeListener((buttonView, isChecked) -> {

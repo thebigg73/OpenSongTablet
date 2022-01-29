@@ -490,7 +490,7 @@
     <string name="duplicate">Duplicar</string>
     <string name="storage_warning">No seleccione la carpeta \'Canciones\' como ubicación de almacenamiento. En su lugar, debe seleccionar la ubicación de la carpeta principal \'OpenSong\'.</string>
     <string name="choosestickyfont">Elija la fuente de notas adhesivas</string>
-    <string name="block_shadow_opacity">Opacidad</string>
+    <string name="opacity">Opacidad</string>
     <string name="block_text_shadow">Bloquear sombra de texto</string>
     <string name="continuous">Continuo</string>
     <string name="metronome_duration">Duración del metrónomo (barras)</string>

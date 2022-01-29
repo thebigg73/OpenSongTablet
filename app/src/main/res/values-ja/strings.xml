@@ -490,7 +490,7 @@
     <string name="duplicate">複製する</string>
     <string name="storage_warning">保存場所として「曲」フォルダを選択しないでください。 代わりに、親の「OpenSong」フォルダーの場所を選択する必要があります。</string>
     <string name="choosestickyfont">付箋フォントを選択する</string>
-    <string name="block_shadow_opacity">不透明度</string>
+    <string name="opacity">不透明度</string>
     <string name="block_text_shadow">テキストの影をブロックする</string>
     <string name="continuous">連続的</string>
     <string name="metronome_duration">メトロノームの長さ（バー）</string>
