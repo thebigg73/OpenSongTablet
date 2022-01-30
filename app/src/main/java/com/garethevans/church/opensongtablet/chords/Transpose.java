@@ -34,6 +34,11 @@ public class Transpose {
     //   from number ├W┤ is replaced to 3 Solfege «Solb   - ???    «««Solbm    ???
     //   '«««' is processed to remove 3 following spaces  - ???    Solbm ???
     //   In effect Solbm overwrites Fm and 3 spaces
+    //
+    // Replaces occur in order, with this used to perform logic.
+    // Example protect logic: Replace "maj7" to "¬aj7" to stop the m being treated as a minor, is followed by replace "¬" with "m" to restore it.
+    // Example variation handling logic: replace 'TI' with "SI, "Ti" with "SI" and "ti" with "SI" is followed by replace of "SI' with chord number "«├3┤"
+    // Three variants "TI", "Ti" and "ti" are therefore handled the same as SI.
 
     // Chord to number: 'majors' and sus interfere so are protected
 
@@ -81,15 +86,32 @@ public class Transpose {
 
     // Solfeggio (DoReMi) = 4
     // Also handles variations of chord name
+    // Solfege variants
     private final String[] fromChords4 =    {"maj7", "ma7", "maj9", "ma9",
-            "la", "Ti", "ti", "si", "do", "Re", "re", "ré", "mi", "fa", "sol",
-            "LA", "TI", "DO", "RE", "RÉ", "MI", "FA", "SOL",
-            "La#",    "Si#",    "Do#",    "Ré#",    "Mi#",    "Fa#",    "Sol#",
-            "Lab",    "Sib",    "Dob",    "Réb",    "Mib",    "Fab",    "Solb",
-            "La",     "Si",     "Do",     "Ré",     "Mi",     "Fa",     "Sol",   "¬"};
+            // Variation handling: Transpose á é ó and case variants to 'uppercase, no accent' chords
+            "La", "la", "LÁ", "Lá", "lá",
+            "TI", "Ti", "ti",
+            "Si", "si",
+            "UT", "Ut", "ut",
+            "Do", "do", "DÓ", "Dó", "dó",
+            "Re", "re", "RÉ", "Ré", "ré",
+            "Mi", "mi",
+            "Fa", "fa", "FÁ", "Fá", "fá",
+            "Sol", "sol",
+            // Now, transpose 'uppercase, no accent' chords.
+            "LA#",    "SI#",    "DO#",    "RE#",    "MI#",    "FA#",    "SOL#",
+            "LAb",    "SIb",    "DOb",    "REb",    "MIb",    "FAb",    "SOLb",
+            "LA",     "SI",     "DO",     "RE",     "MI",     "FA",     "SOL",   "¬"};
     private final String[] toChordsNums4 =  {"¬aj7", "¬a7", "¬aj9", "¬a9",
-            "La", "Si", "Si", "Si", "Do", "Re", "Re", "Re", "Mi", "Fa", "Sol",
-            "La", "Si", "Do", "Re", "Re", "Mi", "Fa", "Sol",
+            "LA", "LA", "LA", "LA", "LA",
+            "SI", "SI", "SI",
+            "SI", "SI",
+            "DO", "DO", "DO",
+            "DO", "DO", "DO", "DO", "DO",
+            "RE", "RE", "RE", "RE", "RE",
+            "MI", "MI",
+            "FA", "FA", "FA", "FA", "FA",
+            "SOL", "SOL",
             "├2┤",    "├4┤",    "├5┤",    "├7┤",    "├9┤",    "├W┤",   "»├Y┤",
             "├Y┤",    "├2┤",    "├3┤",    "├5┤",    "├7┤",    "├8┤",   "»├W┤",
             "«├1┤",   "«├3┤",   "«├4┤",   "«├6┤",   "«├8┤",   "«├9┤",    "├X┤",    "m"};
@@ -102,8 +124,9 @@ public class Transpose {
     private final String[] toFlatChords1 =  "»Bb »Db »Eb »Gb »Ab »»A »»B »»C »»D »»E »»F »»G".split(" ");
     private final String[] toSharpChords2 = "»»B »C# »D# »F# »G# »»A »»H »»C »»D »»E »»F »»G".split(" ");
     private final String[] toFlatChords2 =  "»»B »Db »Eb »Gb »Ab »»A »»H »»C »»D »»E »»F »»G".split(" ");
-    private final String[] toSharpChords4 = "La# Do# Re# Fa# «Sol# »La »Si »Do »Re »Mi »Fa Sol".split(" ");
-    private final String[] toFlatChords4 =  "Sib Reb Mib «Solb Lab »La »Si »Do »Re »Mi »Fa Sol".split(" ");
+    // IV - Solfege out format is 'SongSelect fixed DO' - Capitals = easy to read, no accents = easy to type, DO not UT and SI not TI = most common across solfege variants
+    private final String[] toSharpChords4 = "LA# DO# RE# FA# «SOL# »LA »SI »DO »RE »MI »FA SOL".split(" ");
+    private final String[] toFlatChords4 =  "SIb REb MIb «SOLb LAb »LA »SI »DO »RE »MI »FA SOL".split(" ");
     //  A trick! Minors arrive ending ┤m, the m is moved into the number to give numbers for minors. '┤ma' is treated as the start of major and is protected.
     private final String[] fromChordsNumM = "┤ma ┤m ├2m┤ ├5m┤ ├7m┤ ├Wm┤ ├Ym┤ ├1m┤ ├3m┤ ├4m┤ ├6m┤ ├8m┤ ├9m┤ ├Xm┤ ├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤ ¬".split(" ");
     private final String[] toSharpChords3 = "┤¬a m┤ »»»b »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
@@ -133,9 +156,8 @@ public class Transpose {
     private final String[] format2Identifiers = new String[]{"h"};
     // Format 3 has lowecase minors. 'b' is 'flat', "h" is dealt with separatly so both not tested
     // is/es identifiers are dealt with as 'chord ends with s' later in the logic
-    private static final String[] format3Identifiers = new String[]{"a", "c", "d", "e,", "f", "g"};
-
-    private final String[] format4Identifiers = new String[]{"do","re","ré","mi","fa","sol","la","si"};
+    private final String[] format3Identifiers = new String[]{"a","c","d","e,","f","g"}; // Format 3 has lowecase minors. 'b' is 'flat', "h" is dealt with separatly so both not tested
+    private final String[] format4Identifiers = new String[]{"do","dó","re","ré","mi","fa","fá","sol","la","lá", "si","ti"};
     private final String[] format5Identifiers = new String[]{"1","2","3","4","5","6","7"};
     private final String[] format6Identifiers = new String[]{"i","ii","ii","iii","iii","iv","iv","v","vi","vii"};
 

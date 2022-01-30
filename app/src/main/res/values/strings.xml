@@ -64,7 +64,7 @@
     <string name="chordformat_2_name" translatable="false">Euro (B,H)</string>
     <string name="chordformat_3" translatable="false">C  Cis/Des  D  Dis/Es  E  F  Fis/Ges  G  Gis/As  A  B  H</string>
     <string name="chordformat_3_name" translatable="false">Euro (B,H,is,es)</string>
-    <string name="chordformat_4" translatable="false">Do  Do#/Reb  Re  Re#/Mib  Mi  Fa  Fa#/Solb  Sol  Sol#/Lab  La  La#/Sib Si</string>
+    <string name="chordformat_4" translatable="false">DO  DO#/REb  RE  RE#/MIb  MI  FA  FA#/SOLb  SOL  SOL#/LAb  LA  LA#/SIb SI</string>
     <string name="chordformat_4_name" translatable="false">Solfège</string>
     <string name="chordformat_5" translatable="false">1  2  3  4  5  6  7  8  9  10  11  12</string>
     <string name="chordformat_5_name" translatable="false">Nashville</string>
