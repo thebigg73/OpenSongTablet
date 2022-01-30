@@ -1779,6 +1779,7 @@ public class StageMode extends AppCompatActivity implements
                 scrollUpButton.setAlpha((0.0f));
             }
 
+
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true) && StaticVariables.setView ) {
                 // IV - Code removed - No longer support Set Move buttons making section moves in Stage mode here or in mext and previous item code
                 // Use checkCanGoTo results
@@ -2300,7 +2301,7 @@ public class StageMode extends AppCompatActivity implements
             if (StaticVariables.whichMode.equals("Stage") && FullscreenActivity.isSong) {
                 if (StaticVariables.currentSection == StaticVariables.songSections.length - 1) {
                     // We are at the end of the song
-                    Log.d("d", "End of the song");
+                    Log.d(TAG, "End of the song");
                 } else {
                     try {
                         StaticVariables.currentSection += 1;
@@ -5528,7 +5529,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             start = System.currentTimeMillis();
-            Log.d(TAG, "Duration(ms): Before Create final view: " + (System.currentTimeMillis() - songTransitionStart));
+            //Log.d(TAG, "Duration(ms): Before Create final view: " + (System.currentTimeMillis() - songTransitionStart));
             try {
                 // We know how many columns we are using, so lets go for it.
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
@@ -5568,10 +5569,10 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
+            //Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
             try {
                 songTransition_QOS();
-                Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
+                //Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
                 if (!cancelled) {
                     songscrollview.removeAllViews();
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -5590,7 +5591,7 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
+            //Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
         }
     }
 
@@ -5891,10 +5892,10 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
+            //Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
             try {
                 songTransition_QOS();
-                Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
+                //Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
                 if (!cancelled) {
                     songscrollview.removeAllViews();
                     LinearLayout.LayoutParams llp1_2 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(2), LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -5913,7 +5914,7 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
+            //Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
         }
     }
 
@@ -6005,10 +6006,10 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
+            //Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
             try {
                 songTransition_QOS();
-                Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
+                //Log.d(TAG, "Duration(ms): Overall: " + (System.currentTimeMillis() - songTransitionStart));
                 if (!cancelled) {
                     songscrollview.removeAllViews();
                     LinearLayout.LayoutParams llp1_3 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(3), LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -6030,7 +6031,7 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
+            //Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
         }
     }
 
@@ -6298,7 +6299,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             start = System.currentTimeMillis();
-            Log.d(TAG, "Duration(ms): Before render of final view: " + (System.currentTimeMillis() - songTransitionStart));
+            //Log.d(TAG, "Duration(ms): Before render of final view: " + (System.currentTimeMillis() - songTransitionStart));
             try {
                 // Only 1 column, but many sections
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
@@ -6347,9 +6348,9 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(String s) {
-            Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
+            //Log.d(TAG, "Duration(ms): Since start: " + (System.currentTimeMillis() - songTransitionStart) + " Since render start: " +  (System.currentTimeMillis() - start));
             songTransition_QOS();
-            Log.d(TAG, "Duration(ms): Overall QOS: " + (System.currentTimeMillis() - songTransitionStart));
+            //Log.d(TAG, "Duration(ms): Overall QOS: " + (System.currentTimeMillis() - songTransitionStart));
             try {
                 if (!cancelled) {
                     songscrollview.removeAllViews();
@@ -6368,7 +6369,7 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
+            //Log.d(TAG, "Duration(ms): End: " + (System.currentTimeMillis() - songTransitionStart));
         }
     }
 
@@ -7200,7 +7201,7 @@ public class StageMode extends AppCompatActivity implements
                 }
 
 
-                Log.d(TAG, "Transition start: " + (System.currentTimeMillis() - songTransitionStart));
+                //Log.d(TAG, "Transition start: " + (System.currentTimeMillis() - songTransitionStart));
 
                 // After animate out, load the song
                 Handler h = new Handler();
@@ -7245,13 +7246,13 @@ public class StageMode extends AppCompatActivity implements
                 StaticVariables.infoBarChangeRequired = true;
                 FullscreenActivity.scalingfiguredout = false;
                 sectionpresented = false;
-                Log.d(TAG, "Duration(ms): Wait complete: Before LoadXML: " + (System.currentTimeMillis() - songTransitionStart));
+                //Log.d(TAG, "Duration(ms): Wait complete: Before LoadXML: " + (System.currentTimeMillis() - songTransitionStart));
                 try {
                     LoadXML.loadXML(StageMode.this, preferences, storageAccess, processSong);
                 } catch (Exception e) {
                     Log.d(TAG, "Error loading song:" + StaticVariables.songfilename);
                 }
-                Log.d(TAG, "Duration(ms): After LoadXML: " + (System.currentTimeMillis() - songTransitionStart));
+                //Log.d(TAG, "Duration(ms): After LoadXML: " + (System.currentTimeMillis() - songTransitionStart));
                 if (!StaticVariables.reloadOfSong) {
                     // Send Nearby song intent
                     if (StaticVariables.isConnected && StaticVariables.isHost && !FullscreenActivity.orientationchanged) {
@@ -7297,9 +7298,9 @@ public class StageMode extends AppCompatActivity implements
                     // FullscreenActivity.myLyrics,
                     // StaticVariables.songSections, StaticVariables.songSectionsLabels, StaticVariables.songSectionsTypes,
                     // StaticVariables.sectionContents, StaticVariables.sectionLineTypes
-                    Log.d(TAG, "Duration(ms): Before PrepareSongSections: " + (System.currentTimeMillis() - songTransitionStart));
+                    //Log.d(TAG, "Duration(ms): Before PrepareSongSections: " + (System.currentTimeMillis() - songTransitionStart));
                     processSong.prepareSongSections(StageMode.this, preferences, storageAccess);
-                    Log.d(TAG, "Duration(ms): After PrepareSongSections: " + (System.currentTimeMillis() - songTransitionStart));
+                    //Log.d(TAG, "Duration(ms): After PrepareSongSections: " + (System.currentTimeMillis() - songTransitionStart));
                     if (StaticVariables.whichMode.equals("Performance")) {
                         // Put the song back together for checking for splitpoints
                         processSong.rebuildParsedLyrics(StaticVariables.songSections.length);
@@ -7373,7 +7374,7 @@ public class StageMode extends AppCompatActivity implements
                         FullscreenActivity.isImage = false;
                     }
 
-                    Log.d(TAG, "Duration(ms): Before prepareView: " + (System.currentTimeMillis() - songTransitionStart));
+                    //Log.d(TAG, "Duration(ms): Before prepareView: " + (System.currentTimeMillis() - songTransitionStart));
                     // IV - Background colour set to white for PDF and Image
                     if (FullscreenActivity.isPDF) {
                         mypage.setBackgroundColor(StaticVariables.white);

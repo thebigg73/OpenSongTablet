@@ -40,6 +40,7 @@ public class PopUpSetViewNew extends DialogFragment {
     private static Dialog setfrag;
     private boolean longKeyPress = false;
     private int keyRepeatCount = 0;
+    private final String TAG = "PopUpSetViewNew";
 
 
     static PopUpSetViewNew newInstance() {
@@ -176,16 +177,19 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     private void doSave() {
+        Log.d(TAG,"setCurrent:"+ preferences.getMyPreferenceString(getContext(),"setCurrent",""));
         StringBuilder tempmySet = new StringBuilder();
         String tempItem;
         if (StaticVariables.mTempSetList == null) {
             StaticVariables.mTempSetList = new ArrayList<>();
         }
+        Log.d(TAG,"mTempSetList.size()="+StaticVariables.mTempSetList.size());
         for (int z = 0; z < StaticVariables.mTempSetList.size(); z++) {
             // IV - Use displayed info as is in the desired order
             tempItem = mFolderName.get(z) + "/" + mSongName.get(z);
             tempmySet.append("$**_").append(tempItem).append("_**$");
         }
+        Log.d(TAG,"tempmySet: "+tempmySet);
         preferences.setMyPreferenceString(getContext(),"setCurrent",tempmySet.toString());
         setActions.prepareSetList(getContext(),preferences);
         StaticVariables.myToastMessage = getString(R.string.currentset) +

@@ -29,6 +29,7 @@ class SetActions {
     private String title = "", author = "", lyrics = "", hymn_number = "";
     private String custom_notes, user1 = "", user2 = "", user3 = "", aka = "", key_line = "";
     private XmlPullParser xpp;
+    private final String TAG = "SetActions";
 
     ArrayList<String> listAllSets(Context c, Preferences preferences, StorageAccess storageAccess) {
         return storageAccess.listFilesInFolder(c, preferences, "Sets", "");
@@ -156,6 +157,9 @@ class SetActions {
 
             // Remove any blank set entries that shouldn't be there
             String setparse = preferences.getMyPreferenceString(c,"setCurrent","");
+
+            Log.d(TAG,"setparse="+setparse);
+
             setparse =  setparse.replace("$**__**$", "");
 
             // Add a delimiter between songs
@@ -187,6 +191,21 @@ class SetActions {
             } else {
                 StaticVariables.mSetList = null;
                 StaticVariables.setSize = 0;
+            }
+
+            // TODO remove
+            for (String s:StaticVariables.mTempSetList) {
+                Log.d(TAG,"mTempSetList: "+s);
+            }
+
+            if (StaticVariables.mSetList!=null) {
+                for (String s : StaticVariables.mSetList) {
+                    Log.d(TAG, "mSetList: " + s);
+                }
+            }
+
+            for (String s:StaticVariables.mSet) {
+                Log.d(TAG,"mSet: "+s);
             }
 
         } catch (Exception e) {
@@ -330,16 +349,22 @@ class SetActions {
         if (StaticVariables.setSize > 0) {
             // Get the name of the song to look for (including folders if need be)
             String songforsetwork;
+            String songforsetworkalt;
             songforsetwork = getSongForSetWork(c);
+
             songforsetwork = fixIsInSetSearch(songforsetwork);
+            songforsetworkalt = checkMain(c,songforsetwork);
+
             String currset = preferences.getMyPreferenceString(c,"setCurrent","");
 
-            if (StaticVariables.setView && currset.contains(songforsetwork)) {
+            boolean containsitem = currset.contains(songforsetwork) || currset.contains(songforsetworkalt);
+
+            if (StaticVariables.setView && containsitem) {
                 // If we are currently in set mode, check if the new song is there, in which case do nothing else
                 indexSongInSet();
                 return true;
 
-            } else if (StaticVariables.setView && !currset.contains(songforsetwork)) {
+            } else if (StaticVariables.setView && !currset.contains(songforsetwork) && !currset.contains(songforsetworkalt)) {
                 // If we are currently in set mode, but the new song isn't there, leave set mode
                 StaticVariables.setView = false;
                 StaticVariables.previousSongInSet = "";
@@ -347,7 +372,7 @@ class SetActions {
                 StaticVariables.indexSongInSet = 0;
                 return false;
 
-            } else if (!StaticVariables.setView && currset.contains(songforsetwork)) {
+            } else if (!StaticVariables.setView && containsitem) {
                 // If we aren't currently in set mode and the new song is there, enter set mode and get the index
                 StaticVariables.setView = true;
                 StaticVariables.previousSongInSet = "";
@@ -357,7 +382,7 @@ class SetActions {
                 indexSongInSet();
                 return true;
 
-            } else if (!currset.contains(songforsetwork)) {
+            } else if (!currset.contains(songforsetwork) && !currset.contains(songforsetworkalt)) {
                 // The new song isn't in the set, so leave set mode and reset index
                 StaticVariables.setView = false;
                 StaticVariables.previousSongInSet = "";
@@ -378,6 +403,14 @@ class SetActions {
         return false;
     }
 
+    private String checkMain(Context c, String songforsetwork) {
+        if (songforsetwork.contains("MAIN/") || songforsetwork.contains(c.getString(R.string.mainfoldername)+"/") ||
+                songforsetwork.contains("/")) {
+            return songforsetwork;
+        } else {
+            return songforsetwork.replace("$**_","$**_"+c.getString(R.string.mainfoldername) + "/");
+        }
+    }
     void emptyCacheDirectories(Context c, Preferences preferences, StorageAccess storageAccess) {
         storageAccess.wipeFolder(c, preferences, "Scripture", "_cache");
         storageAccess.wipeFolder(c, preferences, "Slides", "_cache");
