@@ -116,7 +116,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         // Add the song to the current set
         mainActivityInterface.getCurrentSet().
                 addSetItem(mainActivityInterface.getSetActions().
-                        getSongForSetWork(requireContext(), mainActivityInterface.getSong()));
+                        getSongForSetWork(mainActivityInterface.getSong()));
         // Now send the call to update the set menu fragment
         mainActivityInterface.updateSetList();
     }

@@ -24,6 +24,8 @@ import java.util.Locale;
 
 public class SetActions {
 
+    // "$**_" + getSong().getFolder() + "/" + getSong().getFilename() + "_***" + getSong().getKey() + "***_" + "_**$";
+
     // TODO TIDY UP and check transpose bit works
     private final String itemStart = "$**_", itemEnd = "_**$",
             keyStart = "_***", keyEnd = "***_", setCategorySeparator = "__",
@@ -177,7 +179,7 @@ public class SetActions {
     }
 
     // Get a reference string for thisSong for working with the currentSet string in preferences
-    public String getSongForSetWork(Context c, Song thisSong) {
+    public String getSongForSetWork(Song thisSong) {
         return itemStart + thisSong.getFolder() + "/" + thisSong.getFilename() +
                 keyStart + thisSong.getKey() + keyEnd + itemEnd;
     }
@@ -185,14 +187,14 @@ public class SetActions {
         return itemStart + folder + "/" + filename + keyStart + key + keyEnd + itemEnd;
     }
 
-    public int indexSongInSet(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    public int indexSongInSet(MainActivityInterface mainActivityInterface, Song thisSong) {
         // Because set items can be stored with or without a specified key, we search for both
-        String searchText = getSongForSetWork(c,thisSong);
+        String searchText = getSongForSetWork(thisSong);
         Song noKeySong = new Song();
         noKeySong.setFolder(thisSong.getFolder());
         noKeySong.setFilename(thisSong.getFilename());
         noKeySong.setKey("");
-        String searchTextNoKeySpecified = getSongForSetWork(c,noKeySong);
+        String searchTextNoKeySpecified = getSongForSetWork(noKeySong);
 
         int position = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchText);
         int positionNoKey = mainActivityInterface.getCurrentSet().getSetItems().lastIndexOf(searchTextNoKeySpecified);
@@ -245,7 +247,6 @@ public class SetActions {
         // If there is an empty value, try again
         // Build an arraylist of the positions so we can redraw the adapter
         missingKeyPositions = new ArrayList<>();
-        int size = mainActivityInterface.getCurrentSet().getSetKeys().size();
         for (int x = 0; x<mainActivityInterface.getCurrentSet().getSetKeys().size(); x++) {
             String key = fixNull(mainActivityInterface.getCurrentSet().getKey(x));
             if (key.isEmpty()) {
@@ -1082,9 +1083,6 @@ public class SetActions {
                     case "song_subtitle":
                     default:
                         // Do nothing
-                        /*if (xpp.getEventType() == XmlPullParser.START_TAG && !xpp.isEmptyElementTag()) {
-                            Log.d("SetActions", xpp.getName());
-                        }*/
                         break;
                 }
             }

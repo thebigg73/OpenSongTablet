@@ -65,77 +65,79 @@ public class SongListBuildIndex {
                     " FROM " + SQLite.TABLE_NAME;
 
             Cursor cursor = db.rawQuery(altquery, null);
-            cursor.moveToFirst();
 
-            // We now iterate through each song in turn!
-            do {
-                mainActivityInterface.setIndexingSong(new Song());
+            if (cursor.getCount()>0) {
+                cursor.moveToFirst();
 
-                // Set the folder and filename from the database entry
-                int indexId = cursor.getColumnIndex(SQLite.COLUMN_ID);
-                int indexFolder = cursor.getColumnIndex(SQLite.COLUMN_FOLDER);
-                int indexFilename = cursor.getColumnIndex(SQLite.COLUMN_FILENAME);
+                // We now iterate through each song in turn!
+                do {
+                    mainActivityInterface.setIndexingSong(new Song());
 
-                if (indexId >= 0 && indexFolder >= 0 && indexFilename >= 0) {
-                    mainActivityInterface.getIndexingSong().setId(cursor.getInt(indexId));
-                    mainActivityInterface.getIndexingSong().setFolder(cursor.getString(indexFolder));
-                    mainActivityInterface.getIndexingSong().setFilename(cursor.getString(indexFilename));
+                    // Set the folder and filename from the database entry
+                    int indexId = cursor.getColumnIndex(SQLite.COLUMN_ID);
+                    int indexFolder = cursor.getColumnIndex(SQLite.COLUMN_FOLDER);
+                    int indexFilename = cursor.getColumnIndex(SQLite.COLUMN_FILENAME);
 
-                    // Now we have the info to open the file and extract what we need
-                    if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {
-                        // Get the uri, utf and inputStream for the file
-                        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs",
-                                mainActivityInterface.getIndexingSong().getFolder(),
-                                mainActivityInterface.getIndexingSong().getFilename());
-                        String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
+                    if (indexId >= 0 && indexFolder >= 0 && indexFilename >= 0) {
+                        mainActivityInterface.getIndexingSong().setId(cursor.getInt(indexId));
+                        mainActivityInterface.getIndexingSong().setFolder(cursor.getString(indexFolder));
+                        mainActivityInterface.getIndexingSong().setFilename(cursor.getString(indexFilename));
 
-                        // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
-                        if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename())) {
-                            try {
-                                // All going well all the other details for sqLite are now set!
-                                // Assume XML for now!
-                                mainActivityInterface.getIndexingSong().setFiletype("XML");
+                        // Now we have the info to open the file and extract what we need
+                        if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {
+                            // Get the uri, utf and inputStream for the file
+                            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs",
+                                    mainActivityInterface.getIndexingSong().getFolder(),
+                                    mainActivityInterface.getIndexingSong().getFilename());
+                            String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
 
-                                mainActivityInterface.getLoadSong().readFileAsXML(c, mainActivityInterface,
+                            // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
+                            if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename())) {
+                                try {
+                                    // All going well all the other details for sqLite are now set!
+                                    // Assume XML for now!
+                                    mainActivityInterface.getIndexingSong().setFiletype("XML");
+
+                                    mainActivityInterface.getLoadSong().readFileAsXML(c, mainActivityInterface,
                                             mainActivityInterface.getIndexingSong(), "Songs",
                                             uri, utf);
 
-                            } catch (Exception e) {
-                                // OK, so this wasn't an XML file.  Try to extract as something else
-                                mainActivityInterface.setIndexingSong(tryToFixSong(c, mainActivityInterface, mainActivityInterface.getIndexingSong(),uri));
-                            }
-                        } else {
-                            // Look for data in the nonopensong persistent database import
-                            mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(c,mainActivityInterface,mainActivityInterface.getIndexingSong().getFolder(),mainActivityInterface.getIndexingSong().getFilename()));
-                            if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf",mainActivityInterface.getIndexingSong().getFilename())) {
-                                // This is a PDF
-                                mainActivityInterface.getIndexingSong().setFiletype("PDF");
-                            } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image",mainActivityInterface.getIndexingSong().getFilename())) {
-                                // This is an Image
-                                mainActivityInterface.getIndexingSong().setFiletype("IMG");
+                                } catch (Exception e) {
+                                    // OK, so this wasn't an XML file.  Try to extract as something else
+                                    mainActivityInterface.setIndexingSong(tryToFixSong(c, mainActivityInterface, mainActivityInterface.getIndexingSong(), uri));
+                                }
                             } else {
-                                // Unknown
-                                mainActivityInterface.getIndexingSong().setFiletype("?");
+                                // Look for data in the nonopensong persistent database import
+                                mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(c, mainActivityInterface, mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
+                                if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf", mainActivityInterface.getIndexingSong().getFilename())) {
+                                    // This is a PDF
+                                    mainActivityInterface.getIndexingSong().setFiletype("PDF");
+                                } else if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("image", mainActivityInterface.getIndexingSong().getFilename())) {
+                                    // This is an Image
+                                    mainActivityInterface.getIndexingSong().setFiletype("IMG");
+                                } else {
+                                    // Unknown
+                                    mainActivityInterface.getIndexingSong().setFiletype("?");
+                                }
+
                             }
 
-                        }
+                            // Update the database entry
+                            mainActivityInterface.getIndexingSong().setSongid(mainActivityInterface.getCommonSQL().getAnySongId(
+                                    mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
+                            mainActivityInterface.getCommonSQL().updateSong(db, mainActivityInterface.getIndexingSong());
 
-                        // Update the database entry
-                        mainActivityInterface.getIndexingSong().setSongid(mainActivityInterface.getCommonSQL().getAnySongId(
-                                mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
-                        mainActivityInterface.getCommonSQL().updateSong(db, mainActivityInterface.getIndexingSong());
-
-                        // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
-                        // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
-                        if (mainActivityInterface.getIndexingSong().getFiletype().equals("PDF") ||
-                                mainActivityInterface.getIndexingSong().getFiletype().equals("IMG")) {
-                            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c, mainActivityInterface,
-                                    mainActivityInterface.getIndexingSong());
+                            // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
+                            // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
+                            if (mainActivityInterface.getIndexingSong().getFiletype().equals("PDF") ||
+                                    mainActivityInterface.getIndexingSong().getFiletype().equals("IMG")) {
+                                mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c, mainActivityInterface,
+                                        mainActivityInterface.getIndexingSong());
+                            }
                         }
-                        //inputStream.close();
                     }
-                }
-            } while (cursor.moveToNext());
+                } while (cursor.moveToNext());
+            }
             cursor.close();
             indexRequired = false;
             indexComplete = true;

@@ -990,10 +990,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 getSupportActionBar().hide();
             }
         } else {
+            actionBar.show();
             if (getSupportActionBar()!=null) {
                 getSupportActionBar().show();
             }
         }
+
     }
     @Override
     public void updateToolbar(String what) {
