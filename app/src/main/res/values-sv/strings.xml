@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"Handling"</string>
     <string name="action_search">"Söka låtar"</string>
-    <string name="action_settings">"OpenSong-inställningar"</string>
+    <string name="settings">"OpenSong-inställningar"</string>
     <string name="actionbar">"Menyraden info"</string>
     <string name="actions">"Handlingar"</string>
     <string name="activated">"Aktiverad / körning"</string>
     <string name="add_custom_slide">"Lägg till anpassad bild för att ställa in"</string>
     <string name="add_reusable">"Spara som en återanvändbar bild"</string>
     <string name="add_song_to_set">"Lägg till aktuell sång för att ställa in"</string>
-    <string name="addedtoset">"Har lagts till i slutet av din nuvarande uppsättning."</string>
+    <string name="added_to_set">"Har lagts till i slutet av din nuvarande uppsättning."</string>
     <string name="alert">"Varna"</string>
     <string name="alert_text">"Ange meddelandetext"</string>
     <string name="alphabetical">Alfabetiskt låtindex</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Är du säker?"</string>
+    <string name="are_you_sure">"Är du säker?"</string>
     <string name="ask">"Fråga varje gång"</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Växla autoskala"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">Blockera textskugga</string>
     <string name="continuous">Kontinuerlig</string>
     <string name="metronome_duration">Metronome varaktighet (staplar)</string>
-    <string name="airTurnLongPress">AirTurn lång tryckläge</string>
-    <string name="autoRepeatCount">Antal knappupprepningar som krävs för att emulera lång tryckning</string>
-    <string name="autoRepeatRationale">Vissa pedaler (som AirTurn) skickar auto repetitionssignaler som stoppar de långa pressåtgärderna. Om du använder en av dessa pedaler, slå på AirTurns långa tryckläge och justera skjutreglaget till antalet upprepade signaler som behövs för en simulerad lång pressåtgärd. De flesta tangentbord har en fördröjning på 500 ms och en repetitionsfrekvens på cirka 25 ms. Detta innebär att om du håller ner en knapp under en sekund registrerar du 20 knapptryckningar. Med AirTurn-pedaler kan du justera repetitionsfrekvensen och fördröjningstiden med hjälp av deras följeslagarapp. Högre siffror för upprepningen av tangenterna betyder att du håller pedalen längre för att registrera dig som en lång tryckning.</string>
+    <string name="air_turn_long_press">AirTurn lång tryckläge</string>
+    <string name="autorepeat_count">Antal knappupprepningar som krävs för att emulera lång tryckning</string>
+    <string name="autorepeat_rationale">Vissa pedaler (som AirTurn) skickar auto repetitionssignaler som stoppar de långa pressåtgärderna. Om du använder en av dessa pedaler, slå på AirTurns långa tryckläge och justera skjutreglaget till antalet upprepade signaler som behövs för en simulerad lång pressåtgärd. De flesta tangentbord har en fördröjning på 500 ms och en repetitionsfrekvens på cirka 25 ms. Detta innebär att om du håller ner en knapp under en sekund registrerar du 20 knapptryckningar. Med AirTurn-pedaler kan du justera repetitionsfrekvensen och fördröjningstiden med hjälp av deras följeslagarapp. Högre siffror för upprepningen av tangenterna betyder att du håller pedalen längre för att registrera dig som en lång tryckning.</string>
     <string name="rotate_display">Rotera displayen</string>
     <string name="about">Handla om</string>
     <string name="about_description">Appinfo, hjälp, användarhandbok etc.</string>
@@ -566,4 +566,18 @@
     <string name="connections_actasclient">Fungera som klient</string>
     <string name="respect_copyright">Respektera upphovsrätten - använd alltid lagligt</string>
     <string name="nearby_large_file">Denna stora låtfil delas</string>
+    <string name="action_long_press">Ytterligare långa tryckåtgärder</string>
+    <string name="action_short_press">Kort tryck/klick</string>
+    <string name="actionbar_autohide">Dölj åtgärdsfältet automatiskt</string>
+    <string name="actionbar_display">Åtgärdsfältet</string>
+    <string name="actionbar_info">Ändra utseendet på informationen i åtgärdsfältet</string>
+    <string name="actions_current_song">Åtgärder för aktuell låt</string>
+    <string name="add_songs">Lägg till låtar</string>
+    <string name="appearance_change">Justerar utseendet</string>
+    <string name="audio_source">Ljudkälla</string>
+    <string name="autoscale_info">Appen kommer att göra texten så stor som möjligt för att passa skärmen</string>
+    <string name="autoscroll_autostart">Håll autoscroll aktiverat när du byter låt</string>
+    <string name="autoscroll_info">Justera inställningarna för autoscroll</string>
+    <string name="autoscroll_link_audio">Använd varaktighet för länkljudfil</string>
+    <string name="autorepeat_time">Autoupprepningstid (pedalinställning)</string>
 </resources>

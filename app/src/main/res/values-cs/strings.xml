@@ -2,18 +2,18 @@
 <resources>
     <string name="action">"Akce"</string>
     <string name="action_search">"Hledání skladby"</string>
-    <string name="action_settings">"Nastavení OpenSong"</string>
+    <string name="settings">"Nastavení OpenSong"</string>
     <string name="actionbar">"Menu bar info"</string>
     <string name="actions">Akce</string>
     <string name="activated">"Aktivováno / běží"</string>
     <string name="add_reusable">"Uložit jako opakovaně použitelný snímek"</string>
     <string name="add_song_to_set">Každému z nich lze přiřadit akce písní, jako jsou metronomy, transpozice, pady atd.</string>
-    <string name="addedtoset">"byla přidána na konec aktuálního souboru."</string>
+    <string name="added_to_set">"byla přidána na konec aktuálního souboru."</string>
     <string name="alert">Dlouhým stisknutím hlavního tlačítka můžete změnit nastavení každého tlačítka.</string>
     <string name="alert_text">Dlouhé stisknutí některých tlačítek na stránce provádí rychlé akce, jako je spuštění / zastavení / úpravy</string>
     <string name="alphabetical">Abecední index písní</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Jste si jist?"</string>
+    <string name="are_you_sure">"Jste si jist?"</string>
     <string name="ask">"Zeptejte se pokaždé,"</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Přepnout autoscale"</string>
@@ -493,9 +493,9 @@
     <string name="block_text_shadow">Blokovat textový stín</string>
     <string name="continuous">Kontinuální</string>
     <string name="metronome_duration">Trvání metronomu (bary)</string>
-    <string name="airTurnLongPress">AirTurn režim dlouhého stisknutí</string>
-    <string name="autoRepeatCount">Počet opakování kláves potřebných k emulaci dlouhého stisknutí</string>
-    <string name="autoRepeatRationale">Některé pedály (například AirTurn) vysílají klíčové signály automatického opakování, které zastaví činnost dlouhého stisknutí. Pokud používáte jeden z těchto pedálů, zapněte režim dlouhého stisknutí AirTurn a nastavte posuvník na počet opakovaných signálů potřebných pro simulovanou akci dlouhého stisknutí. Většina klávesnic má zpoždění 500ms a opakovací rychlost asi 25ms. To znamená, že podržením tlačítka po dobu 1 sekundy se zaznamená 20 stisknutí tlačítka. Pedály AirTurn vám umožňují upravit rychlost opakování a dobu zpoždění pomocí jejich doprovodné aplikace. Vyšší čísla pro počet opakování tlačítek znamenají, že se pedál drží déle, aby se zaregistroval jako dlouhý stisk.</string>
+    <string name="air_turn_long_press">AirTurn režim dlouhého stisknutí</string>
+    <string name="autorepeat_count">Počet opakování kláves potřebných k emulaci dlouhého stisknutí</string>
+    <string name="autorepeat_rationale">Některé pedály (například AirTurn) vysílají klíčové signály automatického opakování, které zastaví činnost dlouhého stisknutí. Pokud používáte jeden z těchto pedálů, zapněte režim dlouhého stisknutí AirTurn a nastavte posuvník na počet opakovaných signálů potřebných pro simulovanou akci dlouhého stisknutí. Většina klávesnic má zpoždění 500ms a opakovací rychlost asi 25ms. To znamená, že podržením tlačítka po dobu 1 sekundy se zaznamená 20 stisknutí tlačítka. Pedály AirTurn vám umožňují upravit rychlost opakování a dobu zpoždění pomocí jejich doprovodné aplikace. Vyšší čísla pro počet opakování tlačítek znamenají, že se pedál drží déle, aby se zaregistroval jako dlouhý stisk.</string>
     <string name="rotate_display">Otočení displeje</string>
     <string name="action_button_info">Kliknutím zobrazíte nebo skryjete tlačítka stránky.\n\nKaždému lze přiřadit akce písní, jako jsou metronomy, transpozice, pady atd.\nDlouhým stisknutím hlavního tlačítka můžete změnit nastavení jednotlivých tlačítek.\nDlouhým stisknutím některá tlačítka stránky provádějí rychlé akce, jako je spuštění / zastavení / úpravy</string>
     <string name="about">Asi</string>
@@ -564,4 +564,18 @@
     <string name="connections_actasclient">Působit jako klient</string>
     <string name="respect_copyright">Respektujte autorská práva - vždy používejte legálně</string>
     <string name="nearby_large_file">Tento velký soubor písní je sdílen</string>
+    <string name="action_long_press">Dodatečná akce dlouhého stisknutí</string>
+    <string name="action_short_press">Krátké stisknutí/kliknutí</string>
+    <string name="actionbar_autohide">Automaticky skrýt panel akcí</string>
+    <string name="actionbar_display">Panel akcí</string>
+    <string name="actionbar_info">Verander die voorkoms van die inligting in die aksiebalk</string>
+    <string name="actions_current_song">Akce pro aktuální skladbu</string>
+    <string name="add_songs">Přidejte písně</string>
+    <string name="appearance_change">Upravuje vzhled</string>
+    <string name="audio_source">Zdroj zvuku</string>
+    <string name="autoscale_info">Aplikace udělá text co největší, aby se vešel na obrazovku</string>
+    <string name="autoscroll_autostart">Při změně skladeb mějte aktivovaný automatický posun</string>
+    <string name="autoscroll_info">Upravte nastavení automatického posouvání</string>
+    <string name="autoscroll_link_audio">Použít dobu trvání odkazového zvukového souboru</string>
+    <string name="autorepeat_time">Čas automatického opakování (nastavení pedálu)</string>
 </resources>

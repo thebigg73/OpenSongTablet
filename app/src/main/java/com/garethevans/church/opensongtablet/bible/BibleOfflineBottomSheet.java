@@ -133,7 +133,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
             // Add to the set
             mainActivityInterface.getCustomSlide().buildCustomSlide(requireContext(),mainActivityInterface,scripture);
             mainActivityInterface.getCustomSlide().addItemToSet(requireContext(),mainActivityInterface,false);
-            mainActivityInterface.getShowToast().doIt(getString(R.string.scripture)+" "+getString(R.string.addedtoset));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.scripture)+" "+getString(R.string.added_to_set));
             if (!mainActivityInterface.getMode().equals("Presenter")) {
                 mainActivityInterface.navHome();
             }

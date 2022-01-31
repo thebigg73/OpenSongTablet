@@ -2951,7 +2951,7 @@ Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageA
             try {
                 if (!cancelled) {
                     // Tell the user that the song has been added.
-                    showToastMessage("\"" + FullscreenActivity.customslide_title + "\" " + getResources().getString(R.string.addedtoset));
+                    showToastMessage("\"" + FullscreenActivity.customslide_title + "\" " + getResources().getString(R.string.added_to_set));
 
                     // Vibrate to let the user know something happened
                     DoVibrate.vibrate(PresenterMode.this, 50);

@@ -2,18 +2,18 @@
 <resources>
     <string name="action">"Aksie"</string>
     <string name="action_search">"Soek songs"</string>
-    <string name="action_settings">"OpenSong instellings"</string>
+    <string name="settings">"OpenSong instellings"</string>
     <string name="actionbar">"Menubalk info"</string>
     <string name="actions">Aksies</string>
     <string name="activated">"Aktiveer / hardloop"</string>
     <string name="add_reusable">"Slaan as 'n herbruikbare slide"</string>
     <string name="add_song_to_set">Elkeen kan toegewys word aan liedjies soos metronomieë, transponeer, boekies, ens.</string>
-    <string name="addedtoset">"is by die einde van jou huidige stel."</string>
+    <string name="added_to_set">"is by die einde van jou huidige stel."</string>
     <string name="alert">As u die hoofknoppie lank indruk, kan u die instellings van elke knoppie verander.</string>
     <string name="alert_text">As u sommige bladsyknoppies lank indruk, voer u vinnige aksies uit soos begin / stop / wysig</string>
     <string name="alphabetical">Alfabetiese liedjie indeks</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Is jy seker?"</string>
+    <string name="are_you_sure">"Is jy seker?"</string>
     <string name="ask">"Vra elke keer"</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Toggle motor skaal lied op / af"</string>
@@ -493,9 +493,9 @@
     <string name="block_text_shadow">Blokkeer teksskadu</string>
     <string name="continuous">Deurlopende</string>
     <string name="metronome_duration">Metronoomduur (mate)</string>
-    <string name="airTurnLongPress">AirTurn lang persmodus</string>
-    <string name="autoRepeatCount">Aantal toonsherhalings wat benodig word om die lang druk na te boots</string>
-    <string name="autoRepeatRationale">Sommige pedale (soos AirTurn) stuur outomatiese herhalingstoetsseine wat keer dat die lang persaksies werk. As u een van hierdie pedale gebruik, skakel dan die AirTurn-langpersmodus aan en pas die skuifknop aan by die aantal herhaalde seine wat nodig is vir \'n gesimuleerde langpersaksie. Die meeste sleutelborde het \'n vertraging van 500 m en \'n herhalingstempo van ongeveer 25 m. Dit beteken dat die hou van \'n sleutel vir 1 sekonde 20 sleuteldrukke opneem. Met AirTurn-pedale kan u die herhalingskoers en die vertragingstyd aanpas met behulp van hul metgesel-app. Hoër getalle vir die toetsherhalingstelling beteken dat u die pedaal langer moet hou om as \'n lang pers te registreer.</string>
+    <string name="air_turn_long_press">AirTurn lang persmodus</string>
+    <string name="autorepeat_count">Aantal toonsherhalings wat benodig word om die lang druk na te boots</string>
+    <string name="autorepeat_rationale">Sommige pedale (soos AirTurn) stuur outomatiese herhalingstoetsseine wat keer dat die lang persaksies werk. As u een van hierdie pedale gebruik, skakel dan die AirTurn-langpersmodus aan en pas die skuifknop aan by die aantal herhaalde seine wat nodig is vir \'n gesimuleerde langpersaksie. Die meeste sleutelborde het \'n vertraging van 500 m en \'n herhalingstempo van ongeveer 25 m. Dit beteken dat die hou van \'n sleutel vir 1 sekonde 20 sleuteldrukke opneem. Met AirTurn-pedale kan u die herhalingskoers en die vertragingstyd aanpas met behulp van hul metgesel-app. Hoër getalle vir die toetsherhalingstelling beteken dat u die pedaal langer moet hou om as \'n lang pers te registreer.</string>
     <string name="rotate_display">Draai skerm</string>
     <string name="about">Oor</string>
     <string name="about_description">Inligting oor inligting, hulp, gebruikersgids, ens.</string>
@@ -563,4 +563,18 @@
     <string name="connections_actasclient">Tree op as kliënt</string>
     <string name="respect_copyright">Respekteer kopiereg - gebruik dit altyd wettig</string>
     <string name="nearby_large_file">" Hierdie groot liedlêer word gedeel"</string>
+    <string name="action_long_press">Bykomende langdrukaksie</string>
+    <string name="action_short_press">Kort druk/klik aksie</string>
+    <string name="actionbar_autohide">Versteek aksiebalk outomaties</string>
+    <string name="actionbar_display">Aksiebalk</string>
+    <string name="actionbar_info">Verander die voorkoms van die inligting in die aksiebalk</string>
+    <string name="actions_current_song">Aksies vir huidige liedjie</string>
+    <string name="add_songs">Voeg liedjies by</string>
+    <string name="appearance_change">Pas voorkoms aan</string>
+    <string name="audio_source">Oudio bron</string>
+    <string name="autoscale_info">Die toepassing sal die teks so groot as moontlik maak om by die skerm te pas</string>
+    <string name="autoscroll_autostart">Hou outoscroll geaktiveer wanneer jy van liedjies verander</string>
+    <string name="autoscroll_info">Pas die outoscroll-instellings aan</string>
+    <string name="autoscroll_link_audio">Gebruik duur van skakel oudiolêer</string>
+    <string name="autorepeat_time">Outo-herhalingstyd (pedaalinstelling)</string>
 </resources>

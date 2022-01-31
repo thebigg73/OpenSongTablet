@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"Acción"</string>
     <string name="action_search">"Buscar canciones"</string>
-    <string name="action_settings">"Ajustes OpenSong"</string>
+    <string name="settings">"Ajustes OpenSong"</string>
     <string name="actionbar">"Información barra de menú"</string>
     <string name="actions">Acciones</string>
     <string name="activated">"Activado / funcionando"</string>
     <string name="add_custom_slide">"Añadir diapositiva / nota"</string>
     <string name="add_reusable">"Guardar como una diapositiva reutilizable"</string>
     <string name="add_song_to_set">"Añadir canción actual para establecer"</string>
-    <string name="addedtoset">"se ha añadido al final de su conjunto actual."</string>
+    <string name="added_to_set">"se ha añadido al final de su conjunto actual."</string>
     <string name="alert">Alerta</string>
     <string name="alert_text">Introduzca el texto del mensaje</string>
     <string name="alphabetical">Índice alfabético de canciones</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"¿Estás seguro?"</string>
+    <string name="are_you_sure">"¿Estás seguro?"</string>
     <string name="ask">"Pida a cada tiempo"</string>
     <string name="autoscale">"Auto escala"</string>
     <string name="autoscale_toggle">"Canción auto escala activado / desactivado"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">Bloquear sombra de texto</string>
     <string name="continuous">Continuo</string>
     <string name="metronome_duration">Duración del metrónomo (barras)</string>
-    <string name="airTurnLongPress">Modo de pulsación larga AirTurn</string>
-    <string name="autoRepeatCount">Número de repeticiones de teclas necesarias para emular una pulsación larga</string>
-    <string name="autoRepeatRationale">Algunos pedales (como AirTurn) envían señales de tecla de repetición automática que detiene el funcionamiento de las acciones de pulsación larga. Si está utilizando uno de estos pedales, active el modo de pulsación larga AirTurn y ajuste el control deslizante a la cantidad de señales repetidas necesarias para una acción de presión prolongada simulada. La mayoría de los teclados tienen un retraso de 500 ms y una frecuencia de repetición de aproximadamente 25 ms. Esto significa que mantener presionada una tecla durante 1 segundo registrará 20 pulsaciones de teclas. Los pedales AirTurn le permiten ajustar la frecuencia de repetición y el tiempo de retraso utilizando su aplicación complementaria. Los números más altos para el recuento de repetición de teclas significan mantener presionado el pedal durante más tiempo para registrarse como una pulsación larga.</string>
+    <string name="air_turn_long_press">Modo de pulsación larga AirTurn</string>
+    <string name="autorepeat_count">Número de repeticiones de teclas necesarias para emular una pulsación larga</string>
+    <string name="autorepeat_rationale">Algunos pedales (como AirTurn) envían señales de tecla de repetición automática que detiene el funcionamiento de las acciones de pulsación larga. Si está utilizando uno de estos pedales, active el modo de pulsación larga AirTurn y ajuste el control deslizante a la cantidad de señales repetidas necesarias para una acción de presión prolongada simulada. La mayoría de los teclados tienen un retraso de 500 ms y una frecuencia de repetición de aproximadamente 25 ms. Esto significa que mantener presionada una tecla durante 1 segundo registrará 20 pulsaciones de teclas. Los pedales AirTurn le permiten ajustar la frecuencia de repetición y el tiempo de retraso utilizando su aplicación complementaria. Los números más altos para el recuento de repetición de teclas significan mantener presionado el pedal durante más tiempo para registrarse como una pulsación larga.</string>
     <string name="rotate_display">Girar pantalla</string>
     <string name="about">Acerca de</string>
     <string name="about_description">Información de la aplicación, ayuda, guía del usuario, etc.</string>
@@ -566,4 +566,18 @@
     <string name="connections_actasclient">Actuar como cliente</string>
     <string name="respect_copyright">Respete los derechos de autor: utilice siempre legalmente</string>
     <string name="nearby_large_file">Este archivo de canción grande se está compartiendo</string>
+    <string name="action_long_press">Acción de pulsación prolongada adicional</string>
+    <string name="action_short_press">Acción breve de pulsación/clic</string>
+    <string name="actionbar_autohide">Ocultar automáticamente la barra de acciones</string>
+    <string name="actionbar_display">Barra de acciones</string>
+    <string name="actionbar_info">Cambiar la apariencia de la información en la barra de acciones</string>
+    <string name="actions_current_song">Acciones para la canción actual</string>
+    <string name="add_songs">Agregar canciones</string>
+    <string name="appearance_change">Ajusta la apariencia</string>
+    <string name="audio_source">Fuente de audio</string>
+    <string name="autoscale_info">La aplicación hará que el texto sea lo más grande posible para que quepa en la pantalla.</string>
+    <string name="autoscroll_autostart">Mantenga el desplazamiento automático activado al cambiar de canción</string>
+    <string name="autoscroll_info">Ajustar la configuración de desplazamiento automático</string>
+    <string name="autoscroll_link_audio">Usar la duración del archivo de audio del enlace</string>
+    <string name="autorepeat_time">Tiempo de repetición automática (ajuste del pedal)</string>
 </resources>

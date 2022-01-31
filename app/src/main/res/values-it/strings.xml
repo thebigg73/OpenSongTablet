@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"Azione"</string>
     <string name="action_search">"Cerca canzoni"</string>
-    <string name="action_settings">"Impostazioni OpenSong"</string>
+    <string name="settings">"Impostazioni OpenSong"</string>
     <string name="actionbar">"Informazioni Barra dei menu"</string>
     <string name="actions">Azioni</string>
     <string name="activated">"Attivato / in esecuzione"</string>
     <string name="add_custom_slide">"Aggiungi diapositiva / note"</string>
     <string name="add_reusable">"Salvare come una diapositiva riutilizzabile"</string>
     <string name="add_song_to_set">"Aggiungi brano corrente per impostare"</string>
-    <string name="addedtoset">"è stato aggiunto alla fine del set corrente."</string>
+    <string name="added_to_set">"è stato aggiunto alla fine del set corrente."</string>
     <string name="alert">Avviso</string>
     <string name="alert_text">Inserisci il testo del messaggio</string>
     <string name="alphabetical">Indice alfabetico delle canzoni</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Sei sicuro?"</string>
+    <string name="are_you_sure">"Sei sicuro?"</string>
     <string name="ask">"Chiedi ogni volta"</string>
     <string name="autoscale">"autoscale"</string>
     <string name="autoscale_toggle">"Toggle canzone scala automatica accendere / spegnere"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">Blocca l\'ombra del testo</string>
     <string name="continuous">Continuo</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)…</string>
-    <string name="airTurnLongPress">AirTurn modalità di pressione lunga</string>
-    <string name="autoRepeatCount">Numero di ripetizioni dei tasti richieste per emulare la pressione prolungata</string>
-    <string name="autoRepeatRationale">Alcuni pedali (come AirTurn) inviano segnali del tasto di ripetizione automatica che interrompe il funzionamento delle azioni di pressione prolungata. Se si utilizza uno di questi pedali, attivare la modalità di pressione prolungata AirTurn e regolare il dispositivo di scorrimento in base al numero di segnali ripetuti necessari per un\'azione di pressione prolungata simulata. La maggior parte delle tastiere ha un ritardo di 500 ms e una frequenza di ripetizione di circa 25 ms. Ciò significa che tenere premuto un tasto per 1 secondo registrerà 20 pressioni di tasti. I pedali AirTurn ti consentono di regolare la frequenza di ripetizione e il tempo di ritardo usando la loro app di accompagnamento. Numeri più alti per il conteggio delle ripetizioni dei tasti significano tenere premuto il pedale più a lungo per registrarsi come una pressione lunga.</string>
+    <string name="air_turn_long_press">AirTurn modalità di pressione lunga</string>
+    <string name="autorepeat_count">Numero di ripetizioni dei tasti richieste per emulare la pressione prolungata</string>
+    <string name="autorepeat_rationale">Alcuni pedali (come AirTurn) inviano segnali del tasto di ripetizione automatica che interrompe il funzionamento delle azioni di pressione prolungata. Se si utilizza uno di questi pedali, attivare la modalità di pressione prolungata AirTurn e regolare il dispositivo di scorrimento in base al numero di segnali ripetuti necessari per un\'azione di pressione prolungata simulata. La maggior parte delle tastiere ha un ritardo di 500 ms e una frequenza di ripetizione di circa 25 ms. Ciò significa che tenere premuto un tasto per 1 secondo registrerà 20 pressioni di tasti. I pedali AirTurn ti consentono di regolare la frequenza di ripetizione e il tempo di ritardo usando la loro app di accompagnamento. Numeri più alti per il conteggio delle ripetizioni dei tasti significano tenere premuto il pedale più a lungo per registrarsi come una pressione lunga.</string>
     <string name="rotate_display">Ruota display</string>
     <string name="about">Di</string>
     <string name="about_description">Informazioni sull\'app, aiuto, guida per l\'utente, ecc.</string>
@@ -546,4 +546,18 @@
     <string name="connections_actasclient">Agisci come cliente</string>
     <string name="respect_copyright">Rispetta il copyright: usa sempre legalmente</string>
     <string name="nearby_large_file">Questo file di grandi dimensioni è stato condiviso</string>
+    <string name="action_long_press">Azione di pressione prolungata aggiuntiva</string>
+    <string name="action_short_press">Azione di pressione breve/clic</string>
+    <string name="actionbar_autohide">Nascondi automaticamente la barra delle azioni</string>
+    <string name="actionbar_display">Barra dell\'azione</string>
+    <string name="actionbar_info">Modifica l\'aspetto delle informazioni nella barra delle azioni</string>
+    <string name="actions_current_song">Azioni per il brano corrente</string>
+    <string name="add_songs">Aggiungi canzoni</string>
+    <string name="appearance_change">Regola l\'aspetto</string>
+    <string name="audio_source">Sorgente Audio</string>
+    <string name="autoscale_info">L\'app renderà il testo il più grande possibile per adattarsi allo schermo</string>
+    <string name="autoscroll_autostart">Mantieni lo scorrimento automatico attivato quando cambi i brani</string>
+    <string name="autoscroll_info">Regola le impostazioni di scorrimento automatico</string>
+    <string name="autoscroll_link_audio">Usa la durata del file audio del collegamento</string>
+    <string name="autorepeat_time">Tempo di ripetizione automatica (impostazione del pedale)</string>
 </resources>

@@ -2,18 +2,18 @@
 <resources>
     <string name="action">"行动"</string>
     <string name="action_search">"搜索歌曲"</string>
-    <string name="action_settings">"OpenSong设置"</string>
+    <string name="settings">"OpenSong设置"</string>
     <string name="actionbar">"Traka izbornika info"</string>
     <string name="actions">行动</string>
     <string name="activated">"激活/运行"</string>
     <string name="add_reusable">"保存为可重复使用的幻灯片"</string>
     <string name="add_song_to_set">可以为每个歌曲分配节拍，移调，打击垫等歌曲操作。</string>
-    <string name="addedtoset">"已被添加到您的当前集的末尾。"</string>
+    <string name="added_to_set">"已被添加到您的当前集的末尾。"</string>
     <string name="alert">长按主按钮可让您更改每个按钮的设置。</string>
     <string name="alert_text">长按某些页面按钮可执行快速操作，例如开始/停止/编辑</string>
     <string name="alphabetical">按字母排序的歌曲索引</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"是否确定?"</string>
+    <string name="are_you_sure">"是否确定?"</string>
     <string name="ask">"要求每个时间"</string>
     <string name="autoscale">"自动定标"</string>
     <string name="autoscale_toggle">"切换自动缩放"</string>
@@ -493,9 +493,9 @@
     <string name="block_text_shadow">阻止文字阴影</string>
     <string name="continuous">连续</string>
     <string name="metronome_duration">节拍器持续时间（巴）</string>
-    <string name="airTurnLongPress">AirTurn长按模式</string>
-    <string name="autoRepeatCount">模拟长按所需的按键重复次数</string>
-    <string name="autoRepeatRationale">某些踏板（例如AirTurn）会发送自动重复键信号，从而使长按动作停止工作。 如果使用这些踏板之一，请打开AirTurn长按模式，并将滑块调整为模拟长按动作所需的重复信号数。 大多数键盘的延迟时间为500毫秒，重复率约为25毫秒。 这意味着按住一个键1秒钟将记录20次按键。 AirTurn踏板允许您使用其配套应用程序调整重复频率和延迟时间。 按键重复计数的数字越大，表示踩下踏板的时间越长，以表示长按。</string>
+    <string name="air_turn_long_press">AirTurn长按模式</string>
+    <string name="autorepeat_count">模拟长按所需的按键重复次数</string>
+    <string name="autorepeat_rationale">某些踏板（例如AirTurn）会发送自动重复键信号，从而使长按动作停止工作。 如果使用这些踏板之一，请打开AirTurn长按模式，并将滑块调整为模拟长按动作所需的重复信号数。 大多数键盘的延迟时间为500毫秒，重复率约为25毫秒。 这意味着按住一个键1秒钟将记录20次按键。 AirTurn踏板允许您使用其配套应用程序调整重复频率和延迟时间。 按键重复计数的数字越大，表示踩下踏板的时间越长，以表示长按。</string>
     <string name="rotate_display">旋转显示</string>
     <string name="action_button_info">单击以显示或隐藏页面按钮。\n\n可以将每个按钮分配给节拍，移调，打击垫等歌曲操作。\n长按主按钮可更改每个按钮的设置。\n长按 一些页面按钮执行快速操作，例如开始/停止/编辑</string>
     <string name="about">关于</string>
@@ -564,4 +564,18 @@
     <string name="connections_actasclient">担任客户</string>
     <string name="respect_copyright">尊重版权-始终合法使用</string>
     <string name="nearby_large_file">"正在共享此大歌曲文件"</string>
+    <string name="action_long_press">额外的长按动作</string>
+    <string name="action_short_press">短按/点击动作</string>
+    <string name="actionbar_autohide">自动隐藏操作栏</string>
+    <string name="actionbar_display">操作栏</string>
+    <string name="actionbar_info">更改操作栏中信息的外观</string>
+    <string name="actions_current_song">当前歌曲的操作</string>
+    <string name="add_songs">添加歌曲</string>
+    <string name="appearance_change">调整外观</string>
+    <string name="audio_source">音源</string>
+    <string name="autoscale_info">该应用程序将使文本尽可能大以适合屏幕</string>
+    <string name="autoscroll_autostart">更改歌曲时保持自动滚动激活</string>
+    <string name="autoscroll_info">调整自动滚动设置</string>
+    <string name="autoscroll_link_audio">链接音频文件的使用时长</string>
+    <string name="autorepeat_time">自动重复时间（踏板设置）</string>
 </resources>

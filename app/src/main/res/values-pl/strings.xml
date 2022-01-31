@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"Akcja"</string>
     <string name="action_search">"Szukaj piosenki"</string>
-    <string name="action_settings">"Ustawienia OpenSong"</string>
+    <string name="settings">"Ustawienia OpenSong"</string>
     <string name="actionbar">"Informacje Pasek menu"</string>
     <string name="actions">Akcje</string>
     <string name="activated">"Aktywowany / uruchomiony"</string>
     <string name="add_custom_slide">"Dodaj slajdów / notatka"</string>
     <string name="add_reusable">"Zapisz jako wielokrotnego użytku slajdu"</string>
     <string name="add_song_to_set">"Dodać bieżący utwór, aby ustawić"</string>
-    <string name="addedtoset">"został dodany do końca bieżącego zestawu."</string>
+    <string name="added_to_set">"został dodany do końca bieżącego zestawu."</string>
     <string name="alert">Komunikat</string>
     <string name="alert_text">Wprowadź tekst wiadomości</string>
     <string name="alphabetical">Alfabetyczny indeks utworu</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">" Jesteś pewien?"</string>
+    <string name="are_you_sure">" Jesteś pewien?"</string>
     <string name="ask">"Zapytaj każdym razem"</string>
     <string name="autoscale">"Autoscale"</string>
     <string name="autoscale_toggle">"Przełącz piosenka skala auto włącz / wyłącz"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">Zablokuj cień tekstu</string>
     <string name="continuous">Ciągły</string>
     <string name="metronome_duration">Czas trwania metronomu (słupki)</string>
-    <string name="airTurnLongPress">Tryb długiego naciśnięcia AirTurn</string>
-    <string name="autoRepeatCount">Liczba powtórzeń klawiszy wymaganych do emulacji długiego naciśnięcia</string>
-    <string name="autoRepeatRationale">Niektóre pedały (takie jak AirTurn) wysyłają sygnały klawiszy automatycznego powtarzania, które zatrzymują działanie długich naciśnięć. Jeśli używasz jednego z tych pedałów, włącz tryb długiego naciśnięcia AirTurn i dostosuj suwak do liczby powtarzanych sygnałów potrzebnych do symulacji długiego naciśnięcia. Większość klawiatur ma opóźnienie 500 ms i częstotliwość powtarzania około 25 ms. Oznacza to, że przytrzymanie klawisza przez 1 sekundę spowoduje zarejestrowanie 20 naciśnięć klawiszy. Pedały AirTurn umożliwiają dostosowanie częstotliwości powtarzania i czasu opóźnienia za pomocą aplikacji towarzyszącej. Wyższe liczby dla liczby powtórzeń klawiszy oznaczają dłuższe przytrzymanie pedału, aby zarejestrować się jako długie naciśnięcie.</string>
+    <string name="air_turn_long_press">Tryb długiego naciśnięcia AirTurn</string>
+    <string name="autorepeat_count">Liczba powtórzeń klawiszy wymaganych do emulacji długiego naciśnięcia</string>
+    <string name="autorepeat_rationale">Niektóre pedały (takie jak AirTurn) wysyłają sygnały klawiszy automatycznego powtarzania, które zatrzymują działanie długich naciśnięć. Jeśli używasz jednego z tych pedałów, włącz tryb długiego naciśnięcia AirTurn i dostosuj suwak do liczby powtarzanych sygnałów potrzebnych do symulacji długiego naciśnięcia. Większość klawiatur ma opóźnienie 500 ms i częstotliwość powtarzania około 25 ms. Oznacza to, że przytrzymanie klawisza przez 1 sekundę spowoduje zarejestrowanie 20 naciśnięć klawiszy. Pedały AirTurn umożliwiają dostosowanie częstotliwości powtarzania i czasu opóźnienia za pomocą aplikacji towarzyszącej. Wyższe liczby dla liczby powtórzeń klawiszy oznaczają dłuższe przytrzymanie pedału, aby zarejestrować się jako długie naciśnięcie.</string>
     <string name="rotate_display">Obróć wyświetlacz</string>
     <string name="about">O</string>
     <string name="capo_chords">Akordy capo</string>
@@ -547,4 +547,18 @@
     <string name="connections_actasclient">Działaj jako klient</string>
     <string name="respect_copyright">Szanuj prawa autorskie - zawsze korzystaj z nich legalnie</string>
     <string name="nearby_large_file">Udostępniam ten duży plik utworu</string>
+    <string name="action_long_press">Dodatkowe długie naciśnięcie przycisku</string>
+    <string name="action_short_press">Krótkie naciśnięcie/kliknięcie;</string>
+    <string name="actionbar_autohide">Automatycznie ukryj pasek akcji</string>
+    <string name="actionbar_display">Pasek działań</string>
+    <string name="actionbar_info">Zmień wygląd informacji na pasku działań</string>
+    <string name="actions_current_song">Działania dla bieżącego utworu</string>
+    <string name="add_songs">Dodaj utwory</string>
+    <string name="appearance_change">Dostosowuje wygląd</string>
+    <string name="audio_source">Źródło dźwięku</string>
+    <string name="autoscale_info">Aplikacja sprawi, że tekst będzie tak duży, jak to możliwe, aby zmieścił się na ekranie</string>
+    <string name="autoscroll_autostart">Pozostaw aktywne automatyczne przewijanie podczas zmiany utworów</string>
+    <string name="autoscroll_info">Dostosuj ustawienia automatycznego przewijania</string>
+    <string name="autoscroll_link_audio">Użyj czasu trwania linku do pliku audio</string>
+    <string name="autorepeat_time">Czas automatycznego powtarzania (ustawienie pedału)</string>
 </resources>

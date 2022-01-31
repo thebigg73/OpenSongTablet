@@ -113,7 +113,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
 
             // Tell the user that the song has been added.
             StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" " +
-                    c.getResources().getString(R.string.addedtoset);
+                    c.getResources().getString(R.string.added_to_set);
             _ShowToast.showToast(c);
         }
     }

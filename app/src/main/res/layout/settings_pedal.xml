@@ -57,7 +57,7 @@
                 android:id="@+id/airTurnMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/airTurnLongPress" />
+                android:text="@string/air_turn_long_press" />
 
             <LinearLayout
                 android:id="@+id/airTurnOptions"
@@ -69,14 +69,14 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/autoRepeatRationale" />
+                    android:text="@string/autorepeat_rationale" />
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                     android:id="@+id/autoRepeatCount_Slider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/autoRepeatCount"
+                    android:text="@string/autorepeat_count"
                     android:valueFrom="2"
                     android:valueTo="200" />
 

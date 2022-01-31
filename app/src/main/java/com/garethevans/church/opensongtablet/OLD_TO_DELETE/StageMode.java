@@ -4634,7 +4634,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 if (!cancelled) {
                     // Tell the user that the song has been added.
-                    showToastMessage("\"" + FullscreenActivity.customslide_title + "\" " + getResources().getString(R.string.addedtoset));
+                    showToastMessage("\"" + FullscreenActivity.customslide_title + "\" " + getResources().getString(R.string.added_to_set));
 
                     // Vibrate to let the user know something happened
                     DoVibrate.vibrate(StageMode.this, 50);
@@ -5853,7 +5853,7 @@ public class StageMode extends AppCompatActivity implements
         // IV - isSong and Stage mode limitations moved elsewhere
         // If we confirm a move then we will ignore the move
         if (StaticVariables.pedalPreviousAndNextNeedsConfirm) {
-            StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.areyousure);
+            StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.are_you_sure);
             ShowToast.showToast(StageMode.this);
             StaticVariables.pedalPreviousAndNextNeedsConfirm = false;
             pedalPreviousAndNextNeedsConfirmHandler.postDelayed(pedalPreviousAndNextNeedsConfirmRunnable, 10000);
@@ -6370,7 +6370,7 @@ public class StageMode extends AppCompatActivity implements
         preferences.setMyPreferenceString(StageMode.this,"setCurrent",val);
         // Tell the user that the song has been added.
         showToastMessage("\"" + StaticVariables.songfilename + "\" "
-                + getResources().getString(R.string.addedtoset));
+                + getResources().getString(R.string.added_to_set));
         // Vibrate to let the user know something happened
         DoVibrate.vibrate(StageMode.this, 50);
 

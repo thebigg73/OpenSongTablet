@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"Açao"</string>
     <string name="action_search">"Pesquisar músicas"</string>
-    <string name="action_settings">"Configurações OpenSong"</string>
+    <string name="settings">"Configurações OpenSong"</string>
     <string name="actionbar">"Informações barra de menu"</string>
     <string name="actions">Ações</string>
     <string name="activated">"Ativado / executado"</string>
     <string name="add_custom_slide">"Adicionar diapositivo / nota"</string>
     <string name="add_reusable">"Salvar como um slide reutilizável"</string>
     <string name="add_song_to_set">"Adicionar música atual para definir"</string>
-    <string name="addedtoset">"foi adicionado ao final do seu conjunto atual."</string>
+    <string name="added_to_set">"foi adicionado ao final do seu conjunto atual."</string>
     <string name="alert">Alerta</string>
     <string name="alert_text">Digite o texto da mensagem</string>
     <string name="alphabetical">Índice de canção alfabética</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Tem certeza ? "</string>
+    <string name="are_you_sure">"Tem certeza ? "</string>
     <string name="ask">"Peça a cada vez"</string>
     <string name="autoscale">"Escala automática"</string>
     <string name="autoscale_toggle">"Canção escala auto Alternar ligar / desligar"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">Bloquear sombra do texto</string>
     <string name="continuous">Contínuo</string>
     <string name="metronome_duration">Duração do metrônomo (barras)</string>
-    <string name="airTurnLongPress">Modo de pressão longa do AirTurn</string>
-    <string name="autoRepeatCount">Número de repetições de teclas necessárias para emular a pressão longa</string>
-    <string name="autoRepeatRationale">Alguns pedais (como o AirTurn) enviam sinais automáticos de teclas de repetição, o que interrompe o funcionamento prolongado da pressão. Se você estiver usando um desses pedais, ative o modo de pressão longa do AirTurn e ajuste o controle deslizante para o número de sinais repetidos necessários para uma ação simulada de pressão longa. A maioria dos teclados possui um atraso de 500 ms e uma taxa de repetição de cerca de 25 ms. Isso significa que pressionar uma tecla por 1 segundo registrará 20 pressionamentos de tecla. Os pedais AirTurn permitem ajustar a taxa de repetição e o tempo de atraso usando o aplicativo complementar. Números mais altos para a contagem de repetição de tecla significam manter o pedal pressionado por mais tempo para registrar como um toque longo.</string>
+    <string name="air_turn_long_press">Modo de pressão longa do AirTurn</string>
+    <string name="autorepeat_count">Número de repetições de teclas necessárias para emular a pressão longa</string>
+    <string name="autorepeat_rationale">Alguns pedais (como o AirTurn) enviam sinais automáticos de teclas de repetição, o que interrompe o funcionamento prolongado da pressão. Se você estiver usando um desses pedais, ative o modo de pressão longa do AirTurn e ajuste o controle deslizante para o número de sinais repetidos necessários para uma ação simulada de pressão longa. A maioria dos teclados possui um atraso de 500 ms e uma taxa de repetição de cerca de 25 ms. Isso significa que pressionar uma tecla por 1 segundo registrará 20 pressionamentos de tecla. Os pedais AirTurn permitem ajustar a taxa de repetição e o tempo de atraso usando o aplicativo complementar. Números mais altos para a contagem de repetição de tecla significam manter o pedal pressionado por mais tempo para registrar como um toque longo.</string>
     <string name="rotate_display">Girar exibição</string>
     <string name="about">Cerca de</string>
     <string name="capo_chords">Acordes capo</string>
@@ -546,4 +546,18 @@
     <string name="connections_actasclient">Atuar como cliente</string>
     <string name="respect_copyright">Respeite os direitos autorais - use sempre legalmente</string>
     <string name="nearby_large_file">Este grande arquivo de música está sendo compartilhado</string>
+    <string name="action_long_press">Ação adicional de pressão longa</string>
+    <string name="action_short_press">Ação de toque/clique curto</string>
+    <string name="actionbar_autohide">Ocultar barra de ação automaticamente</string>
+    <string name="actionbar_display">Barra de ação</string>
+    <string name="actionbar_info">Alterar a aparência das informações na barra de ação</string>
+    <string name="actions_current_song">Ações para a música atual</string>
+    <string name="add_songs">Adicionar músicas</string>
+    <string name="appearance_change">Ajusta a aparência</string>
+    <string name="audio_source">Fonte de áudio</string>
+    <string name="autoscale_info">O aplicativo tornará o texto o maior possível para caber na tela</string>
+    <string name="autoscroll_autostart">Mantenha a rolagem automática ativada ao alterar as músicas</string>
+    <string name="autoscroll_info">Ajuste as configurações de rolagem automática</string>
+    <string name="autoscroll_link_audio">Use a duração do arquivo de áudio do link</string>
+    <string name="autorepeat_time">Tempo de repetição automática (ajuste do pedal)</string>
 </resources>

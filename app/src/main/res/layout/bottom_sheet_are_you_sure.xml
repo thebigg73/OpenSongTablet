@@ -9,7 +9,7 @@
         android:id="@+id/dialogHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/areyousure" />
+        android:text="@string/are_you_sure" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

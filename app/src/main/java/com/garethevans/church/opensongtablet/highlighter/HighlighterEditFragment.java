@@ -368,7 +368,7 @@ public class HighlighterEditFragment extends Fragment {
         AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("deleteHighlighter",
                 getString(R.string.delete) + " " + getString(R.string.highlight) + " (" + orientation + ")", null,
                 "highlighterEditFragment", this, mainActivityInterface.getSong());
-        areYouSureBottomSheet.show(requireActivity().getSupportFragmentManager(), "areyousure");
+        areYouSureBottomSheet.show(requireActivity().getSupportFragmentManager(), "are_you_sure");
     }
 
     public void doDelete(boolean confirmed) {

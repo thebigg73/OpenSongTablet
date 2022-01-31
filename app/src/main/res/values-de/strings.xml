@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"Aktion"</string>
     <string name="action_search">"Songs suchen"</string>
-    <string name="action_settings">"OpenSong Einstellungen"</string>
+    <string name="settings">"OpenSong Einstellungen"</string>
     <string name="actionbar">"Menüleiste Info"</string>
     <string name="actions">Aktionen</string>
     <string name="activated">"Aktiviert / ausgeführt"</string>
     <string name="add_custom_slide">"Folie / Notiz"</string>
     <string name="add_reusable">"Als wiederverwendbare Folie speichern"</string>
     <string name="add_song_to_set">"Song zum aktuellen Set zufügen"</string>
-    <string name="addedtoset">"wurde an das aktuelle Set angefügt."</string>
+    <string name="added_to_set">"wurde an das aktuelle Set angefügt."</string>
     <string name="alert">Meldung</string>
     <string name="alert_text">Text eingeben</string>
     <string name="alphabetical">Alphabetische Song Index</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Sind Sie sicher?"</string>
+    <string name="are_you_sure">"Sind Sie sicher?"</string>
     <string name="ask">"Jedes Mal nachfragen"</string>
     <string name="autoscale">"Autoskalierung"</string>
     <string name="autoscale_toggle">"Autoskalierung für Songs ein / aus"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">Blockieren Sie Textschatten</string>
     <string name="continuous">Kontinuierlich</string>
     <string name="metronome_duration">Metronomdauer (Takte)</string>
-    <string name="airTurnLongPress">AirTurn-Modus für langes Drücken</string>
-    <string name="autoRepeatCount">Anzahl der Tastenwiederholungen, die zum Emulieren eines langen Drucks erforderlich sind</string>
-    <string name="autoRepeatRationale">Einige Pedale (z. B. AirTurn) senden automatische Wiederholungssignale, wodurch die langen Druckaktionen gestoppt werden. Wenn Sie eines dieser Pedale verwenden, schalten Sie den AirTurn-Langdruckmodus ein und stellen Sie den Schieberegler auf die Anzahl der wiederholten Signale ein, die für eine simulierte Langdruckaktion erforderlich sind. Die meisten Tastaturen haben eine Verzögerung von 500 ms und eine Wiederholrate von etwa 25 ms. Dies bedeutet, dass durch Halten einer Taste für 1 Sekunde 20 Tastendrücke aufgezeichnet werden. Mit AirTurn-Pedalen können Sie die Wiederholungsrate und die Verzögerungszeit mithilfe der Begleit-App anpassen. Höhere Zahlen für die Anzahl der Tastenwiederholungen bedeuten, dass Sie das Pedal länger gedrückt halten, um sich als langes Drücken zu registrieren.</string>
+    <string name="air_turn_long_press">AirTurn-Modus für langes Drücken</string>
+    <string name="autorepeat_count">Anzahl der Tastenwiederholungen, die zum Emulieren eines langen Drucks erforderlich sind</string>
+    <string name="autorepeat_rationale">Einige Pedale (z. B. AirTurn) senden automatische Wiederholungssignale, wodurch die langen Druckaktionen gestoppt werden. Wenn Sie eines dieser Pedale verwenden, schalten Sie den AirTurn-Langdruckmodus ein und stellen Sie den Schieberegler auf die Anzahl der wiederholten Signale ein, die für eine simulierte Langdruckaktion erforderlich sind. Die meisten Tastaturen haben eine Verzögerung von 500 ms und eine Wiederholrate von etwa 25 ms. Dies bedeutet, dass durch Halten einer Taste für 1 Sekunde 20 Tastendrücke aufgezeichnet werden. Mit AirTurn-Pedalen können Sie die Wiederholungsrate und die Verzögerungszeit mithilfe der Begleit-App anpassen. Höhere Zahlen für die Anzahl der Tastenwiederholungen bedeuten, dass Sie das Pedal länger gedrückt halten, um sich als langes Drücken zu registrieren.</string>
     <string name="rotate_display">Anzeige drehen</string>
     <string name="about">Über</string>
     <string name="capo_chords">Capo-Akkorde</string>
@@ -546,4 +546,18 @@
     <string name="connections_actasclient">Als Kunde auftreten</string>
     <string name="respect_copyright">Respektieren Sie das Urheberrecht - verwenden Sie es immer legal</string>
     <string name="nearby_large_file">Diese große Songdatei wird geteilt</string>
+    <string name="action_long_press">Zusätzliche lange Druckaktion</string>
+    <string name="actionbar_autohide">Aktionsleiste automatisch ausblenden</string>
+    <string name="action_short_press">Aktion kurz drücken/klicken</string>
+    <string name="actionbar_display">Aktionsleiste</string>
+    <string name="actionbar_info">Ändern Sie das Erscheinungsbild der Informationen in der Aktionsleiste</string>
+    <string name="actions_current_song">Aktionen für den aktuellen Song</string>
+    <string name="add_songs">Lieder hinzufügen</string>
+    <string name="appearance_change">Passt das Aussehen an</string>
+    <string name="audio_source">Audio quelle</string>
+    <string name="autoscale_info">Die App wird den Text so groß wie möglich machen, damit er auf den Bildschirm passt</string>
+    <string name="autoscroll_autostart">Lassen Sie Autoscroll aktiviert, wenn Sie Songs wechseln</string>
+    <string name="autoscroll_info">Passen Sie die Autoscroll-Einstellungen an</string>
+    <string name="autoscroll_link_audio">Verwenden Sie die Dauer der verknüpften Audiodatei</string>
+    <string name="autorepeat_time">Automatische Wiederholzeit (Pedaleinstellung)</string>
 </resources>

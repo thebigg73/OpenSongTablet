@@ -2,18 +2,18 @@
 <resources>
     <string name="action">Chacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.</string>
     <string name="action_search">"Recherche chansons"</string>
-    <string name="action_settings">"Paramètres OpenSong"</string>
+    <string name="settings">"Paramètres OpenSong"</string>
     <string name="actionbar">"Info menu bar"</string>
     <string name="actions">Un appui long sur le bouton principal vous permet de modifier les paramètres de chaque bouton.</string>
     <string name="activated">"Activé / en cours d'exécution"</string>
     <string name="add_reusable">"Enregistrer comme une diapositive réutilisables"</string>
     <string name="add_song_to_set">Chacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.</string>
-    <string name="addedtoset">"a été ajoutée à la fin de votre liste actuelle."</string>
+    <string name="added_to_set">"a été ajoutée à la fin de votre liste actuelle."</string>
     <string name="alert">Un appui long sur le bouton principal vous permet de modifier les paramètres de chaque bouton.</string>
     <string name="alert_text">Un appui long sur certains boutons de page effectue des actions rapides telles que démarrer / arrêter / modifier</string>
     <string name="alphabetical">Index de chanson alphabétique</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Êtes-vous sûr?"</string>
+    <string name="are_you_sure">"Êtes-vous sûr?"</string>
     <string name="ask">"Demandez à chaque fois"</string>
     <string name="autoscale">"Échelle automatique"</string>
     <string name="autoscale_toggle">"Activer / desactiver la mise en page automatique"</string>
@@ -493,9 +493,9 @@
     <string name="block_text_shadow">Bloquer l\'ombre du texte</string>
     <string name="continuous">Continu</string>
     <string name="metronome_duration">Durée du métronome (barres)</string>
-    <string name="airTurnLongPress">Mode appui long AirTurn</string>
-    <string name="autoRepeatCount">Nombre de répétitions de touches nécessaires pour émuler un appui long</string>
-    <string name="autoRepeatRationale">Certaines pédales (comme AirTurn) envoient des signaux de touche de répétition automatique, ce qui empêche les actions de pression longue de fonctionner. Si vous utilisez l\'une de ces pédales, activez le mode AirTurn appui long et réglez le curseur sur le nombre de signaux répétés nécessaires pour une action de pression longue simulée. La plupart des claviers ont un retard de 500 ms et un taux de répétition d\'environ 25 ms. Cela signifie qu\'en maintenant une touche enfoncée pendant 1 seconde, 20 pressions de touches seront enregistrées. Les pédales AirTurn vous permettent d\'ajuster le taux de répétition et le temps de retard à l\'aide de leur application compagnon. Des nombres plus élevés pour le nombre de répétitions de touches signifient que vous maintenez la pédale plus longtemps pour vous enregistrer en tant que pression longue.</string>
+    <string name="air_turn_long_press">Mode appui long AirTurn</string>
+    <string name="autorepeat_count">Nombre de répétitions de touches nécessaires pour émuler un appui long</string>
+    <string name="autorepeat_rationale">Certaines pédales (comme AirTurn) envoient des signaux de touche de répétition automatique, ce qui empêche les actions de pression longue de fonctionner. Si vous utilisez l\'une de ces pédales, activez le mode AirTurn appui long et réglez le curseur sur le nombre de signaux répétés nécessaires pour une action de pression longue simulée. La plupart des claviers ont un retard de 500 ms et un taux de répétition d\'environ 25 ms. Cela signifie qu\'en maintenant une touche enfoncée pendant 1 seconde, 20 pressions de touches seront enregistrées. Les pédales AirTurn vous permettent d\'ajuster le taux de répétition et le temps de retard à l\'aide de leur application compagnon. Des nombres plus élevés pour le nombre de répétitions de touches signifient que vous maintenez la pédale plus longtemps pour vous enregistrer en tant que pression longue.</string>
     <string name="rotate_display">Faire pivoter l\'affichage</string>
     <string name="action_button_info">Cliquez pour afficher ou masquer les boutons de votre page.\n\nChacun peut être affecté à des actions de morceau telles que les métronomes, la transposition, les pads, etc.\nUn appui long sur le bouton principal vous permet de modifier les paramètres de chaque bouton.\nUn appui long sur certains boutons de page effectue des actions rapides telles que démarrer / arrêter / modifier</string>
     <string name="about">À propos</string>
@@ -546,4 +546,18 @@
     <string name="connections_actasclient">Agir en tant que client</string>
     <string name="respect_copyright">Respectez les droits d\'auteur - utilisez toujours légalement</string>
     <string name="nearby_large_file">Ce gros fichier de chanson est en cours de partage</string>
+    <string name="action_long_press">Action de pression longue supplémentaire</string>
+    <string name="action_short_press">Action d\'appui/clic court</string>
+    <string name="actionbar_autohide">Masquer automatiquement la barre d\'action</string>
+    <string name="actionbar_display">Barre d\'action</string>
+    <string name="actionbar_info">Modifier l\'apparence des informations dans la barre d\'action</string>
+    <string name="actions_current_song">Actions pour la chanson en cours</string>
+    <string name="add_songs">Ajouter des chansons</string>
+    <string name="appearance_change">Ajuste l\'apparence</string>
+    <string name="audio_source">Source audio</string>
+    <string name="autoscale_info">L\'application rendra le texte aussi grand que possible pour s\'adapter à l\'écran</string>
+    <string name="autoscroll_autostart">Gardez le défilement automatique activé lorsque vous changez de chanson</string>
+    <string name="autoscroll_info">Ajuster les paramètres de défilement automatique</string>
+    <string name="autoscroll_link_audio">Utiliser la durée du fichier audio du lien</string>
+    <string name="autorepeat_time">Temps de répétition automatique (réglage de la pédale)</string>
 </resources>

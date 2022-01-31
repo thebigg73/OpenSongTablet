@@ -36,7 +36,7 @@ class MenuHandlers {
                 }
                 break;
 
-            case R.id.action_settings:
+            case R.id.settings:
                 // Open/close the option drawer
                 if (mListener !=null) {
                     mListener.openMyDrawers("option_toggle");
@@ -64,7 +64,7 @@ class MenuHandlers {
                     preferences.setMyPreferenceString(c,"setCurrent",newval);
                     // Tell the user that the song has been added.
                     StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" "
-                            + c.getResources().getString(R.string.addedtoset);
+                            + c.getResources().getString(R.string.added_to_set);
                     _ShowToast.showToast(c);
                     // Vibrate to indicate something has happened
                     DoVibrate.vibrate(c,50);

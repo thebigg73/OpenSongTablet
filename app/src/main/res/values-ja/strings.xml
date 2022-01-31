@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"アクション"</string>
     <string name="action_search">"検索の歌"</string>
-    <string name="action_settings">"OpenSong設定"</string>
+    <string name="settings">"OpenSong設定"</string>
     <string name="actionbar">"メニューバー情報"</string>
     <string name="actions">アクション</string>
     <string name="activated">"有効化/実行中"</string>
     <string name="add_custom_slide">"スライド/メモを追加"</string>
     <string name="add_reusable">"再利用可能なスライドとして保存"</string>
     <string name="add_song_to_set">"設定するには現在の曲を追加"</string>
-    <string name="addedtoset">"あなたの現在のセットの最後に追加されました。"</string>
+    <string name="added_to_set">"あなたの現在のセットの最後に追加されました。"</string>
     <string name="alert">アラート</string>
     <string name="alert_text">メッセージテキストを入力してください</string>
     <string name="alphabetical">アルファベット順の曲インデックス</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"確かですか？"</string>
+    <string name="are_you_sure">"確かですか？"</string>
     <string name="ask">"毎回確認して下さい"</string>
     <string name="autoscale">"オートスケール"</string>
     <string name="autoscale_toggle">"トグルオートスケール"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">テキストの影をブロックする</string>
     <string name="continuous">連続的</string>
     <string name="metronome_duration">メトロノームの長さ（バー）</string>
-    <string name="airTurnLongPress">AirTurn長押しモード</string>
-    <string name="autoRepeatCount">長押しをエミュレートするために必要なキーリピートの数</string>
-    <string name="autoRepeatRationale">一部のペダル（AirTurnなど）は、長押し操作の動作を停止する自動リピートキー信号を送信します。 これらのペダルのいずれかを使用している場合は、AirTurnの長押しモードをオンにして、シミュレートされた長押しアクションに必要な繰り返し信号の数にスライダーを調整します。 ほとんどのキーボードの遅延は500ミリ秒で、リピートレートは約25ミリ秒です。 つまり、キーを1秒間押し続けると、20回のキー押下が記録されます。 AirTurnペダルを使用すると、コンパニオンアプリを使用してリピートレートと遅延時間を調整できます。 キーリピートカウントの数値が大きいほど、長押しとして登録するためにペダルをより長く保持することを意味します。</string>
+    <string name="air_turn_long_press">AirTurn長押しモード</string>
+    <string name="autorepeat_count">長押しをエミュレートするために必要なキーリピートの数</string>
+    <string name="autorepeat_rationale">一部のペダル（AirTurnなど）は、長押し操作の動作を停止する自動リピートキー信号を送信します。 これらのペダルのいずれかを使用している場合は、AirTurnの長押しモードをオンにして、シミュレートされた長押しアクションに必要な繰り返し信号の数にスライダーを調整します。 ほとんどのキーボードの遅延は500ミリ秒で、リピートレートは約25ミリ秒です。 つまり、キーを1秒間押し続けると、20回のキー押下が記録されます。 AirTurnペダルを使用すると、コンパニオンアプリを使用してリピートレートと遅延時間を調整できます。 キーリピートカウントの数値が大きいほど、長押しとして登録するためにペダルをより長く保持することを意味します。</string>
     <string name="rotate_display">回転表示</string>
     <string name="about">約</string>
     <string name="about_description">アプリ情報、ヘルプ、ユーザーガイドなど。</string>
@@ -547,4 +547,18 @@
     <string name="connections_actasclient">クライアントとして行動する</string>
     <string name="respect_copyright">著作権を尊重する-常に合法的に使用する</string>
     <string name="nearby_large_file">この大きな曲ファイルは共有されています</string>
+    <string name="action_long_press">追加の長押しアクション</string>
+    <string name="action_short_press">短押し/クリックアクション</string>
+    <string name="actionbar_autohide">アクションバーを自動的に非表示</string>
+    <string name="actionbar_display">アクションバー</string>
+    <string name="actionbar_info">アクションバーの情報の外観を変更する</string>
+    <string name="actions_current_song">現在の曲のアクション</string>
+    <string name="add_songs">曲を追加する</string>
+    <string name="appearance_change">外観を調整します</string>
+    <string name="audio_source">オーディオソース</string>
+    <string name="autoscale_info">アプリは、画面に合わせてテキストを可能な限り大きくします</string>
+    <string name="autoscroll_autostart">曲を変更するときは、自動スクロールを有効にしてください</string>
+    <string name="autoscroll_info">自動スクロール設定を調整します</string>
+    <string name="autoscroll_link_audio">リンクオーディオファイルの期間を使用する</string>
+    <string name="autorepeat_time">自動リピート時間（ペダル設定）</string>
 </resources>

@@ -2,19 +2,19 @@
 <resources>
     <string name="action">Дія</string>
     <string name="action_search">Пошук пісень</string>
-    <string name="action_settings">Налаштування OpenSong</string>
+    <string name="settings">Налаштування OpenSong</string>
     <string name="actionbar">Інформація на панелі меню</string>
     <string name="actions">Дії</string>
     <string name="activated">Активовано</string>
     <string name="add_custom_slide">Додати слайд користувача (з вмістом)</string>
     <string name="add_reusable">Зберегти слайд для повторного використання</string>
     <string name="add_song_to_set">Додати пісню в список</string>
-    <string name="addedtoset">додана в кінець поточного списку.</string>
+    <string name="added_to_set">додана в кінець поточного списку.</string>
     <string name="alert">Попередження</string>
     <string name="alert_text">Введіть текст повідомлення</string>
     <string name="alphabetical">Алфавітний порядок пісень</string>
     <string name="app_name">OpenSongApp</string>
-    <string name="areyousure">Ви впевнені?</string>
+    <string name="are_you_sure">Ви впевнені?</string>
     <string name="ask">Уточнювати кожен раз</string>
     <string name="autoscale">Автомасштабування</string>
     <string name="autoscale_toggle">Автомасштаб Вкл./Викл.</string>
@@ -459,9 +459,9 @@
     <string name="block_text_shadow">Блок текстової тіні</string>
     <string name="continuous">безперервний</string>
     <string name="metronome_duration">Тривалість метронома (бари)</string>
-    <string name="airTurnLongPress">Режим тривалого натискання AirTurn</string>
-    <string name="autoRepeatCount">Кількість повторень клавіш, необхідних для емуляції тривалого натискання</string>
-    <string name="autoRepeatRationale">Деякі педалі (наприклад, AirTurn) посилають сигнали клавіш автоповтора, що зупиняє роботу тривалих натискань. Якщо ви використовуєте одну з цих педалей, включіть режим тривалого натискання AirTurn і відрегулюйте повзунок відповідно до кількості повторюваних сигналів, необхідних для імітації тривалого натиснутоі я. Більшість клавіатур мають затримку 500 мс і частоту повторення близько 25 мс. Це означає, що натискання клавіші протягом 1 секунди запише 20 натискань клавіш. Педалі AirTurn дозволяють регулювати частоту повторення і час затримки за допомогою програми-компаньйона. Більш високі числа для лічильника повторень клавіш означають, що педаль утримується довше, щоб реєструватися як тривале натискання.</string>
+    <string name="air_turn_long_press">Режим тривалого натискання AirTurn</string>
+    <string name="autorepeat_count">Кількість повторень клавіш, необхідних для емуляції тривалого натискання</string>
+    <string name="autorepeat_rationale">Деякі педалі (наприклад, AirTurn) посилають сигнали клавіш автоповтора, що зупиняє роботу тривалих натискань. Якщо ви використовуєте одну з цих педалей, включіть режим тривалого натискання AirTurn і відрегулюйте повзунок відповідно до кількості повторюваних сигналів, необхідних для імітації тривалого натиснутоі я. Більшість клавіатур мають затримку 500 мс і частоту повторення близько 25 мс. Це означає, що натискання клавіші протягом 1 секунди запише 20 натискань клавіш. Педалі AirTurn дозволяють регулювати частоту повторення і час затримки за допомогою програми-компаньйона. Більш високі числа для лічильника повторень клавіш означають, що педаль утримується довше, щоб реєструватися як тривале натискання.</string>
     <string name="rotate_display">Повернути дисплей</string>
     <string name="warn_before_changing_song">Показувати попередження перед переходом до наступної пісні (корисно, щоб уникнути випадкових натискань)</string>
     <string name="bold_chords_headings">Акорди та заголовки відображаються жирним шрифтом</string>
@@ -577,4 +577,17 @@
     <string name="open_song_menu">Відкрити меню пісні</string>
     <string name="set_reset">Скиньте поточний набір, створивши новий</string>
     <string name="midi_devices">Доступні пристрої</string>
+    <string name="action_long_press">Додаткова дія довгого натискання</string>
+    <string name="action_short_press">Коротка дія натискання/клацання</string>
+    <string name="actionbar_autohide">Автоматично приховати панель дій</string>
+    <string name="actionbar_display">Панель дій</string>
+    <string name="actionbar_info">Змініть вигляд інформації на панелі дій</string>
+    <string name="actions_current_song">Дії для поточної пісні</string>
+    <string name="add_songs">Додайте пісні</string>
+    <string name="appearance_change">Коригує зовнішній вигляд</string>
+    <string name="audio_source">Джерело звуку</string>
+    <string name="autoscale_info">Додаток зробить текст максимально великим, щоб він поміщався на екрані</string>
+    <string name="autoscroll_autostart">Залишайте активованим автопрокрутку під час зміни пісень</string>
+    <string name="autoscroll_info">Налаштуйте параметри автопрокрутки</string>
+    <string name="autoscroll_link_audio">Використовуйте тривалість аудіофайлу посилання</string>
 </resources>

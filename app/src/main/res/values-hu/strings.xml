@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"Akció"</string>
     <string name="action_search">"Keresés dalok"</string>
-    <string name="action_settings">"OpenSong beállítások"</string>
+    <string name="settings">"OpenSong beállítások"</string>
     <string name="actionbar">"Menüsor info"</string>
     <string name="actions">Hozzászólások</string>
     <string name="activated">"Aktiválva / futva"</string>
     <string name="add_custom_slide">"Add slide / megjegyzés"</string>
     <string name="add_reusable">"Mentés másként újrafelhasználható dia"</string>
     <string name="add_song_to_set">"Add jelenlegi dal beállítani"</string>
-    <string name="addedtoset">"került, hogy a végén a jelenlegi készlet."</string>
+    <string name="added_to_set">"került, hogy a végén a jelenlegi készlet."</string>
     <string name="alert">üzenet</string>
     <string name="alert_text">Írja be az üzenet szövegét</string>
     <string name="alphabetical">Betűrendes dalok indexe</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Biztos benne?"</string>
+    <string name="are_you_sure">"Biztos benne?"</string>
     <string name="ask">"Kérdezze minden alkalommal"</string>
     <string name="autoscale">"autoscale"</string>
     <string name="autoscale_toggle">"Toggle Auto Scale dal be / ki"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">Blokkolja a szöveg árnyékát</string>
     <string name="continuous">Folyamatos</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)</string>
-    <string name="airTurnLongPress">AirTurn hosszú megnyomású üzemmód</string>
-    <string name="autoRepeatCount">A hosszú megnyomás emulálásához szükséges gombismétlések száma</string>
-    <string name="autoRepeatRationale">Néhány pedál (például az AirTurn) automatikus ismételt gombjeleket küld, amely megállítja a hosszú nyomás mûködését. Ha ezen pedálok egyikét használja, kapcsolja be az AirTurn hosszú sajtó üzemmódot, és állítsa be a csúszkát a szimulált hosszú sajtoláshoz szükséges ismétlődő jelek számához. A legtöbb billentyűzet 500 ms késleltetéssel és kb. 25 ms ismétlési sebességgel rendelkezik. Ez azt jelenti, hogy egy gomb egy másodpercig tartsa lenyomva a 20 gombnyomást. Az AirTurn pedálok lehetővé teszik az ismétlési sebesség és a késleltetési idő beállítását társaik alkalmazásával. A gombok ismétlési számának magasabb száma azt jelenti, hogy hosszabb ideig tartja a pedált, hogy hosszú nyomásig regisztráljon.</string>
+    <string name="air_turn_long_press">AirTurn hosszú megnyomású üzemmód</string>
+    <string name="autorepeat_count">A hosszú megnyomás emulálásához szükséges gombismétlések száma</string>
+    <string name="autorepeat_rationale">Néhány pedál (például az AirTurn) automatikus ismételt gombjeleket küld, amely megállítja a hosszú nyomás mûködését. Ha ezen pedálok egyikét használja, kapcsolja be az AirTurn hosszú sajtó üzemmódot, és állítsa be a csúszkát a szimulált hosszú sajtoláshoz szükséges ismétlődő jelek számához. A legtöbb billentyűzet 500 ms késleltetéssel és kb. 25 ms ismétlési sebességgel rendelkezik. Ez azt jelenti, hogy egy gomb egy másodpercig tartsa lenyomva a 20 gombnyomást. Az AirTurn pedálok lehetővé teszik az ismétlési sebesség és a késleltetési idő beállítását társaik alkalmazásával. A gombok ismétlési számának magasabb száma azt jelenti, hogy hosszabb ideig tartja a pedált, hogy hosszú nyomásig regisztráljon.</string>
     <string name="rotate_display">A kijelző forgatása</string>
     <string name="about">Ról ről</string>
     <string name="about_description">Alkalmazás információk, súgó, felhasználói útmutató stb.</string>
@@ -546,4 +546,18 @@
     <string name="connections_actasclient">Ügyfélként jár el</string>
     <string name="respect_copyright">Tisztelet a szerzői jogoknak - mindig legálisan használja</string>
     <string name="nearby_large_file">Ezt a nagy dalfájlt megosztják</string>
+    <string name="action_long_press">Kiegészítő hosszú megnyomásos művelet</string>
+    <string name="action_short_press">Rövid nyomás/kattintás művelet</string>
+    <string name="actionbar_autohide">Műveletsáv automatikus elrejtése</string>
+    <string name="actionbar_display">Actionbar</string>
+    <string name="actionbar_info">Módosítsa az információ megjelenését a műveletsoron</string>
+    <string name="actions_current_song">Műveletek az aktuális dalhoz</string>
+    <string name="add_songs">Dalok hozzáadása</string>
+    <string name="appearance_change">Beállítja a megjelenést</string>
+    <string name="audio_source">Hangforrás</string>
+    <string name="autoscale_info">Az alkalmazás a szöveget a lehető legnagyobbra teszi, hogy elférjen a képernyőn</string>
+    <string name="autoscroll_autostart">Tartsa az automatikus görgetést bekapcsolva, amikor dalokat vált</string>
+    <string name="autoscroll_info">Módosítsa az automatikus görgetés beállításait</string>
+    <string name="autoscroll_link_audio">A hivatkozás hangfájljának időtartama</string>
+    <string name="autorepeat_time">Automatikus ismétlési idő (pedálbeállítás)</string>
 </resources>

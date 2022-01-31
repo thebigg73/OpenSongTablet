@@ -2,19 +2,19 @@
 <resources>
     <string name="action">"Δράση"</string>
     <string name="action_search">"Αναζήτηση τραγουδιών"</string>
-    <string name="action_settings">"Ρυθμίσεις OpenSong"</string>
+    <string name="settings">"Ρυθμίσεις OpenSong"</string>
     <string name="actionbar">"Πληροφορίες Γραμμή μενού"</string>
     <string name="actions">"Ενέργειες"</string>
     <string name="activated">"Ενεργοποίηση / λειτουργία"</string>
     <string name="add_custom_slide">"Add custom slide to set"</string>
     <string name="add_reusable">"Save as a reusable slide"</string>
     <string name="add_song_to_set">"Πρόσθεσε το τρέχων τραγουδι σε λιστα"</string>
-    <string name="addedtoset">"προστέθηκε στο τέλος της σειράς."</string>
+    <string name="added_to_set">"προστέθηκε στο τέλος της σειράς."</string>
     <string name="alert">"Προειδοποίηση"</string>
     <string name="alert_text">"Εισαγωγή κείμενο μηνύματος"</string>
     <string name="alphabetical">Αλφαβητικό ευρετήριο τραγουδιών</string>
     <string name="app_name">"OpenSongApp"</string>
-    <string name="areyousure">"Είσαι σίγουρος;"</string>
+    <string name="are_you_sure">"Είσαι σίγουρος;"</string>
     <string name="ask">"Ερώτηση κάθε φορά"</string>
     <string name="autoscale">"Αυτόματη κλίμακα"</string>
     <string name="autoscale_toggle">"Αυτόματη προσαρμογή κειμένου"</string>
@@ -494,9 +494,9 @@
     <string name="block_text_shadow">Αποκλεισμός σκιάς κειμένου</string>
     <string name="continuous">Συνεχής</string>
     <string name="metronome_duration">Διάρκεια μετρονόμου (bars)</string>
-    <string name="airTurnLongPress">Λειτουργία μακρινής πτήσης AirTurn</string>
-    <string name="autoRepeatCount">Αριθμός επαναλήψεων κλειδιών που απαιτούνται για την προσομοίωση του μακρού τύπου</string>
-    <string name="autoRepeatRationale">Ορισμένα πεντάλ (όπως το AirTurn) στέλνουν σήματα κλειδιού αυτόματης επανάληψης, τα οποία σταματούν τις εκτεταμένες ενέργειες πατώντας. Αν χρησιμοποιείτε ένα από αυτά τα πεντάλ, ενεργοποιήστε τη λειτουργία μακράς πτήσης AirTurn και ρυθμίστε το ρυθμιστικό με τον αριθμό των επαναλαμβανόμενων σημάτων που χρειάζονται για μια προσομοιωμένη ενέργεια μακράς πίεσης. Τα περισσότερα πληκτρολόγια έχουν καθυστέρηση 500ms και ρυθμό επανάληψης περίπου 25ms. Αυτό σημαίνει ότι το πάτημα ενός πλήκτρου για 1 δευτερόλεπτο θα καταγράφει 20 πλήκτρα. Τα πεντάλ AirTurn σάς επιτρέπουν να ρυθμίζετε το ρυθμό επανάληψης και τον χρόνο καθυστέρησης χρησιμοποιώντας την εφαρμογή σύντροφος τους. Υψηλότεροι αριθμοί για τον κύριο αριθμό επανάληψης σημαίνουν ότι κρατάτε το πεντάλ για μεγαλύτερο χρονικό διάστημα για να εγγραφείτε ως μακρύς πάπας.</string>
+    <string name="air_turn_long_press">Λειτουργία μακρινής πτήσης AirTurn</string>
+    <string name="autorepeat_count">Αριθμός επαναλήψεων κλειδιών που απαιτούνται για την προσομοίωση του μακρού τύπου</string>
+    <string name="autorepeat_rationale">Ορισμένα πεντάλ (όπως το AirTurn) στέλνουν σήματα κλειδιού αυτόματης επανάληψης, τα οποία σταματούν τις εκτεταμένες ενέργειες πατώντας. Αν χρησιμοποιείτε ένα από αυτά τα πεντάλ, ενεργοποιήστε τη λειτουργία μακράς πτήσης AirTurn και ρυθμίστε το ρυθμιστικό με τον αριθμό των επαναλαμβανόμενων σημάτων που χρειάζονται για μια προσομοιωμένη ενέργεια μακράς πίεσης. Τα περισσότερα πληκτρολόγια έχουν καθυστέρηση 500ms και ρυθμό επανάληψης περίπου 25ms. Αυτό σημαίνει ότι το πάτημα ενός πλήκτρου για 1 δευτερόλεπτο θα καταγράφει 20 πλήκτρα. Τα πεντάλ AirTurn σάς επιτρέπουν να ρυθμίζετε το ρυθμό επανάληψης και τον χρόνο καθυστέρησης χρησιμοποιώντας την εφαρμογή σύντροφος τους. Υψηλότεροι αριθμοί για τον κύριο αριθμό επανάληψης σημαίνουν ότι κρατάτε το πεντάλ για μεγαλύτερο χρονικό διάστημα για να εγγραφείτε ως μακρύς πάπας.</string>
     <string name="rotate_display">Περιστρέψτε την οθόνη</string>
     <string name="about">Σχετικά με</string>
     <string name="capo_chords">Χορδές Capo</string>
@@ -546,4 +546,18 @@
     <string name="connections_actasclient">Ενεργήστε ως πελάτης</string>
     <string name="respect_copyright">Σεβασμός των πνευματικών δικαιωμάτων - να χρησιμοποιείτε πάντα νόμιμα</string>
     <string name="nearby_large_file">Αυτό το μεγάλο αρχείο τραγουδιού κοινοποιείται</string>
+    <string name="action_long_press">Πρόσθετη δράση παρατεταμένου πάτημας</string>
+    <string name="actionbar_autohide">Αυτόματη απόκρυψη της γραμμής ενεργειών</string>
+    <string name="action_short_press">Ενέργεια σύντομης πίεσης/κλικ</string>
+    <string name="actionbar_display">Γραμμή δράσης</string>
+    <string name="actionbar_info">Αλλάξτε την εμφάνιση των πληροφοριών στη γραμμή ενεργειών</string>
+    <string name="actions_current_song">Ενέργειες για το τρέχον τραγούδι</string>
+    <string name="add_songs">Προσθήκη τραγουδιών</string>
+    <string name="appearance_change">Ρυθμίζει την εμφάνιση</string>
+    <string name="audio_source">Πηγή ήχου</string>
+    <string name="autoscale_info">Η εφαρμογή θα κάνει το κείμενο όσο το δυνατόν μεγαλύτερο ώστε να ταιριάζει στην οθόνη</string>
+    <string name="autoscroll_autostart">Διατηρήστε την αυτόματη κύλιση ενεργοποιημένη όταν αλλάζετε τραγούδια</string>
+    <string name="autoscroll_info">Προσαρμόστε τις ρυθμίσεις αυτόματης κύλισης</string>
+    <string name="autoscroll_link_audio">Χρησιμοποιήστε τη διάρκεια του αρχείου ήχου συνδέσμου</string>
+    <string name="autorepeat_time">Χρόνος αυτόματης επανάληψης (ρύθμιση πεντάλ)</string>
 </resources>
