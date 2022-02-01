@@ -346,71 +346,27 @@ class SetActions {
     }
 
     boolean isSongInSet(Context c, Preferences preferences) {
-        if (StaticVariables.setSize > 0) {
-            // Get the name of the song to look for (including folders if need be)
-            String songforsetwork;
-            String songforsetworkalt;
-            songforsetwork = getSongForSetWork(c);
-
-            songforsetwork = fixIsInSetSearch(songforsetwork);
-            songforsetworkalt = checkMain(c,songforsetwork);
-
-            String currset = preferences.getMyPreferenceString(c,"setCurrent","");
-
-            boolean containsitem = currset.contains(songforsetwork) || currset.contains(songforsetworkalt);
-
-            if (StaticVariables.setView && containsitem) {
-                // If we are currently in set mode, check if the new song is there, in which case do nothing else
-                indexSongInSet();
-                return true;
-
-            } else if (StaticVariables.setView && !currset.contains(songforsetwork) && !currset.contains(songforsetworkalt)) {
-                // If we are currently in set mode, but the new song isn't there, leave set mode
-                StaticVariables.setView = false;
-                StaticVariables.previousSongInSet = "";
-                StaticVariables.nextSongInSet = "";
-                StaticVariables.indexSongInSet = 0;
-                return false;
-
-            } else if (!StaticVariables.setView && containsitem) {
-                // If we aren't currently in set mode and the new song is there, enter set mode and get the index
+        // IV - Check if set contains the set entry for the song StaticVariables.whatsongforsetwork (which is only set on song load)
+        if (StaticVariables.setSize > 0 &&
+                preferences.getMyPreferenceString(c, "setCurrent", "").contains(StaticVariables.whatsongforsetwork)) {
+            // If we aren't currently in set mode, reset index
+            if (!StaticVariables.setView) {
+                StaticVariables.indexSongInSet = -1;
                 StaticVariables.setView = true;
-                StaticVariables.previousSongInSet = "";
-                StaticVariables.nextSongInSet = "";
-
-                // Get the song index
-                indexSongInSet();
-                return true;
-
-            } else if (!currset.contains(songforsetwork) && !currset.contains(songforsetworkalt)) {
-                // The new song isn't in the set, so leave set mode and reset index
-                StaticVariables.setView = false;
-                StaticVariables.previousSongInSet = "";
-                StaticVariables.nextSongInSet = "";
-                StaticVariables.indexSongInSet = 0;
-                return false;
             }
-
+            // Index the item which also sets previous and next variables
+            indexSongInSet();
+            return true;
         } else {
-            // User wasn't in set view, or the set was empty
-            // Switch off the set view (buttons in action bar)
-            StaticVariables.setView = false;
+            // Exit set mode
             StaticVariables.previousSongInSet = "";
             StaticVariables.nextSongInSet = "";
-            StaticVariables.indexSongInSet = 0;
-            return false;
+            StaticVariables.indexSongInSet = -1;
+            StaticVariables.setView = false;
         }
         return false;
     }
 
-    private String checkMain(Context c, String songforsetwork) {
-        if (songforsetwork.contains("MAIN/") || songforsetwork.contains(c.getString(R.string.mainfoldername)+"/") ||
-                songforsetwork.contains("/")) {
-            return songforsetwork;
-        } else {
-            return songforsetwork.replace("$**_","$**_"+c.getString(R.string.mainfoldername) + "/");
-        }
-    }
     void emptyCacheDirectories(Context c, Preferences preferences, StorageAccess storageAccess) {
         storageAccess.wipeFolder(c, preferences, "Scripture", "_cache");
         storageAccess.wipeFolder(c, preferences, "Slides", "_cache");

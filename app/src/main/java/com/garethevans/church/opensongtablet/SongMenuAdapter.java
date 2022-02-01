@@ -246,17 +246,27 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                     // IV - Consume the click - Do nothing
                     });
 
-                   viewHolder.lblListCheck.setOnClickListener(v -> {
+                    viewHolder.lblListCheck.setOnClickListener(v -> {
                         int position1 = (Integer) v.getTag();
-                        // Create the text to add to the set (sets FullscreenActivity.whatsongforsetwork
-                        String whatsongforsetwork;
+                        // Create the text to add to the set
+                        String whatsongforsetwork = "";
 
                         // Set the appropriate song filename
-                        if (whichSongFolder.equals(c.getString(R.string.mainfoldername)) || whichSongFolder.equals("MAIN") ||
-                                whichSongFolder.equals("")) {
+                        if (whichSongFolder.equals("") || whichSongFolder.equals(c.getString(R.string.mainfoldername)) || whichSongFolder.equals("MAIN")) {
                             whatsongforsetwork = "$**_" + item_filename + "_**$";
+                        // Handle a custom folder (should not happen but just in case!)
+                        } else if (whichSongFolder.startsWith("../")) {
+                            if (whichSongFolder.startsWith("../Variations")) {
+                               whatsongforsetwork = "$**_**" + c.getString(R.string.variation) + "/" + item_filename + "_**$";
+                            } else if (whichSongFolder.startsWith("../Notes")) {
+                               whatsongforsetwork = "$**_**" + c.getString(R.string.note) + "/" + item_filename + "_**$";
+                            } else if (whichSongFolder.startsWith("../Slides")) {
+                               whatsongforsetwork = "$**_**" + c.getString(R.string.slide) + "/" + item_filename + "_**$";
+                            } else if (whichSongFolder.startsWith("../Images")) {
+                                whatsongforsetwork = "$**_**" + c.getString(R.string.image_slide) + "/" + item_filename + "_**$";
+                            }
                         } else {
-                            whatsongforsetwork = "$**_" + whichSongFolder + "/" + item_filename + "_**$";
+                           whatsongforsetwork = "$**_" + whichSongFolder + "/" + item_filename + "_**$";
                         }
 
                         // If it was checked already, uncheck it and remove it from the set

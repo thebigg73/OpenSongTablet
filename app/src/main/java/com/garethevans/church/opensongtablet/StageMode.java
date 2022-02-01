@@ -3483,16 +3483,14 @@ public class StageMode extends AppCompatActivity implements
                 // We weren't in set mode, so find the first instance of this song.
                 setActions.indexSongInSet();
             }
-            // If we aren't at the beginning or have pdf pages before this, indicate a setBackButton
-            StaticVariables.canGoToPrevious = (StaticVariables.indexSongInSet > 0) ||
-                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
+            // If we aren't at the beginning indicate a set back button
+            StaticVariables.canGoToPrevious = StaticVariables.indexSongInSet > 0;
 
-            // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
+            // If we aren't at the end of the set indicate a setForwardButton
             if (StaticVariables.mSetList==null) {
                 StaticVariables.mSetList = new String[0];
             }
-            StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
+            StaticVariables.canGoToNext = StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1;
         } else {
             StaticVariables.canGoToPrevious = (FullscreenActivity.currentSongIndex > FullscreenActivity.previousSongIndex); // i.e there is a song before in the list/menu
             StaticVariables.canGoToNext = (FullscreenActivity.currentSongIndex < FullscreenActivity.nextSongIndex); // i.e there is a song after in the list/menu
@@ -7149,7 +7147,8 @@ public class StageMode extends AppCompatActivity implements
                     stopAutoScroll();
                 }
 
-                // Check for set song
+                // Check for set song (isSongInSet will index)
+                StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(StageMode.this);
                 StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
 
                 // Sort the text size and colour of the info stuff
@@ -7266,10 +7265,6 @@ public class StageMode extends AppCompatActivity implements
                         resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
                     }
                 }
-
-                // If we are in a set, try to get the appropriate indexes
-                StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(StageMode.this);
-                setActions.indexSongInSet();
 
                 if (StaticVariables.mLyrics != null) {
                     FullscreenActivity.myLyrics = StaticVariables.mLyrics;
