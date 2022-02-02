@@ -276,7 +276,6 @@ public class PopUpSetViewNew extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
             PopUpSetViewNew.this.doSave();
-            refresh();
             close();
         });
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
@@ -504,6 +503,9 @@ public class PopUpSetViewNew extends DialogFragment {
             mListener.pageButtonAlpha("");
             mListener.windowFlags();
             mListener.pageButtonAlpha(null);
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                refresh();
+            }
         }
     }
 
