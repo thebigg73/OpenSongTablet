@@ -198,12 +198,6 @@ public class PopUpSetViewNew extends DialogFragment {
                 " - " + getString(R.string.ok);
     }
 
-    private void refresh() {
-        if (mListener != null) {
-            mListener.refreshAll();
-        }
-    }
-
     private void close() {
         try {
             dismiss();
@@ -464,6 +458,8 @@ public class PopUpSetViewNew extends DialogFragment {
 
         void refreshAll();
 
+        void onScrollAction();
+
         void closePopUps();
 
         void pageButtonAlpha(String s);
@@ -503,8 +499,12 @@ public class PopUpSetViewNew extends DialogFragment {
             mListener.pageButtonAlpha("");
             mListener.windowFlags();
             mListener.pageButtonAlpha(null);
+            // IV - For presentation mode refresh all
+            // IV - For performance modes only use onScrollAction to update the set buttons
             if (StaticVariables.whichMode.equals("Presentation")) {
-                refresh();
+                mListener.refreshAll();
+            } else {
+                mListener.onScrollAction();
             }
         }
     }

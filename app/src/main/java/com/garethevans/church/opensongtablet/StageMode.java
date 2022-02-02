@@ -1771,14 +1771,26 @@ public class StageMode extends AppCompatActivity implements
 
             // IV - Added handling for multi-page PDF
             // Use checkCanScroll results
-            // IV - Made invisible when so that they remain active areas on the screen
-            showFAB(scrollDownButton, checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)));
-            showFAB(scrollUpButton, checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0));
+            // IV - Made transparent so that they remain active areas on the screen
             if (!preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true)) {
-                scrollDownButton.setAlpha((0.0f));
-                scrollUpButton.setAlpha((0.0f));
+                scrollDownButton.setAlpha(0.0f);
+                scrollUpButton.setAlpha(0.0f);
+            } else {
+                // Get the default alpha value
+                float val = preferences.getMyPreferenceFloat(StageMode.this, "pageButtonAlpha", 0.5f);
+                scrollDownButton.setAlpha(val);
+                scrollUpButton.setAlpha(val);
             }
-
+            if (checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
+                scrollDownButton.setVisibility(View.VISIBLE);
+            } else {
+                scrollDownButton.setVisibility(View.GONE);
+            }
+            if (checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
+                scrollUpButton.setVisibility(View.VISIBLE);
+            } else {
+                scrollUpButton.setVisibility(View.GONE);
+            };
 
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true) && StaticVariables.setView ) {
                 // IV - Code removed - No longer support Set Move buttons making section moves in Stage mode here or in mext and previous item code
@@ -2589,8 +2601,6 @@ public class StageMode extends AppCompatActivity implements
             custom2Button_ungrouped.setAlpha(custom2Alpha);
             custom3Button_ungrouped.setAlpha(custom3Alpha);
             custom4Button_ungrouped.setAlpha(custom4Alpha);
-            scrollDownButton.setAlpha(val);
-            scrollUpButton.setAlpha(val);
             setBackButton.setAlpha(val);
             setForwardButton.setAlpha(val);
 
