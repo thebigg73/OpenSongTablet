@@ -102,7 +102,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
                     folder = "";
             }
             ArrayList<String> files_ar = mainActivityInterface.getStorageAccess().listFilesInFolder(getContext(), mainActivityInterface, "Songs", folder);
-            songContents.append(getString(R.string.songsinfolder)).append(" \"");
+            songContents.append(getString(R.string.songs_in_folder)).append(" \"");
             if (folder.equals("")) {
                 songContents.append(getString(R.string.mainfoldername));
             } else {

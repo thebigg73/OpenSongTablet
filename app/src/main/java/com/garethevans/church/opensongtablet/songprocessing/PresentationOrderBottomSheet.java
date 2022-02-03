@@ -111,7 +111,7 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
         if (mainActivityInterface.getTempSong().getPresentationorder().isEmpty()) {
             myView.currentSections.setVisibility(View.GONE);
             myView.deletePresOrder.setVisibility(View.GONE);
-            myView.currentSectionsTextView.setHint(getString(R.string.not_set));
+            myView.currentSectionsTextView.setHint(getString(R.string.is_not_set));
         } else {
             myView.currentSectionsTextView.setHint(getString(R.string.presentation_order_info));
             myView.currentSections.setVisibility(View.VISIBLE);

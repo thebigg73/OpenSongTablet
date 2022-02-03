@@ -78,7 +78,7 @@
                 android:id="@+id/songNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/stickynotes"
+                android:hint="@string/song_notes"
                 android:inputType="text|textMultiLine"
                 android:imeOptions="actionNone"
                 android:minLines="5"

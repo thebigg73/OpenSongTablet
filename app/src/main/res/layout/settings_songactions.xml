@@ -81,8 +81,8 @@
                 android:id="@+id/stickyNotes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/stickynotes"
-                android:hint="@string/stickynotes_edit" />
+                android:text="@string/song_notes"
+                android:hint="@string/song_notes_edit" />
 
             <TableRow style="@style/DividerLine" />
 

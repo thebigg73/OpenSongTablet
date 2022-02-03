@@ -22,7 +22,7 @@
         android:inputType="textMultiLine"
         android:minLines="6"
         android:lines="6"
-        android:hint="@string/stickynotes"/>
+        android:hint="@string/song_notes"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveButton"

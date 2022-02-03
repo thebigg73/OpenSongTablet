@@ -59,7 +59,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:hint="@string/edit_song_user1"
+                    android:hint="@string/user_1"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -79,14 +79,14 @@
                     android:layout_marginEnd="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/edit_song_user2"/>
+                    android:hint="@string/user_2"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/user3"
                     android:layout_width="0dp"
                     android:layout_weight="0.5"
                     android:layout_height="wrap_content"
-                    android:hint="@string/edit_song_user3"
+                    android:hint="@string/user_3"
                     android:layout_marginStart="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
@@ -106,7 +106,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="4dp"
-                    android:hint="@string/edit_song_hymn"/>
+                    android:hint="@string/hymn_number"/>
 
                 <com.garethevans.church.opensongtablet.customviews.MaterialEditText
                     android:id="@+id/presorder"

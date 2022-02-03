@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.stickynotes;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,7 +30,7 @@ public class StickyNotesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsStickynotesBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(getString(R.string.stickynotes));
+        mainActivityInterface.updateToolbar(getString(R.string.song_notes));
 
         // Set up the views
         setupViews();

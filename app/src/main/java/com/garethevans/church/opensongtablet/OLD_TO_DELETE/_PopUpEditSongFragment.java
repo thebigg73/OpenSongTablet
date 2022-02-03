@@ -62,7 +62,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     // The General views available
-    private EditText edit_song_title, edit_song_author, edit_song_copyright, edit_song_duration,
+    private EditText edit_song_title, edit_song_author, edit_song_copyright, song_duration,
             edit_song_presentation, edit_song_notes, edit_song_lyrics;
     private Spinner edit_song_key, edit_song_timesig, edit_song_capo, edit_song_capo_print;
     private SeekBar predelay_SeekBar, edit_song_tempo;
@@ -72,8 +72,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     private ActionMode mActionMode = null;
 
     // Advanced
-    private EditText edit_song_CCLI, edit_song_aka, edit_song_key_line, edit_song_hymn, edit_song_user1,
-            edit_song_user2, edit_song_user3, edit_song_midi, edit_song_midi_index,
+    private EditText edit_song_CCLI, edit_song_aka, edit_song_key_line, hymn_number, user_1,
+            user_2, user_3, edit_song_midi, edit_song_midi_index,
             edit_song_restrictions, edit_song_books, edit_song_pitch, customTheme;
     private Spinner edit_song_pad_file;
 
@@ -119,15 +119,15 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         StaticVariables.mCopyright = edit_song_copyright.getText().toString();
         StaticVariables.mLyrics = processSong.fixStartOfLines(edit_song_lyrics.getText().toString());
         StaticVariables.mPresentation = edit_song_presentation.getText().toString();
-        StaticVariables.mHymnNumber = edit_song_hymn.getText().toString();
+        StaticVariables.mHymnNumber = hymn_number.getText().toString();
         StaticVariables.mCCLI = edit_song_CCLI.getText().toString();
-        StaticVariables.mUser1 = edit_song_user1.getText().toString();
-        StaticVariables.mUser2 = edit_song_user2.getText().toString();
-        StaticVariables.mUser3 = edit_song_user3.getText().toString();
+        StaticVariables.mUser1 = user_1.getText().toString();
+        StaticVariables.mUser2 = user_2.getText().toString();
+        StaticVariables.mUser3 = user_3.getText().toString();
         StaticVariables.mAka = edit_song_aka.getText().toString();
         StaticVariables.mKeyLine = edit_song_key_line.getText().toString();
         StaticVariables.mKey = edit_song_key.getItemAtPosition(edit_song_key.getSelectedItemPosition()).toString();
-        StaticVariables.mDuration = edit_song_duration.getText().toString();
+        StaticVariables.mDuration = song_duration.getText().toString();
         int predelayval = predelay_SeekBar.getProgress();
         if (predelayval == 0) {
             StaticVariables.mPreDelay = "";
@@ -620,7 +620,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_author = V.findViewById(R.id.edit_song_author);
         edit_song_copyright = V.findViewById(R.id.edit_song_copyright);
         edit_song_key = V.findViewById(R.id.edit_song_key);
-        edit_song_duration = V.findViewById(R.id.edit_song_duration);
+        song_duration = V.findViewById(R.id.song_duration);
         predelay_SeekBar = V.findViewById(R.id.predelay_SeekBar);
         predelay_TextView = V.findViewById(R.id.predelay_TextView);
         edit_song_tempo = V.findViewById(R.id.edit_song_tempo);
@@ -798,10 +798,10 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_key_line = V.findViewById(R.id.edit_song_keyline);
         hideIfPDF(V.findViewById(R.id.myKeyLine));
         hideIfPDF(edit_song_key_line);
-        edit_song_hymn = V.findViewById(R.id.edit_song_hymn);
-        edit_song_user1 = V.findViewById(R.id.edit_song_user1);
-        edit_song_user2 = V.findViewById(R.id.edit_song_user2);
-        edit_song_user3 = V.findViewById(R.id.edit_song_user3);
+        hymn_number = V.findViewById(R.id.hymn_number);
+        user_1 = V.findViewById(R.id.user_1);
+        user_2 = V.findViewById(R.id.user_2);
+        user_3 = V.findViewById(R.id.user_3);
         edit_song_pad_file = V.findViewById(R.id.edit_pad_file);
         edit_song_midi = V.findViewById(R.id.edit_song_midi);
         edit_song_midi_index = V.findViewById(R.id.edit_song_midi_index);
@@ -883,7 +883,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_author.setText(StaticVariables.mAuthor);
         edit_song_copyright.setText(StaticVariables.mCopyright);
         edit_song_presentation.setText(StaticVariables.mPresentation);
-        edit_song_duration.setText(StaticVariables.mDuration);
+        song_duration.setText(StaticVariables.mDuration);
         if (StaticVariables.mPreDelay.isEmpty()) {
             predelay_SeekBar.setProgress(0);
             predelay_TextView.setText("");
@@ -897,7 +897,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             predelay_TextView.setText(text);
         }
         edit_song_notes.setText(StaticVariables.mNotes);
-        edit_song_duration.setText(StaticVariables.mDuration);
+        song_duration.setText(StaticVariables.mDuration);
         edit_song_lyrics.setTypeface(Typeface.MONOSPACE);
         // Get the lyrics into a temp string (so we can get rid of rubbish tabs, etc)
         String editBoxLyrics = StaticVariables.mLyrics;
@@ -914,10 +914,10 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_CCLI.setText(StaticVariables.mCCLI);
         edit_song_aka.setText(StaticVariables.mAka);
         edit_song_key_line.setText(StaticVariables.mKeyLine);
-        edit_song_hymn.setText(StaticVariables.mHymnNumber);
-        edit_song_user1.setText(StaticVariables.mUser1);
-        edit_song_user2.setText(StaticVariables.mUser2);
-        edit_song_user3.setText(StaticVariables.mUser3);
+        hymn_number.setText(StaticVariables.mHymnNumber);
+        user_1.setText(StaticVariables.mUser1);
+        user_2.setText(StaticVariables.mUser2);
+        user_3.setText(StaticVariables.mUser3);
         edit_song_midi.setText(StaticVariables.mMidi);
         edit_song_midi_index.setText(StaticVariables.mMidiIndex);
         edit_song_restrictions.setText(StaticVariables.mRestrictions);

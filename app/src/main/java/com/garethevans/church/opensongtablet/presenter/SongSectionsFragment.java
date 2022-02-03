@@ -100,7 +100,7 @@ public class SongSectionsFragment extends Fragment {
             !mainActivityInterface.getSong().getPresentationorder().isEmpty()) {
             myView.presentationOrder.setHint(mainActivityInterface.getSong().getPresentationorder());
         } else {
-            myView.presentationOrder.setHint(getString(R.string.not_set));
+            myView.presentationOrder.setHint(getString(R.string.is_not_set));
         }
     }
 

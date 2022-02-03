@@ -806,7 +806,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextButtons(songLinksButton,c.getString(R.string.link));
         setTextButtons(songDuplicateButton,c.getString(R.string.duplicate));
         setTextButtons(songEditButton,c.getString(R.string.edit));
-        setTextButtons(songStickyButton,c.getString(R.string.stickynotes_edit));
+        setTextButtons(songStickyButton,c.getString(R.string.song_notes_edit));
         setTextButtons(songDrawingButton,c.getString(R.string.highlight));
         setTextButtons(songScoreButton,c.getString(R.string.music_score));
         setTextButtons(songOnYouTubeButton,c.getString(R.string.youtube));
@@ -2379,7 +2379,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.other).toUpperCase(StaticVariables.locale));
         setTextButtons(otherHelpButton,c.getString(R.string.help));
-        setTextButtons(otherTweetButton,c.getString(R.string.twitteruser));
+        setTextButtons(otherTweetButton,c.getString(R.string.twitter_user));
         setTextButtons(otherLanguageButton,c.getString(R.string.language));
         setTextButtons(otherStartButton,c.getString(R.string.start_screen));
         setTextButtons(otherRateButton,c.getString(R.string.rate));

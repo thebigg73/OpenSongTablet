@@ -123,7 +123,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="8dp"
-                    android:hint="@string/edit_song_duration"
+                    android:hint="@string/song_duration"
                     app:suffixText="s"
                     android:inputType="number"/>
 

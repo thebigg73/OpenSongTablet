@@ -200,7 +200,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
             // Decide if this song already exists.  If so, alert the user and do nothing more
             StaticVariables.myToastMessage = "";
             if (storageAccess.uriExists(getActivity(), to)) {
-                StaticVariables.myToastMessage = getString(R.string.songnamealreadytaken);
+                StaticVariables.myToastMessage = getString(R.string.song_name_already_taken);
             } else {
 
                 if (StaticVariables.whattodo.equals("savecameraimage")) {
@@ -324,7 +324,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
             try {
                 if (!StaticVariables.myToastMessage.equals(getString(R.string.error)) &&
                         !StaticVariables.myToastMessage.equals(getString(R.string.notset)) &&
-                        !StaticVariables.myToastMessage.equals(getString(R.string.songnamealreadytaken))) {
+                        !StaticVariables.myToastMessage.equals(getString(R.string.song_name_already_taken))) {
 
                     if (mListener != null) {
                         mListener.prepareSongMenu();

@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/search_rebuild"
                 android:padding="16dp"
-                android:text="@string/refreshsongs"
+                android:text="@string/search_rebuild"
                 app:mydrawable="@drawable/ic_menu_white_36dp" />
 
         </LinearLayout>

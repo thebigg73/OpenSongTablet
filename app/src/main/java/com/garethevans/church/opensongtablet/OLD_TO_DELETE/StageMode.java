@@ -4590,7 +4590,7 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.learnSongLength = true;
         StaticVariables.learnPreDelay = false;
         StaticVariables.mPreDelay = time+"";
-        String s = getString(R.string.edit_song_duration) + "\n" + getString(R.string.save);
+        String s = getString(R.string.song_duration) + "\n" + getString(R.string.save);
         learnAutoScroll_TextView.setText(s);
         learnAutoScroll.setOnClickListener(view -> getLearnedSongLengthValue());
     }

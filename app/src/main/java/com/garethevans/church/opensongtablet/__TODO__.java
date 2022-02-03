@@ -4,9 +4,27 @@ public class __TODO__ {
 
     // Connected display settings in menu and presenter mode
 
-    // Still to implement pedal previous next confirm - I think!
+    // Still to implement pedal previous next confirm
 
     // Presenter mode - almost everything!!
+
+    // Variations
+
+    // TODO strings that reference stuff that was used before and probably should be
+    // words_and_music_by
+    // used_by_permission
+    // update_projector_automatically
+    // toggle_autoshow_stickynotes
+    // timer_size
+    // timer_learn
+    // subscription
+    // stage_section_max
+    // song_name_already_taken
+    // set_manage_swipe
+    // set_manage_click
+    // set_help
+    // select_item_variation
+    // reset_colours
 
     //TODO - still to complete
     // Anything still listed below needs work

@@ -379,7 +379,7 @@ public class CommonSQL {
                 thisSong.setTitle(filename);
                 thisSong.setFilename(filename);
                 thisSong.setFolder(folder);
-                thisSong.setLyrics("[" + folder + "/" + filename + "]\n" + c.getString(R.string.songdoesntexist));
+                thisSong.setLyrics("[" + folder + "/" + filename + "]\n" + c.getString(R.string.song_doesnt_exist));
             }
 
             closeCursor(cursor);

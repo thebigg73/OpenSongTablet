@@ -134,7 +134,7 @@ public class PedalsFragment extends Fragment {
 
     private String charFromInt(int i) {
         if (i == -1 || KeyEvent.keyCodeToString(i) == null) {
-            return getString(R.string.not_set);
+            return getString(R.string.is_not_set);
         } else {
             return KeyEvent.keyCodeToString(i);
         }
@@ -321,7 +321,7 @@ public class PedalsFragment extends Fragment {
         for (int x = 1; x <= 8; x++) {
             if (currentListening != x && mainActivityInterface.getPedalActions().getPedalCode(x)==keyCode) {
                 setPedalPreference(x, defKeyCodes[x], null);
-                buttonCodes[x].setText(R.string.not_set);
+                buttonCodes[x].setText(R.string.is_not_set);
             }
         }
     }
@@ -331,7 +331,7 @@ public class PedalsFragment extends Fragment {
         for (int x = 1; x <= 8; x++) {
             if (currentListening != x && mainActivityInterface.getPedalActions().getMidiCode(x).equals(midiCode)) {
                 mainActivityInterface.getPedalActions().setMidiCode(requireContext(),mainActivityInterface,x,"");
-                buttonMidis[x].setText(R.string.not_set);
+                buttonMidis[x].setText(R.string.is_not_set);
             }
         }
     }

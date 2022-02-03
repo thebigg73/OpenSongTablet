@@ -44,7 +44,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_weight="1"
-                    android:hint="@string/edit_song_duration"
+                    android:hint="@string/song_duration"
                     android:inputType="number"
                     app:suffixText="secs" />
 

@@ -516,7 +516,7 @@ public class PresentationCommon {
                 if (StaticVariables.infoBarChangeRequired) {
                     new_author = StaticVariables.mAuthor.trim();
                     if (!new_author.equals(""))
-                        new_author = c.getString(R.string.wordsandmusicby) + " " + new_author;
+                        new_author = c.getString(R.string.words_and_music_by) + " " + new_author;
 
                     new_copyright = StaticVariables.mCopyright.trim();
                     if (!new_copyright.isEmpty() && (!new_copyright.contains("©")))
@@ -524,7 +524,7 @@ public class PresentationCommon {
 
                     new_ccli = preferences.getMyPreferenceString(c, "ccliLicence", "");
                     if (!new_ccli.isEmpty() && (!StaticVariables.mCCLI.isEmpty())) {
-                        new_ccli = c.getString(R.string.usedbypermision) + " CCLI " + c.getString(R.string.ccli_licence) + " " + new_ccli;
+                        new_ccli = c.getString(R.string.used_by_permision) + " CCLI " + c.getString(R.string.ccli_licence) + " " + new_ccli;
                     } else {
                         new_ccli = "";
                     }

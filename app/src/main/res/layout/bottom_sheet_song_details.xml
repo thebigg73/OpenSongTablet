@@ -73,14 +73,14 @@
                 android:id="@+id/hymnnum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_hymn"
+                android:text="@string/hymn_number"
                 android:layout_marginBottom="8dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/notes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/stickynotes"
+                android:text="@string/song_notes"
                 android:layout_marginBottom="8dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView

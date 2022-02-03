@@ -45,7 +45,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     private ImageView level_8;
     private ImageView level_9;
     private ImageView level_10;
-    private TextView volval;
+    private TextView volume_value;
     private TextView averagevol;
     private int totalvols = 0;
     private int counts = 0;
@@ -108,7 +108,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             avvol = 0.0f;
         });
 
-        volval = V.findViewById(R.id.volval);
+        volume_value = V.findViewById(R.id.volume_value);
 
         SeekBar maxvolrange = V.findViewById(R.id.maxvolrange);
         maxvolrange.setMax(7);
@@ -157,12 +157,12 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 break;
         }
         maxvolrange.setProgress(myprogress);
-        volval.setText(mytext);
+        volume_value.setText(mytext);
 
         maxvolrange.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                //volval.setText(progress);
+                //volume_value.setText(progress);
                 int volrangechosen;
                 String text;
                 switch (progress) {
@@ -206,7 +206,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 }
 
                 preferences.setMyPreferenceInt(getContext(),"soundMeterRange",volrangechosen);
-                volval.setText(text);
+                volume_value.setText(text);
             }
 
             @Override

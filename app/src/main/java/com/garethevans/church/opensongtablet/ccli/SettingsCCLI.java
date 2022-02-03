@@ -48,7 +48,7 @@ public class SettingsCCLI extends Fragment {
     private void setCurrentValues() {
         myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "ccliAutomaticLogging", false));
 
-        String notSet = getString(R.string.not_set);
+        String notSet = getString(R.string.is_not_set);
         String ccliChurchName = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliChurchName","");
         String ccliLicence = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliLicence","");
         if (ccliChurchName.isEmpty()) {

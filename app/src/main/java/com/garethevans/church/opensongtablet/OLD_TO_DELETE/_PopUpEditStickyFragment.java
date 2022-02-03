@@ -76,7 +76,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_editsticky, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.stickynotes_edit));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.song_notes_edit));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override

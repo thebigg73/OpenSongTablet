@@ -139,7 +139,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         popupmetronome_volume_text = V.findViewById(R.id.popupmetronome_volume_text);
         popupmetronome_pan = V.findViewById(R.id.popupmetronome_pan);
         popupmetronome_pan_text = V.findViewById(R.id.popupmetronome_pan_text);
-        SwitchCompat visualmetronome = V.findViewById(R.id.visualmetronome);
+        SwitchCompat visual_metronome = V.findViewById(R.id.visual_metronome);
         popupmetronome_startstopbutton = V.findViewById(R.id.popupmetronome_startstopbutton);
 
         // Set up the default values
@@ -158,7 +158,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         tempo = Metronome.getTempo(StaticVariables.mTempo);
         setPan();
         popupmetronome_volume.setProgress(getVolume(preferences.getMyPreferenceFloat(getContext(),"metronomeVol",0.5f)));
-        visualmetronome.setChecked(preferences.getMyPreferenceBoolean(getContext(),"metronomeShowVisual",false));
+        visual_metronome.setChecked(preferences.getMyPreferenceBoolean(getContext(),"metronomeShowVisual",false));
         getTimeSigValues();
         getBPMValues();
         getDurationValues();
@@ -217,7 +217,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 StaticVariables.metronomeok = Metronome.isMetronomeValid();
             }
         });
-        visualmetronome.setOnCheckedChangeListener((compoundButton, b) -> {
+        visual_metronome.setOnCheckedChangeListener((compoundButton, b) -> {
             considerRestart();
             preferences.setMyPreferenceBoolean(getContext(),"metronomeShowVisual",b);
             StaticVariables.metronomeok = Metronome.isMetronomeValid();
