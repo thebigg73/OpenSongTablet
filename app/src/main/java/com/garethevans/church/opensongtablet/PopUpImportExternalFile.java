@@ -613,8 +613,14 @@ public class PopUpImportExternalFile extends DialogFragment {
                     setActions.loadASet(getContext(), preferences, storageAccess);
                     StaticVariables.setView = true;
 
-                    // Get the set first item
-                    setActions.prepareFirstItem(getContext(),preferences);
+                    // Prepare the set
+                    setActions.prepareSetList(getContext(), preferences);
+                    setActions.indexSongInSet();
+
+                    // IV - For presentation mode - Get the set first item
+                    if (StaticVariables.whichMode.equals("Presentation")) {
+                        setActions.prepareFirstItem(getContext(), preferences);
+                    }
 
                     StaticVariables.myToastMessage = getString(R.string.success);
 
@@ -636,7 +642,6 @@ public class PopUpImportExternalFile extends DialogFragment {
             try {
                 mListener.showToastMessage(StaticVariables.myToastMessage);
                 if (!error) {
-                    mListener.refreshAll();
                     FullscreenActivity.whattodo = "editset";
                     mListener.openFragment();
                 }
@@ -667,10 +672,14 @@ public class PopUpImportExternalFile extends DialogFragment {
                 setActions.loadASet(getContext(), preferences, storageAccess);
                 StaticVariables.setView = true;
 
+                // Prepare the set
                 setActions.prepareSetList(getContext(), preferences);
+                setActions.indexSongInSet();
 
-                // Get the set first item
-                setActions.prepareFirstItem(getContext(), preferences);
+                // IV - For presentation mode -  Get the set first item
+                if (StaticVariables.whichMode.equals("Presentation")) {
+                    setActions.prepareFirstItem(getContext(), preferences);
+                }
 
                 StaticVariables.myToastMessage = getString(R.string.success);
 
@@ -687,7 +696,6 @@ public class PopUpImportExternalFile extends DialogFragment {
             try {
                 mListener.showToastMessage(StaticVariables.myToastMessage);
                 if (!error) {
-                    mListener.refreshAll();
                     FullscreenActivity.whattodo = "editset";
                     mListener.openFragment();
                 }

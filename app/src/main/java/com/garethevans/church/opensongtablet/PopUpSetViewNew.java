@@ -185,21 +185,17 @@ public class PopUpSetViewNew extends DialogFragment {
         }
         Log.d(TAG,"mTempSetList.size()="+StaticVariables.mTempSetList.size());
         for (int z = 0; z < StaticVariables.mTempSetList.size(); z++) {
-            // IV - Use displayed info as is in the desired order
-            tempItem = mFolderName.get(z) + "/" + mSongName.get(z);
-            tempmySet.append("$**_").append(tempItem).append("_**$");
+            // IV - Use displayed info as it is in the desired order, with required 'MAIN' (root) folder handling
+            tempItem = ("$**_" + mFolderName.get(z) + "/" + mSongName.get(z) + "_**$").
+                    replace("$**_MAIN/", "$**_").
+                    replace("$**_" + getString(R.string.mainfoldername) + "/", "$**_");
+            tempmySet.append(tempItem);
         }
         Log.d(TAG,"tempmySet: "+tempmySet);
         preferences.setMyPreferenceString(getContext(),"setCurrent",tempmySet.toString());
         setActions.prepareSetList(getContext(),preferences);
         StaticVariables.myToastMessage = getString(R.string.currentset) +
                 " - " + getString(R.string.ok);
-    }
-
-    private void refresh() {
-        if (mListener != null) {
-            mListener.refreshAll();
-        }
     }
 
     private void close() {
@@ -274,7 +270,6 @@ public class PopUpSetViewNew extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
             PopUpSetViewNew.this.doSave();
-            refresh();
             close();
         });
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
@@ -463,6 +458,8 @@ public class PopUpSetViewNew extends DialogFragment {
 
         void refreshAll();
 
+        void onScrollAction();
+
         void closePopUps();
 
         void pageButtonAlpha(String s);
@@ -502,6 +499,13 @@ public class PopUpSetViewNew extends DialogFragment {
             mListener.pageButtonAlpha("");
             mListener.windowFlags();
             mListener.pageButtonAlpha(null);
+            // IV - For presentation mode refresh all
+            // IV - For performance modes only use onScrollAction to update the set buttons
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                mListener.refreshAll();
+            } else {
+                mListener.onScrollAction();
+            }
         }
     }
 

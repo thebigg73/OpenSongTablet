@@ -751,8 +751,8 @@ public class PopUpListSetsFragment extends DialogFragment {
             // Add all the songs of combined sets back to the mySet
             preferences.setMyPreferenceString(getContext(), "setCurrent", allsongsinset.toString());
 
-            // Reset the options menu
-            //setActions.prepareSetList(getContext(), preferences);
+            // Prepare the set
+            setActions.prepareSetList(getContext(), preferences);
             setActions.indexSongInSet();
 
             return "LOADED";
@@ -769,11 +769,11 @@ public class PopUpListSetsFragment extends DialogFragment {
 
             if (result.equals("LOADED") && !dataTask.isCancelled()) {
                 try {
-                    // Get the set first item
-                    setActions.prepareFirstItem(getContext(),preferences);
+                    // IV - For presentation mode - Get the set first item
+                    if (StaticVariables.whichMode.equals("Presentation")) {
+                        setActions.prepareFirstItem(getContext(), preferences);
+                    }
 
-                    // Tell the listener to do something
-                    mListener.refreshAll();
                     FullscreenActivity.whattodo = "editset";
                     mListener.openFragment();
                     //Close this dialog

@@ -1771,14 +1771,26 @@ public class StageMode extends AppCompatActivity implements
 
             // IV - Added handling for multi-page PDF
             // Use checkCanScroll results
-            // IV - Made invisible when so that they remain active areas on the screen
-            showFAB(scrollDownButton, checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)));
-            showFAB(scrollUpButton, checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0));
+            // IV - Made transparent so that they remain active areas on the screen
             if (!preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true)) {
-                scrollDownButton.setAlpha((0.0f));
-                scrollUpButton.setAlpha((0.0f));
+                scrollDownButton.setAlpha(0.0f);
+                scrollUpButton.setAlpha(0.0f);
+            } else {
+                // Get the default alpha value
+                float val = preferences.getMyPreferenceFloat(StageMode.this, "pageButtonAlpha", 0.5f);
+                scrollDownButton.setAlpha(val);
+                scrollUpButton.setAlpha(val);
             }
-
+            if (checkCanScrollDown() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1))) {
+                scrollDownButton.setVisibility(View.VISIBLE);
+            } else {
+                scrollDownButton.setVisibility(View.GONE);
+            }
+            if (checkCanScrollUp() || (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0)) {
+                scrollUpButton.setVisibility(View.VISIBLE);
+            } else {
+                scrollUpButton.setVisibility(View.GONE);
+            };
 
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true) && StaticVariables.setView ) {
                 // IV - Code removed - No longer support Set Move buttons making section moves in Stage mode here or in mext and previous item code
@@ -2589,8 +2601,6 @@ public class StageMode extends AppCompatActivity implements
             custom2Button_ungrouped.setAlpha(custom2Alpha);
             custom3Button_ungrouped.setAlpha(custom3Alpha);
             custom4Button_ungrouped.setAlpha(custom4Alpha);
-            scrollDownButton.setAlpha(val);
-            scrollUpButton.setAlpha(val);
             setBackButton.setAlpha(val);
             setForwardButton.setAlpha(val);
 
@@ -3483,16 +3493,14 @@ public class StageMode extends AppCompatActivity implements
                 // We weren't in set mode, so find the first instance of this song.
                 setActions.indexSongInSet();
             }
-            // If we aren't at the beginning or have pdf pages before this, indicate a setBackButton
-            StaticVariables.canGoToPrevious = (StaticVariables.indexSongInSet > 0) ||
-                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
+            // If we aren't at the beginning indicate a set back button
+            StaticVariables.canGoToPrevious = StaticVariables.indexSongInSet > 0;
 
-            // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
+            // If we aren't at the end of the set indicate a setForwardButton
             if (StaticVariables.mSetList==null) {
                 StaticVariables.mSetList = new String[0];
             }
-            StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
+            StaticVariables.canGoToNext = StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1;
         } else {
             StaticVariables.canGoToPrevious = (FullscreenActivity.currentSongIndex > FullscreenActivity.previousSongIndex); // i.e there is a song before in the list/menu
             StaticVariables.canGoToNext = (FullscreenActivity.currentSongIndex < FullscreenActivity.nextSongIndex); // i.e there is a song after in the list/menu
@@ -7149,7 +7157,8 @@ public class StageMode extends AppCompatActivity implements
                     stopAutoScroll();
                 }
 
-                // Check for set song
+                // Check for set song (isSongInSet will index)
+                StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(StageMode.this);
                 StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
 
                 // Sort the text size and colour of the info stuff
@@ -7266,10 +7275,6 @@ public class StageMode extends AppCompatActivity implements
                         resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
                     }
                 }
-
-                // If we are in a set, try to get the appropriate indexes
-                StaticVariables.whatsongforsetwork = setActions.getSongForSetWork(StageMode.this);
-                setActions.indexSongInSet();
 
                 if (StaticVariables.mLyrics != null) {
                     FullscreenActivity.myLyrics = StaticVariables.mLyrics;
