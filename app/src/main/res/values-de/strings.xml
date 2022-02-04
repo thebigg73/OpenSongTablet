@@ -214,7 +214,7 @@
     <string name="font_browse">"Durchsuchen Sie alle Google-Schriftarten"</string>
     <string name="grabchordpro">"Auszug ChordPro Daten"</string>
     <string name="guitar">Gitarre</string>
-    <string name="headingline_scale">"Überschrift skalieren"</string>
+    <string name="heading_scale">"Überschrift skalieren"</string>
     <string name="help">"Hilfe (Online)"</string>
     <string name="hide_actionbar">"Menüleiste anzeigen / ausblenden"</string>
     <string name="hidelyricsbox">"Liedtext-Container ausblenden"</string>

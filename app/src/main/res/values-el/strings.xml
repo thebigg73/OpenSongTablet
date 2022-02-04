@@ -214,7 +214,7 @@
     <string name="font_browse">"Περιηγηθείτε σε όλες τις γραμματοσειρές Google"</string>
     <string name="grabchordpro">"Extract ChordPro data"</string>
     <string name="guitar">"Κιθάρα"</string>
-    <string name="headingline_scale">"Κείμενο τίτλου κλίμακας"</string>
+    <string name="heading_scale">"Κείμενο τίτλου κλίμακας"</string>
     <string name="help">"Βοήθεια (Online)"</string>
     <string name="hide_actionbar">"Hide top menu bar on/off"</string>
     <string name="hidelyricsbox">"Απόκρυψη κουτιού στίχων"</string>

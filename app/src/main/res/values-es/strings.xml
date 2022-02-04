@@ -214,7 +214,7 @@
     <string name="font_browse">"Explorar todas las fuentes de Google"</string>
     <string name="grabchordpro">"Extraer datos ChordPro"</string>
     <string name="guitar">Guitarra</string>
-    <string name="headingline_scale">"Escalar el texto del título"</string>
+    <string name="heading_scale">"Escalar el texto del título"</string>
     <string name="help">"Ayuda (Online)"</string>
     <string name="hide_actionbar">"Ocultar barra de menú superior de encendido / apagado"</string>
     <string name="hidelyricsbox">"Cuadro de letras ocultas"</string>

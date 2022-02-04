@@ -214,7 +214,7 @@
     <string name="font_browse">"Просмотреть все шрифты Google"</string>
     <string name="grabchordpro">"Извлечение данных ChordPro"</string>
     <string name="guitar">гитара</string>
-    <string name="headingline_scale">"Размер текста заголовка"</string>
+    <string name="heading_scale">"Размер текста заголовка"</string>
     <string name="help">"Помощь (онлайн)"</string>
     <string name="hide_actionbar">"Скрывать верхнюю панель меню"</string>
     <string name="hidelyricsbox">"Скрыть текст"</string>

@@ -214,7 +214,7 @@
     <string name="font_browse">"Bläddra bland alla Google Fonts"</string>
     <string name="grabchordpro">"Extrahera ChordPro-data"</string>
     <string name="guitar">"Gitarr"</string>
-    <string name="headingline_scale">"Skala rubrik text"</string>
+    <string name="heading_scale">"Skala rubrik text"</string>
     <string name="help">"Hjälp (Online)"</string>
     <string name="hide_actionbar">"Dölj top menyraden på / av"</string>
     <string name="hidelyricsbox">"Dölj textrutan"</string>

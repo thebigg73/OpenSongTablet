@@ -1,5 +1,4 @@
 <resources>
-    <!-- DEFINITELY USING IN NEW APP -->
     <string name="about">About</string>
     <string name="about_description">App info, help, user guide, etc.</string>
     <string name="action">Action</string>
@@ -376,29 +375,19 @@
     <string name="forum_description">Report bugs, get help and request features</string>
     <string name="full">Full</string>
 
-    <!-- TODO Not checked-->
-    <string name="gesture3">Add song to set</string>
-    <string name="gesturesandmenus">Gestures and menus</string>
-    <string name="get_songs">Get songs</string>
     <string name="github" translatable="false">GitHub</string>
     <string name="github_description">Contribute to app development</string>
-    <string name="grabchordpro">Extract ChordPro data</string>
     <string name="green">Green</string>
     <string name="guitar">Guitar</string>
 
-    <!-- TODO Not checked-->
     <string name="hdmi" translatable="false">HDMI</string>
-    <string name="headingline_scale">Scale heading text</string>
+    <string name="heading_scale">Scale heading text</string>
     <string name="help">Help (Online)</string>
     <string name="hex_color_code">Hex color code</string>
     <string name="hide">Hide</string>
-    <string name="hide_actionbar">Hide top menu bar on/off</string>
-    <string name="hidelyricsbox">Hide lyrics box</string>
     <string name="highlight">Highlighter</string>
     <string name="highlight_info">Edit highlighter notes / annotations</string>
-    <string name="highlight_notallowed">Autoscale needs to be set to full for this feature</string>
     <string name="holychords" translatable="false">HolyChords.com</string>
-    <string name="host">Host</string>
     <string name="hymn_number">Hymn number</string>
 
     <!-- TODO Not checked-->
@@ -1112,6 +1101,14 @@ Check out the categories in the right hand options menu.
     <string name="removed_from_set">has been removed from your set.</string>
     <string name="quick_navigate">Quick navigate</string>
     <string name="quicklaunch_currentaction">Current action</string>
+    <string name="gesture3">Add song to set</string>
+    <string name="gesturesandmenus">Gestures and menus</string>
+    <string name="get_songs">Get songs</string>
+    <string name="grabchordpro">Extract ChordPro data</string>
+    <string name="hide_actionbar">Hide top menu bar on/off</string>
+    <string name="hidelyricsbox">Hide lyrics box</string>
+    <string name="highlight_notallowed">Autoscale needs to be set to full for this feature</string>
+    <string name="host">Host</string>
 
 
 

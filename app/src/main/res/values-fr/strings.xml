@@ -213,7 +213,7 @@
     <string name="font_browse">"Parcourir toutes les polices de Google"</string>
     <string name="grabchordpro">"Extraire des données ChordPro"</string>
     <string name="guitar">Guitare</string>
-    <string name="headingline_scale">"Taille du texte de titre"</string>
+    <string name="heading_scale">"Taille du texte de titre"</string>
     <string name="help">"Aide (en ligne)"</string>
     <string name="hide_actionbar">"Afficher / Masquer la barre de menu supérieure"</string>
     <string name="hidelyricsbox">"Masquer la boîte de paroles"</string>

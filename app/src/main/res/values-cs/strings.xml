@@ -213,7 +213,7 @@
     <string name="font_browse">"Procházejte všechny písma Google"</string>
     <string name="grabchordpro">"Extrahovat data ChordPro"</string>
     <string name="guitar">Kytara</string>
-    <string name="headingline_scale">"Měřítko textu záhlaví"</string>
+    <string name="heading_scale">"Měřítko textu záhlaví"</string>
     <string name="help">"Help (online)"</string>
     <string name="hide_actionbar">"Skrýt lišty nabídek zap / vyp"</string>
     <string name="hidelyricsbox">"Skrýt textový rámeček"</string>

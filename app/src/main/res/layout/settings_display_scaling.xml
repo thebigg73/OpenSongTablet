@@ -123,7 +123,7 @@
                 android:id="@+id/scaleHeading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/headingline_scale"
+                android:text="@string/heading_scale"
                 android:valueFrom="0"
                 android:valueTo="200"
                 android:layout_marginTop="16dp"

@@ -193,7 +193,7 @@
     <string name="font_browse">Переглянути всі шрифти Google</string>
     <string name="grabchordpro">Витяг даних ChordPro</string>
     <string name="guitar">Гітара</string>
-    <string name="headingline_scale">Розмір тексту заголовка</string>
+    <string name="heading_scale">Розмір тексту заголовка</string>
     <string name="help">Допомога (онлайн)</string>
     <string name="hide_actionbar">Приховувати верхню панель меню</string>
     <string name="hidelyricsbox">Приховати текст</string>

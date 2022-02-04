@@ -214,7 +214,7 @@
     <string name="font_browse">"Tallózzon az összes Google-betűtípusra"</string>
     <string name="grabchordpro">"Kivonat ChordPro adat"</string>
     <string name="guitar">Gitár</string>
-    <string name="headingline_scale">"Scale a fejlécszöveget"</string>
+    <string name="heading_scale">"Scale a fejlécszöveget"</string>
     <string name="help">"Segítség (Online)"</string>
     <string name="hide_actionbar">"Hide felső menüsor on / off"</string>
     <string name="hidelyricsbox">"A dalszöveg elrejtése"</string>

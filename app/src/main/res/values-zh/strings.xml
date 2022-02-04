@@ -213,7 +213,7 @@
     <string name="font_browse">"浏览所有Google字体"</string>
     <string name="grabchordpro">"提取ChordPro数据"</string>
     <string name="guitar">吉他</string>
-    <string name="headingline_scale">"缩放标题文本"</string>
+    <string name="heading_scale">"缩放标题文本"</string>
     <string name="help">"帮助（在线）"</string>
     <string name="hide_actionbar">"隐藏开启/关闭顶部的菜单栏"</string>
     <string name="hidelyricsbox">"隐藏歌词框"</string>

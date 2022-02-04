@@ -214,7 +214,7 @@
     <string name="font_browse">"Googleフォントの全製品を見る"</string>
     <string name="grabchordpro">"ChordProデータを抽出"</string>
     <string name="guitar">ギター</string>
-    <string name="headingline_scale">"見出しのテキストを拡大縮小"</string>
+    <string name="heading_scale">"見出しのテキストを拡大縮小"</string>
     <string name="help">"ヘルプ（オンライン）"</string>
     <string name="hide_actionbar">"オン/オフ上部のメニューバーを非表示にする"</string>
     <string name="hidelyricsbox">"歌詞ボックスを隠す"</string>
