@@ -1820,6 +1820,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     updateFragment("confirmed_" + fragName, callingFragment, arguments);
                     allowToast = false;
                     break;
+
+                case "resetColors":
+                    // We will reset the chosen theme colours to app defaults
+                    themeColors.resetTheme(this,this);
+                    themeColors.getDefaultColors(this,this);
+                    updateFragment(fragName,callingFragment,null);
+                    allowToast = false;
+                    break;
             }
             if (allowToast && result) {
                 // Don't show toast for exit, but other successful actions

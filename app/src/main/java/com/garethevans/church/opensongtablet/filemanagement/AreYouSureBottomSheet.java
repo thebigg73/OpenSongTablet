@@ -44,14 +44,14 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         return dialog;
     }
 
-    private final String action, what, fragName;
+    private final String textToShow, what, fragName;
     private final ArrayList<String> arguments;
     private final Fragment callingFragment;  // can be null if not needed for MainActivity to refresh the fragment
     private final Song song;
 
-    public AreYouSureBottomSheet(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
+    public AreYouSureBottomSheet(String what, String textToShow, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
         this.what = what;      // Variable passed to MainActivity to trigger required action
-        this.action = action;  // Information displayed about what is about to happen
+        this.textToShow = textToShow;  // Information displayed about what is about to happen
         this.arguments = arguments;  // Extra info passed back.  Can be null
         this.fragName = fragName;    // The fragment requesting confirmation
         this.callingFragment = callingFragment;
@@ -65,7 +65,7 @@ public class AreYouSureBottomSheet extends BottomSheetDialogFragment {
         // Initialise the 'close' floatingactionbutton
         myView.dialogHeading.setClose(this);
 
-        myView.action.setText(action);
+        myView.action.setText(textToShow);
         myView.okButton.setOnClickListener(v -> {
             mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment,song);
             dismiss();

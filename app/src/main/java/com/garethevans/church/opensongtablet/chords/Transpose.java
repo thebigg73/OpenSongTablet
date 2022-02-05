@@ -191,12 +191,12 @@ public class Transpose {
                 usesFlats = false;
             }
 
-            // Transpose and write the lyrics
-            thisSong.setLyrics(transposeString(thisSong));
-
             // Change the song format
             thisSong.setDetectedChordFormat(newChordFormat);
             thisSong.setDesiredChordFormat(newChordFormat);
+
+            // Transpose and write the lyrics
+            thisSong.setLyrics(transposeString(thisSong));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -409,9 +409,9 @@ public class Transpose {
                         myindex = line.indexOf("«");
                     }
                     Log.d(TAG,"TRANSPOSED LINE: "+line);
-
+                    line = line.replaceFirst(" ",".");
                 }
-                line = line.replaceFirst(" ",".");
+
                 // Add it back up
                 sb.append(line);
             }

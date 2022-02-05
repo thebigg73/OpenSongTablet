@@ -1127,7 +1127,6 @@ public class ProcessSong {
 
                 // Go through each tag in the song
                 for (String tag : song.getSongSectionHeadings()) {
-                    Log.d(TAG, "PresentationOrder:tag=" + tag);
                     if (tag.equals("") || tag.equals(" ")) {
                         Log.d(TAG, "Empty search");
                     } else if (tempPresentationOrder.toString().contains(tag)) {
@@ -1141,7 +1140,6 @@ public class ProcessSong {
                         errors.append(tag).append(" - not found in presentation order");
                     }
                 }
-                Log.d(TAG, "PresentationOrder: tempPresentationOrder=" + tempPresentationOrder);
                 // tempPresentationOrder now looks like "Intro <__V1__>V2 <__C__><__V3__><__C__><__C__><__Guitar Solo__><__C__>Outro "
                 // Assuming V2 and Outro aren't in the song anymore
                 // Split the string by <__
@@ -1171,10 +1169,6 @@ public class ProcessSong {
                         }
                         // tempPresOrderArray now looks like "", "V1", "C", "V3", "C", "C", "Guitar Solo", "C"
                     }
-                }
-
-                for (String bit : tempPresOrderArray) {
-                    Log.d(TAG, "PresentationOrder: tempPresOrderArray[bit]=" + bit);
                 }
 
                 // Go through the tempPresOrderArray and add the sections back together
@@ -1379,7 +1373,6 @@ public class ProcessSong {
         for (int sect = 0; sect < song.getPresoOrderSongSections().size(); sect++) {
             String section = song.getPresoOrderSongSections().get(sect);
             section = section.replace("____groupline____","\n");
-            Log.d(TAG,"section to process view: "+section);
             if (!section.isEmpty()) {
                 if (trimSections) {
                     section = section.trim();
@@ -1671,9 +1664,6 @@ public class ProcessSong {
             return 1;
         }
 
-        Log.d(TAG,"col1:" + col1 + "  col2[0]:" + col2[0] + "  col2[1]:" + col2[1] +
-                "  col3[0]:" + col3[0] + "  col3[1]:" + col3[1] + "  col3[2]:" + col3[2]);
-
         float col2best = Math.min(col2[0], col2[1]);
         float col3best = Math.min(col3[0], Math.min(col3[1], col3[2]));
         int best;
@@ -1688,16 +1678,12 @@ public class ProcessSong {
                 best = 3;
             }
         }
-        Log.d(TAG,"best="+best);
-        Log.d(TAG,"col2[2]="+col2[2]);
         // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
         if (best == 2) {
             if (col2[2] == 0) {
                 return 1;
             }
             float newFontSize2Col = defFontSize * col2best;
-            Log.d(TAG,"defFontSize="+defFontSize+"  col2Best="+col2best+"  newFontSize2Col="+newFontSize2Col);
-            Log.d(TAG,"songAutoScaleOverrideFull="+songAutoScaleOverrideFull+"  fontSizeMin="+fontSizeMin+"  newFontSize2Col="+newFontSize2Col);
 
             if (songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
                 thisAutoScale = "W";
@@ -1750,7 +1736,6 @@ public class ProcessSong {
         // Include the songSheetView if it isn't empty
         int songSheetTitleHeight = mainActivityInterface.getSongSheetTitleLayout().getHeight();
         if (songSheetTitleHeight>0) {
-            Log.d(TAG,"songSheetTitleHeight="+songSheetTitleHeight);
             currentHeight = currentHeight + songSheetTitleHeight;
             songSheetView.addView(mainActivityInterface.getSongSheetTitleLayout());
         } else {
@@ -1865,9 +1850,6 @@ public class ProcessSong {
             i++;
         }
 
-        Log.d(TAG,"preHalfway="+preHalfWay+"  postHalfway="+postHalfWay);
-        Log.d(TAG,"col1Height="+col1Height+"  col2Height="+col2Height);
-
         // Get the max width for pre halfway split column 1
         int maxWidth_preHalfWay1 = getMaxValue(viewWidth, 0, preHalfWay);
         int maxWidth_preHalfWay2 = getMaxValue(viewWidth, preHalfWay, viewWidth.size());
@@ -1898,7 +1880,6 @@ public class ProcessSong {
         float preScaleTotal = preCol1Scale + preCol2Scale;
         float postScaleTotal = postCol1Scale + postCol2Scale;
 
-        Log.d(TAG,"preScaleTotal="+preScaleTotal + "  postScaleTotal="+postScaleTotal);
         if (preScaleTotal >= postScaleTotal) {
             colscale[0] = preCol1Scale;
             colscale[1] = preCol2Scale;

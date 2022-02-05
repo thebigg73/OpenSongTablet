@@ -13,7 +13,6 @@ import android.text.method.KeyListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -52,7 +51,7 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
                 com.google.android.material.R.attr.endIconMode,
                 R.attr.useMonospace,
                 com.google.android.material.R.attr.suffixText,
-                androidx.navigation.ui.R.attr.helperText,
+                com.google.android.material.R.attr.helperText,
                 android.R.attr.layout_gravity};
         TypedArray a = context.obtainStyledAttributes(attrs, set);
         CharSequence text = a.getText(0);
@@ -111,21 +110,15 @@ public class MaterialEditText extends LinearLayout implements View.OnTouchListen
         } else {
             editText.setInputType(inputType);
             editText.setImeOptions(imeOptions);
-            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-
-                        //Clear focus here from edittext
-                        editText.clearFocus();
-                        //MainActivityInterface mainActivityInterface = (MainActivityInterface) context;
-                        //mainActivityInterface.setWindowFlags();
-                    }
-                    return false;
+            editText.setOnEditorActionListener((v, actionId, event) -> {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    //Clear focus here from edittext
+                    editText.clearFocus();
                 }
+                return false;
             });
         }
-        ;
+
 
         if (useMonospace) {
             editText.setTypeface(Typeface.MONOSPACE);

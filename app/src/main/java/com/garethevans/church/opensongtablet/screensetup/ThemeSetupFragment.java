@@ -160,6 +160,7 @@ public class ThemeSetupFragment extends Fragment {
         myView.extrabackgroundButton.setOnClickListener(v-> chooseColor("extraInfoBgColor"));
         myView.presoAlertButton.setOnClickListener(v -> chooseColor("presoAlertColor"));
         myView.presoShadowButton.setOnClickListener(v -> chooseColor("presoShadowColor"));
+        myView.resetTheme.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("resetColors",myView.themeName.getText().toString() + ": "+getString(R.string.reset_colours),null,"themeSetupFragment",this,null));
     }
 
     private void chooseColor(String which) {

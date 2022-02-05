@@ -745,7 +745,6 @@
     <string name="section_space_info">Add a small space between sections to improve visibility</string>
     <string name="select">Select</string>
     <string name="select_all">Select all</string>
-    <string name="select_item_variation">Select the song to create a set variation</string>
     <string name="select_page">Select page</string>
     <string name="separator" translatable="false"> / </string>
     <string name="service_id" translatable="false">com.garethevans.church.opensongtablet</string>
@@ -1109,6 +1108,7 @@ Check out the categories in the right hand options menu.
     <string name="hidelyricsbox">Hide lyrics box</string>
     <string name="highlight_notallowed">Autoscale needs to be set to full for this feature</string>
     <string name="host">Host</string>
+    <string name="select_item_variation">Select the song to create a set variation</string>
 
 
 

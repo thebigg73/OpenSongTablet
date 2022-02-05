@@ -20,10 +20,6 @@ public class __TODO__ {
     // subscription
     // stage_section_max
     // song_name_already_taken
-    // set_manage_swipe
-    // set_manage_click
-    // set_help
-    // select_item_variation
     // reset_colours
 
     //TODO - still to complete

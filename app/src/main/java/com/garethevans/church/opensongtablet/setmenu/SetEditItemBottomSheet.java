@@ -32,7 +32,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     // This allows the user to select a set item to make it a variation
     private MainActivityInterface mainActivityInterface;
     private BottomSheetSetitemeditBinding myView;
-    private final String TAG = "SetVariationBottomSheet";
+    private final String TAG = "SetEditItemBottomSheet";
     private ArrayList<String> filenames;
     private ArrayList<String> currentSetFolder;
     private int setPosition = 0;

@@ -59,6 +59,12 @@ public class SetMenuFragment extends Fragment {
         return myView.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        runSetShowcase();
+    }
+
     private void setupAdapter() {
         setListAdapter = new SetListAdapter(mainActivityInterface);
         ItemTouchHelper.Callback callback = new SetListItemTouchHelper(setListAdapter);
@@ -187,6 +193,16 @@ public class SetMenuFragment extends Fragment {
         setListAdapter.notifyItemInserted(currentSetPosition);
     }
 
+    public void runSetShowcase() {
+        try {
+            String info = getString(R.string.set_manage_click) + "\n" + getString(R.string.set_help) +
+                    "\n" + getString(R.string.set_manage_swipe);
+            myView.myRecyclerView.post(() -> mainActivityInterface.getShowCase().singleShowCase(requireActivity(),
+                    myView.setTitle, null, info, true, "setFragment"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // Called from clicking on checkboxes in song menu (via MainActivity)
     public void removeSetItem(int currentSetPosition) {
