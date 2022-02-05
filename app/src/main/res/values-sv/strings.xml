@@ -463,7 +463,7 @@
     <string name="title">"Titel"</string>
     <string name="pedal_scroll_before_move">"Växla bläddra före nästa / föregående låt"</string>
     <string name="autoscroll_pause">"Växla Autoscroll paus"</string>
-    <string name="toggle_autoshow_stickynotes">"Autoshow klisterlappar"</string>
+    <string name="autoshow_stickynotes">"Autoshow klisterlappar"</string>
     <string name="toobig">"Vänligen byt autoskala på för png / pdf-export"</string>
     <string name="top">"Topp"</string>
     <string name="transparency">"Genomskinlighet"</string>

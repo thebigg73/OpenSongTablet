@@ -462,7 +462,7 @@
     <string name="title">"titre"</string>
     <string name="pedal_scroll_before_move">"Défilement entre la chanson précédente/suivante par balayage"</string>
     <string name="autoscroll_pause">"Activer la permutation automatique"</string>
-    <string name="toggle_autoshow_stickynotes">"Afficher/masquer les notes du show automatique"</string>
+    <string name="autoshow_stickynotes">"Afficher/masquer les notes du show automatique"</string>
     <string name="toobig">"S\'il vous plaît passer autoscale sur pour export png/pdf"</string>
     <string name="top">Haut</string>
     <string name="transparency">"Transparence"</string>

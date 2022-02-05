@@ -463,7 +463,7 @@
     <string name="title">"название"</string>
     <string name="pedal_scroll_before_move">"Включение прокрутки до следующей / предыдущей песни"</string>
     <string name="autoscroll_pause">"Пауза автопрокрутки"</string>
-    <string name="toggle_autoshow_stickynotes">"Автопоказ заметок"</string>
+    <string name="autoshow_stickynotes">"Автопоказ заметок"</string>
     <string name="toobig">"Пожалуйста, включите автомасштабирование для экспорт в формат PNG/PDF"</string>
     <string name="top">верх</string>
     <string name="transparency">"прозрачность"</string>

@@ -3,8 +3,8 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -12,47 +12,69 @@ import androidx.appcompat.app.ActionBar;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class AppActionBar {
 
+    // This holds references to the items in the ActionBar (except the battery)
+    // Battery changes get sent via the mainactivityInterface
     private final String TAG = "AppActionBar";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     private final ActionBar actionBar;
     private final TextView title;
     private final TextView author;
     private final TextView key;
     private final TextView capo;
-    private final ImageView batteryDial;
-    private final TextView batteryText;
     private final TextView clock;
-    private final BatteryStatus batteryStatus;
     private final Handler delayactionBarHide;
     private final Runnable hideActionBarRunnable;
     private final int autoHideTime = 1200;
+    private float clockTextSize;
+    private boolean clock24hFormat, clockOn, hideActionBar;
+    private Timer clockTimer;
+    private TimerTask clockTimerTask;
 
-    private boolean hideActionBar;
     private boolean performanceMode;
 
-    public AppActionBar(ActionBar actionBar, BatteryStatus batteryStatus, TextView title, TextView author, TextView key, TextView capo, ImageView batteryDial,
-                        TextView batteryText, TextView clock, boolean hideActionBar) {
-        if (batteryStatus == null) {
-            this.batteryStatus = new BatteryStatus();
-        } else {
-            this.batteryStatus = batteryStatus;
-        }
+    public AppActionBar(Context c, ActionBar actionBar, TextView title, TextView author,
+                        TextView key, TextView capo, TextView clock) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+
         this.actionBar = actionBar;
         this.title = title;
         this.author = author;
         this.key = key;
         this.capo = capo;
-        this.batteryDial = batteryDial;
-        this.batteryText = batteryText;
         this.clock = clock;
-        this.hideActionBar = hideActionBar;
         delayactionBarHide = new Handler();
         hideActionBarRunnable = () -> {
             if (actionBar != null && actionBar.isShowing()) {
                 actionBar.hide();
             }
         };
+
+        updateActionBarPrefs();
+
+        clockTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                updateClock();
+            }
+        };
+        clockTimer = new Timer();
+        clockTimer.scheduleAtFixedRate(clockTimerTask,0,10000);
+    }
+
+    private void updateActionBarPrefs() {
+        clockTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"clockTextSize",9.0f);
+        clock24hFormat = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"clock24hFormat",true);
+        clockOn = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"clockOn",true);
+        hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"hideActionBar",false);
     }
 
     public void setHideActionBar(boolean hideActionBar) {
@@ -109,11 +131,12 @@ public class AppActionBar {
                     return true;
                 });
             }
+
         } else {
             // We are in a different fragment, so don't hide the song info stuff
             actionBar.show();
             if (title != null) {
-                title.setTextSize(22.0f);
+                title.setTextSize(18.0f);
                 title.setText(newtitle);
                 hideView(author, true);
                 hideView(key, true);
@@ -137,38 +160,39 @@ public class AppActionBar {
         capo.setText(string);
     }
 
-    public void updateActionBarSettings(Context c, MainActivityInterface mainActivityInterface,
-                                        String prefName, int intval, float floatval, boolean isvisible) {
+    public void updateActionBarSettings(String prefName, float value, boolean isvisible) {
+        Log.d(TAG,"prefName="+prefName+"  value="+value+"  isvisible="+isvisible);
+
         switch (prefName) {
             case "batteryDialOn":
-                hideView(batteryDial,!isvisible);
+                mainActivityInterface.getBatteryStatus().setBatteryDialOn(isvisible);
                 break;
             case "batteryDialThickness":
-                batteryStatus.setBatteryImage(c,batteryDial,actionBar.getHeight(),(int) (batteryStatus.getBatteryStatus(c) * 100.0f),intval);
+                mainActivityInterface.getBatteryStatus().setBatteryDialThickness((int)value);
+                mainActivityInterface.getBatteryStatus().setBatteryImage();
                 break;
             case "batteryTextOn":
-                hideView(batteryText,!isvisible);
+                mainActivityInterface.getBatteryStatus().setBatteryTextOn(isvisible);
                 break;
             case "batteryTextSize":
-                batteryText.setTextSize(floatval);
+                mainActivityInterface.getBatteryStatus().setBatteryTextSize(value);
                 break;
             case "clockOn":
                 hideView(clock,!isvisible);
                 break;
             case "clock24hFormat":
-                batteryStatus.updateClock(mainActivityInterface,clock,mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"clockTextSize",9.0f),
-                        clock.getVisibility()==View.VISIBLE,isvisible);
+                updateClock();
                 break;
             case "clockTextSize":
-                clock.setTextSize(floatval);
+                clock.setTextSize(value);
                 break;
             case "songTitleSize":
-                title.setTextSize(floatval);
-                key.setTextSize(floatval);
-                capo.setTextSize(floatval);
+                title.setTextSize(value);
+                key.setTextSize(value);
+                capo.setTextSize(value);
                 break;
             case "songAuthorSize":
-                author.setTextSize(floatval);
+                author.setTextSize(value);
                 break;
             case "hideActionBar":
                 setHideActionBar(!isvisible);
@@ -258,5 +282,38 @@ public class AppActionBar {
         } else {
             return actionBar.getHeight();
         }
+    }
+
+    public void updateClock() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat df;
+        if (clock24hFormat) {
+            df = new SimpleDateFormat("HH:mm", mainActivityInterface.getLocale());
+        } else {
+            df = new SimpleDateFormat("h:mm", mainActivityInterface.getLocale());
+        }
+        String formattedTime = df.format(cal.getTime());
+
+        clock.post(() -> {
+            if (clockOn) {
+                clock.setVisibility(View.VISIBLE);
+            } else {
+                clock.setVisibility(View.GONE);
+            }
+            clock.setTextSize(clockTextSize);
+            clock.setText(formattedTime);
+        });
+    }
+
+    public void stopTimers() {
+        if (clockTimer!=null) {
+            clockTimer.cancel();
+            clockTimer.purge();
+        }
+        clockTimer = null;
+        if (clockTimerTask!=null) {
+            clockTimerTask.cancel();
+        }
+        clockTimerTask = null;
     }
 }

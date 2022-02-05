@@ -211,7 +211,6 @@ public class Midi {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     void sendMidi(int position) {
-        Log.d(TAG,"sendMidi("+position+")");
         // Send midi from the arrayList
         if (position>=0 && position<songMidiMessages.size()) {
             Log.d(TAG,"Sending "+position+" :" + songMidiMessages.get(position));
@@ -220,7 +219,6 @@ public class Midi {
     }
 
     String buildMidiString(String action, int channel, int byte2, int byte3) {
-        Log.d(TAG,"action="+action+"  channel:"+channel+"  byte2="+byte2+"  byte3="+byte3);
         String s = "";
         String b1 =  "0x";                               // This initialises the hex numbering convention
         String b2 = " 0x" + Integer.toHexString(byte2).toUpperCase(Locale.ROOT); // Convert numbers 0-127 to hex
@@ -317,7 +315,6 @@ public class Midi {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void enableMidiListener(Context c) {
-        Log.d(TAG,"midiListener");
         if (midiDevice!=null && midiOutputPort!=null) {
             pedalMidiReceiver = new PedalMidiReceiver(this,mainActivityInterface);
             try {
@@ -350,7 +347,6 @@ public class Midi {
         }
 
         String messages = mainActivityInterface.getSong().getMidi();
-        Log.d(TAG,"songMessages="+messages);
 
         String[] bits = messages.split("\n");
         Collections.addAll(songMidiMessages, bits);
@@ -376,7 +372,6 @@ public class Midi {
                 s.append(message).append("\n");
             }
         }
-        Log.d(TAG,"s="+s);
         mainActivityInterface.getSong().setMidi(s.toString().trim());
         mainActivityInterface.updateSong();
     }

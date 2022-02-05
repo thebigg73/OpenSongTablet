@@ -429,7 +429,7 @@
     <string name="timer_learn">Навчання часу автопрокрутки</string>
     <string name="timer_size">Розмір таймера</string>
     <string name="title">назва</string>
-    <string name="toggle_autoshow_stickynotes">автопоказ заміток</string>
+    <string name="autoshow_stickynotes">автопоказ заміток</string>
     <string name="toobig">Будь ласка, включите автомасштабирование для експорт в формат PNG/PDF</string>
     <string name="top">верх</string>
     <string name="transparency">прозорість</string>

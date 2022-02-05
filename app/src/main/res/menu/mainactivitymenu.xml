@@ -11,7 +11,8 @@
         android:title="@string/information"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_information_white_36dp"
-        android:orderInCategory="2"/>
+        android:orderInCategory="2"
+        app:actionViewClass="android.widget.ImageButton" />
     <item android:id="@+id/settings_menu_item"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings_white_36dp"

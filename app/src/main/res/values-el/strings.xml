@@ -463,7 +463,7 @@
     <string name="title">"Τίτλος"</string>
     <string name="pedal_scroll_before_move">"Toggle scroll before Next/Previous song"</string>
     <string name="autoscroll_pause">"Εναλλαγή της παύσης αυτόματης κύλισης"</string>
-    <string name="toggle_autoshow_stickynotes">"Toggle autoshow sticky notes"</string>
+    <string name="autoshow_stickynotes">"Toggle autoshow sticky notes"</string>
     <string name="toobig">"Παρακαλώ ενεργοποιήσετε autoscale επάνω για png/pdf εξαγωγή"</string>
     <string name="top">"Κορυφή"</string>
     <string name="transparency">"Διαφάνεια"</string>

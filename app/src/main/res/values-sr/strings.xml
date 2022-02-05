@@ -19,7 +19,7 @@
     <string name="link_audio">"Audio datoteka veza"</string>
     <string name="link_file">"Druga datoteka"</string>
     <string name="overwrite">"Prepisati preko postojeće stavke"</string>
-    <string name="toggle_autoshow_stickynotes">"Uključiti automatsko prikazivanje lepljivih beleški"</string>
+    <string name="autoshow_stickynotes">"Uključiti automatsko prikazivanje lepljivih beleški"</string>
     <string name="file_type">"Tip datoteke"</string>
     <string name="unknown">"Nepoznato"</string>
     <string name="file_exists">"Datoteka već postoji. Molimo promenite ime."</string>

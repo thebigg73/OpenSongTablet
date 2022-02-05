@@ -463,7 +463,7 @@
     <string name="title">"título"</string>
     <string name="pedal_scroll_before_move">"Rolagem de alternância antes canção seguinte / anterior"</string>
     <string name="autoscroll_pause">"Alternar Pausa Autoscroll"</string>
-    <string name="toggle_autoshow_stickynotes">"AutoApresentação alternância notas pegajosas"</string>
+    <string name="autoshow_stickynotes">"AutoApresentação alternância notas pegajosas"</string>
     <string name="toobig">"Por favor mudar autoscale por png/pdf exportação"</string>
     <string name="top">Top</string>
     <string name="transparency">"Transparência"</string>

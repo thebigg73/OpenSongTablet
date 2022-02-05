@@ -462,7 +462,7 @@
     <string name="title">"nadpis"</string>
     <string name="pedal_scroll_before_move">"Přepnout scroll před další / předchozí skladbu"</string>
     <string name="autoscroll_pause">"Přepnout automatické přerušení"</string>
-    <string name="toggle_autoshow_stickynotes">"Přepnout Autoshow Sticky Notes"</string>
+    <string name="autoshow_stickynotes">"Přepnout Autoshow Sticky Notes"</string>
     <string name="toobig">Pro export png / pdf prosím přepněte autoscale</string>
     <string name="top">vrchol</string>
     <string name="transparency">"Průhlednost"</string>

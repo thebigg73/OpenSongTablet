@@ -53,7 +53,7 @@
                 android:id="@+id/autoShowSticky"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/autoshow_highlight" />
+                android:text="@string/autoshow_stickynotes" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSlider
                 android:id="@+id/alphaSlider"

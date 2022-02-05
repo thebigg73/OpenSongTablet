@@ -76,7 +76,7 @@
                 android:layout_marginBottom="0dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 tools:text="Author" />
 
         </RelativeLayout>

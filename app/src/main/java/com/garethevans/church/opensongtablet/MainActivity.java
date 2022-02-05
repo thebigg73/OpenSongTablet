@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private AppBarConfiguration appBarConfiguration;
     private SecondaryDisplay[] secondaryDisplays;
     private Display[] connectedDisplays;
-    private ImageView screenMirror;
+    private ImageView screenMirror, alertButton;
 
     // Variables used
     private ArrayList<View> targets;
@@ -375,6 +375,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         this.registerReceiver(batteryStatus, filter);
     }
+    @Override
+    public BatteryStatus getBatteryStatus() {
+        return batteryStatus;
+    }
+
     private void setupActionbar() {
         setSupportActionBar(myView.toolBar.myToolbar);
             actionBar = getSupportActionBar();
@@ -412,12 +417,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private void setupViews() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(actionBar,
-                batteryStatus,myView.toolBar.songtitleAb,
+        appActionBar = new AppActionBar(this,actionBar,
+                myView.toolBar.songtitleAb,
                 myView.toolBar.songauthorAb, myView.toolBar.songkeyAb,
-                myView.toolBar.songcapoAb,myView.toolBar.batteryimage,
-                myView.toolBar.batterycharge,myView.toolBar.digitalclock,
-                preferences.getMyPreferenceBoolean(this,"hideActionBar",false));
+                myView.toolBar.songcapoAb,
+                myView.toolBar.digitalclock);
         pageButtons.setMainFABS(this,
                 myView.pageButtonRight.actionFAB, myView.pageButtonRight.custom1Button,
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
@@ -1003,14 +1007,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Otherwise a new title is passed as a string (in a settings menu)
         windowFlags.setWindowFlags();
         appActionBar.setActionBar(this,this, what);
-
+        if (what==null) {
+            menuIconVisibility(true);
+        } else {
+            menuIconVisibility(false);
+        }
         myView.fragmentView.setTop(appActionBar.getActionBarHeight());
     }
+    private void menuIconVisibility(boolean isVisible) {
+        if (isVisible) {
+            screenMirror.setVisibility(View.VISIBLE);
+            myView.toolBar.batteryholder.setVisibility(View.VISIBLE);
+            alertButton.setVisibility(View.VISIBLE);
+        } else {
+            screenMirror.setVisibility(View.GONE);
+            //myView.toolBar.batteryholder.setVisibility(View.GONE);
+            alertButton.setVisibility(View.GONE);
+        }
+    }
+
     @Override
-    public void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible) {
+    public void updateActionBarSettings(String prefName, float floatval, boolean isvisible) {
         // If the user changes settings from the ActionBarSettingsFragment, they get sent here to deal with
         // So let's pass them on to the AppActionBar helper
-        appActionBar.updateActionBarSettings(this,this,prefName,intval,floatval,isvisible);
+        appActionBar.updateActionBarSettings(prefName,floatval,isvisible);
     }
     @Override
     public void showTutorial(String what, ArrayList<View> viewsToHighlight) {
@@ -1143,39 +1163,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         settingsButton = menu.findItem(R.id.settings_menu_item);
-        MenuItem alertButton = menu.findItem(R.id.alert_info_item);
-        // Decide if an alert should be shown
-        if (alertChecks.showBackup(
-                preferences.getMyPreferenceInt(this,"runssincebackup",0)) ||
-                alertChecks.showPlayServicesAlert(this) ||
-                alertChecks.showUpdateInfo(versionNumber.getVersionCode(),
-                        preferences.getMyPreferenceInt(this,"lastUsedVersion",0))) {
-            alertButton.setVisible(true);
-        } else if (alertButton!=null){
-            alertButton.setVisible(false);
-        }
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         showHideActionBar();
-        switch (item.toString()) {
-            case "Settings":
-                if (settingsOpen) {
-                    navHome();
-                } else {
-                    navigateToFragment("opensongapp://preferences",0);
-                }
-                break;
-
-            case "Information":
-                AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
-                alertInfoBottomSheet.show(getMyFragmentManager(),"AlertInfoBottomSheet");
-                break;
-
-            case "mirror":
-                startActivity(new Intent("android.settings.CAST_SETTINGS"));
-                break;
+        if ("Settings".equals(item.toString())) {
+            if (settingsOpen) {
+                navHome();
+            } else {
+                navigateToFragment("opensongapp://preferences", 0);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -1190,9 +1188,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
 
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
+        alertButton = (ImageView) menu.findItem(R.id.alert_info_item).getActionView();
         GlideApp.with(this).load(ContextCompat.getDrawable(this,R.drawable.ic_mr_button_connected_00_dark)).into(screenMirror);
+        GlideApp.with(this).load(ContextCompat.getDrawable(this,R.drawable.ic_information_white_36dp)).into(alertButton);
+        // Decide if an alert should be shown
+        if (alertChecks.showBackup(
+                preferences.getMyPreferenceInt(this,"runssincebackup",0)) ||
+                alertChecks.showPlayServicesAlert(this) ||
+                alertChecks.showUpdateInfo(versionNumber.getVersionCode(),
+                        preferences.getMyPreferenceInt(this,"lastUsedVersion",0))) {
+            alertButton.setVisibility(View.VISIBLE);
+        } else if (alertButton!=null){
+            alertButton.setVisibility(View.GONE);
+        }
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
-
+        alertButton.setOnClickListener(view -> {
+            AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
+            alertInfoBottomSheet.show(getMyFragmentManager(),"AlertInfoBottomSheet");
+        });
         // Setup the menu item for connecting to cast devices
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
             //CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
@@ -1206,10 +1219,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
 
         // Set up battery monitor
-        batteryStatus = new BatteryStatus();
-        batteryStatus.setUpBatteryMonitor(this,myView.toolBar.digitalclock,
-                myView.toolBar.batterycharge,
-                myView.toolBar.batteryimage,actionBar);
+        batteryStatus = new BatteryStatus(this,myView.toolBar.batteryimage,
+                myView.toolBar.batterycharge, actionBar);
+        batteryStatus.setUpBatteryMonitor();
         return true;
     }
 
@@ -2608,19 +2620,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // Turn off nearby
         nearbyConnections.turnOffNearby(this);
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
+        if (appActionBar!=null) {
+            appActionBar.stopTimers();
+        }
+        // Stop battery service and timers
         if (batteryStatus!=null) {
+            batteryStatus.stopTimers();
             try {
                 this.unregisterReceiver(batteryStatus);
             } catch (Exception e) {
                 Log.d(TAG, "Battery receiver not registered, so no need to unregister");
             }
         }
+        // Stop pad timers
+        if (pad!=null) {
+            pad.stopTimers(1);
+            pad.stopTimers(2);
+        }
+        // Stop metronome timers
+        if (metronome!=null) {
+            metronome.stopTimers(true);
+        }
+        // Stop autoscroll timers
+        if (autoscroll!=null) {
+            autoscroll.stopTimers();
+        }
     }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

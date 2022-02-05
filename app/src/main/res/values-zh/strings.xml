@@ -462,7 +462,7 @@
     <string name="title">"称号"</string>
     <string name="pedal_scroll_before_move">"下一个/上一首歌曲之前切换滚动"</string>
     <string name="autoscroll_pause">"切换自动滚动暂停"</string>
-    <string name="toggle_autoshow_stickynotes">"切换自动显示即时贴"</string>
+    <string name="autoshow_stickynotes">"切换自动显示即时贴"</string>
     <string name="toobig">"请切换自动缩放对PDF导出"</string>
     <string name="top">顶</string>
     <string name="transparency">"透明度"</string>

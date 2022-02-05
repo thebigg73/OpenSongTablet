@@ -61,7 +61,7 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.authorTextSize.setHint(authorTextSize+"sp");
         myView.authorTextSize.setLabelFormatter(value -> ((int)value)+"sp");
         myView.authorTextSize.setHintTextSize(authorTextSize);
-        myView.batteryDialSize.setValue((int)batteryDialSize);
+        myView.batteryDialSize.setValue(batteryDialSize);
         myView.batteryDialSize.setLabelFormatter(value -> ((int)value)+"px");
         myView.batteryTextSize.setValue(batteryTextSize);
         myView.batteryTextSize.setLabelFormatter(value -> ((int)value)+"px");
@@ -84,32 +84,32 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.timeTextSize.addOnChangeListener(new MyOnChangeListener("clockTextSize",true));
         myView.titleTextSize.addOnSliderTouchListener(new MyOnSliderTouch("songTitleSize",true));
         myView.authorTextSize.addOnSliderTouchListener(new MyOnSliderTouch("songAuthorSize",true));
-        myView.batteryDialSize.addOnSliderTouchListener(new MyOnSliderTouch("batteryDialThickness",true));
+        myView.batteryDialSize.addOnSliderTouchListener(new MyOnSliderTouch("batteryDialThickness",false));
         myView.batteryTextSize.addOnSliderTouchListener(new MyOnSliderTouch("batteryTextSize",true));
         myView.timeTextSize.addOnSliderTouchListener(new MyOnSliderTouch("clockTextSize",true));
 
         myView.autohideActionBar.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            updateActionBar("hideActionBar",-1,0.0f,!isChecked);
+            updateActionBar("hideActionBar",0.0f,!isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"hideActionBar",isChecked);
         });
         myView.batteryDialOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateActionBar("batteryDialOn",0.0f,isChecked);
             showOrHideView(isChecked,false ,myView.batteryDialOnOff, myView.batteryDialSize);
-            updateActionBar("batteryDialOn",-1,0.0f,isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"batteryDialOn",isChecked);
         });
         myView.batteryTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            showOrHideView(isChecked,false ,myView.batteryTextOnOff, myView.batteryTextSize);
-            updateActionBar("batteryTextOn",-1,0.0f,isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"batteryTextOn",isChecked);
+            showOrHideView(isChecked,false ,myView.batteryTextOnOff, myView.batteryTextSize);
+            updateActionBar("batteryTextOn",0.0f,isChecked);
         });
         myView.clockTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            showOrHideView(isChecked,false ,myView.clockTextOnOff, myView.timeLayout);
-            updateActionBar("clockOn",-1,0.0f,isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"clockOn",isChecked);
+            showOrHideView(isChecked,false ,myView.clockTextOnOff, myView.timeLayout);
+            updateActionBar("clockOn",0.0f,isChecked);
         });
         myView.clock24hrOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            updateActionBar("clock24hFormat",-1,0.0f,isChecked);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"clock24hFormat",isChecked);
+            updateActionBar("clock24hFormat",0.0f,isChecked);
         });
     }
 
@@ -148,10 +148,10 @@ public class ActionBarSettingsFragment extends Fragment {
                     myView.authorTextSize.setHint((int)value + "sp");
                     myView.authorTextSize.setHintTextSize(value);
                 } else {
-                    updateActionBar(prefName, -1, value, false);
+                    updateActionBar(prefName, value, false);
                 }
             } else {
-                updateActionBar(prefName, (int)value, 0.0f, false);
+                updateActionBar(prefName, (int)value, false);
             }
         }
     }
@@ -179,8 +179,8 @@ public class ActionBarSettingsFragment extends Fragment {
         }
     }
 
-    private void updateActionBar(String prefName, int intval, float floatval, boolean isvisible) {
-        mainActivityInterface.updateActionBarSettings(prefName, intval, floatval, isvisible);
+    private void updateActionBar(String prefName, float floatval, boolean isvisible) {
+        mainActivityInterface.updateActionBarSettings(prefName, floatval, isvisible);
     }
 
     @Override

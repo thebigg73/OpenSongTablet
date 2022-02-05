@@ -463,7 +463,7 @@
     <string name="title">"Titel"</string>
     <string name="pedal_scroll_before_move">"Bildlauf vor nächstem/vorigen Song umschalten"</string>
     <string name="autoscroll_pause">"Autoscroll-Pause umschalten (toggle)"</string>
-    <string name="toggle_autoshow_stickynotes">"Song Notizen automatisch zeigen umschalten"</string>
+    <string name="autoshow_stickynotes">"Song Notizen automatisch zeigen umschalten"</string>
     <string name="toobig">"Bitte schalten Sie die automatische Skalierung für PNG/PDF-Export ein"</string>
     <string name="top">Anfang</string>
     <string name="transparency">"Transparenz"</string>

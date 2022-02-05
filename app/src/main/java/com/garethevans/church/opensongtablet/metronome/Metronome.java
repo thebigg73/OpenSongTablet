@@ -57,25 +57,7 @@ public class Metronome {
         // Make sure the action bar resets to the off color
         mainActivityInterface.getAppActionBar().doFlash(metronomeFlashOffColor);
 
-        // Stop the metronome timer stuff
-        if (metronomeTimerTask != null) {
-            metronomeTimerTask.cancel();
-            metronomeTimerTask = null;
-        }
-        if (metronomeTimer != null) {
-            metronomeTimer.cancel();
-            metronomeTimer.purge();
-        }
-
-        // Stop the visual metronome timer stuff
-        if (visualTimerTask!=null) {
-            visualTimerTask.cancel();
-            visualTimerTask = null;
-        }
-        if (visualTimer != null) {
-            visualTimer.cancel();
-            visualTimer.purge();
-        }
+        stopTimers(false);
 
         // Clean up the soundPool
         soundPool.release();
@@ -357,4 +339,30 @@ public class Metronome {
         visualTimer.scheduleAtFixedRate(visualTimerTask, beatTimeLength/2, beatTimeLength);
     }
 
+    public void stopTimers(boolean nullTimer) {
+        // Stop the metronome timer stuff
+        if (metronomeTimerTask != null) {
+            metronomeTimerTask.cancel();
+            metronomeTimerTask = null;
+        }
+        if (metronomeTimer != null) {
+            metronomeTimer.cancel();
+            metronomeTimer.purge();
+        }
+
+        // Stop the visual metronome timer stuff
+        if (visualTimerTask!=null) {
+            visualTimerTask.cancel();
+            visualTimerTask = null;
+        }
+        if (visualTimer != null) {
+            visualTimer.cancel();
+            visualTimer.purge();
+        }
+
+        if (nullTimer) {
+            metronomeTimer = null;
+            visualTimer = null;
+        }
+    }
 }

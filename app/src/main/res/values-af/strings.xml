@@ -462,7 +462,7 @@
     <string name="title">"titel"</string>
     <string name="pedal_scroll_before_move">"Toggle scroll voor die volgende/vorige lied"</string>
     <string name="autoscroll_pause">"Skakel Autoscroll Pause"</string>
-    <string name="toggle_autoshow_stickynotes">"Toggle autoshow taai notas"</string>
+    <string name="autoshow_stickynotes">"Toggle autoshow taai notas"</string>
     <string name="toobig">"Přepněte prosím Autoscale na pro export do PNG/PDF"</string>
     <string name="top">bopunt </string>
     <string name="transparency">"deursigtigheid"</string>

@@ -387,6 +387,12 @@ public class Autoscroll {
             }
         }
     }
+
+    public void stopTimers() {
+        resetTimers();
+        timer = null;
+        timerTask = null;
+    }
 }
 
 // TODO Learn autoscroll should we want it back - probably not used very much anyway

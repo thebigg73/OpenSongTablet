@@ -463,7 +463,7 @@
     <string name="title">"タイトル"</string>
     <string name="pedal_scroll_before_move">"次/前の曲の前にトグルスクロール"</string>
     <string name="autoscroll_pause">"自動スクロールの一時停止を切り替える"</string>
-    <string name="toggle_autoshow_stickynotes">"トグルautoshow付箋"</string>
+    <string name="autoshow_stickynotes">"トグルautoshow付箋"</string>
     <string name="toobig">"PNG/PDFエクスポート用に自動縮尺切り替えてください"</string>
     <string name="top">トップ</string>
     <string name="transparency">"透明性"</string>

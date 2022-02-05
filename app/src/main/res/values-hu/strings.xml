@@ -463,7 +463,7 @@
     <string name="title">"cím"</string>
     <string name="pedal_scroll_before_move">"Váltás scroll, mielőtt a következő / előző szám"</string>
     <string name="autoscroll_pause">"Kapcsolja be az Autoscroll szünetet"</string>
-    <string name="toggle_autoshow_stickynotes">"Toggle autoshow cetlik"</string>
+    <string name="autoshow_stickynotes">"Toggle autoshow cetlik"</string>
     <string name="toobig">"Kérjük kapcsolja be autoscale png/pdf export"</string>
     <string name="top">Felső</string>
     <string name="transparency">"Átláthatóság"</string>

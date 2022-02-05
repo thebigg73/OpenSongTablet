@@ -322,28 +322,7 @@ public class Pad {
         padTime.setText("");
         padTotalTime.setText("");
         pad.setVisibility(View.GONE);
-        switch (padNum) {
-            case 1:
-                if (pad1PlayTimerTask!=null) {
-                    pad1PlayTimerTask.cancel();
-                    pad1PlayTimerTask = null;
-                }
-                if (pad1PlayTimer != null) {
-                    pad1PlayTimer.cancel();
-                    pad1PlayTimer.purge();
-                }
-                break;
-            case 2:
-                if (pad2PlayTimerTask!=null) {
-                    pad2PlayTimerTask.cancel();
-                    pad2PlayTimerTask = null;
-                }
-                if (pad2PlayTimer != null) {
-                    pad2PlayTimer.cancel();
-                    pad2PlayTimer.purge();
-                }
-                break;
-        }
+        stopTimers(padNum);
     }
     private void endFadeTimer(int padNum) {
         switch (padNum) {
@@ -588,5 +567,30 @@ public class Pad {
         stopAndReset(padNum);
         endTimer(padNum);
         return true;
+    }
+
+    public void stopTimers(int padNum) {
+        switch (padNum) {
+            case 1:
+                if (pad1PlayTimerTask!=null) {
+                    pad1PlayTimerTask.cancel();
+                    pad1PlayTimerTask = null;
+                }
+                if (pad1PlayTimer != null) {
+                    pad1PlayTimer.cancel();
+                    pad1PlayTimer.purge();
+                }
+                break;
+            case 2:
+                if (pad2PlayTimerTask!=null) {
+                    pad2PlayTimerTask.cancel();
+                    pad2PlayTimerTask = null;
+                }
+                if (pad2PlayTimer != null) {
+                    pad2PlayTimer.cancel();
+                    pad2PlayTimer.purge();
+                }
+                break;
+        }
     }
 }

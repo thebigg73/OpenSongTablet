@@ -14,13 +14,11 @@ public class __TODO__ {
     // words_and_music_by
     // used_by_permission
     // update_projector_automatically
-    // toggle_autoshow_stickynotes
     // timer_size
     // timer_learn
     // subscription
     // stage_section_max
     // song_name_already_taken
-    // reset_colours
 
     //TODO - still to complete
     // Anything still listed below needs work

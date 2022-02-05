@@ -47,6 +47,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
+import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
@@ -145,10 +146,11 @@ public interface MainActivityInterface {
     // Action bar
     ActionBar getMyActionBar();
     AppActionBar getAppActionBar();
+    BatteryStatus getBatteryStatus();
     void hideActionBar(boolean hide);
     void showHideActionBar();
     void updateToolbar(String what);
-    void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible);
+    void updateActionBarSettings(String prefName, float floatval, boolean isvisible);
 
     // Page button(s)
     PageButtons getPageButtons();

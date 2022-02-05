@@ -45,6 +45,7 @@
     <string name="autoscroll_pause">Autoscroll Pause</string>
     <string name="autoscroll_time">Autoscroll delay time</string>
     <string name="autoshow_highlight">Autoshow highlighter notes</string>
+    <string name="autoshow_stickynotes">Autoshow sticky notes</string>
     <string name="average">Average</string>
 
     <!-- TODO Not checked-->
@@ -893,7 +894,6 @@
     <string name="timer_learn">Learn autoscroll time</string>
     <string name="timer_size">Timer size</string>
     <string name="title">Title</string>
-    <string name="toggle_autoshow_stickynotes">Autoshow sticky notes</string>
     <string name="tool">Tool</string>
     <string name="transpose">Transpose</string>
     <string name="transpose_capo">Transpose by capo fret change</string>

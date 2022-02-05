@@ -11,7 +11,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.BatteryManager;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,56 +20,105 @@ import androidx.appcompat.app.ActionBar;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BatteryStatus extends BroadcastReceiver {
 
     private boolean isCharging;
     private final String TAG = "BatteryStatus";
 
+    private float batteryTextSize, charge;
+    private int batteryDialThickness;
+    private int actionBarHeight = 0;
+    private boolean batteryTextOn, batteryDialOn;
+    private final ActionBar actionBar;
+    private final TextView batteryCharge;
+    private final ImageView batteryImage;
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
+    private Timer batteryTimer;
+    private TimerTask batteryTimerTask;
+    private Intent batteryStatus;
+
     public interface MyInterface {
         void setUpBatteryMonitor();
     }
 
-    public void setUpBatteryMonitor(Context c, TextView digitalclock,
-                                    TextView batterycharge, ImageView batteryimage, ActionBar ab) {
-        MainActivityInterface mainActivityInterface = (MainActivityInterface) c;
+    public BatteryStatus(Context c, ImageView batteryImage, TextView batteryCharge, ActionBar actionBar) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+        this.batteryImage = batteryImage;
+        this.batteryCharge = batteryCharge;
+        this.actionBar = actionBar;
+    }
 
-        // Get clock
-        try {
-            // Get clock
-            updateClock(mainActivityInterface,digitalclock,
-                    mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"clockTextSize",9.0f),
-                    mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"clock24hFormat",true),
-                    mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"clockOn",true));
+    public void setUpBatteryMonitor() {
 
-            // Get battery
-            int i = (int) (getBatteryStatus(c) * 100.0f);
-            String charge = i + "%";
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"batteryTextOn",true)) {
-                batterycharge.setVisibility(View.VISIBLE);
-            } else {
-                batterycharge.setVisibility(View.GONE);
-            }
-            batterycharge.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "batteryTextSize",9.0f));
-            batterycharge.setText(charge);
-            int abh = ab.getHeight();
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"batteryDialOn",true)) {
-                batteryimage.setVisibility(View.VISIBLE);
-            } else {
-                batteryimage.setVisibility(View.INVISIBLE);
-            }
-            if (abh > 0) {
-                setBatteryImage(c,batteryimage,abh,i,mainActivityInterface.getPreferences().getMyPreferenceInt(c,"batteryDialThickness",4));
-            }
+        // Get the initial preferences
+        updateBatteryPrefs();
 
-            // Ask the app to check again in 60s
-            Handler batterycheck = new Handler();
-            batterycheck.postDelayed(() -> setUpBatteryMonitor(c,digitalclock,batterycharge,batteryimage,ab), 60000);
-        } catch (Exception e) {
-            // Ooops
+        // Set up the intent
+        IntentFilter intentFiler = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        batteryStatus = c.registerReceiver(null, intentFiler);
+
+        // Get the initial battery charge and set values and colour
+        updateBattery();
+    }
+
+    public void updateBattery() {
+        // If we haven't set the timerTask already, do it now.
+        // This task is called every minute for an update
+        stopTimers();
+
+            batteryTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        getBatteryStatus();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+        // Run this now and again every minute
+        batteryTimer = new Timer();
+        batteryTimer.scheduleAtFixedRate(batteryTimerTask,0,6000);
+    }
+
+    public void updateBatteryPrefs() {
+        setBatteryTextOn(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"batteryTextOn",true));
+        setBatteryTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "batteryTextSize",9.0f));
+        setBatteryDialOn(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"batteryDialOn",true));
+        setBatteryDialThickness(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "batteryDialThickness", 4));
+    }
+
+    public void setBatteryDialOn(boolean batteryDialOn) {
+        this.batteryDialOn = batteryDialOn;
+        if (batteryDialOn) {
+            batteryImage.setVisibility(View.VISIBLE);
+        } else {
+            batteryImage.setVisibility(View.GONE);
         }
+    }
+
+    public void setBatteryDialThickness(int batteryDialThickness) {
+        this.batteryDialThickness = batteryDialThickness;
+        setBatteryImage();
+    }
+    public void setBatteryTextOn(boolean batteryTextOn) {
+        this.batteryTextOn = batteryTextOn;
+        if (batteryTextOn) {
+            batteryCharge.setVisibility(View.VISIBLE);
+        } else {
+            batteryCharge.setVisibility(View.GONE);
+        }
+    }
+    public void setBatteryTextSize(float batteryTextSize) {
+        this.batteryTextSize = batteryTextSize;
+        batteryCharge.setTextSize(batteryTextSize);
     }
 
     @Override
@@ -79,10 +127,9 @@ public class BatteryStatus extends BroadcastReceiver {
             int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                     status == BatteryManager.BATTERY_STATUS_FULL;
-
+            charge = status;
             try {
-                MyInterface mListener = (MyInterface) context;
-                mListener.setUpBatteryMonitor();
+                updateBattery();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d(TAG, "Problem setting up the battery monitor");
@@ -90,37 +137,50 @@ public class BatteryStatus extends BroadcastReceiver {
         }
     }
 
-    public float getBatteryStatus (Context context) {
-
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = context.registerReceiver(null, ifilter);
-
+    private void getBatteryStatus () {
         if (batteryStatus != null) {
             int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
-            float batteryPct = level / (float) scale;
+            charge = level / (float) scale;
 
             // Are we charging / charged?
             int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                     status == BatteryManager.BATTERY_STATUS_FULL;
+        }
 
-            return batteryPct;
+        if (batteryTextOn && batteryCharge != null && charge!=0) {
+            batteryCharge.post(() -> {
+                int i = (int) (charge * 100.0f);
+                String chargeText = i + "%";
 
-        } else {
-            return 0;
+                batteryCharge.setTextSize(batteryTextSize);
+                batteryCharge.setText(chargeText);
+            });
+        }
+
+        // Get the image
+        if (batteryCharge != null && actionBar != null && charge!=0) {
+            if (batteryDialOn) {
+                actionBarHeight = actionBar.getHeight();
+                if (actionBarHeight > 0) {
+                    batteryImage.post(this::setBatteryImage);
+                }
+            }
         }
     }
 
-    public void setBatteryImage(Context c, ImageView batteryImage, int abheight, int charge, int thickness) {
-        BitmapDrawable bmp = batteryImage(c, abheight, charge, thickness);
-        batteryImage.setImageDrawable(bmp);
+    public void setBatteryImage() {
+        if (charge>0) {
+            BitmapDrawable bmp = batteryImage((int) (charge * 100f));
+            batteryImage.setImageDrawable(bmp);
+        }
     }
 
-    public BitmapDrawable batteryImage(Context c, int abheight, int charge, int thickness) {
+    public BitmapDrawable batteryImage(int charge) {
 
-        int size = (int)(abheight*0.75f);
+        int size = (int)(actionBarHeight*0.75f);
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         Bitmap bmp = Bitmap.createBitmap(size,size, conf);
 
@@ -146,7 +206,7 @@ public class BatteryStatus extends BroadcastReceiver {
         bPaint.setStyle(Paint.Style.STROKE);
         bPaint.setStrokeJoin(Paint.Join.ROUND);
         bPaint.setStrokeCap(Paint.Cap.ROUND);
-        bPaint.setStrokeWidth(thickness);
+        bPaint.setStrokeWidth(batteryDialThickness);
 
         Paint mPaint = new Paint();
         mPaint.setDither(true);
@@ -155,15 +215,17 @@ public class BatteryStatus extends BroadcastReceiver {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(thickness);
+        mPaint.setStrokeWidth(batteryDialThickness);
 
         Path circle = new Path();
-        RectF box = new RectF(thickness,thickness,size-thickness,size-thickness);
+        RectF box = new RectF(batteryDialThickness, batteryDialThickness,
+                size-batteryDialThickness,size-batteryDialThickness);
         float sweep = 360 * charge * 0.01f;
         circle.addArc(box, 270, sweep);
 
         Path circle2 = new Path();
-        RectF box2 = new RectF(thickness,thickness,size-thickness,size-thickness);
+        RectF box2 = new RectF(batteryDialThickness, batteryDialThickness,
+                size-batteryDialThickness,size-batteryDialThickness);
         float sweep2 = 360;
         circle2.addArc(box2, 270, sweep2);
 
@@ -174,21 +236,16 @@ public class BatteryStatus extends BroadcastReceiver {
         return drawable;
     }
 
-    public void updateClock(MainActivityInterface mainActivityInterface, TextView digitalclock, float textsize, boolean clockon, boolean is24h) {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat df;
-        if (is24h) {
-            df = new SimpleDateFormat("HH:mm", mainActivityInterface.getLocale());
-        } else {
-            df = new SimpleDateFormat("h:mm", mainActivityInterface.getLocale());
+    public void stopTimers() {
+        // Called when the app closes
+        if (batteryTimer!=null) {
+            batteryTimer.cancel();
+            batteryTimer.purge();
         }
-        String formattedTime = df.format(cal.getTime());
-        if (clockon) {
-            digitalclock.setVisibility(View.VISIBLE);
-        } else {
-            digitalclock.setVisibility(View.GONE);
+        batteryTimer = null;
+        if (batteryTimerTask!=null) {
+            batteryTimerTask.cancel();
         }
-        digitalclock.setTextSize(textsize);
-        digitalclock.setText(formattedTime);
+        batteryTimerTask = null;
     }
 }
