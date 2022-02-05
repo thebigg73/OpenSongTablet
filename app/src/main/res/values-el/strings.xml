@@ -376,7 +376,7 @@
     <string name="scale_style">"Στυλ κλίμακας"</string>
     <string name="scripture">"Scripture"</string>
     <string name="scrollbuttons">"Ρυθμίσεις κύλισης"</string>
-    <string name="scrollbuttons_distance">"Μετακινήστε το ποσό"</string>
+    <string name="scroll_amount">"Μετακινήστε το ποσό"</string>
     <string name="scrollbuttons_toggle">"Toggle scroll buttons"</string>
     <string name="search">"Ψάξιμο"</string>
     <string name="search_biblegateway">"Αναζήτηση στο BibleGateway.com"</string>
@@ -804,7 +804,7 @@
     <string name="no_suitable_application">Δεν υπάρχει διαθέσιμη ή εγκατεστημένη εφαρμογή που να μπορεί να ανοίξει αυτό το στοιχείο.</string>
     <string name="not_available">Μη διαθέσιμος</string>
     <string name="nothing_selected">Τίποτα επιλεγμένο</string>
-    <string name="ok">Εντάξει</string>
+    <string name="okay">Εντάξει</string>
     <string name="online">Σε σύνδεση</string>
     <string name="optional">Προαιρετικός</string>
     <string name="pad_cross_fade">Διασταυρούμενα μαξιλαράκια</string>

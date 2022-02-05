@@ -376,7 +376,7 @@
     <string name="scale_style">"Estilo de escala"</string>
     <string name="scripture">"Bíblia"</string>
     <string name="scrollbuttons">"Configurações de rolagem"</string>
-    <string name="scrollbuttons_distance">"Quantidade de rolagem"</string>
+    <string name="scroll_amount">"Quantidade de rolagem"</string>
     <string name="scrollbuttons_toggle">Botões de rolagem de alternância</string>
     <string name="search">"Pesquisa"</string>
     <string name="search_biblegateway">"Pesquisar BibleGateway.com"</string>
@@ -710,7 +710,7 @@
     <string name="pad_custom_pad_error">Há um problema com o conjunto de autopad personalizado para esta tecla</string>
     <string name="pad_custom_info">Defina pads personalizados para usar como faixas de acompanhamento correspondentes às teclas da música. Esses arquivos devem ser salvos na pasta OpenSong/Pads. As músicas que têm o pad definido como \'Auto\' e um conjunto de teclas usarão o arquivo indicado aqui.</string>
     <string name="pad_cross_fade">Pads de crossfade</string>
-    <string name="ok">OK</string>
+    <string name="okay">OK</string>
     <string name="nothing_selected">Nada selecionado</string>
     <string name="not_available">Não disponível</string>
     <string name="both">Ambos</string>

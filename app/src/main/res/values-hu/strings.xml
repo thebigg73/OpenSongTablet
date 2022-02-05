@@ -376,7 +376,7 @@
     <string name="scale_style">"Scale stílus"</string>
     <string name="scripture">"Szentírás"</string>
     <string name="scrollbuttons">"Scroll beállítások"</string>
-    <string name="scrollbuttons_distance">"Scroll összeg"</string>
+    <string name="scroll_amount">"Scroll összeg"</string>
     <string name="scrollbuttons_toggle">Váltás gördítőgombokat</string>
     <string name="search">"Keresés"</string>
     <string name="search_biblegateway">"Keresés BibleGateway.com"</string>
@@ -725,7 +725,7 @@
     <string name="pad_cross_fade">Kereszthalványuló párnák</string>
     <string name="optional">Választható</string>
     <string name="online">Online</string>
-    <string name="ok">Rendben</string>
+    <string name="okay">Rendben</string>
     <string name="nothing_selected">Semmi nincs kiválasztva</string>
     <string name="not_available">Nem elérhető</string>
     <string name="no_suitable_application">Nem érhető el vagy nincs telepítve olyan alkalmazás, amely megnyitná ezt az elemet.</string>

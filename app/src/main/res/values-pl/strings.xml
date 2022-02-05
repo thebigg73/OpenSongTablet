@@ -376,7 +376,7 @@
     <string name="scale_style">"Styl skala"</string>
     <string name="scripture">"Pismo"</string>
     <string name="scrollbuttons">"Przewiń ustawienia"</string>
-    <string name="scrollbuttons_distance">"Kwota przewijania"</string>
+    <string name="scroll_amount">"Kwota przewijania"</string>
     <string name="scrollbuttons_toggle">Przełącz przycisków przewijania</string>
     <string name="search">"Szukaj"</string>
     <string name="search_biblegateway">"Szukaj BibleGateway.com"</string>
@@ -711,7 +711,7 @@
     <string name="pad_custom_pad_error">Wystąpił problem z niestandardowym zestawem podkładek automatycznych dla tego klawisza</string>
     <string name="pad_custom_info">Ustaw niestandardowe pady, które będą używane jako podkłady pasujące do klawiszy utworu. Te pliki muszą być zapisane w folderze OpenSong/Pads. Utwory, w których pad jest ustawiony jako „Auto” i mają zestaw klawiszy, będą korzystać z podanego tutaj pliku.</string>
     <string name="pad_cross_fade">Pady przenikania</string>
-    <string name="ok">Dobrze</string>
+    <string name="okay">Dobrze</string>
     <string name="nothing_selected">Niczego nie wybrano</string>
     <string name="not_available">Niedostępne</string>
     <string name="both">Obydwa</string>

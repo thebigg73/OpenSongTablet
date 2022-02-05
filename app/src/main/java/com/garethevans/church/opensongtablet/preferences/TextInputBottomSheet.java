@@ -194,7 +194,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
         myView.prefEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // The user has clicked Enter/Done, so the keyboard has closed
-                // Click on the ok button to save it
+                // Click on the okay button to save it
                 myView.okButton.performClick();
             }
             return false;

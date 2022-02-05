@@ -376,7 +376,7 @@
     <string name="scale_style">"Skala stil"</string>
     <string name="scripture">"skriften"</string>
     <string name="scrollbuttons">"Rullningsinställningar"</string>
-    <string name="scrollbuttons_distance">"Rulla beloppet"</string>
+    <string name="scroll_amount">"Rulla beloppet"</string>
     <string name="scrollbuttons_toggle">"Växla bläddringsknapparna"</string>
     <string name="search">"Sök"</string>
     <string name="search_biblegateway">"Sök BibleGateway.com"</string>
@@ -697,7 +697,7 @@
     <string name="no_folders">Du måste skapa en undermapp för att kunna flytta filer</string>
     <string name="not_available">Inte tillgänglig</string>
     <string name="nothing_selected">Inget valt</string>
-    <string name="ok">Ok</string>
+    <string name="okay">Ok</string>
     <string name="pad_cross_fade">Cross-fade pads</string>
     <string name="pad_custom_info">Ställ in anpassade pads som ska användas som bakgrundsspår som matchar sångtangenterna. Dessa filer måste sparas i mappen OpenSong/Pads. Låtar som har pad inställd som \'Auto\' och har en tangentuppsättning kommer att använda filen som anges här.</string>
     <string name="pad_custom_pad_error">Det finns ett problem med den anpassade autopad-uppsättningen för denna nyckel</string>

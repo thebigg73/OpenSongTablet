@@ -91,7 +91,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     private ArrayList<String> folderlist;
 
     // Other variables
-    private boolean overwrite, ok, error;
+    private boolean overwrite, okay, error;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -382,9 +382,9 @@ public class PopUpImportExternalFile extends DialogFragment {
             OutputStream outputStream = storageAccess.getOutputStream(getActivity(), newfile);
 
             error = false;
-            ok = storageAccess.copyFile(inputStream, outputStream);
+            okay = storageAccess.copyFile(inputStream, outputStream);
 
-            if (!ok) {
+            if (!okay) {
                 errormessage = errormessage + filename + ": " + Objects.requireNonNull(getActivity()).getString(R.string.backup_error) + "\n";
             }
         } else {
@@ -426,7 +426,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             sqLiteHelper.createSong(getActivity(), subfolder, song);
         }
 
-        if (ok && !error) {
+        if (okay && !error) {
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
         } else {
             StaticVariables.myToastMessage = errormessage;
@@ -589,7 +589,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                             onsongdbfile = new File(getActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
                             Uri outuri = Uri.fromFile(onsongdbfile);
                             if (!onsongdbfile.mkdirs()) {
-                                Log.d("PopUpImport", "Database file already exists - ok");
+                                Log.d("PopUpImport", "Database file already exists - okay");
                             }
                             out = storageAccess.getOutputStream(getActivity(), outuri);
 

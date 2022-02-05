@@ -62,7 +62,7 @@ public class MoveContentFragment extends Fragment {
         // Prepare the list of files in the folder
         listFilesInFolder();
 
-        // Listen for the dialog ok/close
+        // Listen for the dialog okay/close
         myView.doMove.setOnClickListener(b -> doMove());
         myView.selectAllCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> checkAll(isChecked));
 

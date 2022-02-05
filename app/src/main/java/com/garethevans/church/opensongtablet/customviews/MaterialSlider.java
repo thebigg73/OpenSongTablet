@@ -104,14 +104,14 @@ public class MaterialSlider extends LinearLayout {
 
     // The setters
     public void setValueFrom(float valueFrom) {
-        // Check any set value is ok
+        // Check any set value is okay
         if (slider.getValue() < valueFrom) {
             slider.setValue(valueFrom);
         }
         slider.setValueFrom(valueFrom);
     }
     public void setValueTo(float valueTo) {
-        // Check any set value is ok
+        // Check any set value is okay
         if (slider.getValue() > valueTo) {
             slider.setValue(valueTo);
         }

@@ -281,7 +281,7 @@
     <string name="is_not_set">Не встановлено</string>
     <string name="nowifidirect">На жаль, цей пристрій не підтримує доступ до WiFi.</string>
     <string name="off">ВИКЛ</string>
-    <string name="ok">OK</string>
+    <string name="okay">OK</string>
     <string name="on">ВКЛ</string>
     <string name="options">Меню</string>
     <string name="other">інший</string>
@@ -347,7 +347,7 @@
     <string name="scale_style">Стиль масштабу</string>
     <string name="scripture">Священний писання</string>
     <string name="scrollbuttons">Налаштування кнопок прокрутки</string>
-    <string name="scrollbuttons_distance">Інтервал прокрутки</string>
+    <string name="scroll_amount">Інтервал прокрутки</string>
     <string name="scrollbuttons_toggle">Перемикання кнопок прокрутки</string>
     <string name="search">Пошук</string>
     <string name="search_biblegateway">Пошук на BibleGateway.com</string>

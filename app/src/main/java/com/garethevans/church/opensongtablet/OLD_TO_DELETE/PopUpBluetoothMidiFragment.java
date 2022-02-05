@@ -365,7 +365,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
                     m.sendMidi(buffer2);
                 }
             },1000);
-            StaticVariables.myToastMessage = getString(R.string.ok);
+            StaticVariables.myToastMessage = getString(R.string.okay);
             _ShowToast.showToast(getContext());
         } catch (Exception e) {
             e.printStackTrace();

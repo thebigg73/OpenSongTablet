@@ -146,7 +146,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 });
 
                 // Prepare the toast message using the title.  It is cleared if cancel is clicked
-                StaticVariables.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.ok);
+                StaticVariables.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.okay);
 
                 // Reset the setname chosen
                 StaticVariables.setnamechosen = "";

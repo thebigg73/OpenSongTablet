@@ -1939,7 +1939,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             pad.startPad(this);
             // Showcase if required
-            showCase.singleShowCase(this,myView.onScreenInfo.pad,getString(R.string.ok),getString(R.string.pad_playback_info),true,"padPlayback");
+            showCase.singleShowCase(this,myView.onScreenInfo.pad,getString(R.string.okay),getString(R.string.pad_playback_info),true,"padPlayback");
             return true;
         }
     }

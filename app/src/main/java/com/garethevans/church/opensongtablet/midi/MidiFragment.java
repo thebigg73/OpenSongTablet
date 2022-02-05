@@ -572,7 +572,7 @@ public class MidiFragment extends Fragment {
                 mainActivityInterface.getMidi().sendMidi(buffer2);
             }, 1000);
             if (sent) {
-                mainActivityInterface.getShowToast().doIt(getString(R.string.ok));
+                mainActivityInterface.getShowToast().doIt(getString(R.string.okay));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -594,7 +594,7 @@ public class MidiFragment extends Fragment {
         if (!success) {
             mainActivityInterface.getShowToast().doIt(getString(R.string.midi_error));
         } else {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.ok));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.okay));
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)

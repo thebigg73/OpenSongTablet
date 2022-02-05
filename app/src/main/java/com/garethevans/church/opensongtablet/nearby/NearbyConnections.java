@@ -219,7 +219,7 @@ public class NearbyConnections implements NearbyInterface {
                                 .setTitle(c.getString(R.string.connections_accept) + " " + connectionInfo.getEndpointName())
                                 .setMessage(c.getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationToken())
                                 .setPositiveButton(
-                                        c.getString(R.string.ok),
+                                        c.getString(R.string.okay),
                                         (DialogInterface dialog, int which) -> delayAcceptConnection(c, mainActivityInterface, endpointId, connectionInfo))
                                 .setNegativeButton(
                                         c.getString(R.string.cancel),

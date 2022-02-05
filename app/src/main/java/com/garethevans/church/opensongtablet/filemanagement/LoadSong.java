@@ -209,7 +209,7 @@ public class LoadSong {
     private String getFileTypeByExtension(String filename) {
         filename = filename.toLowerCase(Locale.ROOT);
         if (!filename.contains(".")) {
-            // No extension, so hopefully ok
+            // No extension, so hopefully okay
             return "XML";
         } else if (filename.endsWith(".pdf")) {
             return "PDF";

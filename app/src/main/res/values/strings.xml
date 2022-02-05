@@ -418,7 +418,6 @@
     <string name="is_not_set">Not set</string>
     <string name="item">Item</string>
 
-    <!-- TODO Not checked-->
     <string name="keepmultiline">Keep multiline compact</string>
     <string name="key">Key</string>
     <array name="key_choice">
@@ -597,9 +596,8 @@
     <string name="nothing_selected">Nothing selected</string>
     <string name="nowifidirect">Sorry, this device does not support WiFi direct</string>
 
-    <!-- TODO Not checked-->
     <string name="off">Off</string>
-    <string name="ok">OK</string>
+    <string name="okay">OK</string>
     <string name="on">On</string>
     <string name="online">Online</string>
     <string name="online_services" translatable="false">UG, SongSelect, Chordie, etc.</string>
@@ -610,17 +608,14 @@
     <string name="open_song_menu">Open song menu</string>
     <string name="opensong" translatable="false">OpenSong</string>
     <string name="optional">Optional</string>
-    <string name="options">OPTIONS</string>
     <string name="other">Other</string>
     <string name="override_fullautoscale">Override full autoscale to width only</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
     <string name="overwrite">Overwrite existing item</string>
 
-    <!-- TODO Not checked-->
     <string name="pad">Pad</string>
     <string name="pad_auto">Auto</string>
-    <string name="pad_choose_key">Please select the key of this song</string>
     <string name="pad_cross_fade">Cross-fade pads</string>
     <string name="pad_custom_info">Set custom pads to use as backing tracks matching song keys.  These files must be saved in the OpenSong/Pads folder.  Songs that have the pad set as \'Auto\' and have a key set will use the file noted here.</string>
     <string name="pad_custom_pad_error">There is a problem with the custom auto pad set for this key</string>
@@ -632,14 +627,7 @@
     <string name="pad_onoroff">Use a pad with this song</string>
     <string name="pad_playback_info">Pad progress is shown here.  Tap to pause, press and hold to stop.</string>
     <string name="pad_settings_info">Default pad settings</string>
-    <string name="page_background">Page background</string>
     <string name="page_buttons">Page buttons</string>
-    <string name="pagebutton_custom_group">Group custom buttons</string>
-    <string name="pagebutton_extrainfo_group">Group extra information buttons</string>
-    <string name="pagebutton_group">Group all page buttons</string>
-    <string name="pagebutton_visibility">Show/hide page buttons</string>
-    <string name="pageturn_instructions">"This page allows you to assign buttons from a page turning device (such as a bluetooth footswitch) to control moving through sets or scrolling up and down on a song page.\n\nYou must ensure that the device is already connected to your Android tablet and switched on.\n\nClick on the green or blue buttons below then press the desired control button on your footswitch, etc."</string>
-    <string name="pageturn_next">Next</string>
     <string name="pan">Pan</string>
     <string name="pan_center">Center</string>
     <string name="pan_left">Left</string>
@@ -650,8 +638,6 @@
     <string name="paypal" translatable="false">PayPal</string>
     <string name="paypal_description">Send me a donation if you find the app useful</string>
     <string name="pdf" translatable="false">PDF</string>
-    <string name="pdf_functionnotavailable">This function is not available for PDF documents</string>
-    <string name="pdfonly">No ChordPro, just the PDF</string>
     <string name="pdftotext_extract">Extract text from PDF</string>
     <string name="pdftotext_found">Text found:</string>
     <string name="pedal">Pedal</string>
@@ -663,15 +649,12 @@
     <string name="pedal_waiting">"Waiting for button…."</string>
     <string name="performance_mode">Performance mode</string>
     <string name="performance_mode_info">Use your device as a songbook</string>
-    <string name="phrasesearch">Enter search phrase (title, author, lyrics, etc.)</string>
     <string name="piano">Piano</string>
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
     <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
     <string name="play_services_how">Show me how</string>
-    <string name="pleaseselect">Please select</string>
     <string name="plus_1" translatable="false">+1</string>
     <string name="portrait">Portrait</string>
-    <string name="position">Position</string>
     <string name="prechorus">Pre-Chorus</string>
     <string name="prechorus_background">Prechorus background</string>
     <string name="pref_key_text">Choose your preferred key settings for transposing and capo display</string>
@@ -685,7 +668,6 @@
     <string name="processing">Files are being processed</string>
     <string name="profile">Profile</string>
     <string name="profile_backup">Backup current profile</string>
-    <string name="profile_description">Backup and restore your settings</string>
     <string name="profile_explanation">Profiles are used to store your display preferences.</string>
     <string name="profile_restore">Restore a saved profile</string>
     <string name="project">Project</string>
@@ -731,6 +713,7 @@
     <string name="scaling">Scaling</string>
     <string name="scaling_info">Autoscale settings and section scaling</string>
     <string name="scripture">Scripture</string>
+    <string name="scroll_amount">Scroll amount</string>
     <string name="scroll_down">Scroll down</string>
     <string name="scroll_up">"Scroll up</string>
     <string name="search">Search</string>
@@ -1091,8 +1074,6 @@ Check out the categories in the right hand options menu.
     <string name="set_new_name">New set name</string>
     <string name="search_log">Check the search database error log</string>
     <string name="search_fields">Search fields</string>
-    <string name="scrollbuttons">Scroll settings</string>
-    <string name="scrollbuttons_distance">Scroll amount</string>
     <string name="scrollbuttons_toggle">Toggle scroll buttons</string>
     <string name="refreshsongs">Refresh song menu</string>
     <string name="remindme">Remind me later</string>
@@ -1109,6 +1090,21 @@ Check out the categories in the right hand options menu.
     <string name="highlight_notallowed">Autoscale needs to be set to full for this feature</string>
     <string name="host">Host</string>
     <string name="select_item_variation">Select the song to create a set variation</string>
+    <string name="pad_choose_key">Please select the key of this song</string>
+    <string name="page_background">Page background</string>
+    <string name="pagebutton_custom_group">Group custom buttons</string>
+    <string name="pagebutton_extrainfo_group">Group extra information buttons</string>
+    <string name="pagebutton_group">Group all page buttons</string>
+    <string name="pagebutton_visibility">Show/hide page buttons</string>
+    <string name="pageturn_instructions">"This page allows you to assign buttons from a page turning device (such as a bluetooth footswitch) to control moving through sets or scrolling up and down on a song page.\n\nYou must ensure that the device is already connected to your Android tablet and switched on.\n\nClick on the green or blue buttons below then press the desired control button on your footswitch, etc."</string>
+    <string name="pageturn_next">Next</string>
+    <string name="pdf_functionnotavailable">This function is not available for PDF documents</string>
+    <string name="pdfonly">No ChordPro, just the PDF</string>
+    <string name="phrasesearch">Enter search phrase (title, author, lyrics, etc.)</string>
+    <string name="pleaseselect">Please select</string>
+    <string name="position">Position</string>
+    <string name="profile_description">Backup and restore your settings</string>
+    <string name="options">OPTIONS</string>
 
 
 

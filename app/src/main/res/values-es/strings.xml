@@ -376,7 +376,7 @@
     <string name="scale_style">"Estilo de escala"</string>
     <string name="scripture">"Sagrada Escritura"</string>
     <string name="scrollbuttons">"Ajustes de desplazamiento"</string>
-    <string name="scrollbuttons_distance">"Cantidad de desplazamiento"</string>
+    <string name="scroll_amount">"Cantidad de desplazamiento"</string>
     <string name="scrollbuttons_toggle">Botones de desplazamiento Toggle</string>
     <string name="search">"Buscar"</string>
     <string name="search_biblegateway">"Buscar BibleGateway.com"</string>
@@ -697,7 +697,7 @@
     <string name="no_folders">Debe crear una subcarpeta para permitir el movimiento de archivos</string>
     <string name="not_available">No disponible</string>
     <string name="nothing_selected">Nada seleccionado</string>
-    <string name="ok">OK</string>
+    <string name="okay">OK</string>
     <string name="pad_cross_fade">Pads de fundido cruzado</string>
     <string name="pad_custom_info">Configure almohadillas personalizadas para usar como pistas de acompañamiento que coincidan con las teclas de la canción. Estos archivos deben guardarse en la carpeta OpenSong/Pads. Las canciones que tienen el pad configurado como \'Auto\' y tienen un conjunto de teclas usarán el archivo que se indica aquí.</string>
     <string name="pad_custom_pad_error">Hay un problema con el teclado automático personalizado configurado para esta tecla</string>

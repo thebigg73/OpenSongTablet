@@ -19,10 +19,15 @@ public class __TODO__ {
     // subscription
     // stage_section_max
     // song_name_already_taken
+    // pad_off
+    // pdftotext_extract
+    // pdftotext_found
+    // presoFontShadow
+    // keepmultiline
 
     //TODO - still to complete
     // Anything still listed below needs work
-    // Anything missing has been tested as ok
+    // Anything missing has been tested as okay
     /*
 
 Bugs:
@@ -60,8 +65,6 @@ opening a song when in the set menu doesn't scroll to it
     Controls - page buttons: Add the features once they are all ready
     Controls - pedals: Add the features once they are ready
     Controls - custom gestures:  Add the features once they are ready
-
-    popup scroll settings - speed/amount - add to pedals fragment?  Don't want up/down arrow anymore
 
 
 }

@@ -376,7 +376,7 @@
     <string name="scale_style">"Стиль масштаба"</string>
     <string name="scripture">"Cвященное писание"</string>
     <string name="scrollbuttons">"Настройка кнопок прокрутки"</string>
-    <string name="scrollbuttons_distance">"Интервал прокрутки"</string>
+    <string name="scroll_amount">"Интервал прокрутки"</string>
     <string name="scrollbuttons_toggle">Переключение кнопок прокрутки</string>
     <string name="search">"Поиск"</string>
     <string name="search_biblegateway">"Поиск на BibleGateway.com"</string>
@@ -710,7 +710,7 @@
     <string name="pad_custom_pad_error">Возникла проблема с пользовательским набором автопэдов для этой клавиши.</string>
     <string name="pad_custom_info">Установите пользовательские пэды для использования в качестве фоновых дорожек, соответствующих клавишам песни. Эти файлы должны быть сохранены в папке OpenSong/Pads. Композиции, в которых пэд установлен как «Auto» и имеет установленную тональность, будут использовать указанный здесь файл.</string>
     <string name="pad_cross_fade">Пэды с перекрестным затуханием</string>
-    <string name="ok">В порядке</string>
+    <string name="okay">В порядке</string>
     <string name="nothing_selected">Ничего не выбрано</string>
     <string name="not_available">Недоступно</string>
     <string name="both">Оба</string>

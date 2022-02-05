@@ -396,7 +396,7 @@
     <string name="floating_window">"Floating window"</string>
     <string name="timer_size">"Timer size"</string>
     <string name="scrollbuttons">"Pomicanje postavki"</string>
-    <string name="scrollbuttons_distance">"Pomični iznos"</string>
+    <string name="scroll_amount">"Pomični iznos"</string>
     <string name="speed">"Ubrzati"</string>
     <string name="swipe">"Presavijte postavke"</string>
     <string name="swipe_allowance">"Dopušteno je vertikalno kretanje"</string>
@@ -697,7 +697,7 @@
     <string name="no_folders">Morate da kreirate poddirektorijum da biste dozvolili premeštanje datoteka</string>
     <string name="not_available">Nije dostupno</string>
     <string name="nothing_selected">Ništa nije izabrano</string>
-    <string name="ok">Ok</string>
+    <string name="okay">Ok</string>
     <string name="pad_cross_fade">Cross-fade jastučići</string>
     <string name="pad_custom_info">Podesite prilagođene podloge da se koriste kao prateće numere koje odgovaraju tasterima pesme. Ove datoteke moraju biti sačuvane u fascikli OpenSong/Pads. Pesme koje imaju pad podešen na \'Auto\' i imaju set tastera koristiće fajl koji je ovde naveden.</string>
     <string name="pad_custom_pad_error">Postoji problem sa prilagođenim automatskim padovima za ovaj taster</string>

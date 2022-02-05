@@ -375,7 +375,7 @@
     <string name="scale_style">"Style à l'échelle"</string>
     <string name="scripture">"Texte sacré"</string>
     <string name="scrollbuttons">"Paramètres de défilement"</string>
-    <string name="scrollbuttons_distance">"Montant de défilement"</string>
+    <string name="scroll_amount">"Montant de défilement"</string>
     <string name="scrollbuttons_toggle">Boutons de défilement</string>
     <string name="search">"Chercher"</string>
     <string name="search_biblegateway">"Rechercher sur BibleGateway.com"</string>
@@ -804,7 +804,7 @@
     <string name="no_suitable_application">Aucune application disponible ou installée ne peut ouvrir cet élément.</string>
     <string name="not_available">Indisponible</string>
     <string name="nothing_selected">Rien de sélectionné</string>
-    <string name="ok">D\'accord</string>
+    <string name="okay">D\'accord</string>
     <string name="online">En ligne</string>
     <string name="optional">Optionnel</string>
     <string name="pad_cross_fade">Pads de fondu enchaîné</string>

@@ -376,7 +376,7 @@
     <string name="scale_style">"Scala stile"</string>
     <string name="scripture">"Sacre Scritture"</string>
     <string name="scrollbuttons">"Impostazioni di scorrimento"</string>
-    <string name="scrollbuttons_distance">"Quantità di scorrimento"</string>
+    <string name="scroll_amount">"Quantità di scorrimento"</string>
     <string name="scrollbuttons_toggle">Pulsanti di scorrimento Toggle</string>
     <string name="search">"Ricerca"</string>
     <string name="search_biblegateway">"Ricerca BibleGateway.com"</string>
@@ -725,7 +725,7 @@
     <string name="pad_cross_fade">Pad a dissolvenza incrociata</string>
     <string name="optional">Opzionale</string>
     <string name="online">In linea</string>
-    <string name="ok">Ok</string>
+    <string name="okay">Ok</string>
     <string name="nothing_selected">Niente selezionato</string>
     <string name="not_available">Non disponibile</string>
     <string name="no_suitable_application">Nessuna applicazione disponibile o installata in grado di aprire questo elemento.</string>

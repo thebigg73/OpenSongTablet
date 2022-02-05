@@ -494,7 +494,7 @@ public class ImportOSBFragment extends Fragment {
                         // Find the folders
                         findFolders();
 
-                        // Check we are ok to load
+                        // Check we are okay to load
                         okToLoad();
                     });
                 }

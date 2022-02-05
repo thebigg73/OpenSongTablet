@@ -376,7 +376,7 @@
     <string name="scale_style">"スケールスタイル"</string>
     <string name="scripture">"聖書"</string>
     <string name="scrollbuttons">"スクロール設定"</string>
-    <string name="scrollbuttons_distance">"スクロール量"</string>
+    <string name="scroll_amount">"スクロール量"</string>
     <string name="scrollbuttons_toggle">トグルスクロールボタン</string>
     <string name="search">"サーチ"</string>
     <string name="search_biblegateway">"BibleGateway.comを検索"</string>
@@ -726,7 +726,7 @@
     <string name="pad_cross_fade">クロスフェードパッド</string>
     <string name="optional">オプション</string>
     <string name="online">オンライン</string>
-    <string name="ok">Ok</string>
+    <string name="okay">Ok</string>
     <string name="nothing_selected">何も選択されていません</string>
     <string name="not_available">利用不可</string>
     <string name="no_suitable_application">このアイテムを開くことができるアプリケーションは利用できないか、インストールされていません。</string>

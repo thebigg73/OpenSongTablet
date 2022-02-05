@@ -131,7 +131,7 @@ public class PopUpSetViewNew extends DialogFragment {
         StaticVariables.mTempSetList = null;
         setActions.prepareSetList(getActivity(),preferences);
         StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.currentset) +
-                " - " + getActivity().getString(R.string.ok);
+                " - " + getActivity().getString(R.string.okay);
     }
 
     private void refresh() {

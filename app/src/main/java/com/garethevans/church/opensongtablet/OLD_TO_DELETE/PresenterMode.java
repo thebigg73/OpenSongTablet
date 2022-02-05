@@ -3123,7 +3123,7 @@ Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageA
         // Check audio record is allowed
         if (ActivityCompat.checkSelfPermission(PresenterMode.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
-                Snackbar.make(mLayout, R.string.microphone_rationale, Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(PresenterMode.this, new String[]{Manifest.permission.RECORD_AUDIO}, StaticVariables.REQUEST_MICROPHONE_CODE)).show();
+                Snackbar.make(mLayout, R.string.microphone_rationale, Snackbar.LENGTH_INDEFINITE).setAction(R.string.okay, view -> ActivityCompat.requestPermissions(PresenterMode.this, new String[]{Manifest.permission.RECORD_AUDIO}, StaticVariables.REQUEST_MICROPHONE_CODE)).show();
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
                         StaticVariables.REQUEST_MICROPHONE_CODE);
@@ -3200,7 +3200,7 @@ Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageA
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
             try {
                 make(findViewById(R.id.mypage), R.string.location_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
+                        LENGTH_INDEFINITE).setAction(R.string.okay, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
                 return false;
             } catch (Exception e) {
@@ -3457,7 +3457,7 @@ Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageA
                         prepareSongMenu();
                     }
 
-                    // Get the SQLite stuff if the song exists.  Otherwise throws an exception (which is ok)
+                    // Get the SQLite stuff if the song exists.  Otherwise throws an exception (which is okay)
                     if (!StaticVariables.whichSongFolder.startsWith("..")) {
                         String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
 

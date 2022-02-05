@@ -69,7 +69,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             try {
                 Snackbar.make(findViewById(R.id.page), R.string.storage_rationale,
-                        Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
+                        Snackbar.LENGTH_INDEFINITE).setAction(R.string.okay, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         ActivityCompat.requestPermissions(ImportIntent.this,

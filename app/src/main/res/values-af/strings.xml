@@ -375,7 +375,7 @@
     <string name="scale_style">"Skaal styl"</string>
     <string name="scripture">"Skrif"</string>
     <string name="scrollbuttons">"Scroll instellings"</string>
-    <string name="scrollbuttons_distance">"Scroll bedrag"</string>
+    <string name="scroll_amount">"Scroll bedrag"</string>
     <string name="scrollbuttons_toggle">Toggle scroll knoppies</string>
     <string name="search">"Soek"</string>
     <string name="search_biblegateway">"Soek BibleGateway.com"</string>
@@ -587,7 +587,7 @@
     <string name="forum_description">Rapporteer foute, kry hulp en versoek kenmerke</string>
     <string name="github_description">Dra by tot toepassingsontwikkeling</string>
     <string name="green">Groen</string>
-    <string name="ok">Goed</string>
+    <string name="okay">Goed</string>
     <string name="backup">Ondersteuning</string>
     <string name="bible_browse">Blaai deur/soek Bybel</string>
     <string name="bible_browse_offline">Gebruik vanlyn/afgelaaide Bybel</string>

@@ -376,7 +376,7 @@ public class SetStorageLocationFragment extends Fragment {
         }
     }
 
-    // Checks for the storage being ok to proceed
+    // Checks for the storage being okay to proceed
     private boolean isStorageSet() {
         return (uriTreeHome!=null && uriTree!=null && !uriTreeHome.toString().isEmpty() && !uriTree.toString().isEmpty());
     }

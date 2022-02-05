@@ -375,7 +375,7 @@
     <string name="scale_style">"缩放风格"</string>
     <string name="scripture">"圣经"</string>
     <string name="scrollbuttons">"滚动设置"</string>
-    <string name="scrollbuttons_distance">"滚动量"</string>
+    <string name="scroll_amount">"滚动量"</string>
     <string name="scrollbuttons_toggle">切换滚动按钮</string>
     <string name="search">"搜索"</string>
     <string name="search_biblegateway">"搜索BibleGateway.com"</string>
@@ -588,7 +588,7 @@
     <string name="forum_description">报告错误、获取帮助和请求功能</string>
     <string name="github_description">为应用程序开发做出贡献</string>
     <string name="green">绿</string>
-    <string name="ok">行</string>
+    <string name="okay">行</string>
     <string name="backup">备份</string>
     <string name="bible_browse">浏览/搜索圣经</string>
     <string name="bible_browse_offline">使用离线/下载的圣经</string>

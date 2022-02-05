@@ -201,7 +201,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         }
 
         // If this isn't a song (a set item, variation, etc, it won't be in the database, so the following will fail
-        // That's ok though!!  We don't want to update search indexes or song menus
+        // That's okay though!!  We don't want to update search indexes or song menus
         try {
             if ((FullscreenActivity.isPDF || FullscreenActivity.isImage) && nonOpenSongSQLite == null) {
                 nonOpenSongSQLiteHelper.createBasicSong(getActivity(),storageAccess,preferences,
@@ -260,7 +260,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
             // Prepare the message
             StaticVariables.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
-                    getResources().getString(R.string.ok);
+                    getResources().getString(R.string.okay);
 
             // Now tell the main page to refresh itself with this new song
             // Don't need to reload the XML as we already have all its values

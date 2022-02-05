@@ -376,7 +376,7 @@
     <string name="scale_style">"Skalierung"</string>
     <string name="scripture">"Bibeltext"</string>
     <string name="scrollbuttons">"Scroll-Einstellungen"</string>
-    <string name="scrollbuttons_distance">"Scrollweite"</string>
+    <string name="scroll_amount">"Scrollweite"</string>
     <string name="scrollbuttons_toggle">Toggle Scroll-Tasten</string>
     <string name="search">"Suche"</string>
     <string name="search_biblegateway">"Auf BibleGateway.com suchen"</string>
@@ -804,7 +804,7 @@
     <string name="no_suitable_application">Es ist keine Anwendung verfügbar oder installiert, die dieses Element öffnen kann.</string>
     <string name="not_available">Nicht verfügbar</string>
     <string name="nothing_selected">Nichts ausgewählt</string>
-    <string name="ok">In Ordnung</string>
+    <string name="okay">In Ordnung</string>
     <string name="online">Online</string>
     <string name="optional">Optional</string>
     <string name="pad_cross_fade">Crossfade-Pads</string>

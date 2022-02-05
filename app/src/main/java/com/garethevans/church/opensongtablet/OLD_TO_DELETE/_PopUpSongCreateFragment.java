@@ -38,7 +38,7 @@ import java.util.Objects;
 
 public class PopUpSongCreateFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
-    // Once it has been completed positively (i.e. ok was clicked) it sends a refreshAll() interface call
+    // Once it has been completed positively (i.e. okay was clicked) it sends a refreshAll() interface call
 
     private ArrayList<String> foldernames;
     private Spinner newFolderSpinner;

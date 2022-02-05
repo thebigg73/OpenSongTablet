@@ -76,6 +76,9 @@ public class Gestures {
         swipeEnabled = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "swipeForSongs",true);
         scrollDistance = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scrollDistance", 0.7f);
     }
+    public void setScrollDistance(float scrollDistance) {
+        this.scrollDistance = scrollDistance;
+    }
 
     // The getters and setters called by other classes
     public ArrayList<String> getGestures() {

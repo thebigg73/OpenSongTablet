@@ -81,6 +81,9 @@ public class PedalsFragment extends Fragment {
         // Set up the button actions
         setupButtons();
 
+        // Set up the sliders
+        setupSliders();
+
         // Set up the toggle switches
         setupSwitches();
 
@@ -140,6 +143,23 @@ public class PedalsFragment extends Fragment {
         }
     }
 
+    private void setupSliders() {
+        myView.scrollDistance.setValue((int)(mainActivityInterface.getGestures().getScrollDistance()*100f));
+        myView.scrollDistance.setLabelFormatter(value -> (int)value + "%");
+        myView.scrollDistance.addOnChangeListener((slider, value, fromUser) -> myView.scrollDistance.setHint((int)value + "%"));
+        myView.scrollDistance.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(), "scrollDistance", slider.getValue()/100f);
+                mainActivityInterface.getGestures().setScrollDistance(slider.getValue()/100f);
+            }
+        });
+
+    }
     private void setupDropDowns() {
         arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, actions);
         for (int s = 1; s <= 8; s++) {

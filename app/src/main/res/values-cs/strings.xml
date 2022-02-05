@@ -375,7 +375,7 @@
     <string name="scale_style">"Stupnice měřítka"</string>
     <string name="scripture">"Písmo svaté"</string>
     <string name="scrollbuttons">"Nastavení posunu"</string>
-    <string name="scrollbuttons_distance">"Množství posunu"</string>
+    <string name="scroll_amount">"Množství posunu"</string>
     <string name="scrollbuttons_toggle">Přepnout rolovací tlačítka</string>
     <string name="search">"Vyhledávání"</string>
     <string name="search_biblegateway">"Vyhledávání BibleGateway.com"</string>
@@ -588,7 +588,7 @@
     <string name="forum_description">Nahlašte chyby, získejte nápovědu a vyžádejte si funkce</string>
     <string name="github_description">Přispějte k vývoji aplikací</string>
     <string name="green">Zelená</string>
-    <string name="ok">OK</string>
+    <string name="okay">OK</string>
     <string name="backup">Záloha</string>
     <string name="bible_browse">Procházet/hledat bibli</string>
     <string name="bible_browse_offline">Používejte offline/staženou bibli</string>
