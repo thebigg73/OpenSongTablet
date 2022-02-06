@@ -376,9 +376,36 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:padding">16dp</item>
         <item name="android:layout_gravity">center</item>
+        <item name="shapeAppearanceOverlay">@style/ButtonOverlay</item>
+    </style>
+    <style name="ButtonOverlay">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">8dp</item>
+        <item name="cornerSizeBottomRight">8dp</item>
+        <item name="cornerSizeTopLeft">8dp</item>
+        <item name="cornerSizeBottomLeft">8dp</item>
     </style>
 
-
+    <style name="LeftButton" parent="TextBackgroundButton">
+        <item name="shapeAppearanceOverlay">@style/LeftButtonOverlay</item>
+    </style>
+    <style name="LeftButtonOverlay">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeTopLeft">8dp</item>
+        <item name="cornerSizeBottomLeft">8dp</item>
+    </style>
+    <style name="RightButton" parent="TextBackgroundButton">
+        <item name="shapeAppearanceOverlay">@style/RightButtonOverlay</item>
+    </style>
+    <style name="RightButtonOverlay">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">8dp</item>
+        <item name="cornerSizeBottomRight">8dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
     <style name="largeText" parent="AppTheme">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>

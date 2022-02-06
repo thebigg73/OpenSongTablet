@@ -60,7 +60,9 @@ public class Song {
     private ArrayList<String> songSectionTypes;
     private ArrayList<String> presoOrderSongSections;
     private ArrayList<String> presoOrderSongHeadings;
-    private int currentSection =0;
+    private ArrayList<String> lyricsUndos = new ArrayList<>();
+    private int lyricsUndosPos = -1;
+    private int currentSection = 0;
     private boolean isImageSlide;
     private int pdfPageCurrent = 0;
     private int pdfPageCount = 0;
@@ -179,6 +181,12 @@ public class Song {
         } else {
             return new ArrayList<>();
         }
+    }
+    public ArrayList<String> getLyricsUndos() {
+        return lyricsUndos;
+    }
+    public int getLyricsUndosPos() {
+        return lyricsUndosPos;
     }
     public boolean getIsImageSlide() {return isImageSlide;}
     public int getPdfPageCurrent() {return pdfPageCurrent;}
@@ -311,6 +319,15 @@ public class Song {
     public void setPresoOrderSongHeadings(ArrayList<String> presoOrderSongHeadings) {
         this.presoOrderSongHeadings = presoOrderSongHeadings;
     }
+    public void setLyricsUndos(int position,String value) {
+        if (lyricsUndos==null) {
+            lyricsUndos = new ArrayList<>();
+        }
+        lyricsUndos.add(position,value);
+    }
+    public void setLyricsUndosPos(int lyricsUndosPos) {
+        this.lyricsUndosPos = lyricsUndosPos;
+    }
     public void setIsImageSlide(boolean isImageSlide) {this.isImageSlide = isImageSlide;}
     public void setPdfPageCurrent(int pdfPageCurrent) {this.pdfPageCurrent = pdfPageCurrent;}
     public void setPdfPageCount(int pdfPageCount) {
@@ -413,6 +430,8 @@ public class Song {
         this.twoThirdSplit = toCopy.twoThirdSplit;
         this.scalingFiguredOut = toCopy.scalingFiguredOut;
         this.alreadyLoading = toCopy.alreadyLoading;
+        this.lyricsUndos = toCopy.lyricsUndos;
+        this.lyricsUndosPos = toCopy.lyricsUndosPos;
     }
 
     // The welcome song if there is a problem

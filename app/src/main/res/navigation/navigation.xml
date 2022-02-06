@@ -292,7 +292,11 @@
                 android:id="@+id/actionBarSettingsFragment"
                 android:name="com.garethevans.church.opensongtablet.screensetup.ActionBarSettingsFragment"
                 android:label="settings_actionbar"
-                tools:layout="@layout/settings_actionbar"/>
+                tools:layout="@layout/settings_actionbar">
+                <deepLink
+                    android:id="@+id/deepLink31"
+                    app:uri="opensongapp://settings/display/actionbar" />
+            </fragment>
             <fragment
                 android:id="@+id/menuSettingsFragment"
                 android:name="com.garethevans.church.opensongtablet.screensetup.MenuSettingsFragment"

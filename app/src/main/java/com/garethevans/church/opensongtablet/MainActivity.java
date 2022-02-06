@@ -1021,7 +1021,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             alertButton.setVisibility(View.VISIBLE);
         } else {
             screenMirror.setVisibility(View.GONE);
-            //myView.toolBar.batteryholder.setVisibility(View.GONE);
+            myView.toolBar.batteryholder.setVisibility(View.GONE);
             alertButton.setVisibility(View.GONE);
         }
     }
@@ -1183,7 +1183,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         invalidateOptionsMenu();
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
 
@@ -1206,6 +1206,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
             alertInfoBottomSheet.show(getMyFragmentManager(),"AlertInfoBottomSheet");
         });
+        myView.toolBar.batteryholder.setOnClickListener(view -> navigateToFragment("opensongapp://settings/display/actionbar",0));
         // Setup the menu item for connecting to cast devices
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
             //CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);

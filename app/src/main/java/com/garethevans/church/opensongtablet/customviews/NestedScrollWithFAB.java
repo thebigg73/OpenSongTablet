@@ -14,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class NestedScrollWithFAB extends NestedScrollView {
 
     private FloatingActionButton fab = null;
+    private FloatingActionButton fab2 = null;
     private ExtendedFloatingActionButton extendedFab = null;
 
     public NestedScrollWithFAB(@NonNull Context context) {
@@ -28,12 +29,15 @@ public class NestedScrollWithFAB extends NestedScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (fab!=null || extendedFab!=null) {
+        if (fab!=null || fab2!=null || extendedFab!=null) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_SCROLL:
                 case MotionEvent.ACTION_MOVE:
                     if (fab!=null) {
                         fab.hide();
+                    }
+                    if (fab2!=null) {
+                        fab2.hide();
                     }
                     if (extendedFab!=null) {
                         extendedFab.hide();
@@ -43,6 +47,9 @@ public class NestedScrollWithFAB extends NestedScrollView {
                 case MotionEvent.ACTION_UP:
                     if (fab!=null) {
                         fab.show();
+                    }
+                    if (fab2!=null) {
+                        fab2.show();
                     }
                     if (extendedFab!=null) {
                         extendedFab.show();
@@ -61,6 +68,9 @@ public class NestedScrollWithFAB extends NestedScrollView {
 
     public void setFabToAnimate(FloatingActionButton fab) {
         this.fab = fab;
+    }
+    public void setFab2ToAnimate(FloatingActionButton fab2) {
+        this.fab2 = fab2;
     }
 
     public void setExtendedFabToAnimate(ExtendedFloatingActionButton extendedFab) {

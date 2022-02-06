@@ -32,7 +32,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private float editTextSize = 11;
     private int colorOn, colorOff;
-
+    private boolean undoredo = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -75,33 +75,33 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.clearFocus();
         myView.lyrics.requestFocus();
 
+        myView.bottomSheetLayout.insertSection.setHint("[V]="+getString(R.string.verse) +
+                " , [V1]="+getString(R.string.verse)+" 1, [C]="+getString(R.string.chorus) +
+                ", [B]="+getString(R.string.bridge)+", [P]="+getString(R.string.prechorus) +
+                ", [...]="+getString(R.string.custom));
+
         myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
         editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"editTextSize",14);
         checkTextSize(0);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
+
+        validUndoRedo(mainActivityInterface.getTempSong().getLyricsUndosPos());
     }
 
     private void bottomSheetBar() {
         bottomSheetBehavior = BottomSheetBehavior.from(myView.bottomSheetLayout.bottomSheet);
         bottomSheetBehavior.setHideable(false);
         bottomSheetBehavior.setGestureInsetBottomIgnored(true);
-
-        myView.bottomSheetLayout.insertSection.setHint("[V]="+getString(R.string.verse) +
-                " , [V1]="+getString(R.string.verse)+" 1, [C]="+getString(R.string.chorus) +
-                ", [B]="+getString(R.string.bridge)+", [P]="+getString(R.string.prechorus) +
-                ", [...]="+getString(R.string.custom));
-
-
-        //myView.dimBackground.setClickable(true);
-        //myView.dimBackground.setOnClickListener(v -> myView.bottomSheetLayout.handleView.performClick());
         myView.bottomSheetTab.setOnClickListener(v -> {
             if (bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 myView.lyrics.setEnabled(false);
+                myView.dimBackground.setVisibility(View.VISIBLE);
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 myView.lyrics.setEnabled(true);
+                myView.dimBackground.setVisibility(View.GONE);
             }
         });
 
@@ -115,9 +115,12 @@ public class EditSongFragmentLyrics extends Fragment {
                         myView.dimBackground.setVisibility(View.GONE);
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                        myView.lyrics.setEnabled(false);
+                        myView.dimBackground.setVisibility(View.VISIBLE);
+                        break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                     case BottomSheetBehavior.STATE_SETTLING:
-                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
                         myView.lyrics.setEnabled(false);
                         break;
                 }
@@ -125,7 +128,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
             @Override
             public void onSlide (@NonNull View bottomSheet,float slideOffset) {
-                myView.dimBackground.setVisibility(View.VISIBLE);
+                //myView.dimBackground.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -149,14 +152,29 @@ public class EditSongFragmentLyrics extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 mainActivityInterface.getTempSong().setLyrics(editable.toString());
+                if (!undoredo) {
+                    int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos() + 1;
+                    mainActivityInterface.getTempSong().setLyricsUndos(lyricsUndosPos, editable.toString());
+                    mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
+                    // Enable/disable the undo and redo button
+                    validUndoRedo(lyricsUndosPos);
+                } else {
+                    undoredo = false;
+                }
+
             }
         });
         myView.bottomSheetLayout.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
         myView.bottomSheetLayout.textSizeUp.setOnClickListener(v -> checkTextSize(+1));
         myView.bottomSheetLayout.insertSection.setOnClickListener(v -> insertSection());
 
+        myView.undoButton.setOnClickListener(v -> undoLyrics());
+        myView.redoButton.setOnClickListener(v -> redoLyrics());
+
         // Scroll listener
         myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
+        myView.nestedScrollView.setFabToAnimate(myView.undoButton);
+        myView.nestedScrollView.setFab2ToAnimate(myView.redoButton);
     }
 
     private void checkTextSize(int change) {
@@ -210,8 +228,38 @@ public class EditSongFragmentLyrics extends Fragment {
                     fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics()));
         }
     }
+    private void undoLyrics() {
+        // If we can go back, undo the changes
+        int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
+        Log.d(TAG,"undo: lyricsUndosPos: "+lyricsUndosPos);
+        if (lyricsUndosPos>0) {
+            lyricsUndosPos = lyricsUndosPos - 1;
+            Log.d(TAG,"undo: lyricsUndosPos: "+lyricsUndosPos);
+            mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
+            undoredo = true;
+            myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
+        }
+        validUndoRedo(lyricsUndosPos);
+    }
+    private void redoLyrics() {
+        // If we can go forward, redo the changes
+        int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
+        if (lyricsUndosPos<mainActivityInterface.getTempSong().getLyricsUndos().size()-1) {
+            lyricsUndosPos = lyricsUndosPos + 1;
+            undoredo = true;
+            mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
+            myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
+        }
+        validUndoRedo(lyricsUndosPos);
+    }
 
+    private void validUndoRedo(int currentPosition) {
+        // Enable/disable the undo button
+        myView.undoButton.setEnabled(currentPosition>0);
 
+        // Enable/disable the redo button
+        myView.redoButton.setEnabled(currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1);
+    }
     // The stuff for the bottom sheet
 
     /*

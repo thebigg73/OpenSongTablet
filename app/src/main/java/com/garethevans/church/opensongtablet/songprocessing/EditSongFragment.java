@@ -61,6 +61,8 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
 
         // Set up the updated song (a copy of the current song for editing)
         mainActivityInterface.setTempSong(new Song(mainActivityInterface.getSong()));
+        mainActivityInterface.getTempSong().setLyricsUndosPos(0);
+        mainActivityInterface.getTempSong().setLyricsUndos(0,mainActivityInterface.getTempSong().getLyrics());
 
         // Initialise views
         setUpTabs();
