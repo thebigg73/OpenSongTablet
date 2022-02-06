@@ -73,6 +73,7 @@ public class Song {
     private int twoThirdSplit;
     private boolean scalingFiguredOut = false;
     private boolean alreadyLoading = false;  // TODO From IV changes - need to check purpose!
+    private boolean editingAsChoPro = false;
 
     // The getters
     public int getId() {
@@ -227,6 +228,9 @@ public class Song {
     public boolean getAlreadyLoading() {
         return alreadyLoading;
     }
+    public boolean getEditingAsChoPro() {
+        return editingAsChoPro;
+    }
 
     // The setters
     public void setId(int id) {
@@ -364,7 +368,9 @@ public class Song {
     public void setAlreadyLoading(boolean alreadyLoading) {
         this.alreadyLoading = alreadyLoading;
     }
-
+    public void setEditingAsChoPro(boolean editingAsChoPro) {
+        this.editingAsChoPro = editingAsChoPro;
+    }
 
     // The constructor to create a new song object
     public Song() {}
@@ -432,6 +438,7 @@ public class Song {
         this.alreadyLoading = toCopy.alreadyLoading;
         this.lyricsUndos = toCopy.lyricsUndos;
         this.lyricsUndosPos = toCopy.lyricsUndosPos;
+        this.editingAsChoPro = toCopy.editingAsChoPro;
     }
 
     // The welcome song if there is a problem

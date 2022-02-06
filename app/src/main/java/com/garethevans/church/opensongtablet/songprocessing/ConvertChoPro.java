@@ -817,6 +817,7 @@ public class ConvertChoPro {
             switch (mainActivityInterface.getProcessSong().howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype)) {
                 // If this is a chord line followed by a lyric line.
                 case "chord_then_lyric":
+                    Log.d(TAG,"chord_then_lyric: "+thisLine);
                     // IV - We have a next line - make lines the same length.
                     nextLine = lines[y + 1].replaceAll("\\s+$", "");
                     if (thisLine.length() < nextLine.length()) {
@@ -824,6 +825,8 @@ public class ConvertChoPro {
                     } else {
                         nextLine = mainActivityInterface.getProcessSong().fixLineLength(nextLine, thisLine.length());
                     }
+                    thisLine = thisLine.replaceFirst(".","");
+                    nextLine = nextLine.replaceFirst(" ","");
                     positions_returned = mainActivityInterface.getProcessSong().getChordPositions(thisLine, nextLine);
                     chords_returned = mainActivityInterface.getProcessSong().getSections(thisLine, positions_returned);
                     lyrics_returned = mainActivityInterface.getProcessSong().getSections(nextLine, positions_returned);
@@ -841,11 +844,13 @@ public class ConvertChoPro {
                                 }
                             }
                         }
+                        Log.d(TAG,"chord_to_add: "+chord_to_add);
                         newlyrics.append(chord_to_add).append(lyrics_returned[w]);
                     }
                     break;
 
                 case "chord_only":
+                    Log.d(TAG,"chord_only: "+thisLine);
                     // Use same logic as chord_then_lyric to guarantee consistency
                     String tempString = mainActivityInterface.getProcessSong().fixLineLength("", thisLine.length());
                     // IV - Chord positioning now uses a lyric line - in this case no lyrics!
@@ -871,6 +876,7 @@ public class ConvertChoPro {
                     break;
 
                 case "lyric_no_chord":
+                    Log.d(TAG,"lyric_no_chord: "+thisLine);
                     // Another place to end a Chorus
                     if (thisLine.replace(" ","").equals("")) {
                         if (dealingwithchorus) {
@@ -885,10 +891,12 @@ public class ConvertChoPro {
                     break;
 
                 case "comment_no_chord":
+                    Log.d(TAG,"comment_no_chord: "+thisLine);
                     newlyrics.append("{c:").append(lines[y].replaceFirst(";","")).append("}");
                     break;
 
                 case "heading":
+                    Log.d(TAG,"heading: "+thisLine);
                     // If this is a chorus, deal with it appropriately
                     // Add the heading as a comment with hash
                     if (thisLine.startsWith("[C")) {
@@ -906,6 +914,7 @@ public class ConvertChoPro {
                     break;
 
                 default:
+                    Log.d(TAG,"default: "+thisLine);
                     // If a line is blank we need to add it and consider an end of a Chorus
                     if (thisLine.trim().equals("")) {
                         // Add just a line beginning (trim the line)

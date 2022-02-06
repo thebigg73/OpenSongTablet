@@ -106,10 +106,16 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     private void doSaveChanges() {
         // Send this off for processing in a new Thread
         new Thread(() -> {
+            // If we were editing the lyrics as ChoPro, convert to OpenSong
+            if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+                String lyrics = mainActivityInterface.getTempSong().getLyrics();
+                lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(lyrics);
+                mainActivityInterface.getTempSong().setLyrics(lyrics);
+                mainActivityInterface.getTempSong().setEditingAsChoPro(false);
+            }
             if (mainActivityInterface.getSaveSong().doSave(requireContext(), mainActivityInterface,
                     mainActivityInterface.getTempSong())) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
-
                 requireActivity().runOnUiThread(() -> mainActivityInterface.navHome());
             } else {
                 mainActivityInterface.getShowToast().doIt(requireContext().getString(R.string.not_saved));

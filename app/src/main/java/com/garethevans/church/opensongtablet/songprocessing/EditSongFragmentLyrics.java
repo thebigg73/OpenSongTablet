@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -32,7 +33,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private float editTextSize = 11;
     private int colorOn, colorOff;
-    private boolean undoredo = false;
+    private boolean addUndoStep = true, asChordPro = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -98,6 +99,20 @@ public class EditSongFragmentLyrics extends Fragment {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 myView.lyrics.setEnabled(false);
                 myView.dimBackground.setVisibility(View.VISIBLE);
+                if (!mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+                    mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
+                } else {
+                    String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
+                    // Convert to OpenSong to detect the chord format
+                    String openSongLyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(choProLyrics);
+                    // Set the lyrics back to the temp song
+                    mainActivityInterface.getTempSong().setLyrics(openSongLyrics);
+                    // Now detect the chord format
+                    mainActivityInterface.getTranspose().checkChordFormat(mainActivityInterface.getTempSong());
+                    // Now set the lyrics back as chordpro
+                    mainActivityInterface.getTempSong().setLyrics(choProLyrics);
+                }
+                setTransposeDetectedFormat();
             } else {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 myView.lyrics.setEnabled(true);
@@ -152,25 +167,33 @@ public class EditSongFragmentLyrics extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 mainActivityInterface.getTempSong().setLyrics(editable.toString());
-                if (!undoredo) {
+                // If we are not undoing/redoing add the changes to the undo list
+                if (addUndoStep) {
                     int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos() + 1;
                     mainActivityInterface.getTempSong().setLyricsUndos(lyricsUndosPos, editable.toString());
                     mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
                     // Enable/disable the undo and redo button
                     validUndoRedo(lyricsUndosPos);
                 } else {
-                    undoredo = false;
+                    // We were undoing/redoing, so we didn't do the above.  Now turn this off
+                    addUndoStep = true;
                 }
-
             }
         });
         myView.bottomSheetLayout.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
         myView.bottomSheetLayout.textSizeUp.setOnClickListener(v -> checkTextSize(+1));
         myView.bottomSheetLayout.insertSection.setOnClickListener(v -> insertSection());
 
+        myView.bottomSheetLayout.convertToOpenSong.setOnClickListener(v -> convertToOpenSong());
+        myView.bottomSheetLayout.convertToChoPro.setOnClickListener(v -> convertToChoPro());
+
         myView.undoButton.setOnClickListener(v -> undoLyrics());
         myView.redoButton.setOnClickListener(v -> redoLyrics());
 
+        myView.bottomSheetLayout.transposeDown.setOnClickListener(v -> transpose("-1"));
+        myView.bottomSheetLayout.transposeUp.setOnClickListener(v -> transpose("+1"));
+
+        myView.bottomSheetLayout.autoFix.setOnClickListener(v -> autoFix());
         // Scroll listener
         myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
         myView.nestedScrollView.setFabToAnimate(myView.undoButton);
@@ -236,7 +259,7 @@ public class EditSongFragmentLyrics extends Fragment {
             lyricsUndosPos = lyricsUndosPos - 1;
             Log.d(TAG,"undo: lyricsUndosPos: "+lyricsUndosPos);
             mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
-            undoredo = true;
+            addUndoStep = false;
             myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
         }
         validUndoRedo(lyricsUndosPos);
@@ -246,13 +269,62 @@ public class EditSongFragmentLyrics extends Fragment {
         int lyricsUndosPos = mainActivityInterface.getTempSong().getLyricsUndosPos();
         if (lyricsUndosPos<mainActivityInterface.getTempSong().getLyricsUndos().size()-1) {
             lyricsUndosPos = lyricsUndosPos + 1;
-            undoredo = true;
+            addUndoStep = false;
             mainActivityInterface.getTempSong().setLyricsUndosPos(lyricsUndosPos);
             myView.lyrics.setText(mainActivityInterface.getTempSong().getLyricsUndos().get(lyricsUndosPos));
         }
         validUndoRedo(lyricsUndosPos);
     }
 
+    private void transpose(String direction) {
+        // If we are editing as choPro, we need to convert to OpenSong first
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            String choProLyrics = mainActivityInterface.getTempSong().getLyrics();
+            // Convert the lyrics to OpenSong
+            mainActivityInterface.getTempSong().setLyrics(mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(choProLyrics));
+        }
+
+        // Transpose the OpenSong lyrics
+        mainActivityInterface.getTranspose().doTranspose(requireContext(),mainActivityInterface,
+                mainActivityInterface.getTempSong(),direction,1,1,1);
+
+        // If we were using ChoPro, convert back
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            String choProLyrics =  mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(requireContext(),mainActivityInterface,
+                    mainActivityInterface.getTempSong().getLyrics());
+            mainActivityInterface.getTempSong().setLyrics(choProLyrics);
+        }
+        // Don't add this as an undo/redo as it breaks the key
+        addUndoStep = false;
+        myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
+    }
+
+    private void convertToOpenSong() {
+        // Only do this if we are editing as ChordPro
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            mainActivityInterface.getTempSong().setEditingAsChoPro(false);
+            myView.bottomSheetLayout.convertToChoPro.setBackgroundTintList(ColorStateList.valueOf(colorOff));
+            myView.bottomSheetLayout.convertToOpenSong.setBackgroundTintList(ColorStateList.valueOf(colorOn));
+            // Get the lyrics converted
+            String lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics());
+            // Set them into the edit box - don't include an undo/redo step, so pretend we're carrying this out
+            addUndoStep = false;
+            myView.lyrics.setText(lyrics);
+        }
+    }
+    private void convertToChoPro() {
+        // Only do this if we aren't editing as ChordPro
+        if (!mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            mainActivityInterface.getTempSong().setEditingAsChoPro(true);
+            myView.bottomSheetLayout.convertToChoPro.setBackgroundTintList(ColorStateList.valueOf(colorOn));
+            myView.bottomSheetLayout.convertToOpenSong.setBackgroundTintList(ColorStateList.valueOf(colorOff));
+            // Get the lyrics converted
+            String lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(requireContext(),mainActivityInterface,mainActivityInterface.getTempSong().getLyrics());
+            // Set them into the edit box - don't include an undo/redo step, so pretend we're carrying this out
+            addUndoStep = false;
+            myView.lyrics.setText(lyrics);
+        }
+    }
     private void validUndoRedo(int currentPosition) {
         // Enable/disable the undo button
         myView.undoButton.setEnabled(currentPosition>0);
@@ -260,6 +332,54 @@ public class EditSongFragmentLyrics extends Fragment {
         // Enable/disable the redo button
         myView.redoButton.setEnabled(currentPosition<mainActivityInterface.getTempSong().getLyricsUndos().size()-1);
     }
+
+    private void setTransposeDetectedFormat() {
+        String text = getString(R.string.chordformat_detected) + ": ";
+        switch (mainActivityInterface.getTempSong().getDetectedChordFormat()) {
+            case 1:
+                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_1));
+                break;
+            case 2:
+                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_2));
+                break;
+            case 3:
+                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_3));
+                break;
+            case 4:
+                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_4));
+                break;
+            case 5:
+                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_5));
+                break;
+            case 6:
+                myView.bottomSheetLayout.transposeText.setHint(text + getString(R.string.chordformat_6));
+                break;
+        }
+    }
+
+    private void autoFix() {
+        String lyrics;
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            lyrics = mainActivityInterface.getConvertChoPro().fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics());
+        } else {
+            lyrics = mainActivityInterface.getTempSong().getLyrics();
+        }
+
+        Log.d(TAG,"original: "+lyrics);
+        // Use the text conversion to fix
+        lyrics = mainActivityInterface.getConvertTextSong().convertText(requireContext(),lyrics);
+        Log.d(TAG,"texttidy: "+lyrics);
+
+        // Put back (includes undo step)
+        if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
+            lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(requireContext(),
+                    mainActivityInterface, lyrics);
+        }
+        myView.lyrics.setText(lyrics);
+        mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+    }
+
+
     // The stuff for the bottom sheet
 
     /*

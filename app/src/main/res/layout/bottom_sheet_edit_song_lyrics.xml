@@ -32,6 +32,7 @@
         <TableRow style="@style/DividerLine"/>
 
         <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/autoFix"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/fix_info"
@@ -49,6 +50,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/convertToOpenSong"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -58,6 +60,7 @@
                 style="@style/LeftButton" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/convertToChoPro"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -99,7 +102,8 @@
         </LinearLayout>
         <TableRow style="@style/DividerLine"/>
 
-        <TextView
+        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+            android:id="@+id/transposeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/transpose" />
@@ -110,6 +114,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/transposeDown"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -118,6 +123,7 @@
                 android:text="@string/minus_1" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/transposeUp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
