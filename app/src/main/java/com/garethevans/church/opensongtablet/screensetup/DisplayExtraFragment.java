@@ -53,6 +53,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.boldChordsHeadings.setChecked(getChecked("displayBoldChordsHeadings",false));
         myView.showChords.setChecked(getChecked("displayChords",true));
         myView.showLyrics.setChecked(getChecked("displayLyrics",true));
+        myView.presoOrder.setChecked(getChecked("usePresentationOrder",false));
         myView.trimSections.setChecked(getChecked("trimSections",true));
         myView.addSectionSpace.setChecked(getChecked("addSectionSpace",true));
         myView.trimLineSpacing.setChecked(getChecked("trimLines",false));
@@ -63,7 +64,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.trimLineSpacingSlider.setLabelFormatter(value -> ((int)value)+"%");
         sliderValToText(percentage);
         myView.filterSwitch.setChecked(getChecked("filterSections",false));
-        visibilityByBoolean(myView.filterLayout,myView.filterSwitch.isChecked());
+        visibilityByBoolean(myView.filterLayout,myView.filterSwitch.getChecked());
         myView.filterShow.setChecked(getChecked("filterShow",false));
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.filters);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.filters,4);
@@ -109,6 +110,10 @@ public class DisplayExtraFragment extends Fragment {
         myView.showLyrics.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayLyrics",isChecked,null);
             mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        });
+        myView.presoOrder.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("usePresentationOrder",isChecked,null);
+            mainActivityInterface.getPresenterSettings().setUsePresentationOrder(isChecked);
         });
         myView.trimSections.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("trimSections",isChecked,null);

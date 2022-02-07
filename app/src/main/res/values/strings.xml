@@ -1105,9 +1105,7 @@ Check out the categories in the right hand options menu.
     <string name="position">Position</string>
     <string name="profile_description">Backup and restore your settings</string>
     <string name="options">OPTIONS</string>
-
-
-
+    <string name="presentation_order_use">If presentation order exists for the song, use this to create the display</string>
 
 
 </resources>
