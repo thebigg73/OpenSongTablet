@@ -194,8 +194,6 @@ public class EditSongFragmentTags extends Fragment {
             for (Song thisSong : songs) {
                 thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(requireContext(),mainActivityInterface,
                         thisSong.getFolder(), thisSong.getFilename());
-                Log.d(TAG,"songId: "+thisSong.getSongid()+"  tagToRemove: "+tagToRemove +
-                        "  currTheme: "+thisSong.getTheme() + "  fileType: "+thisSong.getFiletype());
 
                 // Update this song object
                 thisSong.setTheme(removeTagFromTheme(thisSong.getTheme(),tagToRemove));
@@ -212,7 +210,7 @@ public class EditSongFragmentTags extends Fragment {
 
                 } else if (thisSong.getFiletype().equals("XML")) {
                     // Update the actual OpenSong file since it is XML
-                    mainActivityInterface.getSaveSong().doSave(requireContext(), mainActivityInterface,
+                    mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
                             thisSong);
                 }
             }
@@ -227,20 +225,29 @@ public class EditSongFragmentTags extends Fragment {
     }
 
     private String removeTagFromTheme(String currTheme, String tagToRemove) {
-        if (currTheme.contains(tagToRemove + "; ")) {
-            currTheme = currTheme.replace(tagToRemove + "; ", "");
-        } else if (currTheme.endsWith(tagToRemove)) {
-            currTheme = currTheme.substring(0, currTheme.lastIndexOf(tagToRemove));
-        } else if (currTheme.contains(tagToRemove + ";")) {
-            currTheme = currTheme.replace(tagToRemove + ";", "");
+        // Have to be careful as removing the tag Love would wreck Mercy/Love
+        // Each theme should be split by a ;
+        if (currTheme.contains(";")) {
+            currTheme = currTheme + ";";
         }
-        if (currTheme.startsWith(";")) {
-            currTheme = currTheme.substring(1);
+
+        String[] bits = currTheme.split(";");
+        tagToRemove = tagToRemove.trim();
+
+        // Now we have all the bits, trim them and look for matches
+        // If there is a match, don't add it back.  If it doesn't match, add it
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String bit:bits) {
+            bit = bit.trim();
+            if (!bit.equals(tagToRemove)) {
+                stringBuilder.append(bit).append("; ");
+            }
         }
-        if (currTheme.endsWith(";") || currTheme.endsWith("; ")) {
-            currTheme = currTheme.substring(0,currTheme.lastIndexOf(";"));
+        String newTheme = stringBuilder.toString().trim();
+        if (newTheme.endsWith(";")) {
+            // Remove final ;
+            newTheme = newTheme.substring(0,newTheme.lastIndexOf(";"));
         }
-        Log.d(TAG,"fixedCurrTheme:"+currTheme);
-        return currTheme;
+        return newTheme;
     }
 }

@@ -348,8 +348,10 @@ public class Midi {
 
         String messages = mainActivityInterface.getSong().getMidi();
 
-        String[] bits = messages.split("\n");
-        Collections.addAll(songMidiMessages, bits);
+        if (messages!=null) {
+            String[] bits = messages.split("\n");
+            Collections.addAll(songMidiMessages, bits);
+        }
     }
     public ArrayList<String> getSongMidiMessages() {
         return songMidiMessages;
@@ -365,7 +367,7 @@ public class Midi {
             songMidiMessages.add(position,command);
         }
     }
-    public void updateSongMessages() {
+    public void updateSongMessages(Context c) {
         StringBuilder s = new StringBuilder();
         for (String message:songMidiMessages) {
             if (!message.trim().isEmpty()) {
@@ -373,6 +375,7 @@ public class Midi {
             }
         }
         mainActivityInterface.getSong().setMidi(s.toString().trim());
-        mainActivityInterface.updateSong();
+        mainActivityInterface.getSaveSong().updateSong(c,mainActivityInterface,
+                mainActivityInterface.getSong());
     }
 }

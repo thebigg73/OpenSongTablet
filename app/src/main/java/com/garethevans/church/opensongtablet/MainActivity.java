@@ -1829,7 +1829,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "removeThemeTag":
-                    // We are about to remove tags from songs.  This is done in the EditSong framgment
+                    // We are about to remove tags from songs.  This is done in the EditSong fragment
                     updateFragment("confirmed_" + fragName, callingFragment, arguments);
                     allowToast = false;
                     break;
@@ -2124,11 +2124,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public SaveSong getSaveSong() {
         return saveSong;
-    }
-    @Override
-    public void updateSong() {
-        saveSong.updateSong(this,this);
-        Log.d(TAG,"getMidi():"+song.getMidi());
     }
 
     @Override

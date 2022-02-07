@@ -87,7 +87,7 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupAdapter() {
-        midiMessagesAdapter = new MidiMessagesAdapter(mainActivityInterface,false);
+        midiMessagesAdapter = new MidiMessagesAdapter(requireContext(),mainActivityInterface,false);
         ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         midiMessagesAdapter.setTouchHelper(itemTouchHelper);

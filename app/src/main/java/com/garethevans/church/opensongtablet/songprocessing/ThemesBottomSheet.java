@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,19 +66,18 @@ public class ThemesBottomSheet extends BottomSheetDialogFragment {
 
     private void setCurrentTags() {
         // Update the recycler view
-        themesAdapter = new ThemesAdapter(requireContext(),mainActivityInterface,
-                requireActivity().getSupportFragmentManager(),callingFragment,fragName);
+        themesAdapter = new ThemesAdapter(requireContext(), mainActivityInterface,
+                requireActivity().getSupportFragmentManager(), callingFragment, fragName);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        myView.currentTags.setLayoutManager(new LinearLayoutManager(requireContext()));
+        myView.currentTags.setLayoutManager(linearLayoutManager);
         myView.currentTags.setAdapter(themesAdapter);
-        }
+    }
 
     public void insertTag() {
         // Check this song doesn't have this tag already (meaning it's already in the list)
         String themeString = mainActivityInterface.getTempSong().getTheme().trim();
         String newThemeString = myView.newTag.getText().toString().trim();
-        Log.d(TAG,"themeString: "+themeString);
         if (!themeString.contains(newThemeString + ";") && !themeString.endsWith(newThemeString)) {
             themeString = themeString + "; " + newThemeString;
             themeString = mainActivityInterface.getProcessSong().tidyThemeString(themeString);
@@ -92,7 +90,7 @@ public class ThemesBottomSheet extends BottomSheetDialogFragment {
     }
     public void deleteTags(int position) {
         // The tags have been deleted, so update the recycler view
-        themesAdapter.notifyItemRemoved(position);
+        themesAdapter.confirmedRemoveThemeTag(position);
     }
 
 

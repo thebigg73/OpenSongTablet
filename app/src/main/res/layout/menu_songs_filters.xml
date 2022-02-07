@@ -47,11 +47,12 @@
         android:paddingTop="4dp"
         android:paddingBottom="4dp"/>
 
-    <com.garethevans.church.opensongtablet.customviews.ExposedDropDown
+    <com.garethevans.church.opensongtablet.customviews.MaterialEditText
         android:id="@+id/tagSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/theme"
+        app:endIconMode="clear_text"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="4dp"

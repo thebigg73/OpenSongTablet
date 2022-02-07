@@ -143,7 +143,8 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
                     mainActivityInterface.getSong().setAutoscrolllength(duration+"");
                     break;
             }
-            mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface);
+            mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
+                    mainActivityInterface.getSong());
         }
     }
 }

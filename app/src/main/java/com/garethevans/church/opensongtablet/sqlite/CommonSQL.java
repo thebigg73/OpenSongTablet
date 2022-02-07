@@ -459,19 +459,26 @@ public class CommonSQL {
         Cursor cursor = db.rawQuery(q, null);
         cursor.moveToFirst();
 
+        Log.d(TAG,"cursor.getCount()="+cursor.getCount());
+        Log.d(TAG,"cursor.getColumnCount()="+cursor.getColumnCount());
+        Log.d(TAG,"ursor.getColumnIndex(SQLite.COLUMN_THEME)="+cursor.getColumnIndex(SQLite.COLUMN_THEME));
+
         if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_THEME)==0) {
             for (int x=0; x<cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
                 String themes = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_THEME));
-                if (themes.contains(";")) {
+                Log.d(TAG,"themes: "+themes);
+                if (themes!=null && themes.contains(";")) {
                     String[] themeBits = themes.split(";");
                     for (String bit:themeBits) {
                         if (!themeTags.contains(bit.trim()) && !bit.trim().isEmpty()) {
                             themeTags.add(bit.trim());
+                            Log.d(TAG,"adding: "+bit.trim());
                         }
                     }
-                } else if (!themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {
+                } else if (themes!=null && !themeTags.contains(themes.trim()) && !themes.trim().isEmpty()) {
                     themeTags.add(themes.trim());
+                    Log.d(TAG,"adding: "+themes.trim());
                 }
             }
         }

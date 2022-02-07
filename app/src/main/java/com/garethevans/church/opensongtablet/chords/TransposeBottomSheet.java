@@ -273,7 +273,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                     transposeDirection, transposeTimes, fromFormat, toFormat);
 
             // Now save the changes
-            mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface);
+            mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
+                    mainActivityInterface.getSong());
 
             requireActivity().runOnUiThread(() -> {
                 // Update the song menu

@@ -101,7 +101,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         tagDelete.setOnClickListener(view -> {
             String textToFind = holder.tagName.getText().toString();
             positionToRemove = tags.indexOf(textToFind);
-            Log.d(TAG,"positionToRemove: "+positionToRemove);
             removeThemeTag();
         });
         // Set the checkbox if the song is in the set
@@ -135,9 +134,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
     }
 
     private void initialiseCheckedArray() {
-        Log.d(TAG,"getTheme()="+mainActivityInterface.getTempSong().getTheme());
         for (int i = 0; i < tags.size(); i++) {
-            Log.d(TAG, "tags.get(i): "+tags.get(i));
             if (mainActivityInterface.getTempSong().getTheme().contains(tags.get(i))) {
                 checked.add(i, true);
             } else {
@@ -147,7 +144,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
     }
 
     private void updateThemeTags(boolean add, String themeTag) {
-        Log.d(TAG,"updateThemeTags called.  add="+add+" themeTag="+themeTag);
         String currThemeTag = mainActivityInterface.getTempSong().getTheme();
 
         // Do either add or remove
@@ -174,7 +170,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
     }
 
     public void insertThemeTag(String themeTag) {
-        Log.d(TAG,"Trying to insert: "+themeTag);
         if (!tags.contains(themeTag)) {
             tags.add(0, themeTag);
             songsWithTags.add(0, mainActivityInterface.getTempSong().getSongid());
@@ -187,23 +182,21 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
     private void removeThemeTag() {
         // This is step 1.  We now need to check the 'are you sure' prompt/
         // This will warn users that this tag will be removed from all songs that have it
-        Log.d(TAG, "about to call are you sure: "+songsWithTags.get(positionToRemove));
         ArrayList<String> arguments = new ArrayList<>();
         arguments.add(tags.get(positionToRemove));
         arguments.add(positionToRemove+"");
         AreYouSureBottomSheet bottomSheet = new AreYouSureBottomSheet(
                 "removeThemeTag",
-                c.getString(R.string.tags_remove_from_songs) + "\n" +
+                "\"" + tags.get(positionToRemove) + "\"\n\n" + c.getString(R.string.tags_remove_from_songs) + "\n\n" +
                         songsWithTags.get(positionToRemove), arguments,
                 fragName, callingFragment, null);
         bottomSheet.show(fragmentManager,"AreYouSureBottomSheet");
     }
     private int positionToRemove = -1;
-    public void confirmendRemoveThemeTag() {
-        tags.remove(positionToRemove);
-        songsWithTags.remove(positionToRemove);
-        checked.remove(positionToRemove);
-        notifyItemRemoved(positionToRemove);
-        mainActivityInterface.updateFragment(fragName,callingFragment,null);
+    public void confirmedRemoveThemeTag(int position) {
+        tags.remove(position);
+        songsWithTags.remove(position);
+        checked.remove(position);
+        notifyItemRemoved(position);
     }
 }

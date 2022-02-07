@@ -19,7 +19,7 @@ public class SaveSong {
         // Because we haven't written the changes, we receive the 'newSong' object to compare with the current song
 
         // Only if we aren't messing with the welcome song!
-        if (checkNotWelcomeSong(mainActivityInterface)) {
+        if (checkNotWelcomeSong(mainActivityInterface,mainActivityInterface.getSong())) {
             // Check for folders
             String oldFolder = mainActivityInterface.getSong().getFolder();
             String oldFilename = mainActivityInterface.getSong().getFilename();
@@ -70,7 +70,7 @@ public class SaveSong {
             }
 
             // Now save the new song
-            boolean saveSuccessful = updateSong(c, mainActivityInterface);
+            boolean saveSuccessful = updateSong(c, mainActivityInterface, mainActivityInterface.getSong());
 
             // Now, if the save was successful and the folder/filename changes, delete the old stuff
             if ((folderChange || filenameChange) && saveSuccessful) {
@@ -100,31 +100,31 @@ public class SaveSong {
     }
 
     // This updates the current song
-    public boolean updateSong(Context c, MainActivityInterface mainActivityInterface) {
+    public boolean updateSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
         // This is called if we just want to save the current song updates stored in the current song
         // This only works is the folder and filename haven't changed (done in the step above from edit song instead)
 
         // Won't do anything if this is the 'Welcome' song
-        if (checkNotWelcomeSong(mainActivityInterface)) {
+        if (checkNotWelcomeSong(mainActivityInterface, thisSong)) {
             // First update the song database
-            mainActivityInterface.getSQLiteHelper().updateSong(c, mainActivityInterface, mainActivityInterface.getSong());
+            mainActivityInterface.getSQLiteHelper().updateSong(c, mainActivityInterface, thisSong);
 
             // If this is a non-OpenSong song (PDF, IMG), update the persistent database
-            if (!mainActivityInterface.getSong().getFiletype().equals("XML")) {
+            if (!thisSong.getFiletype().equals("XML")) {
                 // If update fails (due to no existing row, a new one is created)
                 mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c, mainActivityInterface,
-                        mainActivityInterface.getSong());
+                        thisSong);
             }
 
             // Update the CCLI log if required
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "ccliAutomaticLogging", false)) {
                 mainActivityInterface.getCCLILog().addEntry(c, mainActivityInterface,
-                        mainActivityInterface.getSong(), "3"); // 3=edited
+                        thisSong, "3"); // 3=edited
             }
 
             // Now save the song file and return the success!
-            if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
-                return mainActivityInterface.getStorageAccess().saveSongFile(c, mainActivityInterface);
+            if (thisSong.getFiletype().equals("XML")) {
+                return mainActivityInterface.getStorageAccess().saveThisSongFile(c,mainActivityInterface,thisSong);
             } else {
                 return true;
             }
@@ -135,8 +135,8 @@ public class SaveSong {
         }
     }
 
-    private boolean checkNotWelcomeSong(MainActivityInterface mainActivityInterface) {
-        return (!mainActivityInterface.getSong().getFilename().equals("Welcome to OpenSongApp") &&
-                !mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp"));
+    public boolean checkNotWelcomeSong(MainActivityInterface mainActivityInterface, Song thisSong) {
+        return (!thisSong.getFilename().equals("Welcome to OpenSongApp") &&
+                !thisSong.getTitle().equals("Welcome to OpenSongApp"));
     }
 }

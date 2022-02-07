@@ -98,7 +98,6 @@ public interface MainActivityInterface {
     SaveSong getSaveSong();
     void setSong(Song song);
     void setTempSong(Song tempSong);
-    void updateSong();
     void updateKeyAndLyrics(Song song);
 
     // Metronome

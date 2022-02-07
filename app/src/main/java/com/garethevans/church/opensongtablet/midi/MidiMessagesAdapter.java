@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.midi;
 
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,13 +21,15 @@ import java.util.ArrayList;
 public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHolder> implements MidiItemTouchInterface {
 
     private final boolean editing;
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private ItemTouchHelper itemTouchHelper;
     private ArrayList<MidiInfo> midiInfos;
     private final String TAG = "MidiMessagesAdapter";
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MidiMessagesAdapter(MainActivityInterface mainActivityInterface, boolean editing) {
+    public MidiMessagesAdapter(Context c, MainActivityInterface mainActivityInterface, boolean editing) {
+        this.c = c;
         this.mainActivityInterface = mainActivityInterface;
         this.editing = editing;
         midiInfos = new ArrayList<>();
@@ -108,7 +111,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         mainActivityInterface.getMidi().addToSongMessages(toPosition,thisCommand);
 
         // Update the song midi messages and save to the song
-        mainActivityInterface.getMidi().updateSongMessages();
+        mainActivityInterface.getMidi().updateSongMessages(c);
 
         // Notify the changes to this adapter
         MidiInfo midiInfo = midiInfos.get(fromPosition);
@@ -123,7 +126,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         // Remove from the song messages
         mainActivityInterface.getMidi().removeFromSongMessages(fromPosition);
         // Update and ave the song messages
-        mainActivityInterface.getMidi().updateSongMessages();
+        mainActivityInterface.getMidi().updateSongMessages(c);
 
         // Remover from the adapter
         midiInfos.remove(fromPosition);

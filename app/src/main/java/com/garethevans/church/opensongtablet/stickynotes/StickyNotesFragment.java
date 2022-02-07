@@ -79,7 +79,8 @@ public class StickyNotesFragment extends Fragment {
         myView.saveButton.setOnClickListener(v -> {
             if (myView.stickyNotes.getText()!=null) {
                 mainActivityInterface.getSong().setNotes(myView.stickyNotes.getText().toString());
-                if (mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface)) {
+                if (mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
+                        mainActivityInterface.getSong())) {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
                 } else {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.error_song_not_saved));

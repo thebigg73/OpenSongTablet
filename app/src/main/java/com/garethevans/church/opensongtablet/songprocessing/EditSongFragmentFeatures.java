@@ -88,11 +88,13 @@ public class EditSongFragmentFeatures extends Fragment {
         ExposedDropDownArrayAdapter padArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
                 myView.pad, R.layout.view_exposed_dropdown_item, padfiles);
         myView.pad.setAdapter(padArrayAdapter);
+        Log.d(TAG,"padFile="+mainActivityInterface.getTempSong().getPadfile());
         if (mainActivityInterface.getTempSong().getPadfile() == null ||
                 mainActivityInterface.getTempSong().getPadfile().isEmpty()) {
             mainActivityInterface.getTempSong().setPadfile("auto");
         }
         myView.pad.setText(niceTextFromPref(mainActivityInterface.getTempSong().getPadfile()));
+        Log.d(TAG,"padFile="+mainActivityInterface.getTempSong().getPadfile());
 
         // The loop
         if (mainActivityInterface.getTempSong().getPadloop()!=null) {
@@ -227,6 +229,7 @@ public class EditSongFragmentFeatures extends Fragment {
     }
 
     private String niceTextFromPref(String prefText) {
+        Log.d(TAG,"prefText: "+prefText);
         switch (prefText) {
             default:
                 return "";

@@ -119,7 +119,8 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
             } else {
                 //Add to the persistent database only
                 mainActivityInterface.getSong().setLyrics(myView.extractedText.getText().toString());
-                mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface);
+                mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
+                        mainActivityInterface.getSong());
             }
             // Open the edit song page so the user can check for updates
             mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);

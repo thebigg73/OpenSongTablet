@@ -1097,6 +1097,17 @@ public class StorageAccess {
                 mainActivityInterface.getSong().getFilename(),
                 mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, mainActivityInterface.getSong()));
     }
+    public boolean saveThisSongFile(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+        Log.d(TAG,"saveSongFile() called");
+        // This is called from the SaveSong class and uses the sent Song object
+        // First get the song uri
+        // Because it may not be in the songs folder, lets check!
+        ArrayList<String> newLocation = fixNonSongs(thisSong.getFolder());
+        // Write the string file
+        return doStringWriteToFile(c,mainActivityInterface,newLocation.get(0), newLocation.get(1),
+                thisSong.getFilename(),
+                mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, thisSong));
+    }
     public ArrayList<String> fixNonSongs(String folderToCheck) {
         // Return any subfolder and change the 'Songs' folder as required
         ArrayList<String> fixedFolders = new ArrayList<>();

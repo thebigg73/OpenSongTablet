@@ -139,7 +139,8 @@ public class AutoscrollSettingsFragment extends Fragment {
                         mainActivityInterface.getSong().setAutoscrolldelay(song_duration+"");
                     }
                     mainActivityInterface.getSong().setAutoscrolllength(song_duration+"");
-                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface);
+                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
+                            mainActivityInterface.getSong());
                     break;
                 case "songDelay":
                     if (song_delay>song_duration) {
@@ -147,7 +148,8 @@ public class AutoscrollSettingsFragment extends Fragment {
                         mainActivityInterface.getSong().setAutoscrolllength(song_delay+"");
                     }
                     mainActivityInterface.getSong().setAutoscrolldelay(song_delay+"");
-                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface);
+                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
+                            mainActivityInterface.getSong());
                     break;
             }
         }

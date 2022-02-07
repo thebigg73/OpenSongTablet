@@ -687,7 +687,7 @@ public class MidiFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mainActivityInterface.getMidi().updateSongMessages();
+        mainActivityInterface.getMidi().updateSongMessages(requireContext());
     }
     // Called back from MainActivity
     public void deleteMidiFromList(int i) {
@@ -697,12 +697,12 @@ public class MidiFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mainActivityInterface.getMidi().updateSongMessages();
+        mainActivityInterface.getMidi().updateSongMessages(requireContext());
     }
 
     // Process song midi messages
     private void setupAdapter() {
-        midiMessagesAdapter = new MidiMessagesAdapter(mainActivityInterface,false);
+        midiMessagesAdapter = new MidiMessagesAdapter(requireContext(),mainActivityInterface,false);
         ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         midiMessagesAdapter.setTouchHelper(itemTouchHelper);
@@ -737,7 +737,7 @@ public class MidiFragment extends Fragment {
 
     // Save the song messages
     private void saveSongMessages() {
-        mainActivityInterface.getMidi().updateSongMessages();
+        mainActivityInterface.getMidi().updateSongMessages(requireContext());
         try {
             // Get a string representation of the midi commands
             StringBuilder s = new StringBuilder();
@@ -759,6 +759,7 @@ public class MidiFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // Save the song
-        mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface);
+        mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
+                mainActivityInterface.getSong());
     }
 }

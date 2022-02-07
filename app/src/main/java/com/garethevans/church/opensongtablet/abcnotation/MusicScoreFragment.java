@@ -63,7 +63,8 @@ public class MusicScoreFragment extends Fragment {
             if (!myJsString.equals(mainActivityInterface.getAbcNotation().getSongInfo(mainActivityInterface))) {
                 // Something has changed
                 mainActivityInterface.getSong().setAbc(myJsString);
-                mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface);
+                mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
+                        mainActivityInterface.getSong());
             }
         }
     }
