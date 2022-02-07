@@ -70,7 +70,7 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
     private void prepareViews() {
         // Update the recycler view
         presentationOrderAdapter = new PresentationOrderAdapter(requireContext(), this, mainActivityInterface,
-                callingFragment, fragName);
+                callingFragment, fragName, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         myView.currentSections.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -130,5 +130,14 @@ public class PresentationOrderBottomSheet extends BottomSheetDialogFragment impl
         // Notification that an item has been removed
         Log.d(TAG,"Item removed from "+position);
         checkViewsToShow();
+    }
+
+    public void showWarning(String warning) {
+        if (warning!=null && !warning.isEmpty()) {
+            myView.warningText.setText(warning);
+            myView.warningText.setVisibility(View.VISIBLE);
+        } else {
+            myView.warningText.setVisibility(View.GONE);
+        }
     }
 }

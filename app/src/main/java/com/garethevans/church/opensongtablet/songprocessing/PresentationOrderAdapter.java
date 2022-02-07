@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.RecyclerInterface;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,30 +28,37 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
 
     private final MainActivityInterface mainActivityInterface;
     private final RecyclerInterface recyclerInterface;
-    private final String TAG = "PresentationOrderAdapter";
+    private final String TAG = "PresOrderAdapter";
     private final Fragment callingFragment;
+    private final BottomSheetDialogFragment bottomSheetDialogFragment;
     private final String fragName;
     private final Context c;
     private final ArrayList<String> currentOrder = new ArrayList<>();
 
     public PresentationOrderAdapter(Context c, Fragment bottomSheet, MainActivityInterface mainActivityInterface,
-                         Fragment callingFragment, String fragName) {
+                                    Fragment callingFragment, String fragName, BottomSheetDialogFragment bottomSheetDialogFragment) {
         this.mainActivityInterface = mainActivityInterface;
         this.callingFragment = callingFragment;
         this.fragName = fragName;
+        this.bottomSheetDialogFragment = bottomSheetDialogFragment;
         this.c = c;
         recyclerInterface = (RecyclerInterface) bottomSheet;
 
         // Process the song and get for any existing tags to choose from
-        if (mainActivityInterface.getTempSong().getPresoOrderSongSections()==null ||
-        mainActivityInterface.getTempSong().getPresoOrderSongSections().isEmpty()) {
-            mainActivityInterface.getTempSong().setSongSectionHeadings(mainActivityInterface.getProcessSong().getSectionHeadings(
-                    mainActivityInterface.getTempSong().getLyrics()));
+         mainActivityInterface.getTempSong().setSongSectionHeadings(mainActivityInterface.getProcessSong().getSectionHeadings(
+                mainActivityInterface.getTempSong().getLyrics()));
+
+        for (String heading:mainActivityInterface.getTempSong().getSongSectionHeadings()) {
+            Log.d(TAG,"heading: "+heading);
         }
+
 
         // If tags are duplicated, warn the user
         Set<String> check = new HashSet<>(mainActivityInterface.getTempSong().getSongSectionHeadings());
         if (check.size() < mainActivityInterface.getTempSong().getSongSectionHeadings().size()){
+            if (bottomSheetDialogFragment!=null) {
+                ((PresentationOrderBottomSheet) bottomSheetDialogFragment).showWarning(c.getString(R.string.duplicate_sections));
+            }
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.duplicate_sections));
         }
 

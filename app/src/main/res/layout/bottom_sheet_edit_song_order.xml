@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingBottom="16dp">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.garethevans.church.opensongtablet.customviews.DialogHeader
         android:id="@+id/dialogHeading"
@@ -13,52 +12,77 @@
         android:layout_height="wrap_content"
         android:text="@string/presentation_order" />
 
-    <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-        android:id="@+id/sectionButtonsTextView"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/song_sections"
-        android:hint="@string/song_sections_info"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/sectionButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:padding="16dp"
-        android:isScrollContainer="true"
-        app:columnCount="3" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-            android:id="@+id/currentSectionsTextView"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="@string/presentation_order"
-            android:hint="@string/presentation_order_info"
-            android:layout_gravity="center_vertical"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/deletePresOrder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_delete_white_36dp"
-            android:layout_gravity="center_vertical"
-            app:useCompatPadding="true"
-            android:contentDescription="@string/delete" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/currentSections"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp"/>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/sectionButtonsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/song_sections_info"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/song_sections" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/warningText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/red"
+                android:visibility="gone" />
+
+            <androidx.gridlayout.widget.GridLayout
+                android:id="@+id/sectionButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:isScrollContainer="true"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:columnCount="3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                    android:id="@+id/currentSectionsTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:hint="@string/presentation_order_info"
+                    android:text="@string/presentation_order" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/deletePresOrder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/delete"
+                    android:src="@drawable/ic_delete_white_36dp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/currentSections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

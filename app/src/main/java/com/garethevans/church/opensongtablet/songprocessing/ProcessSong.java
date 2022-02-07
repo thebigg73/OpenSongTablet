@@ -2614,21 +2614,27 @@ public class ProcessSong {
         String[] bits = lyrics.split("\\[");
         ArrayList<String> sections = new ArrayList<>();
         for (String bit:bits) {
+            Log.d(TAG,"bit: "+bit);
             if (bit.contains("]") && bit.indexOf("]")<20) {
                 String section = bit.substring(0,bit.indexOf("]"));
+                Log.d(TAG,"section="+section);
                 boolean multiverse = false;
                 // Check for multiverse/chorus
                 String[] lines = bit.split("\n");
                 for (String line:lines) {
+                    Log.d(TAG,"line="+line);
                     if (line.length()>2 && line.charAt(1) == '.' &&
                     nums.contains(line.substring(0,1)) &&
                     !sections.contains(section+line.charAt(0))) {
                         sections.add(section+line.charAt(0));
                         multiverse = true;
+                        Log.d(TAG, "multiverse: true   adding: "+section+line.charAt(0));
+
                     }
                 }
                 if (!multiverse) {
-                sections.add(section);
+                    Log.d(TAG, "multiverse: false   adding: "+section);
+                    sections.add(section);
                 }
             }
         }
