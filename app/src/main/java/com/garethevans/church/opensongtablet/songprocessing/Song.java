@@ -60,6 +60,7 @@ public class Song {
     private ArrayList<String> songSectionTypes;
     private ArrayList<String> presoOrderSongSections;
     private ArrayList<String> presoOrderSongHeadings;
+    private ArrayList<String> groupedSections;
     private ArrayList<String> lyricsUndos = new ArrayList<>();
     private int lyricsUndosPos = -1;
     private int currentSection = 0;
@@ -182,6 +183,9 @@ public class Song {
         } else {
             return new ArrayList<>();
         }
+    }
+    public ArrayList<String> getGroupedSections() {
+        return groupedSections;
     }
     public ArrayList<String> getLyricsUndos() {
         return lyricsUndos;
@@ -323,6 +327,9 @@ public class Song {
     public void setPresoOrderSongHeadings(ArrayList<String> presoOrderSongHeadings) {
         this.presoOrderSongHeadings = presoOrderSongHeadings;
     }
+    public void setGroupedSections(ArrayList<String> groupedSections) {
+        this.groupedSections = groupedSections;
+    }
     public void setLyricsUndos(int position,String value) {
         if (lyricsUndos==null) {
             lyricsUndos = new ArrayList<>();
@@ -424,6 +431,7 @@ public class Song {
         this.songSectionTypes = toCopy.songSectionTypes;
         this.presoOrderSongSections = toCopy.presoOrderSongSections;
         this.presoOrderSongHeadings = toCopy.presoOrderSongHeadings;
+        this.groupedSections = toCopy.groupedSections;
         this.currentSection = toCopy.currentSection;
         this.isImageSlide = toCopy.isImageSlide;
         this.pdfPageCurrent = toCopy.pdfPageCurrent;

@@ -19,7 +19,7 @@ public class SaveSong {
         // Because we haven't written the changes, we receive the 'newSong' object to compare with the current song
 
         // Only if we aren't messing with the welcome song!
-        if (checkNotWelcomeSong(mainActivityInterface,mainActivityInterface.getSong())) {
+        if (checkNotWelcomeSong(mainActivityInterface.getSong())) {
             // Check for folders
             String oldFolder = mainActivityInterface.getSong().getFolder();
             String oldFilename = mainActivityInterface.getSong().getFilename();
@@ -105,7 +105,7 @@ public class SaveSong {
         // This only works is the folder and filename haven't changed (done in the step above from edit song instead)
 
         // Won't do anything if this is the 'Welcome' song
-        if (checkNotWelcomeSong(mainActivityInterface, thisSong)) {
+        if (checkNotWelcomeSong(thisSong)) {
             // First update the song database
             mainActivityInterface.getSQLiteHelper().updateSong(c, mainActivityInterface, thisSong);
 
@@ -135,7 +135,7 @@ public class SaveSong {
         }
     }
 
-    public boolean checkNotWelcomeSong(MainActivityInterface mainActivityInterface, Song thisSong) {
+    public boolean checkNotWelcomeSong(Song thisSong) {
         return (!thisSong.getFilename().equals("Welcome to OpenSongApp") &&
                 !thisSong.getTitle().equals("Welcome to OpenSongApp"));
     }

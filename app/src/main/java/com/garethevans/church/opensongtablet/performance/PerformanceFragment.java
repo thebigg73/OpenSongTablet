@@ -184,10 +184,6 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
                     mainActivityInterface.getSong(),false));
 
-            // Because we have loaded the song, figure out any presentation order requirements
-            mainActivityInterface.getSong().setPresoOrderSongSections(null);
-            mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface,mainActivityInterface.getSong());
-
             mainActivityInterface.moveToSongInSongMenu();
 
             // Now animate out the song and after a delay start the next bit of the processing

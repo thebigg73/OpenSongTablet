@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +19,14 @@ public class ShowToast {
     private final PopupWindow popupWindow;
     private final MaterialTextView textToast;
     private final String TAG = "ShowToast";
+    private long messageEndTime = 0;
+    private final Runnable hidePopupRunnable = new Runnable() {
+        @Override
+        public void run() {
+            popupWindow.dismiss();
+            Log.d(TAG,"closing");
+        }
+    };
 
     public ShowToast(Context c, View anchor) {
         this.anchor = anchor;
@@ -30,23 +39,36 @@ public class ShowToast {
         textToast = view.findViewById(R.id.textToast);
     }
 
-    public void doIt(String message) {
+    public void doIt(final String message) {
         try {
 
-            // Toasts with custom layouts are deprecated and look ugly!
-            //Toast toast = Toast.makeText(c, message, Toast.LENGTH_SHORT);
-            //toast.show();
+            if (message != null && !message.isEmpty()) {
+                // Toasts with custom layouts are deprecated and look ugly!
+                // Use a more customisable popup window
 
-            // Use a more customisable popup window
-            //LayoutInflater inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //View view = inflater.inflate(R.layout.view_toast,null,false);
-            textToast.setText(message);
-            popupWindow.showAtLocation(anchor, Gravity.CENTER,0,0);
-            Runnable r = popupWindow::dismiss;
-            new Handler().postDelayed(r, 2000);
+                // If a message is already showing, then wait
+                long delayTime;
+                long currTime = System.currentTimeMillis();
+                if (currTime > messageEndTime) {
+                    // Good to go now
+                    delayTime = 0;
+                    messageEndTime = currTime + 2000;
+                } else {
+                    delayTime = messageEndTime - currTime + 500;
+                }
 
-        } catch (Exception e) {
-            Log.d(TAG,"Error showing toast message");
+
+                Runnable showRunnable = () -> {
+                    textToast.setText(message);
+                    popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
+                    messageEndTime = System.currentTimeMillis() + 2000;
+                    new Handler().postDelayed(hidePopupRunnable, 2000);
+                };
+
+                new Handler(Looper.getMainLooper()).postDelayed(showRunnable, delayTime);
+
+            }
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }

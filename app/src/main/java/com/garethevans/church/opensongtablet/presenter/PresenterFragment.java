@@ -81,9 +81,7 @@ public class PresenterFragment extends Fragment {
         // Load the song
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
-        // Because we have loaded the song, figure out any presentation order requirements
         mainActivityInterface.getSong().setPresoOrderSongSections(null);
-        mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface,mainActivityInterface.getSong());
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
         if (mainActivityInterface.getSongListBuildIndex().getIndexRequired() &&
@@ -181,7 +179,7 @@ public class PresenterFragment extends Fragment {
 
         // Because we have loaded the song, figure out any presentation order requirements
         mainActivityInterface.getSong().setPresoOrderSongSections(null);
-        mainActivityInterface.getProcessSong().matchPresentationOrder(mainActivityInterface,mainActivityInterface.getSong());
+        mainActivityInterface.getProcessSong().matchPresentationOrder(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
 
         // Get the song views
         getSongViews();

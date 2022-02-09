@@ -62,7 +62,7 @@ public class PerformanceGestures {
 
     // Edit song
     public void editSong() {
-        if (mainActivityInterface.getSaveSong().checkNotWelcomeSong(mainActivityInterface,mainActivityInterface.getSong())) {
+        if (mainActivityInterface.getSaveSong().checkNotWelcomeSong(mainActivityInterface.getSong())) {
             mainActivityInterface.navigateToFragment("opensongapp://settings/edit", 0);
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
