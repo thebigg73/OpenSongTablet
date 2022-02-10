@@ -454,6 +454,8 @@ public class PopUpSetViewNew extends DialogFragment {
 
         void prepareOptionMenu();
 
+        void prepareSongMenu();
+
         void confirmedAction();
 
         void refreshAll();
@@ -500,10 +502,11 @@ public class PopUpSetViewNew extends DialogFragment {
             mListener.windowFlags();
             mListener.pageButtonAlpha(null);
             // IV - For presentation mode refresh all
-            // IV - For performance modes only use onScrollAction to update the set buttons
+            // IV - For performance modes call prepareSongMenu to update song list which handles ticks and use onScrollAction to update the set buttons
             if (StaticVariables.whichMode.equals("Presentation")) {
                 mListener.refreshAll();
             } else {
+                mListener.prepareSongMenu();
                 mListener.onScrollAction();
             }
         }
