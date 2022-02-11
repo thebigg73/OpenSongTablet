@@ -193,10 +193,10 @@ public class ChordDisplayProcessing {
             }
         }
     }
-    public void transposeChordsInSong(MainActivityInterface mainActivityInterface) {
+    public void transposeChordsInSong(Context c, MainActivityInterface mainActivityInterface) {
         // Go through each chord and transpose it
         for (int i=0; i<chordsInSong.size(); i++) {
-            chordsInSong.set(i, mainActivityInterface.getTranspose().getKeyBeforeCapo(
+            chordsInSong.set(i, mainActivityInterface.getTranspose().getKeyBeforeCapo(c, mainActivityInterface,
                     Integer.parseInt(mainActivityInterface.getSong().getCapo()),chordsInSong.get(i)));
         }
     }

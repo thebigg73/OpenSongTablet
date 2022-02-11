@@ -95,7 +95,7 @@ public class SongSheetHeaders {
         if (capo!=null && !capo.isEmpty()) {
             keyCapoTempo += c.getString(R.string.capo) + ": " + capo + " ";
             if (key!=null && !key.isEmpty()) {
-                keyCapoTempo += "(" + mainActivityInterface.getTranspose().getKeyBeforeCapo(Integer.parseInt(capo), key) + ") |";
+                keyCapoTempo += "(" + mainActivityInterface.getTranspose().getKeyBeforeCapo(c, mainActivityInterface, Integer.parseInt(capo), key) + ") |";
             }
         } else if (key!=null && !key.isEmpty()) {
             keyCapoTempo += "| " + c.getString(R.string.key) + ": " + key + " |";

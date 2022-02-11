@@ -192,10 +192,11 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     }
 
     private void itemSelected(int thisPos) {
-        notifyItemChanged(mainActivityInterface.getPresenterSettings().getCurrentSection());
         notifyItemChanged(thisPos);
+        notifyItemChanged(mainActivityInterface.getPresenterSettings().getCurrentSection());
         mainActivityInterface.getPresenterSettings().setCurrentSection(thisPos);
         displayInterface.presenterShowSection(thisPos);
+        fragment.doScrollTo(thisPos);
     }
 
     public void setSectionEdited(String content) {

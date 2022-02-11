@@ -90,7 +90,11 @@ public class AppActionBar {
 
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
                 title.setTextSize(mainsize);
-                title.setText(mainActivityInterface.getSong().getTitle());
+                String text = mainActivityInterface.getSong().getTitle();
+                if (mainActivityInterface.getSong().getFolder().startsWith("*")) {
+                    text = "*" + text;
+                }
+                title.setText(text);
             }
             if (author != null && mainActivityInterface.getSong().getAuthor() != null &&
                     !mainActivityInterface.getSong().getAuthor().isEmpty()) {

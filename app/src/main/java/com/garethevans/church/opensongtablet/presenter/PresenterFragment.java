@@ -179,7 +179,6 @@ public class PresenterFragment extends Fragment {
 
         // Because we have loaded the song, figure out any presentation order requirements
         mainActivityInterface.getSong().setPresoOrderSongSections(null);
-        mainActivityInterface.getProcessSong().matchPresentationOrder(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
 
         // Get the song views
         getSongViews();
@@ -285,5 +284,9 @@ public class PresenterFragment extends Fragment {
                 displayInterface.updateDisplay("showBlackscreen");
             }
         }
+    }
+
+    public void doScrollTo(int thisPos) {
+        songSectionsFragment.doScrollTo(thisPos);
     }
 }

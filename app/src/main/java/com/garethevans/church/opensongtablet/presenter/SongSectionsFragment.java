@@ -125,7 +125,9 @@ public class SongSectionsFragment extends Fragment {
         mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSectionEdited(content);
     }
 
-
+    public void doScrollTo(int thisPos) {
+        ((LinearLayoutManager)myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(thisPos,0);
+    }
 
     public void showTutorial(ArrayList<View> viewsToHighlight) {
         // The presenter fragment has sent the main parent views

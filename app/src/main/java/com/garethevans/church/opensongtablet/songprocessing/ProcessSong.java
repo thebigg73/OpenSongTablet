@@ -1160,11 +1160,13 @@ public class ProcessSong {
             // So, if entry doesn't contain __> it isn't in the song
             // Also, anything after __> isn't in the song
             for (int d = 0; d < tempPresOrderArray.length; d++) {
+                Log.d(TAG,"tempPresOrderArray["+d+"]: "+tempPresOrderArray[d]);
                 if (!tempPresOrderArray[d].contains("__>")) {
                     if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
                         if (errors.length() > 0) {
                             errors.append(("\n"));
                         }
+                        Log.d(TAG,"HERE");
                         errors.append(tempPresOrderArray[d]).append(" - ").append(c.getString(R.string.section_not_found));
                     }
                     tempPresOrderArray[d] = "";

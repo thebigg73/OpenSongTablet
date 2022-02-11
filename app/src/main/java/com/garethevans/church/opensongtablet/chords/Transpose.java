@@ -118,6 +118,12 @@ public class Transpose {
     private String[] fromNash;
     private String[] toChordNumsNash;
 
+    // For working out auto transpose times
+    private final String[] keyText = new String[] {"A","A#","Bb","B","C","C#","Db","D","D#","Eb","E","F","F#","Gb","G","G#","Ab",
+                                             "A","A#","Bb","B","C","C#","Db","D","D#","Eb","E","F","F#","Gb","G","G#","Ab"};
+    private final int[] keyNum     = new int[]    { 0,  1,   1,   2,  3,  4,   4,   5,  6,   6,   7,  8,  9,   9,   10, 11,  11,
+                                              12, 13,  13,  14, 15, 16,  16,  17, 18,  18,  19, 20, 21,  21,  22, 23,  23};
+
     // Number to chord:
     private final String[] fromChordsNum  = "├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤".split(" ");
     private final String[] toSharpChords1 = "»A# »C# »D# »F# »G# »»A »»B »»C »»D »»E »»F »»G".split(" ");
@@ -184,19 +190,12 @@ public class Transpose {
                 thisSong.setKey(numberToKey(c, mainActivityInterface, transposeNumber(keyToNumber(originalkey), transposeDirection, transposeTimes)));
             }
 
-            // Now we have the new key, we can decide if we use flats or not for any notes
-            if (thisSong.getKey()!=null) {
-                usesFlats = keyUsesFlats(c, mainActivityInterface, thisSong.getKey());
-            } else {
-                usesFlats = false;
-            }
-
             // Change the song format
             thisSong.setDetectedChordFormat(newChordFormat);
             thisSong.setDesiredChordFormat(newChordFormat);
 
             // Transpose and write the lyrics
-            thisSong.setLyrics(transposeString(thisSong));
+            thisSong.setLyrics(transposeString(c, mainActivityInterface, thisSong));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,12 +204,12 @@ public class Transpose {
     }
 
     // Stuff for dealing with the song key
-    public String getKeyBeforeCapo(int capo, String oldkey) {
+    public String getKeyBeforeCapo(Context c, MainActivityInterface mainActivityInterface, int capo, String oldkey) {
         // TODO
         Log.d(TAG,"getKeyBeforeCapo() NOT DOING ANYTHING PROBABLY - NEED TO FIX OR CHECK!!!!");
         Song tempSong = new Song();
         tempSong.setLyrics("."+oldkey);
-        return transposeNumber(transposeString(tempSong),"-1",capo);
+        return transposeNumber(transposeString(c,mainActivityInterface,tempSong),"-1",capo);
         /*String getkeynum = chordToNumber1(oldkey);
         getkeynum = transposeKey(getkeynum,"-1",capo);
         // IV - The returned chord may include « or » - removeAll
@@ -280,7 +279,17 @@ public class Transpose {
 
 
     // This is the chord transpose engine
-    private String transposeString(Song thisSong) {
+    private String transposeString(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+
+        // Now we have the new key, we can decide if we use flats or not for any notes
+        if (thisSong.getKey()!=null) {
+            forceFlats = keyUsesFlats(c, mainActivityInterface, thisSong.getKey());
+            usesFlats = forceFlats;
+        } else {
+            usesFlats = forceFlats;
+            forceFlats = false;
+        }
+
         try {
             StringBuilder sb = new StringBuilder();
 
@@ -667,7 +676,7 @@ public class Transpose {
         transposeDirection = "-1";
         // TODO - Line below from IV #136
         //return transposeString("." + string, !capoForceFlats, capoForceFlats).substring(1);
-        return transposeString(mainActivityInterface.getSong());
+        return transposeString(c, mainActivityInterface, mainActivityInterface.getSong());
     }
 
     private void capoKeyTranspose(Context c, MainActivityInterface mainActivityInterface) {
@@ -823,18 +832,28 @@ public class Transpose {
 
     // For dealing with songs loaded from sets (checking key with current song)
     public int getTransposeTimes(String from, String to) {
-        String startAt = keyToNumber(from);
-        Log.d(TAG,"from: "+from+"  startAt: "+startAt);
-        String endAt = keyToNumber(to);
-        Log.d(TAG,"to: "+to+"  endAt: "+endAt);
-        int transposeTimes = 0;
-        for (int x=1; x<13; x++) {
-            if (transposeNumber(startAt,"+1",x).equals(endAt)) {
-                transposeTimes = x;
+        int startPos = -1;
+        int endPos = -1;
+        // Get rid of minors for transpose times - not required
+        from = from.replace("m","");
+        to = to.replace("m","");
+        // Go through the keys until the start position is found
+        // The keep going and find the end position
+        for (int x=0; x<keyText.length; x++) {
+            if (startPos<0 && keyText[x].equals(from)) {
+                startPos = keyNum[x];
+            }
+            if (startPos>-1 && endPos<0 && keyText[x].equals(to)) {
+                endPos = keyNum[x];
             }
         }
-
-        return transposeTimes;
+        // Return the transpose times (for +1 direction).  If bigger than 6, the app actually does -1
+        if (startPos>-1 && endPos>-1 && endPos>startPos) {
+            return endPos - startPos;
+        } else {
+            // Some issue - no transpose!
+            return 0;
+        }
     }
 
 

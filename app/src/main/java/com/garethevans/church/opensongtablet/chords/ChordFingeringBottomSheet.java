@@ -135,7 +135,7 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
 
         // If we have a capo set and want to see capo chords, transpose
         if (!mainActivityInterface.getSong().getCapo().isEmpty() && myView.capoChords.isChecked()) {
-            chordDisplayProcessing.transposeChordsInSong(mainActivityInterface);
+            chordDisplayProcessing.transposeChordsInSong(requireContext(),mainActivityInterface);
         }
 
         // Now get the fingerings based on the instrument

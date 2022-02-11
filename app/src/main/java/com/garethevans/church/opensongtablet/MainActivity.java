@@ -1686,8 +1686,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 newFilename = setFolder + "_" + setFilename + "_" + setKey;
             }
 
+            Log.d(TAG,"newFilename="+newFilename);
             Uri variationUri = storageAccess.getUriForItem(this,this,"Variations","",newFilename);
-            if (!storageAccess.uriExists(this,variationUri)) {
+            Log.d(TAG,"variationUri="+variationUri);
+
+            // If the file already exists, remove it as we might have edited the original
+
                 // Make this temp variation file
                 storageAccess.lollipopCreateFileForOutputStream(this,this,variationUri,null,"Variations","",newFilename);
                 // Get a tempSong we can write
@@ -1710,12 +1714,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 copySong.setLyrics(transpose.doTranspose(this,this,copySong,
                         "+1",transposeTimes,copySong.getDetectedChordFormat(),
                         copySong.getDesiredChordFormat()).getLyrics());
-                //copySong.setLyrics(transpose.doTranspose(this,this,copySong,"+1",transposeTimes).getLyrics());
                 // Get the song XML
                 String songXML = processSong.getXML(this,this,copySong);
                 // Save the song
                 storageAccess.doStringWriteToFile(this,this,"Variations","",newFilename,songXML);
-            }
+
             setFolder = newFolder;
             setFilename = newFilename;
         }

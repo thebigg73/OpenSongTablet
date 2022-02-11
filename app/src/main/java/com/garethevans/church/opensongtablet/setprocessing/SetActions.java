@@ -573,7 +573,10 @@ public class SetActions {
         String pathText = "";
         if (path!=null && !path.replace("/","").equals(c.getString(R.string.mainfoldername))) {
             pathText = " path=\"" + mainActivityInterface.getProcessSong().parseToHTMLEntities(path) + "\"";
+        } else {
+            pathText = " path=\"/\"";
         }
+        Log.d(TAG,"pathText="+pathText);
         sb.append("  <slide_group name=\"")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(name))
                 .append("\" type=\"song\"")
@@ -852,7 +855,7 @@ public class SetActions {
                                 case "song":
                                     // Get Song
                                     try {
-                                        getSong(mainActivityInterface, xpp);
+                                        getSong(c,mainActivityInterface, xpp);
                                     } catch (Exception e) {
                                         Log.d(TAG, "Couldn't get song location from set");
                                         e.printStackTrace();
@@ -906,7 +909,7 @@ public class SetActions {
         return string;
     }
 
-    private void getSong(MainActivityInterface mainActivityInterface, XmlPullParser xpp)
+    private void getSong(Context c, MainActivityInterface mainActivityInterface, XmlPullParser xpp)
             throws IOException, XmlPullParserException {
         // Set this info into the current set.  We will just load our song
         // When we load, we will transpose our song if the key is different
@@ -921,6 +924,10 @@ public class SetActions {
         }
 
         key = fixNull(key);
+
+        if (path.isEmpty()) {
+            path = c.getString(R.string.mainfoldername);
+        }
 
         mainActivityInterface.getCurrentSet().addSetValues(path, name, key);
         mainActivityInterface.getCurrentSet().addSetItem(getSongForSetWork(path, name, key));
