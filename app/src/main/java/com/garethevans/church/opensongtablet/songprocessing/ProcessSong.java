@@ -969,7 +969,7 @@ public class ProcessSong {
                 } else {
                     textView.setText(str);
                 }
-            } else if (linetype.equals("capoline") && displayChords && (!hasCapo || displayCapoChords)) {
+            } else if (linetype.equals("capoline") && displayChords && (!hasCapo || displayCapoChords || displayCapoAndNativeChords)) {
                 if (highlightChordColor != 0x00000000) {
                     textView.setText(highlightChords(str, highlightChordColor));
                 } else {
