@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.chords;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -17,6 +16,7 @@ public class Transpose {
     // TODO TIDY UP
     private final String TAG = "Transpose";
     private ArrayList<String> chordFormatNames, chordFormatAppearances;
+    private Song miniTransposeSong = new Song();
 
     //  A  A#/Bb  B/(Cb) C/(B#) C#/Db    D    D#/Eb  E/(Fb) (E#)/F   F#/Gb   G     G#/Ab
     //  A    B     H      C
@@ -120,9 +120,9 @@ public class Transpose {
 
     // For working out auto transpose times
     private final String[] keyText = new String[] {"A","A#","Bb","B","C","C#","Db","D","D#","Eb","E","F","F#","Gb","G","G#","Ab",
-                                             "A","A#","Bb","B","C","C#","Db","D","D#","Eb","E","F","F#","Gb","G","G#","Ab"};
+            "A","A#","Bb","B","C","C#","Db","D","D#","Eb","E","F","F#","Gb","G","G#","Ab"};
     private final int[] keyNum     = new int[]    { 0,  1,   1,   2,  3,  4,   4,   5,  6,   6,   7,  8,  9,   9,   10, 11,  11,
-                                              12, 13,  13,  14, 15, 16,  16,  17, 18,  18,  19, 20, 21,  21,  22, 23,  23};
+            12, 13,  13,  14, 15, 16,  16,  17, 18,  18,  19, 20, 21,  21,  22, 23,  23};
 
     // Number to chord:
     private final String[] fromChordsNum  = "├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤".split(" ");
@@ -205,16 +205,15 @@ public class Transpose {
 
     // Stuff for dealing with the song key
     public String getKeyBeforeCapo(Context c, MainActivityInterface mainActivityInterface, int capo, String oldkey) {
-        // TODO
-        Log.d(TAG,"getKeyBeforeCapo() NOT DOING ANYTHING PROBABLY - NEED TO FIX OR CHECK!!!!");
         Song tempSong = new Song();
         tempSong.setLyrics("."+oldkey);
-        return transposeNumber(transposeString(c,mainActivityInterface,tempSong),"-1",capo);
-        /*String getkeynum = chordToNumber1(oldkey);
-        getkeynum = transposeKey(getkeynum,"-1",capo);
-        // IV - The returned chord may include « or » - removeAll
-        return numberToChord1(getkeynum,false).replaceAll("[«»]","");*/
-        //return oldkey;
+        oldChordFormat = 1;
+        newChordFormat = 1;
+        tempSong.setDetectedChordFormat(1);
+        tempSong.setDesiredChordFormat(1);
+        transposeDirection = "-1";
+        transposeTimes = capo;
+        return transposeString(c,mainActivityInterface,tempSong).replace(".","");
     }
 
     public String keyToNumber(String key) {
@@ -276,7 +275,16 @@ public class Transpose {
                 testkey.equals("Cm");
     }
 
-
+    public String transposeChordForCapo(Context c, MainActivityInterface mainActivityInterface, int capo, String string) {
+        // Use the miniTransposeSong
+        miniTransposeSong.setLyrics(string);
+        miniTransposeSong.setCapo(""+capo);
+        miniTransposeSong.setDetectedChordFormat(mainActivityInterface.getSong().getDetectedChordFormat());
+        miniTransposeSong.setDesiredChordFormat(mainActivityInterface.getSong().getDesiredChordFormat());
+        transposeTimes = capo;
+        transposeDirection = "-1";
+        return transposeString(c,mainActivityInterface,miniTransposeSong);
+    }
 
     // This is the chord transpose engine
     private String transposeString(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
@@ -298,7 +306,7 @@ public class Transpose {
                 // IV - Use leading \n as we can be certain it is safe to remove later
                 sb.append("\n");
                 if (line.startsWith(".")) {
-                    Log.d(TAG,"PRETRANSPOSE LINE: "+line);
+                    //Log.d(TAG,"PRETRANSPOSE LINE: "+line);
                     line = line.replaceFirst("."," ");
                     switch (oldChordFormat) {
                         default:
@@ -332,14 +340,14 @@ public class Transpose {
                             }
                             break;
                     }
-                    Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
+                    //Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
 
                     // If the old format has transposable chords - transpose
                     if (oldChordFormat < 5) {
                         line = transposeNumber(line, transposeDirection, transposeTimes);
-                        Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
+                        //Log.d(TAG,"MIDTRANSPOSE LINE: "+line);
                     }
-                    Log.d(TAG,"newChordFormat="+newChordFormat);
+                    //Log.d(TAG,"newChordFormat="+newChordFormat);
                     switch (newChordFormat) {
                         default:
                         case 1:
@@ -400,7 +408,7 @@ public class Transpose {
                             break;
                     }
 
-                    Log.d(TAG,"NEARLY DONE LINE: "+line);
+                    //Log.d(TAG,"NEARLY DONE LINE: "+line);
 
                     // Space adjustments: Remove patterns that cancel out
                     line = line.replace("««»»", "").replace("«»", "");
@@ -417,7 +425,7 @@ public class Transpose {
                         line = line.substring(0, myindex) + line.substring(myindex + 1).replaceFirst(" {2}", " ");
                         myindex = line.indexOf("«");
                     }
-                    Log.d(TAG,"TRANSPOSED LINE: "+line);
+                    //Log.d(TAG,"TRANSPOSED LINE: "+line);
                     line = line.replaceFirst(" ",".");
                 }
 
@@ -739,7 +747,7 @@ public class Transpose {
                 // Case is needed as lowercase chords denotes minor chords for format 3
                 // Not required for format 5 (Nashville numbers)
                 for (String chordInLine:chordsInLine) {
-                    Log.d(TAG,"chordInLine: "+chordInLine);
+                    //Log.d(TAG,"chordInLine: "+chordInLine);
                     chordInLineLC = chordInLine.toLowerCase(Locale.ROOT);
                     if (Arrays.asList(format6Identifiers).contains(chordInLineLC)) {
                         contains_nashnumeral_count ++;
@@ -765,11 +773,11 @@ public class Transpose {
         boolean contains_nash = (contains_nash_count > 4);
         boolean contains_nashnumeral = (contains_nashnumeral_count > 4);
 
-        Log.d(TAG, "contains_es_is_count="+contains_es_is_count);
-        Log.d(TAG, "contains_H_count="+contains_H_count);
-        Log.d(TAG, "contains_do_count="+contains_do_count);
-        Log.d(TAG, "contains_nash_count="+contains_nash_count);
-        Log.d(TAG, "contains_nashnumeral_count="+contains_nashnumeral_count);
+        //Log.d(TAG, "contains_es_is_count="+contains_es_is_count);
+        //Log.d(TAG, "contains_H_count="+contains_H_count);
+        //Log.d(TAG, "contains_do_count="+contains_do_count);
+        //Log.d(TAG, "contains_nash_count="+contains_nash_count);
+        //Log.d(TAG, "contains_nashnumeral_count="+contains_nashnumeral_count);
 
         // Set the chord style detected - Ok so the user chord format may not quite match the song - it might though!
         int formatNum;
@@ -794,7 +802,7 @@ public class Transpose {
         // We set the newChordFormat default to the same as detected
         newChordFormat = formatNum;
 
-        Log.d(TAG,"formatNum="+formatNum);
+        //Log.d(TAG,"formatNum="+formatNum);
     }
 
 

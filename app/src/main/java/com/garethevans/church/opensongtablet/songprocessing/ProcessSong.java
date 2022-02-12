@@ -51,7 +51,7 @@ public class ProcessSong {
     private final String TAG = "ProcessSong";
     private final float defFontSize = 8.0f;
     private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
-            displayChords, displayLyrics, usePresentationOrder,
+            displayChords, displayLyrics, usePresentationOrder, displayCapoChords, displayCapoAndNativeChords,
             songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
             songAutoScaleOverrideWidth, trimLines, trimSections;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha,
@@ -74,8 +74,8 @@ public class ProcessSong {
         addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "addSectionSpace", true);
         blockShadow = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "blockShadow", false);
         blockShadowAlpha = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "blockShadowAlpha", 0.7f);
-        //displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoChords", true);
-        //displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
+        displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoChords", true);
+        displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
         displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayChords", true);
         displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayLyrics", true);
         displayBoldChordsHeadings = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayBoldChordsHeadings", false);
@@ -317,6 +317,8 @@ public class ProcessSong {
             type = "heading";
         } else if (string.startsWith(".")) {
             type = "chord";
+        } else if (string.startsWith("^")) {
+            type = "capoline";
         } else if (string.startsWith(";")) {
             // Simple test for ; above means that the complex tests below are done only if a comment line
             if (string.startsWith(";__" + c.getResources().getString(R.string.capo))) {
@@ -599,6 +601,8 @@ public class ProcessSong {
     private String getLineType(String string) {
         if (string.startsWith(".")) {
             return "chord";
+        } else if (string.startsWith("˄")) {
+            return "capoline";
         } else if (string.startsWith(";") && string.contains("|")) {
             return "tab";
         } else if (string.startsWith(";")) {
@@ -624,6 +628,7 @@ public class ProcessSong {
                 }
                 break;
             case "chord":
+            case "capoline":
             case "comment":
             case "tab":
                 if (string.length() > 0) {
@@ -818,9 +823,20 @@ public class ProcessSong {
     }
 
     private TableLayout groupTable(Context c, MainActivityInterface mainActivityInterface,
-                                   String string, int lyricColor, int chordColor,
+                                   String string, int lyricColor, int chordColor, int capoColor,
                                    int highlightChordColor, boolean presentation) {
         TableLayout tableLayout = newTableLayout(c);
+
+        // If we have a capo and want to show capo chords, duplicate and tranpose the chord line
+        String capoText = mainActivityInterface.getSong().getCapo();
+        boolean hasCapo = capoText!=null && !capoText.isEmpty();
+        if (hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
+            int capo = Integer.parseInt(capoText);
+            String chordbit = string.substring(0,string.indexOf("____groupline____"));
+            chordbit = mainActivityInterface.getTranspose().transposeChordForCapo(c,mainActivityInterface,capo,chordbit).replaceFirst(".","˄");
+            // Add it back in with a capo identifying this part
+            string = chordbit + "____groupline____" + string;
+        }
 
         // Split the group into lines
         String[] lines = string.split("____groupline____");
@@ -881,7 +897,7 @@ public class ProcessSong {
 
             Typeface typeface = getTypeface(mainActivityInterface, presentation, linetype);
             float size = getFontSize(linetype);
-            int color = getFontColor(linetype, lyricColor, chordColor);
+            int color = getFontColor(linetype, lyricColor, chordColor, capoColor);
             int startpos = 0;
             for (int endpos : pos) {
                 if (endpos != 0) {
@@ -890,16 +906,51 @@ public class ProcessSong {
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(c, mainActivityInterface, linetype, str);
                     }
-                    if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
-                        textView.setText(highlightChords(str, highlightChordColor));
-                    } else if (linetype.equals("lyric")) {
-                        // TODO
-                        // IV - This will need more complexity depending on mode and if showing chords
-                        textView.setText(str.replaceAll("[|_]", " "));
-                    } else {
-                        textView.setText(str);
+                    // If this is a chord line that either has highlighting, or needs to to include capo chords
+                    // We process separately, otherwise it is handled in the last default 'else'
+                    /*if (linetype.equals("chord") && highlightChordColor != 0x00000000 &&
+                    ) {*/
+
+                    switch (linetype) {
+                        case "chord":
+                            // Only show this if we want chords and if there is a capo, we want both capo and native
+                            if (displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords)) {
+                                if (highlightChordColor != 0x00000000) {
+                                    textView.setText(new SpannableString(highlightChords(str,
+                                            highlightChordColor)));
+                                } else {
+                                    textView.setText(str);
+                                }
+                            } else {
+                                textView = null;
+                            }
+                            break;
+                        case "capoline":
+                            // Only show this if we want chords and if there is a capo and showcapo
+                            if (displayChords && hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
+                                if (highlightChordColor != 0x00000000) {
+                                    textView.setText(new SpannableString(highlightChords(str,
+                                            highlightChordColor)));
+                                } else {
+                                    textView.setText(str);
+                                }
+                            } else {
+                                textView = null;
+                            }
+                            break;
+                        case "lyric":
+                            // TODO
+                            // IV - This will need more complexity depending on mode and if showing chords
+                            textView.setText(str.replaceAll("[|_]", " "));
+                            break;
+                        default:
+                            // Just set the text
+                            textView.setText(str);
+                            break;
                     }
-                    tableRow.addView(textView);
+                    if (textView!=null) {
+                        tableRow.addView(textView);
+                    }
                     startpos = endpos;
                 }
             }
@@ -909,16 +960,33 @@ public class ProcessSong {
             if (str.startsWith(".")) {
                 str = str.replaceFirst(".", "");
             }
-            if (linetype.equals("chord") && highlightChordColor != 0x00000000) {
-                textView.setText(highlightChords(str, highlightChordColor));
+            if (str.startsWith("^")) {
+                str = str.replaceFirst("^", "");
+            }
+            if (linetype.equals("chord") && displayChords && (!hasCapo || displayCapoAndNativeChords || !displayCapoChords)) {
+                if (highlightChordColor != 0x00000000) {
+                    textView.setText(highlightChords(str, highlightChordColor));
+                } else {
+                    textView.setText(str);
+                }
+            } else if (linetype.equals("capoline") && displayChords && (!hasCapo || displayCapoChords)) {
+                if (highlightChordColor != 0x00000000) {
+                    textView.setText(highlightChords(str, highlightChordColor));
+                } else {
+                    textView.setText(str);
+                }
             } else if (linetype.equals("lyric")) {
                 // TODO
                 // IV - This will need more complexity depending on mode and if showing chords
                 textView.setText(str.replaceAll("[|_]", " "));
+            } else if (linetype.equals("chord") || linetype.equals("chordline")) {
+                textView = null;
             } else {
                 textView.setText(str);
             }
-            tableRow.addView(textView);
+            if (textView!=null) {
+                tableRow.addView(textView);
+            }
             tableLayout.addView(tableRow);
         }
         return tableLayout;
@@ -1160,13 +1228,11 @@ public class ProcessSong {
             // So, if entry doesn't contain __> it isn't in the song
             // Also, anything after __> isn't in the song
             for (int d = 0; d < tempPresOrderArray.length; d++) {
-                Log.d(TAG,"tempPresOrderArray["+d+"]: "+tempPresOrderArray[d]);
                 if (!tempPresOrderArray[d].contains("__>")) {
                     if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
                         if (errors.length() > 0) {
                             errors.append(("\n"));
                         }
-                        Log.d(TAG,"HERE");
                         errors.append(tempPresOrderArray[d]).append(" - ").append(c.getString(R.string.section_not_found));
                     }
                     tempPresOrderArray[d] = "";
@@ -1429,22 +1495,25 @@ public class ProcessSong {
                         float size = getFontSize(linetype);
                         if (!asPDF && !presentation) {
                             textColor = getFontColor(linetype, mainActivityInterface.getMyThemeColors().
-                                    getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
+                                    getLyricsTextColor(), mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
+                                    mainActivityInterface.getMyThemeColors().getLyricsCapoColor());
                         }
 
                         if (line.contains("____groupline____")) {
                             if (asPDF) {
                                 linearLayout.addView(groupTable(c, mainActivityInterface, line, Color.BLACK, Color.BLACK,
-                                        Color.TRANSPARENT, false));
+                                        Color.BLACK, Color.TRANSPARENT, false));
                             } else if (presentation) {
                                 linearLayout.addView(groupTable(c, mainActivityInterface, line,
                                         mainActivityInterface.getMyThemeColors().getPresoFontColor(),
                                         mainActivityInterface.getMyThemeColors().getPresoFontColor(),
+                                        mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
                                         mainActivityInterface.getMyThemeColors().getHighlightChordColor(), true));
                             } else {
                                 linearLayout.addView(groupTable(c, mainActivityInterface, line,
                                         mainActivityInterface.getMyThemeColors().getLyricsTextColor(),
                                         mainActivityInterface.getMyThemeColors().getLyricsChordsColor(),
+                                        mainActivityInterface.getMyThemeColors().getLyricsCapoColor(),
                                         mainActivityInterface.getMyThemeColors().getHighlightChordColor(), false));
                             }
                         } else {
@@ -1487,9 +1556,11 @@ public class ProcessSong {
         }
     }
 
-    private int getFontColor(String string, int lyricColor, int chordColor) {
+    private int getFontColor(String string, int lyricColor, int chordColor, int capoColor) {
         if (string.equals("chord")) {
             return chordColor;
+        } else if (string.equals("capoline")) {
+            return capoColor;
         } else {
             return lyricColor;
         }
@@ -1499,6 +1570,7 @@ public class ProcessSong {
         float f = defFontSize;
         switch (string) {
             case "chord":
+            case "capoline":
                 f = defFontSize * scaleChords;
                 break;
             case "comment":
@@ -1564,7 +1636,7 @@ public class ProcessSong {
         TextView textView = new TextView(c);
         if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             int trimval;
-            if (linetype.equals("chord")) {
+            if (linetype.equals("chord") || linetype.equals("capoline")) {
                 trimval = (int) (size * scaleChords * lineSpacing);
             } else if (linetype.equals("heading")) {
                 trimval = (int) (size * scaleHeadings * lineSpacing);
@@ -1587,7 +1659,7 @@ public class ProcessSong {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             }
         }
-        if (linetype.equals("chord") && displayBoldChordsHeadings) {
+        if ((linetype.equals("chord") || linetype.equals("capoline")) && displayBoldChordsHeadings) {
             textView.setPaintFlags(textView.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
         }
         return textView;
