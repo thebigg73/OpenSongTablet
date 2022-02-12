@@ -939,9 +939,13 @@ public class ProcessSong {
                             }
                             break;
                         case "lyric":
-                            // TODO
-                            // IV - This will need more complexity depending on mode and if showing chords
-                            textView.setText(str.replaceAll("[|_]", " "));
+                            if (displayLyrics) {
+                                // TODO
+                                // IV - This will need more complexity depending on mode and if showing chords
+                                textView.setText(str.replaceAll("[|_]", " "));
+                            } else {
+                                textView = null;
+                            }
                             break;
                         default:
                             // Just set the text
@@ -976,9 +980,13 @@ public class ProcessSong {
                     textView.setText(str);
                 }
             } else if (linetype.equals("lyric")) {
-                // TODO
-                // IV - This will need more complexity depending on mode and if showing chords
-                textView.setText(str.replaceAll("[|_]", " "));
+                if (displayLyrics) {
+                    // TODO
+                    // IV - This will need more complexity depending on mode and if showing chords
+                    textView.setText(str.replaceAll("[|_]", " "));
+                } else {
+                    textView = null;
+                }
             } else if (linetype.equals("chord") || linetype.equals("chordline")) {
                 textView = null;
             } else {

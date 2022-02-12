@@ -184,6 +184,7 @@ public class PerformanceGestures {
     public void showChords() {
         boolean displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayChords", true);
         mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayChords", !displayChords);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(c,mainActivityInterface);
         mainActivityInterface.navHome();
     }
 
@@ -194,12 +195,29 @@ public class PerformanceGestures {
 
     // Toggle between native, capo and both
     public void showCapo() {
-        // TODO
+        boolean displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayCapoChords", true);
+        boolean displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayCapoAndNativeChords", false);
+        if (displayCapoAndNativeChords) {
+            displayCapoAndNativeChords = false;
+            displayCapoChords = false;
+        } else if (displayCapoChords) {
+            displayCapoAndNativeChords = true;
+        } else {
+            displayCapoChords = true;
+            displayCapoAndNativeChords = false;
+        }
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayCapoChords", displayCapoChords);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayCapoAndNativeChords", displayCapoAndNativeChords);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(c,mainActivityInterface);
+        mainActivityInterface.navHome();
     }
 
     // Show or hide the lyrics
     public void showLyrics() {
-        // TODO
+        boolean displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayLyrics", true);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayLyrics", !displayLyrics);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences(c,mainActivityInterface);
+        mainActivityInterface.navHome();
     }
 
     // Show the abc notation
