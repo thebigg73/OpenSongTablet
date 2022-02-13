@@ -1504,11 +1504,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void showSticky(boolean forceshow, boolean hide) {
         // Try to show the sticky note
-        if (!whichMode.equals("Presenter") && isCurrentFragment(R.id.performanceFragment)) {
-            ((PerformanceFragment)getCurrentFragment()).dealWithStickyNotes(forceshow,hide);
+        if (!whichMode.equals("Presenter") && performanceFragment!=null) {
+            performanceFragment.dealWithStickyNotes(forceshow,hide);
         }
     }
 
+    // Highlighter
+    @Override
+    public void toggleHighlighter() {
+        // Try to show the highlighter
+        if (!whichMode.equals("Presenter") && performanceFragment!=null) {
+            performanceFragment.toggleHighlighter();
+        }
+    }
 
     // Metronome
     @Override
@@ -2668,10 +2676,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public int[] getDisplayMetrics() {
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
         int[] displayMetrics = new int[3];
-        displayMetrics[1] = metrics.heightPixels;
-        displayMetrics[0] = metrics.widthPixels;
         displayMetrics[0] = getWindow().getDecorView().getWidth();
         displayMetrics[1] = getWindow().getDecorView().getHeight();
+        displayMetrics[2] = metrics.densityDpi;
         return displayMetrics;
     }
 

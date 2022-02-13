@@ -388,11 +388,11 @@ public class PerformanceFragment extends Fragment {
             float maxWidth = 0;
             float totalHeight = 0;
             for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-                maxWidth = Math.max(maxWidth, mainActivityInterface.getSectionWidths().get(x) * scaleFactor);
-                totalHeight += mainActivityInterface.getSectionHeights().get(x) * scaleFactor;
+                maxWidth = Math.max(maxWidth, mainActivityInterface.getSectionWidths().get(x));
+                totalHeight += mainActivityInterface.getSectionHeights().get(x);
             }
-            final int w = (int) maxWidth;
-            final int h = (int) totalHeight;
+            final int w = (int) (maxWidth*scaleFactor);
+            final int h = (int) (totalHeight*scaleFactor);
 
             myView.zoomLayout.setSongSize(w, h + (int)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor));
 
@@ -403,8 +403,11 @@ public class PerformanceFragment extends Fragment {
             }
 
             // Now deal with the highlighter file
-            myView.highlighterView.setY((float)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
-            dealWithHighlighterFile(w, h, topPadding);
+            //myView.highlighterView.setY((float)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
+            //myView.highlighterView.setTop(0);
+            //myView.highlighterView.setY(0);
+            Log.d(TAG,"scaleFactor="+scaleFactor);
+            dealWithHighlighterFile((int)(maxWidth), (int)(totalHeight), topPadding);
 
             // Send the autoscroll information (if required)
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h, screenHeight);
@@ -456,16 +459,27 @@ public class PerformanceFragment extends Fragment {
                 public void onGlobalLayout() {
                     // Load in the bitmap with these dimensions
                     Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                            getHighlighterFile(requireContext(), mainActivityInterface, w, h);
+                            getHighlighterFile(requireContext(), mainActivityInterface, 0, 0);
                     if (highlighterBitmap != null &&
                             mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "drawingAutoDisplay", true)) {
+
                         myView.highlighterView.setVisibility(View.VISIBLE);
-                        RequestOptions scaleOption = new RequestOptions().sizeMultiplier(myView.zoomLayout.getScaleFactor());
-                        RequestOptions sizeOption = new RequestOptions().override(w,h);
-                        GlideApp.with(requireContext()).load(highlighterBitmap).override(w,h).
-                                apply(scaleOption).apply(sizeOption).into(myView.highlighterView);
-                        myView.highlighterView.setY(topPadding);
-                        myView.highlighterView.setScaleY(myView.zoomLayout.getScaleFactor());
+                        ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
+                        rlp.width = w;
+                        rlp.height = h;
+                        myView.highlighterView.setLayoutParams(rlp);
+                        RequestOptions requestOptions = new RequestOptions().centerInside();
+                        GlideApp.with(requireContext()).load(highlighterBitmap).
+                                apply(requestOptions).
+                                into(myView.highlighterView);
+
+                        myView.highlighterView.setPivotX(0f);
+                        myView.highlighterView.setPivotY(0);
+                        myView.highlighterView.setTranslationX(0f);
+                        myView.highlighterView.setTranslationY((mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
+                        myView.highlighterView.setScaleX(scaleFactor);
+                        myView.highlighterView.setScaleY(scaleFactor);
+
                         // Hide after a certain length of time
                         int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
                         if (timetohide != 0) {
@@ -485,12 +499,12 @@ public class PerformanceFragment extends Fragment {
                     }
                 }
             });
-            myView.songView.post(() -> myView.songView.getLayoutParams().height = h);
+            myView.songView.post(() -> myView.songView.getLayoutParams().height = (int)(h*scaleFactor));
             myView.highlighterView.post(() -> {
-                myView.highlighterView.getLayoutParams().height = h;
-                myView.highlighterView.getLayoutParams().width = w;
+                //myView.highlighterView.getLayoutParams().height = (int)(h*scaleFactor);
+                //myView.highlighterView.getLayoutParams().width = (int)(w*scaleFactor);
                 myView.highlighterView.requestLayout();
-                myView.highlighterView.invalidate();
+                //myView.highlighterView.invalidate();
             });
         } else {
             myView.highlighterView.post(() -> myView.highlighterView.setVisibility(View.GONE));
@@ -510,6 +524,14 @@ public class PerformanceFragment extends Fragment {
                 // This is called from the MainActivity when we clicked on the page button
                 stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);
             } }
+    }
+
+    public void toggleHighlighter() {
+        if (myView.highlighterView.getVisibility()==View.VISIBLE) {
+            myView.highlighterView.setVisibility(View.GONE);
+        } else {
+            myView.highlighterView.setVisibility(View.VISIBLE);
+        }
     }
 
     // The scale and gesture bits of the code

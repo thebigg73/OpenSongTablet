@@ -233,7 +233,7 @@ public class PerformanceGestures {
 
     // Show the highlighter notes
     public void showHighlight() {
-        // TODO
+        actionInterface.toggleHighlighter();
     }
 
     // Highlighter edit

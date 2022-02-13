@@ -1281,7 +1281,7 @@ public class StorageAccess {
             bmp.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.flush();
             outputStream.close();
-            bmp.recycle();
+            //bmp.recycle();
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
         }

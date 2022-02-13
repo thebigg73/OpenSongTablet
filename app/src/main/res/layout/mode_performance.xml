@@ -119,15 +119,15 @@
             <!-- This is where highlighter notes go -->
             <ImageView
                 android:id="@+id/highlighterView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_below="@id/songSheetTitle"
                 android:layout_alignParentStart="true"
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:contentDescription="@string/image"
                 android:visibility="visible"
-                tools:ignore="ImageContrastCheck" />
+                tools:ignore="ImageContrastCheck"/>
 
         </RelativeLayout>
     </com.garethevans.church.opensongtablet.customviews.MyZoomLayout>

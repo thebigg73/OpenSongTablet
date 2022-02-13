@@ -12,6 +12,7 @@ public interface ActionInterface {
     Preferences getPreferences();
     void navigateToFragment(String deepLink, int id);
     void showSticky(boolean forceShow, boolean hide);
+    void toggleHighlighter();
     void chooseMenu(boolean showSetMenu);
     void onBackPressed();
     void metronomeToggle();
