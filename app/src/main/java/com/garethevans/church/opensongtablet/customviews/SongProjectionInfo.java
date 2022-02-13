@@ -17,20 +17,25 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class SongProjectionInfo extends LinearLayout {
 
     private final LinearLayout castSongInfo;
-    private final TextView songTitle, songAuthor, songCopyright;
+    private final TextView songTitle, songAuthor, songCopyright, songCCLI;
     private final ImageView miniLogo;
     private final String TAG = "SongProjectionInfo";
     private int viewHeight = 0;
+    private final String used_by_permission, words_and_music_by;
 
     public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_song_info, this);
+
+        used_by_permission = context.getString(R.string.used_by_permision);
+        words_and_music_by = context.getString(R.string.words_and_music_by);
 
         castSongInfo = findViewById(R.id.castSongInfo);
         LinearLayout contentLayout = findViewById(R.id.contentLayout);
         songTitle = findViewById(R.id.songTitle);
         songAuthor = findViewById(R.id.songAuthor);
         songCopyright = findViewById(R.id.songCopyright);
+        songCCLI = findViewById(R.id.songCCLI);
         miniLogo = findViewById(R.id.miniLogo);
 
         castSongInfo.setId(View.generateViewId());
@@ -38,6 +43,7 @@ public class SongProjectionInfo extends LinearLayout {
         songTitle.setId(View.generateViewId());
         songAuthor.setId(View.generateViewId());
         songCopyright.setId(View.generateViewId());
+        songCCLI.setId(View.generateViewId());
         miniLogo.setId(View.generateViewId());
     }
 
@@ -67,19 +73,25 @@ public class SongProjectionInfo extends LinearLayout {
 
     // Updating the text in the view
     public void setSongTitle(String title) {
-        setText(songTitle,title);
+        setText(songTitle,title,"");
     }
     public void setSongAuthor(String author) {
-        setText(songAuthor,author);
+        setText(songAuthor,author,words_and_music_by+" ");
     }
     public void setSongCopyright(String copyright) {
-        setText(songCopyright,copyright);
+        setText(songCopyright,copyright,"© ");
     }
-    private void setText(TextView textView, String text) {
+    public void setSongCCLI(String ccli) {
+        setText(songCCLI,ccli,used_by_permission+" ");
+    }
+    private void setText(TextView textView, String text, String pretext) {
         if (text==null || text.isEmpty()) {
             textView.setVisibility(View.GONE);
         } else {
             textView.setVisibility(View.VISIBLE);
+        }
+        if (text!=null && !text.isEmpty() && text.contains(pretext.trim())) {
+            text = pretext + text;
         }
         textView.setText(text);
     }
@@ -96,10 +108,12 @@ public class SongProjectionInfo extends LinearLayout {
         songTitle.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songAuthor.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
         songCopyright.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
+        songCCLI.setTypeface(mainActivityInterface.getMyFonts().getPresoInfoFont());
 
         songTitle.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songAuthor.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
         songCopyright.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
+        songCCLI.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
     }
 
     public String getSongTitle() {

@@ -529,7 +529,7 @@
     <string name="location_rationale">Diese Funktion ist erforderlich, um andere Netzwerkgeräte zu finden</string>
     <string name="bold_text">Zeigen Sie die Texte in Fettdruck an</string>
     <string name="words_and_music_by">Worte und Musik von</string>
-    <string name="used_by_permision">Mit Genehmigung verwendet.</string>
+    <string name="used_by_permision">Mit Genehmigung verwendet</string>
     <string name="play_services_how">Zeig mir wie</string>
     <string name="play_services_error">Um Google Cast, Schriftarten und Verbindungen in der Nähe verwenden zu können, müssen Sie Google Play Services installieren.</string>
     <string name="hide">Ausblenden</string>

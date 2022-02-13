@@ -39,9 +39,12 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/songCopyright"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="0dp"
-                android:layout_margin="0dp"/>
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/songCCLI"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 </LinearLayout>

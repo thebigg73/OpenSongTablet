@@ -529,7 +529,7 @@
     <string name="connections_keephostsongs">Zachowaj piosenki gospodarza</string>
     <string name="location_rationale">Ta funkcja jest wymagana do lokalizowania innych urządzeń sieciowych</string>
     <string name="bold_text">Wyświetlaj teksty pogrubioną czcionką</string>
-    <string name="used_by_permision">Wykorzystane za zgodą.</string>
+    <string name="used_by_permision">Wykorzystane za zgodą</string>
     <string name="words_and_music_by">Słowa i muzyka wg</string>
     <string name="play_services_how">Pokaż mi jak</string>
     <string name="play_services_error">Aby korzystać z Google Cast, czcionek i pobliskich połączeń, musisz zainstalować usługi Google Play.</string>

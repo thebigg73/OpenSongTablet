@@ -549,7 +549,7 @@
     <string name="warn_before_changing_song">Pokažite upozorenje pre prelaska na sledeću pesmu (korisno da izbegnete slučajne pritiske)</string>
     <string name="bold_text">Prikažite tekst podebljano</string>
     <string name="words_and_music_by">Reči i muzika</string>
-    <string name="used_by_permision">Koristi se uz dozvolu.</string>
+    <string name="used_by_permision">Koristi se uz dozvolu</string>
     <string name="play_services_error">Da biste koristili Google Cast, fontove i veze u blizini, moraćete da instalirate Google Plai usluge.</string>
     <string name="play_services_how">Pokaži mi kako</string>
     <string name="hide">Sakriti</string>

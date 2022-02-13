@@ -528,7 +528,7 @@
     <string name="connections_keephostsongs">Mantenha as músicas do host</string>
     <string name="location_rationale">Esse recurso é necessário para localizar outros dispositivos de rede</string>
     <string name="bold_text">Exibir letras em negrito</string>
-    <string name="used_by_permision">Usado com permissão.</string>
+    <string name="used_by_permision">Usado com permissão</string>
     <string name="words_and_music_by">Palavras e música de</string>
     <string name="play_services_how">Mostre-me como</string>
     <string name="play_services_error">Para usar o Google Cast, fontes e conexões próximas, você precisará instalar o Google Play Services.</string>

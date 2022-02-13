@@ -529,7 +529,7 @@
     <string name="warn_before_changing_song">Mutasson figyelmeztetést, mielőtt a következő dalra lépne (hasznos a véletlen megnyomás elkerülése érdekében)</string>
     <string name="bold_text">A dalszövegeket vastag betűvel jelenítheti meg</string>
     <string name="words_and_music_by">Szavak és zene</string>
-    <string name="used_by_permision">Engedély alapján használják.</string>
+    <string name="used_by_permision">Engedély alapján használják</string>
     <string name="play_services_error">A Google Cast, a Betűtípusok és a Közeli kapcsolatok használatához telepítenie kell a Google Play szolgáltatásokat.</string>
     <string name="play_services_how">Mutassa meg, hogyan</string>
     <string name="hide">Elrejt</string>

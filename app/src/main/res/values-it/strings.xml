@@ -529,7 +529,7 @@
     <string name="warn_before_changing_song">Mostra un avviso prima di passare al brano successivo (utile per evitare pressioni accidentali)</string>
     <string name="bold_text">Mostra i testi in grassetto</string>
     <string name="words_and_music_by">Parole e musica di</string>
-    <string name="used_by_permision">Utilizzato su autorizzazione.</string>
+    <string name="used_by_permision">Utilizzato su autorizzazione</string>
     <string name="play_services_error">Per utilizzare Google Cast, i caratteri e le connessioni nelle vicinanze, dovrai installare Google Play Services.</string>
     <string name="play_services_how">Mostrami come</string>
     <string name="hide">Nascondere</string>

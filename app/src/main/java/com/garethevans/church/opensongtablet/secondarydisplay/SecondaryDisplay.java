@@ -582,12 +582,26 @@ public class SecondaryDisplay extends Presentation {
         String title = mainActivityInterface.getSong().getTitle();
         String author = mainActivityInterface.getSong().getAuthor();
         String copyright = mainActivityInterface.getSong().getCopyright();
+        String ccli = mainActivityInterface.getSong().getCcli();
         if (title == null || title.isEmpty()) {
             title = mainActivityInterface.getSong().getFilename();
         }
-        String finalTitle = title;
 
-        Log.d(TAG, "setSongInfo()  title=" + finalTitle);
+        if (ccli!=null && !ccli.isEmpty()) {
+            ccli = c.getString(R.string.used_by_permision)+" "+ccli;
+        }
+        if (copyright!=null && !copyright.isEmpty() && copyright.contains("©")) {
+            copyright = "©"+copyright;
+        }
+        if (author!=null && !author.isEmpty()) {
+            author = c.getString(R.string.words_and_music_by)+" "+author;
+        }
+
+        // Get final strings for VTO
+        String finalTitle = title;
+        String finalAuthor = author;
+        String finalCopyright = copyright;
+        String finalCcli = ccli;
 
         // Draw the test song info bar so we can measure it with a VTO
         myView.testSongInfo.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -602,13 +616,15 @@ public class SecondaryDisplay extends Presentation {
                 // Now write the actual song info and set the determined height
                 if (showWhichInfo < 2) {
                     myView.songProjectionInfo1.setSongTitle(finalTitle);
-                    myView.songProjectionInfo1.setSongAuthor(author);
-                    myView.songProjectionInfo1.setSongCopyright(copyright);
+                    myView.songProjectionInfo1.setSongAuthor(finalAuthor);
+                    myView.songProjectionInfo1.setSongCopyright(finalCopyright);
+                    myView.songProjectionInfo1.setSongCCLI(finalCcli);
                     myView.songProjectionInfo1.setViewHeight(height);
                 } else {
                     myView.songProjectionInfo2.setSongTitle(finalTitle);
-                    myView.songProjectionInfo2.setSongAuthor(author);
-                    myView.songProjectionInfo2.setSongCopyright(copyright);
+                    myView.songProjectionInfo2.setSongAuthor(finalAuthor);
+                    myView.songProjectionInfo2.setSongCopyright(finalCopyright);
+                    myView.songProjectionInfo2.setSongCCLI(finalCcli);
                     myView.songProjectionInfo2.setViewHeight(height);
 
                 }
@@ -618,6 +634,7 @@ public class SecondaryDisplay extends Presentation {
         myView.testSongInfo.setSongTitle(title);
         myView.testSongInfo.setSongAuthor(author);
         myView.testSongInfo.setSongCopyright(copyright);
+        myView.testSongInfo.setSongCCLI(ccli);
     }
     public void initialiseInfoBarRequired() {
         // This sets the info bar as being required for first time shown

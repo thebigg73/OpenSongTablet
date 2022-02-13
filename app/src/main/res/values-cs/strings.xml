@@ -546,7 +546,7 @@
     <string name="connections_keephostsongs">Udržujte hostitelské písně</string>
     <string name="location_rationale">Tato funkce je vyžadována k nalezení dalších síťových zařízení</string>
     <string name="bold_text">Zobrazit text tučně</string>
-    <string name="used_by_permision">Používáno se svolením.</string>
+    <string name="used_by_permision">Používáno se svolením</string>
     <string name="words_and_music_by">Slova a hudba od</string>
     <string name="play_services_error">Abyste mohli používat Google Cast, písma a připojení v okolí, budete si muset nainstalovat služby Google Play.</string>
     <string name="play_services_how">Ukaž mi jak</string>

@@ -546,7 +546,7 @@
     <string name="connections_keephostsongs">保留主持人的歌曲</string>
     <string name="location_rationale">查找其他网络设备需要此功能</string>
     <string name="bold_text">以粗体显示歌词</string>
-    <string name="used_by_permision">经许可使用。</string>
+    <string name="used_by_permision">经许可使用</string>
     <string name="words_and_music_by">文字和音乐</string>
     <string name="play_services_error">要使用Google Cast，字体和附近的连接，您需要安装Google Play服务。</string>
     <string name="play_services_how">告诉我如何</string>

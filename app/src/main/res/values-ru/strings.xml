@@ -528,7 +528,7 @@
     <string name="bold_chords_headings">Аккорды и заголовки отображаются жирным шрифтом</string>
     <string name="location_rationale">Эта функция требуется для поиска других сетевых устройств</string>
     <string name="bold_text">Показать текст жирным шрифтом</string>
-    <string name="used_by_permision">Используется с разрешения.</string>
+    <string name="used_by_permision">Используется с разрешения</string>
     <string name="words_and_music_by">Слова и музыка</string>
     <string name="play_services_how">Показать мне, как</string>
     <string name="play_services_error">Чтобы использовать Google Cast, Fonts и Nearby Connections, вам необходимо установить Google Play Services.</string>

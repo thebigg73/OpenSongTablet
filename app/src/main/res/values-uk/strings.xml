@@ -470,7 +470,7 @@
     <string name="connections_keephostsongs">Зберігати пісні сервера</string>
     <string name="location_rationale">Ця функція потрібна для пошуку інших мережевих пристроїв</string>
     <string name="bold_text">Показати текст жирним шрифтом</string>
-    <string name="used_by_permision">Використовується з дозволу.</string>
+    <string name="used_by_permision">Використовується з дозволу</string>
     <string name="words_and_music_by">Слова і музика</string>
     <string name="play_services_how">Показати мені, як</string>
     <string name="play_services_error">Щоб використовувати Google Cast, Fonts і Nearby Connections, вам необхідно встановити Google Play Services.</string>

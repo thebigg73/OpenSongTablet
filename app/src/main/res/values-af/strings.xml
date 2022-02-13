@@ -545,7 +545,7 @@
     <string name="connections_keephostsongs">Hou gasheerliedjies</string>
     <string name="location_rationale">Hierdie funksie is nodig om ander netwerktoestelle op te spoor</string>
     <string name="bold_text">Vertoon lirieke vetdruk</string>
-    <string name="used_by_permision">Gebruik met toestemming.</string>
+    <string name="used_by_permision">Gebruik met toestemming</string>
     <string name="words_and_music_by">Woorde en musiek deur</string>
     <string name="play_services_error">Om Google Cast, lettertipes en verbindings in die buurt te gebruik, moet u Google Play Services installeer.</string>
     <string name="play_services_how">Wys my hoe</string>

@@ -549,7 +549,7 @@
     <string name="warn_before_changing_song">Visa en varning innan du går till nästa låt (användbart för att undvika oavsiktliga tryck)</string>
     <string name="bold_text">Visa texter med fet stil</string>
     <string name="words_and_music_by">Ord och musik av</string>
-    <string name="used_by_permision">Används med tillstånd.</string>
+    <string name="used_by_permision">Används med tillstånd</string>
     <string name="play_services_error">För att kunna använda Google Cast, teckensnitt och anslutningar i närheten måste du installera Google Play-tjänster.</string>
     <string name="play_services_how">Visa mig hur</string>
     <string name="hide">Dölj</string>

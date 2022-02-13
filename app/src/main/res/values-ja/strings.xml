@@ -530,7 +530,7 @@
     <string name="warn_before_changing_song">次の曲に移動する前に警告を表示します（誤って押すのを防ぐのに役立ちます）</string>
     <string name="bold_text">歌詞を太字で表示する</string>
     <string name="words_and_music_by">言葉と音楽</string>
-    <string name="used_by_permision">許可を得て使用。</string>
+    <string name="used_by_permision">許可を得て使用</string>
     <string name="play_services_error">Google Cast、Fonts、Nearby Connectionsを使用するには、GooglePlayサービスをインストールする必要があります。</string>
     <string name="play_services_how">どうするか教えて</string>
     <string name="hide">隠す</string>

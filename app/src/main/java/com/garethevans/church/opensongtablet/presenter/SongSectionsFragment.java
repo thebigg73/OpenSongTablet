@@ -82,6 +82,7 @@ public class SongSectionsFragment extends Fragment {
             myView.songInfo.setSongTitle(mainActivityInterface.getSong().getTitle());
             myView.songInfo.setSongAuthor(mainActivityInterface.getSong().getAuthor());
             myView.songInfo.setSongCopyright(mainActivityInterface.getSong().getCopyright());
+            myView.songInfo.setSongCCLI(mainActivityInterface.getSong().getCcli());
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(-1);
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().buildSongSections();
             myView.songInfo.setOnLongClickListener(view -> {
