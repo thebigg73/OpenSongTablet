@@ -113,10 +113,6 @@ public class HighlighterEditFragment extends Fragment {
                 float scale = Math.min(scaledX, scaledY);
                 int imgW = (int) (w * scale);
                 int imgH = (int) (h * scale);
-                Log.d(TAG, "screenshot=" + w + "," + h);
-                Log.d(TAG, "glideImage=" + viewWidth + "," + viewHeight);
-                Log.d(TAG, "Scale=" + scale);
-                Log.d(TAG, "imgW=" + imgW + "  imgH=" + imgH);
                 ViewGroup.LayoutParams layoutParams = myView.glideImage.getLayoutParams();
                 layoutParams.width = imgW;
                 layoutParams.height = imgH;
@@ -131,8 +127,6 @@ public class HighlighterEditFragment extends Fragment {
                 layoutParams2.width = imgW;
                 layoutParams2.height = imgH;
                 myView.drawNotes.setLayoutParams(layoutParams2);
-                Log.d(TAG, "w=" + w + "  imgW=" + imgW);
-                Log.d(TAG, "h=" + h + "  imgH=" + imgH);
                 // Set the original highlighter file if it exists
                 mainActivityInterface.getDrawNotes().loadExistingHighlighter(requireContext(), mainActivityInterface, imgW, imgH);
                 myView.glideImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);

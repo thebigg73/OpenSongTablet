@@ -376,7 +376,7 @@ public class PerformanceFragment extends Fragment {
             myView.zoomLayout.setVisibility(View.VISIBLE);
             myView.zoomLayout.setPageSize(screenWidth, screenHeight);
 
-            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(getContext(),
+            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(requireContext(),
                     mainActivityInterface,
                     myView.pageHolder, myView.songView, myView.songSheetTitle,
                     screenWidth, screenHeight,
@@ -403,11 +403,7 @@ public class PerformanceFragment extends Fragment {
             }
 
             // Now deal with the highlighter file
-            //myView.highlighterView.setY((float)(mainActivityInterface.getSongSheetTitleLayout().getHeight()*scaleFactor) - mainActivityInterface.getSongSheetTitleLayout().getHeight());
-            //myView.highlighterView.setTop(0);
-            //myView.highlighterView.setY(0);
-            Log.d(TAG,"scaleFactor="+scaleFactor);
-            dealWithHighlighterFile((int)(maxWidth), (int)(totalHeight), topPadding);
+            dealWithHighlighterFile((int)(maxWidth), (int)(totalHeight));
 
             // Send the autoscroll information (if required)
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), h, screenHeight);
@@ -447,7 +443,7 @@ public class PerformanceFragment extends Fragment {
         displayInterface.updateDisplay("setSongContent");
     }
 
-    private void dealWithHighlighterFile(int w, int h, int topPadding) {
+    private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().
                 getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")) {
             // Set the highlighter image view to match
@@ -500,16 +496,12 @@ public class PerformanceFragment extends Fragment {
                 }
             });
             myView.songView.post(() -> myView.songView.getLayoutParams().height = (int)(h*scaleFactor));
-            myView.highlighterView.post(() -> {
-                //myView.highlighterView.getLayoutParams().height = (int)(h*scaleFactor);
-                //myView.highlighterView.getLayoutParams().width = (int)(w*scaleFactor);
-                myView.highlighterView.requestLayout();
-                //myView.highlighterView.invalidate();
-            });
+            myView.highlighterView.post(() -> myView.highlighterView.requestLayout());
         } else {
             myView.highlighterView.post(() -> myView.highlighterView.setVisibility(View.GONE));
         }
     }
+
     public void dealWithStickyNotes(boolean forceShow, boolean hide) {
         if (hide) {
             if (stickyPopUp!=null) {

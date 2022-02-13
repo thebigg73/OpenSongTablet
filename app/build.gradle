@@ -35,7 +35,7 @@ android {
         }
         dependencies {
             classpath 'com.android.tools.build:gradle:4.2.2'
-            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.4.0'
+            classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.4.1'
         }
     }
 
@@ -79,9 +79,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'                            // Older device support in views
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.mediarouter:mediarouter:1.2.6'
-    implementation 'androidx.navigation:navigation-fragment:2.4.0'
-    implementation 'androidx.navigation:navigation-ui:2.4.0'
-    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.4.0'
+    implementation 'androidx.navigation:navigation-fragment:2.4.1'
+    implementation 'androidx.navigation:navigation-ui:2.4.1'
+    implementation 'androidx.navigation:navigation-dynamic-features-fragment:2.4.1'
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.multidex:multidex:2.0.1'
