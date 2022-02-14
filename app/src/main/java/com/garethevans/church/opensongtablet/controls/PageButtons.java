@@ -11,6 +11,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 
@@ -98,19 +99,20 @@ public class PageButtons {
     public FloatingActionButton getFAB(int x) {
         return fabs.get(x);
     }
-    private final OvershootInterpolator interpolator = new OvershootInterpolator(1.0f);
+    private final OvershootInterpolator interpolator = new OvershootInterpolator(0.75f);
 
     public void animatePageButton(Context c, boolean open) {
         if (open) {
             ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();
-            actionButton.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.red)));
+            int redAlpha = ColorUtils.setAlphaComponent(c.getResources().getColor(R.color.red), (int)(pageButtonAlpha*255));
+            actionButton.setBackgroundTintList(ColorStateList.valueOf(redAlpha));
         } else {
             ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         }
-        actionButton.setAlpha(pageButtonAlpha);
+        //actionButton.setAlpha(pageButtonAlpha);
         for (int x=0; x<6; x++) {
             if (pageButtonVisibility.get(x)) {
                 getFAB(x).setVisibility(View.VISIBLE);

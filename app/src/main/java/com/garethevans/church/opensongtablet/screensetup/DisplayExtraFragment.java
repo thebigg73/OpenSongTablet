@@ -50,6 +50,9 @@ public class DisplayExtraFragment extends Fragment {
         myView.nextInSet.setChecked(getChecked("nextInSet",true));
         myView.prevInSet.setChecked(getChecked("prevInSet",false));
         myView.prevNextSongMenu.setChecked(getChecked("prevNextSongMenu",false));
+        myView.onscreenAutoscrollHide.setChecked(getChecked("onscreenAutoscrollHide",true));
+        myView.onscreenCapoHide.setChecked(getChecked("onscreenCapoHide", true));
+        myView.onscreenPadHide.setChecked(getChecked("onscreenPadHide",true));
         myView.boldChordsHeadings.setChecked(getChecked("displayBoldChordsHeadings",false));
         myView.showChords.setChecked(getChecked("displayChords",true));
         myView.showLyrics.setChecked(getChecked("displayLyrics",true));
@@ -98,6 +101,18 @@ public class DisplayExtraFragment extends Fragment {
         myView.prevNextSongMenu.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("prevNextSongMenu", isChecked, null);
             mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
+        });
+        myView.onscreenAutoscrollHide.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("onscreenAutoscrollHide", isChecked, null);
+            mainActivityInterface.updateOnScreenInfo("setpreferences");
+        });
+        myView.onscreenCapoHide.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("onscreenCapoHide", isChecked, null);
+            mainActivityInterface.updateOnScreenInfo("setpreferences");
+        });
+        myView.onscreenPadHide.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            updateBooleanPreference("onscreenPadHide", isChecked, null);
+            mainActivityInterface.updateOnScreenInfo("setpreferences");
         });
         myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayBoldChordsHeadings",isChecked,null);

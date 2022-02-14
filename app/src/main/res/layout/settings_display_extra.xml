@@ -61,6 +61,36 @@
                 android:text="@string/show_next_prev_in_song_menu"
                 android:hint="@string/page_buttons"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/onscreenAutoscrollHide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="false"
+                android:text="@string/autoscroll_hide"
+                android:hint="@string/info_text_autohide_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/onscreenCapoHide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="false"
+                android:text="@string/capo_hide"
+                android:hint="@string/info_text_autohide_info"/>
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/onscreenPadHide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="false"
+                android:text="@string/pad_hide"
+                android:hint="@string/info_text_autohide_info"/>
+
             <TableRow style="@style/DividerLine" />
 
 

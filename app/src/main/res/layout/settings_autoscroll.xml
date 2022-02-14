@@ -84,6 +84,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/autoscroll_autostart" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/onscreenAutoscrollHide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="false"
+                android:text="@string/autoscroll_hide"
+                android:hint="@string/info_text_autohide_info"/>
+
             <TableRow style="@style/DividerLine" />
 
             <com.google.android.material.textview.MaterialTextView

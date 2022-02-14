@@ -65,7 +65,8 @@ public class AutoscrollSettingsFragment extends Fragment {
         // Check audio link file
         mainActivityInterface.getAutoscroll().checkLinkAudio(requireContext(),mainActivityInterface,
                 myView.linkAudio, myView.songDuration, myView.songDelay,getStringToInt(myView.songDelay.getText().toString()));
-
+        myView.onscreenAutoscrollHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+                "onscreenAutoscrollHide",true));
     }
 
     private void setupListeners() {
@@ -90,6 +91,12 @@ public class AutoscrollSettingsFragment extends Fragment {
         myView.nestedScrollView.setFabToAnimate(myView.startStopAutoscroll);
 
         myView.startStopAutoscroll.setOnClickListener(v -> startStopAutoscroll());
+        myView.onscreenAutoscrollHide.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+                    "onscreenAutoscrollHide",b);
+            mainActivityInterface.
+                    updateOnScreenInfo("setpreferences");
+        });
     }
 
     private class MyTextWatcher implements TextWatcher {

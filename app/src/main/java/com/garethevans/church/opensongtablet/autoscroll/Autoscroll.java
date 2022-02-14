@@ -87,8 +87,8 @@ public class Autoscroll {
             stopAutoscroll();
             return true;
         });
-        autoscrollView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
-        autoscrollView.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
+        //autoscrollView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
+        //autoscrollView.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
     }
 
     public boolean getIsPaused() {
@@ -155,7 +155,9 @@ public class Autoscroll {
             isPaused = false;
             autoscrollActivated = true;
             setIsAutoscrolling(true);
-            autoscrollView.post(() -> autoscrollView.setVisibility(View.VISIBLE));
+            autoscrollView.post(() -> {
+                mainActivityInterface.updateOnScreenInfo("showhide");
+            });
             try {
                 timer.scheduleAtFixedRate(timerTask, 0, updateTime);
             } catch (Exception e) {
@@ -306,7 +308,9 @@ public class Autoscroll {
     public boolean getAutoscrollOK() {
         return autoscrollOK;
     }
-
+    public boolean getAutoscrollActivated() {
+        return autoscrollActivated;
+    }
     // The calculations
     private void calculateAutoscroll() {
         // The total scroll amount is the height of the view - the screen height.

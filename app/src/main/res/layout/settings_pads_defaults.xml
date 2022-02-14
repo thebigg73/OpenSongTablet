@@ -57,6 +57,16 @@
                 android:valueTo="12"
                 app:stepSize="0.1"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                android:id="@+id/onscreenPadHide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="false"
+                android:text="@string/pad_hide"
+                android:hint="@string/info_text_autohide_info"/>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

@@ -559,7 +559,6 @@ public class ThemeColors {
         pageButtonsSplitAlpha = alpha / 255.0f;
         // Update page buttons and extra info
         mainActivityInterface.getPageButtons().updateColors(mainActivityInterface);
-        mainActivityInterface.getPad().updateColor();
         mainActivityInterface.getDisplayPrevNext().updateColors();
         mainActivityInterface.updateOnScreenInfo("alpha");
     }

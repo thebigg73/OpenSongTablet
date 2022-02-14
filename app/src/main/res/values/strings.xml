@@ -1106,6 +1106,9 @@ Check out the categories in the right hand options menu.
     <string name="profile_description">Backup and restore your settings</string>
     <string name="options">OPTIONS</string>
     <string name="presentation_order_use">If presentation order exists for the song, use this to create the display</string>
+    <string name="autoscroll_hide">Autohide autoscroll</string>
+    <string name="capo_hide">Autohide capo</string>
+    <string name="pad_hide">Autohide pad</string>
 
 
 </resources>

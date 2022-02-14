@@ -47,20 +47,10 @@ public class Pad {
         this.pad = pad;
         padTime = pad.findViewById(R.id.padTime);
         padTotalTime = pad.findViewById(R.id.padTotalTime);
-        updateColor();
-    }
-    
-    public void updateColor() {
-        // Get the color and alpha
-        pad.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
-        pad.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
-        padTime.setTextColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());
-        padTotalTime.setTextColor(mainActivityInterface.getMyThemeColors().getExtraInfoTextColor());
     }
 
     public void startPad(Context c) {
         // Decide which pad to fade (if any)
-        updateColor();
         padsActivated = true;
         whichPadToFade(c);
         endTimer(1);
@@ -405,7 +395,6 @@ public class Pad {
         String display = mainActivityInterface.getTimeTools().timeFormatFixer(0);
         padTime.setText(display);
         padTotalTime.setText(padLengthText);
-        pad.setVisibility(View.VISIBLE);
 
         switch (padNum) {
             case 1:
@@ -460,6 +449,7 @@ public class Pad {
                 pad2PlayTimer.scheduleAtFixedRate(pad2PlayTimerTask,500,500);
                 break;
         }
+        mainActivityInterface.updateOnScreenInfo("showhide");
     }
 
     // Get info about the pads
@@ -474,6 +464,10 @@ public class Pad {
     }
     public boolean isPadPlaying() {
         return (pad1!=null && pad1.isPlaying() && !pad1Fading) || (pad2!=null && pad2.isPlaying() && !pad2Fading);
+    }
+    public boolean isPadPrepared() {
+        return (pad1!=null && pad1.getDuration()>0 && pad1.isPlaying()) ||
+                (pad2!=null && pad2.getDuration()>0 && pad2.isPlaying());
     }
     public void autoStartPad(Context c) {
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"padAutoStart",false) && padsActivated) {

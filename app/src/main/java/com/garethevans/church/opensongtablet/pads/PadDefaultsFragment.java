@@ -74,6 +74,9 @@ public class PadDefaultsFragment extends Fragment {
         myView.crossFadeTime.setValue(padCrossFadeTime/1000f);
         myView.crossFadeTime.setHint((padCrossFadeTime/1000f)+"ms");
         myView.crossFadeTime.setLabelFormatter(value -> value+"ms");
+
+        myView.onscreenPadHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+                "onscreenPadHide",true));
     }
 
     private void setupListeners() {
@@ -89,6 +92,12 @@ public class PadDefaultsFragment extends Fragment {
             } else {
                 myView.crossFadeTime.setVisibility(View.GONE);
             }
+        });
+        myView.onscreenPadHide.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+                    "onscreenPadHide",b);
+            mainActivityInterface.
+                    updateOnScreenInfo("setpreferences");
         });
     }
 

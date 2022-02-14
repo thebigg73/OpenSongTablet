@@ -1,12 +1,14 @@
 package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.widget.TextViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -24,12 +26,12 @@ public class OnScreenInfo extends LinearLayout {
     private final LinearLayout pad;
     private final MaterialTextView padTime;
     private final MaterialTextView padTotalTime;
-    private boolean capoInfoNeeded, capoPulsing;
+    private boolean capoInfoNeeded, capoPulsing, autoHideCapo, autoHidePad, autoHideAutoscroll;
     private final int delayTime = 3000;
     private final Runnable hideCapoRunnable = new Runnable() {
         @Override
         public void run() {
-            if (!capoPulsing) {
+            if (!capoPulsing && capoInfoNeeded) {
                 capoInfo.setVisibility(View.GONE);
                 capoInfo.clearAnimation();
             }
@@ -62,8 +64,24 @@ public class OnScreenInfo extends LinearLayout {
         padTotalTime = findViewById(R.id.padTotalTime);
     }
 
+    public void setPreferences(Context c, MainActivityInterface mainActivityInterface) {
+        int textColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
+        autoHideCapo = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenCapoHide",true);
+        autoHidePad  = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenPadHide", true);
+        autoHideAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenAutoscrollHide", true);
+        padTime.setTextColor(textColor);
+        padTotalTime.setTextColor(textColor);
+        capoInfo.setTextColor(textColor);
+        autoscrollTime.setTextColor(textColor);
+        autoscrollTotalTime.setTextColor(textColor);
+        TextViewCompat.setCompoundDrawableTintList(autoscrollTime, ColorStateList.valueOf(textColor));
+        TextViewCompat.setCompoundDrawableTintList(padTime, ColorStateList.valueOf(textColor));
+        TextViewCompat.setCompoundDrawableTintList(capoInfo, ColorStateList.valueOf(textColor));
+    }
+
     public void updateAlpha(MainActivityInterface mainActivityInterface) {
         Log.d(TAG,"updating alpha to: "+mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
+        info.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
         info.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
     }
 
@@ -87,14 +105,33 @@ public class OnScreenInfo extends LinearLayout {
                 capoPulsing = false;
             }, delayTime);
         } else {
+            capoPulsing = false;
             capoInfo.setText("");
             capoInfo.clearAnimation();
             capoInfo.setVisibility(View.GONE);
         }
     }
 
-    public void showHideCapo() {
-        capoInfo.post(showCapoRunnable);
+    public void showHideViews(MainActivityInterface mainActivityInterface) {
+        if (capoInfoNeeded && autoHideCapo) {
+            capoInfo.post(showCapoRunnable);
+        }
+        if (mainActivityInterface.getPad().isPadPrepared()) {
+            if (pad.getVisibility()!=View.VISIBLE) {
+                pad.setVisibility(View.VISIBLE);
+                if (autoHidePad) {
+                    pad.postDelayed(() -> pad.setVisibility(View.GONE), delayTime);
+                }
+            }
+        }
+        if (mainActivityInterface.getAutoscroll().getAutoscrollActivated()) {
+            if (autoscroll.getVisibility()!=View.VISIBLE) {
+                autoscroll.setVisibility(View.VISIBLE);
+                if (autoHideAutoscroll) {
+                    autoscroll.postDelayed(() -> autoscroll.setVisibility(View.GONE), delayTime);
+                }
+            }
+        }
     }
     public LinearLayout getInfo() {
         return info;

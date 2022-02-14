@@ -56,7 +56,8 @@ public class ChordFormatFragment extends Fragment {
         myView.capoStyle.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 requireContext(),"capoInfoAsNumerals", false));
         setCapoChordSlider();
-
+        myView.onscreenCapoHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
+                requireContext(),"onscreenCapoHide",true));
         myView.sliderAb.setSliderPos(setSwitchSliderFromPref("prefKey_Ab",true));
         myView.sliderBb.setSliderPos(setSwitchSliderFromPref("prefKey_Bb",true));
         myView.sliderDb.setSliderPos(setSwitchSliderFromPref("prefKey_Db",true));
@@ -128,6 +129,12 @@ public class ChordFormatFragment extends Fragment {
         myView.capoStyle.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.
                 getPreferences().setMyPreferenceBoolean(requireContext(),
                 "capoInfoAsNumerals", b));
+        myView.onscreenCapoHide.setOnCheckedChangeListener((compoundButton, b) -> {
+            mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+                    "onscreenCapoHide",b);
+            mainActivityInterface.
+                    updateOnScreenInfo("setpreferences");
+        });
         myView.sliderAb.addOnChangeListener(new MySliderChangeListener("prefKey_Ab"));
         myView.sliderBb.addOnChangeListener(new MySliderChangeListener("prefKey_Bb"));
         myView.sliderDb.addOnChangeListener(new MySliderChangeListener("prefKey_Db"));

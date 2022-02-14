@@ -1443,7 +1443,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
-
     // Databases
     @Override
     public SQLiteHelper getSQLiteHelper() {
@@ -1559,8 +1558,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             case "alpha":
                 myView.onScreenInfo.updateAlpha(this);
                 break;
-            case "showcapo":
-                myView.onScreenInfo.showHideCapo();
+            case "showhide":
+                myView.onScreenInfo.showHideViews(this);
+                break;
+            case "setpreferences":
+                myView.onScreenInfo.setPreferences(this,this);
                 break;
         }
     }

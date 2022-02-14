@@ -149,7 +149,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     private void onTouchAction() {
         mainActivityInterface.getDisplayPrevNext().showAndHide();
-        mainActivityInterface.updateOnScreenInfo("showcapo");
+        mainActivityInterface.updateOnScreenInfo("showhide");
         mainActivityInterface.showHideActionBar();
     }
 }

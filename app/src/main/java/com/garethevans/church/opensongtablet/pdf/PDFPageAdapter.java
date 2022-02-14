@@ -180,7 +180,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
     private void onTouchAction() {
         mainActivityInterface.getDisplayPrevNext().showAndHide();
-        mainActivityInterface.updateOnScreenInfo("showcapo");
+        mainActivityInterface.updateOnScreenInfo("showhide");
         mainActivityInterface.showHideActionBar();
     }
 

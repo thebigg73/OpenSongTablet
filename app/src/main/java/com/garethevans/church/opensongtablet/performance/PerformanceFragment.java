@@ -158,6 +158,7 @@ public class PerformanceFragment extends Fragment {
             myView.mypage.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             myView.waterMark.setVisibility(View.GONE);
         }
+        mainActivityInterface.updateOnScreenInfo("setpreferences");
     }
 
     // Displaying the song
@@ -542,7 +543,7 @@ public class PerformanceFragment extends Fragment {
         myView.zoomLayout.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 mainActivityInterface.getDisplayPrevNext().showAndHide();
-                mainActivityInterface.updateOnScreenInfo("showcapo");
+                mainActivityInterface.updateOnScreenInfo("showhide");
                 mainActivityInterface.showHideActionBar();
             }
             return gestureDetector.onTouchEvent(motionEvent);
