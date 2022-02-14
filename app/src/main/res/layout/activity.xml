@@ -27,13 +27,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:navGraph="@navigation/navigation" />
 
-            <include
+            <com.garethevans.church.opensongtablet.customviews.OnScreenInfo
                 android:id="@+id/onScreenInfo"
-                layout="@layout/view_on_screen_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"/>
 
             <!-- The page buttons -->
             <include

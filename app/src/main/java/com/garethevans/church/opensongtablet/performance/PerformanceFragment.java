@@ -438,6 +438,9 @@ public class PerformanceFragment extends Fragment {
         // Update any midi commands (if any)
         mainActivityInterface.getMidi().buildSongMidiMessages();
 
+        // Deal with capo information (if required)
+        mainActivityInterface.dealWithCapo();
+
         // Update the secondary display (if present)
         displayInterface.updateDisplay("setSongInfo");
         displayInterface.updateDisplay("setSongContent");
@@ -539,6 +542,7 @@ public class PerformanceFragment extends Fragment {
         myView.zoomLayout.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 mainActivityInterface.getDisplayPrevNext().showAndHide();
+                mainActivityInterface.updateOnScreenInfo("showcapo");
                 mainActivityInterface.showHideActionBar();
             }
             return gestureDetector.onTouchEvent(motionEvent);

@@ -65,6 +65,8 @@ import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
+import com.garethevans.church.opensongtablet.chords.ChordDirectory;
+import com.garethevans.church.opensongtablet.chords.ChordDisplayProcessing;
 import com.garethevans.church.opensongtablet.chords.CustomChordsFragment;
 import com.garethevans.church.opensongtablet.chords.Transpose;
 import com.garethevans.church.opensongtablet.controls.Gestures;
@@ -173,6 +175,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private Bible bible;
     private CCLILog ccliLog;
     private CheckInternet checkInternet;
+    private ChordDirectory chordDirectory;
+    private ChordDisplayProcessing chordDisplayProcessing;
     private CommonSQL commonSQL;
     private ConvertChoPro convertChoPro;
     private ConvertOnSong convertOnSong;
@@ -324,6 +328,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         commonSQL = new CommonSQL();
 
         // Converting song formats and processing song content
+        chordDisplayProcessing = new ChordDisplayProcessing(this);
+        chordDirectory = new ChordDirectory();
         convertChoPro = new ConvertChoPro();
         convertOnSong = new ConvertOnSong();
         convertTextSong = new ConvertTextSong();
@@ -350,9 +356,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         pageButtons = new PageButtons(this);
         midi = new Midi(this);
         pedalActions = new PedalActions(this,this);
-        pad = new Pad(this, myView.onScreenInfo.pad);
-        autoscroll = new Autoscroll(this,myView.onScreenInfo.autoscrollTime,
-                myView.onScreenInfo.autoscrollTotalTime,myView.onScreenInfo.autoscroll);
+        pad = new Pad(this, myView.onScreenInfo.getPad());
+        autoscroll = new Autoscroll(this,myView.onScreenInfo.getAutoscrollTime(),
+                myView.onScreenInfo.getAutoscrollTotalTime(),myView.onScreenInfo.getAutoscroll());
         metronome = new Metronome();
         gestures = new Gestures(this);
         swipes = new Swipes(this);
@@ -972,13 +978,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (hide) {
                 myView.pageButtonRight.actionFAB.setVisibility(View.GONE);
                 myView.pageButtonRight.bottomButtons.setVisibility(View.GONE);
-                myView.onScreenInfo.info.setVisibility(View.GONE);
+                myView.onScreenInfo.getInfo().setVisibility(View.GONE);
                 myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.GONE);
 
             } else {
                 myView.pageButtonRight.actionFAB.setVisibility(View.VISIBLE);
                 myView.pageButtonRight.bottomButtons.setVisibility(View.VISIBLE);
-                myView.onScreenInfo.info.setVisibility(View.VISIBLE);
+                myView.onScreenInfo.getInfo().setVisibility(View.VISIBLE);
                 if (displayPrevNext.getShowPrev() || displayPrevNext.getShowNext()) {
                     myView.nextPrevInfo.nextPrevInfoLayout.setVisibility(View.VISIBLE);
                 }
@@ -1541,6 +1547,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return ccliLog;
     }
 
+    // Capo
+    @Override
+    public void dealWithCapo() {
+        // This checks for song capo and if capo chords are shown
+        myView.onScreenInfo.dealWithCapo(this,this);
+    }
+    @Override
+    public void updateOnScreenInfo(String what) {
+        switch (what) {
+            case "alpha":
+                myView.onScreenInfo.updateAlpha(this);
+                break;
+            case "showcapo":
+                myView.onScreenInfo.showHideCapo();
+                break;
+        }
+    }
 
     // Song processing
     @Override
@@ -1573,6 +1596,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public ExportActions getExportActions() {
         return exportActions;
+    }
+    @Override
+    public ChordDisplayProcessing getChordDisplayProcessing() {
+        return chordDisplayProcessing;
+    }
+    @Override
+    public ChordDirectory getChordDirectory() {
+        return chordDirectory;
     }
     @Override
     public ConvertChoPro getConvertChoPro() {
@@ -1951,7 +1982,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             pad.startPad(this);
             // Showcase if required
-            showCase.singleShowCase(this,myView.onScreenInfo.pad,getString(R.string.okay),getString(R.string.pad_playback_info),true,"padPlayback");
+            showCase.singleShowCase(this,myView.onScreenInfo.getPad(),getString(R.string.okay),getString(R.string.pad_playback_info),true,"padPlayback");
             return true;
         }
     }

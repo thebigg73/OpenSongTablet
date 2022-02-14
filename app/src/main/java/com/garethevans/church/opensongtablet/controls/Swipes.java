@@ -45,17 +45,17 @@ public class Swipes {
     }
     public void fixWidth(Context c, MainActivityInterface mainActivityInterface, int width) {
         widthPx = width;
-        swipeWidth = (float) ((float)widthPx/(float)viewWidth);
+        swipeWidth = (float)widthPx/(float)viewWidth;
         mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeWidth",swipeWidth);
     }
     public void fixHeight(Context c, MainActivityInterface mainActivityInterface, int height) {
         heightPx = height;
-        swipeHeight = (float) ((float)heightPx/(float)viewHeight);
+        swipeHeight = (float)heightPx/(float)viewHeight;
         mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeHeight",swipeHeight);
     }
     public void fixTime(Context c, MainActivityInterface mainActivityInterface, int time) {
         timeMs = time;
-        swipeTime = (float) ((float)timeMs/(float)maxTime);
+        swipeTime = (float)timeMs/(float)maxTime;
         mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeTime",swipeTime);
     }
 

@@ -21,6 +21,8 @@ import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.autoscroll.Autoscroll;
 import com.garethevans.church.opensongtablet.bible.Bible;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
+import com.garethevans.church.opensongtablet.chords.ChordDirectory;
+import com.garethevans.church.opensongtablet.chords.ChordDisplayProcessing;
 import com.garethevans.church.opensongtablet.chords.Transpose;
 import com.garethevans.church.opensongtablet.controls.Gestures;
 import com.garethevans.church.opensongtablet.controls.PageButtons;
@@ -99,6 +101,9 @@ public interface MainActivityInterface {
     void setSong(Song song);
     void setTempSong(Song tempSong);
     void updateKeyAndLyrics(Song song);
+
+    // Capo
+    void dealWithCapo();
 
     // Metronome
     Metronome getMetronome();
@@ -271,5 +276,8 @@ public interface MainActivityInterface {
     ConvertOnSong getConvertOnSong();
     ConvertTextSong getConvertTextSong();
     ProcessSong getProcessSong();
+    ChordDisplayProcessing getChordDisplayProcessing();
+    ChordDirectory getChordDirectory();
+    void updateOnScreenInfo(String what);
 
 }

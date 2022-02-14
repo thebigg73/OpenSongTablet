@@ -561,5 +561,6 @@ public class ThemeColors {
         mainActivityInterface.getPageButtons().updateColors(mainActivityInterface);
         mainActivityInterface.getPad().updateColor();
         mainActivityInterface.getDisplayPrevNext().updateColors();
+        mainActivityInterface.updateOnScreenInfo("alpha");
     }
 }

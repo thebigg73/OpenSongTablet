@@ -95,6 +95,10 @@ public class ProcessSong {
         scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scaleComments", 0.8f);
     }
 
+    public boolean showingCapo(String capo) {
+        return (displayCapoChords || displayCapoAndNativeChords) && capo!=null && !capo.isEmpty();
+    }
+
     // Get some preferences back
     public float getScaleComments() {
         return scaleComments;

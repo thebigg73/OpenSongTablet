@@ -30,10 +30,10 @@ public class CustomChordsFragment extends Fragment {
 
     private SettingsChordsCustomBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private ChordDirectory chordDirectory;
-    private ChordDisplayProcessing chordDisplayProcessing;
-    private ArrayList<String> customChordCode, customChordsFingering, customChordsFret, customChordsName;
-    private ArrayList<String> chordsCodeForInstrument, chordsNameForInstrument, chordsFretForInstrument, chordsFingeringForInstrument;
+    private ArrayList<String> customChordCode, customChordsFingering, customChordsFret,
+            customChordsName;
+    private ArrayList<String> chordsCodeForInstrument, chordsNameForInstrument,
+            chordsFretForInstrument, chordsFingeringForInstrument;
     private String currentCode;
     private ArrayList<Boolean> pianoKeysOn;
     int selectedIndex = 0;
@@ -46,13 +46,10 @@ public class CustomChordsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         myView = SettingsChordsCustomBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.custom_chords));
-
-        // Initialise the chord helpers
-        chordDirectory = new ChordDirectory();
-        chordDisplayProcessing = new ChordDisplayProcessing(requireContext());
 
         // Get the chords in the song
         getChordsInSong();
@@ -101,15 +98,15 @@ public class CustomChordsFragment extends Fragment {
         int chordFormat = mainActivityInterface.getSong().getDetectedChordFormat();
 
         // Figure out the chords in the song
-        chordDisplayProcessing.getChordsInSong(mainActivityInterface);
+        mainActivityInterface.getChordDisplayProcessing().getChordsInSong(mainActivityInterface);
 
         // Now go through each one in turn
-        for (String chord:chordDisplayProcessing.getChordsInSong()) {
+        for (String chord:mainActivityInterface.getChordDisplayProcessing().getChordsInSong()) {
             // Chords are encoded, so remove the $
             chord = chord.replace("$","");
             chordsInSongBuilder.append(chord).append(", ");
             // Any chords in the database exist for all instruments.  Check piano
-            String piano = chordDirectory.pianoChords(chordFormat,chord);
+            String piano = mainActivityInterface.getChordDirectory().pianoChords(chordFormat,chord);
             if (piano.startsWith("_p")) {
                 // No notes, so no chord found
                 chordsNotInDatabaseBuilder.append(chord).append(", ");
@@ -176,17 +173,21 @@ public class CustomChordsFragment extends Fragment {
 
     // Set up the drop down menus
     private void setupInstruments() {
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.instrument, R.layout.view_exposed_dropdown_item, chordDisplayProcessing.getInstruments());
+        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+                myView.instrument, R.layout.view_exposed_dropdown_item,
+                mainActivityInterface.getChordDisplayProcessing().getInstruments());
         myView.instrument.setAdapter(exposedDropDownArrayAdapter);
-        String instrumentPref = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"chordInstrument", "g");
-        myView.instrument.setText(chordDisplayProcessing.getInstrumentFromPref(instrumentPref));
+        String instrumentPref = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
+                "chordInstrument", "g");
+        myView.instrument.setText(mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(instrumentPref));
     }
     private void updateCustomChordDropDown() {
         chordsCodeForInstrument = new ArrayList<>();
         chordsNameForInstrument = new ArrayList<>();
         chordsFretForInstrument = new ArrayList<>();
         chordsFingeringForInstrument = new ArrayList<>();
-        String chordPref = chordDisplayProcessing.getPrefFromInstrument(myView.instrument.getText().toString());
+        String chordPref = mainActivityInterface.getChordDisplayProcessing().
+                getPrefFromInstrument(myView.instrument.getText().toString());
         for (int i=0; i<customChordCode.size(); i++) {
             if (customChordCode.get(i).contains("_"+chordPref+"_")) {
                 chordsCodeForInstrument.add(customChordCode.get(i));
@@ -195,7 +196,8 @@ public class CustomChordsFragment extends Fragment {
                 chordsFingeringForInstrument.add(customChordsFingering.get(i));
             }
         }
-        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.chordName, R.layout.view_exposed_dropdown_item, chordsNameForInstrument);
+        ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
+                myView.chordName, R.layout.view_exposed_dropdown_item, chordsNameForInstrument);
         myView.chordName.setAdapter(exposedDropDownArrayAdapter);
 
         if (selectedIndex>-1 && chordsNameForInstrument.size()>selectedIndex) {
@@ -229,7 +231,9 @@ public class CustomChordsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // Save the chosen instrument as our preference
-                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"chordInstrument", chordDisplayProcessing.getPrefFromInstrument(editable.toString()));
+                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                        "chordInstrument",
+                        mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(editable.toString()));
 
                 // This building part draws and measures
                 // Once measured, the views are shown, not hidden
@@ -297,7 +301,8 @@ public class CustomChordsFragment extends Fragment {
         myView.newChord.setOnClickListener(v -> {
             // Open the bottom sheet dialog and get the text back from the MainActivity
             TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,
-                    "CustomChordsFragment",getString(R.string.custom_chords),getString(R.string.customchords_name),null,null,null,true);
+                    "CustomChordsFragment",getString(R.string.custom_chords),getString(R.string.customchords_name),null,
+                    null,null,true);
             textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
         });
     }
@@ -341,7 +346,8 @@ public class CustomChordsFragment extends Fragment {
         markers.addView(textViewSpacer);
 
         for (int markerpos=1; markerpos < numberOfStrings()+1; markerpos++) {
-            TextView marker = getLayoutInflater().inflate(R.layout.view_string_marker,markers).findViewById(R.id.stringMarker);
+            TextView marker = getLayoutInflater().inflate(R.layout.view_string_marker,markers).
+                    findViewById(R.id.stringMarker);
             marker.setTag("stringMarker"+markerpos);
             marker.setText("o");
             marker.setId(View.generateViewId());
@@ -356,7 +362,8 @@ public class CustomChordsFragment extends Fragment {
             frets.setId(View.generateViewId());
             TextView textView;
             if (fret==1) {
-                textView = getLayoutInflater().inflate(R.layout.view_chord_fret_marker,frets).findViewById(R.id.fretMarker);
+                textView = getLayoutInflater().inflate(R.layout.view_chord_fret_marker,frets).
+                        findViewById(R.id.fretMarker);
                 textView.setTag("fretMarker");
                 textView.setText("1");
                 textView.setOnClickListener(v->increaseFretNumber());
@@ -394,7 +401,8 @@ public class CustomChordsFragment extends Fragment {
         }
     }
     private void vtoGuitar() {
-        myView.guitarChordLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        myView.guitarChordLayout.getViewTreeObserver().
+                addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 try {
@@ -451,7 +459,8 @@ public class CustomChordsFragment extends Fragment {
                     } else if (notes.length >= i && notes[i - 1] != null && notes[i - 1].equals("0")) {
                         setMarkerText("stringMarker" + i, "o");
                         hideNotesOnString(i);
-                    } else if (notes.length >= i && notes[i - 1] != null && myView.guitarChordLayout.findViewWithTag("stringMarker"+i)!=null) {
+                    } else if (notes.length >= i && notes[i - 1] != null &&
+                            myView.guitarChordLayout.findViewWithTag("stringMarker"+i)!=null) {
                         ((TextView)myView.guitarChordLayout.findViewWithTag("stringMarker" + i)).setText("");
                         if (!notes[i - 1].isEmpty()) {
                             try {
@@ -543,7 +552,8 @@ public class CustomChordsFragment extends Fragment {
             // First get the fret for each string
             StringBuilder stringBuilder = new StringBuilder();
             for (int string = 1; string < numberOfStrings() + 1; string++) {
-                String marker = ((TextView) myView.guitarChordLayout.findViewWithTag("stringMarker" + string)).getText().toString();
+                String marker = ((TextView) myView.guitarChordLayout.findViewWithTag("stringMarker" + string)).
+                        getText().toString();
                 if (marker.equals("x")) {
                     stringBuilder.append(marker);
                 } else if(marker.equals("o") || marker.equals("0")) {
@@ -560,7 +570,8 @@ public class CustomChordsFragment extends Fragment {
             }
             // Update the text
             String codeString = stringBuilder + "_" + getFretMarkerText() + "_" +
-                    chordDisplayProcessing.getPrefFromInstrument(myView.instrument.getText().toString()) +
+                    mainActivityInterface.getChordDisplayProcessing().
+                            getPrefFromInstrument(myView.instrument.getText().toString()) +
                     "_" + myView.chordName.getText().toString();
             myView.customCode.setHint(codeString);
             canShowSave();
@@ -578,7 +589,8 @@ public class CustomChordsFragment extends Fragment {
         StringBuilder stringBuilder = new StringBuilder();
         for (int x=0;x<pianoKeysOn.size();x++) {
             if (pianoKeysOn.get(x)) {
-                stringBuilder.append(chordDisplayProcessing.getPianoNotesArray().get(x)).append(",");
+                stringBuilder.append(mainActivityInterface.getChordDisplayProcessing().
+                        getPianoNotesArray().get(x)).append(",");
             }
         }
         // Remove the final ","
@@ -618,13 +630,17 @@ public class CustomChordsFragment extends Fragment {
                 String[] notes = customChordsFingering.get(which).split(",");
                 // Go through each note and colour tint the view
                 // Get the starting position for the first note in the array
-                int start = chordDisplayProcessing.getPianoNotesArray().indexOf(notes[0]);
+                int start = mainActivityInterface.getChordDisplayProcessing().getPianoNotesArray().indexOf(notes[0]);
                 int noteToFind = 0;
                 if (start != -1) {
-                    for (int x = start; x < chordDisplayProcessing.getPianoKeysArray().size(); x++) {
+                    for (int x = start; x < mainActivityInterface.getChordDisplayProcessing().
+                            getPianoKeysArray().size(); x++) {
                         // Look for the remaining positions in the notesArray
-                        if (noteToFind < notes.length && chordDisplayProcessing.getPianoNotesArray().get(x).equals(notes[noteToFind])) {
-                            chordDisplayProcessing.tintDrawable(requireContext(), myView.pianoChordLayout.piano.findViewById(chordDisplayProcessing.getPianoKeysArray().get(x)), notes[noteToFind], true);
+                        if (noteToFind < notes.length && mainActivityInterface.getChordDisplayProcessing().
+                                getPianoNotesArray().get(x).equals(notes[noteToFind])) {
+                            mainActivityInterface.getChordDisplayProcessing().tintDrawable(requireContext(),
+                                    myView.pianoChordLayout.piano.findViewById(mainActivityInterface.getChordDisplayProcessing().
+                                            getPianoKeysArray().get(x)), notes[noteToFind], true);
                             // Add the piano key array true value for this key
                             pianoKeysOn.set(x,true);
                             noteToFind++;  // Once we've found them all, this won't get called again
@@ -644,23 +660,28 @@ public class CustomChordsFragment extends Fragment {
     // Listeners for clicking on the piano keyboard
     private void setPianoListeners() {
         // Go through each key and add a listener
-        for (int pos=0; pos<chordDisplayProcessing.getPianoKeysArray().size(); pos++) {
-            ImageView imageView = myView.pianoChordLayout.piano.findViewById(chordDisplayProcessing.getPianoKeysArray().get(pos));
+        for (int pos=0; pos<mainActivityInterface.getChordDisplayProcessing().getPianoKeysArray().size(); pos++) {
+            ImageView imageView = myView.pianoChordLayout.piano.findViewById(mainActivityInterface.
+                    getChordDisplayProcessing().getPianoKeysArray().get(pos));
             if (imageView!=null) {
                 int finalPos = pos;
                 imageView.setOnClickListener(v -> {
                     // Change the array value to the opposite of what is currently is
                     pianoKeysOn.set(finalPos,!pianoKeysOn.get(finalPos));
                     // Now update the tints
-                    chordDisplayProcessing.tintDrawable(requireContext(),myView.pianoChordLayout.piano.findViewById(chordDisplayProcessing.getPianoKeysArray().get(finalPos)),
-                            chordDisplayProcessing.getPianoNotesArray().get(finalPos),pianoKeysOn.get(finalPos));
+                    mainActivityInterface.getChordDisplayProcessing().tintDrawable(requireContext(),
+                            myView.pianoChordLayout.piano.findViewById(mainActivityInterface.
+                                    getChordDisplayProcessing().getPianoKeysArray().get(finalPos)),
+                            mainActivityInterface.getChordDisplayProcessing().getPianoNotesArray().
+                                    get(finalPos),pianoKeysOn.get(finalPos));
                     getPianoNotes();
                 });
             }
         }
     }
     private void vtoPiano() {
-        myView.pianoChordLayout.piano.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        myView.pianoChordLayout.piano.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 // Measure the layout
@@ -746,7 +767,8 @@ public class CustomChordsFragment extends Fragment {
         // Received from the textInputBottomSheet via the MainActivity
         if (newChord!=null) {
             // Only allow if this chord doesn't already exist for this instrument
-            String instrCode = "_" + chordDisplayProcessing.getPrefFromInstrument(myView.instrument.getText().toString()) + "_" + newChord;
+            String instrCode = "_" + mainActivityInterface.getChordDisplayProcessing().
+                    getPrefFromInstrument(myView.instrument.getText().toString()) + "_" + newChord;
             boolean alreadyExists = false;
             for (int x=0; x<customChordCode.size(); x++) {
                 if (customChordCode.get(x).contains(instrCode)) {

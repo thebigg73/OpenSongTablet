@@ -5,18 +5,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="false"
+    android:background="@drawable/rounded_dialog_node"
     android:orientation="vertical">
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/capoInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="2dp"
-        android:gravity="center"
-        android:padding="4dp"
-        android:visibility="gone"
-        app:drawableStartCompat="@drawable/ic_capo_white_36dp" />
 
     <!-- Autoscroll -->
     <LinearLayout
@@ -48,7 +38,6 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:clickable="false"/>
-
     </LinearLayout>
 
     <!-- Pad -->
@@ -81,7 +70,17 @@
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:clickable="false"/>
-
     </LinearLayout>
 
+    <!-- The capo information. Shows for 3 secs, then hides but reshown on touchevent-->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/capoInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="2dp"
+        android:gravity="center"
+        android:padding="4dp"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/ic_capo_white_36dp" />
 </LinearLayout>

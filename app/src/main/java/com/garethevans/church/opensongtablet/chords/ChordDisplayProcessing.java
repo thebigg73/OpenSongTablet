@@ -29,7 +29,7 @@ public class ChordDisplayProcessing {
     private ArrayList<Integer> pianoKeysArray;
     private final String TAG = "ChordDisplayProcessing";
 
-    ChordDisplayProcessing(Context c) {
+    public ChordDisplayProcessing(Context c) {
         initialiseArrays(c);
     }
     public void initialiseArrays(Context c) {

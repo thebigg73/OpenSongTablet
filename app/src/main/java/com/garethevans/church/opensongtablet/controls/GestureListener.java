@@ -100,7 +100,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
                     && Math.abs(velocityX) > swipeMinimumVelocity) {
                 Log.d(TAG, "Right to Left");
                 mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
-                //mainActivityInterface.getDisplayPrevNext().swipeNextCheck();
                 mainActivityInterface.getDisplayPrevNext().moveToNext();
                 return true;
 
@@ -109,7 +108,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
                     && Math.abs(velocityX) > swipeMinimumVelocity) {
                 Log.d(TAG, "Left to Right");
                 mainActivityInterface.getDisplayPrevNext().setSwipeDirection("L2R");
-                //mainActivityInterface.getDisplayPrevNext().swipePrevCheck();
                 mainActivityInterface.getDisplayPrevNext().moveToPrev();
                 return true;
 
