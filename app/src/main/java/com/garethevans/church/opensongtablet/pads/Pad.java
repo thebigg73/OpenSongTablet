@@ -466,8 +466,9 @@ public class Pad {
         return (pad1!=null && pad1.isPlaying() && !pad1Fading) || (pad2!=null && pad2.isPlaying() && !pad2Fading);
     }
     public boolean isPadPrepared() {
-        return (pad1!=null && pad1.getDuration()>0 && pad1.isPlaying()) ||
-                (pad2!=null && pad2.getDuration()>0 && pad2.isPlaying());
+        return padTime.getText()!=null && !padTime.getText().toString().isEmpty() &&
+                ((pad1!=null && pad1.getDuration()>0 && (pad1.isPlaying() || pad1Pause)) ||
+                (pad2!=null && pad2.getDuration()>0 && (pad2.isPlaying() || pad2Pause)));
     }
     public void autoStartPad(Context c) {
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"padAutoStart",false) && padsActivated) {

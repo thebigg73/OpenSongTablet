@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -52,10 +53,12 @@ public class StickyNotesFragment extends Fragment {
         myView.timeSlider.setValue((float)time);
         myView.timeSlider.setLabelFormatter(value -> ((int)value)+"s");
         setTimeHint(time);
-        float alpha = mainActivityInterface.getPreferences().
-                getMyPreferenceFloat(requireContext(),"stickyAlpha",0.8f);
-        myView.alphaSlider.setValue(alpha*100.0f);
-        setAlphaHint(alpha*100.0f);
+        int alpha = Math.round(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitAlpha()*100.0f);
+        if (alpha<50) {
+            alpha = 50;
+        }
+        myView.alphaSlider.setValue(alpha);
+        setAlphaHint(alpha);
         myView.alphaSlider.setLabelFormatter(value -> ((int)value)+"%");
     }
 
@@ -96,8 +99,12 @@ public class StickyNotesFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
-                        "stickyAlpha", slider.getValue()/100.0f);
+                float val = slider.getValue()/100f;
+                int color = ColorUtils.setAlphaComponent(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitColor(),(int)(val*255f));
+                mainActivityInterface.getMyThemeColors().setStickyTextColor(color);
+                String theme = mainActivityInterface.getMyThemeColors().getThemeName();
+                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),theme+"_stickyBackgroundColor",color);
+                mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
             }
         });
         myView.alphaSlider.addOnChangeListener((slider, value, fromUser) -> setAlphaHint(value));

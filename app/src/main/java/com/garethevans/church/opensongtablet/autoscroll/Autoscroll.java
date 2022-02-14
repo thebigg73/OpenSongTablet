@@ -87,8 +87,6 @@ public class Autoscroll {
             stopAutoscroll();
             return true;
         });
-        //autoscrollView.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
-        //autoscrollView.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
     }
 
     public boolean getIsPaused() {
@@ -155,9 +153,7 @@ public class Autoscroll {
             isPaused = false;
             autoscrollActivated = true;
             setIsAutoscrolling(true);
-            autoscrollView.post(() -> {
-                mainActivityInterface.updateOnScreenInfo("showhide");
-            });
+            autoscrollView.post(() -> mainActivityInterface.updateOnScreenInfo("showhide"));
             try {
                 timer.scheduleAtFixedRate(timerTask, 0, updateTime);
             } catch (Exception e) {
@@ -398,5 +394,3 @@ public class Autoscroll {
         timerTask = null;
     }
 }
-
-// TODO Learn autoscroll should we want it back - probably not used very much anyway

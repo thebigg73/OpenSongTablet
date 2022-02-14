@@ -2,12 +2,15 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.TextViewCompat;
 
 import com.garethevans.church.opensongtablet.R;
@@ -65,10 +68,22 @@ public class OnScreenInfo extends LinearLayout {
     }
 
     public void setPreferences(Context c, MainActivityInterface mainActivityInterface) {
-        int textColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         autoHideCapo = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenCapoHide",true);
         autoHidePad  = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenPadHide", true);
         autoHideAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenAutoscrollHide", true);
+        updateAlpha(c,mainActivityInterface);
+    }
+
+    public void updateAlpha(Context c, MainActivityInterface mainActivityInterface) {
+        Log.d(TAG,"updating alpha to: "+mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
+        Drawable drawable = ContextCompat.getDrawable(c,R.drawable.rounded_dialog_node);
+        if (drawable!=null) {
+            drawable.setColorFilter(mainActivityInterface.getMyThemeColors().getExtraInfoBgSplitColor(),
+                    PorterDuff.Mode.SRC_ATOP);
+            info.setBackground(drawable);
+        }
+        info.setAlpha(mainActivityInterface.getMyThemeColors().getExtraInfoBgSplitAlpha());
+        int textColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
         padTime.setTextColor(textColor);
         padTotalTime.setTextColor(textColor);
         capoInfo.setTextColor(textColor);
@@ -77,12 +92,6 @@ public class OnScreenInfo extends LinearLayout {
         TextViewCompat.setCompoundDrawableTintList(autoscrollTime, ColorStateList.valueOf(textColor));
         TextViewCompat.setCompoundDrawableTintList(padTime, ColorStateList.valueOf(textColor));
         TextViewCompat.setCompoundDrawableTintList(capoInfo, ColorStateList.valueOf(textColor));
-    }
-
-    public void updateAlpha(MainActivityInterface mainActivityInterface) {
-        Log.d(TAG,"updating alpha to: "+mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
-        info.setBackgroundColor(mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor());
-        info.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
     }
 
     public void dealWithCapo(Context c, MainActivityInterface mainActivityInterface) {
@@ -115,6 +124,8 @@ public class OnScreenInfo extends LinearLayout {
     public void showHideViews(MainActivityInterface mainActivityInterface) {
         if (capoInfoNeeded && autoHideCapo) {
             capoInfo.post(showCapoRunnable);
+        } else {
+            capoInfo.setVisibility(View.GONE);
         }
         if (mainActivityInterface.getPad().isPadPrepared()) {
             if (pad.getVisibility()!=View.VISIBLE) {
@@ -123,6 +134,8 @@ public class OnScreenInfo extends LinearLayout {
                     pad.postDelayed(() -> pad.setVisibility(View.GONE), delayTime);
                 }
             }
+        } else {
+            pad.setVisibility(View.GONE);
         }
         if (mainActivityInterface.getAutoscroll().getAutoscrollActivated()) {
             if (autoscroll.getVisibility()!=View.VISIBLE) {
@@ -131,6 +144,8 @@ public class OnScreenInfo extends LinearLayout {
                     autoscroll.postDelayed(() -> autoscroll.setVisibility(View.GONE), delayTime);
                 }
             }
+        } else {
+            autoscroll.setVisibility(View.GONE);
         }
     }
     public LinearLayout getInfo() {

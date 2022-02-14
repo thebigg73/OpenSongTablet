@@ -35,7 +35,11 @@ public class ThemeColors {
     private int pageButtonsSplitColor;
     private int stickyTextColor;
     private int stickyBackgroundColor;
+    private int stickyBackgroundSplitColor;
+    private float stickyBackgroundSplitAlpha;
     private int extraInfoBgColor;
+    private int extraInfoBgSplitColor;
+    private float extraInfoBgSplitAlpha;
     private int extraInfoTextColor;
     private int highlightChordColor;
     private int highlightHeadingColor;
@@ -178,11 +182,23 @@ public class ThemeColors {
     public int getStickyBackgroundColor() {
         return stickyBackgroundColor;
     }
+    public int getStickyBackgroundSplitColor() {
+        return stickyBackgroundSplitColor;
+    }
+    public float getStickyBackgroundSplitAlpha() {
+        return stickyBackgroundSplitAlpha;
+    }
     public int getStickyTextColor() {
         return stickyTextColor;
     }
     public int getExtraInfoBgColor() {
         return extraInfoBgColor;
+    }
+    public int getExtraInfoBgSplitColor() {
+        return extraInfoBgSplitColor;
+    }
+    public float getExtraInfoBgSplitAlpha() {
+        return extraInfoBgSplitAlpha;
     }
     public int getExtraInfoTextColor() {
         return extraInfoTextColor;
@@ -195,8 +211,8 @@ public class ThemeColors {
     }
 
     public void getDefaultColors(Context c, MainActivityInterface mainActivityInterface) {
-        String theme = mainActivityInterface.getPreferences().getMyPreferenceString(c,"appTheme","dark");
-        switch (theme) {
+        themeName = mainActivityInterface.getPreferences().getMyPreferenceString(c,"appTheme","dark");
+        switch (themeName) {
             case "dark":
             default:
                 setThemeDark(c, mainActivityInterface);
@@ -211,7 +227,7 @@ public class ThemeColors {
                 setThemeCustom2(c, mainActivityInterface);
                 break;
         }
-        splitPageButtonsColorAndAlpha(mainActivityInterface);
+        splitColorAndAlpha(mainActivityInterface);
     }
 
     public void resetTheme(Context c, MainActivityInterface mainActivityInterface) {
@@ -299,7 +315,7 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_metronomeColor",               darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_pageButtonsColor",           pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_stickyTextColor",             black));
-        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_stickyBackgroundColor", lightyellow));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_stickyBackgroundColor", stickybg));
         setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_extraInfoBgColor",           grey));
         setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_extraInfoTextColor",       white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "dark_lyricsTextColor",             white));
@@ -324,7 +340,7 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_metronomeColor",               darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_pageButtonsColor",           pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_stickyTextColor",             black));
-        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_stickyBackgroundColor", lightyellow));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_stickyBackgroundColor", stickybg));
         setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_extraInfoBgColor",           grey));
         setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_extraInfoTextColor",       white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"light_lyricsTextColor",             black));
@@ -349,7 +365,7 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_metronomeColor",             darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_pageButtonsColor",         pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_stickyTextColor",           black));
-        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_stickyBackgroundColor",lightyellow));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_stickyBackgroundColor",stickybg));
         setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_extraInfoBgColor",         grey));
         setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_extraInfoTextColor",     white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom1_lyricsTextColor",           white));
@@ -375,7 +391,7 @@ public class ThemeColors {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_metronomeColor",             darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_pageButtonsColor",         pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_stickyTextColor",           black));
-        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_stickyBackgroundColor",lightyellow));
+        setStickyBackgroundColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_stickyBackgroundColor",stickybg));
         setExtraInfoBgColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_extraInfoBgColor",         grey));
         setExtraInfoTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_extraInfoTextColor",     white));
         setLyricsTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"custom2_lyricsTextColor",           black));
@@ -475,6 +491,7 @@ public class ThemeColors {
     private final int lightyellow = 0xffddaa00;
     private final int yellow = 0xffffff00;
     private final int darkyellow = 0xffaaaa00;;
+    private final int stickybg = 0xddddaa00;
     private final int vdarkyellow = 0xff111100;
     private final int red = 0xffff0000;
     private final int vdarkred = 0xff220000;
@@ -549,17 +566,33 @@ public class ThemeColors {
         return color;
     }
 
-    public void splitPageButtonsColorAndAlpha(MainActivityInterface mainActivityInterface) {
+    public void splitColorAndAlpha(MainActivityInterface mainActivityInterface) {
         // The colour will include alpha.  Strip this out
         int alpha = Math.round(Color.alpha(pageButtonsColor));
         int red = Color.red(pageButtonsColor);
         int green = Color.green(pageButtonsColor);
         int blue = Color.blue(pageButtonsColor);
         pageButtonsSplitColor = Color.argb(255, red, green, blue);
-        pageButtonsSplitAlpha = alpha / 255.0f;
+        pageButtonsSplitAlpha = alpha / 255f;
         // Update page buttons and extra info
         mainActivityInterface.getPageButtons().updateColors(mainActivityInterface);
         mainActivityInterface.getDisplayPrevNext().updateColors();
         mainActivityInterface.updateOnScreenInfo("alpha");
+
+        // Repeat for the extra info
+        alpha = Math.round(Color.alpha(extraInfoBgColor));
+        red = Color.red(extraInfoBgColor);
+        green = Color.green(extraInfoBgColor);
+        blue = Color.blue(extraInfoBgColor);
+        extraInfoBgSplitColor = Color.argb(255,red,green,blue);
+        extraInfoBgSplitAlpha = alpha / 255f;
+
+        // Repeat for the sticky notes
+        alpha = Math.round(Color.alpha(stickyBackgroundColor));
+        red = Color.red(stickyBackgroundColor);
+        green = Color.green(stickyBackgroundColor);
+        blue = Color.blue(stickyBackgroundColor);
+        stickyBackgroundSplitColor = Color.argb(255,red,green,blue);
+        stickyBackgroundSplitAlpha = alpha / 255f;
     }
 }

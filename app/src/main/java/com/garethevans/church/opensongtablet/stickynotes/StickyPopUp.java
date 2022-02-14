@@ -74,10 +74,10 @@ public class StickyPopUp {
         GradientDrawable drawable = (GradientDrawable) ResourcesCompat.getDrawable(c.getResources(),
                 R.drawable.popup_sticky,null);
         if (drawable!=null) {
-            drawable.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());
+            drawable.setColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitColor());
         }
         popupWindow.setBackgroundDrawable(null);
-        floatWindow.setAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"stickyAlpha", 0.8f));
+        floatWindow.setAlpha(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitAlpha());
         floatWindow.setBackground(drawable);
         floatWindow.setPadding(16,16,16,16);
 
@@ -163,8 +163,8 @@ public class StickyPopUp {
     }
 
     public void closeSticky() {
-        if (popupWindow!=null) {
-            popupWindow.dismiss();
+        if (floatWindow!=null && popupWindow!=null) {
+            floatWindow.post(() -> popupWindow.dismiss());
         }
     }
 

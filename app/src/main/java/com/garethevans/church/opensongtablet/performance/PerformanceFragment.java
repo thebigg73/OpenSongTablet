@@ -27,6 +27,7 @@ import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
+import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
@@ -43,6 +44,7 @@ public class PerformanceFragment extends Fragment {
     private StickyPopUp stickyPopUp;
 
     private MainActivityInterface mainActivityInterface;
+    private ActionInterface actionInterface;
     private DisplayInterface displayInterface;
 
     // The variables used in the fragment
@@ -64,6 +66,7 @@ public class PerformanceFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
+        actionInterface = (ActionInterface) context;
         displayInterface = (DisplayInterface) context;
         mainActivityInterface.registerFragment(this,"Performance");
     }
@@ -79,6 +82,7 @@ public class PerformanceFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        actionInterface.showSticky(false,true);
         myView = null;
     }
 
@@ -180,6 +184,8 @@ public class PerformanceFragment extends Fragment {
             } else {
                 animSlideOut = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
             }
+
+            actionInterface.showSticky(false,true);
 
             // Now reset the song
             mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
@@ -600,5 +606,4 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.scrollToPosition(position);
         // TODO send an update the the secondary display
     }
-
 }

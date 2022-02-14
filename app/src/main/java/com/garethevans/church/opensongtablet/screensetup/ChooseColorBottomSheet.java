@@ -301,10 +301,13 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         // If we changed the page button color...
         if (whichColor.equals("pageButtonsColor")) {
             mainActivityInterface.getMyThemeColors().setPageButtonsColor(newColorInt);
-            mainActivityInterface.getMyThemeColors().splitPageButtonsColorAndAlpha(mainActivityInterface);
+            mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
         } else if (whichColor.equals("extraInfoTextColor")) {
             mainActivityInterface.getMyThemeColors().setExtraInfoTextColor(newColorInt);
-            mainActivityInterface.getMyThemeColors().splitPageButtonsColorAndAlpha(mainActivityInterface);
+            mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+        } else if (whichColor.equals("extraInfoBgColor")) {
+            mainActivityInterface.getMyThemeColors().setExtraInfoBgColor(newColorInt);
+            mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
         }
 
         // These changes should call an update to any secondary displays as well

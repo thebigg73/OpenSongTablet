@@ -1556,7 +1556,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateOnScreenInfo(String what) {
         switch (what) {
             case "alpha":
-                myView.onScreenInfo.updateAlpha(this);
+                myView.onScreenInfo.updateAlpha(this,this);
                 break;
             case "showhide":
                 myView.onScreenInfo.showHideViews(this);

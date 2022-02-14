@@ -455,7 +455,6 @@ public class Preferences extends Activity {
     stageModeScale                  float       The max height of each stage mode section (to allow next section to peek at bottom) (def:0.80f)
     stickyAuto                      boolean     Should sticky notes be shown automatically (def:true)
     stickyWidth                     int         The width of popup sticky notes (def:400)
-    stickyAlpha                     float       The alpha of popup sticky notes (def:0.8f)
     stickyLargeFont                 boolean     The text size for the popup sticky notes (true=20.0f, def:false=14.0f)
     stickyXPosition                 int         The x position of the popup sticky note (def: -1 which means figure it out first)
     stickyYPosition                 int         The y position of the popup sticky note (def: -1 which means figure it out first)
