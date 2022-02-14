@@ -2,6 +2,9 @@
 // It only shows if the storage location has an issue or we have updated the app, or user returned manually
 package com.garethevans.church.opensongtablet;
 
+import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -40,9 +43,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import lib.folderpicker.FolderPicker;
-
-import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
 
 public class BootUpCheck extends AppCompatActivity {
 
@@ -476,6 +476,12 @@ public class BootUpCheck extends AppCompatActivity {
 
             // Save the location uriTree and uriTreeHome
             saveUriLocation();
+
+            // After an attempt to change storage, set to show Welcome song
+            StaticVariables.whichSongFolder = getString(R.string.mainfoldername);
+            StaticVariables.songfilename = "Welcome to OpenSongApp";
+            preferences.setMyPreferenceString(BootUpCheck.this,"whichSongFolder",StaticVariables.whichSongFolder);
+            preferences.setMyPreferenceString(BootUpCheck.this,"songfilename",StaticVariables.songfilename);
 
             // See if we can show the start button yet
             checkReadiness();

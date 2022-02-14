@@ -1554,22 +1554,18 @@ class StorageAccess {
         }
         File songIDFile = new File(c.getExternalFilesDir("Database"),"SongIds.txt");
         Uri uri = Uri.fromFile(songIDFile);
-        boolean fileexists;
-        if (!uriExists(c,uri)) {
-            try {
-                fileexists = songIDFile.createNewFile();
-            } catch (Exception e) {
-                fileexists = false;
+        try {
+            if (uriExists(c,uri)) {
+                // IV - Delete any old file
+                songIDFile.delete();
             }
-        } else {
-            fileexists = true;
-        }
-
-        if (fileexists) {
+            songIDFile.createNewFile();
             OutputStream outputStream = getOutputStream(c, Uri.fromFile(songIDFile));
             if (outputStream!=null) {
                 writeFileFromString(stringBuilder.toString(), outputStream);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
