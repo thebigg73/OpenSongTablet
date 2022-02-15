@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.controls.GestureListener;
+import com.garethevans.church.opensongtablet.customslides.ImageSlideAdapter;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
@@ -59,6 +60,7 @@ public class PerformanceFragment extends Fragment {
     private Animation animSlideIn, animSlideOut;
     private GestureDetector gestureDetector;
     private PDFPageAdapter pdfPageAdapter;
+    private ImageSlideAdapter imageSlideAdapter;
     private StageSectionAdapter stageSectionAdapter;
 
     // Attaching and destroying
@@ -260,6 +262,35 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
 
             }
+        } else if (mainActivityInterface.getSong().getFolder().contains("**Image")) {
+            // An image slide.  Use array adapter
+            int availWidth = getResources().getDisplayMetrics().widthPixels;
+            int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
+            imageSlideAdapter = new ImageSlideAdapter(requireContext(), mainActivityInterface, displayInterface,
+                    availWidth, availHeight);
+
+            myView.recyclerView.setAdapter(imageSlideAdapter);
+            myView.recyclerView.setVisibility(View.VISIBLE);
+
+            // Set up the type of animate in
+            if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
+                animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+            } else {
+                animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+            }
+            myView.recyclerView.startAnimation(animSlideIn);
+
+            // Send the autoscroll information (if required)
+            int totalHeight = imageSlideAdapter.getHeight();
+            myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
+            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
+
+            // Get a null screenshot
+            getScreenshot(0,0,0);
+
+            // Set the previous/next if we want to
+            mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
+
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
             mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().

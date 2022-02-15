@@ -64,6 +64,7 @@ public class CustomSlide {
                     user1 = customSlide.get(3);
                     user2 = customSlide.get(4);
                     user3 = customSlide.get(5);
+                    lyrics = "";
                     folder = "Images";
                     type = c.getResources().getString(R.string.image);
                     break;
