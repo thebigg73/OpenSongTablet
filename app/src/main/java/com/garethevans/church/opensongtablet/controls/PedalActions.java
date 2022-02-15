@@ -12,6 +12,8 @@ import java.util.TimerTask;
 
 public class PedalActions {
 
+    // Actions triggered here are sent to the PerformanceGestures to be acted upon there (one place!)
+
     // TODO Airturn
     private final String TAG = "PedalActions";
     private final MainActivityInterface mainActivityInterface;

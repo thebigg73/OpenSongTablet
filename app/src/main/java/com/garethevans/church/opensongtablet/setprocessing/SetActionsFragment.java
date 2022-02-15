@@ -53,6 +53,10 @@ public class SetActionsFragment extends Fragment {
             mainActivityInterface.setWhattodo("saveset");
             mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
         });
+        myView.renameSet.setOnClickListener(v -> {
+            mainActivityInterface.setWhattodo("renameset");
+            mainActivityInterface.navigateToFragment(null,R.id.setManageFragment);
+        });
         myView.deleteSet.setOnClickListener(v -> {
             mainActivityInterface.setWhattodo("deleteset");
             mainActivityInterface.navigateToFragment(null, R.id.setManageFragment);

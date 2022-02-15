@@ -42,6 +42,15 @@
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/renameSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rename"
+                android:hint="@string/rename_info" />
+
+            <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/deleteSet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

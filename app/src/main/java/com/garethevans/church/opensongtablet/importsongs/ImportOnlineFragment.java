@@ -501,11 +501,11 @@ public class ImportOnlineFragment extends Fragment {
                     mainActivityInterface,
                     mainActivityInterface.getStorageAccess().getSongIDsFromFile(requireContext()));
 
-            // Add the song to the database
-            mainActivityInterface.getSQLiteHelper().createSong(requireContext(), mainActivityInterface,
+            // Add the song to the database - done already?
+            /*mainActivityInterface.getSQLiteHelper().createSong(requireContext(), mainActivityInterface,
                     newSong.getFolder(), newSong.getFilename());
             mainActivityInterface.getSQLiteHelper().updateSong(requireContext(), mainActivityInterface, newSong);
-
+*/
             // Set the current song to this
             mainActivityInterface.getPreferences().
                     setMyPreferenceString(requireContext(), "whichSongFolder", newSong.getFolder());

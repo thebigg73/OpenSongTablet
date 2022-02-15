@@ -16,6 +16,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
@@ -394,7 +395,27 @@ public class SetActions {
         Collections.sort(availableSets);
         return availableSets;
     }
-
+    public ArrayList<String> listSetsWithCategories(Context c, MainActivityInterface mainActivityInterface,
+                                                    ArrayList<String> allSets) {
+        ArrayList<String> availableSets = new ArrayList<>();
+        for (String possibleSet:allSets) {
+            if (possibleSet.contains(setCategorySeparator)) {
+                possibleSet = possibleSet.replace(setCategorySeparator,"/");
+            } else {
+                possibleSet = c.getString(R.string.mainfoldername) + "/" + possibleSet;
+            }
+            availableSets.add(possibleSet);
+        }
+        Collator collator;
+        if (mainActivityInterface.getLocale() == null) {
+            collator = Collator.getInstance(Locale.getDefault());
+        } else {
+            collator = Collator.getInstance(mainActivityInterface.getLocale());
+        }
+        collator.setStrength(Collator.SECONDARY);
+        Collections.sort(availableSets,collator);
+        return availableSets;
+    }
     public void makeVariation(Context c, MainActivityInterface mainActivityInterface, int position) {
         // Takes the chosen song and copies it to a temporary file in the Variations folder
         // This also updates the set menu to point to the new temporary item

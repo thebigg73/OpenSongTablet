@@ -409,6 +409,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
         // Prepare the song menu (includes a call to update the prepareSearch
         fixButtons();
+
+        if (songListAdapter!=null) {
+            new Thread(() -> {
+                requireActivity().runOnUiThread(() -> songListAdapter.notifyDataSetChanged());
+            }).start();
+        }
     }
 
     public void moveToSongInMenu(Song song) {
@@ -478,4 +484,5 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             prepareSearch();
         }
     }
+
 }

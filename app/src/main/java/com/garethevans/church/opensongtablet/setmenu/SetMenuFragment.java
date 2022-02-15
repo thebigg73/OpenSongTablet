@@ -170,10 +170,6 @@ public class SetMenuFragment extends Fragment {
         setListAdapter.getSetList().get(position).songtitle = filename;
         setListAdapter.getSetList().get(position).songkey = key;
 
-        Log.d(TAG,"updateItem().  folder="+folder);
-        Log.d(TAG,"updateItem().  filename="+filename);
-        Log.d(TAG,"updateItem().  key="+key);
-
         // Check for icon
         setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().
                 getIconIdentifier(mainActivityInterface,folder,filename);
@@ -191,6 +187,7 @@ public class SetMenuFragment extends Fragment {
     public void addSetItem(int currentSetPosition) {
         setListAdapter.getSetList().add(makeSetItem(currentSetPosition));
         setListAdapter.notifyItemInserted(currentSetPosition);
+        updateSetTitle();
     }
 
     public void runSetShowcase() {
@@ -210,6 +207,7 @@ public class SetMenuFragment extends Fragment {
         Log.d(TAG,"item: "+setListAdapter.getSetList().get(currentSetPosition).songfilename);
         setListAdapter.getSetList().remove(currentSetPosition);
         setListAdapter.notifyItemRemoved(currentSetPosition);
+        updateSetTitle();
     }
     private SetItemInfo makeSetItem(int i) {
         SetItemInfo si = new SetItemInfo();

@@ -523,7 +523,7 @@ public class StorageAccess {
     }
     public String safeFilename(String filename) {
         // Remove bad characters from filenames
-        filename = filename.replaceAll("[*?/<>&!#$+\"':{}@\\\\]", " "); // Removes bad characters
+        filename = filename.replaceAll("[*?/<>&!#$+\":{}@\\\\]", " "); // Removes bad characters - leave ' though
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
         return filename.trim();  // Returns the trimmed value
     }
@@ -583,7 +583,6 @@ public class StorageAccess {
         }
         return path;
     }
-
 
     // Get information about the files
     public String getUTFEncoding(Context c, Uri uri) {
@@ -1154,9 +1153,15 @@ public class StorageAccess {
         return location;
     }
     public void lollipopCreateFileForOutputStream(Context c, MainActivityInterface mainActivityInterface, Uri uri, String mimeType, String folder, String subfolder, String filename) {
-        if (lollipopOrLater() && !uriExists(c, uri)) {
+        if (lollipopOrLater()) {
             // Only need to do this for Lollipop or later
+            if (uriExists(c,uri)) {
+                // Delete it to avoid overwrite errors that leaves old stuff at the end of the file
+                deleteFile_SAF(c,uri);
+            }
+            // Create the new file
             createFile(c, mainActivityInterface, mimeType, folder, subfolder, filename);
+
         } else if (!lollipopOrLater() && !uriExists(c, uri)) {
             // Check it exists
             try {
@@ -1539,41 +1544,6 @@ public class StorageAccess {
         Uri uri = getUriForItem(c, mainActivityInterface, location, subfolder, filename);
         return deleteFile(c, uri);
     }
-    boolean renameSetFile(Context c, MainActivityInterface mainActivityInterface, String oldname, String newname) {
-        String folder = "Sets";
-        String oldsubfolder = "";
-        String newsubfolder = "";
-        Uri olduri = getUriForItem(c, mainActivityInterface, folder, oldsubfolder, oldname);
-        InputStream inputStream = getInputStream(c, olduri);
-        Uri newuri = getUriForItem(c, mainActivityInterface, folder, newsubfolder, newname);
-        if (!uriExists(c, newuri)) {
-            // Create a new blank file ready
-            createFile(c, mainActivityInterface, null, folder, newsubfolder, newname);
-        }
-        OutputStream outputStream = getOutputStream(c, newuri);
-        try {
-            // Copy the file
-            copyFile(inputStream, outputStream);
-            // All is good, so delete the old one
-            if (lollipopOrLater()) {
-                DocumentFile df = DocumentFile.fromSingleUri(c, olduri);
-                if (df != null) {
-                    return df.delete();
-                } else {
-                    return false;
-                }
-            } else {
-                if (olduri.getPath() != null) {
-                    File f = new File(olduri.getPath());
-                    return f.delete();
-                }
-            }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
     public String getImageSlide(Context c, String loc) {
         String b = "";
         Uri uri = Uri.parse(loc);
@@ -1625,9 +1595,10 @@ public class StorageAccess {
             }
         }
     }
-    public boolean renameFileFromUri(Context c, Uri oldUri, Uri newUri, String newName) {
+    public boolean renameFileFromUri(Context c, MainActivityInterface mainActivityInterface, Uri oldUri,
+                                     Uri newUri, String newFolder, String newSubfolder, String newName) {
         if (lollipopOrLater()) {
-            return renameFileFromUri_SAF(c, oldUri, newName);
+            return renameFileFromUri_SAF(c, mainActivityInterface, oldUri, newUri, newFolder, newSubfolder, newName);
         } else {
             return renameFileFromUri_File(oldUri, newUri);
         }
@@ -1636,10 +1607,26 @@ public class StorageAccess {
         File file = new File(oldUri.getPath());
         return file.renameTo(new File(newUri.getPath()));
     }
-    private boolean renameFileFromUri_SAF(Context c, Uri oldUri, String newName) {
-        DocumentFile documentFile = DocumentFile.fromTreeUri(c,oldUri);
-        if (documentFile!=null) {
-            return documentFile.renameTo(newName);
+    private boolean renameFileFromUri_SAF(Context c, MainActivityInterface mainActivityInterface, Uri oldUri,
+                                          Uri newUri, String newFolder, String newSubfolder, String newName) {
+        // Don't use document file rename as it can end badly if there is an issue
+        // This can rename the root folder.  So instead copy the old file contents
+        // Write the new file and delete the old one
+
+        // If the new file already exists, delete it to avoid overwrite errors
+        deleteFile(c,newUri);
+
+        // Now create a blank file
+        lollipopCreateFileForOutputStream(c,mainActivityInterface,newUri,null,newFolder,newSubfolder,newName);
+
+        // Now get an InputStream from the oldUri and an OutputStream for the newUri
+        InputStream inputStream = getInputStream(c,oldUri);
+        OutputStream outputStream = getOutputStream(c,newUri);
+
+        // Copy the file, which also closes the streams and on success, delete the old file
+        if (copyFile(inputStream, outputStream)) {
+            deleteFile(c,oldUri);
+            return true;
         } else {
             return false;
         }
@@ -1903,7 +1890,7 @@ public class StorageAccess {
 
         // Sort the array
         Collator collator;
-        if (mainActivityInterface.getLocale()==null) {
+        if (mainActivityInterface.getLocale() == null) {
             collator = Collator.getInstance(Locale.getDefault());
         } else {
             collator = Collator.getInstance(mainActivityInterface.getLocale());
@@ -1916,25 +1903,16 @@ public class StorageAccess {
         // Get the file reference
         File songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
         // Let's delete this file and then create a new blank one
-        songIDFile.delete();
+        Log.d(TAG,"Deleting old songIDFile success="+songIDFile.delete());
         songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
-        Uri uri = Uri.fromFile(songIDFile);
-        boolean fileexists;
-        if (!uriExists(c, uri)) {
-            try {
-                fileexists = songIDFile.createNewFile();
-            } catch (Exception e) {
-                fileexists = false;
-            }
-        } else {
-            fileexists = true;
-        }
-
-        if (fileexists) {
+        try {
+            Log.d(TAG,"Creating new songIDFile success="+songIDFile.createNewFile());
             OutputStream outputStream = getOutputStream(c, Uri.fromFile(songIDFile));
             if (outputStream != null) {
                 writeFileFromString(stringBuilder.toString(), outputStream);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     public ArrayList<String> getSongIDsFromFile(Context c) {

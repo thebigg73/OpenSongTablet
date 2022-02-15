@@ -315,6 +315,12 @@ public class SetStorageLocationFragment extends Fragment {
             myView.startApp.setVisibility(View.VISIBLE);
             pulseButton(myView.startApp);
             myView.setStorage.clearAnimation();
+            // After an attempt to change storage, set to show Welcome song
+            mainActivityInterface.getSong().setFolder(getString(R.string.mainfoldername));
+            mainActivityInterface.getSong().setFilename("Welcome to OpenSongApp");
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername));
+            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp");
+
         } else {
             myView.firstRun.setVisibility(View.VISIBLE);
             myView.startApp.clearAnimation();

@@ -82,7 +82,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     public boolean renameSong(Context c, MainActivityInterface mainActivityInterface,
                               String oldFolder, String newFolder, String oldName, String newName) {
         try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
-            return mainActivityInterface.getCommonSQL().renameSong(db2,oldFolder,newFolder,oldName,newName);
+            return mainActivityInterface.getCommonSQL().renameSong(db2, oldFolder,newFolder,oldName,newName);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -95,6 +95,16 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
             return "";
+        }
+    }
+
+    // Check if a song exists
+    public boolean songExists(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+        try (SQLiteDatabase db = getDB(c,mainActivityInterface)) {
+            return mainActivityInterface.getCommonSQL().songExists(db, folder, filename);
+        } catch (OutOfMemoryError | Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

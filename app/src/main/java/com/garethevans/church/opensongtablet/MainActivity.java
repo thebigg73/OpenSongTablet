@@ -790,6 +790,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     ((ThemeSetupFragment) callingFragment).updateButtons();
                     break;
 
+                case "setManageFragment":
+                    ((SetManageFragment) callingFragment).doRename();
+                    break;
+
             }
         }
     }
@@ -1882,6 +1886,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // We will reset the chosen theme colours to app defaults
                     themeColors.resetTheme(this,this);
                     themeColors.getDefaultColors(this,this);
+                    updateFragment(fragName,callingFragment,null);
+                    allowToast = false;
+                    break;
+
+                case "renameSet":
+                    // We are renaming a set
                     updateFragment(fragName,callingFragment,null);
                     allowToast = false;
                     break;

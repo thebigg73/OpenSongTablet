@@ -112,6 +112,11 @@ public class CommonSQL {
     public void updateSong(SQLiteDatabase db, Song thisSong) {
         // Values have already been set to sqLite, just need updated in the table
         // We use an object reference to song as this could be from indexingSong or actual song
+        String correctId = getAnySongId(thisSong.getFolder(),thisSong.getFilename());
+        if (thisSong.getSongid()==null || thisSong.getSongid().isEmpty() || !thisSong.getSongid().equals(correctId)) {
+            thisSong.setSongid(correctId);
+        }
+        Log.d(TAG,"updatingSong: "+thisSong.getSongid()+" - "+thisSong.getFolder()+"/"+thisSong.getFilename());
         ContentValues values = new ContentValues();
         values.put(SQLite.COLUMN_SONGID, thisSong.getSongid());
         values.put(SQLite.COLUMN_FILENAME, thisSong.getFilename());
@@ -152,6 +157,7 @@ public class CommonSQL {
         int row = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_SONGID + "=?",
                 new String[]{String.valueOf(thisSong.getSongid())});
         if (row == 0) {
+            Log.d(TAG,"inserting="+thisSong.getSongid());
             db.insert(SQLite.TABLE_NAME, null, values);
         }
     }
@@ -425,20 +431,22 @@ public class CommonSQL {
     }
 
     public boolean renameSong(SQLiteDatabase db, String oldFolder, String newFolder,
-                           String oldName, String newName) {
+                              String oldName, String newName) {
         String oldId = getAnySongId(oldFolder,oldName);
         String newId = getAnySongId(newFolder,newName);
 
+        Log.d(TAG,"oldId: "+oldId+"  newId: "+newId);
         // First change the folder/file againts the matching old songid
-        String[] selectionArgs = new String[]{newId, newFolder, newName,oldId};
-        String q = "UPDATE " + SQLite.TABLE_NAME + " SET " +
-                SQLite.COLUMN_SONGID + " = ? ," +
-                SQLite.COLUMN_FOLDER + " = ? ," +
-                SQLite.COLUMN_FILENAME + " = ? WHERE " + SQLite.COLUMN_SONGID + " = ? ";
-        Cursor cursor = db.rawQuery(q,selectionArgs);
-        boolean success = cursor.getCount() > 0;
-        closeCursor(cursor);
-        return success;
+        String[] whereClause = new String[]{oldId};
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(SQLite.COLUMN_FOLDER,newFolder);
+        contentValues.put(SQLite.COLUMN_FILENAME,newName);
+        contentValues.put(SQLite.COLUMN_SONGID,newId);
+
+        int val = db.update(SQLite.TABLE_NAME,contentValues,SQLite.COLUMN_SONGID+"=?",whereClause);
+
+        Log.d(TAG,"val="+val);
+        return val>0;
     }
 
     private void closeCursor(Cursor cursor) {

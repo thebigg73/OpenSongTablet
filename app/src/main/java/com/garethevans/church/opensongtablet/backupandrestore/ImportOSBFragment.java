@@ -479,7 +479,9 @@ public class ImportOSBFragment extends Fragment {
             if (messages[1]==null) {
                 // There was a problem
                 mainActivityInterface.getShowToast().doIt(messages[0]);
-                requireActivity().runOnUiThread(() -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
+                if (getActivity()!=null) {
+                    requireActivity().runOnUiThread(() -> mainActivityInterface.navigateToFragment(null, R.id.import_graph));
+                }
 
             } else {
                 mainActivityInterface.setImportFilename(filename);

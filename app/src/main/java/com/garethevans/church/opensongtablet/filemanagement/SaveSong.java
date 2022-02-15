@@ -44,15 +44,16 @@ public class SaveSong {
             Log.d(TAG,"oldLocation: " + oldLocation.get(0) + ", " + oldLocation.get(1));
             Log.d(TAG,"folderChange: " + folderChange);
             Log.d(TAG,"filenameChange: " + filenameChange);
-            if (folderChange || filenameChange) {
-                // We need to create a new entry in the database
-                mainActivityInterface.getSQLiteHelper().createSong(c, mainActivityInterface,
-                        newSong.getFolder(), newSong.getFilename());
+            Log.d(TAG,"newSong.getSongId()="+newSong.getSongid()+"  mainSong="+mainActivityInterface.getSong().getSongid());
 
+            if (folderChange || filenameChange) {
+                // We need to rename the entry in the database
+                mainActivityInterface.getSQLiteHelper().renameSong(c, mainActivityInterface,
+                        oldFolder, newSong.getFolder(), oldFilename, newSong.getFilename());
                 if (newSong.getFiletype().equals("PDF") || newSong.getFiletype().equals("IMG")) {
                     // If it isn't an XML file, also update the persistent database
-                    mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(c, mainActivityInterface,
-                            newSong.getFolder(), newSong.getFilename());
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(c, mainActivityInterface,
+                            oldFolder, newSong.getFolder(), oldFilename, newSong.getFilename());
                 }
 
                 // Now try to rename the highlighter files if they exist
@@ -60,36 +61,26 @@ public class SaveSong {
                 Uri landscapeOld = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Highlighter","", oldHighlighterFile_l);
                 if (mainActivityInterface.getStorageAccess().uriExists(c,portraitOld)) {
                     Uri portraitNew = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", newHighlighterFile_p);
-                    mainActivityInterface.getStorageAccess().renameFileFromUri(c,portraitOld,portraitNew,newHighlighterFile_p);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(c,mainActivityInterface,portraitOld,portraitNew,"Highlighter","",newHighlighterFile_p);
                 }
                 if (mainActivityInterface.getStorageAccess().uriExists(c,landscapeOld)) {
                     Uri landscapeNew = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", newHighlighterFile_l);
-                    mainActivityInterface.getStorageAccess().renameFileFromUri(c,landscapeOld,landscapeNew,newHighlighterFile_l);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(c,mainActivityInterface,landscapeOld,landscapeNew,"Highlighter", "", newHighlighterFile_l);
                 }
-
             }
 
             // Now save the new song
-            boolean saveSuccessful = updateSong(c, mainActivityInterface, mainActivityInterface.getSong());
+            boolean saveSuccessful = updateSong(c, mainActivityInterface, newSong);
 
             // Now, if the save was successful and the folder/filename changes, delete the old stuff
             if ((folderChange || filenameChange) && saveSuccessful) {
-                mainActivityInterface.getSQLiteHelper().deleteSong(c,mainActivityInterface,oldFolder,oldFilename);
-                if (!newSong.getFiletype().equals("XML")) {
-                    // If it isn't an XML file, also update the persistent database
-                    mainActivityInterface.getNonOpenSongSQLiteHelper().deleteSong(c,mainActivityInterface,oldFolder,oldFilename);
-                }
-
                 // If there wasn't an old song, don't try to delete it otherwise we delete the Songs folder!
-                if (oldFilename!=null && !oldFilename.isEmpty()) {
+                if (oldFilename!=null && !oldFilename.isEmpty() && oldLocation.get(0)!=null && oldLocation.get(1)!=null) {
                     Uri oldUri = mainActivityInterface.getStorageAccess().
                             getUriForItem(c, mainActivityInterface, oldLocation.get(0), oldLocation.get(1), oldFilename);
                     mainActivityInterface.getStorageAccess().deleteFile(c, oldUri);
-                    Log.d(TAG, "oldUri: " + oldUri);
                 }
             }
-
-
 
             return saveSuccessful;
 
@@ -121,6 +112,14 @@ public class SaveSong {
                 mainActivityInterface.getCCLILog().addEntry(c, mainActivityInterface,
                         thisSong, "3"); // 3=edited
             }
+
+            // Update the song menu
+            mainActivityInterface.updateSongMenu(thisSong);
+
+            mainActivityInterface.getSong().setFilename(thisSong.getFilename());
+            mainActivityInterface.getSong().setFolder(thisSong.getFolder());
+            mainActivityInterface.getPreferences().setMyPreferenceString(c,"whichSongFolder",thisSong.getFolder());
+            mainActivityInterface.getPreferences().setMyPreferenceString(c,"songfilename",thisSong.getFilename());
 
             // Now save the song file and return the success!
             if (thisSong.getFiletype().equals("XML")) {
