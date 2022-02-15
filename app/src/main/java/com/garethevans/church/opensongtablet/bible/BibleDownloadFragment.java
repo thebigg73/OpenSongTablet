@@ -110,28 +110,32 @@ public class BibleDownloadFragment extends Fragment {
             progressBar(true);
             // Run this in a new Thread
             new Thread(() -> {
-                // Get the url based on the text position
-                int position = -1;
-                if (myView.translation.getText()!=null) {
-                    position = bibles_EN.indexOf(myView.translation.getText().toString());
-                }
-                if (position>-1) {
-                    String url = bibles_EN_URL.get(position);
-                    String name = bibles_EN_URL.get(position).substring(bibles_EN_URL.get(position).lastIndexOf("/")+1);
-                    String[] downloadInfo = webDownload.doDownload(requireContext(), url, name);
-                    if (downloadInfo[1]!=null) {
-                        Uri uri = Uri.parse(downloadInfo[1]);
-                        // Now we need to extract the xmm file from the zip file
-                        if (extractBibleZipFile(uri)) {
-                            requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.success)));
-                        } else {
-                            requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.error)));
-                        }
-                    } else {
-                        requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(downloadInfo[0]));
+                try {
+                    // Get the url based on the text position
+                    int position = -1;
+                    if (myView.translation.getText() != null) {
+                        position = bibles_EN.indexOf(myView.translation.getText().toString());
                     }
+                    if (position > -1) {
+                        String url = bibles_EN_URL.get(position);
+                        String name = bibles_EN_URL.get(position).substring(bibles_EN_URL.get(position).lastIndexOf("/") + 1);
+                        String[] downloadInfo = webDownload.doDownload(requireContext(), url, name);
+                        if (downloadInfo[1] != null) {
+                            Uri uri = Uri.parse(downloadInfo[1]);
+                            // Now we need to extract the xmm file from the zip file
+                            if (extractBibleZipFile(uri)) {
+                                requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.success)));
+                            } else {
+                                requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(getString(R.string.error)));
+                            }
+                        } else {
+                            requireActivity().runOnUiThread(() -> mainActivityInterface.getShowToast().doIt(downloadInfo[0]));
+                        }
+                    }
+                    requireActivity().runOnUiThread(() -> progressBar(false));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                requireActivity().runOnUiThread(() -> progressBar(false));
                 }).start();
         } else {
             mainActivityInterface.getShowToast().doIt(getString(R.string.requires_internet));
@@ -188,7 +192,9 @@ public class BibleDownloadFragment extends Fragment {
             }
         }
         // Delete the zip file
-        mainActivityInterface.getStorageAccess().deleteFile(requireContext(),zipUri);
+        if (getContext()!=null) {
+            mainActivityInterface.getStorageAccess().deleteFile(requireContext(), zipUri);
+        }
 
         return success;
     }

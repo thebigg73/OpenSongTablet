@@ -83,8 +83,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         myView.lineLength.setHint(bible.getLineLength() +"");
         myView.linesPerSlide.setValue(bible.getLinesPerSlide());
         myView.linesPerSlide.setHint(bible.getLinesPerSlide() + "");
-        myView.verseNumbers.setOnCheckedChangeListener((compoundButton, b) -> bible.setShowVerseNumbers(b));
-
+        myView.verseNumbers.setChecked(bible.getShowVerseNumbers());
     }
 
     private void setupListeners() {

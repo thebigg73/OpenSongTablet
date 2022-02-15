@@ -198,6 +198,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 mainActivityInterface.getCurrentSet().addSetValues(itemFolder, itemFilename, itemKey);
                 checkedArray.put(adapterPosition, true);
                 mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
+                mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
 
             } else {
                 songItemViewHolder.itemChecked.setChecked(false);

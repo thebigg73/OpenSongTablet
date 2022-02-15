@@ -129,8 +129,13 @@ public class CustomSlide {
 
             // Add to set $**_**{customsfolder}/filename_***key***_**$
             String songforsetwork = "$**_**" + folder + "/" + file + "_***" + key + "***__**$";
+            mainActivityInterface.getCurrentSet().addToCurrentSetString(songforsetwork);
             mainActivityInterface.getCurrentSet().addSetItem(songforsetwork);
             mainActivityInterface.getCurrentSet().addSetValues("**" + folder, file, key);
+            mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
+
+            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
+            mainActivityInterface.getPreferences().setMyPreferenceString(c, "setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
             // Update the set menu
             //mainActivityInterface.updateSetList();

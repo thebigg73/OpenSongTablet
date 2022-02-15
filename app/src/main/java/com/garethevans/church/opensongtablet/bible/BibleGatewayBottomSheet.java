@@ -247,15 +247,19 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
             }
         }
 
-        String[] weblines = webString.split("\n");
-        for (String webline:weblines) {
-            Log.d(TAG,webline);
-        }
+        //int start = webString.indexOf("<div class=\"passage-text\">");
         int start = webString.indexOf("<sup class=\"versenum\">");
+        Log.d(TAG,"start="+start);
         if (start>-1) {
-            int end = webString.indexOf("</span></p>",start);
+            webString = webString.substring(start);
+            String[] weblines = webString.split("\n");
+            for (String webline:weblines) {
+                Log.d(TAG,webline);
+            }
+            int end = webString.indexOf("</span>");
+            Log.d(TAG, "end:"+end);
             if (end>-1) {
-                webString = webString.substring(start,end);
+                webString = webString.substring(0,end);
                 // Identify the verse numbering (so we keep)
                 webString = webString.replace("<sup class=\"versenum\">","_STARTOFVERSE_");
                 webString = webString.replace("&nbsp;</sup>","_ENDOFVERSE_");

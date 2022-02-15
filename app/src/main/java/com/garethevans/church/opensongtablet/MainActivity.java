@@ -1683,13 +1683,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (presenterFragment!=null) {
                 presenterFragment.doSongLoad(folder,filename);
             } else {
-                navigateToFragment(null,R.id.performanceFragment);
+                navigateToFragment(null,R.id.presenterFragment);
             }
         } else {
             if (performanceFragment!=null) {
                 performanceFragment.doSongLoad(folder,filename);
             } else {
-                navigateToFragment(null,R.id.presenterFragment);
+                navigateToFragment(null,R.id.performanceFragment);
             }
         }
         closeDrawer(closeDrawer);
