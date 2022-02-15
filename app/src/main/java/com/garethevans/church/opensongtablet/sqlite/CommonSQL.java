@@ -116,7 +116,6 @@ public class CommonSQL {
         if (thisSong.getSongid()==null || thisSong.getSongid().isEmpty() || !thisSong.getSongid().equals(correctId)) {
             thisSong.setSongid(correctId);
         }
-        Log.d(TAG,"updatingSong: "+thisSong.getSongid()+" - "+thisSong.getFolder()+"/"+thisSong.getFilename());
         ContentValues values = new ContentValues();
         values.put(SQLite.COLUMN_SONGID, thisSong.getSongid());
         values.put(SQLite.COLUMN_FILENAME, thisSong.getFilename());
@@ -435,7 +434,6 @@ public class CommonSQL {
         String oldId = getAnySongId(oldFolder,oldName);
         String newId = getAnySongId(newFolder,newName);
 
-        Log.d(TAG,"oldId: "+oldId+"  newId: "+newId);
         // First change the folder/file againts the matching old songid
         String[] whereClause = new String[]{oldId};
         ContentValues contentValues = new ContentValues();
@@ -445,7 +443,6 @@ public class CommonSQL {
 
         int val = db.update(SQLite.TABLE_NAME,contentValues,SQLite.COLUMN_SONGID+"=?",whereClause);
 
-        Log.d(TAG,"val="+val);
         return val>0;
     }
 

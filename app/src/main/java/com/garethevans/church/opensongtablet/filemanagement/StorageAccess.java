@@ -1622,9 +1622,9 @@ public class StorageAccess {
         // Now get an InputStream from the oldUri and an OutputStream for the newUri
         InputStream inputStream = getInputStream(c,oldUri);
         OutputStream outputStream = getOutputStream(c,newUri);
-
         // Copy the file, which also closes the streams and on success, delete the old file
         if (copyFile(inputStream, outputStream)) {
+            // Likely the inputStream or outputStream was null, so don't delete the old file!
             deleteFile(c,oldUri);
             return true;
         } else {
@@ -1657,7 +1657,7 @@ public class StorageAccess {
     }
 
     // Actions for folders (create, delete, rename, clear)
-    boolean renameFolder(Context c, MainActivityInterface mainActivityInterface, ShowToast showToast, Song song, String oldsubfolder, String newsubfolder) {
+    public boolean renameFolder(Context c, MainActivityInterface mainActivityInterface, ShowToast showToast, Song song, String oldsubfolder, String newsubfolder) {
         if (lollipopOrLater()) {
             return renameFolder_SAF(c, mainActivityInterface, showToast, song, oldsubfolder, newsubfolder);
         } else {

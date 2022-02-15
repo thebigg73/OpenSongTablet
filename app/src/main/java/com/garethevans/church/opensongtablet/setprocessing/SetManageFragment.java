@@ -259,7 +259,6 @@ public class SetManageFragment extends Fragment {
         for (String setName : availableSets) {
             @SuppressLint("InflateParams") CheckBox checkBox = (CheckBox) LayoutInflater.from(requireContext()).inflate(R.layout.view_checkbox_list_item, null);
             checkBox.setTag(setName.replace("__","/"));
-            Log.d(TAG,"setName for tag="+setName);
             setName = setName.replace(bitToRemove, "");
             checkBox.setText(setName);
             if (whattodo.equals("saveset") || whattodo.equals("renameset")) {
@@ -415,19 +414,21 @@ public class SetManageFragment extends Fragment {
             oldSetFilename = renameSetCategory + "__" + renameSetName;
             oldSetText = renameSetCategory + "/" + renameSetName;
         }
+        oldSetUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                mainActivityInterface,"Sets","",oldSetFilename);
+
         Editable mycat = myView.setCategory.getText();
         Editable mynam = myView.setName.getText();
         if (mycat!=null && !mycat.toString().isEmpty() && mynam!=null && !mynam.toString().isEmpty()) {
-            String toFilename;
             if (mycat.toString().isEmpty() || mycat.toString().equals(getString(R.string.mainfoldername))) {
-                toFilename = mynam.toString();
+                newSetFilename = mynam.toString();
                 newSetText = getString(R.string.mainfoldername) + "/" + mynam;
             } else {
-                toFilename = mycat + "__" + mynam;
+                newSetFilename = mycat + "__" + mynam;
                 newSetText = mycat + "/" + mynam;
             }
             newSetUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                    mainActivityInterface,"Sets","",toFilename);
+                    mainActivityInterface,"Sets","",newSetFilename);
 
             boolean exists = mainActivityInterface.getStorageAccess().uriExists(requireContext(),newSetUri);
             if (exists && !myView.overWrite.isChecked()) {
@@ -513,9 +514,9 @@ public class SetManageFragment extends Fragment {
 
     public void doRename() {
         // Received back from the are you sure dialog
-        Log.d(TAG,"oldSetFilename="+oldSetFilename+"  newSetFilename="+newSetFilename);
         mainActivityInterface.getStorageAccess().renameFileFromUri(requireContext(),mainActivityInterface,
                 oldSetUri,newSetUri,"Sets","",newSetFilename);
+        prepareSets();
     }
 
 }
