@@ -26,7 +26,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
-        Log.d(TAG, "onDoubleTapEvent()");
         doubleTapping = true;
         return performAction(mainActivityInterface.getGestures().getDoubleTap());
     }
@@ -37,7 +36,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         if (doubleTapping) {
             doubleTapping = false;
         } else {
-            Log.d(TAG, "onLongPress()");
             performAction(mainActivityInterface.getGestures().getLongPress());
         }
     }
@@ -104,7 +102,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
             } else if (mainActivityInterface.getGestures().getSwipeEnabled() &&
                     e1.getX() - e2.getX() > swipeMinimumDistance
                     && Math.abs(velocityX) > swipeMinimumVelocity) {
-                Log.d(TAG, "Right to Left");
                 mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
                 mainActivityInterface.getDisplayPrevNext().moveToNext();
                 return true;
@@ -112,7 +109,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
             } else if (mainActivityInterface.getGestures().getSwipeEnabled() &&
                     e2.getX() - e1.getX() > swipeMinimumDistance
                     && Math.abs(velocityX) > swipeMinimumVelocity) {
-                Log.d(TAG, "Left to Right");
                 mainActivityInterface.getDisplayPrevNext().setSwipeDirection("L2R");
                 mainActivityInterface.getDisplayPrevNext().moveToPrev();
                 return true;

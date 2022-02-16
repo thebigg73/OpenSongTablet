@@ -102,6 +102,13 @@ public class PerformanceFragment extends Fragment {
         // Initialise the helper classes that do the heavy lifting
         initialiseHelpers();
 
+        // Initialisen the recyclerview
+        if (recyclerLayoutManager==null) {
+            recyclerLayoutManager = new RecyclerLayoutManager(requireContext());
+            myView.recyclerView.setLayoutManager(recyclerLayoutManager);
+        }
+        myView.recyclerView.setItemAnimator(null);
+
         // Pass view references to the Autoscroll class
         mainActivityInterface.getAutoscroll().initialiseAutoscroll(myView.zoomLayout, myView.recyclerView);
 
@@ -218,11 +225,6 @@ public class PerformanceFragment extends Fragment {
         // Reset the song views
         mainActivityInterface.setSectionViews(null);
 
-        if (recyclerLayoutManager==null) {
-            recyclerLayoutManager = new RecyclerLayoutManager(requireContext());
-            myView.recyclerView.setLayoutManager(recyclerLayoutManager);
-        }
-
         // Reset the song sheet titles
         mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
         myView.songSheetTitle.removeAllViews();
@@ -236,69 +238,76 @@ public class PerformanceFragment extends Fragment {
         int[] screenSizes = mainActivityInterface.getDisplayMetrics();
         screenWidth = screenSizes[0];
         screenHeight = screenSizes[1] - mainActivityInterface.getAppActionBar().getActionBarHeight();
+        int availWidth = getResources().getDisplayMetrics().widthPixels;
+        int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
+
+        // Set up the type of animate in
+        setupSlideIn();
 
         if (mainActivityInterface.getSong().getFilename().toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             // We populate the recyclerView with the pages of the PDF
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                int availWidth = getResources().getDisplayMetrics().widthPixels;
-                int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
                 pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface, displayInterface,
                         availWidth, availHeight);
                 myView.recyclerView.setAdapter(pdfPageAdapter);
                 myView.recyclerView.setVisibility(View.VISIBLE);
-                myView.recyclerView.setItemAnimator(null);
-
-                // Set up the type of animate in
-                if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
-                    animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
-                } else {
-                    animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
-                }
-                myView.recyclerView.startAnimation(animSlideIn);
 
                 // Send the autoscroll information (if required)
-                int totalHeight = pdfPageAdapter.getHeight();
-                myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
-                mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
+                myView.recyclerView.post(() -> {
+                    int totalHeight = pdfPageAdapter.getHeight();
+                    recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(),screenHeight);
+                    myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
+                    mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
+
+                    // Do the slide in
+                    myView.recyclerView.startAnimation(animSlideIn);
+
+                    // Set the previous/next if we want to
+                    mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
+                });
 
                 // Get a null screenshot
                 getScreenshot(0,0,0);
-
-                // Set the previous/next if we want to
-                mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
-
             }
+
         } else if (mainActivityInterface.getSong().getFolder().contains("**Image")) {
             // An image slide.  Use array adapter
-            int availWidth = getResources().getDisplayMetrics().widthPixels;
-            int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
             imageSlideAdapter = new ImageSlideAdapter(requireContext(), mainActivityInterface, displayInterface,
                     availWidth, availHeight);
             myView.recyclerView.setAdapter(imageSlideAdapter);
             myView.recyclerView.setVisibility(View.VISIBLE);
-            myView.recyclerView.setItemAnimator(null);
 
-            // Set up the type of animate in
-            if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
-                animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
-            } else {
-                animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+            // If we have a time for each slide, set the song duration
+            if (mainActivityInterface.getSong().getUser1()!=null && !mainActivityInterface.getSong().getUser1().isEmpty()) {
+                int time;
+                try {
+                    time = Integer.parseInt(mainActivityInterface.getSong().getUser1());
+                } catch (Exception e) {
+                    time = 0;
+                }
+                mainActivityInterface.getSong().setAutoscrolllength(""+(time*imageSlideAdapter.getItemCount()));
+                mainActivityInterface.getSong().setAutoscrolldelay("0");
             }
-            myView.recyclerView.startAnimation(animSlideIn);
+
+            Log.d(TAG,"length="+mainActivityInterface.getSong().getAutoscrolllength());
 
             // Send the autoscroll information (if required)
             myView.recyclerView.post(() -> {
-                        int totalHeight = imageSlideAdapter.getHeight();
-                        myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
-                        recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(), screenHeight);
-                        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
-                    });
+                int totalHeight = imageSlideAdapter.getHeight();
+                recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),screenHeight);
+                myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
+                mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
+
+                // Slide in
+                myView.recyclerView.startAnimation(animSlideIn);
+
+                // Set the previous/next if we want to
+                mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
+            });
+
             // Get a null screenshot
             getScreenshot(0,0,0);
-
-            // Set the previous/next if we want to
-            mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
 
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
             // Now prepare the song sections views so we can measure them for scaling using a view tree observer
@@ -321,6 +330,15 @@ public class PerformanceFragment extends Fragment {
 
         // Update the toolbar with the song (null)
         mainActivityInterface.updateToolbar(null);
+    }
+
+    private void setupSlideIn() {
+        // Set up the type of animate in
+        if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
+            animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+        } else {
+            animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+        }
     }
 
     private void setUpHeaderListener() {
@@ -384,13 +402,6 @@ public class PerformanceFragment extends Fragment {
 
         myView.testPane.removeAllViews();
 
-        // Set up the type of animate in
-        if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
-            animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
-        } else {
-            animSlideIn = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
-        }
-
         // Decide which mode we are in to determine how the views are rendered
         if (mainActivityInterface.getMode().equals("Stage")) {
             // We are in Stage mode so use the recyclerView
@@ -410,9 +421,9 @@ public class PerformanceFragment extends Fragment {
             myView.recyclerView.startAnimation(animSlideIn);
 
             // Send the autoscroll information (if required)
-            int totalHeight = stageSectionAdapter.getTotalHeight();
-            myView.recyclerView.setMaxScrollY(totalHeight-screenHeight);
+            int totalHeight = stageSectionAdapter.getHeight();
             recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(),screenHeight);
+            myView.recyclerView.setMaxScrollY(totalHeight-screenHeight);
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
 
             // Get a null screenshot
@@ -643,7 +654,8 @@ public class PerformanceFragment extends Fragment {
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
     public void performanceShowSection(int position) {
         // Scroll the recyclerView to the top of the page
-        myView.recyclerView.scrollToPosition(position);
-        // TODO send an update the the secondary display
+        myView.recyclerView.smoothScrollToPosition(position);
+        mainActivityInterface.getPresenterSettings().setCurrentSection(position);
+        displayInterface.updateDisplay("showSection");
     }
 }

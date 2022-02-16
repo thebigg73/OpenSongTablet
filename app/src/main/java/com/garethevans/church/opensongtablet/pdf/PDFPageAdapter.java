@@ -6,7 +6,6 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // This deals with previewing the PDF file.  Only available for Lollipop+
 
@@ -34,16 +34,16 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private final DisplayInterface displayInterface;
     private final Context c;
     private ArrayList<PDFPageItemInfo> pageInfos;
+    private ArrayList<Float> floatSizes;
     private final int viewWidth, viewHeight;
     private String pdfFolder, pdfFilename;
     private Uri pdfUri;
     private int totalPages;
-    private int totalHeight;
-    private int totalPadding;
+    private float floatHeight;
     private final String scaleType;
-    private boolean manualDrag = false;
     private final float density;
     private int currentSection = 0;
+    private final String alphaChange = "alpha";
 
     public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {
         this.c = c;
@@ -57,8 +57,10 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     private void setSongInfo() {
-        totalHeight = 0;
-        totalPadding = 0;
+        floatHeight = 0;
+        pageInfos = new ArrayList<>();
+        floatSizes = new ArrayList<>();
+
         pdfFolder = mainActivityInterface.getSong().getFolder();
         pdfFilename = mainActivityInterface.getSong().getFilename();
         pdfUri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
@@ -96,22 +98,29 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     } else {
                         scaleFactor = 1f;
                     }
-                    Log.d(TAG, "width=" + width + "  height=" + height + "  scaleFactor=" + scaleFactor);
+
+                    // Add up the heights
+                    float itemHeight = height * scaleFactor + (4f * density);
+                    floatHeight += itemHeight ;
+                    floatSizes.add(itemHeight);
+
                     pageInfo.width = (int) (width * scaleFactor);
-                    pageInfo.height = (int) (height * scaleFactor);
+                    pageInfo.height = (int) itemHeight;
+
+                    if (mainActivityInterface.getMode().equals("Stage")) {
+                        pageInfo.alpha = 0.4f;
+                    } else {
+                        pageInfo.alpha = 1f;
+                    }
                     pageInfos.add(pageInfo);
                     page.close();
 
-                    // Add up the heights
-                    totalHeight += (int) (height * scaleFactor);
-                    totalPadding += (int)Math.ceil(4f*density); // 4dp margin after each cardView.
                     // Set the song load success
                     mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
                     mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", mainActivityInterface.getSong().getFilename());
                     mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", mainActivityInterface.getSong().getFolder());
                 }
             }
-            Log.d(TAG,"final total Height="+totalHeight);
 
             try {
                 if (pdfRenderer!=null) {
@@ -125,10 +134,10 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             }
         } else {
             totalPages = 0;
-            totalHeight = 0;
+            floatHeight = 0;
         }
-        notifyItemRangeChanged(0, totalPages);
     }
+
 
     @NonNull
     @Override
@@ -139,18 +148,29 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     @Override
+    public void onBindViewHolder(@NonNull PDFPageViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads);
+        } else {
+            // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
+            for (Object payload : payloads) {
+                if (payload.equals(alphaChange)) {
+                    // We want to update the highlight colour to off
+                    holder.v.setAlpha(pageInfos.get(position).alpha);
+                }
+            }
+        }
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull PDFPageViewHolder holder, int position) {
         int pageNum = pageInfos.get(position).pageNum;
         int width = pageInfos.get(position).width;
         int height = pageInfos.get(position).height;
+        float alpha = pageInfos.get(position).alpha;
         CardView cardView = (CardView)holder.v;
-        float alpha = 1.0f;
-        if (mainActivityInterface.getMode().equals("Stage")) {
-            if (position == currentSection) {
-                alpha = 1.0f;
-            } else {
-                alpha = 0.4f;
-            }
+        if (mainActivityInterface.getMode().equals("Stage") && position == currentSection) {
+            alpha = 1.0f;
         }
         cardView.setAlpha(alpha);
         String pagetNumText = pageInfos.get(position).pageNumText;
@@ -164,14 +184,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         if (pdfHighlighter!=null) {
             Glide.with(c).load(pdfHighlighter).override(width,height).into(holder.pdfPageHighlight);
         }
-        holder.pdfPageImage.setOnClickListener(view -> {
-            Log.d(TAG,"clicked on "+pageNum);
-            // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
-            onTouchAction();
-            sectionSelected(pageNum);
-            // Send and update notification to Performance Fragment via the MainActivity
-            displayInterface.performanceShowSection(pageNum);
-        });
+        holder.pdfPageImage.setOnClickListener(view -> sectionSelected(pageNum));
         holder.pdfPageImage.setOnLongClickListener(view -> {
             // Do nothing other than consume the long press
             return true;
@@ -187,8 +200,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     }
 
     public int getHeight() {
-        Log.d(TAG,"totalHeight="+totalHeight);
-        return totalHeight + totalPadding;
+        return (int) floatHeight;
     }
 
     private void onTouchAction() {
@@ -199,19 +211,29 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
     public void sectionSelected(int position) {
         // Whatever the previously selected item was, change the alpha to the alphaOff value
-        notifyItemChanged(currentSection);
+        // Only do this alpha change in stage mode
 
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
 
-        // Now update the newly selected position
-        if (position>-1 && position<pageInfos.size()) {
-            mainActivityInterface.getSong().setCurrentSection(position);
-            currentSection = position;
-            notifyItemChanged(position);
+        if (mainActivityInterface.getMode().equals("Stage")) {
+            pageInfos.get(currentSection).alpha = 0.4f;
+            notifyItemChanged(currentSection, alphaChange);
+
+            // Now update the newly selected position
+            if (position >= 0 && position < pageInfos.size()) {
+                mainActivityInterface.getSong().setCurrentSection(position);
+                currentSection = position;
+                pageInfos.get(position).alpha = 1.0f;
+                notifyItemChanged(position, alphaChange);
+            }
         }
 
-        // Send and update notification to Performance Fragment via the MainActivity
+        // Send and update notification to Performance Fragment via the MainActivity (scrolls to position)
         displayInterface.performanceShowSection(position);
+    }
+
+    public ArrayList<Float> getHeights() {
+        return floatSizes;
     }
 }

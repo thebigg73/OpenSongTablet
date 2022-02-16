@@ -51,7 +51,9 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
                 int firstChildPosition = getPosition(firstChild);
                 int scrolledY = (int)-firstChild.getY();
                 for (int i=0;i<firstChildPosition;i++) {
-                    scrolledY += childSizes.get(i);
+                    if (i<childSizes.size()) {
+                        scrolledY += childSizes.get(i);
+                    }
                 }
                 return scrolledY;
             }

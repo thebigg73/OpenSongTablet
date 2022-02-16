@@ -5,4 +5,5 @@ public class StageSectionInfo {
     int width;
     int height;
     float scale;
+    float alpha;
 }

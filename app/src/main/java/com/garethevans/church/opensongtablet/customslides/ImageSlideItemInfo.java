@@ -8,4 +8,5 @@ public class ImageSlideItemInfo {
     int height;
     Uri uri;
     String pageNumText;
+    float alpha;
 }

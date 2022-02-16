@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolder> {
 
@@ -31,17 +31,15 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private ArrayList<ImageSlideItemInfo> slideInfos;
-    private ArrayList<Float> sectionHeights;
+    private ArrayList<Float> floatSizes;
     private final int viewWidth, viewHeight;
-    private String slideFolder, slideFilename;
-    private Uri slideUri;
     private int totalPages;
-    private int totalHeight;
+    private float floatHeight;
     private final String scaleType;
-    private boolean manualDrag = false;
     private final float density;
     private int currentSection = 0;
     private final Context c;
+    private final String alphaChange = "alpha";
 
     public ImageSlideAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {
         this.c = c;
@@ -52,25 +50,14 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         scaleType = mainActivityInterface.getPreferences().getMyPreferenceString(c,"songAutoScale","W");
         density = c.getResources().getDisplayMetrics().density;
         setSongInfo();
-        sectionHeights = new ArrayList<>();
-    }
-
-    @NonNull
-    @Override
-    public ImageSlideViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).
-                inflate(R.layout.view_pdf_page, parent, false);
-        return new ImageSlideViewHolder(mainActivityInterface,itemView);
     }
 
     private void setSongInfo() {
-        totalHeight = 0;
-        float floatHeight = 0;
-        slideFolder = mainActivityInterface.getSong().getFolder();
-        slideFilename = mainActivityInterface.getSong().getFilename();
+        floatHeight = 0;
+        slideInfos = new ArrayList<>();
+        floatSizes = new ArrayList<>();
 
         // The images are references in user3
-        Log.d(TAG,"user3: "+mainActivityInterface.getSong().getUser3());
         String[] images = mainActivityInterface.getSong().getUser3().trim().split("\n");
         totalPages = images.length;
         mainActivityInterface.getSong().setPdfPageCount(totalPages);
@@ -81,13 +68,16 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         }
         mainActivityInterface.getSong().setShowstartofpdf(true);
 
-        slideInfos = new ArrayList<>();
-        sectionHeights = new ArrayList<>();
-
         for (int x=0; x<totalPages; x++) {
             ImageSlideItemInfo slideInfo = new ImageSlideItemInfo();
             slideInfo.pageNum = x;
             slideInfo.pageNumText = (x+1) + "/" + totalPages;
+
+            if (mainActivityInterface.getMode().equals("Stage")) {
+                slideInfo.alpha = 0.4f;
+            } else {
+                slideInfo.alpha = 1f;
+            }
 
             // Get the image sizes from the files
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -117,24 +107,40 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
             } else {
                 scaleFactor = 1f;
             }
-            Log.d(TAG, "width=" + width + "  height=" + height + "  scaleFactor=" + scaleFactor);
+
+            // Add up the heights
+            float itemHeight = height * scaleFactor + (4f * density);
+            floatHeight += itemHeight;
+            floatSizes.add(itemHeight);
 
             slideInfo.width = (int) (width * scaleFactor);
-            slideInfo.height = (int) (height * scaleFactor);
-
-            // Add up the heights plus the 4dp padding at the bottom of each view
-            float thisHeight = height*scaleFactor;
-            thisHeight += 4f*density;
-            sectionHeights.add(thisHeight);
-            floatHeight += thisHeight;
+            slideInfo.height = (int) itemHeight;
 
             slideInfos.add(slideInfo);
         }
+    }
 
-        // Round total height
-        totalHeight = (int) floatHeight;
+    @NonNull
+    @Override
+    public ImageSlideViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).
+                inflate(R.layout.view_pdf_page, parent, false);
+        return new ImageSlideViewHolder(mainActivityInterface,itemView);
+    }
 
-        notifyItemRangeChanged(0, totalPages);
+    @Override
+    public void onBindViewHolder(@NonNull ImageSlideViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads);
+        } else {
+            // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
+            for (Object payload : payloads) {
+                if (payload.equals(alphaChange)) {
+                    // We want to update the highlight colour to off
+                    holder.v.setAlpha(slideInfos.get(position).alpha);
+                }
+            }
+        }
     }
 
     @Override
@@ -142,14 +148,10 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         int pageNum = slideInfos.get(position).pageNum;
         int width = slideInfos.get(position).width;
         int height = slideInfos.get(position).height;
+        float alpha = slideInfos.get(position).alpha;
         CardView cardView = (CardView)holder.v;
-        float alpha = 1.0f;
-        if (mainActivityInterface.getMode().equals("Stage")) {
-            if (position == currentSection) {
-                alpha = 1.0f;
-            } else {
-                alpha = 0.4f;
-            }
+        if (mainActivityInterface.getMode().equals("Stage") && position == currentSection) {
+            alpha = 1.0f;
         }
         cardView.setAlpha(alpha);
 
@@ -161,14 +163,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
                 mainActivityInterface,uri,width,height);
 
         Glide.with(c).load(imageSlideBitmap).override(width,height).into(holder.imageSlideImage);
-        holder.imageSlideImage.setOnClickListener(view -> {
-            Log.d(TAG,"clicked on "+pageNum);
-            // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
-            onTouchAction();
-            sectionSelected(pageNum);
-            // Send and update notification to Performance Fragment via the MainActivity
-            displayInterface.performanceShowSection(pageNum);
-        });
+        holder.imageSlideImage.setOnClickListener(view -> sectionSelected(pageNum));
         holder.imageSlideImage.setOnLongClickListener(view -> {
             // Do nothing other than consume the long press
             return true;
@@ -181,8 +176,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     }
 
     public int getHeight() {
-        Log.d(TAG,"totalHeight="+totalHeight);
-        return totalHeight;
+        return (int) floatHeight;
     }
 
     private void onTouchAction() {
@@ -193,16 +187,22 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
 
     public void sectionSelected(int position) {
         // Whatever the previously selected item was, change the alpha to the alphaOff value
-        notifyItemChanged(currentSection);
+        // Only do this alpha change in stage mode
 
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
 
-        // Now update the newly selected position
-        if (position>-1 && position<slideInfos.size()) {
-            mainActivityInterface.getSong().setCurrentSection(position);
-            currentSection = position;
-            notifyItemChanged(position);
+        if (mainActivityInterface.getMode().equals("Stage")) {
+            slideInfos.get(currentSection).alpha = 0.4f;
+            notifyItemChanged(currentSection, alphaChange);
+
+            // Now update the newly selected position
+            if (position >= 0 && position < slideInfos.size()) {
+                mainActivityInterface.getSong().setCurrentSection(position);
+                currentSection = position;
+                slideInfos.get(position).alpha = 1.0f;
+                notifyItemChanged(position, alphaChange);
+            }
         }
 
         // Send and update notification to Performance Fragment via the MainActivity
@@ -210,7 +210,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
     }
 
     public ArrayList<Float> getHeights() {
-        return sectionHeights;
+        return floatSizes;
     }
 
 }
