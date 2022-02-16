@@ -261,7 +261,7 @@ public class Autoscroll {
                                     scrollPosition = myRecyclerView.getScrollY() + scrollIncrement;
                                     scrollCount = scrollPosition;
                                 }
-                                myRecyclerView.doScrollBy((int)scrollIncrement,updateTime/2);
+                                myRecyclerView.doScrollBy(scrollIncrement,updateTime/2);
                             });
                         }
                     }
@@ -307,6 +307,7 @@ public class Autoscroll {
     public boolean getAutoscrollActivated() {
         return autoscrollActivated;
     }
+
     // The calculations
     private void calculateAutoscroll() {
         // The total scroll amount is the height of the view - the screen height.
@@ -316,7 +317,7 @@ public class Autoscroll {
             scrollHeight = (int) (songHeight * myZoomLayout.getScaleFactor()) - displayHeight;
         } else {
             scrollHeight = songHeight - displayHeight;
-            myRecyclerView.setMaxScrollY(scrollHeight);
+            myRecyclerView.setMaxScrollY((songHeight-displayHeight));
         }
 
         if (scrollHeight>0) {

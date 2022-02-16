@@ -94,7 +94,7 @@ public class PadDefaultsFragment extends Fragment {
             }
         });
         myView.onscreenPadHide.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
                     "onscreenPadHide",b);
             mainActivityInterface.
                     updateOnScreenInfo("setpreferences");

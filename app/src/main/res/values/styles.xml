@@ -227,7 +227,7 @@
     </style>
     <style name="pdfPage" parent="@style/Widget.MaterialComponents.CardView">
         <item name="contentPadding">0dp</item>
-        <item name="cardCornerRadius">8dp</item>
+        <item name="cardCornerRadius">4dp</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginStart">0dp</item>
@@ -235,13 +235,13 @@
         <item name="elevation">0dp</item>
         <item name="cardBackgroundColor">@color/white</item>
         <item name="android:padding">0dp</item>
-        <item name="cardUseCompatPadding">true</item>
+        <item name="cardUseCompatPadding">false</item>
         <item name="cardElevation">0dp</item>
         <item name="cardPreventCornerOverlap">false</item>
     </style>
     <style name="stageSection" parent="@style/Widget.MaterialComponents.CardView">
         <item name="contentPadding">0dp</item>
-        <item name="cardCornerRadius">8dp</item>
+        <item name="cardCornerRadius">4dp</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:layout_marginStart">0dp</item>
@@ -249,7 +249,7 @@
         <item name="elevation">0dp</item>
         <item name="cardBackgroundColor">@color/colorSecondary</item>
         <item name="android:padding">0dp</item>
-        <item name="cardUseCompatPadding">true</item>
+        <item name="cardUseCompatPadding">false</item>
         <item name="cardElevation">0dp</item>
         <item name="cardPreventCornerOverlap">false</item>
     </style>

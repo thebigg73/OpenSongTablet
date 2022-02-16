@@ -13,6 +13,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private final int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
     private final MainActivityInterface mainActivityInterface;
     private final PerformanceGestures performanceGestures;
+    private boolean doubleTapping;
 
     public GestureListener(MainActivityInterface mainActivityInterface, PerformanceGestures performanceGestures,
                     int swipeMinimumDistance, int swipeMaxDistanceYError, int swipeMinimumVelocity) {
@@ -26,14 +27,19 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
         Log.d(TAG, "onDoubleTapEvent()");
+        doubleTapping = true;
         return performAction(mainActivityInterface.getGestures().getDoubleTap());
     }
 
     @Override
     public void onLongPress(MotionEvent e) {
         super.onLongPress(e);
-        Log.d(TAG, "onLongPress()");
-        performAction(mainActivityInterface.getGestures().getLongPress());
+        if (doubleTapping) {
+            doubleTapping = false;
+        } else {
+            Log.d(TAG, "onLongPress()");
+            performAction(mainActivityInterface.getGestures().getLongPress());
+        }
     }
 
     private boolean performAction(String whichAction) {

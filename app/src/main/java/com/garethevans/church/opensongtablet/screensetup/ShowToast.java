@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ public class ShowToast {
         @Override
         public void run() {
             popupWindow.dismiss();
-            Log.d(TAG,"closing");
         }
     };
 
@@ -57,16 +55,13 @@ public class ShowToast {
                     delayTime = messageEndTime - currTime + 500;
                 }
 
-
                 Runnable showRunnable = () -> {
                     textToast.setText(message);
                     popupWindow.showAtLocation(anchor, Gravity.CENTER, 0, 0);
                     messageEndTime = System.currentTimeMillis() + 2000;
                     new Handler().postDelayed(hidePopupRunnable, 2000);
                 };
-
                 new Handler(Looper.getMainLooper()).postDelayed(showRunnable, delayTime);
-
             }
         } catch(Exception e) {
             e.printStackTrace();

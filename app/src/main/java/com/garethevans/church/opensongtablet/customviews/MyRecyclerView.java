@@ -21,9 +21,10 @@ public class MyRecyclerView extends RecyclerView {
     private boolean scrolledToBottom=false;
     private int maxScrollY;
     private GestureDetector gestureDetector;
+    private float floatScrollPos;
 
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
-    private int scrollPosition;
+    //private int scrollPosition;
     private ScrollListener scrollListener;
     private ItemTouchListener itemTouchListener;
 
@@ -36,7 +37,9 @@ public class MyRecyclerView extends RecyclerView {
         addOnItemTouchListener(itemTouchListener);
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
-        scrollPosition = 0;
+        setClipToPadding(false);
+        setItemAnimator(null);
+        floatScrollPos = 0;
     }
 
     public void removeListeners() {
@@ -53,7 +56,7 @@ public class MyRecyclerView extends RecyclerView {
         addOnItemTouchListener(new ItemTouchListener());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
-        scrollPosition = 0;
+        floatScrollPos = 0;
     }
 
     public void setGestureDetector(GestureDetector gestureDetector) {
@@ -77,11 +80,15 @@ public class MyRecyclerView extends RecyclerView {
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            scrollPosition = scrollPosition + dy;
-            scrolledToTop = scrollPosition == 0;
-            scrolledToBottom = (maxScrollY-scrollPosition) <= 0;
+
+            if (isUserTouching) {
+                floatScrollPos = floatScrollPos + dy;
+            }
+            scrolledToTop = recyclerView.computeVerticalScrollExtent() == 0;
+            scrolledToBottom = (maxScrollY-recyclerView.computeVerticalScrollOffset()) <= 0;
         }
     }
+
 
 
     private class ItemTouchListener extends RecyclerView.SimpleOnItemTouchListener {
@@ -113,10 +120,21 @@ public class MyRecyclerView extends RecyclerView {
         mainActivityInterface.showHideActionBar();
     }
 
-    public void doScrollBy(int dy, int duration) {
+    public void doScrollBy(float dy, int duration) {
         // Only do this if we aren't touching the screen!
+        // Because scroll is an int, but getting passed a float, we need to keep track
+        // If we fall behind (or ahead), add this on when it bevomes above 1f
+        int currentActual = (int)floatScrollPos;
+        float currentWanted = floatScrollPos;
+
+        // How far behind are we?  Add this on
+        float behind = (currentWanted - currentActual);
+
+        floatScrollPos += dy;
+
+        int scrollAmount = (int)(dy+behind);
         if (!isUserTouching) {
-            smoothScrollBy(0,dy,linearInterpolator,duration);
+            smoothScrollBy(0,scrollAmount,linearInterpolator,duration);
         }
     }
 
@@ -128,9 +146,8 @@ public class MyRecyclerView extends RecyclerView {
         }
         scrolledToTop = true;
         scrolledToBottom = false;
-        scrollPosition = 0;
+        floatScrollPos = 0;
     }
-
 
     public void setMaxScrollY(int maxScrollY) {
         this.maxScrollY = maxScrollY;
@@ -148,4 +165,6 @@ public class MyRecyclerView extends RecyclerView {
     public boolean getScrolledToBottom() {
         return scrolledToBottom;
     }
+
+
 }

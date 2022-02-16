@@ -130,7 +130,7 @@ public class ChordFormatFragment extends Fragment {
                 getPreferences().setMyPreferenceBoolean(requireContext(),
                 "capoInfoAsNumerals", b));
         myView.onscreenCapoHide.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
                     "onscreenCapoHide",b);
             mainActivityInterface.
                     updateOnScreenInfo("setpreferences");

@@ -27,6 +27,7 @@ import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customslides.ImageSlideAdapter;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.customviews.MyZoomLayout;
+import com.garethevans.church.opensongtablet.customviews.RecyclerLayoutManager;
 import com.garethevans.church.opensongtablet.databinding.ModePerformanceBinding;
 import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
@@ -62,6 +63,7 @@ public class PerformanceFragment extends Fragment {
     private PDFPageAdapter pdfPageAdapter;
     private ImageSlideAdapter imageSlideAdapter;
     private StageSectionAdapter stageSectionAdapter;
+    private RecyclerLayoutManager recyclerLayoutManager;
 
     // Attaching and destroying
     @Override
@@ -216,6 +218,11 @@ public class PerformanceFragment extends Fragment {
         // Reset the song views
         mainActivityInterface.setSectionViews(null);
 
+        if (recyclerLayoutManager==null) {
+            recyclerLayoutManager = new RecyclerLayoutManager(requireContext());
+            myView.recyclerView.setLayoutManager(recyclerLayoutManager);
+        }
+
         // Reset the song sheet titles
         mainActivityInterface.getSongSheetTitleLayout().removeAllViews();
         myView.songSheetTitle.removeAllViews();
@@ -238,9 +245,9 @@ public class PerformanceFragment extends Fragment {
                 int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
                 pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface, displayInterface,
                         availWidth, availHeight);
-
                 myView.recyclerView.setAdapter(pdfPageAdapter);
                 myView.recyclerView.setVisibility(View.VISIBLE);
+                myView.recyclerView.setItemAnimator(null);
 
                 // Set up the type of animate in
                 if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
@@ -268,9 +275,9 @@ public class PerformanceFragment extends Fragment {
             int availHeight = getResources().getDisplayMetrics().heightPixels - mainActivityInterface.getMyActionBar().getHeight();
             imageSlideAdapter = new ImageSlideAdapter(requireContext(), mainActivityInterface, displayInterface,
                     availWidth, availHeight);
-
             myView.recyclerView.setAdapter(imageSlideAdapter);
             myView.recyclerView.setVisibility(View.VISIBLE);
+            myView.recyclerView.setItemAnimator(null);
 
             // Set up the type of animate in
             if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("R2L")) {
@@ -281,10 +288,12 @@ public class PerformanceFragment extends Fragment {
             myView.recyclerView.startAnimation(animSlideIn);
 
             // Send the autoscroll information (if required)
-            int totalHeight = imageSlideAdapter.getHeight();
-            myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
-            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
-
+            myView.recyclerView.post(() -> {
+                        int totalHeight = imageSlideAdapter.getHeight();
+                        myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
+                        recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(), screenHeight);
+                        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
+                    });
             // Get a null screenshot
             getScreenshot(0,0,0);
 
@@ -387,7 +396,6 @@ public class PerformanceFragment extends Fragment {
             // We are in Stage mode so use the recyclerView
             stageSectionAdapter = new StageSectionAdapter(requireContext(),mainActivityInterface,displayInterface);
 
-            myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
             myView.recyclerView.setAdapter(stageSectionAdapter);
             myView.recyclerView.setVisibility(View.VISIBLE);
             if (myView.recyclerView.getItemAnimator()!=null) {
@@ -403,7 +411,8 @@ public class PerformanceFragment extends Fragment {
 
             // Send the autoscroll information (if required)
             int totalHeight = stageSectionAdapter.getTotalHeight();
-            myView.recyclerView.setMaxScrollY(totalHeight - screenHeight);
+            myView.recyclerView.setMaxScrollY(totalHeight-screenHeight);
+            recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(),screenHeight);
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), totalHeight, screenHeight);
 
             // Get a null screenshot

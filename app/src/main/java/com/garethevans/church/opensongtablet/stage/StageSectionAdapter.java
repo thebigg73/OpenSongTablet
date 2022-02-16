@@ -3,7 +3,7 @@ package com.garethevans.church.opensongtablet.stage;
 // This deals with displaying the song in StageMode (actually using a recyclerView in PerformanceMode)
 
 import android.content.Context;
-import android.util.Log;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
@@ -26,9 +27,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private ArrayList<StageSectionInfo> sectionInfos;
+    private ArrayList<Float> sectionHeights = new ArrayList<>();
     private int currentSection = 0;
-    private int scaledTotalHeight;
-    private int totalPadding;
     private final float maxFontSize;
 
     private final float density;
@@ -44,8 +44,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private void setSongInfo() {
         // Prepare the info for each section
         sectionInfos = new ArrayList<>();
-        scaledTotalHeight = 0;
-        totalPadding = 0;
         for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
             stageSectionInfo.section = x;
@@ -53,15 +51,13 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             int sectionHeight = mainActivityInterface.getSectionHeights().get(x);
             stageSectionInfo.width = sectionWidth;
             stageSectionInfo.height = sectionHeight;
-            float x_scale = (float)(mainActivityInterface.getDisplayMetrics()[0]-16f)/(float)sectionWidth;
+            float x_scale = (float)(mainActivityInterface.getDisplayMetrics()[0]-16)/(float)sectionWidth;
             float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getAppActionBar().getActionBarHeight())*0.75f/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
             // Check the scale isn't bigger than the maximum font size
             scale = Math.min(scale,(maxFontSize/14f));
             stageSectionInfo.scale = scale;
             sectionInfos.add(stageSectionInfo);
-            scaledTotalHeight += (int)(sectionHeight*scale);
-            totalPadding += (int)Math.ceil(4f*density); // 4dp margin after each cardView.
         }
         notifyItemRangeChanged(0, mainActivityInterface.getSong().getSongSections().size());
     }
@@ -89,7 +85,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         holder.sectionView.getLayoutParams().width = (int)(width*scale);
         holder.sectionView.getLayoutParams().height = (int)(height*scale);
         cardView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-        cardView.setBackgroundColor(mainActivityInterface.getSectionColors().get(position));
+        ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(position)));
         cardView.getLayoutParams().height = (int)(height*scale);
 
         float alpha;
@@ -111,7 +107,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             holder.sectionView.addView(v);
         }
 
-        Log.d(TAG,"cardView.getMeasuredHeight()="+cardView.getMeasuredHeight());
         cardView.setOnClickListener(view -> sectionSelected(section));
         cardView.setOnLongClickListener(view -> {
             // Do nothing, but consume the event
@@ -144,7 +139,19 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     public int getTotalHeight() {
         // Add up the height of the scaled views (for autoscroll)
-        return (int)(scaledTotalHeight+totalPadding);
+        float size = 0;
+        sectionHeights = new ArrayList<>();
+        for (int x=0;x<sectionInfos.size();x++) {
+            float thisSection  = sectionInfos.get(x).height*sectionInfos.get(x).scale;
+            thisSection += 4f*density;
+            sectionHeights.add(thisSection);
+            size += thisSection;
+        }
+        return (int)size;
+    }
+
+    public ArrayList<Float> getHeights() {
+        return sectionHeights;
     }
 
     private void onTouchAction() {

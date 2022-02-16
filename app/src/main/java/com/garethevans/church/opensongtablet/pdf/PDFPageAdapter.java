@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -42,6 +43,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private final String scaleType;
     private boolean manualDrag = false;
     private final float density;
+    private int currentSection = 0;
 
     public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {
         this.c = c;
@@ -141,6 +143,16 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         int pageNum = pageInfos.get(position).pageNum;
         int width = pageInfos.get(position).width;
         int height = pageInfos.get(position).height;
+        CardView cardView = (CardView)holder.v;
+        float alpha = 1.0f;
+        if (mainActivityInterface.getMode().equals("Stage")) {
+            if (position == currentSection) {
+                alpha = 1.0f;
+            } else {
+                alpha = 0.4f;
+            }
+        }
+        cardView.setAlpha(alpha);
         String pagetNumText = pageInfos.get(position).pageNumText;
         holder.pdfPageNumText.setText(pagetNumText);
         Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(c,mainActivityInterface,
@@ -156,6 +168,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             Log.d(TAG,"clicked on "+pageNum);
             // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
             onTouchAction();
+            sectionSelected(pageNum);
             // Send and update notification to Performance Fragment via the MainActivity
             displayInterface.performanceShowSection(pageNum);
         });
@@ -184,4 +197,21 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         mainActivityInterface.showHideActionBar();
     }
 
+    public void sectionSelected(int position) {
+        // Whatever the previously selected item was, change the alpha to the alphaOff value
+        notifyItemChanged(currentSection);
+
+        // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
+        onTouchAction();
+
+        // Now update the newly selected position
+        if (position>-1 && position<pageInfos.size()) {
+            mainActivityInterface.getSong().setCurrentSection(position);
+            currentSection = position;
+            notifyItemChanged(position);
+        }
+
+        // Send and update notification to Performance Fragment via the MainActivity
+        displayInterface.performanceShowSection(position);
+    }
 }

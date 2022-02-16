@@ -92,7 +92,7 @@ public class AutoscrollSettingsFragment extends Fragment {
 
         myView.startStopAutoscroll.setOnClickListener(v -> startStopAutoscroll());
         myView.onscreenAutoscrollHide.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
                     "onscreenAutoscrollHide",b);
             mainActivityInterface.
                     updateOnScreenInfo("setpreferences");
