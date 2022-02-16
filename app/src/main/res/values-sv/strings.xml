@@ -69,8 +69,8 @@
     <string name="choose_video2">"Välj bakgrunds video 2"</string>
     <string name="choosechordfont">"Välj ackordfont"</string>
     <string name="choosechordformat">"Välj ackordformat (viktigt när du överför en låt)"</string>
-    <string name="choosefolder">"Välj mapp för att spara fil i"</string>
-    <string name="choosefolders">"Välj mappar"</string>
+    <string name="choose_folder">"Välj mapp för att spara fil i"</string>
+    <string name="choose_folders">"Välj mappar"</string>
     <string name="chooselyricfont">"Välj lyrisk typsnitt"</string>
     <string name="choosesongname">"Välj ett namn för den här låten"</string>
     <string name="chord_color">"Ackord typsnitt"</string>
@@ -137,7 +137,7 @@
     <string name="dim">"Bakgrunden mörknar"</string>
     <string name="display">"Visa"</string>
     <string name="display_popups">"Anpassa popup-fönster"</string>
-    <string name="doubleTap">"Välj dubbelknappsåtgärd"</string>
+    <string name="double_tap">"Välj dubbelknappsåtgärd"</string>
     <string name="download_new">"Klicka här för att ladda ner en ny Bibel"</string>
     <string name="close">"Stänga"</string>
     <string name="open">"Öppen"</string>
@@ -255,9 +255,9 @@
     <string name="mainfoldername">"HUVUDSAKLIG"</string>
     <string name="managesets">"Byt namn på uppsättningar"</string>
     <string name="mandolin">"Mandolin"</string>
-    <string name="maxfontsize">"Maximal skriftstorlek för autoskala"</string>
+    <string name="max_font_size">"Maximal skriftstorlek för autoskala"</string>
     <string name="maximise_columns">Skala kolumner oberoende av varandra.</string>
-    <string name="maxvolrange">"Indikatorområde för grafiskt volym"</string>
+    <string name="max_vol_range">"Indikatorområde för grafiskt volym"</string>
     <string name="audio">"Audio"</string>
     <string name="media_chooser">"Media chooser"</string>
     <string name="media_play">"Spela"</string>
@@ -284,7 +284,7 @@
     <string name="midi_usb">"Anslut USB-enhet"</string>
     <string name="midi_value">"Värde"</string>
     <string name="midi_velocity">"Hastighet"</string>
-    <string name="minfontsize">"Föredragen autoskala typstorlek"</string>
+    <string name="min_font_size">"Föredragen autoskala typstorlek"</string>
     <string name="music_score">"Noter"</string>
     <string name="my_band">"Importera bandprov låtar"</string>
     <string name="my_church">"Importera kyrkans provlåtar"</string>
@@ -292,7 +292,7 @@
     <string name="network_error">"Nätverksfel"</string>
     <string name="new_category">"Ny kategori"</string>
     <string name="new_something">Ny</string>
-    <string name="newfolder">"Ny mapp"</string>
+    <string name="new_folder_add">"Ny mapp"</string>
     <string name="new_folder_name">"Ange ett nytt mappnamn"</string>
     <string name="next">"Nästa"</string>
     <string name="no">"Nej"</string>
@@ -640,7 +640,7 @@
     <string name="destination">Destination</string>
     <string name="divisions">Divisioner</string>
     <string name="download">Ladda ner</string>
-    <string name="downloadWiFiOnly">Ladda ner endast via WiFi</string>
+    <string name="download_wifi_only">Ladda ner endast via WiFi</string>
     <string name="duplicate_sections">Du har använt samma tagg flera gånger i låten. Detta kan orsaka problem vid beställning.</string>
     <string name="edit_format">Låtredigeringsformat</string>
     <string name="edit_new_section">Infoga nytt avsnitt</string>

@@ -110,8 +110,8 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
 
         volume_value = V.findViewById(R.id.volume_value);
 
-        SeekBar maxvolrange = V.findViewById(R.id.maxvolrange);
-        maxvolrange.setMax(7);
+        SeekBar max_vol_range = V.findViewById(R.id.max_vol_range);
+        max_vol_range.setMax(7);
         int myprogress;
         String mytext;
         switch (preferences.getMyPreferenceInt(getContext(),"soundMeterRange",400)) {
@@ -156,10 +156,10 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 mytext = "0 - 200";
                 break;
         }
-        maxvolrange.setProgress(myprogress);
+        max_vol_range.setProgress(myprogress);
         volume_value.setText(mytext);
 
-        maxvolrange.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        max_vol_range.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 //volume_value.setText(progress);
@@ -289,8 +289,8 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             // Turn the appropriate level lights on or off
             // Assume the highest value is 170
 
-            float maxvolrange = (float) preferences.getMyPreferenceInt(getContext(),"soundMeterRange",400);
-            if (vol>(0.9*maxvolrange)) {
+            float max_vol_range = (float) preferences.getMyPreferenceInt(getContext(),"soundMeterRange",400);
+            if (vol>(0.9*max_vol_range)) {
                 // All 10 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -302,7 +302,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.VISIBLE);
                 level_9.setVisibility(View.VISIBLE);
                 level_10.setVisibility(View.VISIBLE);
-            } else if (vol>(0.8*maxvolrange)) {
+            } else if (vol>(0.8*max_vol_range)) {
                 // 9 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -314,7 +314,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.VISIBLE);
                 level_9.setVisibility(View.VISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.7*maxvolrange)) {
+            } else if (vol>(0.7*max_vol_range)) {
                 // 8 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -326,7 +326,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.VISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.6*maxvolrange)) {
+            } else if (vol>(0.6*max_vol_range)) {
                 // 7 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -338,7 +338,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.5*maxvolrange)) {
+            } else if (vol>(0.5*max_vol_range)) {
                 // 6 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -350,7 +350,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.4*maxvolrange)) {
+            } else if (vol>(0.4*max_vol_range)) {
                 // 5 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -362,7 +362,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.3*maxvolrange)) {
+            } else if (vol>(0.3*max_vol_range)) {
                 // 4 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -374,7 +374,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.2*maxvolrange)) {
+            } else if (vol>(0.2*max_vol_range)) {
                 // 3 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -386,7 +386,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.1*maxvolrange)) {
+            } else if (vol>(0.1*max_vol_range)) {
                 // 2 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);

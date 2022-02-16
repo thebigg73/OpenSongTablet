@@ -255,7 +255,7 @@ public class Preferences extends Activity {
     displayChords                   boolean     Decides if chords should be shown (def:true)
     displayLyrics                   boolean     Decides if lyrics should be shown (def:true)
     displayBoldChordsHeadings       boolean     Should the chords and headings be shown in a bold font (def:false)
-    downloadWiFiOnly                boolean     Only allow download over WiFi (no mobile data) (def:true)
+    download_wifi_only                boolean     Only allow download over WiFi (no mobile data) (def:true)
     drawingAutoDisplay              boolean     Should the highlighter drawings be shown on page load (def:true)
     drawingEraserSize               int         The default size of the eraser (def:20)
     drawingHighlighterColor         int         The color of the highlighter (StaticVariables.highlighteryellow)

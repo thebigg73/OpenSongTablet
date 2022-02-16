@@ -69,8 +69,8 @@
     <string name="choose_video2">"Válassza ki a háttér video 2"</string>
     <string name="choosechordfont">"Választás akkord font"</string>
     <string name="choosechordformat">"Válassza akkord formátum (csak átültetése során a dal)"</string>
-    <string name="choosefolder">"Válassza ki a mappát, mentse fájlba"</string>
-    <string name="choosefolders">"mappák kiválasztása"</string>
+    <string name="choose_folder">"Válassza ki a mappát, mentse fájlba"</string>
+    <string name="choose_folders">"mappák kiválasztása"</string>
     <string name="chooselyricfont">"Válassza ki a lírai font"</string>
     <string name="choosesongname">"Válasszon egy nevet a dal"</string>
     <string name="chord_color">"Chords font"</string>
@@ -137,7 +137,7 @@
     <string name="dim">"háttér sötétítése"</string>
     <string name="display">"képernyő"</string>
     <string name="display_popups">"Szabása felugró ablakokat"</string>
-    <string name="doubleTap">"Válassza ki dupla csap akció"</string>
+    <string name="double_tap">"Válassza ki dupla csap akció"</string>
     <string name="download_new">"Kattintson ide egy új Biblia letöltéséhez"</string>
     <string name="close">"Bezár"</string>
     <string name="open">"Megnyitás"</string>
@@ -255,9 +255,9 @@
     <string name="mainfoldername">"FŐBB"</string>
     <string name="managesets">"átnevezése készletek"</string>
     <string name="mandolin">Mandolin</string>
-    <string name="maxfontsize">Maximális automatikus átméretezés betűméret</string>
+    <string name="max_font_size">Maximális automatikus átméretezés betűméret</string>
     <string name="maximise_columns">Oszlopok méretezése függetlenül.</string>
-    <string name="maxvolrange">"Grafikus mennyiségi mutató tartományban"</string>
+    <string name="max_vol_range">"Grafikus mennyiségi mutató tartományban"</string>
     <string name="audio">Hang-</string>
     <string name="media_chooser">Media-választó</string>
     <string name="media_play">játék</string>
@@ -284,7 +284,7 @@
     <string name="midi_usb">"Csatlakoztassa az USB eszközt"</string>
     <string name="midi_value">"Érték"</string>
     <string name="midi_velocity">"Sebesség"</string>
-    <string name="minfontsize">"Előnyös minimális autoscale betűméret"</string>
+    <string name="min_font_size">"Előnyös minimális autoscale betűméret"</string>
     <string name="music_score">"Kotta"</string>
     <string name="my_band">"Import sáv minta dalok"</string>
     <string name="my_church">"Import Church minta dalok"</string>
@@ -292,7 +292,7 @@
     <string name="network_error">"Hálózati hiba"</string>
     <string name="new_category">"új kategória"</string>
     <string name="new_something">Új</string>
-    <string name="newfolder">"új mappa"</string>
+    <string name="new_folder_add">"új mappa"</string>
     <string name="new_folder_name">"Adja meg az új mappa nevét"</string>
     <string name="next">Következő</string>
     <string name="no">"Nem"</string>
@@ -793,7 +793,7 @@
     <string name="edit_new_section">Új szakasz beszúrása</string>
     <string name="edit_format">A dal szerkesztési formátuma</string>
     <string name="duplicate_sections">Többször használtad ugyanazt a címkét a dalban. Ez problémákat okozhat a rendelés beállításakor.</string>
-    <string name="downloadWiFiOnly">Letöltés csak WiFi-n keresztül</string>
+    <string name="download_wifi_only">Letöltés csak WiFi-n keresztül</string>
     <string name="download">Letöltés</string>
     <string name="divisions">Osztályok</string>
     <string name="destination">Rendeltetési hely</string>

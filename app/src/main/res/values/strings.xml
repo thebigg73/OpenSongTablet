@@ -39,6 +39,7 @@
     <string name="autoscroll">Autoscroll</string>
     <string name="autoscroll_autostart">Keep autoscroll activated when changing songs</string>
     <string name="autoscroll_default_or_prompt">If you haven\'t set a song duration should the default values be used or do you want to be asked each time?</string>
+    <string name="autoscroll_hide">Autohide autoscroll</string>
     <string name="autoscroll_info">Adjust the autoscroll settings</string>
     <string name="autoscroll_link_audio">Use duration of link audio file</string>
     <string name="autoscroll_pause">Autoscroll Pause</string>
@@ -47,12 +48,9 @@
     <string name="autoshow_stickynotes">Autoshow sticky notes</string>
     <string name="average">Average</string>
 
-    <!-- TODO Not checked-->
     <string name="back">Back</string>
     <string name="background">Background</string>
     <string name="backup">Backup</string>
-    <string name="backup_error">"No OpenSongApp backup file found in OpenSong folder"</string>
-    <string name="backup_export">Export OpenSongApp backup</string>
     <string name="backup_highlighter">Include highlighter notes</string>
     <string name="backup_import">Import OpenSongApp backup</string>
     <string name="backup_info">OpenSongApp Backup file</string>
@@ -91,7 +89,6 @@
     <string name="bridge_background">Bridge background</string>
     <string name="button">Button</string>
 
-    <!-- TODO Not checked-->
     <string name="camera">Camera</string>
     <string name="camera_info">Take a photograph of a songsheet</string>
     <string name="cancel">Cancel</string>
@@ -113,19 +110,14 @@
     <string name="capo_chords">Capo chords</string>
     <string name="capo_color">Capo font</string>
     <string name="capo_fret">Capo fret</string>
+    <string name="capo_hide">Autohide capo</string>
     <string name="capo_style">Capo fret as numeral</string>
     <string name="capo_style_number" translatable="false">1,2,3...</string>
     <string name="capo_style_numeral" translatable="false">I,II,III...</string>
-    <string name="capo_toggle_bothcapo">Show both capo and native chords if available</string>
-    <string-array name="capoprint" translatable="false">
-        <item/>
-        <item>Yes</item>
-        <item>No</item>
-    </string-array>
     <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
     <string name="category">Category</string>
     <string name="cavaquinho">Cavaquinho</string>
-    <string name="ccli">CCLI</string>
+    <string name="ccli" translatable="false">CCLI</string>
     <string name="ccli_automatic">Record usage stats automatically</string>
     <string name="ccli_church">Church name</string>
     <string name="ccli_description">CCLI settings</string>
@@ -137,19 +129,13 @@
     <string name="chapter">Chapter</string>
     <string name="choose_app_mode">Choose app mode</string>
     <string name="choose_background">Click on a background to use it. Long press / right click to change it.</string>
-    <string name="choose_chordformat">Choose chord format</string>
+    <string name="choose_folder">Choose folder to save file in</string>
+    <string name="choose_folders">Choose folders</string>
     <string name="choose_fontsize">Select font size</string>
     <string name="choose_image1">Choose background image 1</string>
     <string name="choose_image2">Choose background image 2</string>
     <string name="choose_video1">Choose background video 1</string>
     <string name="choose_video2">Choose background video 2</string>
-    <string name="choosechordfont">Choose chord font</string>
-    <string name="choosechordformat">Choose your preferred chord format when transposing a song</string>
-    <string name="choosefolder">Choose folder to save file in</string>
-    <string name="choosefolders">Choose folders</string>
-    <string name="chooselyricfont">Choose lyric font</string>
-    <string name="choosesongname">Choose a name for this song</string>
-    <string name="choosestickyfont">Choose sticky notes font</string>
     <string name="chord_capo_display">If a song has capo chords, which chords should be shown?</string>
     <string name="chord_color">Chords font</string>
     <string name="chord_fingering">Chord fingering</string>
@@ -175,20 +161,13 @@
     <string name="chordformat_detected">Detected chord format</string>
     <string name="chordformat_preferred">Use preferred chord format</string>
     <string name="chordformat_preferred_info">Assume current/detected and desired chord format is</string>
-    <string name="chordiesearch">Online search at Chordie.com</string>
     <string name="chordline_scale">Scale chords</string>
     <string name="chordpro" translatable="false">ChordPro</string>
-    <string name="chordpro_false">No ChordPro song detected!</string>
-    <string name="chordproprogress">Looking for ChordPro song data on page…</string>
     <string name="chords">Chords</string>
-    <string name="chords_flat">Use b chords</string>
     <string name="chords_found">All chords found in the song lyrics</string>
-    <string name="chords_sharp">Use # chords</string>
     <string name="chorus">Chorus</string>
     <string name="chorus_background">Chorus background</string>
     <string name="chromecast" translatable="false">Chromecast</string>
-    <string name="click_to_change">Click to change</string>
-    <string name="client">Client</string>
     <string name="close">Close</string>
     <string name="color_choose">Colour Chooser</string>
     <string name="comment">Comment</string>
@@ -205,19 +184,15 @@
     <string name="connections_actashost">Act as host</string>
     <string name="connections_actashost_info">Control other connected devices that are set as clients</string>
     <string name="connections_advertise">Device being advertised: </string>
-    <string name="connections_advertise_stop">Device no longer being advertised</string>
     <string name="connections_change">Once you have made a connection, you can change between host and client as required</string>
     <string name="connections_connect">Connect devices</string>
     <string name="connections_connected">Connected to</string>
     <string name="connections_description">Connect to other devices running OpenSongApp</string>
-    <string name="connections_device_found">Device found</string>
     <string name="connections_device_name">Device name</string>
     <string name="connections_disconnect">Disconnect from</string>
     <string name="connections_discover">Discover services</string>
     <string name="connections_discover_stop">Stop discovery</string>
-    <string name="connections_enable">Enable nearby connections</string>
     <string name="connections_failure">Unable to connect</string>
-    <string name="connections_host">Found host:</string>
     <string name="connections_keephostsongs">Keep host songs</string>
     <string name="connections_keephostsongs_info">If you do not already have the host song in your library, the app will copy if for you</string>
     <string name="connections_log">Connection log (click to clear).  If you have any issues, reset your WiFi and restart the app.</string>
@@ -225,44 +200,28 @@
     <string name="connections_receive_host">Receive host songs</string>
     <string name="connections_receive_host_info">View the host version of the song instead of your own</string>
     <string name="connections_searching">Searching…</string>
-    <string name="connections_service_start">Start service</string>
     <string name="connections_service_stop">Stop service</string>
     <string name="connections_song_sections_info">Listen for song section changes</string>
-    <string name="connections_success">Connection success</string>
     <string name="content">Content</string>
-    <string name="continuous">Continuous</string>
     <string name="controls">Controls</string>
     <string name="controls_description">Foot pedals and screen gestures</string>
-    <string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
-    <string name="converting">Converting</string>
     <string name="copyright">Copyright</string>
     <string name="create_folder_error">There was an error creating the new folder!</string>
     <string name="create_new_song">Create new song</string>
     <string name="crossfade_time">Cross-fade time</string>
-    <string name="current_category">Current category</string>
     <string name="current_location">Current location</string>
-    <string name="currentkeycode">Current keycode</string>
     <string name="custom">Custom</string>
     <string name="custom_background">Custom tag background</string>
     <string name="custom_chord_exists">A custom chord with this name already exists for this instrument</string>
     <string name="custom_chords">Custom chords</string>
     <string name="custom_chords_info">Custom chords saved with the current song</string>
     <string name="custom_chords_needed">Chords not found in database</string>
-    <string name="custom_chords_use_instrument">Click on the instrument to generate the code</string>
     <string name="custom_gestures">Assign custom gestures</string>
     <string name="custom_gestures_info">Double taps and long presses on the song window</string>
-    <string name="custom_search">Custom search</string>
     <string name="custom_slide">Custom slide (with content)</string>
     <string name="customchords_code">Custom code</string>
-    <string name="customchords_fret">Label for first fret</string>
     <string name="customchords_name">Chord name</string>
-    <string name="customchords_nochordname">Chord name has not been set</string>
-    <string name="customchords_noinstrument">Instrument has not been selected</string>
-    <string name="customchords_save">Save new custom chord to song</string>
-    <string name="customchords_saved">Currently saved custom chords</string>
-    <string name="customgestures">Assign custom gestures</string>
 
-    <!-- TODO Not checked-->
     <string name="date">Date</string>
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
     <string name="default_autoscroll">Default autoscroll times</string>
@@ -270,16 +229,12 @@
     <string name="delete_folder_info">Delete song subdirectory</string>
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!\n\nPlease make sure you have made and saved backups of ALL your files before proceeding!!!</string>
     <string name="delete_song_warning">You cannot undo this action.  Please make sure you have created a backup just in case!</string>
-    <string name="destination">Destination</string>
-    <string name="dim">Background darken</string>
     <string name="display">Display</string>
-    <string name="display_popups">Customise popup windows</string>
     <string name="display_settings">Change display settings (what you see on screen)</string>
     <string name="divisions">Divisions</string>
-    <string name="doubleTap">Select double tap action</string>
+    <string name="double_tap">Select double tap action</string>
     <string name="download">Download</string>
-    <string name="downloadWiFiOnly">Download over WiFi only</string>
-    <string name="download_new">Click here to download a new Bible</string>
+    <string name="download_wifi_only">Download over WiFi only</string>
     <string name="duplicate">Duplicate</string>
     <string name="duplicate_sections">You have used the same tag multiple times in the song.  This can cause problems when setting the order.</string>
 
@@ -513,26 +468,19 @@
     <string name="lyrics_color">Lyrics font</string>
     <string name="lyrics_settings">Lyrics settings</string>
 
-    <!-- TODO Not checked-->
     <string name="main_song_display">Main song display</string>
     <string name="mainfoldername">MAIN</string>
-    <string name="managesets">Rename sets</string>
     <string name="mandolin">Mandolin</string>
-    <string name="maxfontsize">Maximum autoscale font size</string>
+    <string name="max_font_size">Maximum autoscale font size</string>
     <string name="maximise_columns">Scale columns independently.</string>
     <string name="maximise_columns_info">If a song is shown in multiple columns (e.g. when rotated to landscape), this allows each column to zoom to fill the portion of the screen it is allocated.</string>
-    <string name="maxvolrange">Graphical volume indicator range</string>
+    <string name="max_vol_range">Graphical volume indicator range</string>
     <string name="media">Media</string>
-    <string name="media_chooser">Media chooser</string>
-    <string name="media_play">Play</string>
     <string name="media_selected">Media loaded</string>
     <string name="menu_set_info">Use this button to view and manage your sets</string>
     <string name="menu_settings">Menu settings</string>
     <string name="menu_settings_description">Change settings for the song/set menu</string>
     <string name="menu_song_info">Use this button view and manage your songs</string>
-    <string name="menu_swipe_toggle">Toggle song list and option menus swipe on/off</string>
-    <string name="menu_text_size">Menu text size</string>
-    <string name="menu_width">Menu width</string>
     <string name="metronome">Metronome</string>
     <string name="metronome_duration">Metronome duration (bars)</string>
     <string name="metronome_info">Adjust the metronome settings</string>
@@ -549,19 +497,15 @@
     <string name="midi_disconnect">Disconnect</string>
     <string name="midi_error">Please check MIDI connection</string>
     <string name="midi_list">Click an item to test and long click to remove it</string>
-    <string name="midi_message_receive">MIDI message to activate song</string>
-    <string name="midi_message_sent">MIDI message sent from song</string>
     <string name="midi_note">Note</string>
     <string name="midi_pedal">Listen for incoming MIDI (e.g. footpedal)</string>
     <string name="midi_program">Program change</string>
     <string name="midi_send">Send MIDI</string>
     <string name="midi_test">Test</string>
-    <string name="midi_usb">Connect USB device</string>
     <string name="midi_value">Value</string>
     <string name="midi_velocity">Velocity</string>
-    <string name="minfontsize">Preferred minimum autoscale font size</string>
+    <string name="min_font_size">Preferred minimum autoscale font size</string>
     <string name="minus_1" translatable="false">-1</string>
-    <string name="mode_settings">Settings specific to this mode</string>
     <string name="move_from">Move from</string>
     <string name="move_to_folder">Move to folder</string>
     <string name="music_score">Music score</string>
@@ -569,31 +513,23 @@
     <string name="my_band">Import Band sample songs</string>
     <string name="my_church">Import Church sample songs</string>
 
-    <!-- TODO Not checked-->
-    <string name="nashville_error">No Nashville/Numeral chord format detected</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="nearby_host_menu_only_info">Connection requests will not be shown unless you are on this page</string>
-    <string name="nearby_large_file">This large song file is being shared</string>
     <string name="network_error">Network error</string>
     <string name="new_category">New category</string>
     <string name="new_folder">Create new song folder</string>
+    <string name="new_folder_add">New folder</string>
     <string name="new_folder_info">Add subfolders in your Songs folder</string>
     <string name="new_folder_name">Enter a new folder name</string>
     <string name="new_something">New</string>
-    <string name="newfolder">New folder</string>
     <string name="next">Next</string>
-    <string name="no">No</string>
-    <string name="no_folders">You need to create a subfolder to allow moving of files</string>
     <string name="no_previous_found">No previous installations found.</string>
     <string name="no_suitable_application">No application is available or installed that can open this item.</string>
-    <string name="nodisplays">No external displays connected.  Please connect to a secondary display using an HDMI output or MiraCast compatible wireless display.</string>
     <string name="not_allowed">This function is not allowed for this item</string>
     <string name="not_available">Not available</string>
     <string name="not_saved">Not saved</string>
     <string name="note">Note</string>
-    <string name="nothighenoughapi">You need a newer version of Android for this!</string>
     <string name="nothing_selected">Nothing selected</string>
-    <string name="nowifidirect">Sorry, this device does not support WiFi direct</string>
 
     <string name="off">Off</string>
     <string name="okay">OK</string>
@@ -620,6 +556,7 @@
     <string name="pad_custom_pad_error">There is a problem with the custom auto pad set for this key</string>
     <string name="pad_custom_short">Choose built in or custom pads to match each key</string>
     <string name="pad_file_error">There is a problem with the link audio file</string>
+    <string name="pad_hide">Autohide pad</string>
     <string name="pad_info">Control or edit the current pad or backing track</string>
     <string name="pad_key_error">The key of this song has not been set</string>
     <string name="pad_off">Pads are switched off for this song</string>
@@ -660,6 +597,7 @@
     <string name="presentation_mode_info">Control the display to a projector</string>
     <string name="presentation_order">Presentation order</string>
     <string name="presentation_order_info">The song presentation order is shown below.  You can drag items to rearrange the order and swipe to remove.</string>
+    <string name="presentation_order_use">If presentation order exists for the song, use this to create the display</string>
     <string name="presenter_mode">Presenter mode</string>
     <string name="presoFontShadow">Presentation font shadow</string>
     <string name="preso_alpha">Background opacity</string>
@@ -691,6 +629,7 @@
     <string name="refrain">Refrain</string>
     <string name="refresh_song">Refresh current song</string>
     <string name="rename">Rename</string>
+    <string name="rename_info">Rename or change the category of a saved set</string>
     <string name="reprise">Reprise</string>
     <string name="requires_internet">This feature requires internet access</string>
     <string name="reset">Reset</string>
@@ -1105,11 +1044,68 @@ Check out the categories in the right hand options menu.
     <string name="position">Position</string>
     <string name="profile_description">Backup and restore your settings</string>
     <string name="options">OPTIONS</string>
-    <string name="presentation_order_use">If presentation order exists for the song, use this to create the display</string>
-    <string name="autoscroll_hide">Autohide autoscroll</string>
-    <string name="capo_hide">Autohide capo</string>
-    <string name="pad_hide">Autohide pad</string>
-    <string name="rename_info">Rename or change the category of a saved set</string>
+    <string name="backup_error">"No OpenSongApp backup file found in OpenSong folder"</string>
+    <string name="backup_export">Export OpenSongApp backup</string>
+    <string name="capo_toggle_bothcapo">Show both capo and native chords if available</string>
+    <string-array name="capoprint" translatable="false">
+        <item/>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string name="choose_chordformat">Choose chord format</string>
+    <string name="choosechordfont">Choose chord font</string>
+    <string name="choosechordformat">Choose your preferred chord format when transposing a song</string>
+    <string name="chooselyricfont">Choose lyric font</string>
+    <string name="choosesongname">Choose a name for this song</string>
+    <string name="choosestickyfont">Choose sticky notes font</string>
+    <string name="chordiesearch">Online search at Chordie.com</string>
+    <string name="chordpro_false">No ChordPro song detected!</string>
+    <string name="chordproprogress">Looking for ChordPro song data on page…</string>
+    <string name="chords_flat">Use b chords</string>
+    <string name="chords_sharp">Use # chords</string>
+    <string name="click_to_change">Click to change</string>
+    <string name="client">Client</string>
+    <string name="connections_advertise_stop">Device no longer being advertised</string>
+    <string name="connections_device_found">Device found</string>
+    <string name="connections_enable">Enable nearby connections</string>
+    <string name="connections_host">Found host:</string>
+    <string name="connections_service_start">Start service</string>
+    <string name="connections_success">Connection success</string>
+    <string name="continuous">Continuous</string>
+    <string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
+    <string name="converting">Converting</string>
+    <string name="current_category">Current category</string>
+    <string name="currentkeycode">Current keycode</string>
+    <string name="custom_chords_use_instrument">Click on the instrument to generate the code</string>
+    <string name="custom_search">Custom search</string>
+    <string name="customchords_fret">Label for first fret</string>
+    <string name="customchords_nochordname">Chord name has not been set</string>
+    <string name="customchords_noinstrument">Instrument has not been selected</string>
+    <string name="customchords_save">Save new custom chord to song</string>
+    <string name="customchords_saved">Currently saved custom chords</string>
+    <string name="customgestures">Assign custom gestures</string>
+    <string name="destination">Destination</string>
+    <string name="dim">Background darken</string>
+    <string name="display_popups">Customise popup windows</string>
+    <string name="download_new">Click here to download a new Bible</string>
+    <string name="nashville_error">No Nashville/Numeral chord format detected</string>
+    <string name="nearby_large_file">This large song file is being shared</string>
+    <string name="no">No</string>
+    <string name="no_folders">You need to create a subfolder to allow moving of files</string>
+    <string name="nodisplays">No external displays connected.  Please connect to a secondary display using an HDMI output or MiraCast compatible wireless display.</string>
+    <string name="nothighenoughapi">You need a newer version of Android for this!</string>
+    <string name="nowifidirect">Sorry, this device does not support WiFi direct</string>
+    <string name="managesets">Rename sets</string>
+    <string name="media_chooser">Media chooser</string>
+    <string name="media_play">Play</string>
+    <string name="menu_swipe_toggle">Toggle song list and option menus swipe on/off</string>
+    <string name="menu_text_size">Menu text size</string>
+    <string name="menu_width">Menu width</string>
+    <string name="midi_message_receive">MIDI message to activate song</string>
+    <string name="midi_message_sent">MIDI message sent from song</string>
+    <string name="midi_usb">Connect USB device</string>
+    <string name="mode_settings">Settings specific to this mode</string>
+
 
 
 </resources>

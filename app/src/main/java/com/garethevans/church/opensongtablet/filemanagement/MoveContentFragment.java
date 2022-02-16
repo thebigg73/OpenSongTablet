@@ -317,7 +317,7 @@ public class MoveContentFragment extends Fragment {
             Snackbar.make(myView.getRoot(), R.string.nothing_selected, Snackbar.LENGTH_LONG).show();
             return false;
         } else {
-            Snackbar.make(myView.getRoot(), R.string.choosefolder, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(myView.getRoot(), R.string.choose_folder, Snackbar.LENGTH_LONG).show();
             return false;
         }
     }

@@ -69,8 +69,8 @@
     <string name="choose_video2">"Elija el fondo de vídeo 2"</string>
     <string name="choosechordfont">"Elija la fuente de acordes"</string>
     <string name="choosechordformat">"Elige formato acorde (sólo se utiliza en la transposición de una canción)"</string>
-    <string name="choosefolder">"Elegir carpeta para guardar el archivo en"</string>
-    <string name="choosefolders">"Elegir carpetas"</string>
+    <string name="choose_folder">"Elegir carpeta para guardar el archivo en"</string>
+    <string name="choose_folders">"Elegir carpetas"</string>
     <string name="chooselyricfont">"Elija la fuente lírica"</string>
     <string name="choosesongname">"Elegir un nombre para esta canción"</string>
     <string name="chord_color">"Acordes de la fuente"</string>
@@ -137,7 +137,7 @@
     <string name="dim">"El fondo se oscurece"</string>
     <string name="display">"visualización"</string>
     <string name="display_popups">"Personalizar ventanas emergentes"</string>
-    <string name="doubleTap">"Seleccione la acción doble toque"</string>
+    <string name="double_tap">"Seleccione la acción doble toque"</string>
     <string name="download_new">"Haga clic aquí para descargar una nueva Biblia"</string>
     <string name="close">"Cerrar"</string>
     <string name="open">"Abrir"</string>
@@ -255,9 +255,9 @@
     <string name="mainfoldername">"PRINCIPAL"</string>
     <string name="managesets">"Cambiar el nombre de conjuntos"</string>
     <string name="mandolin">Mandolina</string>
-    <string name="maxfontsize">Autoescala Máximo tamaño de la fuente</string>
+    <string name="max_font_size">Autoescala Máximo tamaño de la fuente</string>
     <string name="maximise_columns">Escala columnas de forma independiente.</string>
-    <string name="maxvolrange">"Rango indicador de volumen gráfica"</string>
+    <string name="max_vol_range">"Rango indicador de volumen gráfica"</string>
     <string name="audio">Audio-</string>
     <string name="media_chooser">Selector de medios</string>
     <string name="media_play">Jugar</string>
@@ -284,7 +284,7 @@
     <string name="midi_usb">"Conecte el dispositivo USB"</string>
     <string name="midi_value">"Valor"</string>
     <string name="midi_velocity">"Velocidad"</string>
-    <string name="minfontsize">"El tamaño mínimo de letra preferido autoescala"</string>
+    <string name="min_font_size">"El tamaño mínimo de letra preferido autoescala"</string>
     <string name="music_score">"Partitura musical"</string>
     <string name="my_band">"Canciones de Import Band"</string>
     <string name="my_church">"Canciones de la muestra de la iglesia de la importación"</string>
@@ -292,7 +292,7 @@
     <string name="network_error">"Error de red"</string>
     <string name="new_category">"Nueva categoría"</string>
     <string name="new_something">Nuevo</string>
-    <string name="newfolder">"Nueva carpeta"</string>
+    <string name="new_folder_add">"Nueva carpeta"</string>
     <string name="new_folder_name">"Introduzca un nuevo nombre de carpeta"</string>
     <string name="next">Siguiente</string>
     <string name="no">"No"</string>
@@ -640,7 +640,7 @@
     <string name="destination">Destino</string>
     <string name="divisions">Divisiones</string>
     <string name="download">Descargar</string>
-    <string name="downloadWiFiOnly">Descargar solo a través de WiFi</string>
+    <string name="download_wifi_only">Descargar solo a través de WiFi</string>
     <string name="duplicate_sections">Has usado la misma etiqueta varias veces en la canción. Esto puede causar problemas al establecer el pedido.</string>
     <string name="edit_format">Formato de edición de canciones</string>
     <string name="edit_new_section">Insertar nueva sección</string>

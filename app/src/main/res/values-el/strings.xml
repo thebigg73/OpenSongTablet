@@ -69,8 +69,8 @@
     <string name="choose_video2">"Επιλογή βίντεο φόντου 2"</string>
     <string name="choosechordfont">"Επιλογή γραμματοσειράς συγχορδιών"</string>
     <string name="choosechordformat">"Choose chord format (important when transposing a song)"</string>
-    <string name="choosefolder">"Choose folder to save file in"</string>
-    <string name="choosefolders">"Επιλέξτε φακέλους"</string>
+    <string name="choose_folder">"Choose folder to save file in"</string>
+    <string name="choose_folders">"Επιλέξτε φακέλους"</string>
     <string name="chooselyricfont">"Επιλογή γραμματοσειράς στίχων"</string>
     <string name="choosesongname">"Choose a name for this song"</string>
     <string name="chord_color">"Γραμματοσειρά συγχορδιών"</string>
@@ -137,7 +137,7 @@
     <string name="dim">"Το φόντο σκουραίνει"</string>
     <string name="display">"Εμφάνιση"</string>
     <string name="display_popups">"Προσαρμόστε τα αναδυόμενα παράθυρα"</string>
-    <string name="doubleTap">"Select double tap action"</string>
+    <string name="double_tap">"Select double tap action"</string>
     <string name="download_new">"Κάντε κλικ εδώ για να κατεβάσετε μια νέα Βίβλο"</string>
     <string name="close">"Close"</string>
     <string name="open">"Open"</string>
@@ -255,9 +255,9 @@
     <string name="mainfoldername">"ΚΕΝΤΡΙΚΟ"</string>
     <string name="managesets">"Μετονομάστε σύνολα"</string>
     <string name="mandolin">"Μαντολίνο"</string>
-    <string name="maxfontsize">"Maximum autoscale font size"</string>
+    <string name="max_font_size">"Maximum autoscale font size"</string>
     <string name="maximise_columns">Κλίμακα στήλες ανεξάρτητα.</string>
-    <string name="maxvolrange">"Graphical volume indicator range"</string>
+    <string name="max_vol_range">"Graphical volume indicator range"</string>
     <string name="audio">"Ήχος"</string>
     <string name="media_chooser">"Media chooser"</string>
     <string name="media_play">"Παίξε"</string>
@@ -284,7 +284,7 @@
     <string name="midi_usb">"Συνδέστε τη συσκευή USB"</string>
     <string name="midi_value">"αξία"</string>
     <string name="midi_velocity">"Ταχύτητα"</string>
-    <string name="minfontsize">"Preferred minimum autoscale font size"</string>
+    <string name="min_font_size">"Preferred minimum autoscale font size"</string>
     <string name="music_score">"Μουσικό σκορ"</string>
     <string name="my_band">"Εισαγωγή τραγουδιών δείγματος μπάντας"</string>
     <string name="my_church">"Εισάγετε δείγματα τραγουδιών της Εκκλησίας"</string>
@@ -292,7 +292,7 @@
     <string name="network_error">"Σφάλμα δικτύου"</string>
     <string name="new_category">"Νέα κατηγορία"</string>
     <string name="new_something">Νέο τραγούδι</string>
-    <string name="newfolder">"Νέος φάκελος"</string>
+    <string name="new_folder_add">"Νέος φάκελος"</string>
     <string name="new_folder_name">"Εισαγωγή ονόματος νέου φακέλου"</string>
     <string name="next">"Επόμενο"</string>
     <string name="no">"Όχι"</string>
@@ -736,7 +736,7 @@
     <string name="destination">Προορισμός</string>
     <string name="divisions">Τμήματα</string>
     <string name="download">Κατεβάστε</string>
-    <string name="downloadWiFiOnly">Λήψη μόνο μέσω WiFi</string>
+    <string name="download_wifi_only">Λήψη μόνο μέσω WiFi</string>
     <string name="duplicate_sections">Έχετε χρησιμοποιήσει την ίδια ετικέτα πολλές φορές στο τραγούδι. Αυτό μπορεί να προκαλέσει προβλήματα κατά τον ορισμό της παραγγελίας.</string>
     <string name="edit_format">Μορφή επεξεργασίας τραγουδιού</string>
     <string name="edit_new_section">Εισαγωγή νέας ενότητας</string>

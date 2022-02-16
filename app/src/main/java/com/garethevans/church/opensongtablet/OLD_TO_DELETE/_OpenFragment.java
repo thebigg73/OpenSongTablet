@@ -222,7 +222,7 @@ class OpenFragment {
                 newFragment = PopUpMenuSettingsFragment.newInstance();
                 break;
 
-            case "newfolder":
+            case "new_folder_add":
                 message = "create";
                 newFragment = PopUpSongFolderRenameFragment.newInstance(message);
                 break;
@@ -270,7 +270,7 @@ class OpenFragment {
                 newFragment = _PopUpFullSearchFragment.newInstance();
                 break;
 
-            case "choosefolder":
+            case "choose_folder":
                 newFragment = PopUpChooseFolderFragment.newInstance();
                 break;
 
@@ -368,7 +368,7 @@ class OpenFragment {
                         " \"" + StaticVariables.songfilename + "\"?";
                 break;
 
-            case "newfolder":
+            case "new_folder_add":
                 message = "create";
                 break;
 

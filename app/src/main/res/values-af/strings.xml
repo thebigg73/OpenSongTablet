@@ -68,8 +68,8 @@
     <string name="choose_video2">"Kies agtergrond video 2"</string>
     <string name="choosechordfont">"Kies koord font"</string>
     <string name="choosechordformat">"Kies koord formaat (slegs gebruik wanneer omzetting 'n lied)"</string>
-    <string name="choosefolder">"Kies gids lêer te stoor in"</string>
-    <string name="choosefolders">"Kies dopgehou"</string>
+    <string name="choose_folder">"Kies gids lêer te stoor in"</string>
+    <string name="choose_folders">"Kies dopgehou"</string>
     <string name="chooselyricfont">"Kies liriek font"</string>
     <string name="choosesongname">"Kies 'n naam vir hierdie lied"</string>
     <string name="chord_color">"Akkoorde font"</string>
@@ -136,7 +136,7 @@
     <string name="dim">"Agtergrond verduister"</string>
     <string name="display">"vertoon"</string>
     <string name="display_popups">"Pas pop-up vensters aan"</string>
-    <string name="doubleTap">"Kies dubbel tap aksie"</string>
+    <string name="double_tap">"Kies dubbel tap aksie"</string>
     <string name="download_new">"Klik hier om 'n nuwe Bybel af te laai"</string>
     <string name="close">"Sluit"</string>
     <string name="open">"Oop"</string>
@@ -179,7 +179,6 @@
     <string name="export_desktop">"Desktop lêer (geen lêer uitbreiding)"</string>
     <string name="export_onsong">"On song song (.onsong)"</string>
     <string name="export_ost">"OpenSongApp liedjie (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (. Pdf)"</string>
     <string name="export_png">"Screenshot image (. Png)"</string>
     <string name="export_set">"OpenSongApp stel (.osts)"</string>
     <string name="export_text">"Teks (.txt)"</string>
@@ -254,9 +253,9 @@
     <string name="mainfoldername">"MAIN"</string>
     <string name="managesets">"Hernoem stelle"</string>
     <string name="mandolin">Mandolien</string>
-    <string name="maxfontsize">Maksimum autoscale lettergrootte</string>
+    <string name="max_font_size">Maksimum autoscale lettergrootte</string>
     <string name="maximise_columns">Skaal kolomme onafhanklik af.</string>
-    <string name="maxvolrange">"Grafiese volume aanwyser reeks"</string>
+    <string name="max_vol_range">"Grafiese volume aanwyser reeks"</string>
     <string name="audio">Audio</string>
     <string name="media_chooser">Media chooser</string>
     <string name="media_play">speel</string>
@@ -283,7 +282,7 @@
     <string name="midi_usb">"Koppel USB-toestel"</string>
     <string name="midi_value">"waarde"</string>
     <string name="midi_velocity">"snelheid"</string>
-    <string name="minfontsize">"Verkies minimum autoscale lettergrootte"</string>
+    <string name="min_font_size">"Verkies minimum autoscale lettergrootte"</string>
     <string name="music_score">"Musiek telling"</string>
     <string name="my_band">"Invoer Band voorbeeld liedjies"</string>
     <string name="my_church">"Voer kerkmonsterliedjies in"</string>
@@ -291,7 +290,7 @@
     <string name="network_error">"Netwerk fout"</string>
     <string name="new_category">"Nuwe kategorie"</string>
     <string name="new_something">Nuwe</string>
-    <string name="newfolder">"Nuwe gids"</string>
+    <string name="new_folder_add">"Nuwe gids"</string>
     <string name="new_folder_name">"Sleutel 'n naam 'n nuwe gids"</string>
     <string name="next">Volgende</string>
     <string name="no">"Nee"</string>
@@ -706,7 +705,7 @@
     <string name="destination">Bestemming</string>
     <string name="divisions">Afdelings</string>
     <string name="download">Aflaai</string>
-    <string name="downloadWiFiOnly">Laai slegs oor WiFi af</string>
+    <string name="download_wifi_only">Laai slegs oor WiFi af</string>
     <string name="duplicate_sections">Jy het dieselfde merker verskeie kere in die liedjie gebruik. Dit kan probleme veroorsaak wanneer die bestelling opgestel word.</string>
     <string name="edit_format">Liedjie wysig formaat</string>
     <string name="edit_new_section">Voeg nuwe afdeling in</string>

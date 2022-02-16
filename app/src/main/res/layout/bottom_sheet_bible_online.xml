@@ -101,7 +101,7 @@
                         android:id="@+id/downloadWiFiOnly"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/downloadWiFiOnly" />
+                        android:text="@string/download_wifi_only" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/doSearch"

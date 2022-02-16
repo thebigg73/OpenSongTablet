@@ -69,8 +69,8 @@
     <string name="choose_video2">"Выберите фоновое видео 2"</string>
     <string name="choosechordfont">"Выберите шрифт аккордов"</string>
     <string name="choosechordformat">"Выберите формат аккордов (используется при транспонировании)"</string>
-    <string name="choosefolder">"Выберите папку для сохранения файла в"</string>
-    <string name="choosefolders">"Выбор папок"</string>
+    <string name="choose_folder">"Выберите папку для сохранения файла в"</string>
+    <string name="choose_folders">"Выбор папок"</string>
     <string name="chooselyricfont">"Выберите шрифт слов песни"</string>
     <string name="choosesongname">"Выберите имя для этой песни"</string>
     <string name="chord_color">"Аккорды"</string>
@@ -137,7 +137,7 @@
     <string name="dim">"Фон темный"</string>
     <string name="display">"дисплей"</string>
     <string name="display_popups">"Настройка всплывающих окон"</string>
-    <string name="doubleTap">"Действие при двойном касании"</string>
+    <string name="double_tap">"Действие при двойном касании"</string>
     <string name="download_new">"Нажмите здесь, чтобы загрузить новую Библию"</string>
     <string name="close">"Закрыть"</string>
     <string name="open">"Открыть"</string>
@@ -255,9 +255,9 @@
     <string name="mainfoldername">"ГЛАВНАЯ"</string>
     <string name="managesets">"Переименовать списки"</string>
     <string name="mandolin">мандолина</string>
-    <string name="maxfontsize">Максимальный размер шрифта автомасштабирования</string>
+    <string name="max_font_size">Максимальный размер шрифта автомасштабирования</string>
     <string name="maximise_columns">Масштабировать столбцы независимо.</string>
-    <string name="maxvolrange">"Размер индикатора громкости"</string>
+    <string name="max_vol_range">"Размер индикатора громкости"</string>
     <string name="audio">Медиафайл</string>
     <string name="media_chooser">Выбор медиафайла</string>
     <string name="media_play">Воспроизведение</string>
@@ -284,7 +284,7 @@
     <string name="midi_usb">"Подключение USB-устройства"</string>
     <string name="midi_value">"Значение"</string>
     <string name="midi_velocity">"Скорость"</string>
-    <string name="minfontsize">"Предпочтительный минимальный размер шрифта при автомасштабировании"</string>
+    <string name="min_font_size">"Предпочтительный минимальный размер шрифта при автомасштабировании"</string>
     <string name="music_score">"Ноты"</string>
     <string name="my_band">"Импорт песен из файла группы"</string>
     <string name="my_church">"Импорт песен из файла церкви"</string>
@@ -292,7 +292,7 @@
     <string name="network_error">"Ошибка сети"</string>
     <string name="new_category">"Новая категория"</string>
     <string name="new_something">Новая</string>
-    <string name="newfolder">"Новая папка"</string>
+    <string name="new_folder_add">"Новая папка"</string>
     <string name="new_folder_name">"Введите имя новой папки"</string>
     <string name="next">Cледующий</string>
     <string name="no">"Нет"</string>
@@ -808,7 +808,7 @@
     <string name="edit_new_section">Вставить новый раздел</string>
     <string name="edit_format">Формат редактирования песни</string>
     <string name="duplicate_sections">Вы использовали один и тот же тег несколько раз в песне. Это может вызвать проблемы при установке порядка.</string>
-    <string name="downloadWiFiOnly">Скачивать только через Wi-Fi</string>
+    <string name="download_wifi_only">Скачивать только через Wi-Fi</string>
     <string name="download">Скачать</string>
     <string name="divisions">Подразделения</string>
     <string name="destination">Назначения</string>

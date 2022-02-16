@@ -69,8 +69,8 @@
     <string name="choose_video2">"Hintergrundvideo 2 wählen"</string>
     <string name="choosechordfont">"Schriftart Akkorde wählen"</string>
     <string name="choosechordformat">"Wählen Sie ein Akkordformat (wichtig für Transponieren)"</string>
-    <string name="choosefolder">"Wählen Sie Ordner, um die Datei zu speichern"</string>
-    <string name="choosefolders">"Ordner wählen"</string>
+    <string name="choose_folder">"Wählen Sie Ordner, um die Datei zu speichern"</string>
+    <string name="choose_folders">"Ordner wählen"</string>
     <string name="chooselyricfont">"Schriftart Text wählen"</string>
     <string name="choosesongname">"Wählen Sie einen Namen für diesen Song"</string>
     <string name="chord_color">"Schrift Akkorde"</string>
@@ -137,7 +137,7 @@
     <string name="dim">"Hintergrund abdunkeln"</string>
     <string name="display">"Anzeige"</string>
     <string name="display_popups">"Popup-Fenster anpassen"</string>
-    <string name="doubleTap">"Doppeltipp-Aktion wählen"</string>
+    <string name="double_tap">"Doppeltipp-Aktion wählen"</string>
     <string name="download_new">"Klicken Sie hier, um eine neue Bibel herunterzuladen"</string>
     <string name="close">"Schließen"</string>
     <string name="open">"Öffnen"</string>
@@ -180,7 +180,6 @@
     <string name="export_desktop">"Desktop-Datei (keine Dateierweiterung)"</string>
     <string name="export_onsong">"OnSong Lied (.onsong)"</string>
     <string name="export_ost">"OpenSongApp Song (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Screenshot Bild (.png)"</string>
     <string name="export_set">"OpenSongApp Set (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>
@@ -255,9 +254,9 @@
     <string name="mainfoldername">"MAIN"</string>
     <string name="managesets">"Sets umbenennen"</string>
     <string name="mandolin">Mandoline</string>
-    <string name="maxfontsize">Maximale Schriftgröße bei automatischer Skalierung</string>
+    <string name="max_font_size">Maximale Schriftgröße bei automatischer Skalierung</string>
     <string name="maximise_columns">Spalten unabhängig skalieren.</string>
-    <string name="maxvolrange">"Bereich der Lautstärkeanzeige"</string>
+    <string name="max_vol_range">"Bereich der Lautstärkeanzeige"</string>
     <string name="audio">Audio</string>
     <string name="media_chooser">Medienauswahl</string>
     <string name="media_play">Spielen</string>
@@ -284,7 +283,7 @@
     <string name="midi_usb">"Schließen Sie das USB-Gerät an"</string>
     <string name="midi_value">"Wert"</string>
     <string name="midi_velocity">"Anschlagsdynamik"</string>
-    <string name="minfontsize">"Minimale Schriftgröße für automatische Skalierung"</string>
+    <string name="min_font_size">"Minimale Schriftgröße für automatische Skalierung"</string>
     <string name="music_score">"Musikpartitur"</string>
     <string name="my_band">"Band Beispielsongs importieren"</string>
     <string name="my_church">"Kirchen Beispielsongs importieren"</string>
@@ -292,7 +291,7 @@
     <string name="network_error">"Netzwerkfehler"</string>
     <string name="new_category">"Neue Kategorie"</string>
     <string name="new_something">Neu</string>
-    <string name="newfolder">"Neuer Ordner"</string>
+    <string name="new_folder_add">"Neuer Ordner"</string>
     <string name="new_folder_name">"Geben Sie einen neuen Ordnernamen ein"</string>
     <string name="next">nächster Song</string>
     <string name="no">"Nein"</string>
@@ -736,7 +735,7 @@
     <string name="destination">Ziel</string>
     <string name="divisions">Abteilungen</string>
     <string name="download">Herunterladen</string>
-    <string name="downloadWiFiOnly">Nur über WLAN herunterladen</string>
+    <string name="download_wifi_only">Nur über WLAN herunterladen</string>
     <string name="duplicate_sections">Sie haben dasselbe Tag mehrmals im Song verwendet. Dies kann zu Problemen beim Einstellen der Reihenfolge führen.</string>
     <string name="edit_format">Songbearbeitungsformat</string>
     <string name="edit_new_section">Neuen Abschnitt einfügen</string>

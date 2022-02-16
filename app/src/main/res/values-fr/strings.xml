@@ -68,8 +68,8 @@
     <string name="choose_video2">"Choisissez l\'arrière plan vidéo 2"</string>
     <string name="choosechordfont">"Choisissez la police des accords"</string>
     <string name="choosechordformat">"Choisissez le format d\'accord (seulement utilisé lors de la transposition d\'une chanson)"</string>
-    <string name="choosefolder">"Choisissez le dossier pour enregistrer le fichier"</string>
-    <string name="choosefolders">"Choisissez des dossiers"</string>
+    <string name="choose_folder">"Choisissez le dossier pour enregistrer le fichier"</string>
+    <string name="choose_folders">"Choisissez des dossiers"</string>
     <string name="chooselyricfont">"Choisissez la police des paroles"</string>
     <string name="choosesongname">"Choisissez un nom pour cette chanson"</string>
     <string name="chord_color">"Police des accords"</string>
@@ -136,7 +136,7 @@
     <string name="dim">"Fond sombre"</string>
     <string name="display">"Ecran"</string>
     <string name="display_popups">"Personnaliser les fenêtres contextuelles"</string>
-    <string name="doubleTap">"Sélectionnez l\'action du double clic"</string>
+    <string name="double_tap">"Sélectionnez l\'action du double clic"</string>
     <string name="download_new">"Cliquez ici pour télécharger une nouvelle Bible"</string>
     <string name="close">"Fermer"</string>
     <string name="open">"Ouvrir"</string>
@@ -179,7 +179,6 @@
     <string name="export_desktop">"Fichier de bureau (pas d'extension de fichier)"</string>
     <string name="export_onsong">"Chanson OnSong (.onsong)"</string>
     <string name="export_ost">"Chanson OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Capture d'écran PDF (.pdf)"</string>
     <string name="export_png">"Image de capture d'écran (.png)"</string>
     <string name="export_set">"Ensemble OpenSongApp (.osts)"</string>
     <string name="export_text">"Texte (.txt)"</string>
@@ -254,9 +253,9 @@
     <string name="mainfoldername">"MAIN"</string>
     <string name="managesets">"Renommer les ensembles"</string>
     <string name="mandolin">Mandoline</string>
-    <string name="maxfontsize">Taille maximale de la police pour la mise ne page automatique</string>
+    <string name="max_font_size">Taille maximale de la police pour la mise ne page automatique</string>
     <string name="maximise_columns">Échelle des colonnes indépendamment.</string>
-    <string name="maxvolrange">"Plage de l\'indicateur de volume graphique"</string>
+    <string name="max_vol_range">"Plage de l\'indicateur de volume graphique"</string>
     <string name="audio">Médias</string>
     <string name="media_chooser">Sélecteur de médias</string>
     <string name="media_play">Lecture</string>
@@ -283,7 +282,7 @@
     <string name="midi_usb">"Connecter un périphérique USB"</string>
     <string name="midi_value">"Valeur"</string>
     <string name="midi_velocity">"Rapidité"</string>
-    <string name="minfontsize">"La taille minimum préférée pour autoscale"</string>
+    <string name="min_font_size">"La taille minimum préférée pour autoscale"</string>
     <string name="music_score">"Score de musique"</string>
     <string name="my_band">"Bandes d'échange de bandes d'importation"</string>
     <string name="my_church">"Import Church exemple de chansons"</string>
@@ -291,7 +290,7 @@
     <string name="network_error">"Erreur de réseau"</string>
     <string name="new_category">"Nouvelle catégorie"</string>
     <string name="new_something">Nouveau</string>
-    <string name="newfolder">"Nouveau dossier"</string>
+    <string name="new_folder_add">"Nouveau dossier"</string>
     <string name="new_folder_name">"Entrez un nouveau nom de dossier"</string>
     <string name="next">Suivant</string>
     <string name="no">"Non"</string>
@@ -577,7 +576,6 @@
     <string name="font_choose_description">Changer les polices d\'affichage des chansons</string>
     <string name="font_choose_list">Choisissez une police dans la liste ci-dessous</string>
     <string name="font_choose_preview">Choisissez avec l\'aperçu Web</string>
-    <string name="forum">Forum</string>
     <string name="forum_description">Signaler des bugs, obtenir de l\'aide et demander des fonctionnalités</string>
     <string name="github_description">Contribuer au développement de l\'application</string>
     <string name="backup">Sauvegarde</string>
@@ -736,7 +734,7 @@
     <string name="destination">Destination</string>
     <string name="divisions">Divisions</string>
     <string name="download">Télécharger</string>
-    <string name="downloadWiFiOnly">Télécharger via Wi-Fi uniquement</string>
+    <string name="download_wifi_only">Télécharger via Wi-Fi uniquement</string>
     <string name="duplicate_sections">Vous avez utilisé la même balise plusieurs fois dans la chanson. Cela peut causer des problèmes lors de la définition de la commande.</string>
     <string name="edit_format">Format d\'édition de morceau</string>
     <string name="edit_new_section">Insérer une nouvelle rubrique</string>

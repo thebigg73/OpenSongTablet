@@ -714,7 +714,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         public void onStopTrackingTouch(SeekBar seekBar) {
             float val = seekBar.getProgress() + 4.0f;
             preferences.setMyPreferenceFloat(getContext(),"fontSizePresoMax",val);
-            sendUpdateToScreen("maxfontsize");
+            sendUpdateToScreen("max_font_size");
         }
 
     }

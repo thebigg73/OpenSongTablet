@@ -6864,7 +6864,7 @@ public class StageMode extends AppCompatActivity implements
                 case "all":
                 case "chords":
                 case "autoscale":
-                case "maxfontsize":
+                case "max_font_size":
                 case "manualfontsize":
                 default:
                     if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {

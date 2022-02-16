@@ -1166,7 +1166,7 @@ Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageA
         menuFolder_TextView.setText(getString(R.string.wait));
         LinearLayout changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
         changefolder_LinearLayout.setOnClickListener(view -> {
-            FullscreenActivity.whattodo = "choosefolder";
+            FullscreenActivity.whattodo = "choose_folder";
             openFragment();
         });
 
@@ -3823,7 +3823,7 @@ Bitmap bmp = processSong.createPDFPage(PresenterMode.this, preferences, storageA
                 case "all":
                 case "chords":
                 case "autoscale":
-                case "maxfontsize":
+                case "max_font_size":
                 case "manualfontsize":
                 default:
                     if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {

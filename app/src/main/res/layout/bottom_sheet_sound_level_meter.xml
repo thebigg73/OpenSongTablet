@@ -188,7 +188,7 @@
                         android:layout_height="wrap_content"
                         android:clipChildren="false"
                         android:clipToPadding="false"
-                        android:text="@string/maxvolrange"
+                        android:text="@string/max_vol_range"
                         android:minHeight="150dp"
                         android:value="100"
                         android:valueFrom="10"

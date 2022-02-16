@@ -212,7 +212,7 @@
                 android:layout_marginTop="16dp"
                 android:valueFrom="10"
                 android:valueTo="100"
-                android:text="@string/maxfontsize" />
+                android:text="@string/max_font_size" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/showChords"

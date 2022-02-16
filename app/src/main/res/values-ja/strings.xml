@@ -69,8 +69,8 @@
     <string name="choose_video2">背景ビデオ2を選択してください</string>
     <string name="choosechordfont">"コー​​ドフォントを選択してください"</string>
     <string name="choosechordformat">"和音形式を選択してください（曲を移調するときのみ使用されます）"</string>
-    <string name="choosefolder">"でファイルを保存するフォルダを選択してください"</string>
-    <string name="choosefolders">"フォルダを選択する"</string>
+    <string name="choose_folder">"でファイルを保存するフォルダを選択してください"</string>
+    <string name="choose_folders">"フォルダを選択する"</string>
     <string name="chooselyricfont">"歌詞のフォントを選択してください"</string>
     <string name="choosesongname">"この曲の名前を選択してください"</string>
     <string name="chord_color">"和音フォント"</string>
@@ -137,7 +137,7 @@
     <string name="dim">"暗い背景"</string>
     <string name="display">"ディスプレイ"</string>
     <string name="display_popups">"ポップアップウィンドウをカスタマイズする"</string>
-    <string name="doubleTap">"ダブルタップアクションを選択します"</string>
+    <string name="double_tap">"ダブルタップアクションを選択します"</string>
     <string name="download_new">"新しい聖書をダウンロードするにはここをクリック"</string>
     <string name="close">"閉じる"</string>
     <string name="open">"位置打开"</string>
@@ -255,9 +255,9 @@
     <string name="mainfoldername">"ホームページ"</string>
     <string name="managesets">"セットの名前を変更する"</string>
     <string name="mandolin">マンドリン</string>
-    <string name="maxfontsize">最大オートスケールフォントサイズ</string>
+    <string name="max_font_size">最大オートスケールフォントサイズ</string>
     <string name="maximise_columns">列を個別にスケーリングします。</string>
-    <string name="maxvolrange">"グラフィカル音量インジケータ範囲"</string>
+    <string name="max_vol_range">"グラフィカル音量インジケータ範囲"</string>
     <string name="audio">オーディオ</string>
     <string name="media_chooser">メディアチュー</string>
     <string name="media_play">遊びます</string>
@@ -284,7 +284,7 @@
     <string name="midi_usb">"USBデバイスを接続する"</string>
     <string name="midi_value">"値"</string>
     <string name="midi_velocity">"速度"</string>
-    <string name="minfontsize">"好ましい最小オートスケールのフォントサイズ"</string>
+    <string name="min_font_size">"好ましい最小オートスケールのフォントサイズ"</string>
     <string name="music_score">"楽譜"</string>
     <string name="my_band">"バンドのサンプル曲をインポートする"</string>
     <string name="my_church">"教会のサンプル曲をインポートする"</string>
@@ -292,7 +292,7 @@
     <string name="network_error">"ネットワークエラー"</string>
     <string name="new_category">"新しいカテゴリ"</string>
     <string name="new_something">新しい</string>
-    <string name="newfolder">"新しいフォルダ"</string>
+    <string name="new_folder_add">"新しいフォルダ"</string>
     <string name="new_folder_name">"新しいフォルダ名を入力してください"</string>
     <string name="next">次</string>
     <string name="no">"ノー (No)"</string>
@@ -794,7 +794,7 @@
     <string name="edit_new_section">新しいセクションを挿入</string>
     <string name="edit_format">ソング編集フォーマット</string>
     <string name="duplicate_sections">曲の中で同じタグを複数回使用しました。 これにより、順序を設定するときに問題が発生する可能性があります。</string>
-    <string name="downloadWiFiOnly">WiFi経由でのみダウンロード</string>
+    <string name="download_wifi_only">WiFi経由でのみダウンロード</string>
     <string name="download">ダウンロード</string>
     <string name="divisions">部門</string>
     <string name="destination">行き先</string>

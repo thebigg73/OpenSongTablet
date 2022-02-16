@@ -68,8 +68,8 @@
     <string name="choose_video2">"Vyberte si pozadí video 2"</string>
     <string name="choosechordfont">"Zvolte akord písmo"</string>
     <string name="choosechordformat">"Zvolte formát akord (používá se pouze při provádění píseň)"</string>
-    <string name="choosefolder">"Vyberte složku pro uložení souboru v"</string>
-    <string name="choosefolders">"Vyberte složky"</string>
+    <string name="choose_folder">"Vyberte složku pro uložení souboru v"</string>
+    <string name="choose_folders">"Vyberte složky"</string>
     <string name="chooselyricfont">"Zvolte lyrické písmo"</string>
     <string name="choosesongname">"Zvolte název pro tuto píseň"</string>
     <string name="chord_color">"Akordy písmo"</string>
@@ -136,7 +136,7 @@
     <string name="dim">"Pozadí ztmavne"</string>
     <string name="display">"zobrazit"</string>
     <string name="display_popups">"Přizpůsobte vyskakovací okna"</string>
-    <string name="doubleTap">"Vyberte dvojí akci klepněte na položku"</string>
+    <string name="double_tap">"Vyberte dvojí akci klepněte na položku"</string>
     <string name="download_new">"Klikněte zde pro stažení nové Bible"</string>
     <string name="close">"Zavřít"</string>
     <string name="open">"Otevřít"</string>
@@ -179,7 +179,6 @@
     <string name="export_desktop">"Soubor plochy (bez přípony souboru)"</string>
     <string name="export_onsong">"OnSong píseň (.ong)"</string>
     <string name="export_ost">"OpenSongApp song (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Obrázek snímku (.png)"</string>
     <string name="export_set">"Sada OpenSongApp (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>
@@ -254,9 +253,9 @@
     <string name="mainfoldername">"HLAVNÍ"</string>
     <string name="managesets">"Přejmenujte sady"</string>
     <string name="mandolin">Mandolína</string>
-    <string name="maxfontsize">Maximální autoscale velikost písma</string>
+    <string name="max_font_size">Maximální autoscale velikost písma</string>
     <string name="maximise_columns">Měřítko sloupců samostatně.</string>
-    <string name="maxvolrange">"Rozsah Grafické objem indikátor"</string>
+    <string name="max_vol_range">"Rozsah Grafické objem indikátor"</string>
     <string name="audio">Audio</string>
     <string name="media_chooser">Media chooser</string>
     <string name="media_play">hrát</string>
@@ -283,7 +282,7 @@
     <string name="midi_usb">"Připojte zařízení USB"</string>
     <string name="midi_value">"Hodnota"</string>
     <string name="midi_velocity">"Rychlost"</string>
-    <string name="minfontsize">"Preferovaný minimální velikost písma Autoscale"</string>
+    <string name="min_font_size">"Preferovaný minimální velikost písma Autoscale"</string>
     <string name="music_score">"Hudební skóre"</string>
     <string name="my_band">"Importovat skladby"</string>
     <string name="my_church">"Importovat církevní vzorové písně"</string>
@@ -291,7 +290,7 @@
     <string name="network_error">"Chyba sítě"</string>
     <string name="new_category">"Nová kategorie"</string>
     <string name="new_something">Nový</string>
-    <string name="newfolder">"Nová složka"</string>
+    <string name="new_folder_add">"Nová složka"</string>
     <string name="new_folder_name">"Zadejte název nové složky"</string>
     <string name="next">Další</string>
     <string name="no">"Nenašli jsme "</string>
@@ -537,7 +536,6 @@
     <string name="font_choose_description">Změňte písma zobrazení písní</string>
     <string name="font_choose_list">Vyberte písmo ze seznamu níže</string>
     <string name="font_choose_preview">Vyberte si pomocí webového náhledu</string>
-    <string name="forum">Fórum</string>
 
     <string name="connections_enable">Povolit blízká připojení</string>
     <string name="bold_chords_headings">Zobrazit akordy a nadpisy tučně</string>
@@ -707,7 +705,7 @@
     <string name="destination">Destinace</string>
     <string name="divisions">Divize</string>
     <string name="download">Stažení</string>
-    <string name="downloadWiFiOnly">Stahujte pouze přes WiFi</string>
+    <string name="download_wifi_only">Stahujte pouze přes WiFi</string>
     <string name="duplicate_sections">Stejnou značku jste v písni použili několikrát. To může způsobit problémy při zadávání objednávky.</string>
     <string name="edit_format">Formát úpravy písní</string>
     <string name="edit_new_section">Vložit novou sekci</string>

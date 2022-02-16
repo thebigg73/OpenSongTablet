@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="16dp"
                     android:paddingBottom="8dp"
-                    android:text="@string/choosefolders"
+                    android:text="@string/choose_folders"
                     style="@style/largeText"/>
 
                 <LinearLayout

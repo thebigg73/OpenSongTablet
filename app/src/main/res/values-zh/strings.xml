@@ -68,8 +68,8 @@
     <string name="choose_video2">"选择背景视频2"</string>
     <string name="choosechordfont">"选择和弦字体"</string>
     <string name="choosechordformat">"选择和弦格式（仅调换一首歌曲时使用）"</string>
-    <string name="choosefolder">"选择文件夹保存文件"</string>
-    <string name="choosefolders">"选择文件夹"</string>
+    <string name="choose_folder">"选择文件夹保存文件"</string>
+    <string name="choose_folders">"选择文件夹"</string>
     <string name="chooselyricfont">"选择歌词的字体"</string>
     <string name="choosesongname">"在这首歌中选择一个名称"</string>
     <string name="chord_color">"和弦字体"</string>
@@ -136,7 +136,7 @@
     <string name="dim">"背景变暗"</string>
     <string name="display">"显示"</string>
     <string name="display_popups">"自定义弹出窗口"</string>
-    <string name="doubleTap">"选择双击动作"</string>
+    <string name="double_tap">"选择双击动作"</string>
     <string name="download_new">"点击这里下载新的圣经"</string>
     <string name="close">"关闭"</string>
     <string name="open">"打开"</string>
@@ -179,7 +179,6 @@
     <string name="export_desktop">"桌面文件（无文件扩展名）"</string>
     <string name="export_onsong">"安松歌（.onsong）"</string>
     <string name="export_ost">"OpenSongApp歌曲（.ost）"</string>
-    <string name="export_pdf">"截图PDF（.pdf）"</string>
     <string name="export_png">"截图图片（.png）"</string>
     <string name="export_set">"OpenSongApp集（.osts）"</string>
     <string name="export_text">"文字（.txt）"</string>
@@ -254,9 +253,9 @@
     <string name="mainfoldername">"MAIN"</string>
     <string name="managesets">"重命名集"</string>
     <string name="mandolin">曼多林</string>
-    <string name="maxfontsize">最大的自动缩放字体大小</string>
+    <string name="max_font_size">最大的自动缩放字体大小</string>
     <string name="maximise_columns">独立缩放列。</string>
-    <string name="maxvolrange">"图形成交量指标范围"</string>
+    <string name="max_vol_range">"图形成交量指标范围"</string>
     <string name="audio">音频</string>
     <string name="media_chooser">媒体选择器</string>
     <string name="media_play">玩</string>
@@ -283,7 +282,7 @@
     <string name="midi_usb">"连接USB设备"</string>
     <string name="midi_value">"值"</string>
     <string name="midi_velocity">"速度"</string>
-    <string name="minfontsize">"首选最小自动缩放字体大小"</string>
+    <string name="min_font_size">"首选最小自动缩放字体大小"</string>
     <string name="music_score">"谱子"</string>
     <string name="my_band">"导入乐队示例歌曲"</string>
     <string name="my_church">"进口教会样品歌曲"</string>
@@ -291,7 +290,7 @@
     <string name="network_error">"网络错误"</string>
     <string name="new_category">"新类别"</string>
     <string name="new_something">新</string>
-    <string name="newfolder">"新建文件夹"</string>
+    <string name="new_folder_add">"新建文件夹"</string>
     <string name="new_folder_name">"输入一个新的文件夹名称"</string>
     <string name="next">下一个</string>
     <string name="no">"没有"</string>
@@ -707,7 +706,7 @@
     <string name="destination">目的地</string>
     <string name="divisions">部门</string>
     <string name="download">下载</string>
-    <string name="downloadWiFiOnly">仅通过 WiFi 下载</string>
+    <string name="download_wifi_only">仅通过 WiFi 下载</string>
     <string name="duplicate_sections">您在歌曲中多次使用相同的标签。 这可能会在设置订单时引起问题。</string>
     <string name="edit_format">歌曲编辑格式</string>
     <string name="edit_new_section">插入新部分</string>

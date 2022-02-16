@@ -67,8 +67,8 @@
     <string name="choose_video2">Виберіть фонове відео 2</string>
     <string name="choosechordfont">Виберіть шрифт акордів</string>
     <string name="choosechordformat">Виберіть формат акордів (використовується при транспонировании)</string>
-    <string name="choosefolder">Виберіть папку для збереження файлу в</string>
-    <string name="choosefolders">Вибір папок</string>
+    <string name="choose_folder">Виберіть папку для збереження файлу в</string>
+    <string name="choose_folders">Вибір папок</string>
     <string name="chooselyricfont">Виберіть шрифт слів пісні</string>
     <string name="choosesongname">Виберіть ім\'я для цієї пісні</string>
     <string name="chord_color">Акорди</string>
@@ -130,7 +130,7 @@
     <string name="dim">Фон темний</string>
     <string name="display">дисплей</string>
     <string name="display_popups">Налаштування спливаючих вікон</string>
-    <string name="doubleTap">Дія при подвійному торканні</string>
+    <string name="double_tap">Дія при подвійному торканні</string>
     <string name="download_new">Натисніть тут, щоб завантажити нову Біблію</string>
     <string name="open">Відкрити</string>
     <string name="edit">Змінити</string>
@@ -233,9 +233,9 @@
     <string name="mainfoldername">ГОЛОВНА</string>
     <string name="managesets">Перейменувати списки</string>
     <string name="mandolin">мандоліна</string>
-    <string name="maxfontsize">Максимальний розмір шрифту автомасштабирование</string>
+    <string name="max_font_size">Максимальний розмір шрифту автомасштабирование</string>
     <string name="maximise_columns">Змінити масштаб стовпці незалежно.</string>
-    <string name="maxvolrange">Розмір індикатора гучності</string>
+    <string name="max_vol_range">Розмір індикатора гучності</string>
     <string name="media">Медіафайл</string>
     <string name="media_chooser">Вибір медіафайлу</string>
     <string name="media_play">Відтворення</string>
@@ -261,7 +261,7 @@
     <string name="midi_usb">Підключення USB-пристрою</string>
     <string name="midi_value">Значення</string>
     <string name="midi_velocity">Швидкість</string>
-    <string name="minfontsize">Кращий мінімальний розмір шрифту при Автомасштабування</string>
+    <string name="min_font_size">Кращий мінімальний розмір шрифту при Автомасштабування</string>
     <string name="music_score">Рейтинг</string>
     <string name="my_band">Імпорт пісень з файлу групи</string>
     <string name="my_church">Імпорт пісень з файлу церкви</string>
@@ -269,7 +269,7 @@
     <string name="network_error">Помилка мережі</string>
     <string name="new_category">Нова категорія</string>
     <string name="new_something">Нова</string>
-    <string name="newfolder">Нова папка</string>
+    <string name="new_folder_add">Нова папка</string>
     <string name="new_folder_name">Введіть ім\'я нової папки</string>
     <string name="next">Наступна</string>
     <string name="no">Ні</string>
@@ -668,7 +668,7 @@
     <string name="destination">Пункт призначення</string>
     <string name="divisions">Дивізії</string>
     <string name="download">Завантажити</string>
-    <string name="downloadWiFiOnly">Завантажуйте лише через Wi-Fi</string>
+    <string name="download_wifi_only">Завантажуйте лише через Wi-Fi</string>
     <string name="duplicate_sections">Ви використовували той самий тег кілька разів у пісні. Це може викликати проблеми під час встановлення замовлення.</string>
     <string name="edit_format">Формат редагування пісні</string>
     <string name="edit_new_section">Вставити новий розділ</string>

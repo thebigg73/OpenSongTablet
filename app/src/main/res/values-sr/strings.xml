@@ -53,7 +53,7 @@
     <string name="bridge">"Most"</string>
     <string name="prechorus">"Pred-Refren"</string>
     <string name="tag">"Oznaka"</string>
-    <string name="maxfontsize">"Najveća moguća veličina fonta za automatsku promenu veličine"</string>
+    <string name="max_font_size">"Najveća moguća veličina fonta za automatsku promenu veličine"</string>
     <string name="custom">"Prilagođeno"</string>
     <string name="custom_chords">"Prilagođeni akordi"</string>
     <string name="customchords_saved">"Trenutno snimljeni prilagođeni akordi"</string>
@@ -141,7 +141,7 @@
     <string name="help">"Pomoć (Online)"</string>
     <string name="start_screen">"Povratak na početni ekran"</string>
     <string name="customgestures">"Dodeliti prilagođene gestove"</string>"
-    <string name="doubleTap">"Odaberi akciju za dupli tap"</string>
+    <string name="double_tap">"Odaberi akciju za dupli tap"</string>
     <string name="longPress">"Odaberi akciju za dugi pritisak"</string>
     <string name="open_song_menu">"Otvoriti pesma meni"</string>
     <string name="edit_song">"Izmena pesme"</string>
@@ -178,9 +178,9 @@
     <string name="grabchordpro">"Otpakovati ChordPro podatke"</string>
     <string name="chordproprogress">"Tražim ChordPro podatke o pesmi na strani&#8230;"</string>
     <string name="chordpro_false">"Nije pronađena ChordPro pesma!"</string>
-    <string name="choosefolder">"Odaberite fasciklu u koju bi sačuvali datoteku"</string>
+    <string name="choose_folder">"Odaberite fasciklu u koju bi sačuvali datoteku"</string>
     <string name="choosesongname">"Odaberite ime za ovu pesmu"</string>
-    <string name="newfolder">"Nova fascikla"</string>
+    <string name="new_folder_add">"Nova fascikla"</string>
     <string name="new_folder_name">"Uneti novo ime fascikle"</string>
     <string name="folder_exists">"Ova fascikla već postoji!"</string>
     <string name="create_folder_error">"Nastala je greška tokom pravljenja nove fascikle!"</string>
@@ -269,7 +269,7 @@
     <string name="user_guide">"Uputstvo</string>
     <string name="user_guide_text">"Molimo Vas da odvojite vreme da pročitate uputstvo pre korišćenja aplikacije.."</string>
     <string name="average">"Prosečno"</string>
-    <string name="maxvolrange">"Grafički indikator nivoa zvuka"</string>
+    <string name="max_vol_range">"Grafički indikator nivoa zvuka"</string>
     <string name="reset">"Reset"</string>
     <string name="volume_value">"Trenutna jačina zvuka"</string>
     <string name="set_manage_swipe">"Prevuci za uklanjanje stavke iz set liste"</string>
@@ -301,7 +301,7 @@
     <string name="variation_edit">"Ovaj predmet može uređivati. Izvorna će biti nepromijenjen."</string>
     <string name="variation">"Varijacija"</string>
     <string name="extra">"Dodatne informacije"</string>
-    <string name="minfontsize">"Željena minimalna veličina fonta kod autozumiranja"</string>
+    <string name="min_font_size">"Željena minimalna veličina fonta kod autozumiranja"</string>
     <string name="override_fullautoscale">"Prebacivanje punog autozumiranja na samo širinu"</string>
     <string name="override_scale_explanation">"Ako je veličina fonta manja od minimalne željene veličine, da li želite da aplikacij koristi drugu metodu skaliranja? Korišćenje ove opcije Vas može primorati na skrolovanje pesme horizontalno i vertikalno"</string>
     <string name="override_widthautoscale">"Prebacivanje autozumiranja sa širine na mod bez autozumiranja"</string>
@@ -328,7 +328,7 @@
     <string name="autoscale">"Autoskaliranje"</string>
     <string name="camera">"Kamera"</string>
     <string name="category">"Kategorija"</string>
-    <string name="choosefolders">"Odaberite fascikle"</string>
+    <string name="choose_folders">"Odaberite fascikle"</string>
     <string name="chordline_scale">"Skaliranje akorda"</string>
     <string name="connected_display">"Povezani displej"</string>
     <string name="current_category">"Trenutna kategorija"</string>
@@ -640,7 +640,7 @@
     <string name="destination">Odredište</string>
     <string name="divisions">Divizije</string>
     <string name="download">Preuzimanje</string>
-    <string name="downloadWiFiOnly">Preuzmite samo preko ViFi-a</string>
+    <string name="download_wifi_only">Preuzmite samo preko ViFi-a</string>
     <string name="duplicate_sections">Koristili ste istu oznaku više puta u pesmi. Ovo može izazvati probleme prilikom postavljanja naloga.</string>
     <string name="edit_format">Format za uređivanje pesme</string>
     <string name="edit_new_section">Umetnite novi odeljak</string>

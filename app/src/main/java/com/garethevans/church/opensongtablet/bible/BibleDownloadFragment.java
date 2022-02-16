@@ -96,8 +96,8 @@ public class BibleDownloadFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.downloadWiFiOnly.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"downloadWiFiOnly", true));
-        myView.downloadWiFiOnly.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"downloadWiFiOnly",b));
+        myView.downloadWiFiOnly.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"download_wifi_only", true));
+        myView.downloadWiFiOnly.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"download_wifi_only",b));
         myView.download.setOnClickListener(v -> doDownload());
         myView.opensong.setOnClickListener(v -> openWeb("http://www.opensong.org/home/download"));
         myView.zefania.setOnClickListener(v -> openWeb("https://sourceforge.net/projects/zefania-sharp/files/Bibles/"));

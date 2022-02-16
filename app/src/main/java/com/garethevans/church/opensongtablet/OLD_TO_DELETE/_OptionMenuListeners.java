@@ -1665,7 +1665,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
         storageNewFolderButton.setOnClickListener(view -> {
             if (mListener!=null) {
-                FullscreenActivity.whattodo = "newfolder";
+                FullscreenActivity.whattodo = "new_folder_add";
                 mListener.closeMyDrawers("option");
                 mListener.openFragment();
             }
