@@ -88,8 +88,8 @@ public class DisplayPrevNext {
 
             // Set the listeners
             // Use the text as it is for the filename (might be Uri encoded)
-            prev.setOnClickListener(v -> doMove(prevIndex));
-            next.setOnClickListener(v -> doMove(nextIndex));
+            prev.setOnClickListener(v -> moveToPrev());
+            next.setOnClickListener(v -> moveToNext());
 
             // Update the text
             next.setText(nextText);
