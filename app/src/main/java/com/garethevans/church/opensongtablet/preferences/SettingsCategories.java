@@ -109,6 +109,7 @@ public class SettingsCategories extends Fragment {
         myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.midiFragment));
         myView.profilesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.profileFragment));
         myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.settingsCCLI));
+        myView.utilitiesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.utilities_graph));
         myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null, R.id.about_graph));
     }
 

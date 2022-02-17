@@ -122,6 +122,9 @@
             <action
                 android:id="@+id/action_preferencesFragment_to_set_graph"
                 app:destination="@id/set_graph" />
+            <action
+                android:id="@+id/action_preferencesFragment_to_utilities_graph"
+                app:destination="@id/utilities_graph" />
 
         </fragment>
 
@@ -754,6 +757,14 @@
                 android:name="com.garethevans.church.opensongtablet.setprocessing.BackupRestoreSetsFragment"
                 android:label="BackupRestoreSetsFragment"
                 tools:layout="@layout/settings_sets_backups"/>
+        </navigation>
+        <navigation android:id="@+id/utilities_graph"
+            app:startDestination="@id/utilitiesMenuFragment">
+            <fragment
+                android:id="@+id/utilitiesMenuFragment"
+                android:name="com.garethevans.church.opensongtablet.utilities.UtilitiesMenuFragment"
+                android:label="UtilitiesMenuFragment"
+                tools:layout="@layout/settings_utilities"/>
         </navigation>
 
     </navigation>

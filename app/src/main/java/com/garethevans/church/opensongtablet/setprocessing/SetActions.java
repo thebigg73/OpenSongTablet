@@ -780,7 +780,7 @@ public class SetActions {
 
         // The mUser3 field should contain all the images
         // Break all the images into the relevant slides
-        String[] separate_slide = tempSong.getUser3().split("\n");
+        String[] separate_slide = tempSong.getUser3().trim().split("\n");
 
         StringBuilder slideCode = new StringBuilder();
         for (String aSeparate_slide : separate_slide) {
@@ -801,7 +801,7 @@ public class SetActions {
         }
 
         sb.append("  <slide_group name=\"")
-                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getAka()))
+                .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getTitle()))
                 .append("\" type=\"image\" print=\"true\" seconds=\"")
                 .append(mainActivityInterface.getProcessSong().parseToHTMLEntities(tempSong.getUser1()))
                 .append("\" loop=\"")
@@ -814,10 +814,10 @@ public class SetActions {
                 .append("\n    ")
                 .append(emptyTagCheck(mainActivityInterface,"notes",tempSong.getKey()))
                 .append("\n    ")
-                .append("    <slides>\n")
+                .append("  <slides>\n")
                 .append(slideCode)
-                .append("\n")
-                .append("    </slides>\n")
+                .append("\n    ")
+                .append("  </slides>\n")
                 .append("  </slide_group>\n");
 
         return sb;

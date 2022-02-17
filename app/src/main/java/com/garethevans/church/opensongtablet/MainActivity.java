@@ -142,11 +142,12 @@ import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentMain
 import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentTags;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.songprocessing.SongActionsMenuFragment;
 import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
-import com.garethevans.church.opensongtablet.tools.TimeTools;
+import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -714,19 +715,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         String newSongText = processSong.getXML(this,this,song);
                         if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
-                        } else {
-                            showToast.doIt(getString(R.string.error));
-                        }
-                    }
-                    break;
-
-                case "duplicateSong":
-                    // User was in song menu dialog, clicked on create, then entered a new file name
-                    // Check this was successful (saved as arguments)
-                    if (arguments!=null && arguments.size()>1 && arguments.get(0).equals("success")) {
-                        // We now need to copy the original file.  It's contents are saved in arguments.get(1)
-                        if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
-                            doSongLoad(song.getFolder(),song.getFilename(),false);
                         } else {
                             showToast.doIt(getString(R.string.error));
                         }
@@ -2590,6 +2578,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         break;
                     case "SongSectionsFragment":
                         ((SongSectionsFragment) fragment).updateValue(value);
+                        break;
+                    case "songActionsMenuFragment":
+                        ((SongActionsMenuFragment) fragment).doDuplicate(value);
                         break;
                 }
             } catch (Exception e) {

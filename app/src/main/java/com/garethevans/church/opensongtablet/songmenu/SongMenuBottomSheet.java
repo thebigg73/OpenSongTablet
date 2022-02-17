@@ -53,23 +53,26 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeading.setClose(this);
 
         // Set up the views
+        setupViews();
         setListeners();
 
         return myView.getRoot();
     }
 
-    private void setListeners() {
+    private void setupViews() {
         // Set up the song title
         String songTitle = mainActivityInterface.getSong().getTitle();
         Log.d(TAG,"songTitle: "+songTitle);
-        if (songTitle == null || songTitle.isEmpty() || songTitle.equals("Welcome to OpenSongApp")) {
+        if (!mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
+            myView.songEdit.setVisibility(View.GONE);
             myView.songActions.setVisibility(View.GONE);
             myView.addToSet.setVisibility(View.GONE);
         } else {
             myView.songActions.setVisibility(View.VISIBLE);
             myView.addToSet.setVisibility(View.VISIBLE);
-            myView.songActions.setHint(songTitle);
-            myView.addToSet.setHint(songTitle);
+            myView.songEdit.setHint(getString(R.string.file)+": "+songTitle);
+            myView.songActions.setHint(getString(R.string.file)+": "+songTitle);
+            myView.addToSet.setHint(getString(R.string.file)+": "+songTitle);
         }
         // Check we have songs in the menu
         if (mainActivityInterface.getSongsFound("song").size()>0) {
@@ -77,6 +80,10 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         } else {
             myView.randomSong.setVisibility(View.GONE);
         }
+    }
+
+    private void setListeners() {
+
 
         // Listener for buttons
         myView.songEdit.setOnClickListener(v -> navigateTo("opensongapp://settings/edit"));

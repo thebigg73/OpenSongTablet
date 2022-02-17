@@ -2726,4 +2726,12 @@ public class ProcessSong {
         }
         return sections;
     }
+
+    // A check for songs we can edit, etc.
+    public boolean isValidSong(Context c, Song thisSong) {
+        return !thisSong.getFilename().equals(c.getString(R.string.welcome)) &&
+                !thisSong.getFilename().equals("Welcome to OpenSongApp") &&
+                !thisSong.getLyrics().contains(c.getString(R.string.song_doesnt_exist)) &&
+            !thisSong.getFolder().contains("**Image") && !thisSong.getFolder().contains("../Image");
+    }
 }

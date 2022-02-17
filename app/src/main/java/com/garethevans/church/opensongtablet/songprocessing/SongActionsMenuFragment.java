@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,10 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsSongactionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
+import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
+
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class SongActionsMenuFragment extends Fragment {
 
@@ -55,8 +60,20 @@ public class SongActionsMenuFragment extends Fragment {
     private void setListeners() {
         myView.importButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
         myView.edit.setOnClickListener(v -> actionAllowed(R.id.editsong_graph));
+        myView.duplicate.setOnClickListener(v -> {
+            if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
+                TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"songActionsMenuFragment",
+                        getString(R.string.duplicate),getString(R.string.song_new_name),
+                        getString(R.string.duplicate) + ": " +
+                                mainActivityInterface.getSong().getFilename(),
+                        null,null,true);
+                textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "textInputBottomSheet");
+            } else {
+                mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
+            }
+        });
         myView.delete.setOnClickListener(v -> {
-            if (checkFile()) {
+            if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
                 mainActivityInterface.displayAreYouSure("deleteSong",
                         getString(R.string.delete_song_warning), null,
                         "SongActionsMenuFragment", this,
@@ -76,7 +93,7 @@ public class SongActionsMenuFragment extends Fragment {
         myView.chords.setOnClickListener(v -> actionAllowed(R.id.chords_graph));
         myView.notation.setOnClickListener(v -> actionAllowed(R.id.musicScoreFragment));
         myView.midi.setOnClickListener(v -> {
-            if (checkFile()) {
+            if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
                 mainActivityInterface.navHome();
                 MidiSongBottomSheet midiSongBottomSheet = new MidiSongBottomSheet();
                 midiSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "midiSongBottomSheet");
@@ -86,16 +103,89 @@ public class SongActionsMenuFragment extends Fragment {
         });
     }
 
-    private boolean checkFile() {
-        return mainActivityInterface.getSaveSong().checkNotWelcomeSong(mainActivityInterface.getSong()) &&
-                !mainActivityInterface.getSong().getLyrics().contains(getString(R.string.song_doesnt_exist));
-    }
     private void actionAllowed(int id) {
-        if (!checkFile()) {
+        if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
             mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
         } else {
             mainActivityInterface.navigateToFragment(null, id);
         }
+    }
+
+    // Receieved from textInputBottomSheet via the MainActivity
+    public void doDuplicate(String newName) {
+        String oldName = mainActivityInterface.getSong().getFilename();
+        String oldTitle = mainActivityInterface.getSong().getTitle();
+        String folder = mainActivityInterface.getSong().getFolder();
+        Uri duplicateSongUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                mainActivityInterface,"Songs",folder, newName);
+
+        // Only proceed if the song doesn't exist already
+        if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),duplicateSongUri)) {
+            // Warn the user and stop
+            mainActivityInterface.getShowToast().doIt(getString(R.string.file_exists));
+        } else {
+            // Because we want to create a new copy, but change the title as well, we create the XML
+            mainActivityInterface.getSong().setTitle(newName);
+            mainActivityInterface.getSong().setFilename(newName);
+            String content = mainActivityInterface.getProcessSong().getXML(requireContext(),
+                    mainActivityInterface,mainActivityInterface.getSong());
+
+            // Now write the file
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF") ||
+                mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                // Copy the actual file
+                Uri originalUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                        mainActivityInterface,"Songs",folder,oldName);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().
+                        getInputStream(requireContext(),originalUri);
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().
+                        getOutputStream(requireContext(),duplicateSongUri);
+                if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
+                    // Success.  Add to the non-opensong database
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(requireContext(),
+                            mainActivityInterface,folder,newName);
+                    mainActivityInterface.getSong().setFilename(newName);
+                    mainActivityInterface.getSong().setTitle(newName);
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),
+                            mainActivityInterface,mainActivityInterface.getSong());
+                    // Set the new filename to load and navHome (also trigger the menu rebuild)
+                    loadNewSong();
+                } else {
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.error_song_not_saved));
+                    mainActivityInterface.getSong().setTitle(oldTitle);
+                    mainActivityInterface.getSong().setFilename(oldName);
+                }
+
+            } else {
+                if (mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(),
+                        mainActivityInterface, "Songs", mainActivityInterface.getSong().getFolder(),
+                        newName, content)) {
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.success));
+                    mainActivityInterface.getSong().setFilename(newName);
+
+                    // Add the new song to the database too
+                    mainActivityInterface.getSQLiteHelper().createSong(requireContext(), mainActivityInterface,
+                            mainActivityInterface.getSong().getFolder(), newName);
+                    mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),
+                            mainActivityInterface,mainActivityInterface.getSong());
+
+                    // Set the new filename to load and navHome (also trigger the menu rebuild)
+                    loadNewSong();
+                } else {
+                    mainActivityInterface.getSong().setTitle(oldTitle);
+                    mainActivityInterface.getSong().setFilename(oldName);
+                    mainActivityInterface.getShowToast().doIt(getString(R.string.error_song_not_saved));
+                }
+            }
+        }
+    }
+
+    private void loadNewSong() {
+        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                "songfilename",mainActivityInterface.getSong().getFilename());
+        mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
+        mainActivityInterface.navHome();
     }
 
     @Override

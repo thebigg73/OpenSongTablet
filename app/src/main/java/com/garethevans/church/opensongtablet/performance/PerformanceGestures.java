@@ -19,7 +19,7 @@ import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
 import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
-import com.garethevans.church.opensongtablet.tools.SoundLevelBottomSheet;
+import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
 
 public class PerformanceGestures {
 
@@ -62,8 +62,7 @@ public class PerformanceGestures {
 
     // Edit song
     public void editSong() {
-        if (mainActivityInterface.getSaveSong().checkNotWelcomeSong(mainActivityInterface.getSong()) &&
-        !mainActivityInterface.getSong().getLyrics().contains(c.getString(R.string.song_doesnt_exist))) {
+        if (mainActivityInterface.getProcessSong().isValidSong(c,mainActivityInterface.getSong())) {
             mainActivityInterface.navigateToFragment("opensongapp://settings/edit", 0);
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));

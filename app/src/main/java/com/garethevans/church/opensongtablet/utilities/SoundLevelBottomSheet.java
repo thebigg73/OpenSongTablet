@@ -1,9 +1,8 @@
-package com.garethevans.church.opensongtablet.tools;
+package com.garethevans.church.opensongtablet.utilities;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -118,7 +117,6 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
         myView.maxvolrange.setHint("0 - " + range);
     }
 
-
     private void checkPermissions() {
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) {
@@ -151,7 +149,7 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
                 // Permission hasn't been allowed and we are due to explain why
                 try {
-                    Snackbar.make(myView.dialogHeader, R.string.storage_rationale,
+                    Snackbar.make(myView.dialogHeader, R.string.microphone_rationale,
                             LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> activityResultLauncher.launch(Manifest.permission.RECORD_AUDIO)).show();
                 } catch (Exception e) {
                     e.printStackTrace();

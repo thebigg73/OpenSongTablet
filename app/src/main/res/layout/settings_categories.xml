@@ -102,7 +102,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ccli"
                 android:hint="@string/ccli_description" />
+            <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/utilitiesButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/utilities"
+                android:hint="@string/utilities_info" />
             <TableRow style="@style/DividerLine" />
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView

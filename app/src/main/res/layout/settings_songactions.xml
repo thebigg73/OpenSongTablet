@@ -29,8 +29,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/edit"
                 android:hint="@string/edit_song" />
-
             <TableRow style="@style/DividerLine" />
+
+            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+                android:id="@+id/duplicate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/duplicate"
+                android:hint="@string/duplicate_song" />
+            <TableRow style="@style/DividerLine" />
+
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/delete"

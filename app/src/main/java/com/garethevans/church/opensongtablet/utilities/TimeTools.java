@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.tools;
+package com.garethevans.church.opensongtablet.utilities;
 
 public class TimeTools {
     public String timeFormatFixer(int secstime) {

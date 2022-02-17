@@ -65,7 +65,7 @@ import com.garethevans.church.opensongtablet.songprocessing.SongSheetHeaders;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
-import com.garethevans.church.opensongtablet.tools.TimeTools;
+import com.garethevans.church.opensongtablet.utilities.TimeTools;
 
 import java.util.ArrayList;
 import java.util.Locale;

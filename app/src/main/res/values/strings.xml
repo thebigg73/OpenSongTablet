@@ -743,6 +743,7 @@
     <string name="sound_high">High</string>
     <string name="sound_hihat">Hihat</string>
     <string name="sound_level_meter">Sound level meter</string>
+    <string name="sound_level_meter_info">Check volumes (uses microphone)</string>
     <string name="sound_low">Low</string>
     <string name="sound_stick">Stick</string>
     <string name="sound_wood">Wood</string>
@@ -943,6 +944,8 @@ Check out the categories in the right hand options menu.
 [Outro]
 ;(Slow to end)
 .| G  |"</string>
+    <string name="utilities">Utilities</string>
+    <string name="utilities_info">Other tools for musicians</string>
 
     <string name="variation">Variation</string>
     <string name="variation_edit">This item can be edited.  The original will be unaffected.</string>
@@ -1105,7 +1108,7 @@ Check out the categories in the right hand options menu.
     <string name="midi_message_sent">MIDI message sent from song</string>
     <string name="midi_usb">Connect USB device</string>
     <string name="mode_settings">Settings specific to this mode</string>
-
+    <string name="duplicate_song">Create a copy of this song</string>
 
 
 </resources>

@@ -2,8 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 public class __TODO__ {
 
-    // Duplicate song
-    // Microphone rationale text for sound meter
     // Connected display settings in menu and presenter mode
 
     // Still to implement pedal previous next confirm
