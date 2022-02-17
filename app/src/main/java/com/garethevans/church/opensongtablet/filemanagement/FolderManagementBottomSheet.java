@@ -82,12 +82,14 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupView() {
+        myView.backupFolder.setVisibility(View.VISIBLE);
+        myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB", 0));
+
         if (root) {
             myView.dialogHeading.setText(mainActivityInterface.getStorageAccess().
                     niceUriTree(getContext(), mainActivityInterface,
                             mainActivityInterface.getStorageAccess().homeFolder(getContext(),
                                     null, mainActivityInterface))[1]);
-            myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
@@ -102,7 +104,6 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents",0));
             myView.deleteSubdirectory.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
-            myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB", 0));
             myView.exportSongList.setVisibility(View.VISIBLE);
             myView.exportSongList.setOnClickListener(v -> {
                 ExportSongListBottomSheet exportSongListBottomSheet = new ExportSongListBottomSheet();
@@ -114,7 +115,6 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
             String s = "OpenSong/Songs/" + subdir;
             myView.dialogHeading.setText(s);
             myView.changeLocation.setVisibility(View.GONE);
-            myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
             myView.moveContents.setOnClickListener(new ActionClickListener("moveContents",0));
             myView.renameFolder.setOnClickListener(new ActionClickListener("renameFolder",0));

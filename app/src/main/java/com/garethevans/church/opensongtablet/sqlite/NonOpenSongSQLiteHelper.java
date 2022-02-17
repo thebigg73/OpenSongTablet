@@ -4,28 +4,40 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.util.Log;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
-    public NonOpenSongSQLiteHelper(Context context) {
-        super(context, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
-        // Don't create the database here as we don't want to recreate on each call.
+    private final Uri appDB, userDB;
+    private final File appDBFile;
+    private final String TAG = "NonOSSQLHelper";
+
+    public NonOpenSongSQLiteHelper(Context c, MainActivityInterface mainActivityInterface) {
+        super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
+        appDBFile = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
+        appDB = Uri.fromFile(appDBFile);
+        userDB = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
+                "Settings", "", SQLite.NON_OS_DATABASE_NAME);
+
+        // Check for a previous version in user storage
+        // If it exists and isn't empty, copy it in to the appDB
+        // If if doesn't exist, or is empty copy our appDB to the userDb
+        importDatabase(c, mainActivityInterface);
     }
 
     // Database Version
-    private static final int DATABASE_VERSION = 2;  // THIS GETS
+    private static final int DATABASE_VERSION = 2;
+
     private SQLiteDatabase getDB(Context c, MainActivityInterface mainActivityInterface) {
-        // Make sure we have the persistent version ready
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Settings","", SQLite.NON_OS_DATABASE_NAME);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,uri,null,"Settings","", SQLite.NON_OS_DATABASE_NAME);
         // The version we use has to be in local app storage unfortunately.  We can copy this though
-        File f = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
-        SQLiteDatabase db2 = SQLiteDatabase.openOrCreateDatabase(f,null);
+        SQLiteDatabase db2 = SQLiteDatabase.openOrCreateDatabase(appDBFile,null);
         if (db2.getVersion()!=DATABASE_VERSION) {
             // Check we have the columns we need!
             db2.setVersion(DATABASE_VERSION);
@@ -33,6 +45,29 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         }
         return db2;
     }
+
+    private void importDatabase(Context c, MainActivityInterface mainActivityInterface) {
+        // This copies in the version in the settings folder if it exists and isn't empty
+        if (mainActivityInterface.getStorageAccess().uriExists(c,userDB) &&
+        mainActivityInterface.getStorageAccess().getFileSizeFromUri(c,userDB)>0) {
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,userDB);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,appDB);
+            Log.d(TAG,"User database copied in: "+mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream));
+        } else {
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,
+                    mainActivityInterface,true, userDB,null,"Settings","",
+                    SQLite.NON_OS_DATABASE_NAME);
+            Log.d(TAG,"Copy appDB to userDB: "+copyUserDatabase(c,mainActivityInterface));
+        }
+    }
+
+    public boolean copyUserDatabase(Context c, MainActivityInterface mainActivityInterface) {
+        // This copies the app persistent database into the user's OpenSong folder
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,appDB);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,userDB);
+        return mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db2) {
         // If the table doesn't exist, create it.

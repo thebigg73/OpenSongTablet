@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // The databases
         sqLiteHelper = new SQLiteHelper(this);
-        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
+        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this,this);
         commonSQL = new CommonSQL();
 
         // Converting song formats and processing song content
@@ -1726,7 +1726,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // If the file already exists, remove it as we might have edited the original
 
                 // Make this temp variation file
-                storageAccess.lollipopCreateFileForOutputStream(this,this,variationUri,null,"Variations","",newFilename);
+                storageAccess.lollipopCreateFileForOutputStream(this,this, true,
+                        variationUri,null,"Variations","",newFilename);
                 // Get a tempSong we can write
                 Song copySong = new Song();
                 if (setFolder.contains("**") || setFolder.contains("../")) {
@@ -2688,6 +2689,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (autoscroll!=null) {
             autoscroll.stopTimers();
         }
+        // Copy the persistent database from app storage to user storage
+        Log.d(TAG,"Persistent database backed up: "+nonOpenSongSQLiteHelper.copyUserDatabase(this,this));
     }
 
     @Override

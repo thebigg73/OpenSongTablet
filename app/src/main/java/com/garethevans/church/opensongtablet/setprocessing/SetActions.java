@@ -459,7 +459,7 @@ public class SetActions {
         // Make sure there is a file to write the output to (remove any existing first)
         mainActivityInterface.getStorageAccess().deleteFile((Context)mainActivityInterface, uriVariation);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,
-                mainActivityInterface, uriVariation, null, folderVariations, "", filename);
+                mainActivityInterface, true, uriVariation, null, folderVariations, "", filename);
 
         // Get an input/output stream reference and copy (streams are closed in copyFile())
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uriOriginal);
@@ -1261,7 +1261,7 @@ public class SetActions {
                                     folderImages, cache, safeFilename);
 
                             // Check the uri exists for the outputstream to be valid
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null,
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, true, uri, null,
                                     folderImages, cache, safeFilename);
 
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);

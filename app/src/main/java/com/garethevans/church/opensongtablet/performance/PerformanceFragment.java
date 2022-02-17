@@ -388,6 +388,10 @@ public class PerformanceFragment extends Fragment {
         });
         // Add the views and wait for the vto
         for (View view : mainActivityInterface.getSectionViews()) {
+            if (view.getParent()!=null) {
+                // Still attached - remove it
+                ((ViewGroup)view.getParent()).removeView(view);
+            }
             myView.testPane.addView(view);
         }
     }

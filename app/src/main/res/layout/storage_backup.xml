@@ -47,6 +47,17 @@
                     android:text="@string/overwrite"
                     android:visibility="gone" />
 
+                <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+                    android:id="@+id/includePersistentDB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:checked="true"
+                    android:text="@string/persistent_database"
+                    android:hint="@string/persistent_database_info"/>
+
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/includeHighlighter"
                     android:layout_width="match_parent"

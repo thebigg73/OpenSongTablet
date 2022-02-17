@@ -418,7 +418,7 @@ public class HighlighterEditFragment extends Fragment {
             uri = mainActivityInterface.getStorageAccess().getUriForItem(getActivity(), mainActivityInterface,
                     "Highlighter", "", hname);
             // Check the uri exists for the outputstream to be valid
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getActivity(), mainActivityInterface, uri, null,
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getActivity(), mainActivityInterface, false,uri, null,
                     "Highlighter", "", hname);
 
             requireActivity().runOnUiThread(() -> {

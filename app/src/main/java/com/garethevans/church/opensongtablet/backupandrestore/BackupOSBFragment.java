@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.sqlite.SQLite;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,6 +31,7 @@ public class BackupOSBFragment extends Fragment {
     // This Fragment allows the user to create an OpenSongApp backup file
     // Show the user which folders are detected and can be backed up.
     // By default it will be all of them
+    // It will also include the persistent database and highlighter notes
 
     private StorageBackupBinding myView;
     private MainActivityInterface mainActivityInterface;
@@ -39,6 +41,7 @@ public class BackupOSBFragment extends Fragment {
     private ArrayList<String> checkedFolders;
     private boolean error = false;
     private boolean alive = true;
+    boolean wantHighlighter, wantPersistentDB;
 
     private Thread thread;
     private Runnable runnable;
@@ -62,6 +65,9 @@ public class BackupOSBFragment extends Fragment {
 
     private void setupViews() {
         new Thread(() -> {
+            // Hide the progress text view for new
+            myView.progressText.setVisibility(View.GONE);
+
             // Get the default file name
             String deffilename = defaultFilename();
             requireActivity().runOnUiThread(() -> myView.backupName.setText(deffilename));
@@ -83,6 +89,9 @@ public class BackupOSBFragment extends Fragment {
                 myView.createBackupFAB.setText(getString(R.string.export));
                 myView.createBackupFAB.setOnClickListener(v -> doSave());
             });
+
+            // Set the persistent database to backup by default
+            myView.includePersistentDB.setChecked(true);
 
         }).start();
 
@@ -111,6 +120,9 @@ public class BackupOSBFragment extends Fragment {
 
     private void doSave() {
         // Get the checked folders
+        wantHighlighter = myView.includeHighlighter.isChecked();
+        wantPersistentDB = myView.includePersistentDB.getChecked();
+
         getCheckedFolders();
         runnable = () -> {
 
@@ -142,7 +154,8 @@ public class BackupOSBFragment extends Fragment {
             byte[] tempBuff = new byte[1024];
             // Check the temp folder exists
             Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Backups","",backupFilename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,backupUri,null,"Backups","",backupFilename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,true,
+                    backupUri,null,"Backups","",backupFilename);
             OutputStream outputStream;
             ZipOutputStream zipOutputStream = null;
             try {
@@ -155,6 +168,38 @@ public class BackupOSBFragment extends Fragment {
             ZipEntry ze;
 
             // Now go through each one in turn and check if we want it backed up
+            // Include the database
+            if (wantPersistentDB) {
+                // Copy the current appDB to the userDB (the one in Settings)
+                requireActivity().runOnUiThread(() -> {
+                    String message = getString(R.string.processing) + ": " + SQLite.NON_OS_DATABASE_NAME;
+                    myView.progressText.setText(message);
+                });
+                Log.d(TAG,"DB copied: "+mainActivityInterface.getNonOpenSongSQLiteHelper().
+                        copyUserDatabase(requireContext(), mainActivityInterface));
+                Uri uriDB = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
+                        mainActivityInterface,"Settings","", SQLite.NON_OS_DATABASE_NAME);
+                InputStream dbInputStream = mainActivityInterface.getStorageAccess().getInputStream(
+                        requireContext(),uriDB);
+                ze = new ZipEntry(SQLite.NON_OS_DATABASE_NAME);
+                try {
+                    if (zipOutputStream != null) {
+                        zipOutputStream.putNextEntry(ze);
+                        if (!ze.isDirectory()) {
+                            int len;
+                            while ((len = dbInputStream.read(tempBuff)) > 0) {
+                                zipOutputStream.write(tempBuff, 0, len);
+                            }
+                        }
+                        zipOutputStream.closeEntry();
+                        dbInputStream.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Now deal with the songs
             for (String file:allFiles) {
                 // Get folder from file string
                 try {
@@ -203,7 +248,7 @@ public class BackupOSBFragment extends Fragment {
             }
 
             // Now add the matching highligher files
-            if (myView.includeHighlighter.isChecked()) {
+            if (wantHighlighter) {
                 ArrayList<String> highlighterFiles = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(), mainActivityInterface, "Highlighter", "");
                 for (String file : highlighterFiles) {
                     ArrayList<String> bits = mainActivityInterface.getProcessSong().getInfoFromHighlighterFilename(file);

@@ -2729,9 +2729,19 @@ public class ProcessSong {
 
     // A check for songs we can edit, etc.
     public boolean isValidSong(Context c, Song thisSong) {
-        return !thisSong.getFilename().equals(c.getString(R.string.welcome)) &&
-                !thisSong.getFilename().equals("Welcome to OpenSongApp") &&
-                !thisSong.getLyrics().contains(c.getString(R.string.song_doesnt_exist)) &&
-            !thisSong.getFolder().contains("**Image") && !thisSong.getFolder().contains("../Image");
+        Log.d(TAG,"getFilename()="+thisSong.getFilename());
+        Log.d(TAG,"getLyrics()="+thisSong.getLyrics());
+        Log.d(TAG,"getFolder()="+thisSong.getFolder());
+
+        boolean filenameOk = !thisSong.getFilename().equals(c.getString(R.string.welcome)) &&
+                !thisSong.getFilename().equals("Welcome to OpenSongApp");
+        boolean lyricsOk = !thisSong.getLyrics().contains(c.getString(R.string.song_doesnt_exist));
+        boolean folderOk = !thisSong.getFolder().contains("**Image") && !thisSong.getFolder().contains("../Image");
+
+        Log.d(TAG,"filenameOk="+filenameOk);
+        Log.d(TAG,"lyricsOk="+lyricsOk);
+        Log.d(TAG,"folderOk="+folderOk);
+
+        return filenameOk && lyricsOk && folderOk;
     }
 }

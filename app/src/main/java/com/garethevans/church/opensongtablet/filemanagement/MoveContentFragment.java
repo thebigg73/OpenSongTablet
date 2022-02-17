@@ -183,7 +183,8 @@ public class MoveContentFragment extends Fragment {
                 try {
                     for (int x = 0; x < filesChosen.size(); x++) {
                         outputFile = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, "Songs", newFolder, filesChosen.get(x));
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(), mainActivityInterface, outputFile,
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(), mainActivityInterface,
+                                false,outputFile,
                                 null, "Songs", newFolder, filesChosen.get(x));
                         inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), uris.get(x));
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), outputFile);
@@ -271,7 +272,7 @@ public class MoveContentFragment extends Fragment {
         Uri highlighterOutputUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
                 mainActivityInterface,"Highlighter","",newFilename);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                mainActivityInterface,highlighterOutputUri,null,"Highlighter",
+                mainActivityInterface, false, highlighterOutputUri,null,"Highlighter",
                 "",newFilename);
         InputStream highlighterInputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(),oldUri);
         OutputStream highlighterOutputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),highlighterOutputUri);

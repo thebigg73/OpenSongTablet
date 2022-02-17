@@ -515,7 +515,7 @@ public class NearbyConnections implements NearbyInterface {
                         mainActivityInterface.getStorageAccess().createFile(c, mainActivityInterface, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
                         newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", receivedBits.get(0), receivedBits.get(1));
                         // Create the file if it doesn't exist
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, false, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
                         mainActivityInterface.getSong().setFolder(receivedBits.get(0));
                         mainActivityInterface.getSong().setFilename(receivedBits.get(1));
@@ -525,7 +525,7 @@ public class NearbyConnections implements NearbyInterface {
                     } else {
                         newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Received", "", "ReceivedSong");
                         // Prepare the output stream in the Received folder - just keep a temporary version
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Received", "", "ReceivedSong");
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, false, newLocation, null, "Received", "", "ReceivedSong");
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
                         mainActivityInterface.getSong().setFolder("../Received");
                         mainActivityInterface.getSong().setFilename("ReceivedSong");
@@ -585,14 +585,14 @@ public class NearbyConnections implements NearbyInterface {
         if (!isHost && isConnected && receiveHostFiles && keepHostFiles) {
             // The new file goes into our main Songs folder
             newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", folder, filename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Songs", folder, filename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, false, newLocation, null, "Songs", folder, filename);
         } else if (!isHost && isConnected && receiveHostFiles) {
             // The new file goes into our Received folder
             folder = "../Received";
             // IV - Store the received song filename in case the user wants to duplicate the received song
             receivedSongFilename = filename;
             newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Received", "", filename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, newLocation, null, "Received", "", filename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, true, newLocation, null, "Received", "", filename);
         }
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);

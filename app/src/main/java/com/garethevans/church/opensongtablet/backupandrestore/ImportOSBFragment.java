@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.StorageBackupBinding;
 import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.sqlite.SQLite;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -45,7 +47,7 @@ public class ImportOSBFragment extends Fragment {
     private ArrayList<String> foundFolders;
     private ArrayList<String> checkedFolders;
     private ArrayList<String> allZipItems;
-    private boolean error;
+    private boolean error, hasPersistentDB, hasHighlighterNotes;
 
     private Thread thread;
     private Runnable runnable;
@@ -136,13 +138,18 @@ public class ImportOSBFragment extends Fragment {
         myView.backupName.setFocusable(false);
         myView.overWrite.setVisibility(View.VISIBLE);
         myView.foundFoldersListView.removeAllViews();
+        myView.includeHighlighter.setVisibility(View.GONE);
+        myView.includePersistentDB.setVisibility(View.GONE);
     }
 
     private void findFolders() {
         // We need to parse the .osb (zip) file to extract a list of folders it contains as a new thread
         error = false;
         allZipItems = new ArrayList<>();
-        
+
+        hasHighlighterNotes = false;
+        hasPersistentDB = false;
+
         runnable = () -> {
 
             requireActivity().runOnUiThread(() -> {
@@ -179,11 +186,16 @@ public class ImportOSBFragment extends Fragment {
                         if (thisfolder.contains("/")) {
                             thisfolder = thisfolder.substring(0, thisfolder.lastIndexOf("/"));
                         }
+                        if (thisfolder.equals("_Highlighter")) {
+                            hasHighlighterNotes = true;
+                        }
                         // Only add it if we don't already have it
                         if (!foundFolders.contains(thisfolder)) {
                             // Only add if it isn't already in the array
                             foundFolders.add(thisfolder);
                         }
+                    } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
+                        hasPersistentDB = true;
                     }
                 }
 
@@ -230,6 +242,22 @@ public class ImportOSBFragment extends Fragment {
                                 myView.progressText.setText(message);
                             });
                         }
+                    }
+                    // If the _Highligher folder was found, give the user the option
+                    if (hasHighlighterNotes) {
+                        myView.includeHighlighter.setVisibility(View.VISIBLE);
+                        myView.includeHighlighter.setChecked(true);
+                    } else {
+                        myView.includeHighlighter.setVisibility(View.GONE);
+                        myView.includeHighlighter.setChecked(false);
+                    }
+                    // If the NonOpenSongSongs.db file was found, give the user the option
+                    if (hasPersistentDB) {
+                        myView.includePersistentDB.setVisibility(View.VISIBLE);
+                        myView.includePersistentDB.setChecked(true);
+                    } else {
+                        myView.includePersistentDB.setVisibility(View.GONE);
+                        myView.includePersistentDB.setChecked(false);
                     }
                     myView.createBackupFAB.setOnClickListener(v -> doImport());
                     myView.backupName.setOnClickListener(v -> changeBackupFile());
@@ -305,7 +333,7 @@ public class ImportOSBFragment extends Fragment {
                     mainActivityInterface.getMyActionBar().setHomeButtonEnabled(false);
                 }
             });
-            
+
             // Go through the checked folders and check they exist on the local storage
             // If not, create them
             for (String folder : checkedFolders) {
@@ -320,7 +348,7 @@ public class ImportOSBFragment extends Fragment {
                             "Songs", folder, "");
                 }
             }
-            
+
             // Now deal with the zip entries
             try {
                 byte[] buffer = new byte[8192];
@@ -336,6 +364,8 @@ public class ImportOSBFragment extends Fragment {
                         if (alive) {
                             if (ze.getName().startsWith("_Highlighter")) {
                                 file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, "Highlighter", "", ze.getName().replace("_Highlighter/",""));
+                            } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(),mainActivityInterface,"Settings","",SQLite.NON_OS_DATABASE_NAME);
                             } else {
                                 file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, "Songs", "", ze.getName());
                                 if (alive) {
@@ -347,8 +377,11 @@ public class ImportOSBFragment extends Fragment {
                             }
 
                             // If the file exists and we have allowed overwriting, or it doesn't exist and it is in the checked folders, write it
+                            // Because the database will be in the MAIN folder, we need to check that
                             exists = mainActivityInterface.getStorageAccess().uriExists(getContext(), file_uri);
-                            wantit = checkedFolders.contains(filefolder) || (filefolder.equals("_Highlighter") && myView.includeHighlighter.isChecked());
+                            wantit = (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME) && myView.includePersistentDB.getChecked()) ||
+                                    (!ze.getName().equals(SQLite.NON_OS_DATABASE_NAME) && checkedFolders.contains(filefolder)) ||
+                                    (filefolder.equals("_Highlighter") && myView.includeHighlighter.isChecked());
                         }
                         if (alive && wantit && (!exists || canoverwrite)) {
                             // We want it and either it doesn't exist, or we've selected overwriting
@@ -368,15 +401,24 @@ public class ImportOSBFragment extends Fragment {
                             });
 
                             // Make sure the file exists (might be non-existent)
+                            Log.d(TAG,"alive: "+alive+"   exists:"+exists+"   name:"+ze.getName());
                             if (!exists && alive) {
-                                if (ze.getName().startsWith("_Highlighter")) {
+                                Log.d(TAG,ze.getName());
+                                Log.d(TAG,"file_uri="+file_uri);
+                                if (ze.getName().contains("_Highlighter/")) {
                                     filename = ze.getName().replace("_Highlighter/","");
+                                    Log.d(TAG,"filename="+filename);
+                                    Log.d(TAG,"Into highlighter: folder="+filefolder+"  filename="+filename+"  file_uri="+file_uri);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,
-                                            file_uri,null,"Highlighter","",filename);
+                                            false, file_uri,null,"Highlighter","",filename);
+                                } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
+                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,
+                                            false,file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
+                                    Log.d(TAG,"Into songs: folder="+filefolder+"  filename="+filename+"  file_uri="+file_uri);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getContext(), mainActivityInterface,
-                                            file_uri, null, "Songs", filefolder, filename);
+                                            false, file_uri, null, "Songs", filefolder, filename);
                                 }
                             }
                             if (alive) {
@@ -437,6 +479,9 @@ public class ImportOSBFragment extends Fragment {
                         mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),mainActivityInterface,songids);
 
                         // Update the song index
+                        if (myView.includePersistentDB.getChecked()) {
+                            mainActivityInterface.getNonOpenSongSQLiteHelper().copyUserDatabase(requireContext(),mainActivityInterface);
+                        }
                         mainActivityInterface.getSQLiteHelper().insertFast(requireContext(),mainActivityInterface);
                         mainActivityInterface.setFullIndexRequired(true);
                         mainActivityInterface.fullIndex();

@@ -22,6 +22,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ocr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_ocr_white_36dp"
+            app:iconTint="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/text_extract"
+            android:visibility="gone"/>
+
         <com.garethevans.church.opensongtablet.customviews.MaterialEditText
             android:id="@+id/lyrics"
             android:layout_width="match_parent"
@@ -34,6 +45,7 @@
             app:autoSizeMinTextSize="8sp"
             app:autoSizeStepGranularity="2sp"
             app:autoSizeTextType="uniform"
+            android:layout_below="@+id/ocr"
             app:useMonospace="true"
             android:layout_marginBottom="80dp"/>
 

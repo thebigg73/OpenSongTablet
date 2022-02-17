@@ -1152,7 +1152,9 @@ public class StorageAccess {
         }
         return location;
     }
-    public void lollipopCreateFileForOutputStream(Context c, MainActivityInterface mainActivityInterface, Uri uri, String mimeType, String folder, String subfolder, String filename) {
+    public void lollipopCreateFileForOutputStream(Context c, MainActivityInterface mainActivityInterface,
+                                                  boolean deleteOld, Uri uri, String mimeType,
+                                                  String folder, String subfolder, String filename) {
         if (lollipopOrLater()) {
             // Only need to do this for Lollipop or later
             if (uriExists(c,uri)) {
@@ -1188,7 +1190,7 @@ public class StorageAccess {
         Uri fromUri = getUriForItem(c,mainActivityInterface, fromFolder, fromSubfolder, fromName);
         Uri toUri = getUriForItem(c, mainActivityInterface, toFolder, toSubfolder, toName);
         // Make sure the newUri is valid and exists
-        lollipopCreateFileForOutputStream(c,mainActivityInterface,toUri,null,toFolder,toSubfolder,toName);
+        lollipopCreateFileForOutputStream(c,mainActivityInterface,false,toUri,null,toFolder,toSubfolder,toName);
         // Get the input and output streams
         InputStream inputStream = getInputStream(c, fromUri);
         OutputStream outputStream = getOutputStream(c, toUri);
@@ -1221,11 +1223,7 @@ public class StorageAccess {
     public boolean doStringWriteToFile(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename, String string) {
         try {
             Uri uri = getUriForItem(c, mainActivityInterface, folder, subfolder, filename);
-            // If the file exists, delete it, otherwise it doesn't work
-            if (uriExists(c,uri)) {
-                deleteFile(c, uri);
-            }
-            lollipopCreateFileForOutputStream(c, mainActivityInterface, uri, null, folder, subfolder, filename);
+            lollipopCreateFileForOutputStream(c,  mainActivityInterface, true, uri, null, folder, subfolder, filename);
             OutputStream outputStream = getOutputStream(c, uri);
             return writeFileFromString(string, outputStream);
         } catch (Exception e) {
@@ -1614,10 +1612,8 @@ public class StorageAccess {
         // Write the new file and delete the old one
 
         // If the new file already exists, delete it to avoid overwrite errors
-        deleteFile(c,newUri);
-
         // Now create a blank file
-        lollipopCreateFileForOutputStream(c,mainActivityInterface,newUri,null,newFolder,newSubfolder,newName);
+        lollipopCreateFileForOutputStream(c,mainActivityInterface,true, newUri,null,newFolder,newSubfolder,newName);
 
         // Now get an InputStream from the oldUri and an OutputStream for the newUri
         InputStream inputStream = getInputStream(c,oldUri);

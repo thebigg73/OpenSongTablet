@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -66,6 +67,15 @@ public class EditSongFragmentLyrics extends Fragment {
     }
 
     private void setupValues() {
+        if ((Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP &&
+                mainActivityInterface.getSong().getFiletype().equals("PDF")) ||
+                mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+            // Show the OCR button
+            myView.ocr.setVisibility(View.VISIBLE);
+        } else {
+            myView.ocr.setVisibility(View.GONE);
+        }
+
         // The button colors
         colorOn = getResources().getColor(R.color.colorSecondary);
         colorOff = getResources().getColor(R.color.colorAltPrimary);
@@ -179,6 +189,12 @@ public class EditSongFragmentLyrics extends Fragment {
                     addUndoStep = true;
                 }
             }
+        });
+
+        myView.ocr.setOnClickListener(v -> {
+            mainActivityInterface.navHome();
+            mainActivityInterface.getOCR().getTextFromPDF(requireContext(),mainActivityInterface,
+                    mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename());
         });
         myView.bottomSheetLayout.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
         myView.bottomSheetLayout.textSizeUp.setOnClickListener(v -> checkTextSize(+1));

@@ -105,9 +105,9 @@ public class SongActionsMenuFragment extends Fragment {
 
     private void actionAllowed(int id) {
         if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
-            mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
-        } else {
             mainActivityInterface.navigateToFragment(null, id);
+        } else {
+            mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
         }
     }
 

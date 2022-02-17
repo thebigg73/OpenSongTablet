@@ -447,7 +447,7 @@ public class ImportOnlineFragment extends Fragment {
         Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
                 mainActivityInterface,"Songs",folder,filename);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                mainActivityInterface,outputUri,null,"Songs",folder,filename);
+                mainActivityInterface,false,outputUri,null,"Songs",folder,filename);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),outputUri);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(),inputUri);
         try {

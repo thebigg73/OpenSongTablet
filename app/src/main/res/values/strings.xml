@@ -1109,6 +1109,7 @@ Check out the categories in the right hand options menu.
     <string name="midi_usb">Connect USB device</string>
     <string name="mode_settings">Settings specific to this mode</string>
     <string name="duplicate_song">Create a copy of this song</string>
-
+    <string name="persistent_database">Persistent database</string>
+    <string name="persistent_database_info">This stores extra information (key, notes, autoscroll, midi, etc.) for non OpenSong songs such as PDF files</string>
 
 </resources>

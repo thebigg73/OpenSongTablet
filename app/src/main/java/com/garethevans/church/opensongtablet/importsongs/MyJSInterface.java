@@ -30,7 +30,7 @@ public class MyJSInterface {
         this.mainActivityInterface = mainActivityInterface;
         this.fragment = fragment;
         saveFile = mainActivityInterface.getStorageAccess().getUriForItem(context, mainActivityInterface, "Received", "", "SongSelect.pdf");
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(context, mainActivityInterface, saveFile, null, "Received", "", "SongSelect.pdf");
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(context, mainActivityInterface, false,saveFile, null, "Received", "", "SongSelect.pdf");
     }
 
     public static String getBase64StringFromBlobUrl(String blobUrl) {

@@ -423,7 +423,7 @@ public class ExportFragment extends Fragment {
 
         // Now create a blank file ready to assign an outputStream
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                mainActivityInterface,uri,null,"Export","",
+                mainActivityInterface,true, uri,null,"Export","",
                 exportFilename);
 
         return uri;
