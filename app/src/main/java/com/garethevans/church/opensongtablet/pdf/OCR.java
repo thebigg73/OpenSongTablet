@@ -88,6 +88,14 @@ public class OCR {
         }
     }
 
+    public void getTextFromImageFile(Context c, MainActivityInterface mainActivityInterface,
+                                     String folder, String filename) {
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
+                "Songs",folder,filename);
+        Bitmap bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(c,mainActivityInterface,uri,0,0);
+        getTextFromImage(mainActivityInterface,bitmap);
+    }
+
     public void getTextFromImage(MainActivityInterface mainActivityInterface, Bitmap bmp) {
 
         this.mainActivityInterface = mainActivityInterface;

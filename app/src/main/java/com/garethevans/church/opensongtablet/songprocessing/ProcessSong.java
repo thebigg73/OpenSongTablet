@@ -51,7 +51,7 @@ public class ProcessSong {
     private final String TAG = "ProcessSong";
     private final float defFontSize = 8.0f;
     private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
-            displayChords, displayLyrics, usePresentationOrder, displayCapoChords, displayCapoAndNativeChords,
+            displayChords, displayLyrics, displayCapoChords, displayCapoAndNativeChords,
             songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
             songAutoScaleOverrideWidth, trimLines, trimSections;
     private float fontSize, fontSizeMax, fontSizeMin, blockShadowAlpha,
@@ -85,7 +85,6 @@ public class ProcessSong {
         songAutoScaleOverrideWidth = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "songAutoScaleOverrideWidth", false);
         trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "trimLines", true);
         trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "trimSections", true);
-        usePresentationOrder = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "usePresentationOrder", false);
         fontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSize", 20f);
         fontSizeMax = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizeMax", 50f);
         fontSizeMin = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizeMin", 8f);

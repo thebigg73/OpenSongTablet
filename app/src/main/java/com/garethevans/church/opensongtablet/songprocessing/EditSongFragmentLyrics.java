@@ -193,8 +193,14 @@ public class EditSongFragmentLyrics extends Fragment {
 
         myView.ocr.setOnClickListener(v -> {
             mainActivityInterface.navHome();
-            mainActivityInterface.getOCR().getTextFromPDF(requireContext(),mainActivityInterface,
-                    mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename());
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                mainActivityInterface.getOCR().getTextFromPDF(requireContext(), mainActivityInterface,
+                        mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
+            } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                mainActivityInterface.getOCR().getTextFromImageFile(requireContext(),mainActivityInterface,
+                        mainActivityInterface.getSong().getFolder(),
+                        mainActivityInterface.getSong().getFilename());
+            }
         });
         myView.bottomSheetLayout.textSizeDown.setOnClickListener(v -> checkTextSize(-1));
         myView.bottomSheetLayout.textSizeUp.setOnClickListener(v -> checkTextSize(+1));

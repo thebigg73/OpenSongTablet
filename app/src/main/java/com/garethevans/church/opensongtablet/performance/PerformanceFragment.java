@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,7 +21,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
@@ -52,6 +52,7 @@ public class PerformanceFragment extends Fragment {
     private GestureDetector gestureDetector;
     private PDFPageAdapter pdfPageAdapter;
     private ImageSlideAdapter imageSlideAdapter;
+    private StageSectionAdapter stageSectionAdapter;
     private RecyclerLayoutManager recyclerLayoutManager;
 
     // Attaching and destroying
@@ -173,6 +174,7 @@ public class PerformanceFragment extends Fragment {
         myView.testPane.removeAllViews();
         myView.recyclerView.removeAllViews();
         myView.imageView.setImageDrawable(null);
+        mainActivityInterface.setSectionViews(null);
     }
 
     // This stuff loads the song and prepares the views
@@ -183,7 +185,7 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getAutoscroll().stopAutoscroll();
 
         // During the load song call, the song is cleared
-        // However if first extracts the folder and filename we've just set
+        // However ii first extracts the folder and filename we've just set
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename((filename));
 
@@ -289,24 +291,29 @@ public class PerformanceFragment extends Fragment {
 
         pdfPageAdapter = new PDFPageAdapter(requireContext(), mainActivityInterface, displayInterface,
                 availableWidth, availableHeight);
-        myView.recyclerView.setAdapter(pdfPageAdapter);
 
-        myView.recyclerView.post(() -> {
-            heightBeforeScale = pdfPageAdapter.getHeight();
-            heightAfterScale = heightBeforeScale;
-            recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), screenHeight);
-            myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
+        myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                heightBeforeScale = pdfPageAdapter.getHeight();
+                heightAfterScale = heightBeforeScale;
+                recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), screenHeight);
+                myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
 
-            // Do the slide in
-            myView.recyclerView.setVisibility(View.VISIBLE);
-            myView.recyclerView.startAnimation(animSlideIn);
+                // Do the slide in
+                myView.recyclerView.setVisibility(View.VISIBLE);
+                myView.recyclerView.startAnimation(animSlideIn);
 
-            // Get a null screenshot
-            getScreenshot(0, 0, 0);
+                // Get a null screenshot
+                getScreenshot(0, 0, 0);
 
-            // Deal with song actions to run after display (highlighter, notes, etc)
-            dealWithStuffAfterReady();
+                // Deal with song actions to run after display (highlighter, notes, etc)
+                dealWithStuffAfterReady();
+
+                myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
         });
+        myView.recyclerView.setAdapter(pdfPageAdapter);
     }
     private void prepareIMGView() {
         // We use the imageView inside the pageHolder, inside the zoomLayout
@@ -366,7 +373,6 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.setVisibility(View.INVISIBLE);
         imageSlideAdapter = new ImageSlideAdapter(requireContext(), mainActivityInterface, displayInterface,
                 availableWidth, availableHeight);
-        myView.recyclerView.setAdapter(imageSlideAdapter);
 
         // If we have a time for each slide, set the song duration
         if (mainActivityInterface.getSong().getUser1()!=null && !mainActivityInterface.getSong().getUser1().isEmpty()) {
@@ -380,23 +386,29 @@ public class PerformanceFragment extends Fragment {
             mainActivityInterface.getSong().setAutoscrolldelay("0");
         }
 
-        // Send the autoscroll information (if required)
-        myView.recyclerView.post(() -> {
-            heightBeforeScale = imageSlideAdapter.getHeight();
-            heightAfterScale = heightBeforeScale;
-            recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),screenHeight);
-            myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
+        myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                heightBeforeScale = imageSlideAdapter.getHeight();
+                heightAfterScale = heightBeforeScale;
+                recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),screenHeight);
+                myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
 
-            // Slide in
-            myView.recyclerView.setVisibility(View.VISIBLE);
-            myView.recyclerView.startAnimation(animSlideIn);
+                // Slide in
+                myView.recyclerView.setVisibility(View.VISIBLE);
+                myView.recyclerView.startAnimation(animSlideIn);
 
-            // Deal with song actions to run after display (highlighter, notes, etc)
-            dealWithStuffAfterReady();
+                // Deal with song actions to run after display (highlighter, notes, etc)
+                dealWithStuffAfterReady();
 
-            // Get a null screenshot
-            getScreenshot(0,0,0);
+                // Get a null screenshot
+                getScreenshot(0,0,0);
+
+                myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
         });
+        myView.recyclerView.setAdapter(imageSlideAdapter);
+
     }
     private void prepareXMLView() {
         // If we are old Android and can't show a pdf, tell the user
@@ -404,6 +416,8 @@ public class PerformanceFragment extends Fragment {
                 android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
             mainActivityInterface.getShowToast().doIt(getString(R.string.not_high_enough_api));
         }
+
+        mainActivityInterface.setSectionViews(null);
 
         // Now prepare the song sections views so we can measure them for scaling using a view tree observer
         mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
@@ -491,29 +505,41 @@ public class PerformanceFragment extends Fragment {
             // We are in Stage mode so use the recyclerView
             myView.recyclerView.setVisibility(View.INVISIBLE);
             myView.pageHolder.setVisibility(View.GONE);
+            myView.songView.setVisibility(View.GONE);
             myView.zoomLayout.setVisibility(View.GONE);
-            StageSectionAdapter stageSectionAdapter = new StageSectionAdapter(requireContext(), mainActivityInterface, displayInterface);
+            stageSectionAdapter = new StageSectionAdapter(requireContext(), mainActivityInterface, displayInterface);
 
-            myView.recyclerView.setAdapter(stageSectionAdapter);
-            if (myView.recyclerView.getItemAnimator()!=null) {
-                ((SimpleItemAnimator) myView.recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-            }
+            myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    heightBeforeScale = stageSectionAdapter.getHeight();
+                    heightAfterScale = heightBeforeScale;
 
-            heightBeforeScale = stageSectionAdapter.getHeight();
-            heightAfterScale = heightBeforeScale;
+                    Log.d(TAG,"heightBeforeScale="+heightBeforeScale);
 
-            recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(),screenHeight);
+                    for (float heights:stageSectionAdapter.getHeights()) {
+                        Log.d(TAG,"height: "+heights);
+                    }
 
-            // Slide in
-            myView.recyclerView.post(() -> {
-                myView.recyclerView.setVisibility(View.VISIBLE);
-                myView.recyclerView.startAnimation(animSlideIn);
+                    Log.d(TAG,"screenHeight="+screenHeight);
 
-                dealWithStuffAfterReady();
+                    recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(),screenHeight);
+                    myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
 
-                // Get a null screenshot
-                getScreenshot(0,0,0);
+                    // Slide in
+                    myView.recyclerView.setVisibility(View.VISIBLE);
+                    myView.recyclerView.startAnimation(animSlideIn);
+
+                    dealWithStuffAfterReady();
+
+                    // Get a null screenshot
+                    getScreenshot(0,0,0);
+
+                    myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
             });
+            myView.recyclerView.setAdapter(stageSectionAdapter);
+
 
         } else {
             // We are in Performance mode, so use the songView

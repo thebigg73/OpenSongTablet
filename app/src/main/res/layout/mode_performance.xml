@@ -41,7 +41,7 @@
         android:focusable="true"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
     <!-- The main content inside a zoom layout -->
     <com.garethevans.church.opensongtablet.customviews.MyZoomLayout

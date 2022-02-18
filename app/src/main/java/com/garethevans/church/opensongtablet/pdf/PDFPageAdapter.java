@@ -6,7 +6,6 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -219,7 +218,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     public void sectionSelected(int position) {
         // Whatever the previously selected item was, change the alpha to the alphaOff value
         mainActivityInterface.getSong().setPdfPageCurrent(position);
-        currentSection = position;
 
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
@@ -236,6 +234,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                 notifyItemChanged(position, alphaChange);
             }
         }
+        currentSection = position;
 
         // Send and update notification to Performance Fragment via the MainActivity (scrolls to position)
         displayInterface.performanceShowSection(position);

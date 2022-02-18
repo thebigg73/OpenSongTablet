@@ -56,6 +56,7 @@ public class DisplayScalingFragment extends Fragment {
         setSliderValue(myView.scaleHeading,"scaleHeadings",0.6f,100,"%");
         setSliderValue(myView.scaleChords,"scaleChords",0.8f,100,"%");
         setSliderValue(myView.scaleComments,"scaleChords",0.8f,100,"%");
+        setSliderValue(myView.scaleStage,"stageModeScale", 0.8f,100,"%");
 
         myView.manualFontSize.setLabelFormatter(value -> ((int)value)+"sp");
         myView.minFontSize.setLabelFormatter(value -> ((int)value)+"sp");
@@ -63,6 +64,7 @@ public class DisplayScalingFragment extends Fragment {
         myView.scaleHeading.setLabelFormatter(value -> ((int)value)+"%");
         myView.scaleChords.setLabelFormatter(value -> ((int)value)+"%");
         myView.scaleComments.setLabelFormatter(value -> ((int)value)+"%");
+        myView.scaleStage.setLabelFormatter(value -> ((int)value)+"%");
     }
 
     private void setAutoscaleMode() {
@@ -169,9 +171,10 @@ public class DisplayScalingFragment extends Fragment {
         setSliderListeners(myView.manualFontSize, "fontSize", 1.0f, "px");
         setSliderListeners(myView.minFontSize, "fontSizeMin", 1.0f, "px");
         setSliderListeners(myView.maxFontSize, "fontSizeMax", 1.0f, "px");
-        setSliderListeners(myView.scaleHeading, "scaleHeadings", 100.f, "%");
-        setSliderListeners(myView.scaleChords, "scaleChords", 100.f, "%");
-        setSliderListeners(myView.scaleComments, "scaleComments", 100.f, "%");
+        setSliderListeners(myView.scaleHeading, "scaleHeadings", 100f, "%");
+        setSliderListeners(myView.scaleChords, "scaleChords", 100f, "%");
+        setSliderListeners(myView.scaleComments, "scaleComments", 100f, "%");
+        setSliderListeners(myView.scaleStage, "stageModeScale", 100f,"%");
     }
 
     private void updateBooleanPreference(String prefName, boolean isChecked) {

@@ -944,7 +944,6 @@ Check out the categories in the right hand options menu.
 
     <!-- TODO LIKELY TO REMOVE NO USAGES FOUND -->
 
-    <!--
     <string name="action_search">Search songs</string>
     <string name="actionbar">Menu bar info</string>
     <string name="actions">Actions</string>
@@ -1110,5 +1109,5 @@ Check out the categories in the right hand options menu.
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
 
--->
+
 </resources>

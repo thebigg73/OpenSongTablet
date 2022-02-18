@@ -150,7 +150,17 @@
                 android:valueTo="200"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"/>
+            <TableRow style="@style/DividerLine"/>
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/scaleStage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stage_section_max"
+                android:valueFrom="20"
+                android:valueTo="100"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

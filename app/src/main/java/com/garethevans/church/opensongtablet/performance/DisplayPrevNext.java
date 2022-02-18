@@ -16,6 +16,7 @@ public class DisplayPrevNext {
 
     private final String TAG = "DisplayPrevNext";
     private final MainActivityInterface mainActivityInterface;
+    private final Context c;
     private final LinearLayout layout;
     private final ExtendedFloatingActionButton prev, next;
     private boolean showPrev, prevVisible = false;
@@ -41,6 +42,7 @@ public class DisplayPrevNext {
 
     public DisplayPrevNext (Context c, LinearLayout layout,
                            ExtendedFloatingActionButton prev, ExtendedFloatingActionButton next) {
+        this.c = c;
         this.mainActivityInterface = (MainActivityInterface) c;
         this.layout = layout;
         this.prev = prev;
@@ -183,12 +185,16 @@ public class DisplayPrevNext {
         swipeDirection = "R2L";
         if (nextIndex!=-1) {
             doMove(nextIndex);
+        } else {
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.last_song));
         }
     }
     public void moveToPrev() {
         swipeDirection = "L2R";
-        if (prevIndex!=-1) {
+        if (prevIndex != -1) {
             doMove(prevIndex);
+        } else {
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.first_song));
         }
     }
 

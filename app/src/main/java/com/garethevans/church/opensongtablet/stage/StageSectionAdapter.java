@@ -4,10 +4,10 @@ package com.garethevans.church.opensongtablet.stage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -25,57 +25,61 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     // All the helpers we need to access are in the MainActivity
     private final String TAG = "StageSectionAdapter";
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
-    private ArrayList<StageSectionInfo> sectionInfos;
-    private ArrayList<Float> floatSizes;
+    private final ArrayList<StageSectionInfo> sectionInfos;
+    private final ArrayList<Float> floatSizes;
     private float floatHeight = 0;
     private int currentSection = 0;
-    private final float maxFontSize;
-    private final float density;
+    private final float maxFontSize, density, stageModeScale;
     private final String alphaChange = "alpha";
 
     public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface) {
+        this.c = c;
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
         density = c.getResources().getDisplayMetrics().density;
         maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"fontSizeMax",50f);
+        stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"stageModeScale",0.8f);
+        sectionInfos = new ArrayList<>();
+        floatSizes = new ArrayList<>();
         setSongInfo();
     }
 
     private void setSongInfo() {
         // Prepare the info for each section
-        sectionInfos = new ArrayList<>();
-        floatSizes = new ArrayList<>();
         floatHeight = 0;
 
         for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
+            Log.d(TAG,"height["+x+"]="+mainActivityInterface.getSectionHeights().get(x));
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
-            stageSectionInfo.section = x;
 
+            float alpha = 1f;
             if (mainActivityInterface.getMode().equals("Stage")) {
-                stageSectionInfo.alpha = 0.4f;
-            } else {
-                stageSectionInfo.alpha = 1f;
+                alpha = 0.4f;
             }
 
             int sectionWidth = mainActivityInterface.getSectionWidths().get(x);
             int sectionHeight = mainActivityInterface.getSectionHeights().get(x);
 
-            stageSectionInfo.width = sectionWidth;
-            stageSectionInfo.height = sectionHeight;
-
             float x_scale = (float)(mainActivityInterface.getDisplayMetrics()[0]-16)/(float)sectionWidth;
-            float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getAppActionBar().getActionBarHeight())*0.75f/(float)sectionHeight;
+            float y_scale = (float)(mainActivityInterface.getDisplayMetrics()[1]-mainActivityInterface.getAppActionBar().getActionBarHeight())*stageModeScale/(float)sectionHeight;
             float scale = Math.min(x_scale,y_scale);
             // Check the scale isn't bigger than the maximum font size
             scale = Math.min(scale,(maxFontSize/14f));
-            stageSectionInfo.scale = scale;
 
             float itemHeight = sectionHeight * scale + (4f * density);
-            floatHeight += itemHeight;
-            floatSizes.add (itemHeight);
 
+            Log.d(TAG,"itemHeight["+x+"]="+itemHeight);
+            floatHeight += itemHeight;
+            floatSizes.add(itemHeight);
+
+            stageSectionInfo.section = x;
+            stageSectionInfo.width = sectionWidth;
+            stageSectionInfo.height = sectionHeight;
+            stageSectionInfo.scale = scale;
+            stageSectionInfo.alpha = alpha;
             sectionInfos.add(stageSectionInfo);
         }
     }
@@ -105,43 +109,44 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull StageViewHolder holder, int position) {
-        int section = sectionInfos.get(position).section;
-        int width = sectionInfos.get(position).width;
-        int height = sectionInfos.get(position).height;
-        float scale = sectionInfos.get(position).scale;
-        float alpha = sectionInfos.get(position).alpha;
-        CardView cardView = (CardView)holder.v;
-        if (mainActivityInterface.getMode().equals("Stage") && position == currentSection) {
-            alpha = 1.0f;
-        }
-        cardView.setAlpha(alpha);
-        View v = mainActivityInterface.getSectionViews().get(position);
-        v.setPivotX(0);
-        v.setPivotY(0);
-        v.setScaleX(scale);
-        v.setScaleY(scale);
-        holder.sectionView.getLayoutParams().width = (int)(width*scale);
-        holder.sectionView.getLayoutParams().height = (int)(height*scale);
-        cardView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-        ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(position)));
-        cardView.getLayoutParams().height = (int)(height*scale);
+        if (position<sectionInfos.size()) {
+            View v = mainActivityInterface.getSectionViews().get(position);
+            if (v.getParent()!=null) {
+                ((ViewGroup)v.getParent()).removeView(v);
+            }
 
-        // Check it isn't already added to a layout
-        if (v.getParent()!=null) {
-            v.post(() -> {
-                // Run as a post to avoid inproper requestLayout
-                ((FrameLayout)v.getParent()).removeAllViews();
-                holder.sectionView.addView(v);
-            });
-        } else {
+            int section = sectionInfos.get(position).section;
+            int width = sectionInfos.get(position).width;
+            int height = sectionInfos.get(position).height;
+            float scale = sectionInfos.get(position).scale;
+            float alpha = sectionInfos.get(position).alpha;
+            CardView cardView = (CardView) holder.v;
+            if (mainActivityInterface.getMode().equals("Stage") && section == currentSection) {
+                alpha = 1.0f;
+            }
+            cardView.setAlpha(alpha);
+
+            v.setPivotX(0);
+            v.setPivotY(0);
+            v.setScaleX(scale);
+            v.setScaleY(scale);
+            holder.sectionView.getLayoutParams().width = (int) (width * scale);
+            holder.sectionView.getLayoutParams().height = (int) (height * scale);
+            cardView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+            cardView.getLayoutParams().height = (int) (height * scale);
+
+            ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
+
             holder.sectionView.addView(v);
-        }
 
-        cardView.setOnClickListener(view -> sectionSelected(section));
-        cardView.setOnLongClickListener(view -> {
-            // Do nothing, but consume the event
-            return true;
-        });
+            cardView.setVisibility(View.VISIBLE);
+            cardView.setOnClickListener(view -> sectionSelected(section));
+            cardView.setOnLongClickListener(view -> {
+                // Do nothing, but consume the event
+                return true;
+            });
+
+        }
     }
 
     @Override
@@ -173,11 +178,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             // Now update the newly selected position
             if (position >= 0 && position < sectionInfos.size()) {
                 mainActivityInterface.getSong().setCurrentSection(position);
-                currentSection = position;
                 sectionInfos.get(position).alpha = 1.0f;
                 notifyItemChanged(position, alphaChange);
             }
         }
+        currentSection = position;
 
         // Send and update notification to Performance Fragment via the MainActivity
         displayInterface.performanceShowSection(position);
