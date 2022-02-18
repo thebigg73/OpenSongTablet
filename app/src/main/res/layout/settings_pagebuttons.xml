@@ -365,7 +365,16 @@
                     android:hint="" />
 
             </LinearLayout>
+            <TableRow style="@style/DividerLine" />
 
+            <com.garethevans.church.opensongtablet.customviews.MaterialSlider
+                android:id="@+id/opacity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:valueFrom="20"
+                android:valueTo="100"
+                android:text="@string/opacity" />
             <TableRow style="@style/DividerLine" />
 
         </LinearLayout>

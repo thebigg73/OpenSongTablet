@@ -21,6 +21,7 @@ import com.garethevans.church.opensongtablet.customviews.MaterialTextView;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.slider.Slider;
 
 import java.util.ArrayList;
 
@@ -60,6 +61,27 @@ public class PageButtonFragment extends Fragment {
     private void setupPageButtons() {
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> {
+                int opacity = (int)(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha()*100);
+                if (opacity<myView.opacity.getValueFrom()) {
+                    opacity = (int)myView.opacity.getValueFrom();
+                }
+                myView.opacity.setLabelFormatter(value -> ((int)value)+"%");
+                myView.opacity.setValue(opacity);
+                myView.opacity.setHint(opacity+"%");
+                myView.opacity.addOnChangeListener((slider, value, fromUser) -> myView.opacity.setHint((int)value+"%"));
+                myView.opacity.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                    @Override
+                    public void onStartTrackingTouch(@NonNull Slider slider) { }
+
+                    @Override
+                    public void onStopTrackingTouch(@NonNull Slider slider) {
+                        float value = myView.opacity.getValue() /100f;
+                        int newColor = mainActivityInterface.getMyThemeColors().changePageButtonAlpha(value);
+                        mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                                mainActivityInterface.getMyThemeColors().getThemeName()+"_pageButtonsColor",
+                                newColor);
+                    }
+                });
                 // We will programatically draw the page buttons and their options based on our preferences
                 // Add the buttons to our array (so we can iterate through)
                 addMyButtons();

@@ -98,7 +98,7 @@ public class OnScreenInfo extends LinearLayout {
         if (capoInfoNeeded) {
             capoInfo.setText(mainActivityInterface.getChordDisplayProcessing().getCapoPosition(c, mainActivityInterface));
             capoInfo.setVisibility(View.VISIBLE);
-            capoInfo.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
+            capoInfo.setAlpha(mainActivityInterface.getMyThemeColors().getExtraInfoBgSplitAlpha());
             capoInfo.post(() -> {
                 capoInfo.setPivotX(capoInfo.getWidth() / 2f);
                 capoInfo.setPivotY(capoInfo.getHeight() / 2f);
