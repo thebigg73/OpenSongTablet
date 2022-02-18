@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -75,7 +74,6 @@ public class OnScreenInfo extends LinearLayout {
     }
 
     public void updateAlpha(Context c, MainActivityInterface mainActivityInterface) {
-        Log.d(TAG,"updating alpha to: "+mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
         Drawable drawable = ContextCompat.getDrawable(c,R.drawable.rounded_dialog_node);
         if (drawable!=null) {
             drawable.setColorFilter(mainActivityInterface.getMyThemeColors().getExtraInfoBgSplitColor(),
@@ -98,7 +96,6 @@ public class OnScreenInfo extends LinearLayout {
         capoInfoNeeded = !mainActivityInterface.getMode().equals("Presenter") && mainActivityInterface.
                 getProcessSong().showingCapo(mainActivityInterface.getSong().getCapo());
         if (capoInfoNeeded) {
-            Log.d(TAG, "Trying to show capo info");
             capoInfo.setText(mainActivityInterface.getChordDisplayProcessing().getCapoPosition(c, mainActivityInterface));
             capoInfo.setVisibility(View.VISIBLE);
             capoInfo.setAlpha(mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha());
@@ -110,7 +107,9 @@ public class OnScreenInfo extends LinearLayout {
             });
             capoInfo.postDelayed(() -> {
                 capoInfo.clearAnimation();
-                capoInfo.setVisibility(View.GONE);
+                if (autoHideCapo) {
+                    capoInfo.setVisibility(View.GONE);
+                }
                 capoPulsing = false;
             }, delayTime);
         } else {
@@ -124,9 +123,12 @@ public class OnScreenInfo extends LinearLayout {
     public void showHideViews(MainActivityInterface mainActivityInterface) {
         if (capoInfoNeeded && autoHideCapo) {
             capoInfo.post(showCapoRunnable);
+        } else if (capoInfoNeeded) {
+            capoInfo.setVisibility(View.VISIBLE);
         } else {
             capoInfo.setVisibility(View.GONE);
         }
+
         if (mainActivityInterface.getPad().isPadPrepared()) {
             if (pad.getVisibility()!=View.VISIBLE) {
                 pad.setVisibility(View.VISIBLE);

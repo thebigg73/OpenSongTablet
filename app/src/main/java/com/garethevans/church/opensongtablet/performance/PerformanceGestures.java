@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.performance;
 // The gestures used in the app
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -171,7 +172,7 @@ public class PerformanceGestures {
     // Transpose the chords
     public void transpose() {
         TransposeBottomSheet transposeBottomSheet = new TransposeBottomSheet(false);
-        transposeBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"transposeBottomSheet");
+        transposeBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "transposeBottomSheet");
     }
 
     // Show chord fingering in the song
@@ -238,7 +239,9 @@ public class PerformanceGestures {
 
     // Highlighter edit
     public void highlighterEdit() {
-        actionInterface.navigateToFragment("opensongapp://songactions/highlighter/edit",0);
+        if (ifPDFAndAllowed() || !mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            actionInterface.navigateToFragment("opensongapp://songactions/highlighter/edit", 0);
+        }
     }
 
     // Show the song sticky notes
@@ -274,7 +277,7 @@ public class PerformanceGestures {
 
     // PDF page chooser
     public void pdfPage() {
-        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+        if (ifPDFAndAllowed()) {
             PDFPageBottomSheet pdfPageBottomSheet = new PDFPageBottomSheet();
             pdfPageBottomSheet.show(actionInterface.getMyFragmentManager(),"PDFPageBottomSheet");
         }
@@ -336,4 +339,21 @@ public class PerformanceGestures {
     public void onBackPressed() {
         actionInterface.onBackPressed();
     }
+
+
+    // The checks
+    private boolean ifPDFAndAllowed() {
+        if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                return true;
+            } else {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_high_enough_api));
+                return false;
+            }
+        } else {
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
+            return false;
+        }
+    }
+
 }

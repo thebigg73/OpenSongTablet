@@ -328,19 +328,6 @@ public class BackupOSBFragment extends Fragment {
         thread.start();
     }
 
-    private String getRidOfUnderscores(String string) {
-        if (string!=null && string.contains("_")) {
-            if (string.startsWith("_")) {
-                string = string.replaceFirst("_","");
-            }
-            if (string.endsWith("_")) {
-                string = string.substring(0,string.lastIndexOf("_"));
-            }
-            string = string.replace("_","/");
-        }
-        return string;
-    }
-
     private void exportBackup() {
         // Make sure we have an available backup folder
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,

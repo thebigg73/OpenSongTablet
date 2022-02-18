@@ -41,7 +41,6 @@ public class HighlighterEditFragment extends Fragment {
     private int buttonActive, buttonInactive, drawingPenSize, drawingHighlighterSize,
             drawingEraserSize, drawingPenColor, drawingHighlighterColor, availableWidth,
             availableHeight, scaledWidth, scaledHeight;
-    private float scale = 1f;
     private String activeTool;
     private Bitmap screenShotBitmap, highlighterBitmap;
     private Uri highlighterUri;
@@ -132,29 +131,7 @@ public class HighlighterEditFragment extends Fragment {
                 mainActivityInterface.getDrawNotes().loadExistingHighlighter(requireContext(),
                         mainActivityInterface, scaledWidth, scaledHeight);
 
-                //int w = mainActivityInterface.getScreenshot().getWidth();
-                //int h = mainActivityInterface.getScreenshot().getHeight();
-                //float scaledX = (float) availableWidth / (float) w;
-                //float scaledY = (float) availableHeight / (float) h;
-                //float scale = Math.min(scaledX, scaledY);
-                //int imgW = (int) (w * scale);
-                //int imgH = (int) (h * scale);
-                //ViewGroup.LayoutParams layoutParams = myView.glideImage.getLayoutParams();
-                //layoutParams.width = imgW;
-                //layoutParams.height = imgH;
-                //myView.glideImage.setLayoutParams(layoutParams);
-                /*GlideApp.with(myView.glideImage).
-                        load(mainActivityInterface.getScreenshot()).
-                        override(imgW, imgH).
-                        into(myView.glideImage);*/
-
-                // Get a scaled width and height of the bitmap being drawn
-                //ViewGroup.LayoutParams layoutParams2 = myView.drawNotes.getLayoutParams();
-                //layoutParams2.width = imgW;
-                //layoutParams2.height = imgH;
-                //myView.drawNotes.setLayoutParams(layoutParams2);
-                // Set the original highlighter file if it exists
-                //mainActivityInterface.getDrawNotes().loadExistingHighlighter(requireContext(), mainActivityInterface, imgW, imgH);
+                // Remove the VTO as we're done!
                 myView.glideImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -204,7 +181,7 @@ public class HighlighterEditFragment extends Fragment {
     private void setScale(int bitmapWidth, int bitmapHeight) {
         float scaledX = (float) availableWidth / (float) bitmapWidth;
         float scaledY = (float) availableHeight / (float) bitmapHeight;
-        scale = Math.min(scaledX, scaledY);
+        float scale = Math.min(scaledX, scaledY);
         scaledWidth = (int) (bitmapWidth * scale);
         scaledHeight = (int) (bitmapHeight * scale);
     }
