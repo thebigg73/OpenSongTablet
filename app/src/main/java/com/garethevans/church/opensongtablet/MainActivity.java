@@ -108,7 +108,6 @@ import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.pads.Pad;
 import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.pdf.OCR;
-import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
@@ -201,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private OCR ocr;
     private Pad pad;
     private PageButtons pageButtons;
-    private PDFSong pdfSong;
     private PedalActions pedalActions;
     private PerformanceGestures performanceGestures;
     private Preferences preferences;
@@ -336,8 +334,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         convertTextSong = new ConvertTextSong();
         processSong = new ProcessSong();
         prepareFormats = new PrepareFormats();
-        pdfSong = new PDFSong();
-        makePDF = new MakePDF();
         songSheetHeaders = new SongSheetHeaders();
         ocr = new OCR();
         transpose = new Transpose();
@@ -2219,10 +2215,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public CustomAnimation getCustomAnimation() {
         return customAnimation;
-    }
-    @Override
-    public PDFSong getPDFSong() {
-        return pdfSong;
     }
 
     @Override

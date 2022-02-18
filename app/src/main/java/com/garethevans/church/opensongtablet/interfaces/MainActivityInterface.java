@@ -42,7 +42,6 @@ import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.pads.Pad;
 import com.garethevans.church.opensongtablet.pdf.MakePDF;
 import com.garethevans.church.opensongtablet.pdf.OCR;
-import com.garethevans.church.opensongtablet.pdf.PDFSong;
 import com.garethevans.church.opensongtablet.performance.DisplayPrevNext;
 import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
@@ -254,7 +253,6 @@ public interface MainActivityInterface {
     void pdfScrollToPage(int pageNumber);
     OCR getOCR();
     MakePDF getMakePDF();
-    PDFSong getPDFSong();
 
     // Song sections and view for display
     void setSectionViews(ArrayList<View> views);

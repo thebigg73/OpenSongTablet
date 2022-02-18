@@ -6,6 +6,7 @@ import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,9 +76,9 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             }
             mainActivityInterface.getSong().setPdfPageCount(totalPages);
             if (totalPages==0) {
-                mainActivityInterface.getSong().setPdfPageCurrent(0);
+                mainActivityInterface.getSong().setPdfPageCurrent(-1);
             } else {
-                mainActivityInterface.getSong().setPdfPageCurrent(1);
+                mainActivityInterface.getSong().setPdfPageCurrent(0);
             }
             mainActivityInterface.getSong().setShowstartofpdf(true);
 
@@ -168,6 +169,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         int width = pageInfos.get(position).width;
         int height = pageInfos.get(position).height;
         float alpha = pageInfos.get(position).alpha;
+
         CardView cardView = (CardView)holder.v;
         if (mainActivityInterface.getMode().equals("Stage") && position == currentSection) {
             alpha = 1.0f;
@@ -175,14 +177,19 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         cardView.setAlpha(alpha);
         String pagetNumText = pageInfos.get(position).pageNumText;
         holder.pdfPageNumText.setText(pagetNumText);
+
         Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(c,mainActivityInterface,
                 pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString(c,"songAutoScale","W"));
         Glide.with(c).load(pdfPageBitmap).override(width,height).into(holder.pdfPageImage);
+
         // If we have a matching highlighter file...
         Bitmap pdfHighlighter = mainActivityInterface.getProcessSong().getPDFHighlighterBitmap(c,
                 mainActivityInterface,mainActivityInterface.getSong(),width,height,pageNum);
         if (pdfHighlighter!=null) {
+            holder.pdfPageHighlight.setVisibility(View.VISIBLE);
             Glide.with(c).load(pdfHighlighter).override(width,height).into(holder.pdfPageHighlight);
+        } else {
+            holder.pdfPageHighlight.setVisibility(View.GONE);
         }
         holder.pdfPageImage.setOnClickListener(view -> sectionSelected(pageNum));
         holder.pdfPageImage.setOnLongClickListener(view -> {
@@ -211,19 +218,20 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
     public void sectionSelected(int position) {
         // Whatever the previously selected item was, change the alpha to the alphaOff value
-        // Only do this alpha change in stage mode
+        mainActivityInterface.getSong().setPdfPageCurrent(position);
+        currentSection = position;
 
         // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
         onTouchAction();
 
+        // Only do this alpha change in stage mode
         if (mainActivityInterface.getMode().equals("Stage")) {
             pageInfos.get(currentSection).alpha = 0.4f;
             notifyItemChanged(currentSection, alphaChange);
 
             // Now update the newly selected position
             if (position >= 0 && position < pageInfos.size()) {
-                mainActivityInterface.getSong().setCurrentSection(position);
-                currentSection = position;
+                mainActivityInterface.getSong().setPdfPageCurrent(position);
                 pageInfos.get(position).alpha = 1.0f;
                 notifyItemChanged(position, alphaChange);
             }

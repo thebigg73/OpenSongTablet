@@ -39,8 +39,12 @@ public class HighlighterEditFragment extends Fragment {
     private SettingsHighlighterEditBinding myView;
     private Drawable whiteCheck, blackCheck;
     private int buttonActive, buttonInactive, drawingPenSize, drawingHighlighterSize,
-            drawingEraserSize, drawingPenColor, drawingHighlighterColor;
+            drawingEraserSize, drawingPenColor, drawingHighlighterColor, availableWidth,
+            availableHeight, scaledWidth, scaledHeight;
+    private float scale = 1f;
     private String activeTool;
+    private Bitmap screenShotBitmap, highlighterBitmap;
+    private Uri highlighterUri;
 
     // The colours used in drawing
     private final int penBlack = 0xff000000;
@@ -104,31 +108,53 @@ public class HighlighterEditFragment extends Fragment {
             @Override
             public void onGlobalLayout() {
                 // Get the width (match parent) in pixels
-                int viewWidth = myView.glideImage.getWidth();
-                int viewHeight = myView.glideImage.getHeight();
-                int w = mainActivityInterface.getScreenshot().getWidth();
-                int h = mainActivityInterface.getScreenshot().getHeight();
-                float scaledX = (float) viewWidth / (float) w;
-                float scaledY = (float) viewHeight / (float) h;
-                float scale = Math.min(scaledX, scaledY);
-                int imgW = (int) (w * scale);
-                int imgH = (int) (h * scale);
-                ViewGroup.LayoutParams layoutParams = myView.glideImage.getLayoutParams();
-                layoutParams.width = imgW;
-                layoutParams.height = imgH;
-                myView.glideImage.setLayoutParams(layoutParams);
-                GlideApp.with(myView.glideImage).
-                        load(mainActivityInterface.getScreenshot()).
-                        override(imgW, imgH).
+                availableWidth = myView.glideImage.getWidth();
+                availableHeight = myView.glideImage.getHeight();
+                if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
+                    getImageFile();
+
+                } else if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                    getPDFPage();
+
+                } else {
+                    getScreenshot();
+
+                }
+
+                // Sizes and scaling have been figured out, so adjust the size of the song image
+                setImageSize();
+
+                // Put the song image into the view
+                GlideApp.with(myView.glideImage).load(screenShotBitmap).override(scaledWidth, scaledHeight).
                         into(myView.glideImage);
 
-                // Get a scaled width and height of the bitmap being drawn
-                ViewGroup.LayoutParams layoutParams2 = myView.drawNotes.getLayoutParams();
-                layoutParams2.width = imgW;
-                layoutParams2.height = imgH;
-                myView.drawNotes.setLayoutParams(layoutParams2);
                 // Set the original highlighter file if it exists
-                mainActivityInterface.getDrawNotes().loadExistingHighlighter(requireContext(), mainActivityInterface, imgW, imgH);
+                mainActivityInterface.getDrawNotes().loadExistingHighlighter(requireContext(),
+                        mainActivityInterface, scaledWidth, scaledHeight);
+
+                //int w = mainActivityInterface.getScreenshot().getWidth();
+                //int h = mainActivityInterface.getScreenshot().getHeight();
+                //float scaledX = (float) availableWidth / (float) w;
+                //float scaledY = (float) availableHeight / (float) h;
+                //float scale = Math.min(scaledX, scaledY);
+                //int imgW = (int) (w * scale);
+                //int imgH = (int) (h * scale);
+                //ViewGroup.LayoutParams layoutParams = myView.glideImage.getLayoutParams();
+                //layoutParams.width = imgW;
+                //layoutParams.height = imgH;
+                //myView.glideImage.setLayoutParams(layoutParams);
+                /*GlideApp.with(myView.glideImage).
+                        load(mainActivityInterface.getScreenshot()).
+                        override(imgW, imgH).
+                        into(myView.glideImage);*/
+
+                // Get a scaled width and height of the bitmap being drawn
+                //ViewGroup.LayoutParams layoutParams2 = myView.drawNotes.getLayoutParams();
+                //layoutParams2.width = imgW;
+                //layoutParams2.height = imgH;
+                //myView.drawNotes.setLayoutParams(layoutParams2);
+                // Set the original highlighter file if it exists
+                //mainActivityInterface.getDrawNotes().loadExistingHighlighter(requireContext(), mainActivityInterface, imgW, imgH);
                 myView.glideImage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
@@ -136,6 +162,66 @@ public class HighlighterEditFragment extends Fragment {
         bottomSheetBar();
     }
 
+    private void getScreenshot() {
+        // If we are using a normal XML song and in performance mode, we have a screenshot of the song view
+        int w = mainActivityInterface.getScreenshot().getWidth();
+        int h = mainActivityInterface.getScreenshot().getHeight();
+
+        // Get the scale
+        setScale(w,h);
+
+        // Set the bitmap as a reference to the screenshot
+        screenShotBitmap = mainActivityInterface.getScreenshot();
+    }
+
+    private void getImageFile() {
+        // We are using an image file
+        screenShotBitmap = mainActivityInterface.getProcessSong().getSongBitmap(requireContext(),
+                mainActivityInterface,mainActivityInterface.getSong().getFolder(),
+                mainActivityInterface.getSong().getFilename());
+        int w = screenShotBitmap.getWidth();
+        int h = screenShotBitmap.getHeight();
+
+        // Set the scale
+        setScale(w,h);
+    }
+
+    private void getPDFPage() {
+        // Load an image of the currently selected page
+        Log.d(TAG,"pageNumber="+mainActivityInterface.getSong().getPdfPageCurrent());
+        screenShotBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(requireContext(),
+                mainActivityInterface,mainActivityInterface.getSong().getFolder(),
+                mainActivityInterface.getSong().getFilename(),mainActivityInterface.getSong().getPdfPageCurrent(),
+                availableWidth,availableHeight,"Y");
+
+        int w = screenShotBitmap.getWidth();
+        int h = screenShotBitmap.getHeight();
+
+        // Set the scale
+        setScale(w,h);
+    }
+
+    private void setScale(int bitmapWidth, int bitmapHeight) {
+        float scaledX = (float) availableWidth / (float) bitmapWidth;
+        float scaledY = (float) availableHeight / (float) bitmapHeight;
+        scale = Math.min(scaledX, scaledY);
+        scaledWidth = (int) (bitmapWidth * scale);
+        scaledHeight = (int) (bitmapHeight * scale);
+    }
+
+    private void setImageSize() {
+        // The song screenshot/image
+        ViewGroup.LayoutParams layoutParams = myView.glideImage.getLayoutParams();
+        layoutParams.width = scaledWidth;
+        layoutParams.height = scaledHeight;
+        myView.glideImage.setLayoutParams(layoutParams);
+
+        // Get a scaled width and height of the bitmap being drawn as the highlighter
+        ViewGroup.LayoutParams layoutParams2 = myView.drawNotes.getLayoutParams();
+        layoutParams2.width = scaledWidth;
+        layoutParams2.height = scaledHeight;
+        myView.drawNotes.setLayoutParams(layoutParams2);
+    }
     private void bottomSheetBar() {
         bottomSheetBehavior = BottomSheetBehavior.from(myView.bottomSheet.bottomSheet);
         bottomSheetBehavior.setHideable(false);
@@ -407,35 +493,34 @@ public class HighlighterEditFragment extends Fragment {
         mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize, currentColor);
     }
 
-    Uri uri;
-    Bitmap bitmap;
+
 
     private void saveFile() {
         // Get the bitmap of the drawNotes in a new thread
         int orientation = requireContext().getResources().getConfiguration().orientation;
         new Thread(() -> {
             String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), orientation == Configuration.ORIENTATION_PORTRAIT);
-            uri = mainActivityInterface.getStorageAccess().getUriForItem(getActivity(), mainActivityInterface,
+            highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem(getActivity(), mainActivityInterface,
                     "Highlighter", "", hname);
             // Check the uri exists for the outputstream to be valid
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getActivity(), mainActivityInterface, false,uri, null,
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getActivity(), mainActivityInterface, false,highlighterUri, null,
                     "Highlighter", "", hname);
 
             requireActivity().runOnUiThread(() -> {
                 mainActivityInterface.getDrawNotes().setDrawingCacheEnabled(true);
                 try {
-                    bitmap = mainActivityInterface.getDrawNotes().getDrawingCache();
+                    highlighterBitmap = mainActivityInterface.getDrawNotes().getDrawingCache();
                 } catch (Exception e) {
                     Log.d(TAG, "Error extracting the drawing");
                 } catch (OutOfMemoryError e) {
                     Log.d(TAG, "Out of memory trying to get the drawing");
                 }
-                if (uri != null && bitmap != null) {
-                    Log.d(TAG, "newUri=" + uri);
-                    Log.d(TAG, "bitmap=" + bitmap);
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), uri);
+                if (highlighterUri != null && highlighterBitmap != null) {
+                    Log.d(TAG, "newUri=" + highlighterUri);
+                    Log.d(TAG, "bitmap=" + highlighterBitmap);
+                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), highlighterUri);
                     Log.d(TAG, "outputStream=" + outputStream);
-                    mainActivityInterface.getStorageAccess().writeImage(outputStream, bitmap);
+                    mainActivityInterface.getStorageAccess().writeImage(outputStream, highlighterBitmap);
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
                 } else {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.error));

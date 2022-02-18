@@ -2227,12 +2227,12 @@ public class ProcessSong {
         PdfRenderer pdfRenderer = getPDFRenderer(parcelFileDescriptor);
 
         // Get the page count
-        mainActivityInterface.getPDFSong().setPdfPageCount(getPDFPageCount(pdfRenderer));
+        mainActivityInterface.getSong().setPdfPageCount(getPDFPageCount(pdfRenderer));
 
         // Set the current page number
         page = getCurrentPage(mainActivityInterface, page);
 
-        if (parcelFileDescriptor != null && pdfRenderer != null && mainActivityInterface.getPDFSong().getPdfPageCount() > 0) {
+        if (parcelFileDescriptor != null && pdfRenderer != null && mainActivityInterface.getSong().getPdfPageCount() > 0) {
             // Good to continue!
 
             // Get the currentPDF page
@@ -2486,10 +2486,15 @@ public class ProcessSong {
         // The highlighter song file is encoded as FOLDER_FILENAME_{p or l LANDSCAPE}{if pdf _PAGENUMBER_}.png
         String filename = song.getFolder().replace("/", "_") + "_" +
                 song.getFilename();
-        if (portrait) {
-            filename += "_p";
+
+        if (song.getFiletype().equals("PDF")) {
+            filename += "_" + song.getPdfPageCurrent();
         } else {
-            filename += "_l";
+            if (portrait) {
+                filename += "_p";
+            } else {
+                filename += "_l";
+            }
         }
         filename += ".png";
         return filename;
@@ -2533,10 +2538,9 @@ public class ProcessSong {
                                           Song song, int w, int h, int pageNum) {
         // The pdf highlighter song file is encoded as FOLDER_FILENAME_PAGENUM.png
         String filename = song.getFolder().replace("/", "_") + "_" +
-                song.getFilename() + "_" + pageNum;
+                song.getFilename() + "_" + pageNum+".png";
         return getHighlighterBitmap(c, mainActivityInterface, filename, w, h);
     }
-
 
     public Bitmap getHighlighterFile(Context c, MainActivityInterface mainActivityInterface, int w, int h) {
         String filename;

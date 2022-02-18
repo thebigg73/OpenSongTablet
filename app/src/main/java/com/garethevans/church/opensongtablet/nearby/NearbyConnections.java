@@ -579,7 +579,7 @@ public class NearbyConnections implements NearbyInterface {
             // We are likely trying to move page to an already received file
             movepage = true;
         } else {
-            mainActivityInterface.getPDFSong().setPdfPageCurrent(0);
+            mainActivityInterface.getSong().setPdfPageCurrent(0);
         }
         Uri newLocation = null;
         if (!isHost && isConnected && receiveHostFiles && keepHostFiles) {

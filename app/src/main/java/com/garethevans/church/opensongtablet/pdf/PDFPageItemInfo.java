@@ -5,5 +5,6 @@ public class PDFPageItemInfo {
     int width;
     int height;
     String pageNumText;
+    String highlighterFile;
     float alpha;
 }
