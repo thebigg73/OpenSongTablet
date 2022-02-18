@@ -38,6 +38,7 @@ public class Autoscroll {
     private float scrollIncrement;
     private float scrollPosition;
     private float scrollCount;
+    private float scrollIncrementScale;
     private final LinearLayout autoscrollView;
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView myRecyclerView;
@@ -100,6 +101,7 @@ public class Autoscroll {
         scrollPosition = 0;
         scrollCount = 0;
         scrollTime = 0;
+        scrollIncrementScale = 1f;
         songDelay = stringToInt(mainActivityInterface.getSong().getAutoscrolldelay());
         songDuration = stringToInt(mainActivityInterface.getSong().getAutoscrolllength());
         if (songDuration==0 && autoscrollUseDefaultTime) {
@@ -231,14 +233,14 @@ public class Autoscroll {
                             myZoomLayout.post(() -> {
                                 // Check for scaling changes
                                 calculateAutoscroll();
-                                scrollCount = scrollCount + scrollIncrement;
+                                scrollCount = scrollCount + (scrollIncrement*scrollIncrementScale);
                                 if ((Math.max(scrollPosition,myZoomLayout.getScrollPos()) -
                                         Math.min(scrollPosition,myZoomLayout.getScrollPos()))<1) {
                                     // Don't get stuck on float rounding being compounded - use the scroll count
                                     scrollPosition = scrollCount;
                                 } else {
                                     // We've moved (more than 1px), so get the actual start position
-                                    scrollPosition = myZoomLayout.getScrollPos() + scrollIncrement;
+                                    scrollPosition = myZoomLayout.getScrollPos() + (scrollIncrement*scrollIncrementScale);
                                     scrollCount = scrollPosition;
                                 }
                                 //myZoomLayout.smoothScrollTo(0, (int) scrollPosition, updateTime);
@@ -251,17 +253,17 @@ public class Autoscroll {
                             myRecyclerView.post(() -> {
                                 // Check for scaling changes
                                 calculateAutoscroll();
-                                scrollCount = scrollCount + scrollIncrement;
+                                scrollCount = scrollCount + (scrollIncrement*scrollIncrementScale);
                                 if ((Math.max(scrollPosition,myRecyclerView.getScrollY()) -
                                         Math.min(scrollPosition,myRecyclerView.getScrollY()))<1) {
                                     // Don't get stuck on float rounding being compounded - use the scroll count
                                     scrollPosition = scrollCount;
                                 } else {
                                     // We've moved (more than 1px), so get the actual start position
-                                    scrollPosition = myRecyclerView.getScrollY() + scrollIncrement;
+                                    scrollPosition = myRecyclerView.getScrollY() + (scrollIncrement*scrollIncrementScale);
                                     scrollCount = scrollPosition;
                                 }
-                                myRecyclerView.doScrollBy(scrollIncrement,updateTime/2);
+                                myRecyclerView.doScrollBy(scrollIncrement*scrollIncrementScale,updateTime/2);
                             });
                         }
                     }
@@ -337,13 +339,11 @@ public class Autoscroll {
 
     public void speedUpAutoscroll() {
         // This increases the increment by 25%
-        scrollIncrement = 1.25f * scrollIncrement;
-        initialScrollIncrement = 1.25f * initialScrollIncrement;
+        scrollIncrementScale = 1.25f * scrollIncrementScale;
     }
     public void slowDownAutoscroll() {
         // This decreases the increment by 25%
-        scrollIncrement = 0.75f * scrollIncrement;
-        initialScrollIncrement = 0.75f * initialScrollIncrement;
+        scrollIncrementScale = 0.75f * scrollIncrementScale;
     }
     private int stringToInt(String string) {
         if (string!=null && !string.isEmpty()) {
