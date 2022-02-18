@@ -61,7 +61,6 @@ public class LoadSong {
         }
     }
 
-
     public Song doLoadSongFile(Context c, MainActivityInterface mainActivityInterface,
                                Song thisSong, boolean indexing) {
 
@@ -151,18 +150,20 @@ public class LoadSong {
                 // Fix all the rogue code
                 thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(c, mainActivityInterface.getLocale(), thisSong));
 
-                // Update the songLoadSuccess and references to the working file if it did work if we aren't indexing
-                if (!indexing) {
-                    sortLoadingSuccessful(c, mainActivityInterface, thisSong);
-                }
             } else {
                 thisSong.setTitle(thisSong.getFilename());
+
             }
         } else if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
             thisSong = mainActivityInterface.getSong().showWelcomeSong(c,thisSong);
         } else {
             // Not found.  This will get the default 'not found' from the database query
             thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c,mainActivityInterface,thisSong.getFolder(),thisSong.getFilename());
+        }
+
+        // Update the songLoadSuccess and references to the working file if it did work if we aren't indexing
+        if (!indexing) {
+            sortLoadingSuccessful(c, mainActivityInterface, thisSong);
         }
 
         // Send the song back with all of its children populated!

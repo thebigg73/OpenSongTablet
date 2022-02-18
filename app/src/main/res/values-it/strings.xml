@@ -300,7 +300,7 @@
     <string name="no_previous_found">"Nessuna installazione precedente trovata."</string>
     <string name="not_allowed">"Questa funzione non è consentita per questo articolo"</string>
     <string name="note">"Nota"</string>
-    <string name="nothighenoughapi">"Hai bisogno di una versione più recente di Android per questo !"</string>
+    <string name="not_high_enough_api">"Hai bisogno di una versione più recente di Android per questo !"</string>
     <string name="not_saved">Non salvato</string>
     <string name="is_not_set">"Non impostato"</string>
     <string name="nowifidirect">"Spiacenti, questo dispositivo non supporta Direct WiFi"</string>

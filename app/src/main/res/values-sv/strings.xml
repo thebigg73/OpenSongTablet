@@ -300,7 +300,7 @@
     <string name="no_previous_found">"Inga tidigare installationer hittades."</string>
     <string name="not_allowed">"Den här funktionen är inte tillåten för det här objektet"</string>
     <string name="note">"Notera"</string>
-    <string name="nothighenoughapi">"Du behöver en nyare version av Android för detta!"</string>
+    <string name="not_high_enough_api">"Du behöver en nyare version av Android för detta!"</string>
     <string name="not_saved">Ej sparat</string>
     <string name="is_not_set">"Inte inställd"</string>
     <string name="nowifidirect">"Tyvärr, den här enheten stöder inte WiFi direkt"</string>

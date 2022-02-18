@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -30,6 +31,7 @@ public class AppActionBar {
     private final TextView key;
     private final TextView capo;
     private final TextView clock;
+    private final ImageView setIcon;
     private final Handler delayactionBarHide;
     private final Runnable hideActionBarRunnable;
     private final int autoHideTime = 1200;
@@ -40,7 +42,7 @@ public class AppActionBar {
 
     private boolean performanceMode;
 
-    public AppActionBar(Context c, ActionBar actionBar, TextView title, TextView author,
+    public AppActionBar(Context c, ActionBar actionBar, ImageView setIcon, TextView title, TextView author,
                         TextView key, TextView capo, TextView clock) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
@@ -51,6 +53,7 @@ public class AppActionBar {
         this.key = key;
         this.capo = capo;
         this.clock = clock;
+        this.setIcon = setIcon;
         delayactionBarHide = new Handler();
         hideActionBarRunnable = () -> {
             if (actionBar != null && actionBar.isShowing()) {
@@ -87,6 +90,17 @@ public class AppActionBar {
         if (newtitle == null) {
             // We are in the Performance/Stage mode
             float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"songTitleSize",13.0f);
+
+            // If we are in a set, show the icon
+            int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface,
+                    mainActivityInterface.getSong());
+            if (positionInSet>-1) {
+                setIcon.setVisibility(View.VISIBLE);
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(positionInSet);
+            } else {
+                setIcon.setVisibility(View.GONE);
+                mainActivityInterface.getCurrentSet().setIndexSongInSet(-1);
+            }
 
             if (title != null && mainActivityInterface.getSong().getTitle() != null) {
                 title.setTextSize(mainsize);
@@ -138,6 +152,7 @@ public class AppActionBar {
 
         } else {
             // We are in a different fragment, so don't hide the song info stuff
+            setIcon.setVisibility(View.GONE);
             actionBar.show();
             if (title != null) {
                 title.setTextSize(18.0f);

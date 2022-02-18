@@ -298,7 +298,7 @@
     <string name="no_previous_found">"Nebyly nalezeny žádné předchozí instalace."</string>
     <string name="not_allowed">"Tato funkce není povolena pro tuto položku"</string>
     <string name="note">"Poznámka"</string>
-    <string name="nothighenoughapi">"Potřebujete novější verzi Androidu pro to !"</string>
+    <string name="not_high_enough_api">"Potřebujete novější verzi Androidu pro to !"</string>
     <string name="not_saved">"neuloženo"</string>
     <string name="is_not_set">"Není stanoveno"</string>
     <string name="nowifidirect">"Je nám líto, ale toto zařízení nepodporuje WiFi přímo"</string>

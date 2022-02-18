@@ -149,7 +149,7 @@
     <string name="refresh_song">"Osvežiti trenutnu pesmu"</string>
     <string name="transpose">"Transponovati"</string>
     <string name="chordformat_default">"Uvek pretpostaviti da su pesme u mom izabranom formatu akorda"</string>
-    <string name="nothighenoughapi">"Potrebna Vam je novija verzija Androida za ovo!"</string>
+    <string name="not_high_enough_api">"Potrebna Vam je novija verzija Androida za ovo!"</string>
     <string name="chordformat_detected">"Detektovati trenutni format akorda"</string>
     <string name="firstsong">"Prikazivanje prve pesme"</string>
     <string name="lastsong">"Prikazivanje poslednje stavke na set listi"</string>

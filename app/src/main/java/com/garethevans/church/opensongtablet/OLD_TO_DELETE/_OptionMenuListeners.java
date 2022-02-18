@@ -551,7 +551,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             });
         } else {
             menuMidiButton.setOnClickListener(view -> {
-                StaticVariables.myToastMessage = "MIDI - " + c.getString(R.string.nothighenoughapi);
+                StaticVariables.myToastMessage = "MIDI - " + c.getString(R.string.not_high_enough_api);
                 ShowToast.showToast(c);
             });
         }

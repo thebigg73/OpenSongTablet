@@ -112,7 +112,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
             StaticVariables.midiManager = (MidiManager) Objects.requireNonNull(getActivity()).getSystemService(Context.MIDI_SERVICE);
         } catch (Exception e) {
             e.printStackTrace();
-            StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
+            StaticVariables.myToastMessage = getString(R.string.not_high_enough_api);
             _ShowToast.showToast(getActivity());
         }
 
@@ -239,7 +239,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
+            StaticVariables.myToastMessage = getString(R.string.not_high_enough_api);
             _ShowToast.showToast(getActivity());
         }
     }
@@ -277,7 +277,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
             usbDevices.setEnabled(true);
             updateDevices();
         } else {
-            StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
+            StaticVariables.myToastMessage = getString(R.string.not_high_enough_api);
             _ShowToast.showToast(getActivity());
         }
     }

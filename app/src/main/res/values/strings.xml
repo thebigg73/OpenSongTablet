@@ -1096,7 +1096,7 @@ Check out the categories in the right hand options menu.
     <string name="no">No</string>
     <string name="no_folders">You need to create a subfolder to allow moving of files</string>
     <string name="nodisplays">No external displays connected.  Please connect to a secondary display using an HDMI output or MiraCast compatible wireless display.</string>
-    <string name="nothighenoughapi">You need a newer version of Android for this!</string>
+    <string name="not_high_enough_api">You need a newer version of Android for this!</string>
     <string name="nowifidirect">Sorry, this device does not support WiFi direct</string>
     <string name="managesets">Rename sets</string>
     <string name="media_chooser">Media chooser</string>

@@ -300,7 +300,7 @@
     <string name="no_previous_found">"Nincs korábbi telepítés."</string>
     <string name="not_allowed">"Ez a funkció nem engedélyezett ehhez a termékhez"</string>
     <string name="note">"Hangjegy"</string>
-    <string name="nothighenoughapi">"Szüksége van egy újabb változata Android for this!"</string>
+    <string name="not_high_enough_api">"Szüksége van egy újabb változata Android for this!"</string>
     <string name="not_saved">Nem mentve</string>
     <string name="is_not_set">"Nincs beállítva"</string>
     <string name="nowifidirect">"Sajnos ez az eszköz nem támogatja a WiFi közvetlen"</string>

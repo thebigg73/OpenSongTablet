@@ -20,16 +20,29 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/batteryholder"
-            android:gravity="center_vertical|start"
-            android:layout_alignParentStart="true">
+            android:gravity="center_vertical|start">
+
+            <ImageView
+                android:id="@+id/inSet"
+                android:layout_width="16dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/topRow"
+                android:layout_alignParentStart="true"
+                android:padding="0dp"
+                android:layout_margin="0dp"
+                android:layout_above="@+id/songauthor_ab"
+                android:src="@drawable/ic_check_white_36dp"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/topRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
+                android:layout_toEndOf="@id/inSet"
                 android:paddingStart="0dp"
                 android:paddingEnd="16dp"
                 android:orientation="horizontal">
@@ -69,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/topRow"
-                android:layout_alignParentStart="true"
+                android:layout_toEndOf="@id/inSet"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"

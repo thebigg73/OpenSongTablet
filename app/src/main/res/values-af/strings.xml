@@ -298,7 +298,7 @@
     <string name="no_previous_found">"Geen vorige installasies gevind nie."</string>
     <string name="not_allowed">"Hierdie funksie is nie toegelaat om hierdie item"</string>
     <string name="note">"Nota"</string>
-    <string name="nothighenoughapi">"Jy moet 'n nuwer weergawe van Android vir hierdie !"</string>
+    <string name="not_high_enough_api">"Jy moet 'n nuwer weergawe van Android vir hierdie !"</string>
     <string name="not_saved">nie gestoor nie</string>
     <string name="is_not_set">"Nie ingestel"</string>
     <string name="nowifidirect">"Jammer, hierdie toestel ondersteun nie WiFi direkte nie"</string>

@@ -395,6 +395,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
+/*
+
     private void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
         // TODO delete if not used
         Log.d(TAG,"changeActionBarVisible");
@@ -408,6 +410,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         appActionBar.showActionBar(settingsOpen);
         appActionBar.toggleActionBar(wasScrolling,scrollButton,myView.drawerLayout.isOpen());
     }
+*/
 
     @Override
     public void showHideActionBar() {
@@ -424,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private void setupViews() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(this,actionBar,
+        appActionBar = new AppActionBar(this,actionBar, myView.toolBar.inSet,
                 myView.toolBar.songtitleAb,
                 myView.toolBar.songauthorAb, myView.toolBar.songkeyAb,
                 myView.toolBar.songcapoAb,
@@ -1013,14 +1016,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         myView.fragmentView.setTop(appActionBar.getActionBarHeight());
     }
     private void menuIconVisibility(boolean isVisible) {
-        if (isVisible) {
-            screenMirror.setVisibility(View.VISIBLE);
-            myView.toolBar.batteryholder.setVisibility(View.VISIBLE);
-            alertButton.setVisibility(View.VISIBLE);
-        } else {
-            screenMirror.setVisibility(View.GONE);
-            myView.toolBar.batteryholder.setVisibility(View.GONE);
-            alertButton.setVisibility(View.GONE);
+        try {
+            if (isVisible) {
+                screenMirror.setVisibility(View.VISIBLE);
+                myView.toolBar.batteryholder.setVisibility(View.VISIBLE);
+                alertButton.setVisibility(View.VISIBLE);
+            } else {
+                screenMirror.setVisibility(View.GONE);
+                myView.toolBar.batteryholder.setVisibility(View.GONE);
+                alertButton.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1685,6 +1692,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSongFromSet(int position) {
+        if (position>=currentSet.getIndexSongInSet()) {
+            displayPrevNext.setSwipeDirection("R2L");
+        } else {
+            displayPrevNext.setSwipeDirection("L2R");
+        }
         // Get the key of the set item
         String setKey = currentSet.getKey(position);
         String setFolder = currentSet.getFolder(position);

@@ -300,7 +300,7 @@
     <string name="no_previous_found">"Δεν βρέθηκαν προηγούμενες εγκαταστάσεις."</string>
     <string name="not_allowed">"Αυτή η λειτουργία δεν επιτρέπεται για αυτό το αντικείμενο"</string>
     <string name="note">"Σημείωση"</string>
-    <string name="nothighenoughapi">"Χρειάζεται καινούργια έκδοση Android για αυτό!"</string>
+    <string name="not_high_enough_api">"Χρειάζεται καινούργια έκδοση Android για αυτό!"</string>
     <string name="not_saved">Δεν έχει αποθηκευτεί</string>
     <string name="is_not_set">"Not set"</string>
     <string name="nowifidirect">"Λυπούμαστε, αυτή η συσκευή δεν υποστηρίζει απευθείας WiFi"</string>

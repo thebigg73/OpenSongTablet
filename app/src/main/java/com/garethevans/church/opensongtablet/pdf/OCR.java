@@ -75,7 +75,7 @@ public class OCR {
                 bmp = mainActivityInterface.getProcessSong().createBitmapFromPage(bmpSize,currentPage,false);
 
                 // Send this page off for processing.  The onSuccessListener knows when it is done
-                extractTextFromBitmap(bmp,0,i);
+                extractTextFromBitmap(bmp, i);
 
                 currentPage.close();
             }
@@ -89,24 +89,33 @@ public class OCR {
     }
 
     public void getTextFromImage(MainActivityInterface mainActivityInterface, Bitmap bmp) {
+
         this.mainActivityInterface = mainActivityInterface;
         // Just a plain jpg, png or gif converted to a bitmap
-        // Pretenting it is from a 1 page pdf
+        // Pretending it is from a 1 page pdf
         pdfPages = new ArrayList<>();
         pageCount = 1;
         if (bmp!=null) {
-            extractTextFromBitmap(bmp, 0, 0);
+            extractTextFromBitmap(bmp, 0);
         }
     }
 
-    public void getTextFromCamera() {
-        filename = "";
+    public void getTextFromCamera(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
+        this.mainActivityInterface = mainActivityInterface;
+        // The camera saves to Backgrounds/camera_capture.png (_cache) received in the call
+        // Pretending it is from a 1 page pdf
+        pdfPages = new ArrayList<>();
+        pageCount = 1;
+        Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromUri(c,mainActivityInterface,uri,0,0);
+        Log.d(TAG,"bmp="+bmp);
+        if (bmp!=null) {
+            extractTextFromBitmap(bmp, 0);
+        }
     }
-    private void extractTextFromBitmap(Bitmap bmp,int rotation,int page) {
-        String s = "";
-        InputImage image = InputImage.fromBitmap(bmp, rotation);
-        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
+    private void extractTextFromBitmap(Bitmap bmp, int page) {
+        InputImage image = InputImage.fromBitmap(bmp, 0);
+        TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
         final int currpage = page;
         recognizer.process(image).addOnSuccessListener(visionText -> {
                             pdfPages.add(currpage,visionText.getText());
@@ -123,7 +132,6 @@ public class OCR {
                             }
                         });
     }
-
 
     private void runCompleteTask() {
         // Get a filename

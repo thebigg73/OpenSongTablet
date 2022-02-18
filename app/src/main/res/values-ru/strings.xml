@@ -300,7 +300,7 @@
     <string name="no_previous_found">"Не найдено предыдущих установок."</string>
     <string name="not_allowed">"Эта функция не доступна"</string>
     <string name="note">"Заметка"</string>
-    <string name="nothighenoughapi">"Необходимо обновить версию Android!"</string>
+    <string name="not_high_enough_api">"Необходимо обновить версию Android!"</string>
     <string name="not_saved">Не сохранено</string>
     <string name="is_not_set">"Не установлено"</string>
     <string name="nowifidirect">"К сожалению, это устройство не поддерживает доступ к WiFi."</string>

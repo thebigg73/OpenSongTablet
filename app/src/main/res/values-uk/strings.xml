@@ -276,7 +276,7 @@
     <string name="nodisplays">Зовнішні дисплеї не виявлені. Будь ласка, підключіть до зовнішнього дисплею через вихід HDMI або бездротового Miracast.</string>
     <string name="not_allowed">Ця функція недоступна</string>
     <string name="note">Зберегти</string>
-    <string name="nothighenoughapi">Необхідно оновити версію Android!</string>
+    <string name="not_high_enough_api">Необхідно оновити версію Android!</string>
     <string name="not_saved">Чи не збережено</string>
     <string name="is_not_set">Не встановлено</string>
     <string name="nowifidirect">На жаль, цей пристрій не підтримує доступ до WiFi.</string>

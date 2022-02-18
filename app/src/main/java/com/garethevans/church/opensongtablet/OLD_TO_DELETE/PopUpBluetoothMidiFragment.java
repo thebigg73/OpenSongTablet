@@ -293,7 +293,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         if (mBluetoothLeScanner!=null) {
             mBluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.nothighenoughapi);
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.not_high_enough_api);
             _ShowToast.showToast(getActivity());
         }
     }

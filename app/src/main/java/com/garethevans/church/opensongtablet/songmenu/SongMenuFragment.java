@@ -363,7 +363,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     @Override
     public void onItemClicked(int position, String folder, String filename, String key) {
         mainActivityInterface.hideKeyboard();
-        Log.d(TAG,"Clicked on "+folder+"/"+filename);
+        // Default the slide animations to be next (R2L)
+        mainActivityInterface.getDisplayPrevNext().setSwipeDirection("R2L");
         mainActivityInterface.doSongLoad(folder, filename,true);
         songListLayoutManager.scrollToPositionWithOffset(position,0);
     }
@@ -411,9 +412,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         fixButtons();
 
         if (songListAdapter!=null) {
-            new Thread(() -> {
-                requireActivity().runOnUiThread(() -> songListAdapter.notifyDataSetChanged());
-            }).start();
+            new Thread(() -> requireActivity().runOnUiThread(() -> songListAdapter.notifyItemRangeChanged(0,songListAdapter.getItemCount()))).start();
         }
     }
 

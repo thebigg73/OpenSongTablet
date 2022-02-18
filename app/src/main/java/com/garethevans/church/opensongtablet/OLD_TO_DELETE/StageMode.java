@@ -2159,7 +2159,7 @@ public class StageMode extends AppCompatActivity implements
             }
 
         } else {
-            songauthor_ab.setText(getResources().getString(R.string.nothighenoughapi));
+            songauthor_ab.setText(getResources().getString(R.string.not_high_enough_api));
 
             // Set the image to the unhappy android
             Drawable myDrawable = ResourcesCompat.getDrawable(getResources(),R.drawable.unhappy_android,null);

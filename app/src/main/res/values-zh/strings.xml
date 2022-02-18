@@ -298,7 +298,7 @@
     <string name="no_previous_found">"没有找到以前的安装。"</string>
     <string name="not_allowed">"此功能是不允许此项目"</string>
     <string name="note">"注意"</string>
-    <string name="nothighenoughapi">"你需要的Android这个较新版本！"</string>
+    <string name="not_high_enough_api">"你需要的Android这个较新版本！"</string>
     <string name="not_saved">没保存</string>
     <string name="is_not_set">"未设置"</string>
     <string name="nowifidirect">"对不起，此设备不支持WiFi直接"</string>
