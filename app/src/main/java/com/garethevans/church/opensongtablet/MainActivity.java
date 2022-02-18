@@ -2332,12 +2332,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
-
-
-
     @Override
     public void openDocument(String guideId, String location) {
-// I could pass the address in as a location string,
+        // I could pass the address in as a location string,
         // However, for the user-guide to avoid having to change loads of files
         // I keep them listed here.
         if (guideId!=null && !guideId.isEmpty()) {
@@ -2347,6 +2344,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
                 case "storage":
                     location = "https://www.opensongapp.com/user-guide/setting-up-and-using-opensongapp/setting-up-opensong-tablet";
+                    break;
+                case "songformat":
+                    location = "https://www.opensongapp.com/user-guide/songs/creating-new-songs";
                     break;
             }
         }

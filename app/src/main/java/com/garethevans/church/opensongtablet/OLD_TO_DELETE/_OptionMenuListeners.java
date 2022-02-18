@@ -1648,7 +1648,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextButtons(storageNewFolderButton,c.getString(R.string.folder_new));
         setTextButtons(storageEditButton,c.getString(R.string.folder_rename));
         setTextButtons(storageManageButton,c.getString(R.string.storage_choose));
-        setTextButtons(exportSongListButton,c.getString(R.string.exportsongdirectory));
+        setTextButtons(exportSongListButton,c.getString(R.string.export_song_directory));
         setTextButtons(storageImportOSBButton,c.getString(R.string.backup_import));
         setTextButtons(storageExportOSBButton,c.getString(R.string.backup_export));
         setTextButtons(storageImportOnSongButton,c.getString(R.string.import_onsong_choose));

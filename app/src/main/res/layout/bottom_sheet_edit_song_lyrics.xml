@@ -21,14 +21,26 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
-
         <TableRow style="@style/DividerLine"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <com.garethevans.church.opensongtablet.customviews.MaterialTextView
             android:id="@+id/insertSection"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:hint=""
             android:text="@string/edit_new_section" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/formatHelp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_information_outline_white_36dp"
+                android:contentDescription="@string/information"/>
+        </LinearLayout>
         <TableRow style="@style/DividerLine"/>
 
         <com.garethevans.church.opensongtablet.customviews.MaterialTextView

@@ -184,7 +184,7 @@
     <string name="export_text">"Teks (.txt)"</string>
     <string name="export_current_song">"Deel die huidige liedjie"</string>
     <string name="exportsavedset">"Deel die gered stel"</string>
-    <string name="exportsongdirectory">"Voer lys van liedjies uit"</string>
+    <string name="export_song_directory">"Voer lys van liedjies uit"</string>
     <string name="extra">"Ekstra inligting"</string>
     <string name="extract">"uittreksel teks"</string>
     <string name="extracting">"onttrek"</string>
@@ -194,7 +194,7 @@
     <string name="file_type">"lêer tipe"</string>
     <string name="unknown">"onbekend"</string>
     <string name="findnewsongs">"Vind nuwe liedjies"</string>
-    <string name="firstsong">"Vertoon eerste liedjie"</string>
+    <string name="first_song">"Vertoon eerste liedjie"</string>
     <string name="fix">"Autofix"</string>
     <string name="floating_window">"Vloeiende venster"</string>
     <string name="new_folder">"Skep nuwe lied gids"</string>
@@ -231,7 +231,7 @@
     <string name="item">"Item"</string>
     <string name="keepmultiline">" Hou multiline kompak"</string>
     <string name="language">"Taal"</string>
-    <string name="lastsong">"Vertoon laaste item in stel"</string>
+    <string name="last_song">"Vertoon laaste item in stel"</string>
     <string name="latest_updates">"Laaste updates"</string>
     <string name="theme_light">"Lig tema"</string>
     <string name="linespacing">"Trim lynspasiëring deur"</string>
@@ -245,7 +245,7 @@
     <string name="load_preferences">"Laai voorkeure"</string>
     <string name="load_reusable">"Laai 'n herbruikbare slide"</string>
     <string name="logo">"logo"</string>
-    <string name="longPress">"Kies 'n lang pers aksie"</string>
+    <string name="long_press_action">"Kies 'n lang pers aksie"</string>
     <string name="long_press">"Lang druk / hou"</string>
     <string name="loop">"lus"</string>
     <string name="loop_slide_pages">"Loop bladsye in persoonlike slide"</string>
@@ -824,4 +824,15 @@
     <string name="theme_exists">Daardie tema bestaan reeds.</string>
     <string name="quicklaunch_button5">Knoppie 5</string>
     <string name="quicklaunch_button6">Knoppie 6</string>
+    <string name="utilities_info">Ander gereedskap vir musikante</string>
+    <string name="utilities">Nutsprogramme</string>
+    <string name="sound_level_meter_info">Kontroleer volumes (gebruik mikrofoon)</string>
+    <string name="rename_info">Hernoem of verander die kategorie van \'n gestoorde stel</string>
+    <string name="presentation_order_use">As aanbiedingsvolgorde vir die liedjie bestaan, gebruik dit om die vertoning te skep</string>
+    <string name="persistent_database_info">Dit stoor ekstra inligting (sleutel, notas, outoscroll, midi, ens.) vir nie OpenSong-liedjies soos PDF-lêers</string>
+    <string name="persistent_database">Aanhoudende databasis</string>
+    <string name="pad_hide">Versteek pad outomaties</string>
+    <string name="duplicate_song">Skep \'n kopie van hierdie liedjie</string>
+    <string name="capo_hide">Verberg kapo outomaties</string>
+    <string name="autoscroll_hide">Versteek outoscroll outomaties</string>
 </resources>

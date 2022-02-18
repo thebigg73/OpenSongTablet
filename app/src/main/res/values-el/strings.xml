@@ -186,7 +186,7 @@
     <string name="export_text">"Κείμενο (.txt)"</string>
     <string name="export_current_song">"Share the current song"</string>
     <string name="exportsavedset">"Share the saved set"</string>
-    <string name="exportsongdirectory">"Εξαγωγή λίστας τραγουδιών"</string>
+    <string name="export_song_directory">"Εξαγωγή λίστας τραγουδιών"</string>
     <string name="extra">"Extra Information"</string>
     <string name="extract">"Εξαγωγή κειμένου"</string>
     <string name="extracting">"Εξαγωγή"</string>
@@ -196,7 +196,7 @@
     <string name="file_type">"Τύπος αρχείου"</string>
     <string name="unknown">"Άγνωστο"</string>
     <string name="findnewsongs">"Βρείτε νέα τραγούδια"</string>
-    <string name="firstsong">"Εμφάνιση πρώτου τραγουδιού"</string>
+    <string name="first_song">"Εμφάνιση πρώτου τραγουδιού"</string>
     <string name="fix">"Αυτόματη επιδιόρθωση"</string>
     <string name="floating_window">"Πλωτό παράθυρο"</string>
     <string name="new_folder">"Δημιουργία νέου φακέλου τραγουδιού"</string>
@@ -233,7 +233,7 @@
     <string name="item">"Item"</string>
     <string name="keepmultiline">Διατηρήστε συμπαγές πολυγραμμικό</string>
     <string name="language">"Γλώσσα"</string>
-    <string name="lastsong">"Εμφάνιση τελευταίου τραγουδιού στην σειρά"</string>
+    <string name="last_song">"Εμφάνιση τελευταίου τραγουδιού στην σειρά"</string>
     <string name="latest_updates">"Τελευταίες ενημερώσεις"</string>
     <string name="theme_light">"Light theme"</string>
     <string name="linespacing">"Trim linespacing by"</string>
@@ -247,7 +247,7 @@
     <string name="load_preferences">"Φόρτωση προτιμήσεων"</string>
     <string name="load_reusable">"Load a reusable slide"</string>
     <string name="logo">"Λογότυπο"</string>
-    <string name="longPress">"Select long press action"</string>
+    <string name="long_press_action">"Select long press action"</string>
     <string name="long_press">"Πατήστε παρατεταμένα"</string>
     <string name="loop">"Επανάληψη"</string>
     <string name="loop_slide_pages">"Loop pages in custom slide"</string>
@@ -826,4 +826,15 @@
     <string name="portrait">Πορτρέτο</string>
     <string name="quicklaunch_button5">Κουμπί 5</string>
     <string name="quicklaunch_button6">Κουμπί 6</string>
+    <string name="utilities_info">Άλλα εργαλεία για μουσικούς</string>
+    <string name="utilities">Βοηθητικά προγράμματα</string>
+    <string name="sound_level_meter_info">Έλεγχος έντασης ήχου (χρησιμοποιεί μικρόφωνο)</string>
+    <string name="rename_info">Μετονομάστε ή αλλάξτε την κατηγορία ενός αποθηκευμένου συνόλου</string>
+    <string name="presentation_order_use">Εάν υπάρχει σειρά παρουσίασης για το τραγούδι, χρησιμοποιήστε το για να δημιουργήσετε την οθόνη</string>
+    <string name="persistent_database_info">Αυτό αποθηκεύει επιπλέον πληροφορίες (κλειδί, σημειώσεις, αυτόματη κύλιση, midi, κ.λπ.) για τραγούδια που δεν είναι OpenSong, όπως αρχεία PDF</string>
+    <string name="persistent_database">Μόνιμη βάση δεδομένων</string>
+    <string name="pad_hide">Αυτόματη απόκρυψη μαξιλαριού</string>
+    <string name="duplicate_song">Δημιουργήστε ένα αντίγραφο αυτού του τραγουδιού</string>
+    <string name="capo_hide">Αυτόματη απόκρυψη capo</string>
+    <string name="autoscroll_hide">Αυτόματη απόκρυψη αυτόματης κύλισης</string>
 </resources>

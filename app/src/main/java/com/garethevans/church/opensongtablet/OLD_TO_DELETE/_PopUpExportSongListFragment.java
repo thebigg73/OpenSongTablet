@@ -55,7 +55,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportsongdirectory));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.export_song_directory));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +144,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(android.content.Intent.EXTRA_SUBJECT, Objects.requireNonNull(getActivity()).getString(R.string.app_name) + " " +
-                getActivity().getString(R.string.exportsongdirectory));
+                getActivity().getString(R.string.export_song_directory));
         intent.putExtra(Intent.EXTRA_TEXT, songContents.toString());
 
         String title = getActivity().getResources().getString(R.string.export);

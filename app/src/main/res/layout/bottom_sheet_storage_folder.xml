@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/text"
                 android:padding="16dp"
-                android:text="@string/exportsongdirectory"
+                android:text="@string/export_song_directory"
                 custom:mydrawable="@drawable/ic_format_list_bulleted_white_36dp" />
 
         </LinearLayout>

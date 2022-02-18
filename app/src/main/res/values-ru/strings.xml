@@ -186,7 +186,7 @@
     <string name="export_text">"Текстовый файл (.txt)"</string>
     <string name="export_current_song">"Поделится текущей песней"</string>
     <string name="exportsavedset">"Отправить сохраненный список"</string>
-    <string name="exportsongdirectory">"Экспортировать список песен"</string>
+    <string name="export_song_directory">"Экспортировать список песен"</string>
     <string name="extra">"Дополнительная информация"</string>
     <string name="extract">"Извлечь текст"</string>
     <string name="extracting">"экстрагирование"</string>
@@ -196,7 +196,7 @@
     <string name="file_type">"Тип файла"</string>
     <string name="unknown">"неизвестно"</string>
     <string name="findnewsongs">"Поиск новых песен"</string>
-    <string name="firstsong">"Показать первую песню"</string>
+    <string name="first_song">"Показать первую песню"</string>
     <string name="fix">"Автоисправление"</string>
     <string name="floating_window">"Плавающее окно"</string>
     <string name="new_folder">"Создание новой папки"</string>
@@ -233,7 +233,7 @@
     <string name="item">"Пункт"</string>
     <string name="keepmultiline">Держите многострочный компактный</string>
     <string name="language">"Язык"</string>
-    <string name="lastsong">"Показана последняя песня"</string>
+    <string name="last_song">"Показана последняя песня"</string>
     <string name="latest_updates">"Последние обновления"</string>
     <string name="theme_light">"Светлая тема"</string>
     <string name="linespacing">"Обрезать межстрочный интервал"</string>
@@ -247,7 +247,7 @@
     <string name="load_preferences">"Загрузка настроек"</string>
     <string name="load_reusable">"Загрузить слайд"</string>
     <string name="logo">"логотип"</string>
-    <string name="longPress">"Действие при долгом касании"</string>
+    <string name="long_press_action">"Действие при долгом касании"</string>
     <string name="long_press">"Долгое нажатие / удержание"</string>
     <string name="loop">"зациклить"</string>
     <string name="loop_slide_pages">"Зациклить страницы в слайде пользователя"</string>
@@ -826,4 +826,15 @@
     <string name="landscape">Пейзаж</string>
     <string name="quicklaunch_button5">Кнопка 5</string>
     <string name="quicklaunch_button6">Кнопка 6</string>
+    <string name="utilities_info">Другие инструменты для музыкантов</string>
+    <string name="utilities">Утилиты</string>
+    <string name="sound_level_meter_info">Проверьте громкость (использует микрофон)</string>
+    <string name="rename_info">Переименовать или изменить категорию сохраненного набора</string>
+    <string name="presentation_order_use">Если для песни существует порядок представления, используйте его для создания отображения.</string>
+    <string name="persistent_database_info">Здесь хранится дополнительная информация (тональность, ноты, автопрокрутка, миди и т. д.) для песен, отличных от OpenSong, таких как файлы PDF.</string>
+    <string name="persistent_database">Постоянная база данных</string>
+    <string name="pad_hide">Автоскрытие панели</string>
+    <string name="duplicate_song">Создать копию этой песни</string>
+    <string name="capo_hide">Автоскрытие каподастра</string>
+    <string name="autoscroll_hide">Автоскрытие автопрокрутки</string>
 </resources>

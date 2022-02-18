@@ -186,7 +186,7 @@
     <string name="export_text">"Szöveg (.txt)"</string>
     <string name="export_current_song">"Ossza meg az aktuális zeneszám"</string>
     <string name="exportsavedset">"Ossza meg a mentett meg"</string>
-    <string name="exportsongdirectory">"Export dalok listáját"</string>
+    <string name="export_song_directory">"Export dalok listáját"</string>
     <string name="extra">"Extra információ"</string>
     <string name="extract">"kivonat szöveget"</string>
     <string name="extracting">"kitermelő"</string>
@@ -196,7 +196,7 @@
     <string name="file_type">"Fájltípus"</string>
     <string name="unknown">"ismeretlen"</string>
     <string name="findnewsongs">"Találj új dal"</string>
-    <string name="firstsong">"Megjelenítve első dal"</string>
+    <string name="first_song">"Megjelenítve első dal"</string>
     <string name="fix">"Automatikus javítás"</string>
     <string name="floating_window">"lebegő ablakban"</string>
     <string name="new_folder">"Hozzon létre új dalt mappa"</string>
@@ -233,7 +233,7 @@
     <string name="item">"Alkatrész"</string>
     <string name="keepmultiline">Tartsa a többsoros kompakt</string>
     <string name="language">"Nyelv"</string>
-    <string name="lastsong">"Bemutatás utolsó eleme szett"</string>
+    <string name="last_song">"Bemutatás utolsó eleme szett"</string>
     <string name="latest_updates">"Utolsó frissítések</string>
     <string name="theme_light">"Light téma"</string>
     <string name="linespacing">"Trim sorköz által"</string>
@@ -247,7 +247,7 @@
     <string name="load_preferences">"Betöltési beállítások"</string>
     <string name="load_reusable">"Töltsön be egy újrafelhasználható slide"</string>
     <string name="logo">"logo"</string>
-    <string name="longPress">"Válassza ki a hosszú nyomja akció"</string>
+    <string name="long_press_action">"Válassza ki a hosszú nyomja akció"</string>
     <string name="long_press">"Tartsa hosszan a gombot"</string>
     <string name="loop">"hurkol"</string>
     <string name="loop_slide_pages">"Hurok oldalak egyedi dia"</string>
@@ -826,4 +826,15 @@
     <string name="portrait">Portré</string>
     <string name="quicklaunch_button5">5. gomb</string>
     <string name="quicklaunch_button6">6. gomb</string>
+    <string name="utilities_info">Egyéb eszközök zenészek számára</string>
+    <string name="utilities">Segédprogramok</string>
+    <string name="sound_level_meter_info">Ellenőrizze a hangerőt (mikrofont használ)</string>
+    <string name="rename_info">A mentett készlet kategóriájának átnevezése vagy módosítása</string>
+    <string name="presentation_order_use">Ha létezik bemutatási sorrend a dalhoz, használja ezt a megjelenítés létrehozásához</string>
+    <string name="persistent_database_info">Ez extra információkat tárol (kulcs, hangjegyek, automatikus görgetés, midi stb.) a nem OpenSong dalokhoz, például PDF-fájlokhoz</string>
+    <string name="persistent_database">Állandó adatbázis</string>
+    <string name="pad_hide">Automatikusan elrejtő pad</string>
+    <string name="duplicate_song">Készítsen másolatot erről a dalról</string>
+    <string name="capo_hide">Capo automatikus elrejtése</string>
+    <string name="autoscroll_hide">Automatikus görgetés automatikus elrejtése</string>
 </resources>

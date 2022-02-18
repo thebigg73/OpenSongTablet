@@ -186,7 +186,7 @@
     <string name="export_text">"Testo (.txt)"</string>
     <string name="export_current_song">"Condividi il brano corrente"</string>
     <string name="exportsavedset">"Condividi il set salvato"</string>
-    <string name="exportsongdirectory">"Elenco di canzoni di esportazione"</string>
+    <string name="export_song_directory">"Elenco di canzoni di esportazione"</string>
     <string name="extra">"Ulteriori informazioni"</string>
     <string name="extract">"il testo estratto"</string>
     <string name="extracting">"Estrazione"</string>
@@ -196,7 +196,7 @@
     <string name="file_type">"Tipo di file"</string>
     <string name="unknown">"sconosciuto"</string>
     <string name="findnewsongs">"Trova nuove canzoni"</string>
-    <string name="firstsong">"Visualizzazione prima canzone"</string>
+    <string name="first_song">"Visualizzazione prima canzone"</string>
     <string name="fix">"Si auto ripara"</string>
     <string name="floating_window">"Finestra galleggiante"</string>
     <string name="new_folder">"Crea nuova cartella canzone"</string>
@@ -233,7 +233,7 @@
     <string name="item">"Oggetto"</string>
     <string name="keepmultiline">Mantieni compatto multilinea</string>
     <string name="language">"Lingua"</string>
-    <string name="lastsong">"Visualizzazione ultimo elemento nel set"</string>
+    <string name="last_song">"Visualizzazione ultimo elemento nel set"</string>
     <string name="latest_updates">"Ultimi aggiornamenti"</string>
     <string name="theme_light">"Tema della luce"</string>
     <string name="linespacing">"Interlinea trim"</string>
@@ -247,7 +247,7 @@
     <string name="load_preferences">"Caricamento delle preferenze"</string>
     <string name="load_reusable">"Caricare un vetrino riutilizzabile"</string>
     <string name="logo">"Logo"</string>
-    <string name="longPress">"Selezionare l'azione premere a lungo"</string>
+    <string name="long_press_action">"Selezionare l'azione premere a lungo"</string>
     <string name="long_press">"Tenere premuto a lungo"</string>
     <string name="loop">"anello"</string>
     <string name="loop_slide_pages">"Pagine Loop in presentazioni personalizzate"</string>
@@ -826,4 +826,15 @@
     <string name="portrait">Ritratto</string>
     <string name="quicklaunch_button5">Pulsante 5</string>
     <string name="quicklaunch_button6">Pulsante 6</string>
+    <string name="autoscroll_hide">Nascondi automaticamente lo scorrimento automatico</string>
+    <string name="capo_hide">Capotasto autohide</string>
+    <string name="duplicate_song">Crea una copia di questo brano</string>
+    <string name="pad_hide">Nascondi automaticamente pad</string>
+    <string name="persistent_database">Banca dati persistente</string>
+    <string name="persistent_database_info">Memorizza informazioni aggiuntive (tasto, note, scorrimento automatico, midi, ecc.) per brani non OpenSong come file PDF</string>
+    <string name="presentation_order_use">Se esiste un ordine di presentazione per il brano, utilizzalo per creare il display</string>
+    <string name="rename_info">Rinominare o modificare la categoria di un set salvato</string>
+    <string name="sound_level_meter_info">Controlla i volumi (usa il microfono)</string>
+    <string name="utilities">Utilità</string>
+    <string name="utilities_info">Altri strumenti per musicisti</string>
 </resources>

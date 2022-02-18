@@ -24,6 +24,8 @@ public class __TODO__ {
     // pdftotext_found
     // presoFontShadow
     // keepmultiline
+    // editpdf
+    // first_song last_song
 
     //TODO - still to complete
     // Anything still listed below needs work

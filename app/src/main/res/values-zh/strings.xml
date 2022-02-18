@@ -184,7 +184,7 @@
     <string name="export_text">"文字（.txt）"</string>
     <string name="export_current_song">"分享当前歌曲"</string>
     <string name="exportsavedset">"分享保存的设置"</string>
-    <string name="exportsongdirectory">"导出歌曲列表"</string>
+    <string name="export_song_directory">"导出歌曲列表"</string>
     <string name="extra">"额外的信息"额外的信息"</string>
     <string name="extract">"提取文本"</string>
     <string name="extracting">"提取"</string>
@@ -194,7 +194,7 @@
     <string name="file_type">"文件类型"</string>
     <string name="unknown">"未知"</string>
     <string name="findnewsongs">"找新歌"</string>
-    <string name="firstsong">"显示的第一首歌曲"</string>
+    <string name="first_song">"显示的第一首歌曲"</string>
     <string name="fix">"自动修复"</string>
     <string name="floating_window">"浮动窗口"</string>
     <string name="new_folder">"创建新文件夹的歌曲"</string>
@@ -231,7 +231,7 @@
     <string name="item">"项目"</string>
     <string name="keepmultiline">保持多线紧凑</string>
     <string name="language">"语言"</string>
-    <string name="lastsong">"显示在设定最后一个项目"</string>
+    <string name="last_song">"显示在设定最后一个项目"</string>
     <string name="latest_updates">"最新更新"</string>
     <string name="theme_light">"光主题"</string>
     <string name="linespacing">"修剪线间距由"</string>
@@ -245,7 +245,7 @@
     <string name="load_preferences">"加载首选项"</string>
     <string name="load_reusable">"装入可重复使用的幻灯片"</string>
     <string name="logo">"商标"</string>
-    <string name="longPress">"选择长按行动"</string>
+    <string name="long_press_action">"选择长按行动"</string>
     <string name="long_press">"长按/按住"</string>
     <string name="loop">"循环"</string>
     <string name="loop_slide_pages">"在自定义幻灯片循环播放页面"</string>
@@ -825,4 +825,15 @@
     <string name="theme_exists">该主题已经存在。</string>
     <string name="quicklaunch_button5">按钮5</string>
     <string name="quicklaunch_button6">按钮6</string>
+    <string name="autoscroll_hide">自动隐藏自动滚动</string>
+    <string name="capo_hide">自动隐藏变调夹</string>
+    <string name="duplicate_song">创建这首歌的副本</string>
+    <string name="pad_hide">自动隐藏垫</string>
+    <string name="persistent_database">持久数据库</string>
+    <string name="persistent_database_info">这会存储非 OpenSong 歌曲（如 PDF 文件）的额外信息（键、音符、自动滚动、midi 等）</string>
+    <string name="presentation_order_use">如果歌曲存在演示顺序，则使用它来创建显示</string>
+    <string name="rename_info">重命名或更改已保存集的类别</string>
+    <string name="sound_level_meter_info">检查音量（使用麦克风）</string>
+    <string name="utilities">实用程序</string>
+    <string name="utilities_info">音乐家的其他工具</string>
 </resources>

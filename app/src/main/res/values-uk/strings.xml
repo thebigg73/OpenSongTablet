@@ -169,7 +169,7 @@
     <string name="export_text">Текстовий файл (.txt)</string>
     <string name="export_current_song">Поділиться поточної піснею</string>
     <string name="exportsavedset">Надіслати збережений список</string>
-    <string name="exportsongdirectory">Експортувати список пісень</string>
+    <string name="export_song_directory">Експортувати список пісень</string>
     <string name="extra">Додаткова інформація</string>
     <string name="extract">Витягти текст</string>
     <string name="extracting">екстрагування</string>
@@ -179,7 +179,7 @@
     <string name="file_type">Тип файлу</string>
     <string name="unknown">невідомо</string>
     <string name="findnewsongs">Пошук нових пісень</string>
-    <string name="firstsong">Перша пісня</string>
+    <string name="first_song">Перша пісня</string>
     <string name="fix">автоматичного виправлення</string>
     <string name="floating_window">Плаваючий вікно</string>
     <string name="new_folder">Створення нової папки</string>
@@ -211,7 +211,7 @@
     <string name="item">Пункт</string>
     <string name="keepmultiline">Тримайте багатостроковий компактний</string>
     <string name="language">Мова</string>
-    <string name="lastsong">Показати останню пісню</string>
+    <string name="last_song">Показати останню пісню</string>
     <string name="latest_updates">Оновлення</string>
     <string name="theme_light">Світла тема</string>
     <string name="linespacing">Обрізати міжрядковий інтервал</string>
@@ -225,7 +225,7 @@
     <string name="load_preferences">Завантаження налаштувань</string>
     <string name="load_reusable">Завантажити слайд</string>
     <string name="logo">Логотип</string>
-    <string name="longPress">Дія при довгому торканні</string>
+    <string name="long_press_action">Дія при довгому торканні</string>
     <string name="long_press">Довге натискання/утримання</string>
     <string name="loop">зациклити</string>
     <string name="loop_slide_pages">Зациклити сторінки в слайді користувача</string>
@@ -825,4 +825,15 @@
     <string name="landscape">Пейзаж</string>
     <string name="quicklaunch_button5">Кнопка 5</string>
     <string name="quicklaunch_button6">Кнопка 6</string>
+    <string name="autoscroll_hide">Автоматичне приховування автопрокрутки</string>
+    <string name="capo_hide">Автоприховування капо</string>
+    <string name="duplicate_song">Створіть копію цієї пісні</string>
+    <string name="pad_hide">Автоприховування панелі</string>
+    <string name="persistent_database">Постійна база даних</string>
+    <string name="persistent_database_info">Тут зберігається додаткова інформація (клавіша, нотатки, автопрокрутка, міді тощо) для пісень, які не є OpenSong, таких як файли PDF</string>
+    <string name="presentation_order_use">Якщо для пісні існує порядок презентації, використовуйте його для створення дисплея</string>
+    <string name="rename_info">Перейменуйте або змініть категорію збереженого набору</string>
+    <string name="sound_level_meter_info">Перевірити гучність (використовує мікрофон)</string>
+    <string name="utilities">комунальні послуги</string>
+    <string name="utilities_info">Інші інструменти для музикантів</string>
 </resources>

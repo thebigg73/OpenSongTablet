@@ -126,7 +126,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(android.content.Intent.EXTRA_SUBJECT, requireActivity().getString(R.string.app_name) + " " +
-                getString(R.string.exportsongdirectory));
+                getString(R.string.export_song_directory));
         intent.putExtra(Intent.EXTRA_TEXT, songContents.toString());
 
         String title = getString(R.string.export);

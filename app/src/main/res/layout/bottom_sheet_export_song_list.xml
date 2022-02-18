@@ -16,7 +16,7 @@
             android:id="@+id/dialogHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/exportsongdirectory" />
+            android:text="@string/export_song_directory" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

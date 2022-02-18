@@ -2852,7 +2852,7 @@ public class StageMode extends AppCompatActivity implements
                     StaticVariables.setMoveDirection = "back";
                     doMoveInSet();
                 } else {
-                    showToastMessage(getResources().getString(R.string.firstsong));
+                    showToastMessage(getResources().getString(R.string.first_song));
                 }
             } else if (!dealtwithaspdf) {
                 // Try to move to the previous song alphabetically
@@ -2883,7 +2883,7 @@ public class StageMode extends AppCompatActivity implements
                         Handler delayfadeinredraw = new Handler();
                         delayfadeinredraw.postDelayed(() -> FullscreenActivity.tempswipeSet = "enable", FullscreenActivity.delayswipe_time);
                     } else {
-                        showToastMessage(getResources().getString(R.string.firstsong));
+                        showToastMessage(getResources().getString(R.string.first_song));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

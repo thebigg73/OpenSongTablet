@@ -237,30 +237,21 @@
     <string name="download_wifi_only">Download over WiFi only</string>
     <string name="duplicate">Duplicate</string>
     <string name="duplicate_sections">You have used the same tag multiple times in the song.  This can cause problems when setting the order.</string>
+    <string name="duplicate_song">Create a copy of this song</string>
 
-    <!-- TODO Not checked-->
     <string name="edit">Edit</string>
-    <string name="edit_default_delaymax">Max Delay (seconds)</string>
     <string name="edit_format">Song edit format</string>
     <string name="edit_new_section">Insert new section</string>
     <string name="edit_set_item">Edit set item</string>
     <string name="edit_set_item_info">Change item or key or make a variation</string>
     <string name="edit_song">Edit song</string>
     <string name="edit_song_aka">Also known as</string>
-    <string name="edit_song_availabletags">[V] = Verse, [V1] = Verse 1, [C] = Chorus, [C1] for
-		Chorus 1, [P] = Prechorus, [T] = Tag, [B] = Bridge, […(whatever you want)…] = Custom tag.\n Lyric lines start
-		with a space, chord lines with a full stop, comment lines with a
-		semicolon.</string>
-    <string name="edit_song_keyline">Key line</string>
-    <string name="edit_song_pitch">Pitch pipe notes for song</string>
-    <string name="edit_song_restrictions">Restrictions</string>
     <string name="edit_temporary">Temporary edit</string>
     <string name="edit_text_size">Edit text size</string>
     <string name="editpdf">Edit in external PDF program</string>
     <string name="empty">Empty</string>
     <string name="ending">Ending</string>
     <string name="error">Error</string>
-    <string name="error_missingsection">Missing sections</string>
     <string name="error_song_not_saved">There was an error saving the song</string>
     <string name="existing_found">You have already used the following install locations.  You will still need to locate and set this manually using the red button above.</string>
     <string name="exit">Exit</string>
@@ -272,21 +263,14 @@
     <string name="export_include_set_songs">Include songs identified in the set</string>
     <string name="export_onsong">OnSong song (.onsong)</string>
     <string name="export_ost">OpenSongApp song (.ost)</string>
-    <string name="export_pdf">Screenshot PDF (.pdf)</string>
-    <string name="export_png">Screenshot image (.png)</string>
     <string name="export_set">OpenSongApp set (.osts)</string>
     <string name="export_text">Text (.txt)</string>
-    <string name="exportsavedset">Share the saved set</string>
-    <string name="exportsongdirectory">Export list of songs</string>
+    <string name="export_song_directory">Export list of songs</string>
     <string name="extra">Extra information</string>
     <string name="extra_settings">Advanced settings</string>
     <string name="extract">Extract text</string>
-    <string name="extracting">Extracting</string>
-    <string name="extradisplay">Secondary display detected.  Songs will be displayed on the secondary display.</string>
 
-    <!-- TODO Not checked-->
     <string name="file">File</string>
-    <string name="file_choose_info">Select the required file(s) below.</string>
     <string name="file_chooser">File chooser</string>
     <string name="file_exists">File already exists.  Please rename it.</string>
     <string name="file_type">File type</string>
@@ -303,15 +287,12 @@
     <string name="filter_mode_info">By default filtered sections are hidden, but you can set this to only show these filtered sections instead</string>
     <string name="filter_results">Filter results</string>
     <string name="filter_section">Section filtering</string>
-    <string name="filter_structure">[*filter:V] = filtered verse section</string>
     <string name="filters">Filters</string>
     <string name="find_existing">Find previous installation locations for OpenSong files</string>
-    <string name="findnewsongs">Find new songs</string>
     <string name="first_run">Either this is your first time running the app, or something has changed. Due to Android permissions, we need you to set your desired storage location for the app to store its files.</string>
-    <string name="firstsong">Displaying first item</string>
+    <string name="first_song">Displaying first item</string>
     <string name="fix">Autofix</string>
     <string name="fix_info">Try to fix minor formatting issues</string>
-    <string name="floating_window">Floating window</string>
     <string name="folder">Folder</string>
     <string name="folder_exists">This folder already exists!</string>
     <string name="folder_move_contents">Move folder contents</string>
@@ -321,14 +302,10 @@
     <string name="font_choose">Change fonts</string>
     <string name="font_choose_description">Change song display fonts</string>
     <string name="font_choose_list">Choose a font from the list below</string>
-    <string name="font_choose_preview">Choose with web preview</string>
     <string name="font_presentation">Presentation font</string>
     <string name="font_presentation_info">Presentation information font</string>
-    <string name="fontsize">You need to turn off auto scale song.</string>
-    <string name="footpedal">Assign foot pedal</string>
     <string name="forum">Forum</string>
     <string name="forum_description">Report bugs, get help and request features</string>
-    <string name="full">Full</string>
 
     <string name="github" translatable="false">GitHub</string>
     <string name="github_description">Contribute to app development</string>
@@ -345,30 +322,24 @@
     <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="hymn_number">Hymn number</string>
 
-    <!-- TODO Not checked-->
     <string name="image">Image</string>
     <string name="image_change">Click on the image to change</string>
     <string name="image_slide">Image slideshow</string>
     <string name="import_basic">Import</string>
     <string name="import_from_file">Import from a saved file</string>
     <string name="import_main">Import or create songs</string>
-    <string name="import_onsong_error">"No OnSong backup file found in /documents/OpenSong/"</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
-    <string name="import_song">Import a song</string>
-    <string name="importnewset">Import a set</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
     <string name="info_text">Info text</string>
     <string name="info_text_autohide">Automatically hide information bar</string>
     <string name="info_text_autohide_info">Hide once the information has been displayed and a minimum time has elapsed</string>
     <string name="info_text_background">Background for information bar</string>
     <string name="information">Information</string>
-    <string name="initialisesongs_start">Initialising \'Songs\' folder -</string>
     <string name="instrument">Instrument</string>
     <string name="instrumental">Instrumental</string>
     <string name="interlude">Interlude</string>
     <string name="intro">Intro</string>
-    <string name="intro_app">OpenSongApp uses songs created in OpenSong and displays them on your device screen.</string>
     <string name="is_not_set">Not set</string>
     <string name="item">Item</string>
 
@@ -412,7 +383,6 @@
         <item>Abm</item>
     </array>
 
-    <!-- TODO Not checked-->
     <string name="landscape">Landscape</string>
     <string name="language">Language</string>
     <array name="languagelist" translatable="false">
@@ -433,7 +403,7 @@
         <item>(sv) Sweeds</item>
         <item>(zh) 中文</item>
     </array>
-    <string name="lastsong">Displaying last item</string>
+    <string name="last_song">Displaying last item</string>
     <string name="latest_updates">Latest updates</string>
     <string name="line_length">Line length</string>
     <string name="lines_per_slide">Lines per slide</string>
@@ -453,20 +423,17 @@
     <string name="link_web">Online link</string>
     <string name="link_youtube">YouTube link</string>
     <string name="load">Load</string>
-    <string name="load_preferences">Loading preferences</string>
     <string name="load_reusable">Load a reusable slide</string>
     <string name="location_rationale">This feature is required to locate other network devices</string>
     <string name="logo">Logo</string>
     <string name="logo_info">Toggle between the logo and the song content</string>
-    <string name="longPress">Select long press action</string>
     <string name="long_press">Long press/hold</string>
-    <string name="look_for">Look for</string>
+    <string name="long_press_action">Select long press action</string>
     <string name="loop">Loop</string>
     <string name="loop_slide_pages">Loop pages in custom slide</string>
     <string name="lorem" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="lyrics">Lyrics</string>
     <string name="lyrics_color">Lyrics font</string>
-    <string name="lyrics_settings">Lyrics settings</string>
 
     <string name="main_song_display">Main song display</string>
     <string name="mainfoldername">MAIN</string>
@@ -585,6 +552,8 @@
     <string name="pedal_waiting">"Waiting for button…."</string>
     <string name="performance_mode">Performance mode</string>
     <string name="performance_mode_info">Use your device as a songbook</string>
+    <string name="persistent_database">Persistent database</string>
+    <string name="persistent_database_info">This stores extra information (key, notes, autoscroll, midi, etc.) for non OpenSong songs such as PDF files</string>
     <string name="piano">Piano</string>
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
     <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
@@ -974,6 +943,8 @@ Check out the categories in the right hand options menu.
 
 
     <!-- TODO LIKELY TO REMOVE NO USAGES FOUND -->
+
+    <!--
     <string name="action_search">Search songs</string>
     <string name="actionbar">Menu bar info</string>
     <string name="actions">Actions</string>
@@ -1108,8 +1079,36 @@ Check out the categories in the right hand options menu.
     <string name="midi_message_sent">MIDI message sent from song</string>
     <string name="midi_usb">Connect USB device</string>
     <string name="mode_settings">Settings specific to this mode</string>
-    <string name="duplicate_song">Create a copy of this song</string>
-    <string name="persistent_database">Persistent database</string>
-    <string name="persistent_database_info">This stores extra information (key, notes, autoscroll, midi, etc.) for non OpenSong songs such as PDF files</string>
+    <string name="edit_default_delaymax">Max Delay (seconds)</string>
+    <string name="edit_song_availabletags">[V] = Verse, [V1] = Verse 1, [C] = Chorus, [C1] for
+		Chorus 1, [P] = Prechorus, [T] = Tag, [B] = Bridge, […(whatever you want)…] = Custom tag.\n Lyric lines start
+		with a space, chord lines with a full stop, comment lines with a
+		semicolon.</string>
+    <string name="edit_song_keyline">Key line</string>
+    <string name="edit_song_pitch">Pitch pipe notes for song</string>
+    <string name="edit_song_restrictions">Restrictions</string>
+    <string name="error_missingsection">Missing sections</string>
+    <string name="export_pdf">Screenshot PDF (.pdf)</string>
+    <string name="export_png">Screenshot image (.png)</string>
+    <string name="exportsavedset">Share the saved set</string>
+    <string name="extracting">Extracting</string>
+    <string name="extradisplay">Secondary display detected.  Songs will be displayed on the secondary display.</string>
+    <string name="file_choose_info">Select the required file(s) below.</string>
+    <string name="filter_structure">[*filter:V] = filtered verse section</string>
+    <string name="findnewsongs">Find new songs</string>
+    <string name="floating_window">Floating window</string>
+    <string name="font_choose_preview">Choose with web preview</string>
+    <string name="fontsize">You need to turn off auto scale song.</string>
+    <string name="footpedal">Assign foot pedal</string>
+    <string name="full">Full</string>
+    <string name="import_onsong_error">"No OnSong backup file found in /documents/OpenSong/"</string>
+    <string name="import_song">Import a song</string>
+    <string name="importnewset">Import a set</string>
+    <string name="initialisesongs_start">Initialising \'Songs\' folder -</string>
+    <string name="intro_app">OpenSongApp uses songs created in OpenSong and displays them on your device screen.</string>
+    <string name="load_preferences">Loading preferences</string>
+    <string name="look_for">Look for</string>
+    <string name="lyrics_settings">Lyrics settings</string>
 
+-->
 </resources>

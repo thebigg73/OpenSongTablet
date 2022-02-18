@@ -210,6 +210,9 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.bottomSheetLayout.transposeUp.setOnClickListener(v -> transpose("+1"));
 
         myView.bottomSheetLayout.autoFix.setOnClickListener(v -> autoFix());
+
+        myView.bottomSheetLayout.formatHelp.setOnClickListener(v -> mainActivityInterface.openDocument("songformat",null));
+
         // Scroll listener
         myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
         myView.nestedScrollView.setFabToAnimate(myView.undoButton);

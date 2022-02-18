@@ -186,7 +186,7 @@
     <string name="export_text">"Texto (.txt)"</string>
     <string name="export_current_song">"Comparte la canción actual"</string>
     <string name="exportsavedset">"Comparte el conjunto guardado"</string>
-    <string name="exportsongdirectory">"Exportar lista de canciones"</string>
+    <string name="export_song_directory">"Exportar lista de canciones"</string>
     <string name="extra">"Información extra"</string>
     <string name="extract">"Extrae el texto"</string>
     <string name="extracting">"Extrayendo"</string>
@@ -196,7 +196,7 @@
     <string name="file_type">"Tipo de archivo"</string>
     <string name="unknown">"desconocido"</string>
     <string name="findnewsongs">"Encuentra nuevas canciones"</string>
-    <string name="firstsong">"Viendo primera canción"</string>
+    <string name="first_song">"Viendo primera canción"</string>
     <string name="fix">"Autofix"</string>
     <string name="floating_window">"Ventana flotante"</string>
     <string name="new_folder">"Crear carpeta nueva canción"</string>
@@ -233,7 +233,7 @@
     <string name="item">"Artículo"</string>
     <string name="keepmultiline">Mantenga la compacta multilínea</string>
     <string name="language">"Lengua"</string>
-    <string name="lastsong">"Viendo último elemento de conjunto"</string>
+    <string name="last_song">"Viendo último elemento de conjunto"</string>
     <string name="latest_updates">"últimas actualizaciones"</string>
     <string name="theme_light">"Tema de Luz"</string>
     <string name="linespacing">"Interlineado ajuste por"</string>
@@ -247,7 +247,7 @@
     <string name="load_preferences">"Preferencias de carga"</string>
     <string name="load_reusable">"Cargar un portaobjetos reutilizable"</string>
     <string name="logo">"Logo"</string>
-    <string name="longPress">"Seleccione la acción pulsación larga"</string>
+    <string name="long_press_action">"Seleccione la acción pulsación larga"</string>
     <string name="long_press">"Mantenga presionado / mantenga presionado"</string>
     <string name="loop">"lazo"</string>
     <string name="loop_slide_pages">"Páginas Loop en diapositivas personalizada"</string>
@@ -826,4 +826,15 @@
     <string name="portrait">Retrato</string>
     <string name="quicklaunch_button5">Botón 5</string>
     <string name="quicklaunch_button6">Botón 6</string>
+    <string name="autoscroll_hide">Ocultar desplazamiento automático</string>
+    <string name="capo_hide">Cejilla de ocultación automática</string>
+    <string name="duplicate_song">Crear una copia de esta canción</string>
+    <string name="pad_hide">Almohadilla para ocultar automáticamente</string>
+    <string name="persistent_database">Base de datos persistente</string>
+    <string name="persistent_database_info">Esto almacena información adicional (clave, notas, desplazamiento automático, midi, etc.) para canciones que no son de OpenSong, como archivos PDF</string>
+    <string name="presentation_order_use">Si existe un orden de presentación para la canción, utilícelo para crear la pantalla.</string>
+    <string name="rename_info">Cambiar el nombre o cambiar la categoría de un conjunto guardado</string>
+    <string name="sound_level_meter_info">Verificar volúmenes (usa micrófono)</string>
+    <string name="utilities">Utilidades</string>
+    <string name="utilities_info">Otras herramientas para músicos</string>
 </resources>
