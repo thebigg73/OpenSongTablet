@@ -170,6 +170,10 @@ public class PageButtons {
         actions.add("pdfpage");
         actions.add("highlight");
         actions.add("editsong");
+        actions.add("scrolldown");
+        actions.add("scrollup");
+        actions.add("next");
+        actions.add("previous");
         actions.add("theme");
         actions.add("autoscale");
         actions.add("fonts");
@@ -204,6 +208,10 @@ public class PageButtons {
         text.add(c.getString(R.string.select_page));
         text.add(c.getString(R.string.highlight));
         text.add(c.getString(R.string.edit) + " " + c.getString(R.string.song));
+        text.add(c.getString(R.string.scroll_down));
+        text.add(c.getString(R.string.scroll_up));
+        text.add(c.getString(R.string.next));
+        text.add(c.getString(R.string.previous));
         text.add(c.getString(R.string.theme_choose));
         text.add(c.getString(R.string.autoscale));
         text.add(c.getString(R.string.font_choose));
@@ -238,6 +246,10 @@ public class PageButtons {
         shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.open));
+        shortText.add(c.getString(R.string.select));
+        shortText.add(c.getString(R.string.select));
+        shortText.add(c.getString(R.string.select));
+        shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.select));
         shortText.add(c.getString(R.string.scale_style));
         shortText.add(c.getString(R.string.select));
@@ -282,6 +294,10 @@ public class PageButtons {
         longText.add("");
         longText.add("");
         longText.add("");
+        longText.add("");
+        longText.add("");
+        longText.add("");
+        longText.add("");
         longText.add(c.getString(R.string.settings));
         longText.add(c.getString(R.string.edit));
         longText.add("");
@@ -306,6 +322,10 @@ public class PageButtons {
         drawableIds.add(R.drawable.ic_book_white_36dp);
         drawableIds.add(R.drawable.ic_highlighter_white_36dp);
         drawableIds.add(R.drawable.ic_table_edit_white_36dp);
+        drawableIds.add(R.drawable.ic_arrow_down_white_36dp);
+        drawableIds.add(R.drawable.ic_arrow_up_white_36dp);
+        drawableIds.add(R.drawable.ic_arrow_right_white_36dp);
+        drawableIds.add(R.drawable.ic_arrow_left_white_36dp);
         drawableIds.add(R.drawable.ic_theme_light_dark_white_36dp);
         drawableIds.add(R.drawable.ic_arrow_expand_white_36dp);
         drawableIds.add(R.drawable.ic_format_text_white_36dp);
@@ -524,6 +544,18 @@ public class PageButtons {
                 break;
             case "editsong":
                 actionInterface.getPerformanceGestures().editSong();
+                break;
+            case "scrolldown":
+                actionInterface.getPerformanceGestures().scroll(true);
+                break;
+            case "scrollup":
+                actionInterface.getPerformanceGestures().scroll(false);
+                break;
+            case "next":
+                actionInterface.getPerformanceGestures().nextSong();
+                break;
+            case "previous":
+                actionInterface.getPerformanceGestures().prevSong();
                 break;
             case "theme":
                 actionInterface.getPerformanceGestures().editTheme();

@@ -37,6 +37,10 @@ public class Gestures {
         gestures.add("setmenu");
         gestures.add("editsong");
         gestures.add("addtoset");
+        gestures.add("scrolldown");
+        gestures.add("scrollup");
+        gestures.add("next");
+        gestures.add("previous");
         gestures.add("refreshsong");
         gestures.add("autoscroll");
         gestures.add("metronome");
@@ -61,6 +65,10 @@ public class Gestures {
         gestureDescriptions.add(c.getString(R.string.set_current) + showhide);
         gestureDescriptions.add(c.getString(R.string.edit_song));
         gestureDescriptions.add(c.getString(R.string.add_song_to_set));
+        gestureDescriptions.add(c.getString(R.string.scroll_down));
+        gestureDescriptions.add(c.getString(R.string.scroll_up));
+        gestureDescriptions.add(c.getString(R.string.next));
+        gestureDescriptions.add(c.getString(R.string.previous));
         gestureDescriptions.add(c.getString(R.string.refresh_song));
         gestureDescriptions.add(autoscroll + startstop);
         gestureDescriptions.add(metronome + startstop);
