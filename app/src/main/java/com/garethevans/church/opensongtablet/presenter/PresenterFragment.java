@@ -31,9 +31,9 @@ public class PresenterFragment extends Fragment {
     private PageAdapter pageAdapter;
     private SongSectionsFragment songSectionsFragment;
     private SongSectionsAdapter songSectionsAdapter;
-    private MediaFragment mediaFragment;
-    private AlertFragment alertFragment;
-    private SettingsFragment settingsFragment;
+    //private MediaFragment mediaFragment;
+    private AdvancedFragment advancedFragment;
+    //private SettingsFragment settingsFragment;
     private final String TAG = "PresenterFragment";
     private boolean landscape;
 
@@ -101,8 +101,6 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.setFirstRun(false);
         }
 
-
-
         return myView.getRoot();
     }
 
@@ -140,9 +138,9 @@ public class PresenterFragment extends Fragment {
             pageAdapter = new PageAdapter(mainActivityInterface.getMyFragmentManager(), this.getLifecycle());
             pageAdapter.createFragment(0);
             songSectionsFragment = (SongSectionsFragment) pageAdapter.menuFragments[0];
-            mediaFragment = (MediaFragment) pageAdapter.createFragment(1);
-            alertFragment = (AlertFragment) pageAdapter.createFragment(2);
-            settingsFragment = (SettingsFragment) pageAdapter.createFragment(3);
+            //mediaFragment = (MediaFragment) pageAdapter.createFragment(1);
+            advancedFragment = (AdvancedFragment) pageAdapter.createFragment(1);
+            //settingsFragment = (SettingsFragment) pageAdapter.createFragment(3);
 
             mainActivityInterface.getPresenterSettings().setSongSectionsAdapter(new SongSectionsAdapter(requireContext(),mainActivityInterface,this,displayInterface));
 
@@ -153,14 +151,14 @@ public class PresenterFragment extends Fragment {
                         tab.setText(getString(R.string.song));
                         break;
                     case 1:
-                        tab.setText(getString(R.string.media));
+                        tab.setText(getString(R.string.extra_settings));
                         break;
-                    case 2:
+                    /*case 2:
                         tab.setText(getString(R.string.alert));
                         break;
                     case 3:
                         tab.setText(getString(R.string.settings));
-                        break;
+                        break;*/
                 }
             }).attach();
 
@@ -267,6 +265,12 @@ public class PresenterFragment extends Fragment {
         if (songSectionsFragment!=null) {
             songSectionsFragment.showTutorial(viewsToHighlight);
         }
+    }
+
+    public void setAllowPager(boolean allowPager) {
+        //pageAdapter.setAllowPager(allowPager);
+        Log.d(TAG,"swipe enable="+allowPager);
+        myView.viewPager.setUserInputEnabled(allowPager);
     }
 
     private class MyCheckChangeListener implements CompoundButton.OnCheckedChangeListener {

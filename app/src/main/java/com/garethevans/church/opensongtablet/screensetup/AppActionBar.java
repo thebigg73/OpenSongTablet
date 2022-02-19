@@ -284,6 +284,14 @@ public class AppActionBar {
             }
         }
     }
+    public void justShowOrHide(boolean show) {
+        if (actionBar!=null && show) {
+            actionBar.show();
+        } else if (actionBar!=null) {
+            actionBar.hide();
+        }
+        actionBar.hide();
+    }
 
     public void removeCallBacks() {
         delayactionBarHide.removeCallbacks(hideActionBarRunnable);

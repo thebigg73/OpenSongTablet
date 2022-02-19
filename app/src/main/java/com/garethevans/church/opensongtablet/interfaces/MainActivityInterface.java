@@ -165,7 +165,7 @@ public interface MainActivityInterface {
     Gestures getGestures();
     PerformanceGestures getPerformanceGestures();
     Swipes getSwipes();
-    void enableSwipe(boolean canSwipe);
+    void enableSwipe(String which, boolean canSwipe);
 
     // Navigation
     void navHome();

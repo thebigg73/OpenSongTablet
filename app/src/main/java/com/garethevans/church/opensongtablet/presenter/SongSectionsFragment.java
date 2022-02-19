@@ -64,8 +64,8 @@ public class SongSectionsFragment extends Fragment {
         });
         updatePresentationOrder();
 
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext());
+        myView.recyclerView.setItemAnimator(null);
         myView.recyclerView.setLayoutManager(linearLayoutManager);
         myView.recyclerView.setAdapter(mainActivityInterface.getPresenterSettings().getSongSectionsAdapter());
 
@@ -109,8 +109,11 @@ public class SongSectionsFragment extends Fragment {
         if (mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getItemCount()>newPosition) {
             int oldPosition = mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().getSelectedPosition();
             mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().setSelectedPosition(newPosition);
-            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemChanged(oldPosition);
-            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemChanged(newPosition);
+            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemChanged(oldPosition,"colorchange");
+            mainActivityInterface.getPresenterSettings().getSongSectionsAdapter().notifyItemChanged(newPosition,"colorchange");
+            if (myView.recyclerView.getLayoutManager()!=null) {
+                ((LinearLayoutManager) myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(newPosition, 0);
+            }
         }
     }
 
@@ -127,7 +130,11 @@ public class SongSectionsFragment extends Fragment {
     }
 
     public void doScrollTo(int thisPos) {
-        ((LinearLayoutManager)myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(thisPos,0);
+        try {
+            ((LinearLayoutManager) myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(thisPos, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void showTutorial(ArrayList<View> viewsToHighlight) {

@@ -20,7 +20,7 @@ public class PresenterSettings {
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
     private int backgroundColor, presoTransitionTime, presoXMargin, presoYMargin, presoInfoAlign,
         presoLyricsAlign, presoLyricsVAlign, currentSection=-1;
-    private String backgroundToUse, presoAlertText;
+    private String backgroundToUse, presoAlertText, ccliLicence;
     private float logoSize, castRotation, presoInfoBarAlpha, fontSizePresoMax, presoAlertTextSize,
             presoBackgroundAlpha, presoTitleTextSize, presoAuthorTextSize, presoCopyrightTextSize;
     private SongSectionsAdapter songSectionsAdapter;
@@ -127,6 +127,9 @@ public class PresenterSettings {
     }
     public void setSongSectionsAdapter(SongSectionsAdapter songSectionsAdapter) {
         this.songSectionsAdapter = songSectionsAdapter;
+    }
+    public void setCcliLicence(String ccliLicence) {
+        this.ccliLicence = ccliLicence;
     }
 
     // The getters
@@ -241,6 +244,9 @@ public class PresenterSettings {
     public SongSectionsAdapter getSongSectionsAdapter() {
         return songSectionsAdapter;
     }
+    public String getCcliLicence () {
+        return ccliLicence;
+    }
 
 
     // The helpers for this class
@@ -294,7 +300,7 @@ public class PresenterSettings {
         setPresoTitleTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoTitleTextSize",14f));
         setPresoAuthorTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAuthorTextSize",12f));
         setPresoCopyrightTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoCopyrightTextSize",12f));
-
+        setCcliLicence(mainActivityInterface.getPreferences().getMyPreferenceString(c,"ccliLicence",""));
     }
     public void getAlertPreferences(Context c, MainActivityInterface mainActivityInterface) {
         setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString(c,"presoAlertText",""));

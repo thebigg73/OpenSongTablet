@@ -72,6 +72,7 @@ public class BootUpFragment extends Fragment {
 
     private void hideMenus() {
         mainActivityInterface.hideActionBar(true);
+        mainActivityInterface.getAppActionBar().justShowOrHide(false);
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.lockDrawer(true);
     }

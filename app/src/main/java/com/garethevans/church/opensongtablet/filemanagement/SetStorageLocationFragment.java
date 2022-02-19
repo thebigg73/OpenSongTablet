@@ -75,6 +75,8 @@ public class SetStorageLocationFragment extends Fragment {
 
         myView = StorageChooseBinding.inflate(inflater, container, false);
 
+        mainActivityInterface.getAppActionBar().justShowOrHide(false);
+
         // Set up the views
         initialiseViews();
 

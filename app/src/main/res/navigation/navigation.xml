@@ -325,7 +325,11 @@
                 android:id="@+id/connectedDisplayFragment"
                 android:name="com.garethevans.church.opensongtablet.presenter.SettingsFragment"
                 android:label="settings_connected_display"
-                tools:layout="@layout/mode_presenter_settings" />
+                tools:layout="@layout/mode_presenter_settings">
+                <deepLink
+                    android:id="@+id/deepLink32"
+                    app:uri="opensongapp://settings/display/connected" />
+            </fragment>
 
         </navigation>
 

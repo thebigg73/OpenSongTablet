@@ -17,6 +17,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHolder> {
 
@@ -27,7 +28,8 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final PresenterFragment fragment;
     private final String TAG = "SongSetionsAdapter";
     private final int onColor, offColor;
-    private int sectionEdited = -1;
+    private int sectionEdited = -1, currentPosition = -1;
+    private final String colorChange = "color";
 
     SongSectionsAdapter(Context c, MainActivityInterface mainActivityInterface, PresenterFragment fragment,
                         DisplayInterface displayInterface) {
@@ -98,7 +100,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         return bits;
     }
 
-
     @NonNull
     @Override
     public SongSectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -107,6 +108,25 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
                 inflate(R.layout.view_song_section, parent, false);
 
         return new SongSectionViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SongSectionViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads);
+        } else {
+            // Compare each Object in the payloads to the PAYLOAD you provided to notifyItemChanged
+            for (Object payload : payloads) {
+                if (payload.equals(colorChange)) {
+                    // We want to update the highlight colour to on/off
+                    if (position==currentPosition) {
+                        setColor(holder,onColor,offColor);
+                    } else {
+                        setColor(holder,offColor,onColor);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -191,12 +211,24 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
         }
     }
 
+    private void setColor(SongSectionViewHolder holder, int cardColor, int buttonColor) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            holder.item.setBackgroundTintList(ColorStateList.valueOf(cardColor));
+            holder.edit.setBackgroundTintList(ColorStateList.valueOf(buttonColor));
+        } else {
+            holder.item.setBackgroundColor(cardColor);
+            holder.edit.setBackgroundColor(buttonColor);
+        }
+    }
+
     private void itemSelected(int thisPos) {
         notifyItemChanged(thisPos);
-        notifyItemChanged(mainActivityInterface.getPresenterSettings().getCurrentSection());
+        notifyItemChanged(mainActivityInterface.getPresenterSettings().getCurrentSection(),colorChange);
+        notifyItemChanged(thisPos,colorChange);
         mainActivityInterface.getPresenterSettings().setCurrentSection(thisPos);
         displayInterface.presenterShowSection(thisPos);
         fragment.doScrollTo(thisPos);
+        currentPosition = thisPos;
     }
 
     public void setSectionEdited(String content) {

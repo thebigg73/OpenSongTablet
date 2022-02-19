@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.presenter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,16 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.databinding.ModePresenterAlertBinding;
+import com.garethevans.church.opensongtablet.databinding.ModePresenterAdvancedBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.slider.Slider;
 
-public class AlertFragment extends Fragment {
+public class AdvancedFragment extends Fragment {
 
+    private ModePresenterAdvancedBinding myView;
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
-    private ModePresenterAlertBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -35,7 +34,7 @@ public class AlertFragment extends Fragment {
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        myView = ModePresenterAlertBinding.inflate(inflater, container, false);
+        myView = ModePresenterAdvancedBinding.inflate(inflater,container,false);
 
         setValues();
 
@@ -53,6 +52,7 @@ public class AlertFragment extends Fragment {
     }
 
     private void setListeners() {
+        myView.displaySettings.setOnClickListener(view -> mainActivityInterface.navigateToFragment("opensongapp://settings/display/connected",0));
         myView.alertText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -89,4 +89,5 @@ public class AlertFragment extends Fragment {
         });
         myView.presoAlertTextSize.addOnChangeListener((slider, value, fromUser) -> myView.presoAlertTextSize.setHint((int)slider.getValue() + "sp"));
     }
+
 }

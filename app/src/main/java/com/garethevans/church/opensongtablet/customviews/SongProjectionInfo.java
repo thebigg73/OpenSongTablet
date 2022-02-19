@@ -21,14 +21,10 @@ public class SongProjectionInfo extends LinearLayout {
     private final ImageView miniLogo;
     private final String TAG = "SongProjectionInfo";
     private int viewHeight = 0;
-    private final String used_by_permission, words_and_music_by;
 
     public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_song_info, this);
-
-        used_by_permission = context.getString(R.string.used_by_permision);
-        words_and_music_by = context.getString(R.string.words_and_music_by);
 
         castSongInfo = findViewById(R.id.castSongInfo);
         LinearLayout contentLayout = findViewById(R.id.contentLayout);
@@ -73,25 +69,22 @@ public class SongProjectionInfo extends LinearLayout {
 
     // Updating the text in the view
     public void setSongTitle(String title) {
-        setText(songTitle,title,"");
+        setText(songTitle,title);
     }
     public void setSongAuthor(String author) {
-        setText(songAuthor,author,words_and_music_by+" ");
+        setText(songAuthor,author);
     }
     public void setSongCopyright(String copyright) {
-        setText(songCopyright,copyright,"© ");
+        setText(songCopyright,copyright);
     }
     public void setSongCCLI(String ccli) {
-        setText(songCCLI,ccli,used_by_permission+" ");
+        setText(songCCLI,ccli);
     }
-    private void setText(TextView textView, String text, String pretext) {
+    private void setText(TextView textView, String text) {
         if (text==null || text.isEmpty()) {
             textView.setVisibility(View.GONE);
         } else {
             textView.setVisibility(View.VISIBLE);
-        }
-        if (text!=null && !text.isEmpty() && text.contains(pretext.trim())) {
-            text = pretext + text;
         }
         textView.setText(text);
     }
@@ -128,6 +121,7 @@ public class SongProjectionInfo extends LinearLayout {
         songTitle.setGravity(align);
         songAuthor.setGravity(align);
         songCopyright.setGravity(align);
+        songCCLI.setGravity(align);
     }
 
     @Override
@@ -155,10 +149,12 @@ public class SongProjectionInfo extends LinearLayout {
             songTitle.setTextSize(14f);
             songAuthor.setTextSize(12f);
             songCopyright.setTextSize(12f);
+            songCCLI.setTextSize(12f);
         } else {
             songTitle.setTextSize(mainActivityInterface.getPresenterSettings().getPresoTitleTextSize());
             songAuthor.setTextSize(mainActivityInterface.getPresenterSettings().getPresoAuthorTextSize());
             songCopyright.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
+            songCCLI.setTextSize(mainActivityInterface.getPresenterSettings().getPresoCopyrightTextSize());
         }
     }
 }

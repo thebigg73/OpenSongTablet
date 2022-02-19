@@ -90,7 +90,8 @@ public class SettingsCCLI extends Fragment {
     public void updateValue(String which, String value) {
         if (which.equals("ccliChurchName")) {
             myView.ccliChurch.setHint(value);
-        } else if (which.equals("ccliLicence")){
+        } else if (which.equals("ccliLicence")) {
+            mainActivityInterface.getPresenterSettings().setCcliLicence(value);
             myView.ccliLicence.setHint(value);
         }
     }

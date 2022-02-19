@@ -587,10 +587,18 @@ public class SecondaryDisplay extends Presentation {
             title = mainActivityInterface.getSong().getFilename();
         }
 
-        if (ccli!=null && !ccli.isEmpty()) {
-            ccli = c.getString(R.string.used_by_permision)+" "+ccli;
+        String ccliLine = c.getString(R.string.used_by_permision);
+        if (!mainActivityInterface.getPresenterSettings().getCcliLicence().isEmpty()) {
+            ccliLine +=  " CCLI " +
+                    c.getString(R.string.ccli_licence) + " " + mainActivityInterface.
+                    getPresenterSettings().getCcliLicence() + " ";
         }
-        if (copyright!=null && !copyright.isEmpty() && copyright.contains("©")) {
+
+        if (ccli!=null && !ccli.isEmpty()) {
+            ccliLine += c.getString(R.string.song) + " #" + ccli;
+        }
+
+        if (copyright!=null && !copyright.isEmpty() && !copyright.contains("©")) {
             copyright = "©"+copyright;
         }
         if (author!=null && !author.isEmpty()) {
@@ -601,7 +609,7 @@ public class SecondaryDisplay extends Presentation {
         String finalTitle = title;
         String finalAuthor = author;
         String finalCopyright = copyright;
-        String finalCcli = ccli;
+        String finalCcli = ccliLine;
 
         // Draw the test song info bar so we can measure it with a VTO
         myView.testSongInfo.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

@@ -141,10 +141,14 @@ public class MaterialSlider extends LinearLayout {
     }
     public void setHint(String hint) {
         if (hint!=null && !hint.isEmpty()) {
-            valueTextView.setVisibility(View.VISIBLE);
+            if (valueTextView.getVisibility()!=View.VISIBLE) {
+                valueTextView.setVisibility(View.VISIBLE);
+            }
             valueTextView.setText(hint);
         } else {
-            valueTextView.setVisibility(View.GONE);
+            if (valueTextView.getVisibility()!=View.GONE) {
+                valueTextView.setVisibility(View.GONE);
+            }
         }
     }
     public void setText(String text) {

@@ -161,7 +161,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private void setupListeners() {
         myView.lyrics.setOnFocusChangeListener((view, b) -> {
             Log.d(TAG,"b="+b);
-            mainActivityInterface.enableSwipe(!b);
+            mainActivityInterface.enableSwipe("edit",!b);
         });
 
         myView.lyrics.addTextChangedListener(new TextWatcher() {

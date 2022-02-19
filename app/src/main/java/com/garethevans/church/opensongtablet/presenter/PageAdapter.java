@@ -8,7 +8,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class PageAdapter extends FragmentStateAdapter {
 
-    public final Fragment[] menuFragments = {new SongSectionsFragment(), new MediaFragment(), new AlertFragment(), new SettingsFragment()};
+    public final Fragment[] menuFragments = {new SongSectionsFragment(),
+            new AdvancedFragment()};
+    //new MediaFragment(),
+    //new AlertFragment(),
+    //new SettingsFragment()
+
     private int openMenu = 1;
 
     public PageAdapter(@NonNull FragmentManager fragmentManager, Lifecycle lifecycle) {
@@ -24,7 +29,7 @@ public class PageAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 2;
     }
 
     public boolean isSongMenu() {

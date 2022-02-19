@@ -991,7 +991,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 getSupportActionBar().hide();
             }
         } else {
-            actionBar.show();
             if (getSupportActionBar()!=null) {
                 getSupportActionBar().show();
             }
@@ -1004,7 +1003,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Otherwise a new title is passed as a string (in a settings menu)
         windowFlags.setWindowFlags();
         appActionBar.setActionBar(this,this, what);
-        if (what==null) {
+        if (what==null || getMode().equals("Presenter")) {
             menuIconVisibility(true);
         } else {
             menuIconVisibility(false);
@@ -2484,8 +2483,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void enableSwipe(boolean canSwipe) {
-        if (editSongFragment!=null) {
+    public void enableSwipe(String which, boolean canSwipe) {
+        if (which.equals("edit") && editSongFragment!=null) {
             editSongFragment.enableSwipe(canSwipe);
         }
     }

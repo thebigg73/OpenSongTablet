@@ -57,12 +57,6 @@ public class SettingsFragment extends Fragment {
         // Set the listeners
         setListeners();
 
-        Log.d(TAG,"start: "+Gravity.START+"  center_horizontal: "+Gravity.CENTER_HORIZONTAL+"  end:"+Gravity.END);
-        Log.d(TAG,"top: "+Gravity.TOP+"  center_horizontal: "+Gravity.CENTER_VERTICAL+"  end:"+Gravity.BOTTOM);
-        Log.d(TAG,"presoLyricsAlign: "+mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"presoLyricsAlign",Gravity.CENTER_HORIZONTAL));
-        Log.d(TAG,"presoLyricsVAlign: "+mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL));
-        Log.d(TAG, "presentersettings align: "+mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()+"  valign: "+mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign());
-
         return myView.getRoot();
     }
 
@@ -180,6 +174,7 @@ public class SettingsFragment extends Fragment {
         myView.blockShadowAlpha.setHint((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"blockShadowAlpha",0.5f)) + "%");
         myView.blockShadowAlpha.setLabelFormatter(value -> ((int)value)+"%");
     }
+    @SuppressLint("ClickableViewAccessibility")
     private void setListeners() {
         myView.currentBackground.setOnClickListener(view -> {
             ImageChooserBottomSheet imageChooserBottomSheet = new ImageChooserBottomSheet(this,"presenterFragmentSettings");
@@ -201,6 +196,9 @@ public class SettingsFragment extends Fragment {
 
         myView.rotateDisplay.addOnSliderTouchListener(new SliderTouchListener("castRotation"));
         myView.rotateDisplay.addOnChangeListener(new SliderChangeListener("castRotation"));
+        //myView.rotateDisplay.setOnTouchListener(new MyTouchListener());
+        //myView.rotateDisplay.setOnLongClickListener(new MyLongClickListener());
+        //myView.rotateDisplay.setOnClickListener(new MyClickListener());
 
         myView.horizontalMargin.addOnSliderTouchListener(new SliderTouchListener("presoXMargin"));
         myView.horizontalMargin.addOnChangeListener(new SliderChangeListener("presoXMargin"));
@@ -298,6 +296,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+
     private class SliderTouchListener implements Slider.OnSliderTouchListener {
 
         private final String prefName;
@@ -306,12 +305,16 @@ public class SettingsFragment extends Fragment {
             this.prefName = prefName;
         }
 
+
         @Override
-        public void onStartTrackingTouch(@NonNull Slider slider) {}
+        public void onStartTrackingTouch(@NonNull Slider slider) {
+            //myView.nestedScrollView.setScrollingEnabled(false);
+        }
 
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the preference and update the screen
+            //myView.nestedScrollView.setScrollingEnabled(true);
             switch (prefName) {
                 case "logoSize":
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
@@ -381,6 +384,8 @@ public class SettingsFragment extends Fragment {
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
             // Don't save the preference, but update the text
             int gravity;
+            //myView.nestedScrollView.setScrollingEnabled(false);
+
             switch (prefName) {
                 case "logoSize":
                     myView.logoSize.setHint((int)value + "%");
@@ -438,4 +443,5 @@ public class SettingsFragment extends Fragment {
             }
         }
     }
+
 }
