@@ -156,7 +156,7 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
                         message = success;
                     }
                 } else {
-                    message = getString(R.string.file_exists);
+                    message = getString(R.string.song_name_already_taken);
                 }
             }
         }

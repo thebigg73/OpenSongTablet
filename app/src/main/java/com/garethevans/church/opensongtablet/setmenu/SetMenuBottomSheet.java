@@ -85,20 +85,6 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,null,null,null);
             dismiss();
         });
-        myView.shuffleSet.setOnClickListener(v -> {
-            mainActivityInterface.getSetActions().shuffleSet(requireContext(),mainActivityInterface);
-            mainActivityInterface.updateFragment("set_updateView",null,null);
-            dismiss();
-        });
-        myView.addScripture.setOnClickListener(v -> {
-            mainActivityInterface.navigateToFragment("opensongapp://settings/bible",0);
-            dismiss();
-        });
-        myView.randomSong.setOnClickListener(v -> {
-            RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet("set");
-            randomSongBottomSheet.show(requireActivity().getSupportFragmentManager(),"RandomBottomSheet");
-            dismiss();
-        });
         myView.manageSet.setOnClickListener(v -> {
             mainActivityInterface.navigateToFragment("opensongapp://settings/sets",-1);
             dismiss();
@@ -106,6 +92,24 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
         myView.edit.setOnClickListener(v -> {
             SetEditItemBottomSheet setVariationBottomSheet = new SetEditItemBottomSheet();
             setVariationBottomSheet.show(requireActivity().getSupportFragmentManager(),"setVariation");
+            dismiss();
+        });
+        myView.addScripture.setOnClickListener(v -> {
+            mainActivityInterface.navigateToFragment("opensongapp://settings/bible",0);
+            dismiss();
+        });
+        myView.addCustom.setOnClickListener(v -> {
+            mainActivityInterface.navigateToFragment("opensongapp://settings/sets/customslide",0);
+            dismiss();
+        });
+        myView.randomSong.setOnClickListener(v -> {
+            RandomSongBottomSheet randomSongBottomSheet = new RandomSongBottomSheet("set");
+            randomSongBottomSheet.show(requireActivity().getSupportFragmentManager(),"RandomBottomSheet");
+            dismiss();
+        });
+        myView.shuffleSet.setOnClickListener(v -> {
+            mainActivityInterface.getSetActions().shuffleSet(requireContext(),mainActivityInterface);
+            mainActivityInterface.updateFragment("set_updateView",null,null);
             dismiss();
         });
     }

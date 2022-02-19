@@ -1542,9 +1542,14 @@ public class StorageAccess {
         Uri uri = getUriForItem(c, mainActivityInterface, location, subfolder, filename);
         return deleteFile(c, uri);
     }
-    public String getImageSlide(Context c, String loc) {
+    public String getImageSlide(Context c, MainActivityInterface mainActivityInterface, String loc) {
         String b = "";
-        Uri uri = Uri.parse(loc);
+        Uri uri;
+        if (loc.startsWith("../")) {
+            uri = fixLocalisedUri(c,mainActivityInterface,loc);
+        } else {
+            uri = Uri.parse(loc);
+        }
         if (uriExists(c, uri)) {
             try {
                 InputStream inputStream = getInputStream(c, uri);

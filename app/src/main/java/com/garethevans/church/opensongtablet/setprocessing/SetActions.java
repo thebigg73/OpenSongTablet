@@ -533,11 +533,11 @@ public class SetActions {
                 path = path + "/";
             }
             String name = mainActivityInterface.getCurrentSet().getFilename(x);
-            boolean isImage = path.contains("**Images");
-            boolean isVariation = path.contains("**Variations");
-            boolean isScripture = path.contains("**Scripture");
-            boolean isSlide = path.contains("**Slides");
-            boolean isNote = path.contains("**Notes");
+            boolean isImage = path.contains("**Image")||path.contains("**"+c.getString(R.string.image));
+            boolean isVariation = path.contains("**Variation")||path.contains("**"+c.getString(R.string.variation));
+            boolean isScripture = path.contains("**Scripture")||path.contains("**"+c.getString(R.string.scripture));
+            boolean isSlide = path.contains("**Slide")||path.contains("**"+c.getString(R.string.slide));
+            boolean isNote = path.contains("**Note")||path.contains("**"+c.getString(R.string.note));
 
             if (isImage) {
                 // Adding an image
@@ -786,7 +786,8 @@ public class SetActions {
         for (String aSeparate_slide : separate_slide) {
             String imglinetext;
             // Try to get the image into bytes
-            String imgcode = mainActivityInterface.getStorageAccess().getImageSlide(c, aSeparate_slide);
+            String imgcode = mainActivityInterface.getStorageAccess().getImageSlide(c,
+                    mainActivityInterface, aSeparate_slide);
             if (!imgcode.isEmpty()) {
                 imglinetext = "        <image>" + imgcode.trim() + "</image>\n";
             } else {

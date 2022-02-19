@@ -122,7 +122,7 @@ public class SongActionsMenuFragment extends Fragment {
         // Only proceed if the song doesn't exist already
         if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),duplicateSongUri)) {
             // Warn the user and stop
-            mainActivityInterface.getShowToast().doIt(getString(R.string.file_exists));
+            mainActivityInterface.getShowToast().doIt(getString(R.string.song_name_already_taken));
         } else {
             // Because we want to create a new copy, but change the title as well, we create the XML
             mainActivityInterface.getSong().setTitle(newName);

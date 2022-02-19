@@ -12,9 +12,6 @@ public class __TODO__ {
 
     // TODO strings that reference stuff that was used before and probably should be
     // update_projector_automatically
-    // stage_section_max
-    // song_name_already_taken
-    // pad_off
     // presoFontShadow
     // keepmultiline
     // editpdf
@@ -23,12 +20,6 @@ public class __TODO__ {
     // Anything still listed below needs work
     // Anything missing has been tested as okay
     /*
-
-Bugs:
-Changing autoscroll (and probably other) values of pdf corrupts the file - likely overwriting it
-opening a song when in the set menu doesn't scroll to it
-
-
 
     The following menus still need completed
 

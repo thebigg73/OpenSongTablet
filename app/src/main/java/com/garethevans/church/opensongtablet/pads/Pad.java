@@ -149,7 +149,8 @@ public class Pad {
         boolean padLoop = mainActivityInterface.getSong().getPadloop().equals("true");
 
         // Decide if the pad is valid
-        boolean padValid = assetFileDescriptor!=null || isPadValid(c,padUri);
+        boolean padValid = (assetFileDescriptor!=null || isPadValid(c,padUri)) &&
+                !mainActivityInterface.getSong().getPadfile().equals("off");
 
         // Prepare any error message
         if (!padValid) {
@@ -159,6 +160,8 @@ public class Pad {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_file_error));
             } else if (isLinkAudio(c)) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_custom_pad_error));
+            } else if (mainActivityInterface.getSong().getPadfile().equals("off")) {
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_off));
             }
         }
 

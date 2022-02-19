@@ -1764,6 +1764,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             setFolder = newFolder;
             setFilename = newFilename;
         }
+        // If the set menu is open/exists, try to scroll to this item
+        if (setMenuFragment!=null) {
+            try {
+                setMenuFragment.scrollToItem();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         doSongLoad(setFolder,setFilename,true);
     }
 
