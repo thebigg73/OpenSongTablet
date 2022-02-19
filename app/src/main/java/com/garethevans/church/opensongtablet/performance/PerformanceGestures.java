@@ -18,8 +18,10 @@ import com.garethevans.church.opensongtablet.interfaces.ActionInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.midi.MidiSongBottomSheet;
 import com.garethevans.church.opensongtablet.pads.PadsBottomSheet;
+import com.garethevans.church.opensongtablet.pdf.PDFPageAdapter;
 import com.garethevans.church.opensongtablet.pdf.PDFPageBottomSheet;
 import com.garethevans.church.opensongtablet.songmenu.RandomSongBottomSheet;
+import com.garethevans.church.opensongtablet.stage.StageSectionAdapter;
 import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
 
 public class PerformanceGestures {
@@ -29,7 +31,7 @@ public class PerformanceGestures {
     private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
     private MyZoomLayout myZoomLayout;
-    private RecyclerView pdfRecycler;
+    private RecyclerView recyclerView;
 
     // Initialise
     public PerformanceGestures(Context c, MainActivityInterface mainActivityInterface) {
@@ -40,8 +42,8 @@ public class PerformanceGestures {
     public void setZoomLayout(MyZoomLayout myZoomLayout) {
         this.myZoomLayout = myZoomLayout;
     }
-    public void setPDFRecycler(RecyclerView pdfRecycler) {
-        this.pdfRecycler = pdfRecycler;
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
     }
 
     // The following are called from GestureListener, PedalActions, PageButtons
@@ -141,19 +143,47 @@ public class PerformanceGestures {
 
     // Scroll up/down
     public void scroll(boolean scrollDown) {
-        if (myZoomLayout!=null && pdfRecycler!=null && mainActivityInterface.getMode().equals("Performance")) {
+        if (myZoomLayout!=null && recyclerView!=null && mainActivityInterface.getMode().equals("Performance")) {
             try {
-                if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-                    int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*pdfRecycler.getHeight());
+                if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                        Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+                    int height = (int)(mainActivityInterface.getGestures().getScrollDistance()*recyclerView.getHeight());
                     if (!scrollDown) {
                         height = - height;
                     }
-                    pdfRecycler.smoothScrollBy(0,height);
+                    recyclerView.smoothScrollBy(0,height);
                 } else {
                     myZoomLayout.animateScrollBy(mainActivityInterface.getGestures().getScrollDistance(), scrollDown);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        } else if (mainActivityInterface.getMode().equals("Stage") && recyclerView!=null) {
+            if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+            Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+                int currentPage = mainActivityInterface.getSong().getPdfPageCurrent();
+                int totalPages = mainActivityInterface.getSong().getPdfPageCount();
+                if (scrollDown && currentPage<totalPages) {
+                    if (recyclerView.getAdapter()!=null) {
+                        ((PDFPageAdapter) recyclerView.getAdapter()).sectionSelected(currentPage + 1);
+                    }
+                } else if (!scrollDown && currentPage>0) {
+                    if (recyclerView.getAdapter()!=null) {
+                        ((PDFPageAdapter) recyclerView.getAdapter()).sectionSelected(currentPage - 1);
+                    }
+                }
+            } else {
+                int currentPage = mainActivityInterface.getSong().getCurrentSection();
+                int totalPages = mainActivityInterface.getSectionViews().size()-1;
+                if (scrollDown && currentPage<totalPages) {
+                    if (recyclerView.getAdapter()!=null) {
+                        ((StageSectionAdapter) recyclerView.getAdapter()).sectionSelected(currentPage + 1);
+                    }
+                } else if (!scrollDown && currentPage>0) {
+                    if (recyclerView.getAdapter()!=null) {
+                        ((StageSectionAdapter) recyclerView.getAdapter()).sectionSelected(currentPage - 1);
+                    }
+                }
             }
         }
     }

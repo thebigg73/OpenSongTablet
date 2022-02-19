@@ -146,7 +146,7 @@ public class PerformanceFragment extends Fragment {
     private void initialiseHelpers() {
         stickyPopUp = new StickyPopUp();
         mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
-        mainActivityInterface.getPerformanceGestures().setPDFRecycler(myView.recyclerView);
+        mainActivityInterface.getPerformanceGestures().setRecyclerView(myView.recyclerView);
         myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
     }
     private void loadPreferences() {

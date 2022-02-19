@@ -2383,7 +2383,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
-
     @Override
     public void setSectionViews(ArrayList<View> views) {
         if (views==null) {
