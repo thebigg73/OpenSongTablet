@@ -169,9 +169,6 @@
         <item name="colorControlNormal">@color/colorAltSecondary</item>
         <item name="colorOnSurface">@color/colorAltSecondary</item>
         <item name="android:popupBackground">@color/transparent</item>
-
-
-
     </style>
 
     <!-- The ActionBar -->

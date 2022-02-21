@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
@@ -25,6 +26,7 @@ public class AppActionBar {
     private final String TAG = "AppActionBar";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
+    private final Toolbar toolbar;
     private final ActionBar actionBar;
     private final TextView title;
     private final TextView author;
@@ -42,12 +44,13 @@ public class AppActionBar {
 
     private boolean performanceMode;
 
-    public AppActionBar(Context c, ActionBar actionBar, ImageView setIcon, TextView title, TextView author,
+    public AppActionBar(Context c, ActionBar actionBar, Toolbar toolbar, ImageView setIcon, TextView title, TextView author,
                         TextView key, TextView capo, TextView clock) {
         this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
 
         this.actionBar = actionBar;
+        this.toolbar = toolbar;
         this.title = title;
         this.author = author;
         this.key = key;
@@ -80,6 +83,13 @@ public class AppActionBar {
         hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"hideActionBar",false);
     }
 
+    public void translateAwayActionBar(boolean moveAway) {
+        if (moveAway) {
+            toolbar.setTranslationY(-200);
+        } else {
+            toolbar.setTranslationY(0);
+        }
+    }
     public void setHideActionBar(boolean hideActionBar) {
         this.hideActionBar = hideActionBar;
     }

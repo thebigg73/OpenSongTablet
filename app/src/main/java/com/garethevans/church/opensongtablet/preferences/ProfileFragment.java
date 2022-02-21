@@ -114,7 +114,6 @@ public class ProfileFragment extends Fragment {
     private void resetPreferences() {
         // Reset the preferences and start again
         mainActivityInterface.getProfileActions().resetPreferences(mainActivityInterface);
-
         NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.setStorageLocationFragment, true)
                 .build();

@@ -43,6 +43,7 @@ public class BootUpFragment extends Fragment {
     private String message;
     private String uriTreeString;
     private Uri uriTree;
+    private boolean hide;
 
     private BootupLogoBinding myView;
     private MainActivityInterface mainActivityInterface;
@@ -66,16 +67,28 @@ public class BootUpFragment extends Fragment {
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();
 
+        myView.splashlogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hide = !hide;
+                mainActivityInterface.getAppActionBar().translateAwayActionBar(hide);
+            }
+        });
         startOrSetUp();
         return myView.getRoot();
     }
 
     private void hideMenus() {
-        mainActivityInterface.hideActionBar(true);
-        mainActivityInterface.getAppActionBar().justShowOrHide(false);
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.lockDrawer(true);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -85,6 +98,7 @@ public class BootUpFragment extends Fragment {
 
     // Checks made before starting the app
     public void startOrSetUp() {
+        Log.d(TAG,"startOrSetUp");
         if (storageIsCorrectlySet()) {
             startBootProcess();
         } else {
@@ -168,6 +182,7 @@ public class BootUpFragment extends Fragment {
                                 setPopUpTo(R.id.bootUpFragment,false).
                                 build();
                         NavHostFragment.findNavController(this).navigate(destination,null,navOptions);
+                        mainActivityInterface.getAppActionBar().translateAwayActionBar(false);
                         mainActivityInterface.initialiseActivity();
                     });
 

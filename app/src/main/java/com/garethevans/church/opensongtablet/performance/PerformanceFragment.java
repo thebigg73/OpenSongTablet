@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
 import com.garethevans.church.opensongtablet.controls.GestureListener;
 import com.garethevans.church.opensongtablet.customslides.ImageSlideAdapter;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
@@ -64,6 +65,13 @@ public class PerformanceFragment extends Fragment {
         displayInterface = (DisplayInterface) context;
         mainActivityInterface.registerFragment(this,"Performance");
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        displayInterface.checkDisplays();
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -138,6 +146,13 @@ public class PerformanceFragment extends Fragment {
 
         doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
                 mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
+
+        // Check if we need to show an alert
+        if (mainActivityInterface.getAlertChecks().showPlayServicesAlert() ||
+        mainActivityInterface.getAlertChecks().showBackup() || mainActivityInterface.getAlertChecks().showUpdateInfo()) {
+            AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
+            alertInfoBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "AlertInfoBottomSheet");
+        }
 
         return myView.getRoot();
     }

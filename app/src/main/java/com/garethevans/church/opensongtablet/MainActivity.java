@@ -54,7 +54,6 @@ import com.garethevans.church.opensongtablet.abcnotation.ABCNotation;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.AlertChecks;
-import com.garethevans.church.opensongtablet.appdata.AlertInfoBottomSheet;
 import com.garethevans.church.opensongtablet.appdata.BootUpFragment;
 import com.garethevans.church.opensongtablet.appdata.CheckInternet;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
@@ -291,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // One time actions will have been completed
         // Initiate the boot check progress
         doonetimeactions = false;
-        startBoot();
+
     }
     private void setupHelpers() {
         storageAccess = new StorageAccess();
@@ -314,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         doVibrate = new DoVibrate();
         customAnimation = new CustomAnimation();
         webDownload = new WebDownload();
-        alertChecks = new AlertChecks();
+        alertChecks = new AlertChecks(this);
 
         // For user preferences
         setTypeFace = new SetTypeFace();
@@ -391,43 +390,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
 
-/*
-
-    private void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
-        // TODO delete if not used
-        Log.d(TAG,"changeActionBarVisible");
-        if (!whichMode.equals("Presenter") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
-            // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
-            myView.fragmentView.setTop(0);
-        } else {
-            // Otherwise move the content below it
-            myView.fragmentView.setTop(appActionBar.getActionBarHeight());
-        }
-        appActionBar.showActionBar(settingsOpen);
-        appActionBar.toggleActionBar(wasScrolling,scrollButton,myView.drawerLayout.isOpen());
-    }
-*/
-
     @Override
     public void showHideActionBar() {
         // This moves the content depending on the actionbar height (0 if autohide)
         if (settingsOpen) {
             myView.fragmentView.setPadding(0,actionBar.getHeight(),0,0);
-            //myView.fragmentView.setY(actionBar.getHeight());
         } else {
             myView.fragmentView.setPadding(0,appActionBar.getActionBarHeight(),0,0);
-            //myView.fragmentView.setY(appActionBar.getActionBarHeight());
         }
         appActionBar.showActionBar(settingsOpen||menuOpen);
     }
 
     private void setupViews() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(this,actionBar, myView.toolBar.inSet,
-                myView.toolBar.songtitleAb,
-                myView.toolBar.songauthorAb, myView.toolBar.songkeyAb,
-                myView.toolBar.songcapoAb,
-                myView.toolBar.digitalclock);
+        appActionBar = new AppActionBar(this,actionBar, myView.toolBar.myToolbar,
+                myView.toolBar.inSet, myView.toolBar.songtitleAb, myView.toolBar.songauthorAb,
+                myView.toolBar.songkeyAb, myView.toolBar.songcapoAb, myView.toolBar.digitalclock);
         pageButtons.setMainFABS(this,
                 myView.pageButtonRight.actionFAB, myView.pageButtonRight.custom1Button,
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
@@ -435,13 +413,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.pageButtonRight.custom6Button,myView.pageButtonRight.bottomButtons);
         pageButtons.animatePageButton(this, false);
     }
-    private void startBoot() {
-        // The BootCheckFragment has already started and displayed the splash logo
-        // Now initialise the checks
-        if (bootUpFragment!=null && bootUpFragment.isAdded()) {
-            bootUpFragment.startOrSetUp();
-        }
-    }
+
     @Override
     public void setFirstRun(boolean firstRun) {
         this.firstRun = firstRun;
@@ -548,7 +520,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
                 menuOpen = false;
-                Log.d(TAG,"whichMode from drawer="+whichMode);
                 if (!whichMode.equals("Presenter")) {
                     hideActionButton(myView.drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
@@ -672,6 +643,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 .build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
     }
     @Override
     public void navigateToFragment(String deepLink, int id) {
@@ -766,7 +738,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "presenterFragmentSongSections":
                     if (presenterFragment!=null) {
-                        Log.d(TAG,"presenterFragmentSongSections");
                         presenterFragment.getSongViews();
                         presenterFragment.updateButtons();
                     }
@@ -791,6 +762,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (navController.getCurrentDestination()!=null) {
             navController.popBackStack(navController.getCurrentDestination().getId(), true);
         }
+        // If we were in bootfragment, the toolbar was translated -200 out of the way (calls to hide didn't work)
+        appActionBar.translateAwayActionBar(false);
         if (whichMode.equals("Presenter")) {
             navigateToFragment("opensongapp://presenter",0);
         } else {
@@ -1015,11 +988,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             if (isVisible) {
                 screenMirror.setVisibility(View.VISIBLE);
                 myView.toolBar.batteryholder.setVisibility(View.VISIBLE);
-                alertButton.setVisibility(View.VISIBLE);
+                //alertButton.setVisibility(View.VISIBLE);
             } else {
                 screenMirror.setVisibility(View.GONE);
                 myView.toolBar.batteryholder.setVisibility(View.GONE);
-                alertButton.setVisibility(View.GONE);
+                //alertButton.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1083,7 +1056,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     for (int i = 0; i < myView.toolBar.getRoot().getChildCount(); ++i) {
                         final View child = myView.toolBar.getRoot().getChildAt(i);
                         if (child != null && child.getClass().toString().contains("ImageView")) {
-                            Log.d(TAG,"child.getClass()="+child.getClass());
                             targets.add(child);
                             infos.add("Open the menu to view and manage your songs and sets");
                         }
@@ -1188,36 +1160,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
 
         screenMirror = (ImageView) menu.findItem(R.id.mirror_menu_item).getActionView();
-        alertButton = (ImageView) menu.findItem(R.id.alert_info_item).getActionView();
         GlideApp.with(this).load(ContextCompat.getDrawable(this,R.drawable.ic_mr_button_connected_00_dark)).into(screenMirror);
-        GlideApp.with(this).load(ContextCompat.getDrawable(this,R.drawable.ic_information_white_36dp)).into(alertButton);
-        // Decide if an alert should be shown
-        if (alertChecks.showBackup(
-                preferences.getMyPreferenceInt(this,"runssincebackup",0)) ||
-                alertChecks.showPlayServicesAlert(this) ||
-                alertChecks.showUpdateInfo(versionNumber.getVersionCode(),
-                        preferences.getMyPreferenceInt(this,"lastUsedVersion",0))) {
-            alertButton.setVisibility(View.VISIBLE);
-        } else if (alertButton!=null){
-            alertButton.setVisibility(View.GONE);
-        }
         screenMirror.setOnClickListener(view -> startActivity(new Intent("android.settings.CAST_SETTINGS")));
-        alertButton.setOnClickListener(view -> {
-            AlertInfoBottomSheet alertInfoBottomSheet = new AlertInfoBottomSheet();
-            alertInfoBottomSheet.show(getMyFragmentManager(),"AlertInfoBottomSheet");
-        });
         myView.toolBar.batteryholder.setOnClickListener(view -> navigateToFragment("opensongapp://settings/display/actionbar",0));
-        // Setup the menu item for connecting to cast devices
-        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
-            //CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
-            //MediaRouteButton mediaRouteButton = (MediaRouteButton) mediaRouteMenuItem.getActionView();
-            //mediaRouteButton.setDialogFactory(myMediaRouteFactory);
-        } else {
-            Log.d(TAG, "Google Play Services Not Available");
-            // TODO
-            // Alert the user about the Google Play issues and give them an option to fix it
-            // Add it to the menu alerts
-        }
 
         // Set up battery monitor
         batteryStatus = new BatteryStatus(this,myView.toolBar.batteryimage,
@@ -1258,7 +1203,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         } else {
             myView.drawerLayout.openDrawer(GravityCompat.START);
             menuOpen = true;
-
         }
     }
 
@@ -1726,9 +1670,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 newFilename = setFolder + "_" + setFilename + "_" + setKey;
             }
 
-            Log.d(TAG,"newFilename="+newFilename);
             Uri variationUri = storageAccess.getUriForItem(this,this,"Variations","",newFilename);
-            Log.d(TAG,"variationUri="+variationUri);
 
             // If the file already exists, remove it as we might have edited the original
 
@@ -1910,11 +1852,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void refreshAll() {
-        Log.d(TAG,"refreshAll() called");
-    }
-
-    @Override
     public void doExport(String what) {
         Intent intent;
         switch (what) {
@@ -1923,7 +1860,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 startActivityForResult(Intent.createChooser(intent, "ActivityLog.xml"), 2222);
         }
     }
-
 
     @Override
     public void updateSetList() {
@@ -2513,16 +2449,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
 
-
-
-
-
-
-
-
-
-
-
     @Override
     public void updateSizes(int width, int height) {
         /*if (whichMode.equals("Performance") && isCurrentFragment(R.id.performanceFragment)) {
@@ -2531,12 +2457,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 //((PerformanceFragment) getFragmentFromId(R.id.performanceFragment)).updateSizes(width, height);
             }
         }*/
-    }
-
-
-    @Override
-    public void gesture5() {
-        toggleAutoscroll();
     }
 
     @Override
@@ -2551,7 +2471,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSong() {
-        Log.d(TAG,"loadSong() called");
         doSongLoad(song.getFolder(),song.getFilename(),true);
     }
 

@@ -334,7 +334,6 @@ public class BackupOSBFragment extends Fragment {
                 "Backups","",backupFilename);
 
         mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"runssincebackup",0);
-        mainActivityInterface.getAlertChecks();
 
         Intent intent = mainActivityInterface.getExportActions().exportBackup(requireContext(),uri,backupFilename);
         startActivity(Intent.createChooser(intent,getString(R.string.backup_info)));

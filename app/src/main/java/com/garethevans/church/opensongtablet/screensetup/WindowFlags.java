@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,21 +24,13 @@ public class WindowFlags {
                 View.SYSTEM_UI_FLAG_IMMERSIVE |
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-//w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | Window.FEATURE_ACTION_BAR_OVERLAY);
-        //w.addFlags(Window.FEATURE_ACTION_BAR_OVERLAY);
-        //supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
 
         v.setSystemUiVisibility(uiOptions);
 
-        w.getDecorView().setOnSystemUiVisibilityChangeListener(new View
-                        .OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        Log.d(TAG,"uivisibilitychange");
-                        w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                        v.setSystemUiVisibility(uiOptions);
-                    }
-                });
+        w.getDecorView().setOnSystemUiVisibilityChangeListener(visibility -> {
+            w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            v.setSystemUiVisibility(uiOptions);
+        });
     }
 }

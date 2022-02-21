@@ -26,8 +26,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -240,12 +238,6 @@ public class SecondaryDisplay extends Presentation {
         availableScreenHeight = verticalSize - (2 * mainActivityInterface.getPresenterSettings().getPresoYMargin());
 
         updateViewSizes(myView.pageHolder);
-        /*updateViewSizes(myView.songContent1);
-        updateViewSizes(myView.songContent2);
-        updateViewSizes(myView.backgroundImage1);
-        updateViewSizes(myView.backgroundImage1);
-        updateViewSizes(myView.textureView1);
-        updateViewSizes(myView.textureView2);*/
 
         availableWidth_1col = availableScreenWidth;
         availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f);
@@ -289,9 +281,12 @@ public class SecondaryDisplay extends Presentation {
                     new Handler().postDelayed(this::showBlackScreen,logoSplashTime);
                 }
 
-            } else {
+            } else if (mainActivityInterface.getMode().equals("Stage")) {
                 // Prepare the current section 0 ready for the logo hiding after splash
                 new Handler().postDelayed(()-> showSection(0),logoSplashTime);
+
+            } else {
+                new Handler().postDelayed(() -> showAllSections(),logoSplashTime);
             }
 
             // The logo always gets shown on first run
@@ -338,8 +333,20 @@ public class SecondaryDisplay extends Presentation {
         }
         infoBarChangeRequired = true;
         forceCastUpdate = false;
+        hideCols2and3();
     }
 
+    private void hideCols2and3() {
+        // Only need these in performance mode
+        int visiblity = View.GONE;
+        if (mainActivityInterface.getMode().equals("Performance")) {
+            visiblity = View.VISIBLE;
+        }
+        myView.songContent1Col2.setVisibility(visiblity);
+        myView.songContent1Col3.setVisibility(visiblity);
+        myView.songContent2Col2.setVisibility(visiblity);
+        myView.songContent2Col3.setVisibility(visiblity);
+    }
 
     // The screen background
     public void changeBackground() {
@@ -754,10 +761,15 @@ public class SecondaryDisplay extends Presentation {
                 // We can now remove the views from the test layout and remove this listener
                 myView.testLayout.removeAllViews();
 
-                // Show the current view if not -1 (just loaded)
-                if (mainActivityInterface.getPresenterSettings().getCurrentSection()>-1) {
+                Log.d(TAG,"mode="+mainActivityInterface.getMode());
+                if ((mainActivityInterface.getMode().equals("Stage") ||
+                        mainActivityInterface.getMode().equals("Performance")) &&
+                    mainActivityInterface.getPresenterSettings().getCurrentSection()>-1) {
                     showSection(mainActivityInterface.getPresenterSettings().getCurrentSection());
+                } else {
+                    Log.d(TAG, "Perfomance mode - need to show everything");
                 }
+
                 myView.testLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
             }
@@ -822,26 +834,70 @@ public class SecondaryDisplay extends Presentation {
             translateView(mainActivityInterface.getSectionViews().get(position), newWidth, newHeight, infoHeight, alertHeight);
 
             if (showWhich < 2) {
-                myView.songContent1.removeAllViews();
-                myView.songContent1.addView(mainActivityInterface.getSectionViews().get(position));
+                myView.songContent1Col1.removeAllViews();
+                myView.songContent1Col1.addView(mainActivityInterface.getSectionViews().get(position));
                 crossFadeContent(myView.songContent2, myView.songContent1);
 
             } else {
-                myView.songContent2.removeAllViews();
-                myView.songContent2.addView(mainActivityInterface.getSectionViews().get(position));
+                myView.songContent2Col1.removeAllViews();
+                myView.songContent2Col1.addView(mainActivityInterface.getSectionViews().get(position));
                 crossFadeContent(myView.songContent1, myView.songContent2);
 
             }
         }
     }
+    private void showAllSections() {
+
+
+        float scaleFactor;
+        int widthBeforeScale = 0, heightBeforeScale = 0, widthAfterScale, heightAfterScale;
+
+        Log.d(TAG,"availableWidth="+availableScreenWidth+"  availableHeight="+availableScreenHeight);
+
+        if (showWhich<2) {
+            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(c, mainActivityInterface, myView.allContent,
+                    myView.songContent2, null, availableScreenWidth, availableScreenHeight,
+                    myView.songContent2Col1, myView.songContent2Col2, myView.songContent2Col3);
+
+        } else {
+            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(c, mainActivityInterface, myView.allContent,
+                    myView.songContent1, null, availableScreenWidth, availableScreenHeight,
+                    myView.songContent1Col1, myView.songContent1Col2, myView.songContent1Col3);
+        }
+
+        for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
+            widthBeforeScale = Math.max(widthBeforeScale, mainActivityInterface.getSectionWidths().get(x));
+            heightBeforeScale += mainActivityInterface.getSectionHeights().get(x);
+        }
+
+        widthAfterScale = (int) (widthBeforeScale*scaleFactor);
+        heightAfterScale = (int) (heightBeforeScale*scaleFactor);
+
+        Log.d(TAG,"widthBeforeScale="+widthBeforeScale+"  scaleFactor="+scaleFactor+"  widthAfterScale="+widthAfterScale);
+        Log.d(TAG,"heightBeforeScale="+heightBeforeScale+"  scaleFactor="+scaleFactor+"  heightAfterScale="+heightAfterScale);
+
+       //myView.songContent1.setVisibility(View.VISIBLE);
+       // myView.songContent2.setVisibility(View.VISIBLE);
+       // myView.songContent2.setAlpha(1f);
+       // myView.songContent1.setAlpha(1f);
+
+        if (showWhich<2) {
+            crossFadeContent(myView.songContent1,myView.songContent2);
+        } else {
+            crossFadeContent(myView.songContent2,myView.songContent1);
+        }
+        // Move to next view showWhich 1>2, 2>1
+        moveToNextSongView();
+    }
     private void removeViewFromParent(View view) {
-        if (view.getParent()!=null) {
-            String name = view.getParent().getClass().getName();
+        if (view!=null && view.getParent()!=null) {
+            ((ViewGroup)view.getParent()).removeView(view);
+            /*String name = view.getParent().getClass().getName();
             if (name.contains("RelativeLayout")) {
-                ((RelativeLayout) view.getParent()).removeAllViews();
+                ((RelativeLayout) view.getParent()).removeView(view);
             } else if (name.contains("LinearLayout")) {
-                ((LinearLayout) view.getParent()).removeAllViews();
-            }
+                ((LinearLayout) view.getParent()).removeView(view);
+            }*/
         }
     }
     @SuppressLint("RtlHardcoded")

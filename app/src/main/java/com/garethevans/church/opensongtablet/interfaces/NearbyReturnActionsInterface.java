@@ -1,7 +1,7 @@
 package com.garethevans.church.opensongtablet.interfaces;
 
 public interface NearbyReturnActionsInterface {
-    void gesture5();
+    void toggleAutoscroll();
     void selectSection(int i);
     void prepareSongMenu();
     void loadSong();

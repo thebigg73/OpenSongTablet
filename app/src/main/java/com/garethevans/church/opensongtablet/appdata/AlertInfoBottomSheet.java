@@ -71,9 +71,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
     private void whatAlerts() {
         // This decides which alerts are appropriate
         // Check for app updates
-        boolean updateInfo = mainActivityInterface.getAlertChecks().showUpdateInfo(
-                mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "lastUsedVersion", 0),
-                mainActivityInterface.getVersionNumber().getVersionCode());
+        boolean updateInfo = mainActivityInterface.getAlertChecks().showUpdateInfo();
         if (!updateInfo) {
             myView.appUpdated.setVisibility(View.GONE);
         } else {
@@ -87,8 +85,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Check for backup status
-        if (mainActivityInterface.getAlertChecks().showBackup(
-                mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"runssincebackup",0))) {
+        if (mainActivityInterface.getAlertChecks().showBackup()) {
             myView.timeToBackup.setVisibility(View.VISIBLE);
             String s = requireContext().getString(R.string.promptbackup).
                     replace("10","" +
@@ -103,7 +100,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         }
 
         // Check for Google Play Service error
-        if (mainActivityInterface.getAlertChecks().showPlayServicesAlert(requireContext())) {
+        if (mainActivityInterface.getAlertChecks().showPlayServicesAlert()) {
             Log.d(TAG, "onresume()  Play store isn't installed");
             myView.playServices.setVisibility(View.VISIBLE);
             myView.playServicesInfo.setOnClickListener(b -> webLink(getString(R.string.play_services_help)));

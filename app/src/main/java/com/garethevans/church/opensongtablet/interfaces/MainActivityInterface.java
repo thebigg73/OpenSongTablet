@@ -228,7 +228,6 @@ public interface MainActivityInterface {
     void hideKeyboard();
     void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
     void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song);
-    void refreshAll();
     ShowToast getShowToast();
     String getWhattodo();
     void setWhattodo(String whattodo);

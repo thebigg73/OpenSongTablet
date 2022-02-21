@@ -64,18 +64,19 @@ public class SetStorageLocationFragment extends Fragment {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        mainActivityInterface.hideActionBar(true);
-    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         myView = StorageChooseBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.getAppActionBar().justShowOrHide(false);
+        // This moves the content depending on the actionbar height (0 if autohide)
+        mainActivityInterface.hideActionButton(true);
+        mainActivityInterface.lockDrawer(true);
+        //mainActivityInterface.showHideActionBar();
+        //mainActivityInterface.hideActionBar(true);
+        //mainActivityInterface.getAppActionBar().justShowOrHide(false);
 
         // Set up the views
         initialiseViews();
@@ -96,7 +97,15 @@ public class SetStorageLocationFragment extends Fragment {
         // If we have it, this will update the text, if not it will ask for permission
         checkStatus();
 
+        mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
+
         return myView.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.getAppActionBar().translateAwayActionBar(true);
     }
 
     private void initialiseViews() {

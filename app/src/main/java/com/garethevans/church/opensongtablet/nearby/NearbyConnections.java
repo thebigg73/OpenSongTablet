@@ -451,7 +451,7 @@ public class NearbyConnections implements NearbyInterface {
         if (mainActivityInterface.getMode().equals("Performance")) {
             // Adjust only when not already in the correct state
             if (nearbyReturnActionsInterface != null && !(autoScroll.getIsAutoscrolling() == incoming.equals("autoscroll_start"))) {
-                nearbyReturnActionsInterface.gesture5();
+                nearbyReturnActionsInterface.toggleAutoscroll();
             }
         }
     }

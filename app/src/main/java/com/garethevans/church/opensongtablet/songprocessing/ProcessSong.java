@@ -1726,15 +1726,17 @@ public class ProcessSong {
     }
 
     private void setScaledView(LinearLayout innerColumn, float scaleSize, float maxFontSize) {
-        innerColumn.setPivotX(0);
-        innerColumn.setPivotY(0);
-        // Don't scale above the preferred maximum font size
-        float maxScaleSize = maxFontSize / defFontSize;
-        if (scaleSize > maxScaleSize) {
-            scaleSize = maxScaleSize;
+        if (innerColumn!=null) {
+            innerColumn.setPivotX(0);
+            innerColumn.setPivotY(0);
+            // Don't scale above the preferred maximum font size
+            float maxScaleSize = maxFontSize / defFontSize;
+            if (scaleSize > maxScaleSize) {
+                scaleSize = maxScaleSize;
+            }
+            innerColumn.setScaleX(scaleSize);
+            innerColumn.setScaleY(scaleSize);
         }
-        innerColumn.setScaleX(scaleSize);
-        innerColumn.setScaleY(scaleSize);
     }
 
     private void resizeColumn(LinearLayout column, int startWidth, int startHeight, float scaleSize) {
@@ -1814,16 +1816,18 @@ public class ProcessSong {
         clearAndResetLinearLayout(column2, true);
         clearAndResetLinearLayout(column3, true);
 
-        // Set the padding and boxpadding from dp to px
+        // Set the padding and boxpadding from 8dp to px
         float scale = c.getResources().getDisplayMetrics().density;
         padding = (int) (8 * scale);
 
         int currentWidth = getMaxValue(mainActivityInterface.getSectionWidths(), 0, mainActivityInterface.getSectionWidths().size());
         int currentHeight = getTotal(mainActivityInterface.getSectionHeights(), 0, mainActivityInterface.getSectionHeights().size());
 
+        Log.d(TAG,"currentWidth="+currentWidth);
+
         // Include the songSheetView if it isn't empty
         int songSheetTitleHeight = mainActivityInterface.getSongSheetTitleLayout().getHeight();
-        if (songSheetTitleHeight > 0) {
+        if (songSheetView!=null && songSheetTitleHeight > 0) {
             currentHeight = currentHeight + songSheetTitleHeight;
             songSheetView.addView(mainActivityInterface.getSongSheetTitleLayout());
         } else {
@@ -1843,12 +1847,10 @@ public class ProcessSong {
 
         float scaleSize_1col = col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
 
-        // Now we've used the views in measure, we need to remove them from the test pane, so we can reallocate them
-        //testPane.removeAllViews();
-
         // Now decide if 1,2 or 3 columns is best
         int howmany = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull);
 
+        Log.d(TAG,"howmany="+howmany);
         switch (howmany) {
             case 1:
                 // If we are using one column and resizing to width only, change the scale size
@@ -1874,8 +1876,10 @@ public class ProcessSong {
                 break;
         }
         // If we need to move column1 down/up due to potential songSheet and it's scaling, do it
-        setScaledView(songSheetView, scaleSize_1col, fontSizeMax);
-        column1.setPadding(0, (int) (songSheetTitleHeight * scaleSize_1col), 0, 0);
+        if (songSheetView!=null) {
+            setScaledView(songSheetView, scaleSize_1col, fontSizeMax);
+            column1.setPadding(0, (int) (songSheetTitleHeight * scaleSize_1col), 0, 0);
+        }
         return scaleSize_1col;
     }
 
@@ -1893,7 +1897,7 @@ public class ProcessSong {
         LinearLayout innerCol1 = newLinearLayout(c);
 
         int color;
-        // For each section, add it to a relayivelayout to deal with the background colour.
+        // For each section, add it to a relativelayout to deal with the background colour.
         for (View v : sectionViews) {
             color = Color.TRANSPARENT;
             Drawable background = v.getBackground();
