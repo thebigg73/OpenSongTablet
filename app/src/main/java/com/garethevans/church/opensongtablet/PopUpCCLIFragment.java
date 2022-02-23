@@ -253,8 +253,10 @@ public class PopUpCCLIFragment extends DialogFragment {
 
         // Check if the Log file exists and if not, create it
         Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
-        storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, uri, null,
-                "Settings", "", "ActivityLog.xml");
+        if (!storageAccess.uriExists(c, uri)) {
+            storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, uri, null,
+                    "Settings", "", "ActivityLog.xml");
+        }
         InputStream inputStream = storageAccess.getInputStream(c, uri);
         String actfilesize = getLogFileSize(c, uri);
         BuildTable do_buildTable = new BuildTable(inputStream, actfilesize);

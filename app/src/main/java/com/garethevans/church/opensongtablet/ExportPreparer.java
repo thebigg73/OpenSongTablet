@@ -457,29 +457,33 @@ class ExportPreparer {
                                         getSongData(c, songuri, storageAccess);
                                     }
                                     sb.append(song_title);
+                                    sb.append("¬ ");
                                     if (!song_author.isEmpty()) {
-                                        sb.append("¬ ").append(song_author);
+                                        sb.append(song_author);
                                     }
+                                    sb.append("¬ ");
                                     if (!song_hymnnumber.isEmpty()) {
-                                        sb.append("¬ #").append(song_hymnnumber);
+                                        sb.append("#").append(song_hymnnumber);
                                     }
+                                    sb.append("¬ ");
                                     if (!song_ccli.isEmpty() && preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
-                                        sb.append("¬ CCLI Song # ").append(song_ccli);
+                                        sb.append("CCLI Song # ").append(song_ccli);
                                     }
+                                    sb.append("¬ ");
                                     if (!song_key.isEmpty()) {
-                                        sb.append("¬ ").append(song_key);
+                                        sb.append("").append(song_key);
                                     }
                                     sb.append("\n");
                                 } else if (xpp.getAttributeValue(null, "name").contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
                                     String nametemp = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                                     nametemp = nametemp.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
-                                    sb.append(nametemp).append("\n");
+                                    sb.append(nametemp).append("¬ ¬ ¬ ¬ \n");
                                 } else {
-                                    sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"))).append("\n");
+                                    sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"))).append("¬ ¬ ¬ ¬\n");
                                 }
                                 break;
                             case "scripture":
-                                sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
+                                sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("¬ ¬ ¬ ¬\n");
                                 break;
                             case "image":
                                 // Go through the descriptions of each image and extract the absolute file locations
@@ -505,9 +509,9 @@ class ExportPreparer {
                                     eventType = xpp.next(); // Set the current event type from the return value of next()
                                 }
                                 // Go through each of these images and add a line for each one
-                                sb.append(imgname).append("\n");
+                                sb.append(imgname).append("¬ ¬ ¬ ¬ \n");
                                 for (int im = 0; im < theseimages.size(); im++) {
-                                    sb.append("     - ").append(theseimages.get(im)).append("\n");
+                                    sb.append("     - ").append(theseimages.get(im)).append("¬ ¬ ¬ ¬ \n");
                                 }
                                 break;
                         }

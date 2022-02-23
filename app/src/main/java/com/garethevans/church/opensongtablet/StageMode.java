@@ -605,6 +605,9 @@ public class StageMode extends AppCompatActivity implements
         // Establish a known state for Nearby
         nearbyConnections.turnOffNearby();
 
+        // Add action bar menu long press actions
+        menuButtonLongPressActions();
+
         // IV -  One time actions will have been completed
         FullscreenActivity.doonetimeactions = false;
     }
@@ -2033,7 +2036,7 @@ public class StageMode extends AppCompatActivity implements
         stickyButtonLayout.setOnClickListener(view -> stickyButton.performClick());
         stickyButton.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "page_sticky";
-            displaySticky();
+            displaySticky(false);
         });
         stickyButtonLayout.setOnLongClickListener(view -> stickyButton.performLongClick());
         stickyButton.setOnLongClickListener(view -> {
@@ -2045,7 +2048,7 @@ public class StageMode extends AppCompatActivity implements
         stickyButton_ungrouped.setOnClickListener(view -> {
             CustomAnimations.animateFAB(stickyButton_ungrouped,StageMode.this);
             FullscreenActivity.whattodo = "page_sticky";
-            displaySticky();
+            displaySticky(false);
         });
         stickyButton_ungroupedLayout.setOnLongClickListener(view -> stickyButton_ungrouped.performLongClick());
         stickyButton_ungrouped.setOnLongClickListener(view -> {
@@ -3041,6 +3044,10 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void displayHighlight(boolean fromautoshow) {
+        if (!fromautoshow) {
+            // IV - Stop any auto hide
+            doCancelAsyncTask(show_highlight);
+        }
         highlightNotes.setVisibility(View.GONE);
         // IV - A fade out may have occurred so set Alpha to 1
         highlightNotes.setAlpha(1.0f);
@@ -3294,7 +3301,10 @@ public class StageMode extends AppCompatActivity implements
         if (StaticVariables.mTitle.equals("")) {
             StaticVariables.mTitle = StaticVariables.songfilename.replaceAll("\\.[^.]*$", "");
         }
-        if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
+        if (StaticVariables.whichSongFolder.startsWith("../Received")) {
+            String text = "▾" + StaticVariables.mTitle;
+            songtitle_ab.setText(text);
+        } else if (StaticVariables.whichSongFolder.startsWith("../")) {
             String text = "≡" + StaticVariables.mTitle;
             songtitle_ab.setText(text);
         } else {
@@ -3379,7 +3389,10 @@ public class StageMode extends AppCompatActivity implements
         glideimage_HorizontalScrollView.setVisibility(View.VISIBLE);
 
         // Set the ab title to include the song info if available
-        if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
+        if (StaticVariables.whichSongFolder.startsWith("../Received")) {
+            String text = "▾" + StaticVariables.mTitle;
+            songtitle_ab.setText(text);
+        } else if (StaticVariables.whichSongFolder.startsWith("../")) {
             String text = "≡" + StaticVariables.mTitle;
             songtitle_ab.setText(text);
         } else {
@@ -4698,7 +4711,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                 }
                 // Open the sticky note window up again
-                displaySticky();
+                displaySticky(true);
 
                 // Get the current time
                 stickycurrtime = System.currentTimeMillis();
@@ -4719,9 +4732,7 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... objects) {
             try {
                 if (!stickydonthide && !StaticVariables.mNotes.equals("")) {
-                    while (System.currentTimeMillis() < stickytimetohide) {
-                        // Do nothing
-                    }
+                    Thread.sleep(stickytimetohide - System.currentTimeMillis() + 10);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -4757,7 +4768,12 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void displaySticky() {
+    private void displaySticky(boolean fromautoshow) {
+        if (!fromautoshow) {
+            // IV - Stop any auto hide
+            doCancelAsyncTask(show_sticky);
+        }
+
         if (stickyPopUpWindow!=null && stickyPopUpWindow.isShowing()) {
             try {
                 stickyPopUpWindow.dismiss();
@@ -5076,7 +5092,7 @@ public class StageMode extends AppCompatActivity implements
                             StaticVariables.myToastMessage = getString(R.string.stickynotes) + " - " + getString(R.string.notset);
                             ShowToast.showToast(StageMode.this);
                         } else {
-                            displaySticky();
+                            displaySticky(false);
                         }
                     }
                     break;
@@ -5166,7 +5182,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 if (shouldHighlightsBeShown() && !highlightdonthide) {
                     while (System.currentTimeMillis() < highlighttimetohide) {
-                        // Do nothing
+                        Thread.sleep(highlighttimetohide - System.currentTimeMillis() + 10);
                     }
                 }
             } catch (Exception e) {
@@ -5188,6 +5204,7 @@ public class StageMode extends AppCompatActivity implements
                     if (!highlightdonthide && highlightNotes.getVisibility() == View.VISIBLE) {
                         // If there is a highlight note showing, remove it
                         highlightNotes.setVisibility(View.GONE);
+                        FullscreenActivity.highlightOn = false;
                     }
                 }
             } catch (Exception e) {
@@ -7351,7 +7368,10 @@ public class StageMode extends AppCompatActivity implements
                     setWindowFlagsAdvanced();
 
                     // Put the title of the song in the taskbar
-                    if (StaticVariables.whichSongFolder.startsWith("../Variations")) {
+                    if (StaticVariables.whichSongFolder.startsWith("../Received")) {
+                        String text = "▾" + processSong.getSongTitle();
+                        songtitle_ab.setText(text);
+                    } else if (StaticVariables.whichSongFolder.startsWith("../")) {
                         String text = "≡" + processSong.getSongTitle();
                         songtitle_ab.setText(text);
                     } else {
@@ -8885,6 +8905,16 @@ public class StageMode extends AppCompatActivity implements
                             StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
                             ShowToast.showToast(StageMode.this);
                         }
+                        return true;
+                    });
+                }
+                // IV - Support long press of search icon - actually the same action as short press!
+                final View view3 = findViewById(R.id.action_fullsearch);
+
+                if (view3 != null) {
+                    view3.setOnLongClickListener(v -> {
+                        FullscreenActivity.whattodo = "fullsearch";
+                        openFragment();
                         return true;
                     });
                 }

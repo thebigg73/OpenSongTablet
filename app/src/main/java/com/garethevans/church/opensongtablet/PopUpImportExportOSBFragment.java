@@ -425,14 +425,11 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
                             // If we are lollipop or later, we need to create a file for the output stream to work
                             boolean exists = storageAccess.uriExists(getContext(), file_uri);
-                            if (!exists) {
-                                storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences,
-                                        file_uri, null, "Songs", "", ze.getName());
-                            }
-
 
                             // If we have allowed overwriting, or the file doesn't already exist get an output stream and write it
                             if (!exists || canoverwrite) {
+                                storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences,
+                                        file_uri, null, "Songs", "", ze.getName());
                                 OutputStream outputStream = null;
                                 if (file_uri!=null) {
                                     Log.d("ImportExportOSB","file_uri="+file_uri);
