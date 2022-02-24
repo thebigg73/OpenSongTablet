@@ -908,7 +908,12 @@ class StorageAccess {
 
         if (filename != null && !filename.isEmpty()) {
             f = new File(f, filename);
+            Uri uri = Uri.fromFile(f);
             try {
+                if (uriExists(c,uri)) {
+                    // IV - Delete any old file
+                    f.delete();
+                }
                 stuffCreated = f.createNewFile();
             } catch (Exception e) {
                 e.printStackTrace();
