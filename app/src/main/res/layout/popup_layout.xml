@@ -103,9 +103,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="12dp"
                                     android:contentDescription="Left"
+                                    app:elevation="0dp"
                                     android:src="@drawable/ic_format_align_left_white_36dp"
                                     app:backgroundTint="#555555"
-                                    app:elevation="0dp"
                                     app:fabSize="mini"
                                     app:useCompatPadding="true"
                                     tools:ignore="HardcodedText" />
@@ -117,9 +117,9 @@
                                     android:layout_marginStart="12dp"
                                     android:layout_marginEnd="12dp"
                                     android:contentDescription="Center"
+                                    app:elevation="0dp"
                                     android:src="@drawable/ic_format_align_center_white_36dp"
                                     app:backgroundTint="#555555"
-                                    app:elevation="0dp"
                                     app:fabSize="mini"
                                     app:useCompatPadding="true"
                                     tools:ignore="HardcodedText" />
@@ -130,9 +130,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="12dp"
                                     android:contentDescription="Right"
+                                    app:elevation="0dp"
                                     android:src="@drawable/ic_format_align_right_white_36dp"
                                     app:backgroundTint="#555555"
-                                    app:elevation="0dp"
                                     app:fabSize="mini"
                                     app:useCompatPadding="true"
                                     tools:ignore="HardcodedText" />
@@ -160,9 +160,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="12dp"
                                 android:contentDescription="@string/top"
+                                app:elevation="0dp"
                                 android:src="@drawable/ic_format_vertical_align_top_white_36dp"
                                 app:backgroundTint="#555555"
-                                app:elevation="0dp"
                                 app:fabSize="mini"
                                 app:useCompatPadding="true" />
 
@@ -173,9 +173,9 @@
                                 android:layout_marginStart="12dp"
                                 android:layout_marginEnd="12dp"
                                 android:contentDescription="Middle"
+                                app:elevation="0dp"
                                 android:src="@drawable/ic_format_vertical_align_center_white_36dp"
                                 app:backgroundTint="#555555"
-                                app:elevation="0dp"
                                 app:fabSize="mini"
                                 app:useCompatPadding="true"
                                 tools:ignore="HardcodedText" />
@@ -186,9 +186,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="12dp"
                                 android:contentDescription="@string/bottom"
+                                app:elevation="0dp"
                                 android:src="@drawable/ic_format_vertical_align_bottom_white_36dp"
                                 app:backgroundTint="#555555"
-                                app:elevation="0dp"
                                 app:fabSize="mini"
                                 app:useCompatPadding="true" />
 
@@ -405,9 +405,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="12dp"
                             android:contentDescription="Left"
+                            app:elevation="0dp"
                             android:src="@drawable/ic_format_align_left_white_36dp"
                             app:backgroundTint="#555555"
-                            app:elevation="0dp"
                             app:fabSize="mini"
                             app:useCompatPadding="true"
                             tools:ignore="HardcodedText" />
@@ -419,9 +419,9 @@
                             android:layout_marginStart="12dp"
                             android:layout_marginEnd="12dp"
                             android:contentDescription="Center"
+                            app:elevation="0dp"
                             android:src="@drawable/ic_format_align_center_white_36dp"
                             app:backgroundTint="#555555"
-                            app:elevation="0dp"
                             app:fabSize="mini"
                             app:useCompatPadding="true"
                             tools:ignore="HardcodedText" />
@@ -432,9 +432,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:contentDescription="Right"
+                            app:elevation="0dp"
                             android:src="@drawable/ic_format_align_right_white_36dp"
                             app:backgroundTint="#555555"
-                            app:elevation="0dp"
                             app:fabSize="mini"
                             app:useCompatPadding="true"
                             tools:ignore="HardcodedText" />

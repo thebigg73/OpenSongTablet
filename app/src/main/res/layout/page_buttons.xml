@@ -28,6 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/custom"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     app:useCompatPadding="true" />
 
@@ -43,6 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/custom"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     app:useCompatPadding="true" />
 
@@ -58,6 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/custom"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     app:useCompatPadding="true" />
 
@@ -73,6 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/custom"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_help_outline_white_36dp"
                     app:useCompatPadding="true" />
 
@@ -104,6 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/chords"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_guitar_electric_white_36dp"
                     app:useCompatPadding="true" />
 
@@ -119,6 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/link"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_link_white_36dp"
                     app:useCompatPadding="true" />
 
@@ -136,6 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/stickynotes"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_comment_text_white_36dp"
                     app:useCompatPadding="true" />
 
@@ -151,6 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/music_score"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_clef_white_36dp"
                     app:useCompatPadding="true" />
 

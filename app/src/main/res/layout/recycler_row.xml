@@ -23,6 +23,7 @@
             app:fabSize="mini"
             app:borderWidth="0dp"
             app:backgroundTint="@color/grey"
+            app:elevation="0dp"
             android:src="@drawable/ic_amplifier_white_36dp"
             android:alpha="0.8"
             android:layout_alignParentStart="true"

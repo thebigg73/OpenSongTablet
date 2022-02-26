@@ -33,6 +33,7 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/toolbar"
             app:fabSize="mini"
+            app:elevation="0dp"
             android:src="@drawable/ic_arrow_right_white_36dp"
             android:contentDescription="@string/drawer_close" />
 
