@@ -75,7 +75,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         setListeners();
 
         // Decide if we are using preferred chord format
-        usePreferredChordFormat(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",false));
+        usePreferredChordFormat(mainActivityInterface.getPreferences().getMyPreferenceBoolean("chordFormatUsePreferred",false));
 
         return myView.getRoot();
     }
@@ -108,8 +108,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
 
         myView.assumePreferred.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                requireContext(), "chordFormatUsePreferred", false));
-        prefFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),
+                "chordFormatUsePreferred", false));
+        prefFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(
                 "chordFormat",1);
         String hint = getString(R.string.chordformat_preferred_info) + " " +
                 mainActivityInterface.getTranspose().getChordFormatNames(requireContext()).get(prefFormat-1) +
@@ -172,7 +172,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         });
 
         myView.assumePreferred.getSwitch().setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("chordFormatUsePreferred",isChecked);
             usePreferredChordFormat(isChecked);
         });
 
@@ -220,7 +220,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
     private void getValues() {
         if (myView.assumePreferred.getChecked()) {
-            fromFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),
+            fromFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(
                     "chordFormat", 1);
             toFormat = fromFormat;
         } else {

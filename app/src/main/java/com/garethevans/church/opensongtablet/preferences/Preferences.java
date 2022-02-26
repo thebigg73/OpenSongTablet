@@ -6,16 +6,21 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 public class Preferences extends Activity {
+
+    public Preferences(Context c) {
+        this.c = c;
+    }
     // This is the way that preferences will be stored
     private SharedPreferences sharedPref;
     private final String TAG = "Preferences";
+    private final Context c;
 
     public SharedPreferences getSharedPref() {
         return sharedPref;
     }
 
     // Get the saved preference values
-    public String getMyPreferenceString(Context c, String prefname, String fallback) {
+    public String getMyPreferenceString(String prefname, String fallback) {
         // Return a string from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -24,7 +29,7 @@ public class Preferences extends Activity {
             return fallback;
         }
     }
-    public int getMyPreferenceInt(Context c, String prefname, int fallback) {
+    public int getMyPreferenceInt(String prefname, int fallback) {
         // Return an int from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -37,7 +42,7 @@ public class Preferences extends Activity {
             return fallback;
         }
     }
-    public float getMyPreferenceFloat (Context c, String prefname, float fallback) {
+    public float getMyPreferenceFloat(String prefname, float fallback) {
         // Return a float from saved preferences
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -46,7 +51,7 @@ public class Preferences extends Activity {
             return fallback;
         }
     }
-    public boolean getMyPreferenceBoolean(Context c, String prefname, boolean fallback) {
+    public boolean getMyPreferenceBoolean(String prefname, boolean fallback) {
         // Return a boolean from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -57,7 +62,7 @@ public class Preferences extends Activity {
     }
 
     // Set the preference values
-    public void setMyPreferenceString(Context c, String prefname, String value) {
+    public void setMyPreferenceString(String prefname, String value) {
         // Identify the preferences
         if (c!=null && prefname!=null) {
             if (prefname.equals("setCurrent")) {
@@ -67,21 +72,21 @@ public class Preferences extends Activity {
             sharedPref.edit().putString(prefname, value).apply();
         }
     }
-    public void setMyPreferenceInt (Context c, String prefname, int value) {
+    public void setMyPreferenceInt(String prefname, int value) {
         // Identify the preferences
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
             sharedPref.edit().putInt(prefname, value).apply();
         }
     }
-    public void setMyPreferenceFloat (Context c, String prefname, float value) {
+    public void setMyPreferenceFloat(String prefname, float value) {
         // Identify the preferences
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
             sharedPref.edit().putFloat(prefname, value).apply();
         }
     }
-    public void setMyPreferenceBoolean(Context c, String prefname, boolean value) {
+    public void setMyPreferenceBoolean(String prefname, boolean value) {
         // Identify the preferences
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);

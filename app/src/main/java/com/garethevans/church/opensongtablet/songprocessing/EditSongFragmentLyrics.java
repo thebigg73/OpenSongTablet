@@ -93,7 +93,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
         myView.lyrics.setText(mainActivityInterface.getTempSong().getLyrics());
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.lyrics);
-        editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"editTextSize",14);
+        editTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14);
         checkTextSize(0);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.lyrics,20);
 
@@ -253,7 +253,7 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.setTextSize(editTextSize);
 
         // Save this to the user preferences
-        mainActivityInterface.getPreferences().setMyPreferenceFloat(getContext(),"editTextSize",editTextSize);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat("editTextSize",editTextSize);
     }
 
     private void insertSection() {
@@ -268,9 +268,9 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.lyrics.setSelection(pos+1);
     }
     public void changelyricFormat() {
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"editAsChordPro",false)) {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false)) {
             myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
-                    fromOpenSongToChordPro(requireContext(), mainActivityInterface, mainActivityInterface.getTempSong().getLyrics()));
+                    fromOpenSongToChordPro(mainActivityInterface, mainActivityInterface.getTempSong().getLyrics()));
         } else {
             myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
                     fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics()));
@@ -315,7 +315,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
         // If we were using ChoPro, convert back
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            String choProLyrics =  mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(requireContext(),mainActivityInterface,
+            String choProLyrics =  mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface,
                     mainActivityInterface.getTempSong().getLyrics());
             mainActivityInterface.getTempSong().setLyrics(choProLyrics);
         }
@@ -344,7 +344,7 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.bottomSheetLayout.convertToChoPro.setBackgroundTintList(ColorStateList.valueOf(colorOn));
             myView.bottomSheetLayout.convertToOpenSong.setBackgroundTintList(ColorStateList.valueOf(colorOff));
             // Get the lyrics converted
-            String lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(requireContext(),mainActivityInterface,mainActivityInterface.getTempSong().getLyrics());
+            String lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface,mainActivityInterface.getTempSong().getLyrics());
             // Set them into the edit box - don't include an undo/redo step, so pretend we're carrying this out
             addUndoStep = false;
             myView.lyrics.setText(lyrics);
@@ -397,7 +397,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
         // Put back (includes undo step)
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(requireContext(),
+            lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(
                     mainActivityInterface, lyrics);
         }
         myView.lyrics.setText(lyrics);

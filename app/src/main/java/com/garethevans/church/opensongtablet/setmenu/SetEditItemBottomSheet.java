@@ -121,9 +121,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
     private void updateFilesInFolder(String folder) {
         // Do this check as we might be using Notes, Variations, etc.
-        String[] foldersFromNice = mainActivityInterface.getStorageAccess().getActualFoldersFromNice(requireContext(),folder);
+        String[] foldersFromNice = mainActivityInterface.getStorageAccess().getActualFoldersFromNice(folder);
         Log.d(TAG,"folderNames: "+foldersFromNice[0]+" / "+foldersFromNice[1]);
-        filenames = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(),mainActivityInterface,foldersFromNice[0],foldersFromNice[1]);
+        filenames = mainActivityInterface.getStorageAccess().listFilesInFolder(foldersFromNice[0],foldersFromNice[1]);
         filenameAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.editFilename,R.layout.view_exposed_dropdown_item,filenames);
         myView.editFilename.setAdapter(filenameAdapter);
         myView.editFilename.setText(mainActivityInterface.getCurrentSet().getFilename(setPosition));
@@ -199,10 +199,9 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
         } else {
             // Delete the variation file and put the original folder back?
-            Uri variationUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                    mainActivityInterface,"Variations","",myView.editFilename.getText().toString());
-            if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),variationUri)) {
-                mainActivityInterface.getStorageAccess().deleteFile(requireContext(),variationUri);
+            Uri variationUri = mainActivityInterface.getStorageAccess().getUriForItem("Variations","",myView.editFilename.getText().toString());
+            if (mainActivityInterface.getStorageAccess().uriExists(variationUri)) {
+                mainActivityInterface.getStorageAccess().deleteFile(variationUri);
             }
             // Update the matching card
             newFolder = currentSetFolder.get(setPosition);
@@ -220,7 +219,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
 
     private void updateCurrentSetView() {
         String currentSetString = mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface);
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"setCurrent",currentSetString);
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",currentSetString);
 
         Log.d(TAG,"set: "+currentSetString);
 

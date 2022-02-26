@@ -47,17 +47,17 @@ public class AutoscrollSettingsFragment extends Fragment {
 
     private void setupViews() {
         // Get the defaults from preferences
-        myView.defaultDuration.setText(mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),
+        myView.defaultDuration.setText(mainActivityInterface.getPreferences().getMyPreferenceInt(
                 "autoscrollDefaultSongLength", 180)+"");
-        myView.defaultDelay.setText(mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),
+        myView.defaultDelay.setText(mainActivityInterface.getPreferences().getMyPreferenceInt(
                 "autoscrollDefaultSongPreDelay", 20)+"");
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "autoscrollUseDefaultTime", true)) {
             myView.autoscrollDefault.setChecked(true);
         } else {
             myView.autoscrollPrompt.setChecked(true);
         }
-        myView.autostartAutoscroll.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+        myView.autostartAutoscroll.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "autoscrollAutoStart", false));
         // Get song values
         myView.songDuration.setText(mainActivityInterface.getSong().getAutoscrolllength());
@@ -65,7 +65,7 @@ public class AutoscrollSettingsFragment extends Fragment {
         // Check audio link file
         mainActivityInterface.getAutoscroll().checkLinkAudio(requireContext(),mainActivityInterface,
                 myView.linkAudio, myView.songDuration, myView.songDelay,getStringToInt(myView.songDelay.getText().toString()));
-        myView.onscreenAutoscrollHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+        myView.onscreenAutoscrollHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "onscreenAutoscrollHide",true));
     }
 
@@ -74,16 +74,16 @@ public class AutoscrollSettingsFragment extends Fragment {
         myView.songDelay.addTextChangedListener(new MyTextWatcher("songDelay"));
         myView.defaultDuration.addTextChangedListener(new MyTextWatcher("defaultDuration"));
         myView.defaultDelay.addTextChangedListener(new MyTextWatcher("defaultDelay"));
-        myView.autostartAutoscroll.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"autoscrollAutoStart", b));
+        myView.autostartAutoscroll.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("autoscrollAutoStart", b));
         myView.autoscrollPrompt.setOnCheckedChangeListener((compoundButton, b) -> {
             if (!b) {
-                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                         "autoscrollUseDefaultTime", false);
             }
         });
         myView.autoscrollDefault.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+                mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                         "autoscrollUseDefaultTime", true);
             }
         });
@@ -92,7 +92,7 @@ public class AutoscrollSettingsFragment extends Fragment {
 
         myView.startStopAutoscroll.setOnClickListener(v -> startStopAutoscroll());
         myView.onscreenAutoscrollHide.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     "onscreenAutoscrollHide",b);
             mainActivityInterface.
                     updateOnScreenInfo("setpreferences");
@@ -125,19 +125,19 @@ public class AutoscrollSettingsFragment extends Fragment {
                 case "defaultDuration":
                     if (default_duration<default_delay) {
                         myView.defaultDelay.setText(default_duration+"");
-                        mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                        mainActivityInterface.getPreferences().setMyPreferenceInt(
                                 "autoscrollDefaultSongPreDelay", default_duration);
                     }
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "autoscrollDefaultSongLength", default_duration);
                     break;
                 case "defaultDelay":
                     if (default_delay>default_duration) {
                         myView.defaultDuration.setText(default_delay+"");
-                        mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                        mainActivityInterface.getPreferences().setMyPreferenceInt(
                                 "autoscrollDefaultSongLength", default_delay);
                     }
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "autoscrollDefaultSongPreDelay", default_delay);
                     break;
                 case "songDuration":

@@ -37,6 +37,7 @@ import com.garethevans.church.opensongtablet.customviews.GlideApp;
 import com.garethevans.church.opensongtablet.databinding.CastScreenBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,6 +53,8 @@ public class SecondaryDisplay extends Presentation {
     private final Display display;
     private CastScreenBinding myView;
     private final String TAG = "SecondaryDisplay";
+    private ArrayList<View> secondaryViews;
+    private ArrayList<Integer> secondaryWidths, secondaryHeights;
 
     // Default variables
     private float scaleChords, scaleHeadings, scaleComments, lineSpacing;
@@ -185,7 +188,6 @@ public class SecondaryDisplay extends Presentation {
                 !mainActivityInterface.getPresenterSettings().getBlackscreenOn();
     }
 
-
     // Now the screen settings
     public void setScreenSizes() {
         // We need to wait until the view is prepared before rotating and measuring if required
@@ -286,7 +288,7 @@ public class SecondaryDisplay extends Presentation {
                 new Handler().postDelayed(()-> showSection(0),logoSplashTime);
 
             } else {
-                new Handler().postDelayed(() -> showAllSections(),logoSplashTime);
+               new Handler().postDelayed(this::showAllSections,logoSplashTime);
             }
 
             // The logo always gets shown on first run
@@ -300,7 +302,6 @@ public class SecondaryDisplay extends Presentation {
                 mainActivityInterface.getPresenterSettings().getPresoXMargin(),
                 mainActivityInterface.getPresenterSettings().getPresoYMargin());
     }
-
     private void updateViewSizes(View view) {
         if (view == myView.pageHolder) {
             FrameLayout.LayoutParams fllp = (FrameLayout.LayoutParams)view.getLayoutParams();
@@ -310,7 +311,6 @@ public class SecondaryDisplay extends Presentation {
         }
     }
 
-
     // Set views depending on mode
     public void matchPresentationToMode() {
         // Get the settings that are appropriate.  This is called on first run
@@ -318,24 +318,23 @@ public class SecondaryDisplay extends Presentation {
             case "Stage":
             case "Performance":
             default:
-                scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scaleHeadings", 0.8f);
-                scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scaleComments", 0.8f);
-                displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "displayChords", true);
-                boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "boldChordHeading", false);
+                scaleHeadings = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleHeadings", 0.8f);
+                scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments", 0.8f);
+                displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChords", true);
+                boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
                 break;
 
             case "Presenter":
                 scaleHeadings = 0.0f;
                 scaleComments = 0.0f;
-                displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "presoShowChords", false);
-                boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "presoLyricsBold", false);
+                displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords", false);
+                boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoLyricsBold", false);
                 break;
         }
         infoBarChangeRequired = true;
         forceCastUpdate = false;
         hideCols2and3();
     }
-
     private void hideCols2and3() {
         // Only need these in performance mode
         int visiblity = View.GONE;
@@ -447,7 +446,6 @@ public class SecondaryDisplay extends Presentation {
                 0f, mainActivityInterface.getPresenterSettings().getPresoBackgroundAlpha());
     }
 
-
     // The logo
     public void changeLogo() {
         // There may have been an update to the user's logo.  Called from change Background in this
@@ -479,7 +477,6 @@ public class SecondaryDisplay extends Presentation {
             },logoSplashTime);
         }
     }
-
 
     // The black or blank screen
     public void showBlackScreen() {
@@ -533,7 +530,6 @@ public class SecondaryDisplay extends Presentation {
             }
         }
     }
-
 
     // The song info bar
     // For Presenter Mode, the bar shows is required under the following conditions:
@@ -706,26 +702,32 @@ public class SecondaryDisplay extends Presentation {
 
         // Clear any existing views from the test layout.  We don't fade out existing song layout until we are ready
         myView.testLayout.removeAllViews();
+        secondaryViews = null;
+        secondaryViews = new ArrayList<>();
+        secondaryWidths = null;
+        secondaryWidths = new ArrayList<>();
+        secondaryHeights = null;
+        secondaryHeights = new ArrayList<>();
 
         // Decide if this is an XML, PDF or IMG file and proceed accordingly
         if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
-            mainActivityInterface.setSectionViews(null);
             setSectionViews();
         } else {
             // TODO deal with PDF and images!
         }
     }
     public void setSongContentPrefs() {
-        trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "trimLines", false);
-        trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "trimSections", false);
-        addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "addSectionSpace", true);
-        boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "boldChordHeading", false);
-        scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scaleChords", 0.8f);
+        trimLines = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimLines", false);
+        trimSections = mainActivityInterface.getPreferences().getMyPreferenceBoolean("trimSections", false);
+        addSectionSpace = mainActivityInterface.getPreferences().getMyPreferenceBoolean("addSectionSpace", true);
+        boldChordHeading = mainActivityInterface.getPreferences().getMyPreferenceBoolean("boldChordHeading", false);
+        scaleChords = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f);
     }
     private void setSectionViews() {
-        mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
-                setSongInLayout(c, mainActivityInterface, mainActivityInterface.getSong(),
-                        false, true));
+        boolean isPresentation = !mainActivityInterface.getMode().equals("Performance");
+        secondaryViews = mainActivityInterface.getProcessSong().
+                setSongInLayout(mainActivityInterface.getSong(),
+                        false, isPresentation);
 
         // Draw them to the screen test layout for measuring
         ViewTreeObserver testObs = myView.testLayout.getViewTreeObserver();
@@ -733,29 +735,29 @@ public class SecondaryDisplay extends Presentation {
             @Override
             public void onGlobalLayout() {
                 // The views are ready so prepare to create the song page
-                for (int x=0; x<mainActivityInterface.getSectionViews().size();x++) {
-                    int width = mainActivityInterface.getSectionViews().get(x).getMeasuredWidth();
-                    int height = mainActivityInterface.getSectionViews().get(x).getMeasuredHeight();
-                    mainActivityInterface.addSectionSize(x,width,height);
-                }
+                for (int x=0; x<secondaryViews.size();x++) {
+                    int width = secondaryViews.get(x).getMeasuredWidth();
+                    int height = secondaryViews.get(x).getMeasuredHeight();
+                    secondaryWidths.add(x,width);
+                    secondaryHeights.add(x,height);
 
-                // Calculate the scale factor for each section individually
-                // For each meausured view, get the max x and y scale value
-                // Check they are less than the max preferred value
-                for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
-                    float max_x = (float)horizontalSize/(float)mainActivityInterface.getSectionWidths().get(x);
-                    float max_y = (float)verticalSize/(float)mainActivityInterface.getSectionHeights().get(x);
+                    // Calculate the scale factor for each section individually
+                    // For each meausured view, get the max x and y scale value
+                    // Check they are less than the max preferred value
+                    float max_x = (float)horizontalSize/(float)secondaryWidths.get(x);
+                    float max_y = (float)verticalSize/(float)secondaryHeights.get(x);
                     // The text size is 14sp by default.  Compare this to the pref
                     float best = Math.min(max_x,max_y);
                     if (best*14f > mainActivityInterface.getPresenterSettings().getFontSizePresoMax()) {
                         best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax()*14f;
                     }
-                    mainActivityInterface.getSectionViews().get(x).setPivotX(0f);
-                    mainActivityInterface.getSectionViews().get(x).setPivotY(0f);
+                    secondaryViews.get(x).setPivotX(0f);
+                    secondaryViews.get(x).setPivotY(0f);
                     if (best>0) {
-                        mainActivityInterface.getSectionViews().get(x).setScaleX(best);
-                        mainActivityInterface.getSectionViews().get(x).setScaleY(best);
+                        secondaryViews.get(x).setScaleX(best);
+                        secondaryViews.get(x).setScaleY(best);
                     }
+                    Log.d(TAG,"view["+x+"]: "+width+"x"+height+"  scaleFactor="+best);
                 }
 
                 // We can now remove the views from the test layout and remove this listener
@@ -768,13 +770,15 @@ public class SecondaryDisplay extends Presentation {
                     showSection(mainActivityInterface.getPresenterSettings().getCurrentSection());
                 } else {
                     Log.d(TAG, "Perfomance mode - need to show everything");
+                    showAllSections();
                 }
 
                 myView.testLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
             }
         });
-        for (View view:mainActivityInterface.getSectionViews()) {
+        for (View view:secondaryViews) {
+            Log.d(TAG,"drawing a test of view: "+view.getId());
             myView.testLayout.addView(view);
         }
 
@@ -783,20 +787,17 @@ public class SecondaryDisplay extends Presentation {
         // Decide which view to show to
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
         // Check the view isn't already attached to a parent
-        if (position>=0 && position<mainActivityInterface.getSectionViews().size()) {
+        if (position>=0 && position<secondaryViews.size()) {
 
             // Check the song info status first
             checkSongInfoShowHide();
 
             // Remove the view from any parent it might be attached to already (can only have 1)
-            removeViewFromParent(mainActivityInterface.getSectionViews().get(position));
-
-            // Move to next view showWhich 1>2, 2>1
-            moveToNextSongView();
+            removeViewFromParent(secondaryViews.get(position));
 
             // Measure the size of the view
-            int width = mainActivityInterface.getSectionWidths().get(position);
-            int height = mainActivityInterface.getSectionHeights().get(position);
+            int width = secondaryWidths.get(position);
+            int height = secondaryHeights.get(position);
 
             // Get the measured height of the song info bar
             int infoHeight;
@@ -818,56 +819,57 @@ public class SecondaryDisplay extends Presentation {
                 best = mainActivityInterface.getPresenterSettings().getFontSizePresoMax() / 14f;
             }
 
-            mainActivityInterface.getSectionViews().get(position).setPivotX(0f);
-            mainActivityInterface.getSectionViews().get(position).setPivotY(0f);
-            mainActivityInterface.getSectionViews().get(position).setScaleX(best);
-            mainActivityInterface.getSectionViews().get(position).setScaleY(best);
+            secondaryViews.get(position).setPivotX(0f);
+            secondaryViews.get(position).setPivotY(0f);
+            secondaryViews.get(position).setScaleX(best);
+            secondaryViews.get(position).setScaleY(best);
 
             // We can now prepare the new view and animate in/out the views as long as the logo is off
             // and the blank screen isn't on
             Log.d(TAG,"showWhich="+showWhich+"  canShowSong()="+canShowSong());
-            removeViewFromParent(mainActivityInterface.getSectionViews().get(position));
+            removeViewFromParent(secondaryViews.get(position));
 
             // Translate the scaled views based on the alignment
             int newWidth = (int)(width * best);
             int newHeight = (int)(height * best);
-            translateView(mainActivityInterface.getSectionViews().get(position), newWidth, newHeight, infoHeight, alertHeight);
+            translateView(secondaryViews.get(position), newWidth, newHeight, infoHeight, alertHeight);
 
             if (showWhich < 2) {
                 myView.songContent1Col1.removeAllViews();
-                myView.songContent1Col1.addView(mainActivityInterface.getSectionViews().get(position));
+                myView.songContent1Col1.addView(secondaryViews.get(position));
                 crossFadeContent(myView.songContent2, myView.songContent1);
 
             } else {
                 myView.songContent2Col1.removeAllViews();
-                myView.songContent2Col1.addView(mainActivityInterface.getSectionViews().get(position));
+                myView.songContent2Col1.addView(secondaryViews.get(position));
                 crossFadeContent(myView.songContent1, myView.songContent2);
 
             }
         }
     }
     private void showAllSections() {
-
-
         float scaleFactor;
         int widthBeforeScale = 0, heightBeforeScale = 0, widthAfterScale, heightAfterScale;
 
         Log.d(TAG,"availableWidth="+availableScreenWidth+"  availableHeight="+availableScreenHeight);
 
+        boolean need23columns = mainActivityInterface.getMode().equals("Performance");
         if (showWhich<2) {
-            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(c, mainActivityInterface, myView.allContent,
+            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(
+                    need23columns, secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent2, null, availableScreenWidth, availableScreenHeight,
                     myView.songContent2Col1, myView.songContent2Col2, myView.songContent2Col3);
 
         } else {
-            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(c, mainActivityInterface, myView.allContent,
+            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(
+                    need23columns, secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
                     myView.songContent1, null, availableScreenWidth, availableScreenHeight,
                     myView.songContent1Col1, myView.songContent1Col2, myView.songContent1Col3);
         }
 
-        for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-            widthBeforeScale = Math.max(widthBeforeScale, mainActivityInterface.getSectionWidths().get(x));
-            heightBeforeScale += mainActivityInterface.getSectionHeights().get(x);
+        for (int x = 0; x < secondaryViews.size(); x++) {
+            widthBeforeScale = Math.max(widthBeforeScale, secondaryWidths.get(x));
+            heightBeforeScale += secondaryHeights.get(x);
         }
 
         widthAfterScale = (int) (widthBeforeScale*scaleFactor);
@@ -876,28 +878,15 @@ public class SecondaryDisplay extends Presentation {
         Log.d(TAG,"widthBeforeScale="+widthBeforeScale+"  scaleFactor="+scaleFactor+"  widthAfterScale="+widthAfterScale);
         Log.d(TAG,"heightBeforeScale="+heightBeforeScale+"  scaleFactor="+scaleFactor+"  heightAfterScale="+heightAfterScale);
 
-       //myView.songContent1.setVisibility(View.VISIBLE);
-       // myView.songContent2.setVisibility(View.VISIBLE);
-       // myView.songContent2.setAlpha(1f);
-       // myView.songContent1.setAlpha(1f);
-
         if (showWhich<2) {
             crossFadeContent(myView.songContent1,myView.songContent2);
         } else {
             crossFadeContent(myView.songContent2,myView.songContent1);
         }
-        // Move to next view showWhich 1>2, 2>1
-        moveToNextSongView();
     }
     private void removeViewFromParent(View view) {
         if (view!=null && view.getParent()!=null) {
             ((ViewGroup)view.getParent()).removeView(view);
-            /*String name = view.getParent().getClass().getName();
-            if (name.contains("RelativeLayout")) {
-                ((RelativeLayout) view.getParent()).removeView(view);
-            } else if (name.contains("LinearLayout")) {
-                ((LinearLayout) view.getParent()).removeView(view);
-            }*/
         }
     }
     @SuppressLint("RtlHardcoded")
@@ -971,8 +960,10 @@ public class SecondaryDisplay extends Presentation {
                     mainActivityInterface.getPresenterSettings().getPresoTransitionTime(),
                     0f, 1f);
         }
-    }
 
+        // Now get ready for the next views
+        moveToNextSongView();
+    }
 
     // Video
     private class MySurfaceTextureAvailable implements TextureView.SurfaceTextureListener {
@@ -1017,8 +1008,8 @@ public class SecondaryDisplay extends Presentation {
         Log.d(TAG,"uri="+uri);
         String uriString = mainActivityInterface.getStorageAccess().fixUriToLocal(uri);
         Log.d(TAG,"uriString:"+uriString);
-        uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c,mainActivityInterface,uriString);
-        if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
+        uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(uriString);
+        if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(uri)) {
             Log.d(TAG,"uriExists");
             try {
                 if (showWhichVideo<2) {

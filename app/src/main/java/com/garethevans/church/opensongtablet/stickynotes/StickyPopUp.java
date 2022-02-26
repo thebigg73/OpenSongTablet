@@ -98,7 +98,7 @@ public class StickyPopUp {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         stickyNotes.setTextColor(mainActivityInterface.getMyThemeColors().getStickyTextColor());
         stickyNotes.setTypeface(mainActivityInterface.getMyFonts().getStickyFont());
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "stickyLargeFont", true)) {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("stickyLargeFont", true)) {
             stickyNotes.setTextSize(22.0f);
         } else {
             stickyNotes.setTextSize(16.0f);
@@ -114,11 +114,11 @@ public class StickyPopUp {
     }
 
     private void getPositionAndSize(Context c, MainActivityInterface mainActivityInterface) {
-        posX = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "stickyXPosition", -1);
-        posY = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "stickyYPosition", -1);
+        posX = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyXPosition", -1);
+        posY = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyYPosition", -1);
         int w = c.getResources().getDisplayMetrics().widthPixels;
         int h = c.getResources().getDisplayMetrics().heightPixels;
-        stickyWidth = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "stickyWidth", 400);
+        stickyWidth = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyWidth", 400);
 
         // Fix the sizes
         if (posX == -1 || posX > w) {
@@ -154,8 +154,8 @@ public class StickyPopUp {
                         popupWindow.update(offsetX, offsetY, -1, -1, true);
                         break;
                     case MotionEvent.ACTION_UP:
-                        mainActivityInterface.getPreferences().setMyPreferenceInt(c, "stickyXPosition", offsetX);
-                        mainActivityInterface.getPreferences().setMyPreferenceInt(c, "stickyYPosition", offsetY);
+                        mainActivityInterface.getPreferences().setMyPreferenceInt("stickyXPosition", offsetX);
+                        mainActivityInterface.getPreferences().setMyPreferenceInt("stickyYPosition", offsetY);
                 }
                 return true;
             }
@@ -170,7 +170,7 @@ public class StickyPopUp {
 
     private void dealWithAutohide(Context c, MainActivityInterface mainActivityInterface) {
         Handler handler = new Handler();
-        long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"timeToDisplaySticky",0) * 1000L;
+        long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplaySticky",0) * 1000L;
         if (displayTime>0) {
             try {
                 handler.postDelayed(this::closeSticky, displayTime);

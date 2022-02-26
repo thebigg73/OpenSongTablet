@@ -78,7 +78,7 @@ public class ImportOptionsFragment extends Fragment {
                         String filename;
                         if (data.getDataString() != null) {
                             filename = mainActivityInterface.getStorageAccess().
-                                    getActualFilename(requireContext(), data.getDataString());
+                                    getActualFilename(data.getDataString());
                             mainActivityInterface.setImportFilename(filename);
                         }
                         int where = R.id.importFile;
@@ -107,11 +107,9 @@ public class ImportOptionsFragment extends Fragment {
                 // Get a date for the file name
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss",mainActivityInterface.getLocale());
                 cameraFilename = "Camera_"+sdf.format(new Date())+".png";
-                uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                        mainActivityInterface, "Songs", mainActivityInterface.getSong().getFolder(),
+                uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", mainActivityInterface.getSong().getFolder(),
                         cameraFilename);
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                        mainActivityInterface,true,uri,null,"Songs",
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,uri,null,"Songs",
                         mainActivityInterface.getSong().getFolder(),cameraFilename);
 
                 takePhoto.launch(uri);
@@ -127,7 +125,7 @@ public class ImportOptionsFragment extends Fragment {
                                 mainActivityInterface, mainActivityInterface.getSong().getFolder(),
                                 cameraFilename);
                         mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
-                        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                        mainActivityInterface.getPreferences().setMyPreferenceString(
                                 "songfilename",cameraFilename);
                         mainActivityInterface.navHome();
                     }

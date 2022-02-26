@@ -40,8 +40,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
         density = c.getResources().getDisplayMetrics().density;
-        maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"fontSizeMax",50f);
-        stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"stageModeScale",0.8f);
+        maxFontSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizeMax",50f);
+        stageModeScale = mainActivityInterface.getPreferences().getMyPreferenceFloat("stageModeScale",0.8f);
         sectionInfos = new ArrayList<>();
         floatSizes = new ArrayList<>();
         setSongInfo();

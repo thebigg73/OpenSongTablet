@@ -159,7 +159,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupOriginalColor() {
-        themePrefix = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "appTheme", "dark");
+        themePrefix = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme", "dark");
 
         // Load the chosen colours up
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
@@ -292,22 +292,26 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         // Set the preference
         if (whichColor.equals("backgroundColor")) {
             // Presenter settings
-            mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(),whichColor,newColorInt);
+            mainActivityInterface.getPreferences().setMyPreferenceInt(whichColor,newColorInt);
             mainActivityInterface.getPresenterSettings().setBackgroundColor(newColorInt);
         } else {
-            mainActivityInterface.getPreferences().setMyPreferenceInt(getContext(), themePrefix + "_" + whichColor, newColorInt);
+            mainActivityInterface.getPreferences().setMyPreferenceInt(themePrefix + "_" + whichColor, newColorInt);
         }
 
         // If we changed the page button color...
-        if (whichColor.equals("pageButtonsColor")) {
-            mainActivityInterface.getMyThemeColors().setPageButtonsColor(newColorInt);
-            mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
-        } else if (whichColor.equals("extraInfoTextColor")) {
-            mainActivityInterface.getMyThemeColors().setExtraInfoTextColor(newColorInt);
-            mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
-        } else if (whichColor.equals("extraInfoBgColor")) {
-            mainActivityInterface.getMyThemeColors().setExtraInfoBgColor(newColorInt);
-            mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+        switch (whichColor) {
+            case "pageButtonsColor":
+                mainActivityInterface.getMyThemeColors().setPageButtonsColor(newColorInt);
+                mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+                break;
+            case "extraInfoTextColor":
+                mainActivityInterface.getMyThemeColors().setExtraInfoTextColor(newColorInt);
+                mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+                break;
+            case "extraInfoBgColor":
+                mainActivityInterface.getMyThemeColors().setExtraInfoBgColor(newColorInt);
+                mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+                break;
         }
 
         // These changes should call an update to any secondary displays as well

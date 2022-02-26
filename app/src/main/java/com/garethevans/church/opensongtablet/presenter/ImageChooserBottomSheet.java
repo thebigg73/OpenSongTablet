@@ -191,8 +191,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
 
     private void updateChosenImage(String whichToUse) {
         pickThis = whichToUse;
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
-                "backgroundToUse",whichToUse);
+        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundToUse",whichToUse);
         setSelectedBackgroundHighlight();
 
         // Also, if we are in presenter mode, update the 'Settings' tab previews(
@@ -254,29 +253,25 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
                                 switch (pickThis) {
                                     case "img1":
                                         mainActivityInterface.getPresenterSettings().setBackgroundImage1(uri);
-                                        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
-                                                "backgroundImage1",uri.toString());
+                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundImage1",uri.toString());
                                         updatePreview(myView.image1, uri, false);
                                         myView.image1.performClick();
                                         break;
                                     case "img2":
                                         mainActivityInterface.getPresenterSettings().setBackgroundImage2(uri);
-                                        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
-                                                "backgroundImage2",uri.toString());
+                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundImage2",uri.toString());
                                         updatePreview(myView.image2, uri, false);
                                         myView.image2.performClick();
                                         break;
                                     case "vid1":
                                         mainActivityInterface.getPresenterSettings().setBackgroundVideo1(uri);
-                                        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
-                                                "backgroundVideo1",uri.toString());
+                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundVideo1",uri.toString());
                                         updatePreview(myView.video1, uri, false);
                                         myView.video1.performClick();
                                         break;
                                     case "vid2":
                                         mainActivityInterface.getPresenterSettings().setBackgroundVideo2(uri);
-                                        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
-                                                "backgroundVideo2",uri.toString());
+                                        mainActivityInterface.getPreferences().setMyPreferenceString("backgroundVideo2",uri.toString());
                                         updatePreview(myView.video2, uri, false);
                                         myView.video2.performClick();
                                         break;

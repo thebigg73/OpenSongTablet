@@ -22,6 +22,10 @@ import javax.xml.xpath.XPathFactory;
 
 public class Bible {
 
+    public Bible(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+    private final MainActivityInterface mainActivityInterface;
     // This class is instantiated from the Bible bottom sheets.  It will retain info until garbage collection
     private ArrayList<String> bibleFiles, defaultBibleBooks, bibleBooks, bibleChapters, bibleVerses, bibleTexts;
     private String bibleFile, bibleBook = "Genesis", bibleChapter = "1", bibleVerseFrom = "1",
@@ -41,10 +45,10 @@ public class Bible {
     Uri bibleUri;
 
     // Bible files in the OpenSong/OpenSong Scripture/ folder
-    public void buildBibleFiles(Context c, MainActivityInterface mainActivityInterface) {
+    public void buildBibleFiles() {
         bibleFiles = new ArrayList<>();
-        bibleFiles = mainActivityInterface.getStorageAccess().listFilesInFolder(c,mainActivityInterface,"OpenSong Scripture","");
-        String myBiblePref = mainActivityInterface.getPreferences().getMyPreferenceString(c,"bibleCurrentFile","");
+        bibleFiles = mainActivityInterface.getStorageAccess().listFilesInFolder("OpenSong Scripture","");
+        String myBiblePref = mainActivityInterface.getPreferences().getMyPreferenceString("bibleCurrentFile","");
         if (!myBiblePref.isEmpty() && bibleFiles.contains(myBiblePref)) {
             bibleFile = myBiblePref;
         }
@@ -56,18 +60,18 @@ public class Bible {
     public String getBibleFile() {
         return bibleFile;
     }
-    public void setBibleFile(Context c, MainActivityInterface mainActivityInterface, String bibleFile) {
+    public void setBibleFile(String bibleFile) {
         this.bibleFile = bibleFile;
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,"bibleCurrentFile",bibleFile);
-        decideOnBibleFileFormat(c,mainActivityInterface);
+        mainActivityInterface.getPreferences().setMyPreferenceString("bibleCurrentFile",bibleFile);
+        decideOnBibleFileFormat();
     }
-    public void decideOnBibleFileFormat(Context c, MainActivityInterface mainActivityInterface) {
-        bibleUri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"OpenSong Scripture","",bibleFile);
-        if (bibleFileSafe(c,mainActivityInterface)) {
+    public void decideOnBibleFileFormat() {
+        bibleUri = mainActivityInterface.getStorageAccess().getUriForItem("OpenSong Scripture","",bibleFile);
+        if (bibleFileSafe()) {
             try {
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder db = dbf.newDocumentBuilder();
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, bibleUri);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(bibleUri);
                 document = db.parse(inputStream);
                 documentElement = document.getDocumentElement();
                 XPathFactory xPathfactory = XPathFactory.newInstance();
@@ -80,14 +84,14 @@ public class Bible {
                 } else if (nl2 != null && nl2.getLength() > 0) {
                     bibleFormat = "Zefania";
                 }
-                getAttributeToSearch(c,mainActivityInterface);
+                getAttributeToSearch();
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    private void getAttributeToSearch(Context c, MainActivityInterface mainActivityInterface) {
+    private void getAttributeToSearch() {
         switch (bibleFormat) {
             case "OpenSong":
             default:
@@ -95,7 +99,7 @@ public class Bible {
                 attributetosearch_book = "n";
                 attributetosearch_chapter = "n";
                 attributetosearch_verse = "n";
-                setOpenSongBibleName(c,mainActivityInterface);
+                setOpenSongBibleName();
                 break;
 
             case "Zefania":
@@ -103,15 +107,15 @@ public class Bible {
                 attributetosearch_book = "bname";
                 attributetosearch_chapter = "cnumber";
                 attributetosearch_verse = "vnumber";
-                setZefaniaBibleName(c,mainActivityInterface);
+                setZefaniaBibleName();
                 break;
         }
     }
-    private boolean bibleFileSafe(Context c, MainActivityInterface mainActivityInterface) {
-        return bibleFile!=null && !bibleFile.isEmpty() && mainActivityInterface.getStorageAccess().uriExists(c,bibleUri);
+    private boolean bibleFileSafe() {
+        return bibleFile!=null && !bibleFile.isEmpty() && mainActivityInterface.getStorageAccess().uriExists(bibleUri);
     }
-    private void setZefaniaBibleName(Context c, MainActivityInterface mainActivityInterface) {
-        if (bibleFileSafe(c, mainActivityInterface) && document!=null && xpath!=null) {
+    private void setZefaniaBibleName() {
+        if (bibleFileSafe() && document!=null && xpath!=null) {
             try {
                 XPathExpression expr = xpath.compile("/XMLBIBLE/INFORMATION/identifier");
                 nl = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
@@ -124,17 +128,17 @@ public class Bible {
             }
         }
     }
-    private void setOpenSongBibleName(Context c, MainActivityInterface mainActivityInterface) {
-        if (bibleFileSafe(c,mainActivityInterface)) {
+    private void setOpenSongBibleName() {
+        if (bibleFileSafe()) {
             bibleTranslation = bibleFile.replace(".xmm","");
         }
     }
 
 
     // Bible books found in the chosen file
-    public void buildBibleBooks(Context c, MainActivityInterface mainActivityInterface) {
+    public void buildBibleBooks() {
         bibleBooks = new ArrayList<>();
-        if (bibleFileSafe(c,mainActivityInterface) && document!=null && documentElement!=null && xpath!=null) {
+        if (bibleFileSafe() && document!=null && documentElement!=null && xpath!=null) {
             try {
                 nl = documentElement.getElementsByTagName(tagtosearch_book);
                 for (int i=0; i<nl.getLength();i++) {
@@ -266,7 +270,7 @@ public class Bible {
 
 
     // Bible chapters for the chosen book in the chosen file
-    public void buildBibleChapters(Context c, MainActivityInterface mainActivityInterface) {
+    public void buildBibleChapters() {
         bibleChapters = new ArrayList<>();
 
         // If the xml file only has booknums, we need to change back to this
@@ -274,7 +278,7 @@ public class Bible {
             bibleBook = getBookNumberFromName(bibleBook);
         }
 
-        if (bibleFileSafe(c,mainActivityInterface) && document!=null && documentElement!=null && !bibleBook.isEmpty()) {
+        if (bibleFileSafe() && document!=null && documentElement!=null && !bibleBook.isEmpty()) {
             try {
                 nl = documentElement.getElementsByTagName(tagtosearch_book);
                 for (int i=0; i<nl.getLength();i++) {
@@ -311,14 +315,14 @@ public class Bible {
     }
 
     // Bible verses for the chosen chapter of the chosen book in the chosen file
-    public void buildBibleVerses(Context c, MainActivityInterface mainActivityInterface) {
+    public void buildBibleVerses() {
         bibleVerses = new ArrayList<>();
         bibleTexts = new ArrayList<>();
         // If the xml file only has booknums, we need to change back to this
         if (attributetosearch_book.equals("bnumber")) { //Zefania with no book names in the xml
             bibleBook = getBookNumberFromName(bibleBook);
         }
-        if (bibleFileSafe(c,mainActivityInterface) && document!=null && documentElement!=null &&!bibleBook.equals("") && !bibleChapter.isEmpty()) {
+        if (bibleFileSafe() && document!=null && documentElement!=null &&!bibleBook.equals("") && !bibleChapter.isEmpty()) {
             try {
                 NodeList nl = documentElement.getElementsByTagName(tagtosearch_book);
                 for (int i=0; i<nl.getLength();i++) {
@@ -377,8 +381,8 @@ public class Bible {
 
 
     // Get the bible texts
-    public String getBibleText(Context c, MainActivityInterface mainActivityInterface) {
-        if (bibleFileSafe(c, mainActivityInterface)) {
+    public String getBibleText() {
+        if (bibleFileSafe()) {
             // Get from and to
             int from = Integer.parseInt(bibleVerseFrom);
             int to = Integer.parseInt(bibleVerseTo);

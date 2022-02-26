@@ -96,8 +96,8 @@ public class BibleDownloadFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.downloadWiFiOnly.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"download_wifi_only", true));
-        myView.downloadWiFiOnly.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"download_wifi_only",b));
+        myView.downloadWiFiOnly.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("download_wifi_only", true));
+        myView.downloadWiFiOnly.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("download_wifi_only",b));
         myView.download.setOnClickListener(v -> doDownload());
         myView.opensong.setOnClickListener(v -> openWeb("http://www.opensong.org/home/download"));
         myView.zefania.setOnClickListener(v -> openWeb("https://sourceforge.net/projects/zefania-sharp/files/Bibles/"));
@@ -152,7 +152,7 @@ public class BibleDownloadFragment extends Fragment {
         // This bit could be slow, so it will likely be called in an async task
         ZipInputStream zis = null;
         try {
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), zipUri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(zipUri);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
             zis = new ZipInputStream(bufferedInputStream);
             ZipEntry ze;
@@ -161,9 +161,9 @@ public class BibleDownloadFragment extends Fragment {
             while ((ze = zis.getNextEntry()) != null) {
                 if (ze.getName() != null && !ze.getName().startsWith("_")) {
                     Log.d(TAG,"ze.getName()="+ze.getName());
-                    mainActivityInterface.getStorageAccess().createFile(requireContext(), mainActivityInterface, null, folder, subfolder, ze.getName());
-                    Uri newUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, folder, subfolder, ze.getName());
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), newUri);
+                    mainActivityInterface.getStorageAccess().createFile(null, folder, subfolder, ze.getName());
+                    Uri newUri = mainActivityInterface.getStorageAccess().getUriForItem(folder, subfolder, ze.getName());
+                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
 
                     try {
                         while ((count = zis.read(buffer)) != -1)
@@ -193,7 +193,7 @@ public class BibleDownloadFragment extends Fragment {
         }
         // Delete the zip file
         if (getContext()!=null) {
-            mainActivityInterface.getStorageAccess().deleteFile(requireContext(), zipUri);
+            mainActivityInterface.getStorageAccess().deleteFile(zipUri);
         }
 
         return success;

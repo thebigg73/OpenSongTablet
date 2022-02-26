@@ -113,14 +113,14 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
     }
 
     private String instrumentPrefToText() {
-        String pref = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
+        String pref = mainActivityInterface.getPreferences().getMyPreferenceString(
                 "chordInstrument", "g");
         return mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(pref);
     }
 
     private void instrumentTextToPref() {
         String pref = mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(myView.instrument.getText().toString());
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+        mainActivityInterface.getPreferences().setMyPreferenceString(
                 "chordInstrument", pref);
     }
 
@@ -141,7 +141,7 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
         // If the chord isn't found, just don't include it.
         // This could be because it isn't defined or it's a non chord bit of text
 
-        int chordFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "chordFormat", 1);
+        int chordFormat = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat", 1);
         mainActivityInterface.getChordDisplayProcessing().setFingerings(mainActivityInterface.getChordDirectory(), myView.instrument.getText().toString(), mainActivityInterface.getChordDisplayProcessing().getInstruments(), chordFormat);
 
         //  Now we build the chord images and show them

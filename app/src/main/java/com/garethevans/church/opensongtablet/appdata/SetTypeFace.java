@@ -76,11 +76,11 @@ public class SetTypeFace {
                               Handler presoFontHandler, Handler presoInfoFontHandler) {
 
         // Load up the user preferences
-        String fontLyric = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontLyric", "Lato");
-        String fontChord = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontChord", "Lato");
-        String fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontSticky", "Lato");
-        String fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontPreso", "Lato");
-        String fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString(c, "fontPresoInfo", "Lato");
+        String fontLyric = mainActivityInterface.getPreferences().getMyPreferenceString("fontLyric", "Lato");
+        String fontChord = mainActivityInterface.getPreferences().getMyPreferenceString("fontChord", "Lato");
+        String fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString("fontSticky", "Lato");
+        String fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString("fontPreso", "Lato");
+        String fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString("fontPresoInfo", "Lato");
 
         // Set the values  (if Lato, use the bundled font)
         // The reason is that KiKat devices don't load the Google Font resource automatically (it requires manually selecting it).
@@ -114,7 +114,7 @@ public class SetTypeFace {
 
     public void changeFont(Context c,MainActivityInterface mainActivityInterface,String which, String fontName,Handler handler) {
         // Save the preferences
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,which,fontName);
+        mainActivityInterface.getPreferences().setMyPreferenceString(which,fontName);
         // Update the font
         getGoogleFont(c,mainActivityInterface,fontName,which,null,handler);
     }
@@ -172,7 +172,7 @@ public class SetTypeFace {
                         setPresoInfoFont(typeface);
                         break;
                 }
-                mainActivityInterface.getPreferences().setMyPreferenceString(c,which,thisFont);
+                mainActivityInterface.getPreferences().setMyPreferenceString(which,thisFont);
 
                 // If we are previewing the font, update the text (this will be null otherwise)
                 if (textView != null) {

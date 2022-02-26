@@ -175,7 +175,7 @@ public class SetStorageLocationFragment extends Fragment {
         Also it could be null!
         */
 
-        String uriTree_String = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "uriTree", "");
+        String uriTree_String = mainActivityInterface.getPreferences().getMyPreferenceString("uriTree", "");
 
         if (uriTree_String!=null && !uriTree_String.equals("")) {
             if (mainActivityInterface.getStorageAccess().lollipopOrLater()) {
@@ -188,7 +188,7 @@ public class SetStorageLocationFragment extends Fragment {
             uriTreeHome = null;
         }
         if (uriTree!=null && uriTreeHome==null) {
-            uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(), uriTree, mainActivityInterface);
+            uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(uriTree);
         }
     }
 
@@ -212,11 +212,11 @@ public class SetStorageLocationFragment extends Fragment {
             String uriTreeHome_String = uriTreeHome.toString();
             uriTree_String = uriTree_String.replace("file://","");
             uriTreeHome_String = uriTreeHome_String.replace("file://","");
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "uriTree", uriTree_String);
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "uriTreeHome", uriTreeHome_String);
+            mainActivityInterface.getPreferences().setMyPreferenceString("uriTree", uriTree_String);
+            mainActivityInterface.getPreferences().setMyPreferenceString("uriTreeHome", uriTreeHome_String);
         } else {
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "uriTree", "");
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "uriTreeHome", "");
+            mainActivityInterface.getPreferences().setMyPreferenceString("uriTree", "");
+            mainActivityInterface.getPreferences().setMyPreferenceString("uriTreeHome", "");
         }
     }
 
@@ -329,8 +329,8 @@ public class SetStorageLocationFragment extends Fragment {
             // After an attempt to change storage, set to show Welcome song
             mainActivityInterface.getSong().setFolder(getString(R.string.mainfoldername));
             mainActivityInterface.getSong().setFilename("Welcome to OpenSongApp");
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername));
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp");
+            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername));
+            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename","Welcome to OpenSongApp");
 
         } else {
             myView.firstRun.setVisibility(View.VISIBLE);
@@ -398,7 +398,7 @@ public class SetStorageLocationFragment extends Fragment {
         return (uriTreeHome!=null && uriTree!=null && !uriTreeHome.toString().isEmpty() && !uriTree.toString().isEmpty());
     }
     private boolean isStorageValid() {
-        return (isStorageSet() && mainActivityInterface.getStorageAccess().uriTreeValid(getContext(),uriTree));
+        return (isStorageSet() && mainActivityInterface.getStorageAccess().uriTreeValid(uriTree));
     }
     private void notWriteable() {
         uriTree = null;
@@ -442,7 +442,7 @@ public class SetStorageLocationFragment extends Fragment {
                 File kitkatlocation = new File(mainActivityInterface.getWhattodo().replace("kitkat:", ""));
                 mainActivityInterface.setWhattodo(null);
                 uriTree = Uri.fromFile(kitkatlocation);
-                uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireContext(), uriTree, mainActivityInterface);
+                uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(uriTree);
 
                 // Save the location uriTree and uriTreeHome
                 saveUriLocation();
@@ -464,7 +464,7 @@ public class SetStorageLocationFragment extends Fragment {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
-        uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(requireActivity(), uriTree, mainActivityInterface);
+        uriTreeHome = mainActivityInterface.getStorageAccess().homeFolder(uriTree);
         if (uriTree == null || uriTreeHome == null) {
             notWriteable();
         }
@@ -481,7 +481,7 @@ public class SetStorageLocationFragment extends Fragment {
             saveUriLocation();
             myView.progressText.setText("");
         } else {
-            String[] niceLocation = mainActivityInterface.getStorageAccess().niceUriTree(getContext(), mainActivityInterface, uriTreeHome);
+            String[] niceLocation = mainActivityInterface.getStorageAccess().niceUriTree(uriTreeHome);
             String outputText = niceLocation[1] + "\n" + niceLocation[0];
             myView.progressText.setText(outputText);
             warningCheck();

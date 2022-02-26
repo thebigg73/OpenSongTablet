@@ -80,7 +80,7 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setValues() {
-        changeRange(mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "soundMeterRange", 400));
+        changeRange(mainActivityInterface.getPreferences().getMyPreferenceInt("soundMeterRange", 400));
     }
 
     private void setListeners() {
@@ -103,7 +103,7 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
 
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                mainActivityInterface.getPreferences().setMyPreferenceInt(
                         "soundMeterRange", (int) myView.maxvolrange.getValue());
             }
         });

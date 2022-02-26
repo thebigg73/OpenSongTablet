@@ -87,9 +87,7 @@ public class FolderManagementBottomSheet extends BottomSheetDialogFragment {
 
         if (root) {
             myView.dialogHeading.setText(mainActivityInterface.getStorageAccess().
-                    niceUriTree(getContext(), mainActivityInterface,
-                            mainActivityInterface.getStorageAccess().homeFolder(getContext(),
-                                    null, mainActivityInterface))[1]);
+                    niceUriTree(mainActivityInterface.getStorageAccess().homeFolder(null))[1]);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);

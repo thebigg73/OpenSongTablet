@@ -73,8 +73,8 @@ public class CCLILog {
     public void addEntry(Context c, MainActivityInterface mainActivityInterface, Song thisSong, String usageType) {
 
         // Check if the log exists or if we need to create it
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Settings", "", "ActivityLog.xml");
-        if (!mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
+        if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
             Log.d(TAG, "Creating blankXML=" + createBlankXML(c, mainActivityInterface, uri));
         } else {
             Log.d(TAG, uri + " exists");
@@ -91,10 +91,10 @@ public class CCLILog {
                 "<log>\n</log>\n";
 
         // Delete the old file
-        mainActivityInterface.getStorageAccess().deleteFile(c,uri);
+        mainActivityInterface.getStorageAccess().deleteFile(uri);
 
         // Write the new file
-        return mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Settings","","ActivityLog.xml",blankXML);
+        return mainActivityInterface.getStorageAccess().doStringWriteToFile("Settings","","ActivityLog.xml",blankXML);
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -109,7 +109,7 @@ public class CCLILog {
 
     private void doTheSaving(Context c, MainActivityInterface mainActivityInterface, Song thisSong, Uri uri, String usageType) {
         try {
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             String myString = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
@@ -203,7 +203,7 @@ public class CCLILog {
                 Transformer transformer = transformerFactory.newTransformer();
                 transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
+                OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
                 StreamResult result = new StreamResult(outputStream);
                 transformer.transform(source, result);
             } else {
@@ -215,9 +215,9 @@ public class CCLILog {
         }
     }
 
-    public void getLogFileSize(Context c, MainActivityInterface mainActivityInterface, Uri uri, TextView logFileSize) {
+    public void getLogFileSize(MainActivityInterface mainActivityInterface, Uri uri, TextView logFileSize) {
         // Set the uri if it isn't already done
-        float file_size_kb = mainActivityInterface.getStorageAccess().getFileSizeFromUri(c, uri);
+        float file_size_kb = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
         file_size_kb = Math.round(file_size_kb * 100);
         file_size_kb = file_size_kb / 100.0f;
         String returntext = "ActivityLog.xml ("+ file_size_kb + "kb)";
@@ -249,7 +249,7 @@ public class CCLILog {
             xpp = factory.newPullParser();
 
             initialiseTables();
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
 
             xpp.setInput(inputStream, "UTF-8");
 

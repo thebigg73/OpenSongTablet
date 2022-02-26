@@ -122,10 +122,10 @@ public class CustomSlide {
             // Now prepare to save the file
             // If it is flagged to be reusable, it also gets saved in the top level folder
             // All custom slides get saved into the temp _cache folder for use with this set
-            mainActivityInterface.getStorageAccess().doStringWriteToFile(c, mainActivityInterface, folder, "_cache", file, xml);
+            mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "_cache", file, xml);
 
             if (reusable) {
-                mainActivityInterface.getStorageAccess().doStringWriteToFile(c, mainActivityInterface, folder, "", file, xml);
+                mainActivityInterface.getStorageAccess().doStringWriteToFile(folder, "", file, xml);
             }
 
             // Add to set $**_**{customsfolder}/filename_***key***_**$
@@ -136,7 +136,7 @@ public class CustomSlide {
             mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
 
             mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
-            mainActivityInterface.getPreferences().setMyPreferenceString(c, "setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+            mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
             // Update the set menu
             //mainActivityInterface.updateSetList();

@@ -46,11 +46,11 @@ public class SettingsCCLI extends Fragment {
 
 
     private void setCurrentValues() {
-        myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "ccliAutomaticLogging", false));
+        myView.ccliAutomatic.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging", false));
 
         String notSet = getString(R.string.is_not_set);
-        String ccliChurchName = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliChurchName","");
-        String ccliLicence = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliLicence","");
+        String ccliChurchName = mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","");
+        String ccliLicence = mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","");
         if (ccliChurchName.isEmpty()) {
             ccliChurchName = notSet;
         }
@@ -64,13 +64,13 @@ public class SettingsCCLI extends Fragment {
     private void setListeners() {
         myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputBottomSheet(this,
                 "SettingsCCLI", getString(R.string.ccli_church), getString(R.string.ccli_church),null,
-                "ccliChurchName", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
+                "ccliChurchName", mainActivityInterface.getPreferences().getMyPreferenceString(
                 "ccliChurchName", ""),true)));
         myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputBottomSheet(this,
                 "SettingsCCLI", getString(R.string.ccli_licence), getString(R.string.ccli_licence),null,
-                "ccliLicence", mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
+                "ccliLicence", mainActivityInterface.getPreferences().getMyPreferenceString(
                 "ccliLicence", ""),true)));
-        myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+        myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                 "ccliAutomaticLogging", isChecked));
         myView.ccliView.setOnClickListener(v -> showDialog());
         myView.ccliExport.setOnClickListener(view -> mainActivityInterface.doExport("ccliLog"));

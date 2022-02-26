@@ -77,7 +77,7 @@ public class NearbyConnections implements NearbyInterface {
         if (mainActivityInterface == null) {
             try {
                 mainActivityInterface = (MainActivityInterface) c;
-                nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "nearbyHostMenuOnly", false);
+                nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -110,17 +110,17 @@ public class NearbyConnections implements NearbyInterface {
     public void startAdvertising(Context c, MainActivityInterface mainActivityInterface) {
         if (!isAdvertising) {
             Nearby.getConnectionsClient(c)
-                    .startAdvertising(getUserNickname(c, mainActivityInterface), serviceId, connectionLifecycleCallback(c, mainActivityInterface), advertisingOptions)
+                    .startAdvertising(getUserNickname(mainActivityInterface), serviceId, connectionLifecycleCallback(c, mainActivityInterface), advertisingOptions)
                     .addOnSuccessListener(
                             (Void unused) -> {
                                 // We're advertising!
-                                updateConnectionLog(c.getString(R.string.connections_advertise) + " " + getUserNickname(c, mainActivityInterface));
+                                updateConnectionLog(c.getString(R.string.connections_advertise) + " " + getUserNickname(mainActivityInterface));
                                 isAdvertising = true;
                             })
                     .addOnFailureListener(
                             (Exception e) -> {
                                 // We were unable to start advertising.
-                                updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname(c, mainActivityInterface));
+                                updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname(mainActivityInterface));
                                 Log.d(TAG, "startAdvertising() - failure: " + e);
                             });
         }
@@ -214,7 +214,7 @@ public class NearbyConnections implements NearbyInterface {
                 } else {
                     // Allow clients to connect to the host when the Connect menu is open, or the user switches off the requirement for the Connect menu to be open
                     if (mainActivityInterface.getFragmentOpen() == R.id.nearbyConnectionsFragment ||
-                            (isHost && !mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "nearbyHostMenuOnly", false))) {
+                            (isHost && !mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false))) {
                         new AlertDialog.Builder(c)
                                 .setTitle(c.getString(R.string.connections_accept) + " " + connectionInfo.getEndpointName())
                                 .setMessage(c.getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationToken())
@@ -266,7 +266,7 @@ public class NearbyConnections implements NearbyInterface {
                     case ConnectionsStatusCodes.STATUS_ERROR:
                         // The connection broke before it was able to be accepted.
                         // The connection was rejected by one or both sides.
-                        updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname(c, mainActivityInterface) + " <-> " + getDeviceNameFromId(endpointId));
+                        updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname(mainActivityInterface) + " <-> " + getDeviceNameFromId(endpointId));
                         break;
                     default:
                         // Unknown status code
@@ -322,7 +322,7 @@ public class NearbyConnections implements NearbyInterface {
                 if (!findEndpoints(endpointId, discoveredEndpointInfo)) {
                     // Only attempt a connection if we aren't already connected
                     Nearby.getConnectionsClient(c)
-                            .requestConnection(getUserNickname(c, mainActivityInterface), endpointId, connectionLifecycleCallback(c, mainActivityInterface))
+                            .requestConnection(getUserNickname(mainActivityInterface), endpointId, connectionLifecycleCallback(c, mainActivityInterface))
                             .addOnSuccessListener(
                                     (Void unused) -> {
                                         Log.d(TAG, "Trying to connect to host: " + endpointId);
@@ -377,7 +377,7 @@ public class NearbyConnections implements NearbyInterface {
         Payload payloadFile;
         boolean largePayLoad = false;
 
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(
                 "Songs", mainActivityInterface.getSong().getFolder(),
                 mainActivityInterface.getSong().getFilename());
 
@@ -394,8 +394,7 @@ public class NearbyConnections implements NearbyInterface {
                 infoPayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" +
                         mainActivityInterface.getSong().getFilename() + "_xx____xx_" +
                         mainActivityInterface.getDisplayPrevNext().getSwipeDirection() + "_xx____xx_" +
-                        mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface,
-                                mainActivityInterface.getSong());
+                        mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong());
 
                 // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
                 byte[] mybytes = infoPayload.getBytes();
@@ -512,21 +511,21 @@ public class NearbyConnections implements NearbyInterface {
                     if (keepHostFiles) {
                         // Prepare the output stream in the client Songs folder
                         // Check the folder exists, if not, create it
-                        mainActivityInterface.getStorageAccess().createFile(c, mainActivityInterface, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
-                        newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", receivedBits.get(0), receivedBits.get(1));
+                        mainActivityInterface.getStorageAccess().createFile(DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
+                        newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Songs", receivedBits.get(0), receivedBits.get(1));
                         // Create the file if it doesn't exist
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, false, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
-                        outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, newLocation, null, "Songs", receivedBits.get(0), receivedBits.get(1));
+                        outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                         mainActivityInterface.getSong().setFolder(receivedBits.get(0));
                         mainActivityInterface.getSong().setFilename(receivedBits.get(1));
                         // Add to the sqldatabase
                         mainActivityInterface.getSQLiteHelper().createSong(c, mainActivityInterface, mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
 
                     } else {
-                        newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Received", "", "ReceivedSong");
+                        newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "ReceivedSong");
                         // Prepare the output stream in the Received folder - just keep a temporary version
-                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, false, newLocation, null, "Received", "", "ReceivedSong");
-                        outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
+                        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, newLocation, null, "Received", "", "ReceivedSong");
+                        outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
                         mainActivityInterface.getSong().setFolder("../Received");
                         mainActivityInterface.getSong().setFilename("ReceivedSong");
                         // IV - Store the received song filename in case the user wants to duplicate the received song
@@ -584,15 +583,15 @@ public class NearbyConnections implements NearbyInterface {
         Uri newLocation = null;
         if (!isHost && isConnected && receiveHostFiles && keepHostFiles) {
             // The new file goes into our main Songs folder
-            newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", folder, filename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, false, newLocation, null, "Songs", folder, filename);
+            newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, newLocation, null, "Songs", folder, filename);
         } else if (!isHost && isConnected && receiveHostFiles) {
             // The new file goes into our Received folder
             folder = "../Received";
             // IV - Store the received song filename in case the user wants to duplicate the received song
             receivedSongFilename = filename;
-            newLocation = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Received", "", filename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, true, newLocation, null, "Received", "", filename);
+            newLocation = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", filename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newLocation, null, "Received", "", filename);
         }
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);
@@ -612,7 +611,7 @@ public class NearbyConnections implements NearbyInterface {
         } else if (newLocation != null && payload != null && payload.asFile() != null) { // i.e. we have received the file by choice
             InputStream inputStream = new FileInputStream(Objects.requireNonNull(payload.asFile()).asParcelFileDescriptor().getFileDescriptor());
             Uri originalUri = Uri.parse(Objects.requireNonNull(payload.asFile()).asParcelFileDescriptor().getFileDescriptor().toString());
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newLocation);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newLocation);
             if (mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream)) {
                 if (nearbyReturnActionsInterface != null) {
                     mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
@@ -623,8 +622,8 @@ public class NearbyConnections implements NearbyInterface {
             }
             Log.d(TAG, "originalUri=" + originalUri);
             try {
-                if (mainActivityInterface.getStorageAccess().uriExists(c, originalUri)) {
-                    mainActivityInterface.getStorageAccess().deleteFile(c, originalUri);
+                if (mainActivityInterface.getStorageAccess().uriExists(originalUri)) {
+                    mainActivityInterface.getStorageAccess().deleteFile(originalUri);
                 }
             } catch (Exception e) {
                 Log.d(TAG, "Error trying to delete originalUri");
@@ -807,11 +806,11 @@ public class NearbyConnections implements NearbyInterface {
         }
         return endpointId;
     }
-    public String getUserNickname(Context c, MainActivityInterface mainActivityInterface) {
+    public String getUserNickname(MainActivityInterface mainActivityInterface) {
         String model = android.os.Build.MODEL.trim();
         // If the user has saved a value for their device name, use that instead
         // Don't need to save the device name unless the user edits it to make it custom
-        return deviceId = mainActivityInterface.getPreferences().getMyPreferenceString(c, "deviceId", model);
+        return deviceId = mainActivityInterface.getPreferences().getMyPreferenceString("deviceId", model);
     }
     public int getHostSection() {
         return hostSection;
@@ -820,7 +819,7 @@ public class NearbyConnections implements NearbyInterface {
     // The setters
     public void setNearbyHostMenuOnly(Context c, MainActivityInterface mainActivityInterface, boolean nearbyHostMenuOnly) {
         this.nearbyHostMenuOnly = nearbyHostMenuOnly;
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "nearbyHostMenuOnly", nearbyHostMenuOnly);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyHostMenuOnly", nearbyHostMenuOnly);
     }
     public void setReceiveHostFiles(boolean receiveHostFiles) {
         this.receiveHostFiles = receiveHostFiles;

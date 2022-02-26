@@ -43,12 +43,12 @@ public class PadDefaultsFragment extends Fragment {
     }
 
     private void setupViews() {
-        float padVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"padVol",1.0f);
+        float padVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("padVol",1.0f);
         myView.padVolume.setValue(padVol*100f);
         myView.padVolume.setHint((int)(padVol*100f)+"%");
         myView.padVolume.setLabelFormatter(value -> ((int)value)+"%");
 
-        String padPan = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"padPan","C");
+        String padPan = mainActivityInterface.getPreferences().getMyPreferenceString("padPan","C");
         switch (padPan) {
             case "L":
                 myView.padPan.setSliderPos(0);
@@ -62,7 +62,7 @@ public class PadDefaultsFragment extends Fragment {
                 break;
         }
 
-        boolean padAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "padAutoStart", false);
+        boolean padAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean("padAutoStart", false);
         myView.crossFadePad.setChecked(padAutoStart);
         if (padAutoStart) {
             myView.crossFadeTime.setVisibility(View.VISIBLE);
@@ -70,12 +70,12 @@ public class PadDefaultsFragment extends Fragment {
             myView.crossFadeTime.setVisibility(View.GONE);
         }
 
-        int padCrossFadeTime = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"padCrossFadeTime",8000);
+        int padCrossFadeTime = mainActivityInterface.getPreferences().getMyPreferenceInt("padCrossFadeTime",8000);
         myView.crossFadeTime.setValue(padCrossFadeTime/1000f);
         myView.crossFadeTime.setHint((padCrossFadeTime/1000f)+"ms");
         myView.crossFadeTime.setLabelFormatter(value -> value+"ms");
 
-        myView.onscreenPadHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+        myView.onscreenPadHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "onscreenPadHide",true));
     }
 
@@ -86,7 +86,7 @@ public class PadDefaultsFragment extends Fragment {
         myView.crossFadeTime.addOnSliderTouchListener(new MySliderTouchListener("padCrossFadeTime"));
         myView.crossFadeTime.addOnChangeListener(new MyOnChangeListener("padCrossFadeTime"));
         myView.crossFadePad.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"padAutoStart",b);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("padAutoStart",b);
             if (b) {
                 myView.crossFadeTime.setVisibility(View.VISIBLE);
             } else {
@@ -94,7 +94,7 @@ public class PadDefaultsFragment extends Fragment {
             }
         });
         myView.onscreenPadHide.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     "onscreenPadHide",b);
             mainActivityInterface.
                     updateOnScreenInfo("setpreferences");
@@ -117,11 +117,11 @@ public class PadDefaultsFragment extends Fragment {
             // Save the value
             switch (prefName) {
                 case "padVol":
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName,myView.padVolume.getValue()/100f);
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(prefName,myView.padVolume.getValue()/100f);
                     break;
 
                 case "padCrossFadeTime":
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"padCrossFadeTime", (int)(myView.crossFadeTime.getValue()*1000f));
+                    mainActivityInterface.getPreferences().setMyPreferenceInt("padCrossFadeTime", (int)(myView.crossFadeTime.getValue()*1000f));
                     break;
 
             }
@@ -156,7 +156,7 @@ public class PadDefaultsFragment extends Fragment {
                             pan = "R";
                             break;
                     }
-                    mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"padPan",pan);
+                    mainActivityInterface.getPreferences().setMyPreferenceString("padPan",pan);
                     break;
 
                 case "padCrossFadeTime":

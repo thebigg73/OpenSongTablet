@@ -47,9 +47,9 @@ public class StickyNotesFragment extends Fragment {
         myView.stickyNotes.setLines(8);
         myView.stickyNotes.setMinLines(8);
         myView.autoShowSticky.setChecked(mainActivityInterface.getPreferences().
-                getMyPreferenceBoolean(requireContext(),"stickyAuto",true));
+                getMyPreferenceBoolean("stickyAuto",true));
         int time = mainActivityInterface.getPreferences().
-                getMyPreferenceInt(requireContext(),"timeToDisplaySticky",0);
+                getMyPreferenceInt("timeToDisplaySticky",0);
         myView.timeSlider.setValue((float)time);
         myView.timeSlider.setLabelFormatter(value -> ((int)value)+"s");
         setTimeHint(time);
@@ -78,7 +78,7 @@ public class StickyNotesFragment extends Fragment {
     }
 
     private void setupListeners() {
-        myView.autoShowSticky.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"stickyAuto",isChecked));
+        myView.autoShowSticky.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("stickyAuto",isChecked));
         myView.saveButton.setOnClickListener(v -> {
             if (myView.stickyNotes.getText()!=null) {
                 mainActivityInterface.getSong().setNotes(myView.stickyNotes.getText().toString());
@@ -103,7 +103,7 @@ public class StickyNotesFragment extends Fragment {
                 int color = ColorUtils.setAlphaComponent(mainActivityInterface.getMyThemeColors().getStickyBackgroundSplitColor(),(int)(val*255f));
                 mainActivityInterface.getMyThemeColors().setStickyTextColor(color);
                 String theme = mainActivityInterface.getMyThemeColors().getThemeName();
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),theme+"_stickyBackgroundColor",color);
+                mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"_stickyBackgroundColor",color);
                 mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
             }
         });
@@ -115,7 +115,7 @@ public class StickyNotesFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                mainActivityInterface.getPreferences().setMyPreferenceInt(
                         "timeToDisplaySticky", Math.round(slider.getValue()));
             }
         });

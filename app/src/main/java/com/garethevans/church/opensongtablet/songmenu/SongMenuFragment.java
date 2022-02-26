@@ -88,16 +88,16 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         }
 
     private void setValues(Song song) {
-        songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByFolder", false);
+        songListSearchByFolder = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFolder", false);
         if (songListSearchByFolder && folderSearchVal.isEmpty()) {
             // Likely the first run
             // Do on the UI thread - force a folder change when the song menu is opened
             myView.filters.folderSearch.post(() -> myView.filters.folderSearch.setText(song.getFolder()));
         }
-        songListSearchByArtist = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByArtist", false);
-        songListSearchByKey = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByKey", false);
-        songListSearchByTag = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByTag", false);
-        songListSearchByFilter = mainActivityInterface.getPreferences().getMyPreferenceBoolean(getActivity(), "songListSearchByFilter", false);
+        songListSearchByArtist = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByArtist", false);
+        songListSearchByKey = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByKey", false);
+        songListSearchByTag = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByTag", false);
+        songListSearchByFilter = mainActivityInterface.getPreferences().getMyPreferenceBoolean("songListSearchByFilter", false);
         showHideRows(myView.filters.folderSearch, songListSearchByFolder);
         showHideRows(myView.filters.artistSearch, songListSearchByArtist);
         showHideRows(myView.filters.keySearch, songListSearchByKey);
@@ -192,7 +192,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.folderButton.setOnClickListener(v -> {
             songListSearchByFolder = !songListSearchByFolder;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(), "songListSearchByFolder", songListSearchByFolder);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFolder", songListSearchByFolder);
             fixButtons();
             showHideRows(myView.filters.folderSearch, songListSearchByFolder);
             if (songListSearchByFolder) {
@@ -202,7 +202,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.artistButton.setOnClickListener(v -> {
             songListSearchByArtist = !songListSearchByArtist;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(), "songListSearchByArtist", songListSearchByArtist);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByArtist", songListSearchByArtist);
             fixButtons();
             showHideRows(myView.filters.artistSearch, songListSearchByArtist);
             if (songListSearchByArtist) {
@@ -212,7 +212,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.keyButton.setOnClickListener(v -> {
             songListSearchByKey = !songListSearchByKey;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(), "songListSearchByKey", songListSearchByKey);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByKey", songListSearchByKey);
             fixButtons();
             showHideRows(myView.filters.keySearch, songListSearchByKey);
             if (songListSearchByKey) {
@@ -222,7 +222,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.tagButton.setOnClickListener(v -> {
             songListSearchByTag = !songListSearchByTag;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(), "songListSearchByTag", songListSearchByTag);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByTag", songListSearchByTag);
             fixButtons();
             showHideRows(myView.filters.tagSearch, songListSearchByTag);
             if (songListSearchByTag) {
@@ -232,7 +232,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
         myView.filterButton.setOnClickListener(v -> {
             songListSearchByFilter = !songListSearchByFilter;
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireActivity(), "songListSearchByFilter", songListSearchByFilter);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songListSearchByFilter", songListSearchByFilter);
             fixButtons();
             showHideRows(myView.filters.filterSearch, songListSearchByFilter);
             if (songListSearchByFilter) {
@@ -311,8 +311,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         List<String> indexList = new ArrayList<>(setString);
         for (String index : indexList) {
             textView = (TextView) View.inflate(getActivity(), R.layout.view_alphabetical_list, null);
-            textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(), "songMenuAlphaIndexSize", 14.0f));
-            int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(), "songMenuAlphaIndexSize", 14.0f) * 2;
+            textView.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f));
+            int i = (int) mainActivityInterface.getPreferences().getMyPreferenceFloat("songMenuAlphaIndexSize", 14.0f) * 2;
             textView.setPadding(i,i,i,i);
             textView.setMinimumWidth(16);
             textView.setMinimumHeight(16);
@@ -346,7 +346,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
             });
             myView.songmenualpha.sideIndex.addView(textView);
         }
-        changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(), "songMenuAlphaIndexShow", true));
+        changeAlphabeticalVisibility(mainActivityInterface.getPreferences().getMyPreferenceBoolean("songMenuAlphaIndexShow", true));
     }
 
     public void changeAlphabeticalLayout() {

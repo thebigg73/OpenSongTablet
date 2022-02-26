@@ -73,7 +73,7 @@ public class ConvertOnSong {
         setCorrectXMLValues(thisSong);
 
         // Now prepare the new songXML file
-        String myNewXML = mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface,thisSong);
+        String myNewXML = mainActivityInterface.getProcessSong().getXML(thisSong);
 
         // Get a unique uri for the new song
         Uri newUri = mainActivityInterface.getConvertChoPro().getNewSongUri(c, mainActivityInterface, songSubFolder, newSongFileName);

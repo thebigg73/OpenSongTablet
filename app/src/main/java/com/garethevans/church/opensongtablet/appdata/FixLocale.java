@@ -19,7 +19,7 @@ public class FixLocale {
         // Locale
         try {
             // Get the user's preference
-            String val = mainActivityInterface.getPreferences().getMyPreferenceString(c,"language",null);
+            String val = mainActivityInterface.getPreferences().getMyPreferenceString("language",null);
 
             // If this is already set, that' what we will use
             if (val!=null) {
@@ -39,7 +39,7 @@ public class FixLocale {
                 userLocale = new Locale(deviceval);
 
                 // Save our preference
-                mainActivityInterface.getPreferences().setMyPreferenceString(c,"language",deviceval);
+                mainActivityInterface.getPreferences().setMyPreferenceString("language",deviceval);
             }
 
             // Load the appropriate translations

@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,7 +103,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
 
         // Save the preference
-        mainActivityInterface.getPreferences().setMyPreferenceString((Context)mainActivityInterface,"setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
         setList.get(fromPosition).songitem = (toPosition+1) + ".";
         setList.get(toPosition).songitem = (fromPosition+1) + ".";
@@ -134,7 +133,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
 
             // Save the preference
-            mainActivityInterface.getPreferences().setMyPreferenceString((Context) mainActivityInterface, "setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+            mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
             Log.d(TAG, "setList size before: " + setList.size());
             setList.remove(fromPosition);

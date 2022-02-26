@@ -20,7 +20,7 @@ public class CheckInternet {
     private String searchSite = "UltimateGuitar";
 
     public boolean isNetworkConnected(Context c, MainActivityInterface mainActivityInterface) {
-        boolean onlyUseWiFi = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"download_wifi_only",true);
+        boolean onlyUseWiFi = mainActivityInterface.getPreferences().getMyPreferenceBoolean("download_wifi_only",true);
         ConnectivityManager connectivityManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (connectivityManager != null) {

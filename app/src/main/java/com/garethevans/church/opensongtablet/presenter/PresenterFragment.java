@@ -79,8 +79,8 @@ public class PresenterFragment extends Fragment {
         setupPager();
 
         // Load the song
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
-                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername)),
+                mainActivityInterface.getPreferences().getMyPreferenceString("songfilename","Welcome to OpenSongApp"));
         mainActivityInterface.getSong().setPresoOrderSongSections(null);
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
@@ -202,7 +202,7 @@ public class PresenterFragment extends Fragment {
     }
 
     private void getPreferences() {
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(), mainActivityInterface);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
         mainActivityInterface.getPresenterSettings().getAllPreferences(requireContext(),mainActivityInterface);
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
     }
@@ -223,7 +223,7 @@ public class PresenterFragment extends Fragment {
             // This will be a custom slide with images
         } else {
             // A standard XML file
-            mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(requireContext(), mainActivityInterface,
+            mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
                     mainActivityInterface.getSong(), false, true));
         }
     }

@@ -82,7 +82,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                     Intent data = result.getData();
                     if (data != null) {
                         backupUri = data.getData();
-                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(requireContext(),backupUri);
+                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(backupUri);
                         if (importFilename.endsWith(".osbs")) {
                             myView.backupName.setText(importFilename);
                             setupViews();
@@ -108,7 +108,7 @@ public class BackupRestoreSetsFragment extends Fragment {
         // Open the file picker and when the user has picked a file, deal with it
         Intent loadIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         Uri uri = mainActivityInterface.getStorageAccess().
-                getUriForItem(requireContext(),mainActivityInterface,"Backups","",null);
+                getUriForItem("Backups","",null);
         loadIntent.setDataAndType(uri,"application/*");
         loadIntent.putExtra("android.provider.extra.INITIAL_URI", uri);
         loadIntent.putExtra("android.content.extra.SHOW_ADVANCED", true);
@@ -134,7 +134,7 @@ public class BackupRestoreSetsFragment extends Fragment {
             myView.createBackupFAB.setOnClickListener(view -> doBackup());
 
             // Add the checkboxes
-            addCheckBoxes(mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(),mainActivityInterface,"Sets",""));
+            addCheckBoxes(mainActivityInterface.getStorageAccess().listFilesInFolder("Sets",""));
 
 
         } else {
@@ -151,7 +151,7 @@ public class BackupRestoreSetsFragment extends Fragment {
             new Thread(() -> {
                 ArrayList<String> setList = new ArrayList<>();
 
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(getActivity(), backupUri);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(backupUri);
                 ZipInputStream zipInputStream = new ZipInputStream(inputStream);
                 ZipEntry ze;
 
@@ -217,9 +217,9 @@ public class BackupRestoreSetsFragment extends Fragment {
             if (!backupFilename.endsWith(".osbs")) {
                 backupFilename = backupFilename + ".osbs";
             }
-            Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Backups","",backupFilename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,true,backupUri,null,"Backups","",backupFilename);
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),backupUri);
+            Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFilename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,backupUri,null,"Backups","",backupFilename);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(backupUri);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             ZipEntry ze;
             byte[] tempBuff = new byte[1024];
@@ -227,8 +227,8 @@ public class BackupRestoreSetsFragment extends Fragment {
             // For each selected set, get a uri reference and input stream and add to the zip output stream
             for (int x=0; x<chosenSets.size(); x++) {
                 try {
-                    Uri thisUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, "Sets", "", chosenSets.get(x));
-                    InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), thisUri);
+                    Uri thisUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", chosenSets.get(x));
+                    InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(thisUri);
                     ze = new ZipEntry(chosenSets.get(x));
                     zipOutputStream.putNextEntry(ze);
                     if (!ze.isDirectory()) {
@@ -263,7 +263,7 @@ public class BackupRestoreSetsFragment extends Fragment {
 
     private void doImport() {
         myView.progressBar.setVisibility(View.VISIBLE);
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(getActivity(), backupUri);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(backupUri);
         ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
         success = false;
         boolean overwrite = myView.overWrite.isChecked();
@@ -278,11 +278,11 @@ public class BackupRestoreSetsFragment extends Fragment {
             try {
                 while ((ze = zipInputStream.getNextEntry()) != null) {
                     if (chosenSets.contains(ze.getName())) {
-                        Uri file_uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, "Sets", "", ze.getName());
-                        boolean exists = mainActivityInterface.getStorageAccess().uriExists(requireContext(),file_uri);
+                        Uri file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", ze.getName());
+                        boolean exists = mainActivityInterface.getStorageAccess().uriExists(file_uri);
                         if (!exists || overwrite) {
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface, false, file_uri, null, "Sets", "", ze.getName());
-                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), file_uri);
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, file_uri, null, "Sets", "", ze.getName());
+                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(file_uri);
                             // Write the file
                             int count;
                             while ((count = zipInputStream.read(buffer)) != -1) {

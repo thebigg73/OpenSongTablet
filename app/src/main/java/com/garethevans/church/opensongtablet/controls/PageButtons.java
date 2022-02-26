@@ -377,7 +377,7 @@ public class PageButtons {
             } else if (x==4) {
                 fallback = "metronome";
             }
-            String action = actionInterface.getPreferences().getMyPreferenceString(c,"pageButton"+(x+1),fallback);
+            String action = actionInterface.getPreferences().getMyPreferenceString("pageButton"+(x+1),fallback);
             pageButtonAction.add(action);
             int pos = getButtonInArray(action);
             if (pos>=0) {
@@ -393,7 +393,7 @@ public class PageButtons {
             }
 
             // Set the visibility
-            pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean(c,"pageButtonShow"+(x+1),true));
+            pageButtonVisibility.add(actionInterface.getPreferences().getMyPreferenceBoolean("pageButtonShow"+(x+1),true));
         }
     }
 

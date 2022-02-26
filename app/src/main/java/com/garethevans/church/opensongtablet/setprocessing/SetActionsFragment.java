@@ -97,12 +97,12 @@ public class SetActionsFragment extends Fragment {
                     if (data != null) {
                         Uri contentUri = data.getData();
                         Log.d(TAG,"contentUri="+contentUri);
-                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(requireContext(),contentUri);
+                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(contentUri);
                         //String location = mainActivityInterface.getStorageAccess().fixUriToLocal(contentUri);
                         Log.d(TAG,"filename="+importFilename);
                         if (importFilename.endsWith(".osts") || !importFilename.contains(".")) {
                             // Copy the file into the sets folder
-                            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), contentUri);
+                            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(contentUri);
                             /*if (location.contains("/")) {
                                 importFilename = location.substring(location.lastIndexOf("/"));
                                 importFilename = importFilename.replace("/", "");
@@ -112,12 +112,10 @@ public class SetActionsFragment extends Fragment {
                             importFilename = importFilename.replace(".osts","");
 
                             Log.d(TAG,"importFile: "+importFilename);
-                            Uri copyToUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                                    mainActivityInterface, "Sets", "", importFilename);
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                                    mainActivityInterface, false, copyToUri, null, "Sets", "", importFilename);
+                            Uri copyToUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", importFilename);
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, copyToUri, null, "Sets", "", importFilename);
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().
-                                    getOutputStream(requireContext(), copyToUri);
+                                    getOutputStream(copyToUri);
                             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
                             mainActivityInterface.setWhattodo("loadset:"+importFilename);
                             mainActivityInterface.navigateToFragment("opensongapp://settings/sets/manage", 0);

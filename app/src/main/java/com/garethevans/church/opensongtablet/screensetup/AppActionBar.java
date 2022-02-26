@@ -77,10 +77,10 @@ public class AppActionBar {
     }
 
     private void updateActionBarPrefs() {
-        clockTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"clockTextSize",9.0f);
-        clock24hFormat = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"clock24hFormat",true);
-        clockOn = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"clockOn",true);
-        hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"hideActionBar",false);
+        clockTextSize = mainActivityInterface.getPreferences().getMyPreferenceFloat("clockTextSize",9.0f);
+        clock24hFormat = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clock24hFormat",true);
+        clockOn = mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockOn",true);
+        hideActionBar = mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false);
     }
 
     public void translateAwayActionBar(boolean moveAway) {
@@ -99,7 +99,7 @@ public class AppActionBar {
     public void setActionBar(Context c, MainActivityInterface mainActivityInterface, String newtitle) {
         if (newtitle == null) {
             // We are in the Performance/Stage mode
-            float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"songTitleSize",13.0f);
+            float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize",13.0f);
 
             // If we are in a set, show the icon
             int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface,
@@ -122,7 +122,7 @@ public class AppActionBar {
             }
             if (author != null && mainActivityInterface.getSong().getAuthor() != null &&
                     !mainActivityInterface.getSong().getAuthor().isEmpty()) {
-                author.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"songAuthorSize",11.0f));
+                author.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songAuthorSize",11.0f));
                 author.setText(mainActivityInterface.getSong().getAuthor());
                 hideView(author, false);
             } else {

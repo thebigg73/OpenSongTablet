@@ -52,9 +52,9 @@ public class DisplayPrevNext {
     }
 
     public void updateShow(Context c, MainActivityInterface mainActivityInterface) {
-        showPrev = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"prevInSet", false);
-        showNext = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"nextInSet", true);
-        prevNextSongMenu = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "prevNextSongMenu", false);
+        showPrev = mainActivityInterface.getPreferences().getMyPreferenceBoolean("prevInSet", false);
+        showNext = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nextInSet", true);
+        prevNextSongMenu = mainActivityInterface.getPreferences().getMyPreferenceBoolean("prevNextSongMenu", false);
         if (showPrev) {
             layout.findViewById(R.id.prevHolder).setVisibility(View.VISIBLE);
         } else {

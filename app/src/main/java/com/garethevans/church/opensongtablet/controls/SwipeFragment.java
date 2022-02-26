@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.controls;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Path;
 import android.os.Bundle;
@@ -59,7 +58,7 @@ public class SwipeFragment extends Fragment {
 
     private void setupViews() {
         // The checkbox to enable/disable the settings
-        myView.swipeActive.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "swipeForSongs", true));
+        myView.swipeActive.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("swipeForSongs", true));
         showOrHide(myView.swipeActive.isChecked());
 
         myView.swipeActive.setOnCheckedChangeListener((buttonView, isChecked) -> {

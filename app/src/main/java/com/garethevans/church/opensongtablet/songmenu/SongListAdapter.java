@@ -57,7 +57,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
             initialiseCheckedArray(mainActivityInterface.getCurrentSet());
         }
         this.showChecked = mainActivityInterface.getPreferences().
-                getMyPreferenceBoolean(c, "songMenuSetTicksShow", true);
+                getMyPreferenceBoolean("songMenuSetTicksShow", true);
     }
 
     public void initialiseCheckedArray(CurrentSet currentSet) {
@@ -215,7 +215,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 }
                 mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
             }
-            mainActivityInterface.getPreferences().setMyPreferenceString(c, "setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
+            mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
         });
     }
 

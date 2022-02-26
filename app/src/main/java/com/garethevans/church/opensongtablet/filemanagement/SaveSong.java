@@ -57,15 +57,15 @@ public class SaveSong {
                 }
 
                 // Now try to rename the highlighter files if they exist
-                Uri portraitOld = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Highlighter","", oldHighlighterFile_p);
-                Uri landscapeOld = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Highlighter","", oldHighlighterFile_l);
-                if (mainActivityInterface.getStorageAccess().uriExists(c,portraitOld)) {
-                    Uri portraitNew = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", newHighlighterFile_p);
-                    mainActivityInterface.getStorageAccess().renameFileFromUri(c,mainActivityInterface,portraitOld,portraitNew,"Highlighter","",newHighlighterFile_p);
+                Uri portraitOld = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","", oldHighlighterFile_p);
+                Uri landscapeOld = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter","", oldHighlighterFile_l);
+                if (mainActivityInterface.getStorageAccess().uriExists(portraitOld)) {
+                    Uri portraitNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_p);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(portraitOld,portraitNew,"Highlighter","",newHighlighterFile_p);
                 }
-                if (mainActivityInterface.getStorageAccess().uriExists(c,landscapeOld)) {
-                    Uri landscapeNew = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Highlighter", "", newHighlighterFile_l);
-                    mainActivityInterface.getStorageAccess().renameFileFromUri(c,mainActivityInterface,landscapeOld,landscapeNew,"Highlighter", "", newHighlighterFile_l);
+                if (mainActivityInterface.getStorageAccess().uriExists(landscapeOld)) {
+                    Uri landscapeNew = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", newHighlighterFile_l);
+                    mainActivityInterface.getStorageAccess().renameFileFromUri(landscapeOld,landscapeNew,"Highlighter", "", newHighlighterFile_l);
                 }
             }
 
@@ -77,8 +77,8 @@ public class SaveSong {
                 // If there wasn't an old song, don't try to delete it otherwise we delete the Songs folder!
                 if (oldFilename!=null && !oldFilename.isEmpty() && oldLocation.get(0)!=null && oldLocation.get(1)!=null) {
                     Uri oldUri = mainActivityInterface.getStorageAccess().
-                            getUriForItem(c, mainActivityInterface, oldLocation.get(0), oldLocation.get(1), oldFilename);
-                    mainActivityInterface.getStorageAccess().deleteFile(c, oldUri);
+                            getUriForItem(oldLocation.get(0), oldLocation.get(1), oldFilename);
+                    mainActivityInterface.getStorageAccess().deleteFile(oldUri);
                 }
             }
 
@@ -108,7 +108,7 @@ public class SaveSong {
             }
 
             // Update the CCLI log if required
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "ccliAutomaticLogging", false)) {
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging", false)) {
                 mainActivityInterface.getCCLILog().addEntry(c, mainActivityInterface,
                         thisSong, "3"); // 3=edited
             }
@@ -118,12 +118,12 @@ public class SaveSong {
 
             mainActivityInterface.getSong().setFilename(thisSong.getFilename());
             mainActivityInterface.getSong().setFolder(thisSong.getFolder());
-            mainActivityInterface.getPreferences().setMyPreferenceString(c,"whichSongFolder",thisSong.getFolder());
-            mainActivityInterface.getPreferences().setMyPreferenceString(c,"songfilename",thisSong.getFilename());
+            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder",thisSong.getFolder());
+            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename",thisSong.getFilename());
 
             // Now save the song file and return the success!
             if (thisSong.getFiletype().equals("XML")) {
-                return mainActivityInterface.getStorageAccess().saveThisSongFile(c,mainActivityInterface,thisSong);
+                return mainActivityInterface.getStorageAccess().saveThisSongFile(thisSong);
             } else {
                 return true;
             }

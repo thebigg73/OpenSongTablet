@@ -44,31 +44,31 @@ public class PrepareFormats {
         }
         if (txt && thisSongSQL !=null) {
             String text = getSongAsText(thisSongSQL);
-            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".txt",text)) {
-                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".txt"));
+            if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename+".txt",text)) {
+                uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".txt"));
             }
         }
         if (chopro && thisSongSQL !=null) {
-            String text = getSongAsChoPro(c,mainActivityInterface, thisSongSQL);
-            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".chopro",text)) {
-                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".chopro"));
+            String text = getSongAsChoPro(mainActivityInterface, thisSongSQL);
+            if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename+".chopro",text)) {
+                uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".chopro"));
             }
         }
         if (onsong && thisSongSQL !=null) {
-            String text = getSongAsOnSong(c,mainActivityInterface, thisSongSQL);
-            if (mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,"Export","",newFilename+".onsong",text)) {
-                uris.add(mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename+".onsong"));
+            String text = getSongAsOnSong(mainActivityInterface, thisSongSQL);
+            if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename+".onsong",text)) {
+                uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".onsong"));
             }
         }
 
         return uris;
     }
     private Uri doMakeCopy(Context c, MainActivityInterface mainActivityInterface, String currentFolder, String currentFilename, String newFilename) {
-        Uri targetFile = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Songs",currentFolder,currentFilename);
-        Uri destinationFile = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,true,destinationFile,null,"Export","",newFilename);
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,targetFile);
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,destinationFile);
+        Uri targetFile = mainActivityInterface.getStorageAccess().getUriForItem("Songs",currentFolder,currentFilename);
+        Uri destinationFile = mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,destinationFile,null,"Export","",newFilename);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(targetFile);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(destinationFile);
         if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
             return destinationFile;
         } else {
@@ -94,7 +94,7 @@ public class PrepareFormats {
 
         return string;
     }
-    public String getSongAsChoPro(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    public String getSongAsChoPro(MainActivityInterface mainActivityInterface, Song thisSong) {
         // This converts an OpenSong file into a ChordPro file
 
         String string = "{new_song}\n" + replaceNulls("{title:", "}\n", thisSong.getTitle()) +
@@ -105,7 +105,7 @@ public class PrepareFormats {
                 replaceNulls("{copyright:", "}\n", thisSong.getCopyright()) +
                 replaceNulls("{ccli:", "}\n", thisSong.getCcli()) +
                 "\n\n" +
-                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n", "", thisSong.getLyrics()));
+                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface, replaceNulls("\n", "", thisSong.getLyrics()));
         string = string.replace("\n\n\n", "\n\n");
 
         // IV - remove empty comments
@@ -120,14 +120,14 @@ public class PrepareFormats {
             newFilename = newFilename + "_";
         }
         newFilename = newFilename + thisSong.getFilename() + ".png";
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Export","",newFilename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,true, uri, "application/pdf","Export","",newFilename);
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,uri);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, "application/pdf","Export","",newFilename);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
         mainActivityInterface.getStorageAccess().writeImage(outputStream,mainActivityInterface.getScreenshot());
         return uri;
     }
 
-    public String getSongAsOnSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    public String getSongAsOnSong(MainActivityInterface mainActivityInterface, Song thisSong) {
         // This converts an OpenSong file into a OnSong file
 
         String string = replaceNulls("", "\n", thisSong.getTitle()) +
@@ -138,7 +138,7 @@ public class PrepareFormats {
                 replaceNulls("Copyright: ", "\n", thisSong.getCopyright()) +
                 replaceNulls("CCLI: ", "\n", thisSong.getCcli()) +
                 "\n\n" +
-                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(c, mainActivityInterface, replaceNulls("\n", "", thisSong.getLyrics()));
+                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface, replaceNulls("\n", "", thisSong.getLyrics()));
         string = string.replace("\n\n\n", "\n\n");
 
         // IV - remove empty comments

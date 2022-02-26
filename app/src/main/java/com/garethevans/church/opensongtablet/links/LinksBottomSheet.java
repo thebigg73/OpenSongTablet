@@ -175,8 +175,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
     private void openDocument() {
         // Try to open the file or webpage if it isn't null
         if (!getLinkText().isEmpty() && !getLinkText().contains("http")) {
-            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(getContext(),
-                    mainActivityInterface, getLinkText());
+            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(getLinkText());
             mainActivityInterface.openDocument(null, uri.toString());
         } else if (!getLinkText().isEmpty()) {
             mainActivityInterface.openDocument(null, getLinkText());
@@ -229,9 +228,8 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         // If we don't want to play, it is because we're checking the file works
         mediaPlayer = new MediaPlayer();
         if (!getLinkText().isEmpty()) {
-            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(requireContext(),
-                    mainActivityInterface, getLinkText());
-            if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),uri)) {
+            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(getLinkText());
+            if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
                 try {
                     mediaPlayer.setDataSource(requireContext(), uri);
                     mediaPlayer.prepareAsync();

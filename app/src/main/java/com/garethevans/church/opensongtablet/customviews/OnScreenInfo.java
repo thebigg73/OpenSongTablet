@@ -67,9 +67,9 @@ public class OnScreenInfo extends LinearLayout {
     }
 
     public void setPreferences(Context c, MainActivityInterface mainActivityInterface) {
-        autoHideCapo = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenCapoHide",true);
-        autoHidePad  = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenPadHide", true);
-        autoHideAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"onscreenAutoscrollHide", true);
+        autoHideCapo = mainActivityInterface.getPreferences().getMyPreferenceBoolean("onscreenCapoHide",true);
+        autoHidePad  = mainActivityInterface.getPreferences().getMyPreferenceBoolean("onscreenPadHide", true);
+        autoHideAutoscroll = mainActivityInterface.getPreferences().getMyPreferenceBoolean("onscreenAutoscrollHide", true);
         updateAlpha(c,mainActivityInterface);
     }
 

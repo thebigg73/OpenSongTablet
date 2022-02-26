@@ -47,8 +47,8 @@ public class SongListBuildIndex {
 
     public void buildBasicFromFiles(Context c, MainActivityInterface mainActivityInterface) {
         // This creates a basic database from the song files
-        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(c,mainActivityInterface);
-        mainActivityInterface.getStorageAccess().writeSongIDFile(c,mainActivityInterface,songIds);
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
+        mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
         mainActivityInterface.getSQLiteHelper().resetDatabase(c);
         mainActivityInterface.getSQLiteHelper().insertFast(c,mainActivityInterface);
     }
@@ -86,10 +86,10 @@ public class SongListBuildIndex {
                         // Now we have the info to open the file and extract what we need
                         if (!mainActivityInterface.getIndexingSong().getFilename().isEmpty()) {
                             // Get the uri, utf and inputStream for the file
-                            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs",
+                            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",
                                     mainActivityInterface.getIndexingSong().getFolder(),
                                     mainActivityInterface.getIndexingSong().getFilename());
-                            String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
+                            String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(uri);
 
                             // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
                             if (filenameIsOk(mainActivityInterface.getIndexingSong().getFilename())) {
@@ -157,7 +157,7 @@ public class SongListBuildIndex {
         }
         currentlyIndexing = false;
         // Any songs with rogue endings would've been logged, so fix if needed
-        mainActivityInterface.getLoadSong().fixSongs(c,mainActivityInterface);
+        mainActivityInterface.getLoadSong().fixSongs(mainActivityInterface);
         return returnString.toString();
     }
 
@@ -183,7 +183,7 @@ public class SongListBuildIndex {
 
     private Song tryToFixSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong, Uri uri) {
         if (uri != null) {
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,uri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
             if (isChordPro(thisSong.getFilename())) {
                 thisSong.setFiletype("CHO");
                 // This is a chordpro file

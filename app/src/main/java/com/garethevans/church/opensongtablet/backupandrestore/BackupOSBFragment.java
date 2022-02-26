@@ -143,8 +143,7 @@ public class BackupOSBFragment extends Fragment {
             });
 
             // Check the file list is up to date
-            ArrayList<String> allFiles = mainActivityInterface.getStorageAccess().listSongs(requireContext(),
-                    mainActivityInterface);
+            ArrayList<String> allFiles = mainActivityInterface.getStorageAccess().listSongs();
 
             // Prepare the uris, inputStreams and outputStreams
             Uri fileUriToCopy;
@@ -153,13 +152,13 @@ public class BackupOSBFragment extends Fragment {
             // The zip stuff
             byte[] tempBuff = new byte[1024];
             // Check the temp folder exists
-            Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,"Backups","",backupFilename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,true,
+            Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFilename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
                     backupUri,null,"Backups","",backupFilename);
             OutputStream outputStream;
             ZipOutputStream zipOutputStream = null;
             try {
-                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),backupUri);
+                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(backupUri);
                 zipOutputStream = new ZipOutputStream(outputStream);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -177,10 +176,8 @@ public class BackupOSBFragment extends Fragment {
                 });
                 Log.d(TAG,"DB copied: "+mainActivityInterface.getNonOpenSongSQLiteHelper().
                         copyUserDatabase(requireContext(), mainActivityInterface));
-                Uri uriDB = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                        mainActivityInterface,"Settings","", SQLite.NON_OS_DATABASE_NAME);
-                InputStream dbInputStream = mainActivityInterface.getStorageAccess().getInputStream(
-                        requireContext(),uriDB);
+                Uri uriDB = mainActivityInterface.getStorageAccess().getUriForItem("Settings","", SQLite.NON_OS_DATABASE_NAME);
+                InputStream dbInputStream = mainActivityInterface.getStorageAccess().getInputStream(uriDB);
                 ze = new ZipEntry(SQLite.NON_OS_DATABASE_NAME);
                 try {
                     if (zipOutputStream != null) {
@@ -210,9 +207,8 @@ public class BackupOSBFragment extends Fragment {
                         for (String folder : checkedFolders) {
                             if (alive && folder.equals(thisFolder)) {
                                 // Get the uri for this item
-                                fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem(getContext(),
-                                        mainActivityInterface, "Songs", thisFolder, thisFile);
-                                inputStream = mainActivityInterface.getStorageAccess().getInputStream(getContext(), fileUriToCopy);
+                                fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem("Songs", thisFolder, thisFile);
+                                inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUriToCopy);
                                 if (thisFolder.equals(getString(R.string.mainfoldername)) || thisFolder.equals("MAIN")) {
                                     ze = new ZipEntry(thisFile);
                                 } else {
@@ -249,7 +245,7 @@ public class BackupOSBFragment extends Fragment {
 
             // Now add the matching highligher files
             if (wantHighlighter) {
-                ArrayList<String> highlighterFiles = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(), mainActivityInterface, "Highlighter", "");
+                ArrayList<String> highlighterFiles = mainActivityInterface.getStorageAccess().listFilesInFolder("Highlighter", "");
                 for (String file : highlighterFiles) {
                     ArrayList<String> bits = mainActivityInterface.getProcessSong().getInfoFromHighlighterFilename(file);
                     String thisFolder = bits.get(0).replace("_","/");
@@ -263,9 +259,8 @@ public class BackupOSBFragment extends Fragment {
                             if (alive && wantedFolder.equals(thisFolder)) {
                                 try {
                                     // Get the uri for this item
-                                    fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem(getContext(),
-                                            mainActivityInterface, "Highlighter", "", file);
-                                    inputStream = mainActivityInterface.getStorageAccess().getInputStream(getContext(), fileUriToCopy);
+                                    fileUriToCopy = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", file);
+                                    inputStream = mainActivityInterface.getStorageAccess().getInputStream(fileUriToCopy);
                                     ze = new ZipEntry("_Highlighter/" + file);
                                     if (zipOutputStream != null) {
                                         // Update the screen
@@ -330,10 +325,9 @@ public class BackupOSBFragment extends Fragment {
 
     private void exportBackup() {
         // Make sure we have an available backup folder
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),mainActivityInterface,
-                "Backups","",backupFilename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFilename);
 
-        mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"runssincebackup",0);
+        mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup",0);
 
         Intent intent = mainActivityInterface.getExportActions().exportBackup(requireContext(),uri,backupFilename);
         startActivity(Intent.createChooser(intent,getString(R.string.backup_info)));

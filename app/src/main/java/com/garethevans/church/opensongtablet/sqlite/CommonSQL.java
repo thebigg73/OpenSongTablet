@@ -166,7 +166,7 @@ public class CommonSQL {
         String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " ( songid, filename, folder, title ) VALUES ( ?, ?, ?, ?)";
         db.beginTransactionNonExclusive();
         SQLiteStatement stmt = db.compileStatement(sql);
-        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongIDsFromFile(c);
+        ArrayList<String> songIds = mainActivityInterface.getStorageAccess().getSongIDsFromFile();
 
         for (String s : songIds) {
             String filename;

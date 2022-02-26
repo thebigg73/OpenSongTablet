@@ -73,11 +73,11 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void getPreferences() {
-        fontLyric = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontLyric","Lato");
-        fontChord = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontChord","Lato");
-        fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontPreso","Lato");
-        fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontPresoInfo","Lato");
-        fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"fontSticky","Lato");
+        fontLyric = mainActivityInterface.getPreferences().getMyPreferenceString("fontLyric","Lato");
+        fontChord = mainActivityInterface.getPreferences().getMyPreferenceString("fontChord","Lato");
+        fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString("fontPreso","Lato");
+        fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString("fontPresoInfo","Lato");
+        fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString("fontSticky","Lato");
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
     }
 
@@ -120,7 +120,7 @@ public class FontSetupFragment extends Fragment {
             myView.lyricPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsTextColor());
             myView.chordPreview.setTextColor(mainActivityInterface.getMyThemeColors().getLyricsChordsColor());
             myView.lyricPreview.setTextSize(24.0f);
-            myView.chordPreview.setTextSize(24.0f * mainActivityInterface.getPreferences().getMyPreferenceFloat(getContext(), "scaleChords", 0.8f));
+            myView.chordPreview.setTextSize(24.0f * mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleChords", 0.8f));
 
             // Set the presentation preview
             myView.presoPreview.setBackground(ResourcesCompat.getDrawable(requireContext().getResources(), R.drawable.preso_default_bg, null));
@@ -129,8 +129,8 @@ public class FontSetupFragment extends Fragment {
             myView.presoInfoLorem.setTextColor(mainActivityInterface.getMyThemeColors().getPresoInfoFontColor());
             myView.presoLorem.setTextSize(24.0f);
             myView.presoInfoLorem.setTextSize(24.0f * 0.5f);
-            myView.presoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "presoInfoAlign", Gravity.CENTER));
-            myView.presoInfoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt(getContext(), "presoInfoAlign", Gravity.END));
+            myView.presoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt("presoInfoAlign", Gravity.CENTER));
+            myView.presoInfoLorem.setGravity(mainActivityInterface.getPreferences().getMyPreferenceInt("presoInfoAlign", Gravity.END));
 
             // Set the sticky preview
             myView.stickyLorem.setBackgroundColor(mainActivityInterface.getMyThemeColors().getStickyBackgroundColor());

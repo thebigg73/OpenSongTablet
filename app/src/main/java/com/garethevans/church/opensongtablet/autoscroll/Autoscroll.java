@@ -75,13 +75,13 @@ public class Autoscroll {
     public void initialiseSongAutoscroll(Context c, int songHeight, int displayHeight) {
         this.displayHeight = displayHeight;
         this.songHeight = songHeight;
-        autoscrollAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,
+        autoscrollAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "autoscrollAutoStart", false);
-        autoscrollUseDefaultTime = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,
+        autoscrollUseDefaultTime = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "autoscrollUseDefaultTime", true);
-        autoscrollDefaultSongPreDelay = mainActivityInterface.getPreferences().getMyPreferenceInt(c,
+        autoscrollDefaultSongPreDelay = mainActivityInterface.getPreferences().getMyPreferenceInt(
                 "autoscrollDefaultSongPreDelay", 20);
-        autoscrollDefaultSongLength = mainActivityInterface.getPreferences().getMyPreferenceInt(c,
+        autoscrollDefaultSongLength = mainActivityInterface.getPreferences().getMyPreferenceInt(
                 "autoscrollDefaultSongLength", 180);
         autoscrollView.setOnClickListener(view -> isPaused = !isPaused);
         autoscrollView.setOnLongClickListener(view -> {
@@ -364,9 +364,8 @@ public class Autoscroll {
         // If link audio is set and time is valid get it and set the button action
         if (mainActivityInterface.getSong().getLinkaudio()!=null &&
                 !mainActivityInterface.getSong().getLinkaudio().isEmpty()) {
-            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c,
-                    mainActivityInterface, mainActivityInterface.getSong().getLinkaudio());
-            if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
+            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(mainActivityInterface.getSong().getLinkaudio());
+            if (uri!=null && mainActivityInterface.getStorageAccess().uriExists(uri)) {
                 MediaPlayer mediaPlayer = new MediaPlayer();
                 try {
                     mediaPlayer.setDataSource(c, uri);

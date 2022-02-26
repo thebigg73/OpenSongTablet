@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.highlighter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,10 +42,10 @@ public class HighlighterFragment extends Fragment {
     }
 
     private void setupViews() {
-        boolean drawingAutoDisplay = mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",true);
+        boolean drawingAutoDisplay = mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay",true);
         myView.autoShowHighlight.setChecked(drawingAutoDisplay);
         hideView(myView.timeToDisplayHighlighter,drawingAutoDisplay);
-        int timeToDisplayHighlighter = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",0);
+        int timeToDisplayHighlighter = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter",0);
         myView.timeToDisplayHighlighter.setValue(timeToDisplayHighlighter);
         myView.timeToDisplayHighlighter.setLabelFormatter(value -> ((int)value)+"s");
         setHintTime(timeToDisplayHighlighter);
@@ -73,7 +72,7 @@ public class HighlighterFragment extends Fragment {
     private void setListeners() {
         myView.autoShowHighlight.setOnCheckedChangeListener((buttonView, isChecked) -> {
             hideView(myView.timeToDisplayHighlighter,isChecked);
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"drawingAutoDisplay",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("drawingAutoDisplay",isChecked);
         });
         myView.timeToDisplayHighlighter.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
@@ -81,7 +80,7 @@ public class HighlighterFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),"timeToDisplayHighlighter",Math.round(myView.timeToDisplayHighlighter.getValue()));
+                mainActivityInterface.getPreferences().setMyPreferenceInt("timeToDisplayHighlighter",Math.round(myView.timeToDisplayHighlighter.getValue()));
             }
         });
         myView.timeToDisplayHighlighter.addOnChangeListener((slider, value, fromUser) -> setHintTime(Math.round(value)));

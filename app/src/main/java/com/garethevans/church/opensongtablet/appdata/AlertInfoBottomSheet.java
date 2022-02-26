@@ -80,7 +80,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
             myView.showUpdates.setOnClickListener(b -> webLink("http://www.opensongapp.com/latest-updates"));
 
             // We've seen the warning, so update the preference
-            mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), "lastUsedVersion",
+            mainActivityInterface.getPreferences().setMyPreferenceInt("lastUsedVersion",
                     mainActivityInterface.getVersionNumber().getVersionCode());
         }
 
@@ -89,7 +89,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
             myView.timeToBackup.setVisibility(View.VISIBLE);
             String s = requireContext().getString(R.string.promptbackup).
                     replace("10","" +
-                            mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "runssincebackup", 0));
+                            mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup", 0));
             myView.backupDescription.setText(s);
             myView.backupNowButton.setOnClickListener(v -> {
                 mainActivityInterface.navigateToFragment("opensongapp://settings/storage/backup",0);

@@ -99,7 +99,7 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupViews(View whichToShow) {
-        myView.downloadWiFiOnly.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"download_wifi_only",true));
+        myView.downloadWiFiOnly.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("download_wifi_only",true));
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.content);
         myView.lineLength.setValue(bible.getLineLength());
         myView.lineLength.setHint(bible.getLineLength() +"");
@@ -110,7 +110,7 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupListeners() {
-        myView.downloadWiFiOnly.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"download_wifi_only",b));
+        myView.downloadWiFiOnly.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean("download_wifi_only",b));
         myView.doSearch.setOnClickListener(v -> doSearch());
         myView.webBack.setOnClickListener(v -> myView.webView.goBack());
         myView.webClose.setOnClickListener(v -> showView(myView.searchOptions));

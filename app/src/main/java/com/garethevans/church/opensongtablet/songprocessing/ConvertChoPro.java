@@ -72,7 +72,7 @@ public class ConvertChoPro {
             setCorrectXMLValues(thisSong);
 
             // Now prepare the new songXML file
-            String newXML = mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface, thisSong);
+            String newXML = mainActivityInterface.getProcessSong().getXML(thisSong);
 
             // Get a unique uri for the new song
             Uri newUri = getNewSongUri(c, mainActivityInterface, songSubFolder, newSongFileName);
@@ -492,12 +492,12 @@ public class ConvertChoPro {
     Uri getNewSongUri(Context c, MainActivityInterface mainActivityInterface, String songSubFolder, String nsf) {
         // Prepare a new uri based on the best filename, but make it unique so as not to overwrite existing files
         newSongFileName = nsf;
-        Uri n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", songSubFolder, newSongFileName);
+        Uri n = mainActivityInterface.getStorageAccess().getUriForItem("Songs", songSubFolder, newSongFileName);
         int attempts = 0;
-        while (mainActivityInterface.getStorageAccess().uriExists(c, n) && attempts < 4) {
+        while (mainActivityInterface.getStorageAccess().uriExists(n) && attempts < 4) {
             // Append _ to the end of the name until the filename is unique, or give up after 5 attempts
             newSongFileName = newSongFileName + "_";
-            n = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", songSubFolder, newSongFileName);
+            n = mainActivityInterface.getStorageAccess().getUriForItem("Songs", songSubFolder, newSongFileName);
             attempts = attempts + 1;
             Log.d(TAG, "attempt:" + attempts + " newSongFileName=" + newSongFileName);
         }
@@ -575,12 +575,12 @@ public class ConvertChoPro {
         Log.d(TAG,"newSongFileName="+newSongFileName);
         Log.d(TAG,"oldUri="+oldUri);
         Log.d(TAG,"newUri="+newUri);
-        Log.d(TAG,"storageAccess.uriExists(c, oldUri)="+mainActivityInterface.getStorageAccess().uriExists(c, oldUri));
+        Log.d(TAG,"storageAccess.uriExists(c, oldUri)="+mainActivityInterface.getStorageAccess().uriExists(oldUri));
 
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
-                && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(c, oldUri)) {
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,mainActivityInterface,false,newUri,null,"Songs",songSubFolder,newSongFileName);
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, newUri);
+                && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(oldUri)) {
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,newUri,null,"Songs",songSubFolder,newSongFileName);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
 
             Log.d(TAG,"outputStream="+outputStream);
 
@@ -588,7 +588,7 @@ public class ConvertChoPro {
                 // Change the songId (references to the uri)
                 // Now remove the old chordpro file
                 mainActivityInterface.getStorageAccess().writeFileFromString(newXML, outputStream);
-                Log.d(TAG,"attempt to deletefile="+mainActivityInterface.getStorageAccess().deleteFile(c, oldUri));
+                Log.d(TAG,"attempt to deletefile="+mainActivityInterface.getStorageAccess().deleteFile(oldUri));
 
                 // Remove old song from database
                 mainActivityInterface.getSQLiteHelper().deleteSong(c,mainActivityInterface,songSubFolder,oldSongFileName);
@@ -774,7 +774,7 @@ public class ConvertChoPro {
         return l;
     }
 
-    public String fromOpenSongToChordPro(Context c, MainActivityInterface mainActivityInterface, String lyrics) {
+    public String fromOpenSongToChordPro(MainActivityInterface mainActivityInterface, String lyrics) {
         // This receives the text from the edit song lyrics editor and changes the format
         // Allows users to enter their song as chordpro/onsong format
         // The app will convert it into OpenSong before saving.
@@ -787,7 +787,7 @@ public class ConvertChoPro {
 
         // Determine the line types
         for (String l:lines) {
-            type.add(mainActivityInterface.getProcessSong().determineLineTypes(l,c));
+            type.add(mainActivityInterface.getProcessSong().determineLineTypes(l));
         }
 
         boolean dealingwithchorus = false;

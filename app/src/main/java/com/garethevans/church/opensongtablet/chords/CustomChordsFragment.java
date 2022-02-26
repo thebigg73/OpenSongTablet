@@ -177,7 +177,7 @@ public class CustomChordsFragment extends Fragment {
                 myView.instrument, R.layout.view_exposed_dropdown_item,
                 mainActivityInterface.getChordDisplayProcessing().getInstruments());
         myView.instrument.setAdapter(exposedDropDownArrayAdapter);
-        String instrumentPref = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
+        String instrumentPref = mainActivityInterface.getPreferences().getMyPreferenceString(
                 "chordInstrument", "g");
         myView.instrument.setText(mainActivityInterface.getChordDisplayProcessing().getInstrumentFromPref(instrumentPref));
     }
@@ -231,7 +231,7 @@ public class CustomChordsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 // Save the chosen instrument as our preference
-                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                mainActivityInterface.getPreferences().setMyPreferenceString(
                         "chordInstrument",
                         mainActivityInterface.getChordDisplayProcessing().getPrefFromInstrument(editable.toString()));
 

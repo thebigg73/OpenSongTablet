@@ -62,7 +62,7 @@ public class CustomPadsFragment extends Fragment {
                         prefValue = "";
                         text = getString(R.string.pad_auto);
                     }
-                    mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), prefName, prefValue);
+                    mainActivityInterface.getPreferences().setMyPreferenceString(prefName, prefValue);
                     materialEditText.setText(text);
                 });
     }
@@ -95,7 +95,7 @@ public class CustomPadsFragment extends Fragment {
     }
 
     private void setPref(MaterialEditText materialEditText, String prefName) {
-        String pref = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),prefName,"");
+        String pref = mainActivityInterface.getPreferences().getMyPreferenceString(prefName,"");
         if (pref==null || pref.isEmpty() || pref.equals("auto")) {
             pref = getString(R.string.pad_auto);
         }

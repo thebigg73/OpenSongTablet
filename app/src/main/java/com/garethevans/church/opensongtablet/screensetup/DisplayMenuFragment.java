@@ -43,7 +43,7 @@ public class DisplayMenuFragment extends Fragment {
     private void setDefaults() {
         // Get the app theme
         String themeName;
-        switch (mainActivityInterface.getPreferences().getMyPreferenceString(getContext(),"appTheme","dark")) {
+        switch (mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark")) {
             case "dark":
             default:
                 themeName = getString(R.string.theme_dark);

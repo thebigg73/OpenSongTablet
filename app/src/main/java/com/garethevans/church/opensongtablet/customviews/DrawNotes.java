@@ -361,9 +361,9 @@ public class DrawNotes extends View {
 
 
     // Existing highlighter notes to be loaded
-    public void loadExistingHighlighter(Context c, MainActivityInterface mainActivityInterface, int w, int h) {
+    public void loadExistingHighlighter(MainActivityInterface mainActivityInterface, int w, int h) {
         existingHighlighterFile = mainActivityInterface.getProcessSong().
-                getHighlighterFile(c,mainActivityInterface,w,h);
+                getHighlighterFile(w,h);
 
         if (existingHighlighterFile!=null) {
             bitmapPaint = new Paint(Paint.DITHER_FLAG);

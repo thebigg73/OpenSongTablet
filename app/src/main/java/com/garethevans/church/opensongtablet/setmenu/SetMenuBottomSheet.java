@@ -51,7 +51,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = BottomSheetMenuSetBinding.inflate(inflater, container, false);
 
-        Log.d(TAG,"currentSet (pref):"+mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"setCurrent",""));
+        Log.d(TAG,"currentSet (pref):"+mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent",""));
         Log.d(TAG, "currentSet (CurrSet): "+mainActivityInterface.getCurrentSet().getCurrentSetString());
         Log.d(TAG, "initialSet (CurrSet): "+mainActivityInterface.getCurrentSet().getInitialSetString());
         Log.d(TAG,"currentSet==initialSet: "+(mainActivityInterface.getCurrentSet().getCurrentSetString().equals(mainActivityInterface.getCurrentSet().getInitialSetString())));

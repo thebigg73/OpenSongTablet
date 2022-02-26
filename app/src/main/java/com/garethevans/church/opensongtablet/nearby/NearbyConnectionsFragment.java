@@ -59,7 +59,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
     public void updateViews() {
         // Set the device name
-        myView.deviceButton.setHint(mainActivityInterface.getNearbyConnections().getUserNickname(requireContext(),mainActivityInterface));
+        myView.deviceButton.setHint(mainActivityInterface.getNearbyConnections().getUserNickname(mainActivityInterface));
 
         // Set the default values for off/host/client
         if (mainActivityInterface.getNearbyConnections().isHost) {

@@ -169,9 +169,9 @@ public class SettingsFragment extends Fragment {
         myView.contentHorizontalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsAlign()));
         myView.contentVerticalAlign.setSliderPos(gravityToSliderPosition(mainActivityInterface.getPresenterSettings().getPresoLyricsVAlign()));
 
-        myView.blockShadow.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"blockShadow",false));
-        myView.blockShadowAlpha.setValue((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"blockShadowAlpha",0.5f)));
-        myView.blockShadowAlpha.setHint((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"blockShadowAlpha",0.5f)) + "%");
+        myView.blockShadow.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("blockShadow",false));
+        myView.blockShadowAlpha.setValue((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat("blockShadowAlpha",0.5f)));
+        myView.blockShadowAlpha.setHint((int)(100*mainActivityInterface.getPreferences().getMyPreferenceFloat("blockShadowAlpha",0.5f)) + "%");
         myView.blockShadowAlpha.setLabelFormatter(value -> ((int)value)+"%");
     }
     @SuppressLint("ClickableViewAccessibility")
@@ -208,8 +208,7 @@ public class SettingsFragment extends Fragment {
 
         myView.infoAlign.addOnChangeListener(new SliderChangeListener("presoInfoAlign"));
         myView.hideInfoBar.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
-                    "hideInfoBar",b);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("hideInfoBar",b);
             mainActivityInterface.getPresenterSettings().setHideInfoBar(b);
             displayInterface.updateDisplay("initialiseInfoBarRequired");
             displayInterface.updateDisplay("checkSongInfoShowHide");
@@ -219,8 +218,7 @@ public class SettingsFragment extends Fragment {
         myView.maxFontSize.addOnChangeListener(new SliderChangeListener("fontSizePresoMax"));
 
         myView.showChords.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
-                        "presoShowChords",b);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("presoShowChords",b);
                 mainActivityInterface.getPresenterSettings().setPresoShowChords(b);
                 mainActivityInterface.updateFragment("presenterFragmentSongSections",null,null);
                 displayInterface.updateDisplay("setSongContent");
@@ -235,8 +233,8 @@ public class SettingsFragment extends Fragment {
         myView.contentVerticalAlign.addOnChangeListener(new SliderChangeListener("presoLyricsVAlign"));
 
         myView.blockShadow.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"blockShadow",b);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("blockShadow",b);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.blockShadowAlpha.addOnChangeListener(new SliderChangeListener("blockShadowAlpha"));
     }
@@ -317,20 +315,20 @@ public class SettingsFragment extends Fragment {
             //myView.nestedScrollView.setScrollingEnabled(true);
             switch (prefName) {
                 case "logoSize":
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             prefName, floatToDecPlaces(slider.getValue()/100f));
                     mainActivityInterface.getPresenterSettings().setLogoSize(floatToDecPlaces(slider.getValue()/100f));
                     displayInterface.updateDisplay("changeLogo");
                     break;
                 case "presoTransitionTime":
                     // The slider gives values between 200 and 3000ms
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
                             prefName, (int)slider.getValue());
                     mainActivityInterface.getPresenterSettings().setPresoTransitionTime((int)(slider.getValue()));
                     break;
                 case "castRotation":
                     // The slider gives values between 0 and 360
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             prefName, slider.getValue());
                     mainActivityInterface.getPresenterSettings().setCastRotation(slider.getValue());
                     displayInterface.updateDisplay("changeRotation");
@@ -338,7 +336,7 @@ public class SettingsFragment extends Fragment {
                 case "presoXMargin":
                 case "presoYMargin":
                     // The sliders gives values between -50 and 50
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
                             prefName, (int)slider.getValue());
                     if (prefName.contains("X")) {
                         mainActivityInterface.getPresenterSettings().setPresoXMargin((int)slider.getValue());
@@ -349,24 +347,23 @@ public class SettingsFragment extends Fragment {
                     break;
                 case "presoBackgroundAlpha":
                     // The slider goes from 0 to 100
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             "presoBackgroundAlpha", slider.getValue()/100f);
                     mainActivityInterface.getPresenterSettings().setPresoBackgroundAlpha(slider.getValue()/100f);
                     displayInterface.updateDisplay("changeBackground");
                     break;
                 case "fontSizePresoMax":
                     // The slider goes from 10 to 100
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             "fontSizePresoMax", slider.getValue());
                     mainActivityInterface.getPresenterSettings().setFontSizePresoMax(slider.getValue());
                     displayInterface.updateDisplay("setSongContent");
                     break;
                 case "blockShadowAlpha":
                     // The slider goes from 0 to 100
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(
                             "blockShadowAlpha", slider.getValue()/100f);
-                    mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),
-                            mainActivityInterface);
+                    mainActivityInterface.getProcessSong().updateProcessingPreferences();
                     break;
             }
         }
@@ -411,7 +408,7 @@ public class SettingsFragment extends Fragment {
                 case "presoInfoAlign":
                     // The slider goes from 0 to 2.  We need to look up the gravity
                     gravity = sliderPositionToGravity(false, (int) slider.getValue());
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "presoInfoAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoInfoAlign(gravity);
                     displayInterface.updateDisplay("changeInfoAlignment");
@@ -419,7 +416,7 @@ public class SettingsFragment extends Fragment {
                 case "presoLyricsAlign":
                     // The slider goes from 0 to 2.  We need to look up the gravity
                     gravity = sliderPositionToGravity(false,(int)slider.getValue());
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "presoLyricsAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsAlign(gravity);
                     displayInterface.updateDisplay("setSongContent");
@@ -427,7 +424,7 @@ public class SettingsFragment extends Fragment {
                 case "presoLyricsVAlign":
                     // The slider goes from 0 to 2.  We need to look up the gravity
                     gravity = sliderPositionToGravity(true,(int)slider.getValue());
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(
                             "presoLyricsVAlign", gravity);
                     mainActivityInterface.getPresenterSettings().setPresoLyricsVAlign(gravity);
                     displayInterface.updateDisplay("setSongContent");

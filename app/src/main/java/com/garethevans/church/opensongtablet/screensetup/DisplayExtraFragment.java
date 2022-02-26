@@ -61,7 +61,7 @@ public class DisplayExtraFragment extends Fragment {
         myView.addSectionSpace.setChecked(getChecked("addSectionSpace",true));
         myView.trimLineSpacing.setChecked(getChecked("trimLines",false));
         visibilityByBoolean(myView.trimLineSpacingSlider,myView.trimLineSpacing.getChecked());
-        float lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"lineSpacing",0.1f);
+        float lineSpacing = mainActivityInterface.getPreferences().getMyPreferenceFloat("lineSpacing",0.1f);
         int percentage = (int)(lineSpacing * 100);
         myView.trimLineSpacingSlider.setValue(percentage);
         myView.trimLineSpacingSlider.setLabelFormatter(value -> ((int)value)+"%");
@@ -74,7 +74,7 @@ public class DisplayExtraFragment extends Fragment {
     }
 
     private boolean getChecked(String prefName, boolean fallback) {
-        return mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),prefName,fallback);
+        return mainActivityInterface.getPreferences().getMyPreferenceBoolean(prefName,fallback);
     }
     private void visibilityByBoolean(View view, boolean visible) {
         if (visible) {
@@ -116,15 +116,15 @@ public class DisplayExtraFragment extends Fragment {
         });
         myView.boldChordsHeadings.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayBoldChordsHeadings",isChecked,null);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.showChords.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayChords",isChecked,null);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.showLyrics.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("displayLyrics",isChecked,null);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.presoOrder.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("usePresentationOrder",isChecked,null);
@@ -132,23 +132,23 @@ public class DisplayExtraFragment extends Fragment {
         });
         myView.trimSections.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("trimSections",isChecked,null);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.addSectionSpace.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("addSectionSpace",isChecked,null);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.trimLineSpacing.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("trimLines",isChecked,myView.trimLineSpacingSlider);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.filterSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("filterSections",isChecked,myView.filterLayout);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
         myView.filterShow.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("filterShow",isChecked,null);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
         });
 
         // The slider
@@ -160,8 +160,8 @@ public class DisplayExtraFragment extends Fragment {
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 // Save the new value
                 float percentage = slider.getValue()/100f;
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),"lineSpacing",percentage);
-                mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+                mainActivityInterface.getPreferences().setMyPreferenceFloat("lineSpacing",percentage);
+                mainActivityInterface.getProcessSong().updateProcessingPreferences();
             }
         });
         myView.trimLineSpacingSlider.addOnChangeListener((slider, value, fromUser) -> sliderValToText(value));
@@ -184,14 +184,14 @@ public class DisplayExtraFragment extends Fragment {
                 // Put the corrected text back in
                 myView.filters.setText(newText);
                 // Save it
-                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"filterText",newText);
+                mainActivityInterface.getPreferences().setMyPreferenceString("filterText",newText);
             }
         });
     }
 
     private void updateBooleanPreference(String prefName, boolean isChecked, View viewToShowHide) {
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),prefName,isChecked);
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(prefName,isChecked);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
         if (viewToShowHide!=null) {
             visibilityByBoolean(viewToShowHide,isChecked);
         }

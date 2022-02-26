@@ -83,7 +83,7 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
 
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
         if (song!=null) {
-            songContent = mainActivityInterface.getProcessSong().getXML(requireContext(),mainActivityInterface,song);
+            songContent = mainActivityInterface.getProcessSong().getXML(song);
         }
 
         // Set listeners
@@ -138,21 +138,21 @@ public class NewNameBottomSheet extends BottomSheetDialogFragment {
             newName = myView.newName.getText().toString();
             newName = mainActivityInterface.getStorageAccess().safeFilename(newName);
             myView.newName.setText(newName);
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, currentDir, currentSubDir, newName);
-            exists = mainActivityInterface.getStorageAccess().uriExists(getContext(),uri);
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(currentDir, currentSubDir, newName);
+            exists = mainActivityInterface.getStorageAccess().uriExists(uri);
             if (rename) {
                 if (!parentFolder.isEmpty()) {
                     newName = parentFolder + "/" + newName;
                 }
-                mainActivityInterface.getStorageAccess().renameFolder(requireContext(),mainActivityInterface,mainActivityInterface.getShowToast(),song,currentSubDir,newName);
+                mainActivityInterface.getStorageAccess().renameFolder(song,currentSubDir,newName);
                 message = success;
             } else {
                 if (isfile && !exists) {
-                    if (mainActivityInterface.getStorageAccess().createFile(getContext(), mainActivityInterface, null, currentDir, currentSubDir, newName)) {
+                    if (mainActivityInterface.getStorageAccess().createFile(null, currentDir, currentSubDir, newName)) {
                         message = success;
                     }
                 } else if (!isfile && !exists) {
-                    if (mainActivityInterface.getStorageAccess().createFolder(getContext(), mainActivityInterface, currentDir, currentSubDir, newName)) {
+                    if (mainActivityInterface.getStorageAccess().createFolder(currentDir, currentSubDir, newName)) {
                         message = success;
                     }
                 } else {

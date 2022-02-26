@@ -23,7 +23,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
         appDBFile = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
         appDB = Uri.fromFile(appDBFile);
-        userDB = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
+        userDB = mainActivityInterface.getStorageAccess().getUriForItem(
                 "Settings", "", SQLite.NON_OS_DATABASE_NAME);
 
         // Check for a previous version in user storage
@@ -48,14 +48,13 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     private void importDatabase(Context c, MainActivityInterface mainActivityInterface) {
         // This copies in the version in the settings folder if it exists and isn't empty
-        if (mainActivityInterface.getStorageAccess().uriExists(c,userDB) &&
-        mainActivityInterface.getStorageAccess().getFileSizeFromUri(c,userDB)>0) {
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,userDB);
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,appDB);
+        if (mainActivityInterface.getStorageAccess().uriExists(userDB) &&
+        mainActivityInterface.getStorageAccess().getFileSizeFromUri(userDB)>0) {
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(userDB);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(appDB);
             Log.d(TAG,"User database copied in: "+mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream));
         } else {
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,
-                    mainActivityInterface,true, userDB,null,"Settings","",
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, userDB,null,"Settings","",
                     SQLite.NON_OS_DATABASE_NAME);
             Log.d(TAG,"Copy appDB to userDB: "+copyUserDatabase(c,mainActivityInterface));
         }
@@ -63,8 +62,8 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     public boolean copyUserDatabase(Context c, MainActivityInterface mainActivityInterface) {
         // This copies the app persistent database into the user's OpenSong folder
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,appDB);
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,userDB);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
         return mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
     }
 

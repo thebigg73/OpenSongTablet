@@ -77,7 +77,7 @@ public class PageButtonFragment extends Fragment {
                     public void onStopTrackingTouch(@NonNull Slider slider) {
                         float value = myView.opacity.getValue() /100f;
                         int newColor = mainActivityInterface.getMyThemeColors().changePageButtonAlpha(value);
-                        mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                        mainActivityInterface.getPreferences().setMyPreferenceInt(
                                 mainActivityInterface.getMyThemeColors().getThemeName()+"_pageButtonsColor",
                                 newColor);
                     }
@@ -166,7 +166,7 @@ public class PageButtonFragment extends Fragment {
     }
 
     private void changeVisibilityPreference(int x, boolean visible) {
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"pageButtonShow"+(x+1), visible);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("pageButtonShow"+(x+1), visible);
         setVisibilityFromBoolean(myLayouts.get(x),visible);
         mainActivityInterface.getPageButtons().setPageButtonVisibility(x,visible);
         mainActivityInterface.updatePageButtonLayout();
@@ -223,7 +223,7 @@ public class PageButtonFragment extends Fragment {
         mainActivityInterface.getPageButtons().setPageButtonDrawable(requireContext(),x,foundpos);
         mainActivityInterface.getPageButtons().setPageButton(requireContext(), myButtons.get(x), x,true);
         setTheText(x);
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"pageButton"+(x+1),mainActivityInterface.getPageButtons().getPageButtonAction(x));
+        mainActivityInterface.getPreferences().setMyPreferenceString("pageButton"+(x+1),mainActivityInterface.getPageButtons().getPageButtonAction(x));
         mainActivityInterface.updatePageButtonLayout();
     }
 

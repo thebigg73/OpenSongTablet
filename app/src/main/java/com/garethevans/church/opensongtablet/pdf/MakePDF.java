@@ -42,7 +42,7 @@ public class MakePDF {
         // Create the document
         pdfDocument = new PdfDocument();
 
-        initialiseSizes(c,mainActivityInterface);
+        initialiseSizes(mainActivityInterface);
 
         // Start for page 1
         startPage();
@@ -60,9 +60,9 @@ public class MakePDF {
         addSectionViews(sectionViews, sectionWidths, sectionHeights);
 
         // Save the PDF document ready for sharing
-        Uri uri = getPDFUri(c,mainActivityInterface,exportFilename);
+        Uri uri = getPDFUri(mainActivityInterface,exportFilename);
         //pdfDocument.finishPage(page);
-        saveThePDF(c, mainActivityInterface, uri);
+        saveThePDF(mainActivityInterface, uri);
 
         return uri;
     }
@@ -84,8 +84,8 @@ public class MakePDF {
     }
 
     // Initialise the sizes and page numbers
-    private void initialiseSizes(Context c, MainActivityInterface mainActivityInterface) {
-        String pdfSize = mainActivityInterface.getPreferences().getMyPreferenceString(c,"pdfSize","A4");
+    private void initialiseSizes(MainActivityInterface mainActivityInterface) {
+        String pdfSize = mainActivityInterface.getPreferences().getMyPreferenceString("pdfSize","A4");
         PrintAttributes.MediaSize mediaSize;
         switch (pdfSize) {
             case "A4":
@@ -280,8 +280,8 @@ public class MakePDF {
     }
 
     // Deal with saving the PDF so we can share it
-    private void saveThePDF(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
+    private void saveThePDF(MainActivityInterface mainActivityInterface, Uri uri) {
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
         try {
             pdfDocument.writeTo(outputStream);
             outputStream.close();
@@ -290,11 +290,11 @@ public class MakePDF {
             e.printStackTrace();
         }
     }
-    private Uri getPDFUri(Context c, MainActivityInterface mainActivityInterface, String exportFilename) {
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Export", "", exportFilename);
+    private Uri getPDFUri(MainActivityInterface mainActivityInterface, String exportFilename) {
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", exportFilename);
 
         // Remove it as we want to create a new version!
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, true, uri, null, "Export", "", exportFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Export", "", exportFilename);
         return uri;
     }
 }

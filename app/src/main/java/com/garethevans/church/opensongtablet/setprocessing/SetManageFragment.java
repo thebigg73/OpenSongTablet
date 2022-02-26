@@ -222,7 +222,7 @@ public class SetManageFragment extends Fragment {
         categoriesAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.setCategory,
                 R.layout.view_exposed_dropdown_item, categories);
         myView.setCategory.setAdapter(categoriesAdapter);
-        myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),
+        myView.setCategory.setText(mainActivityInterface.getPreferences().getMyPreferenceString(
                 "whichSetCategory", requireContext().getString(R.string.mainfoldername)));
         myView.setCategory.addTextChangedListener(new TextWatcher() {
             @Override
@@ -235,7 +235,7 @@ public class SetManageFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                mainActivityInterface.getPreferences().setMyPreferenceString(
                         "whichSetCategory", s.toString());
                 listAvailableSets();
             }
@@ -343,26 +343,24 @@ public class SetManageFragment extends Fragment {
             setName = category + setName;
 
             // If the file already exists and we aren't overwriting, alert the user to rename it
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                    mainActivityInterface, "Sets", "", setName);
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setName);
 
-            if (mainActivityInterface.getStorageAccess().uriExists(requireContext(), uri) &&
+            if (mainActivityInterface.getStorageAccess().uriExists(uri) &&
                     !myView.overWrite.isChecked()) {
                 mainActivityInterface.getShowToast().doIt(
                         getString(R.string.file_exists));
             } else {
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                        requireContext(), mainActivityInterface, false, uri, null,
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, uri, null,
                         "Sets", "", setName);
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().
-                        getOutputStream(requireContext(), uri);
+                        getOutputStream(uri);
 
                 String setXML = mainActivityInterface.getSetActions().createSetXML(
                         requireContext(), mainActivityInterface);
                 if (mainActivityInterface.getStorageAccess().writeFileFromString(
                         setXML, outputStream)) {
                     // Update the last loaded set now it is saved.
-                    mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+                    mainActivityInterface.getPreferences().setMyPreferenceString(
                             "setCurrentBeforeEdits",
                             mainActivityInterface.getCurrentSet().getCurrentSetString());
                     mainActivityInterface.getShowToast().doIt(getString(R.string.set_current) + " - " +
@@ -384,11 +382,10 @@ public class SetManageFragment extends Fragment {
         String[] setBits = chosenSets.split("%_%");
         for (String setBit : setBits) {
             if (setBit != null && !setBit.isEmpty()) {
-                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                        mainActivityInterface, "Sets", "", setBit);
-                if (mainActivityInterface.getStorageAccess().uriExists(requireContext(), uri)) {
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setBit);
+                if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
                     // Try deleting the set file
-                    if (!mainActivityInterface.getStorageAccess().deleteFile(requireContext(), uri)) {
+                    if (!mainActivityInterface.getStorageAccess().deleteFile(uri)) {
                         success = false;
                     }
                 }
@@ -414,8 +411,7 @@ public class SetManageFragment extends Fragment {
             oldSetFilename = renameSetCategory + "__" + renameSetName;
             oldSetText = renameSetCategory + "/" + renameSetName;
         }
-        oldSetUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface,"Sets","",oldSetFilename);
+        oldSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets","",oldSetFilename);
 
         Editable mycat = myView.setCategory.getText();
         Editable mynam = myView.setName.getText();
@@ -427,10 +423,9 @@ public class SetManageFragment extends Fragment {
                 newSetFilename = mycat + "__" + mynam;
                 newSetText = mycat + "/" + mynam;
             }
-            newSetUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                    mainActivityInterface,"Sets","",newSetFilename);
+            newSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets","",newSetFilename);
 
-            boolean exists = mainActivityInterface.getStorageAccess().uriExists(requireContext(),newSetUri);
+            boolean exists = mainActivityInterface.getStorageAccess().uriExists(newSetUri);
             if (exists && !myView.overWrite.isChecked()) {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.file_exists));
             } else {
@@ -459,8 +454,8 @@ public class SetManageFragment extends Fragment {
         myView.progressBar.setVisibility(View.VISIBLE);
         // Initialise the current set
         mainActivityInterface.getCurrentSet().initialiseTheSet();
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "setCurrent", "");
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "setCurrentBeforeEdits", "");
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", "");
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrentBeforeEdits", "");
 
         // Because we can import multiple sets, we need to get them into an array
         ArrayList<Uri> setUris = new ArrayList<>();
@@ -470,8 +465,7 @@ public class SetManageFragment extends Fragment {
         String[] setBits = chosenSets.split("%_%");
         for (String setBit : setBits) {
             if (setBit != null && !setBit.isEmpty()) {
-                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                        mainActivityInterface, "Sets", "", setBit);
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setBit);
                 setUris.add(uri);
                 setNameBuilder.append(setBit).append("_");
             }
@@ -481,7 +475,7 @@ public class SetManageFragment extends Fragment {
         if (setName.startsWith("_")) {
             setName = setName.replaceFirst("_", "");
         }
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+        mainActivityInterface.getPreferences().setMyPreferenceString(
                 "setCurrentLastName", setName);
 
         new Thread(() -> {
@@ -514,7 +508,7 @@ public class SetManageFragment extends Fragment {
 
     public void doRename() {
         // Received back from the are you sure dialog
-        mainActivityInterface.getStorageAccess().renameFileFromUri(requireContext(),mainActivityInterface,
+        mainActivityInterface.getStorageAccess().renameFileFromUri(
                 oldSetUri,newSetUri,"Sets","",newSetFilename);
         prepareSets();
     }

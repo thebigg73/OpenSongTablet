@@ -43,15 +43,15 @@ public class ActionBarSettingsFragment extends Fragment {
 
     private void setupPreferences() {
         // The song title and author
-        myView.titleTextSize.setHintTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f));
-        myView.authorTextSize.setHintTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f));
+        myView.titleTextSize.setHintTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize",13.0f));
+        myView.authorTextSize.setHintTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("songAuthorSize",11.0f));
 
         // The sliders
-        float titleTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songTitleSize", 13),6);
-        float authorTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"songAuthorSize", 11),6);
-        float batteryTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"batteryTextSize", 9),6);
-        float timeTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"clockTextSize", 9),6);
-        int batteryDialSize = (int)checkMin(mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"batteryDialThickness", 4),1);
+        float titleTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize", 13),6);
+        float authorTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("songAuthorSize", 11),6);
+        float batteryTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("batteryTextSize", 9),6);
+        float timeTextSize = checkMin(mainActivityInterface.getPreferences().getMyPreferenceFloat("clockTextSize", 9),6);
+        int batteryDialSize = (int)checkMin(mainActivityInterface.getPreferences().getMyPreferenceInt("batteryDialThickness", 4),1);
 
         myView.titleTextSize.setValue(titleTextSize);
         myView.titleTextSize.setHint(timeTextSize+"sp");
@@ -67,14 +67,14 @@ public class ActionBarSettingsFragment extends Fragment {
         myView.batteryTextSize.setLabelFormatter(value -> ((int)value)+"px");
 
         // The switches
-        myView.autohideActionBar.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
-        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"batteryDialOn",true),
+        myView.autohideActionBar.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideActionBar",false));
+        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean("batteryDialOn",true),
                 true,myView.batteryDialOnOff,myView.batteryDialSize);
-        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"batteryTextOn",true),
+        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean("batteryTextOn",true),
                 true,myView.batteryTextOnOff,myView.batteryDialSize);
-        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"clockOn",true),
+        showOrHideView(mainActivityInterface.getPreferences().getMyPreferenceBoolean("clockOn",true),
                 true,myView.clockTextOnOff,myView.timeLayout);
-        myView.clock24hrOnOff.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"clock24hFormat",true));
+        myView.clock24hrOnOff.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("clock24hFormat",true));
         
         // The listeners
         myView.titleTextSize.addOnChangeListener(new MyOnChangeListener("songTitleSize",true));
@@ -90,25 +90,25 @@ public class ActionBarSettingsFragment extends Fragment {
 
         myView.autohideActionBar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateActionBar("hideActionBar",0.0f,!isChecked);
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"hideActionBar",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("hideActionBar",isChecked);
         });
         myView.batteryDialOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateActionBar("batteryDialOn",0.0f,isChecked);
             showOrHideView(isChecked,false ,myView.batteryDialOnOff, myView.batteryDialSize);
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"batteryDialOn",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("batteryDialOn",isChecked);
         });
         myView.batteryTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"batteryTextOn",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("batteryTextOn",isChecked);
             showOrHideView(isChecked,false ,myView.batteryTextOnOff, myView.batteryTextSize);
             updateActionBar("batteryTextOn",0.0f,isChecked);
         });
         myView.clockTextOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"clockOn",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("clockOn",isChecked);
             showOrHideView(isChecked,false ,myView.clockTextOnOff, myView.timeLayout);
             updateActionBar("clockOn",0.0f,isChecked);
         });
         myView.clock24hrOnOff.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"clock24hFormat",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("clock24hFormat",isChecked);
             updateActionBar("clock24hFormat",0.0f,isChecked);
         });
     }
@@ -172,9 +172,9 @@ public class ActionBarSettingsFragment extends Fragment {
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the preference
             if (isfloat) {
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName, slider.getValue());
+                mainActivityInterface.getPreferences().setMyPreferenceFloat(prefName, slider.getValue());
             } else {
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),prefName, (int)slider.getValue());
+                mainActivityInterface.getPreferences().setMyPreferenceInt(prefName, (int)slider.getValue());
             }
         }
     }

@@ -109,7 +109,7 @@ public class ImportOSBFragment extends Fragment {
                     Intent data = result.getData();
                     if (data != null) {
                         Uri contentUri = data.getData();
-                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(requireContext(), importUri);
+                        String importFilename = mainActivityInterface.getStorageAccess().getFileNameFromUri(importUri);
                         if (importFilename.endsWith(".osb")) {
                             myView.importTitle.setText(importFilename);
                             importUri = contentUri;
@@ -163,7 +163,7 @@ public class ImportOSBFragment extends Fragment {
 
             try {
                 zipContents = 0;
-                inputStream = mainActivityInterface.getStorageAccess().getInputStream(getActivity(), importUri);
+                inputStream = mainActivityInterface.getStorageAccess().getInputStream(importUri);
                 zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
 
                 // Add the main folder
@@ -322,7 +322,7 @@ public class ImportOSBFragment extends Fragment {
         // The actual importing runs in a new thread
         runnable = () -> {
 
-            inputStream = mainActivityInterface.getStorageAccess().getInputStream(getActivity(), importUri);
+            inputStream = mainActivityInterface.getStorageAccess().getInputStream(importUri);
             zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
 
             requireActivity().runOnUiThread(() -> {
@@ -344,7 +344,7 @@ public class ImportOSBFragment extends Fragment {
                     }
                 });
                 if (alive) {
-                    mainActivityInterface.getStorageAccess().createFile(getActivity(), mainActivityInterface, DocumentsContract.Document.MIME_TYPE_DIR,
+                    mainActivityInterface.getStorageAccess().createFile(DocumentsContract.Document.MIME_TYPE_DIR,
                             "Songs", folder, "");
                 }
             }
@@ -363,11 +363,11 @@ public class ImportOSBFragment extends Fragment {
                         String filefolder = "";
                         if (alive) {
                             if (ze.getName().startsWith("_Highlighter")) {
-                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, "Highlighter", "", ze.getName().replace("_Highlighter/",""));
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", ze.getName().replace("_Highlighter/",""));
                             } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
-                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(),mainActivityInterface,"Settings","",SQLite.NON_OS_DATABASE_NAME);
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings","",SQLite.NON_OS_DATABASE_NAME);
                             } else {
-                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem(getContext(), mainActivityInterface, "Songs", "", ze.getName());
+                                file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", "", ze.getName());
                                 if (alive) {
                                     filefolder = getString(R.string.mainfoldername);
                                 }
@@ -378,7 +378,7 @@ public class ImportOSBFragment extends Fragment {
 
                             // If the file exists and we have allowed overwriting, or it doesn't exist and it is in the checked folders, write it
                             // Because the database will be in the MAIN folder, we need to check that
-                            exists = mainActivityInterface.getStorageAccess().uriExists(getContext(), file_uri);
+                            exists = mainActivityInterface.getStorageAccess().uriExists(file_uri);
                             wantit = (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME) && myView.includePersistentDB.getChecked()) ||
                                     (!ze.getName().equals(SQLite.NON_OS_DATABASE_NAME) && checkedFolders.contains(filefolder)) ||
                                     (filefolder.equals("_Highlighter") && myView.includeHighlighter.isChecked());
@@ -409,20 +409,20 @@ public class ImportOSBFragment extends Fragment {
                                     filename = ze.getName().replace("_Highlighter/","");
                                     Log.d(TAG,"filename="+filename);
                                     Log.d(TAG,"Into highlighter: folder="+filefolder+"  filename="+filename+"  file_uri="+file_uri);
-                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,
+                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, file_uri,null,"Highlighter","",filename);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
-                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),mainActivityInterface,
+                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false,file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
                                     Log.d(TAG,"Into songs: folder="+filefolder+"  filename="+filename+"  file_uri="+file_uri);
-                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getContext(), mainActivityInterface,
+                                    mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
                                             false, file_uri, null, "Songs", filefolder, filename);
                                 }
                             }
                             if (alive) {
-                                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(getContext(), file_uri);
+                                outputStream = mainActivityInterface.getStorageAccess().getOutputStream(file_uri);
                             }
 
                             // Write the file
@@ -475,8 +475,8 @@ public class ImportOSBFragment extends Fragment {
                         mainActivityInterface.closeDrawer(true);
 
                         // Update the songid file
-                        ArrayList<String> songids = mainActivityInterface.getStorageAccess().listSongs(requireContext(),mainActivityInterface);
-                        mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),mainActivityInterface,songids);
+                        ArrayList<String> songids = mainActivityInterface.getStorageAccess().listSongs();
+                        mainActivityInterface.getStorageAccess().writeSongIDFile(songids);
 
                         // Update the song index
                         if (myView.includePersistentDB.getChecked()) {

@@ -47,7 +47,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         this.displayInterface = displayInterface;
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
-        scaleType = mainActivityInterface.getPreferences().getMyPreferenceString(c,"songAutoScale","W");
+        scaleType = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W");
         density = c.getResources().getDisplayMetrics().density;
         setSongInfo();
     }
@@ -82,7 +82,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
             // Get the image sizes from the files
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
-            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c,mainActivityInterface,images[x]);
+            Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(images[x]);
 
             slideInfo.uri = uri;
 
@@ -159,8 +159,7 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         String pageNumText = slideInfos.get(position).pageNumText;
         holder.imageSlideNumText.setText(pageNumText);
 
-        Bitmap imageSlideBitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(c,
-                mainActivityInterface,uri,width,height);
+        Bitmap imageSlideBitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(uri,width,height);
 
         Glide.with(c).load(imageSlideBitmap).override(width,height).into(holder.imageSlideImage);
         holder.imageSlideImage.setOnClickListener(view -> sectionSelected(pageNum));

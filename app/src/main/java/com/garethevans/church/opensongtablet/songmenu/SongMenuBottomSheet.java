@@ -63,7 +63,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         // Set up the song title
         String songTitle = mainActivityInterface.getSong().getTitle();
         Log.d(TAG,"songTitle: "+songTitle);
-        if (!mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
+        if (!mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             myView.songEdit.setVisibility(View.GONE);
             myView.songActions.setVisibility(View.GONE);
             myView.addToSet.setVisibility(View.GONE);

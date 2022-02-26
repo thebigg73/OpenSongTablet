@@ -260,51 +260,51 @@ public class PresenterSettings {
 
     public void getImagePreferences(Context c, MainActivityInterface mainActivityInterface) {
         setLogo(getUriFromString(c,mainActivityInterface,mainActivityInterface.
-                        getPreferences().getMyPreferenceString(c,"customLogo",""),
+                        getPreferences().getMyPreferenceString("customLogo",""),
                 "ost_logo.png"));
-        setLogoSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"customLogoSize",0.5f));
+        setLogoSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("customLogoSize",0.5f));
         setBackgroundImage1(getUriFromString(c,mainActivityInterface,mainActivityInterface.
-                        getPreferences().getMyPreferenceString(c,"backgroundImage1",""),
+                        getPreferences().getMyPreferenceString("backgroundImage1",""),
                 "ost_bg.png"));
         setBackgroundImage2(getUriFromString(c,mainActivityInterface,mainActivityInterface.
-                        getPreferences().getMyPreferenceString(c,"backgroundImage2",""),
+                        getPreferences().getMyPreferenceString("backgroundImage2",""),
                 null));
         setBackgroundVideo1(getUriFromString(c,mainActivityInterface,mainActivityInterface.
-                        getPreferences().getMyPreferenceString(c,"backgroundVideo1",""),
+                        getPreferences().getMyPreferenceString("backgroundVideo1",""),
                 null));
         setBackgroundVideo2(getUriFromString(c,mainActivityInterface,mainActivityInterface.
-                        getPreferences().getMyPreferenceString(c,"backgroundVideo2",""),
+                        getPreferences().getMyPreferenceString("backgroundVideo2",""),
                 null));
         setBackgroundToUse(mainActivityInterface.getPreferences().
-                getMyPreferenceString(c, "backgroundToUse","img1"));
+                getMyPreferenceString("backgroundToUse","img1"));
         setBackgroundColor(mainActivityInterface.getPreferences().
-                getMyPreferenceInt(c,"backgroundColor", ContextCompat.getColor(c,R.color.red)));
+                getMyPreferenceInt("backgroundColor", ContextCompat.getColor(c,R.color.red)));
         setPresoBackgroundAlpha(mainActivityInterface.getPreferences().
-                getMyPreferenceFloat(c,"presoBackgroundAlpha",1f));
+                getMyPreferenceFloat("presoBackgroundAlpha",1f));
     }
     public void getScreenSetupPreferences(Context c, MainActivityInterface mainActivityInterface) {
-        setPresoTransitionTime(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoTransitionTime", 800));
-        setCastRotation(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"castRotation",0.0f));
-        setPresoXMargin(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoXMargin",0));
-        setPresoYMargin(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoYMargin",0));
-        setPresoInfoAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
-        setPresoLyricsAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoLyricsAlign", Gravity.CENTER_HORIZONTAL));
-        setPresoLyricsVAlign(mainActivityInterface.getPreferences().getMyPreferenceInt(c,"presoLyricsVAlign", Gravity.CENTER_VERTICAL));
-        setPresoShowChords(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "presoShowChords", false));
-        setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "fontSizePresoMax", 40f));
-        setUsePresentationOrder(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "usePresentationOrder", false));
+        setPresoTransitionTime(mainActivityInterface.getPreferences().getMyPreferenceInt("presoTransitionTime", 800));
+        setCastRotation(mainActivityInterface.getPreferences().getMyPreferenceFloat("castRotation",0.0f));
+        setPresoXMargin(mainActivityInterface.getPreferences().getMyPreferenceInt("presoXMargin",0));
+        setPresoYMargin(mainActivityInterface.getPreferences().getMyPreferenceInt("presoYMargin",0));
+        setPresoInfoAlign(mainActivityInterface.getPreferences().getMyPreferenceInt("presoInfoAlign", Gravity.END));
+        setPresoLyricsAlign(mainActivityInterface.getPreferences().getMyPreferenceInt("presoLyricsAlign", Gravity.CENTER_HORIZONTAL));
+        setPresoLyricsVAlign(mainActivityInterface.getPreferences().getMyPreferenceInt("presoLyricsVAlign", Gravity.CENTER_VERTICAL));
+        setPresoShowChords(mainActivityInterface.getPreferences().getMyPreferenceBoolean("presoShowChords", false));
+        setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizePresoMax", 40f));
+        setUsePresentationOrder(mainActivityInterface.getPreferences().getMyPreferenceBoolean("usePresentationOrder", false));
     }
     public void getInfoPreferences(Context c, MainActivityInterface mainActivityInterface) {
-        setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoInfoBarAlpha",0.5f));
-        setHideInfoBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"hideInfoBar",true));
-        setPresoTitleTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoTitleTextSize",14f));
-        setPresoAuthorTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAuthorTextSize",12f));
-        setPresoCopyrightTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoCopyrightTextSize",12f));
-        setCcliLicence(mainActivityInterface.getPreferences().getMyPreferenceString(c,"ccliLicence",""));
+        setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoInfoBarAlpha",0.5f));
+        setHideInfoBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInfoBar",true));
+        setPresoTitleTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoTitleTextSize",14f));
+        setPresoAuthorTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoAuthorTextSize",12f));
+        setPresoCopyrightTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoCopyrightTextSize",12f));
+        setCcliLicence(mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence",""));
     }
     public void getAlertPreferences(Context c, MainActivityInterface mainActivityInterface) {
-        setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString(c,"presoAlertText",""));
-        setPresoAlertTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"presoAlertTextSize", 12f));
+        setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString("presoAlertText",""));
+        setPresoAlertTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoAlertTextSize", 12f));
     }
 
     private Uri getUriFromString(Context c, MainActivityInterface mainActivityInterface,
@@ -312,12 +312,12 @@ public class PresenterSettings {
         Uri uri = null;
         if (uriString!=null && !uriString.isEmpty()) {
             uri = mainActivityInterface.getStorageAccess().
-                    fixLocalisedUri(c, mainActivityInterface, uriString);
+                    fixLocalisedUri(uriString);
         }
         if ((backupString!=null && !backupString.isEmpty()) &&
-                (uri==null || !mainActivityInterface.getStorageAccess().uriExists(c,uri))) {
+                (uri==null || !mainActivityInterface.getStorageAccess().uriExists(uri))) {
             uri = mainActivityInterface.getStorageAccess().
-                    fixLocalisedUri(c,mainActivityInterface,backupString);
+                    fixLocalisedUri(backupString);
         }
         return uri;
     }

@@ -26,12 +26,10 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.RequiresApi;
-import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -57,7 +55,14 @@ import java.util.Objects;
 
 public class StorageAccess {
 
+    public StorageAccess(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+
     // TODO TIDY UP
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     public final String appFolder = "OpenSong";
     private final String TAG = "StorageAccess";
     private final String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
@@ -68,8 +73,8 @@ public class StorageAccess {
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
 
     // These are used primarily on start up to initialise stuff
-    private String getStoragePreference(Context c, MainActivityInterface mainActivityInterface) {
-        return mainActivityInterface.getPreferences().getMyPreferenceString(c, "uriTree", null);
+    private String getStoragePreference() {
+        return mainActivityInterface.getPreferences().getMyPreferenceString("uriTree", null);
     }
 
 
@@ -81,7 +86,7 @@ public class StorageAccess {
 
     // This gets the uri for the uriTreeHome (the uri of the ..../OpenSong folder
     // This may or may not be the same as uriTree as this could be the parent folder
-    public Uri homeFolder(Context c, Uri uri, MainActivityInterface mainActivityInterface) {
+    public Uri homeFolder(Uri uri) {
         // The user specified a storage folder when they started the app
         // However, this might not be the OpenSong folder, but the folder containing it
         // This function is called once when the app starts and fixes that
@@ -90,7 +95,7 @@ public class StorageAccess {
         String uriTree_String;
         if (uri == null) {
             // No uri has been sent, so retrieve it from the preferences
-            uriTree_String = getStoragePreference(c, mainActivityInterface);
+            uriTree_String = getStoragePreference();
         } else {
             // Use the uri sent as the base start point
             uriTree_String = uri.toString();
@@ -99,7 +104,7 @@ public class StorageAccess {
         try {
             if (uriTree_String != null) {
                 if (lollipopOrLater()) {
-                    uri = homeFolder_SAF(c, uriTree_String);
+                    uri = homeFolder_SAF(uriTree_String);
                 } else {
                     uri = homeFolder_File(uriTree_String);
                 }
@@ -113,7 +118,7 @@ public class StorageAccess {
         }
         return uri;
     }
-    public boolean uriTreeValid(Context c, Uri uri) {
+    public boolean uriTreeValid(Uri uri) {
         if (uri == null) {
             return false;
         } else {
@@ -134,13 +139,13 @@ public class StorageAccess {
             }
         }
     }
-    private Uri homeFolder_SAF(Context c, String uriTree_String) {
+    private Uri homeFolder_SAF(String uriTree_String) {
         // When using a document tree, the uri needed for DocumentsContract is more complex than the uri chosen.
         // Create a document file to get a contract uri
 
         Uri uri = Uri.parse(uriTree_String);
         if (uri != null) {
-            DocumentFile df = documentFileFromRootUri(c, uri, uriTree_String);
+            DocumentFile df = documentFileFromRootUri(uri, uriTree_String);
             if (df == null || !df.exists()) {
                 uri = null;
             } else {
@@ -181,20 +186,20 @@ public class StorageAccess {
 
     // Sort the initial default folders and files needed when the app installs changes storage location
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public String createOrCheckRootFolders(Context c, Uri uri, MainActivityInterface mainActivityInterface) {
+    public String createOrCheckRootFolders(Uri uri) {
         // uri if the uriTree.  If not sent/null, load from preferences
         if (uri == null) {
-            uri = Uri.parse(mainActivityInterface.getPreferences().getMyPreferenceString(c, "uriTree", ""));
+            uri = Uri.parse(mainActivityInterface.getPreferences().getMyPreferenceString("uriTree", ""));
         }
 
         if (lollipopOrLater()) {
-            return createOrCheckRootFolders_SAF(c, uri, mainActivityInterface);
+            return createOrCheckRootFolders_SAF(uri);
         } else {
-            return createOrCheckRootFolders_File(c, mainActivityInterface);
+            return createOrCheckRootFolders_File();
         }
     }
-    private String createOrCheckRootFolders_File(Context c, MainActivityInterface mainActivityInterface) {
-        File rootFolder = new File(stringForFile(c, mainActivityInterface, ""));
+    private String createOrCheckRootFolders_File() {
+        File rootFolder = new File(stringForFile(""));
         // Go through the main folders and try to create
         for (String folder : rootFolders) {
             File nf = new File(rootFolder, folder);
@@ -214,18 +219,18 @@ public class StorageAccess {
                 }
             }
         }
-        copyAssets(c, mainActivityInterface);
+        copyAssets();
         return "Success";
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private String createOrCheckRootFolders_SAF(Context c, Uri uri, MainActivityInterface mainActivityInterface) {
-        uriTreeHome = homeFolder(c, uri, mainActivityInterface);
+    private String createOrCheckRootFolders_SAF(Uri uri) {
+        uriTreeHome = homeFolder(uri);
 
         // Check the OpenSong folder exists (may be specified in the uriTree and/or uriTreeHome
         if (uriTree != null && uriTree.getLastPathSegment() != null &&
                 (!uriTree.getLastPathSegment().endsWith("OpenSong") || !uriTree.getLastPathSegment().endsWith("OpenSong/"))) {
             // We need to check the uri points to the OpenSong folder
-            if (!uriExists(c, uriTreeHome)) {
+            if (!uriExists(uriTreeHome)) {
                 try {
                     uriTreeHome = DocumentsContract.createDocument(c.getContentResolver(), uriTree, DocumentsContract.Document.MIME_TYPE_DIR, "OpenSong");
                 } catch (Exception e) {
@@ -237,8 +242,8 @@ public class StorageAccess {
         // Go through the main folders and try to create them
         for (String folder : rootFolders) {
             try {
-                Uri thisFolder = getUriForItem(c, mainActivityInterface, folder, "", "");
-                if (!uriExists(c, thisFolder)) {
+                Uri thisFolder = getUriForItem(folder, "", "");
+                if (!uriExists(thisFolder)) {
                     DocumentsContract.createDocument(c.getContentResolver(), uriTreeHome, DocumentsContract.Document.MIME_TYPE_DIR, folder);
                 }
             } catch (Exception e) {
@@ -250,9 +255,9 @@ public class StorageAccess {
         for (String folder : cacheFolders) {
             String[] bits = folder.split("/");
             try {
-                Uri dirUri = getUriForItem(c, mainActivityInterface, bits[0], "", "");
-                Uri thisFolder = getUriForItem(c, mainActivityInterface, bits[0], bits[1], "");
-                if (!uriExists(c, thisFolder)) {
+                Uri dirUri = getUriForItem(bits[0], "", "");
+                Uri thisFolder = getUriForItem(bits[0], bits[1], "");
+                if (!uriExists(thisFolder)) {
                     try {
                         DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
                     } catch (Exception e3) {
@@ -265,31 +270,31 @@ public class StorageAccess {
         }
 
         // Now copy the assets if they aren't already there
-        copyAssets(c, mainActivityInterface);
+        copyAssets();
         return "Success";
     }
-    private void copyAssets(Context c, MainActivityInterface mainActivityInterface) {
+    private void copyAssets() {
         try {
             // Copies the background assets
             AssetManager assetManager = c.getAssets();
             String[] files = new String[2];
             files[0] = "backgrounds/ost_bg.png";
             files[1] = "backgrounds/ost_logo.png";
-            Uri backgrounds = getUriForItem(c, mainActivityInterface, "Backgrounds", "", "");
+            Uri backgrounds = getUriForItem("Backgrounds", "", "");
 
-            DocumentFile df = documentFileFromUri(c, backgrounds, backgrounds.getPath());
+            DocumentFile df = documentFileFromUri(backgrounds, backgrounds.getPath());
             for (String filename : files) {
                 String filetocopy = filename.replace("backgrounds/", "");
                 // See if they are already there first
-                Uri uritocheck = getUriForItem(c, mainActivityInterface, "Backgrounds", "", filetocopy);
-                if (!uriExists(c, uritocheck)) {
+                Uri uritocheck = getUriForItem("Backgrounds", "", filetocopy);
+                if (!uriExists(uritocheck)) {
                     if (lollipopOrLater()) {
                         DocumentsContract.createDocument(c.getContentResolver(), backgrounds, "image/png", filetocopy);
                     } else {
                         df.createFile("image/png", filetocopy);
                     }
                     if (uritocheck != null) {
-                        OutputStream out = getOutputStream(c, uritocheck);
+                        OutputStream out = getOutputStream(uritocheck);
                         try {
                             InputStream in = assetManager.open(filename);
                             copyFile(in, out);
@@ -307,14 +312,14 @@ public class StorageAccess {
 
     // Deal with parsing, creating, editing file and folder names
     // This gets the File location for the app as a String (for appending).  PreLollipop only
-    public String[] niceUriTree(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
+    public String[] niceUriTree(Uri uri) {
         if (lollipopOrLater()) {
-            return niceUriTree_SAF(c, mainActivityInterface, uri, new String[]{"", ""});
+            return niceUriTree_SAF(uri, new String[]{"", ""});
         } else {
-            return niceUriTree_File(c, uri, new String[]{"", ""});
+            return niceUriTree_File(uri, new String[]{"", ""});
         }
     }
-    private String[] niceUriTree_SAF(Context c, MainActivityInterface mainActivityInterface, Uri uri, String[] storageDetails) {
+    private String[] niceUriTree_SAF(Uri uri, String[] storageDetails) {
         // storageDetails is currently empty, but will be [0]=extra info  [1]=nice location
         if (storageDetails == null) {
             storageDetails = new String[2];
@@ -361,7 +366,7 @@ public class StorageAccess {
 
             // If we have a path try to give extra info of a 'songs' count
             try {
-                ArrayList<String> songIds = listSongs(c, mainActivityInterface);
+                ArrayList<String> songIds = listSongs();
 
                 // Only items that don't end with / are songs!
                 int count = 0;
@@ -382,7 +387,7 @@ public class StorageAccess {
         }
         return storageDetails;
     }
-    public String[] niceUriTree_File(Context c, Uri uri, String[] storageDetails) {
+    public String[] niceUriTree_File(Uri uri, String[] storageDetails) {
         storageDetails[1] = uri.getPath().replace("file://", "");
         if (!storageDetails[1].startsWith("/")) {
             storageDetails[1] = "/" + storageDetails[1];
@@ -444,9 +449,9 @@ public class StorageAccess {
         }
         return uri;
     }
-    private String stringForFile(Context c, MainActivityInterface mainActivityInterface, String folderpath) {
+    private String stringForFile(String folderpath) {
         if (uriTreeHome == null) {
-            String uriTreeHome_String = mainActivityInterface.getPreferences().getMyPreferenceString(c, "uriTreeHome", "");
+            String uriTreeHome_String = mainActivityInterface.getPreferences().getMyPreferenceString("uriTreeHome", "");
             uriTreeHome = Uri.parse(uriTreeHome_String);
         }
 
@@ -460,7 +465,7 @@ public class StorageAccess {
             return folderpath;
         }
     }
-    private String[] fixFoldersAndFiles(Context c, String folder, String subfolder, String filename) {
+    private String[] fixFoldersAndFiles(String folder, String subfolder, String filename) {
         // This fixes incorrect folders that would cause problems
         String[] returnvals = new String[3];
         if (subfolder.startsWith("**")) {
@@ -527,7 +532,7 @@ public class StorageAccess {
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
         return filename.trim();  // Returns the trimmed value
     }
-    public Uri fixLocalisedUri(Context c, MainActivityInterface mainActivityInterface, String uriString) {
+    public Uri fixLocalisedUri(String uriString) {
         // This checks for localised filenames first and fixes the Uri
         if (uriString.equals("ost_logo.png") || uriString.equals("ost_bg.png")) {
             uriString = "../OpenSong/Backgrounds/" + uriString;
@@ -543,7 +548,7 @@ public class StorageAccess {
                 uriString = uriString.replace(rootFolder+"/","");
             }
             // Try to get the actual uri
-            return getUriForItem(c,mainActivityInterface,rootFolder,"",uriString);
+            return getUriForItem(rootFolder,"",uriString);
         } else {
             // Now get the actual uri
             return Uri.parse(uriString);
@@ -585,12 +590,12 @@ public class StorageAccess {
     }
 
     // Get information about the files
-    public String getUTFEncoding(Context c, Uri uri) {
+    public String getUTFEncoding(Uri uri) {
         // Try to determine the BOM for UTF encoding
         String utf = "UTF-8";
         InputStream is = null;
         try {
-            is = getInputStream(c, uri);
+            is = getInputStream(uri);
             utf = getBOMEncoding(is);
         } catch (Exception e) {
             Log.d(TAG, "Unable to get encoding for " + uri);
@@ -653,15 +658,15 @@ public class StorageAccess {
             }
         }
     }
-    public float getFileSizeFromUri(Context c, Uri uri) {
+    public float getFileSizeFromUri(Uri uri) {
         if (lollipopOrLater()) {
-            return getFileSizeFromUri_SAF(c, uri);
+            return getFileSizeFromUri_SAF(uri);
         } else {
             return getFileSizeFromUri_File(uri);
         }
     }
-    private float getFileSizeFromUri_SAF(Context c, Uri uri) {
-        DocumentFile df = documentFileFromUri(c, uri, uri.getPath());
+    private float getFileSizeFromUri_SAF(Uri uri) {
+        DocumentFile df = documentFileFromUri(uri, uri.getPath());
         if (df != null && df.exists()) {
             return (float) df.length() / (float) 1024;
         } else {
@@ -679,14 +684,14 @@ public class StorageAccess {
             return 0;
         }
     }
-    public boolean uriExists(Context c, Uri uri) {
+    public boolean uriExists(Uri uri) {
         if (lollipopOrLater()) {
-            return uriExists_SAF(c, uri);
+            return uriExists_SAF(uri);
         } else {
-            return uriExists_File(c, uri);
+            return uriExists_File(uri);
         }
     }
-    private boolean uriExists_SAF(Context c, Uri uri) {
+    private boolean uriExists_SAF(Uri uri) {
         try {
             InputStream is = c.getContentResolver().openInputStream(uri);
             if (is != null) {
@@ -697,7 +702,7 @@ public class StorageAccess {
             return false;
         }
     }
-    private boolean uriExists_File(Context c, Uri uri) {
+    private boolean uriExists_File(Uri uri) {
         if (uri != null && uri.getScheme() != null && uri.getScheme().equals("file")) {
             File df = null;
             if (uri.getPath() != null) {
@@ -721,14 +726,14 @@ public class StorageAccess {
             }
         }
     }
-    public boolean uriIsFile(Context c, Uri uri) {
+    public boolean uriIsFile(Uri uri) {
         if (lollipopOrLater()) {
-            return uriIsFile_SAF(c, uri);
+            return uriIsFile_SAF(uri);
         } else {
             return uriIsFile_File(uri);
         }
     }
-    private boolean uriIsFile_SAF(Context c, Uri uri) {
+    private boolean uriIsFile_SAF(Uri uri) {
         DocumentFile df = DocumentFile.fromSingleUri(c, uri);
         if (df == null) {
             return false;
@@ -748,14 +753,14 @@ public class StorageAccess {
             return false;
         }
     }
-    public boolean canWrite(Context c, Uri uri) {
+    public boolean canWrite(Uri uri) {
         if (lollipopOrLater()) {
-            return canWrite_SAF(c, uri);
+            return canWrite_SAF(uri);
         } else {
             return canWrite_File(uri);
         }
     }
-    private boolean canWrite_SAF(Context c, Uri uri) {
+    private boolean canWrite_SAF(Uri uri) {
         DocumentFile df = DocumentFile.fromSingleUri(c, uri);
         if (df != null) {
             return df.canWrite();
@@ -771,11 +776,11 @@ public class StorageAccess {
             return false;
         }
     }
-    boolean containsXMLTags(Context c, Uri uri) {
+    boolean containsXMLTags(Uri uri) {
         try {
             boolean found = false;
-            String utf = getUTFEncoding(c, uri);
-            InputStream inputStream = getInputStream(c, uri);
+            String utf = getUTFEncoding(uri);
+            InputStream inputStream = getInputStream(uri);
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();
@@ -903,19 +908,19 @@ public class StorageAccess {
 
 
     // Get references to the files and folders
-    public Uri getUriForItem(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
-            String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
+    public Uri getUriForItem(String folder, String subfolder, String filename) {
+            String[] fixedfolders = fixFoldersAndFiles(folder, subfolder, filename);
         if (lollipopOrLater()) {
-            return getUriForItem_SAF(c, mainActivityInterface, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            return getUriForItem_SAF(fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         } else {
-            return getUriForItem_File(c, mainActivityInterface, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            return getUriForItem_File(fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         }
     }
     @SuppressLint("NewApi")
-    private Uri getUriForItem_SAF(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
+    private Uri getUriForItem_SAF(String folder, String subfolder, String filename) {
         // Get the home folder as our start point
         if (uriTreeHome == null) {
-            uriTreeHome = homeFolder(c, null, mainActivityInterface);
+            uriTreeHome = homeFolder(null);
         }
         Uri uri = uriTreeHome;
 
@@ -961,8 +966,8 @@ public class StorageAccess {
         }
         return uri;
     }
-    private Uri getUriForItem_File(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
-        String s = stringForFile(c, mainActivityInterface, folder);
+    private Uri getUriForItem_File(String folder, String subfolder, String filename) {
+        String s = stringForFile(folder);
         File f = new File(s);
         if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
             f = new File(f, subfolder);
@@ -972,15 +977,15 @@ public class StorageAccess {
         }
         return Uri.fromFile(f);
     }
-    public InputStream getInputStream(Context c, Uri uri) {
+    public InputStream getInputStream(Uri uri) {
         try {
             return c.getContentResolver().openInputStream(uri);
         } catch (Exception e) {
             return null;
         }
     }
-    public OutputStream getOutputStream(Context c, Uri uri) {
-        if (uriExists(c, uri) || !lollipopOrLater()) {
+    public OutputStream getOutputStream(Uri uri) {
+        if (uriExists(uri) || !lollipopOrLater()) {
             try {
                 return c.getContentResolver().openOutputStream(uri,"wt");  // Truncate to 0 to wipe
             } catch (Exception e) {
@@ -991,7 +996,7 @@ public class StorageAccess {
         }
         return null;
     }
-    Uri getFileProviderUri(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
+    /*Uri getFileProviderUri(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
         if (lollipopOrLater()) {
             return getFileProviderUri_SAF(c, mainActivityInterface, folder, subfolder, filename);
         } else {
@@ -1000,10 +1005,10 @@ public class StorageAccess {
     }
     private Uri getFileProviderUri_SAF(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
         // No real need as we are using content uris anyway
-        return getUriForItem(c, mainActivityInterface, folder, subfolder, filename);
+        return getUriForItem(folder, subfolder, filename);
     }
     private Uri getFileProviderUri_File(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
-        String s = stringForFile(c, mainActivityInterface, folder);
+        String s = stringForFile(folder);
         File f = new File(s);
         if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
             f = new File(f, subfolder);
@@ -1014,7 +1019,8 @@ public class StorageAccess {
         // Convert to a FileProvider uri
         return FileProvider.getUriForFile(c, "OpenSongAppFiles", f);
     }
-    public DocumentFile documentFileFromRootUri(Context c, Uri uri, String path) {
+    */
+    private DocumentFile documentFileFromRootUri(Uri uri, String path) {
         if (uri != null && lollipopOrLater()) {
             return DocumentFile.fromTreeUri(c, uri);
         } else if (path != null && !lollipopOrLater()) {
@@ -1024,7 +1030,7 @@ public class StorageAccess {
             return null;
         }
     }
-    public DocumentFile documentFileFromUri(Context c, Uri uri, String path) {
+    private DocumentFile documentFileFromUri(Uri uri, String path) {
         if (uri != null && lollipopOrLater()) {
             return DocumentFile.fromSingleUri(c, uri);
         } else if (path != null) {
@@ -1056,7 +1062,7 @@ public class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private boolean docContractCreate(Context c, Uri uri, String mimeType, String name) {
+    private boolean docContractCreate(Uri uri, String mimeType, String name) {
         try {
             return DocumentsContract.createDocument(c.getContentResolver(), uri, mimeType, name) != null;
         } catch (Exception e) {
@@ -1085,7 +1091,7 @@ public class StorageAccess {
     }
 
     // Basic file actions (read, create, copy, delete, write)
-    public boolean saveSongFile(Context c, MainActivityInterface mainActivityInterface) {
+    /*public boolean saveSongFile() {
         Log.w(TAG,"saveSongFile() called");
         // This is called from the SaveSong class and uses the current Song object in MainActivity
         // First get the song uri
@@ -1094,18 +1100,19 @@ public class StorageAccess {
         // Write the string file
         return doStringWriteToFile(c,mainActivityInterface,newLocation.get(0), newLocation.get(1),
                 mainActivityInterface.getSong().getFilename(),
-                mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, mainActivityInterface.getSong()));
+                mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong()));
     }
-    public boolean saveThisSongFile(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    */
+    public boolean saveThisSongFile(Song thisSong) {
         Log.d(TAG,"saveSongFile() called");
         // This is called from the SaveSong class and uses the sent Song object
         // First get the song uri
         // Because it may not be in the songs folder, lets check!
         ArrayList<String> newLocation = fixNonSongs(thisSong.getFolder());
         // Write the string file
-        return doStringWriteToFile(c,mainActivityInterface,newLocation.get(0), newLocation.get(1),
+        return doStringWriteToFile(newLocation.get(0), newLocation.get(1),
                 thisSong.getFilename(),
-                mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface, thisSong));
+                mainActivityInterface.getProcessSong().getXML(thisSong));
     }
     public ArrayList<String> fixNonSongs(String folderToCheck) {
         // Return any subfolder and change the 'Songs' folder as required
@@ -1125,7 +1132,7 @@ public class StorageAccess {
         fixedFolders.add(folderToCheck);
         return fixedFolders;
     }
-    public String[] getActualFoldersFromNice(Context c, String folder) {
+    public String[] getActualFoldersFromNice(String folder) {
         String[] location = new String[2];
         location[0] = "Songs";
         location[1] = folder;
@@ -1152,19 +1159,18 @@ public class StorageAccess {
         }
         return location;
     }
-    public void lollipopCreateFileForOutputStream(Context c, MainActivityInterface mainActivityInterface,
-                                                  boolean deleteOld, Uri uri, String mimeType,
+    public void lollipopCreateFileForOutputStream(boolean deleteOld, Uri uri, String mimeType,
                                                   String folder, String subfolder, String filename) {
         if (lollipopOrLater()) {
             // Only need to do this for Lollipop or later
-            if (uriExists(c,uri)) {
+            if (uriExists(uri)) {
                 // Delete it to avoid overwrite errors that leaves old stuff at the end of the file
-                deleteFile_SAF(c,uri);
+                deleteFile_SAF(uri);
             }
             // Create the new file
-            createFile(c, mainActivityInterface, mimeType, folder, subfolder, filename);
+            createFile(mimeType, folder, subfolder, filename);
 
-        } else if (!lollipopOrLater() && !uriExists(c, uri)) {
+        } else if (!lollipopOrLater() && !uriExists(uri)) {
             // Check it exists
             try {
                 if (uri != null && uri.getPath() != null) {
@@ -1186,14 +1192,14 @@ public class StorageAccess {
             }
         }
     }
-    public Uri copyFromTo(Context c, MainActivityInterface mainActivityInterface, String fromFolder, String fromSubfolder, String fromName, String toFolder, String toSubfolder, String toName) {
-        Uri fromUri = getUriForItem(c,mainActivityInterface, fromFolder, fromSubfolder, fromName);
-        Uri toUri = getUriForItem(c, mainActivityInterface, toFolder, toSubfolder, toName);
+    public Uri copyFromTo(String fromFolder, String fromSubfolder, String fromName, String toFolder, String toSubfolder, String toName) {
+        Uri fromUri = getUriForItem(fromFolder, fromSubfolder, fromName);
+        Uri toUri = getUriForItem(toFolder, toSubfolder, toName);
         // Make sure the newUri is valid and exists
-        lollipopCreateFileForOutputStream(c,mainActivityInterface,false,toUri,null,toFolder,toSubfolder,toName);
+        lollipopCreateFileForOutputStream(false,toUri,null,toFolder,toSubfolder,toName);
         // Get the input and output streams
-        InputStream inputStream = getInputStream(c, fromUri);
-        OutputStream outputStream = getOutputStream(c, toUri);
+        InputStream inputStream = getInputStream(fromUri);
+        OutputStream outputStream = getOutputStream(toUri);
         if (copyFile(inputStream, outputStream)) {
             return toUri;
         } else {
@@ -1220,11 +1226,11 @@ public class StorageAccess {
             return false;
         }
     }
-    public boolean doStringWriteToFile(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename, String string) {
+    public boolean doStringWriteToFile(String folder, String subfolder, String filename, String string) {
         try {
-            Uri uri = getUriForItem(c, mainActivityInterface, folder, subfolder, filename);
-            lollipopCreateFileForOutputStream(c,  mainActivityInterface, true, uri, null, folder, subfolder, filename);
-            OutputStream outputStream = getOutputStream(c, uri);
+            Uri uri = getUriForItem(folder, subfolder, filename);
+            lollipopCreateFileForOutputStream(true, uri, null, folder, subfolder, filename);
+            OutputStream outputStream = getOutputStream(uri);
             return writeFileFromString(string, outputStream);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1357,23 +1363,23 @@ public class StorageAccess {
         }
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public boolean createFile(Context c, MainActivityInterface mainActivityInterface, String mimeType, String folder, String subfolder, String filename) {
-        String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
+    public boolean createFile(String mimeType, String folder, String subfolder, String filename) {
+        String[] fixedfolders = fixFoldersAndFiles(folder, subfolder, filename);
         if (lollipopOrLater()) {
-            return createFile_SAF(c, mainActivityInterface, mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            return createFile_SAF(mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         } else {
-            return createFile_File(c, mainActivityInterface, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            return createFile_File(fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private boolean createFile_SAF(Context c, MainActivityInterface mainActivityInterface, String mimeType, String folder, String subfolder, String filename) {
+    private boolean createFile_SAF(String mimeType, String folder, String subfolder, String filename) {
         // Try this instead
         Uri parentUri;
         folder = removeStartAndEndSlashes(folder);
         subfolder = removeStartAndEndSlashes(subfolder);
         filename = removeStartAndEndSlashes(filename);
 
-        Uri uritest = getUriForItem(c, mainActivityInterface, folder, subfolder, filename);
+        Uri uritest = getUriForItem(folder, subfolder, filename);
 
         if (mimeType != null && mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
             // Check the filename is empty.  If not, add it to the subfolder
@@ -1399,18 +1405,18 @@ public class StorageAccess {
             subfolder = removeStartAndEndSlashes(subfolder);
             foldertocreate = removeStartAndEndSlashes(foldertocreate);
 
-            parentUri = getUriForItem(c, mainActivityInterface, folder, subfolder, "");
+            parentUri = getUriForItem(folder, subfolder, "");
 
             // Only create if it doesn't exist
-            if (!uriExists(c, uritest)) {
-                if (!docContractCreate(c, parentUri, mimeType, foldertocreate)) {
+            if (!uriExists(uritest)) {
+                if (!docContractCreate(parentUri, mimeType, foldertocreate)) {
                     // Error (likely parent directory doesn't exist
                     // Go through each folder and create the ones we need starting
                     String[] bits = subfolder.split("/");
                     String bit = "";
                     for (String s : bits) {
-                        parentUri = getUriForItem(c, mainActivityInterface, folder, bit, "");
-                        docContractCreate(c, parentUri, mimeType, s);
+                        parentUri = getUriForItem(folder, bit, "");
+                        docContractCreate(parentUri, mimeType, s);
                         bit = bit + "/" + s;
                     }
                 }
@@ -1438,39 +1444,39 @@ public class StorageAccess {
             completesubfolder = removeStartAndEndSlashes(completesubfolder);
             completefilename = removeStartAndEndSlashes(completefilename);
 
-            parentUri = getUriForItem(c, mainActivityInterface, folder, completesubfolder, "");
+            parentUri = getUriForItem(folder, completesubfolder, "");
 
             if (uriTreeHome == null) {
-                uriTreeHome = homeFolder(c, null, mainActivityInterface);
+                uriTreeHome = homeFolder(null);
             }
 
             if (folder.isEmpty() && completesubfolder.isEmpty()) {
                 // A temp file in the root folder
-                docContractCreate(c, uriTreeHome, null, filename);
+                docContractCreate(uriTreeHome, null, filename);
 
-            } else if (!uriExists(c, uritest)) {
+            } else if (!uriExists(uritest)) {
 
-                if (!docContractCreate(c, parentUri, mimeType, completefilename)) {
+                if (!docContractCreate(parentUri, mimeType, completefilename)) {
                     // Error (likely parent directory doesn't exist)
                     // Go through each folder and create the ones we need starting at the 'folder'
                     String[] bits = completesubfolder.split("/");
                     String bit = "";
                     for (String s : bits) {
-                        parentUri = getUriForItem(c, mainActivityInterface, folder, bit, "");
-                        docContractCreate(c, parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
+                        parentUri = getUriForItem(folder, bit, "");
+                        docContractCreate(parentUri, DocumentsContract.Document.MIME_TYPE_DIR, s);
                         bit = bit + "/" + s;
                     }
                     // Try again!
-                    parentUri = getUriForItem(c, mainActivityInterface, folder, completesubfolder, "");
-                    return docContractCreate(c, parentUri, mimeType, completefilename);
+                    parentUri = getUriForItem(folder, completesubfolder, "");
+                    return docContractCreate(parentUri, mimeType, completefilename);
                 }
             }
         }
         return true;
     }
-    private boolean createFile_File(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder, String filename) {
+    private boolean createFile_File(String folder, String subfolder, String filename) {
         boolean stuffCreated = false;
-        String filepath = stringForFile(c, mainActivityInterface, folder);
+        String filepath = stringForFile(folder);
         File f = new File(filepath);
         if (subfolder != null && !subfolder.isEmpty()) {
             f = new File(f, subfolder);
@@ -1495,14 +1501,14 @@ public class StorageAccess {
         }
         return stuffCreated;
     }
-    public boolean deleteFile(Context c, Uri uri) {
+    public boolean deleteFile(Uri uri) {
         if (lollipopOrLater()) {
-            return deleteFile_SAF(c, uri);
+            return deleteFile_SAF(uri);
         } else {
             return deleteFile_File(uri);
         }
     }
-    private boolean deleteFile_SAF(Context c, Uri uri) {
+    private boolean deleteFile_SAF(Uri uri) {
         try {
             DocumentFile df = DocumentFile.fromSingleUri(c, uri);
             if (df != null) {
@@ -1538,21 +1544,21 @@ public class StorageAccess {
             return false;
         }
     }
-    public boolean doDeleteFile(Context c, MainActivityInterface mainActivityInterface, String location, String subfolder, String filename) {
-        Uri uri = getUriForItem(c, mainActivityInterface, location, subfolder, filename);
-        return deleteFile(c, uri);
+    public boolean doDeleteFile(String location, String subfolder, String filename) {
+        Uri uri = getUriForItem(location, subfolder, filename);
+        return deleteFile(uri);
     }
-    public String getImageSlide(Context c, MainActivityInterface mainActivityInterface, String loc) {
+    public String getImageSlide(String loc) {
         String b = "";
         Uri uri;
         if (loc.startsWith("../")) {
-            uri = fixLocalisedUri(c,mainActivityInterface,loc);
+            uri = fixLocalisedUri(loc);
         } else {
             uri = Uri.parse(loc);
         }
-        if (uriExists(c, uri)) {
+        if (uriExists(uri)) {
             try {
-                InputStream inputStream = getInputStream(c, uri);
+                InputStream inputStream = getInputStream(uri);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
@@ -1572,7 +1578,7 @@ public class StorageAccess {
         }
         return intent;
     }
-    public String getActualFilename(Context c, String string) {
+    public String getActualFilename(String string) {
         Uri uri = Uri.parse(string);
         if (lollipopOrLater()) {
             try {
@@ -1598,10 +1604,9 @@ public class StorageAccess {
             }
         }
     }
-    public boolean renameFileFromUri(Context c, MainActivityInterface mainActivityInterface, Uri oldUri,
-                                     Uri newUri, String newFolder, String newSubfolder, String newName) {
+    public boolean renameFileFromUri(Uri oldUri, Uri newUri, String newFolder, String newSubfolder, String newName) {
         if (lollipopOrLater()) {
-            return renameFileFromUri_SAF(c, mainActivityInterface, oldUri, newUri, newFolder, newSubfolder, newName);
+            return renameFileFromUri_SAF(oldUri, newUri, newFolder, newSubfolder, newName);
         } else {
             return renameFileFromUri_File(oldUri, newUri);
         }
@@ -1610,29 +1615,28 @@ public class StorageAccess {
         File file = new File(oldUri.getPath());
         return file.renameTo(new File(newUri.getPath()));
     }
-    private boolean renameFileFromUri_SAF(Context c, MainActivityInterface mainActivityInterface, Uri oldUri,
-                                          Uri newUri, String newFolder, String newSubfolder, String newName) {
+    private boolean renameFileFromUri_SAF(Uri oldUri, Uri newUri, String newFolder, String newSubfolder, String newName) {
         // Don't use document file rename as it can end badly if there is an issue
         // This can rename the root folder.  So instead copy the old file contents
         // Write the new file and delete the old one
 
         // If the new file already exists, delete it to avoid overwrite errors
         // Now create a blank file
-        lollipopCreateFileForOutputStream(c,mainActivityInterface,true, newUri,null,newFolder,newSubfolder,newName);
+        lollipopCreateFileForOutputStream(true, newUri,null,newFolder,newSubfolder,newName);
 
         // Now get an InputStream from the oldUri and an OutputStream for the newUri
-        InputStream inputStream = getInputStream(c,oldUri);
-        OutputStream outputStream = getOutputStream(c,newUri);
+        InputStream inputStream = getInputStream(oldUri);
+        OutputStream outputStream = getOutputStream(newUri);
         // Copy the file, which also closes the streams and on success, delete the old file
         if (copyFile(inputStream, outputStream)) {
             // Likely the inputStream or outputStream was null, so don't delete the old file!
-            deleteFile(c,oldUri);
+            deleteFile(oldUri);
             return true;
         } else {
             return false;
         }
     }
-    public String getFileNameFromUri(Context c, Uri uri) {
+    public String getFileNameFromUri(Uri uri) {
         if (uri!=null) {
             String scheme = uri.getScheme();
             if (scheme.equals("file")) {
@@ -1658,48 +1662,46 @@ public class StorageAccess {
     }
 
     // Actions for folders (create, delete, rename, clear)
-    public boolean renameFolder(Context c, MainActivityInterface mainActivityInterface, ShowToast showToast, Song song, String oldsubfolder, String newsubfolder) {
+    public boolean renameFolder(Song song, String oldsubfolder, String newsubfolder) {
         if (lollipopOrLater()) {
-            return renameFolder_SAF(c, mainActivityInterface, showToast, song, oldsubfolder, newsubfolder);
+            return renameFolder_SAF(song, oldsubfolder, newsubfolder);
         } else {
-            return renameFolder_File(c, mainActivityInterface, showToast, song, oldsubfolder, newsubfolder);
+            return renameFolder_File(song, oldsubfolder, newsubfolder);
         }
     }
-    private boolean renameFolder_File(Context c, MainActivityInterface mainActivityInterface, ShowToast showToast,
-                                      Song song, String oldsubfolder, String newsubfolder) {
+    private boolean renameFolder_File(Song song, String oldsubfolder, String newsubfolder) {
         // Now the long bit.  Go through the original folder and copy the files to the new location
-        Uri oldUri = getUriForItem(c, mainActivityInterface, "Songs", oldsubfolder, "");
-        Uri newUri = getUriForItem(c, mainActivityInterface, "Songs", newsubfolder, "");
-        if (!uriExists(c, newUri)) {
+        Uri oldUri = getUriForItem("Songs", oldsubfolder, "");
+        Uri newUri = getUriForItem("Songs", newsubfolder, "");
+        if (!uriExists(newUri)) {
             if (oldUri != null && newUri != null && oldUri.getPath() != null && newUri.getPath() != null) {
                 File oldfile = new File(oldUri.getPath());
                 File newfile = new File(newUri.getPath());
                 if (oldfile.renameTo(newfile)) {
-                    showToast.doIt(c.getString(R.string.rename) + " - " +
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
                             c.getString(android.R.string.ok));
                     song.setFolder(newsubfolder);
                     return true;
                 } else {
-                    showToast.doIt(c.getString(R.string.rename) + " - " +
+                    mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
                             c.getString(R.string.create_folder_error));
                     return false;
                 }
             } else {
-                showToast.doIt(c.getString(R.string.rename) + " - " +
+                mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
                         c.getString(R.string.create_folder_error));
                 return false;
             }
         } else {
-            showToast.doIt(c.getString(R.string.rename) +
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) +
                     " - " + c.getString(R.string.folder_exists));
             return false;
         }
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private boolean renameFolder_SAF(Context c, MainActivityInterface mainActivityInterface, ShowToast showToast,
-                                     Song song, String oldsubfolder, String newsubfolder) {
+    private boolean renameFolder_SAF(Song song, String oldsubfolder, String newsubfolder) {
         // SAF can only rename final name (can't move within directory structure) - No / allowed!
-        Uri oldUri = getUriForItem(c, mainActivityInterface, "Songs", oldsubfolder, "");
+        Uri oldUri = getUriForItem("Songs", oldsubfolder, "");
         // Only rename the last section
         if (newsubfolder.contains("/")) {
             newsubfolder = newsubfolder.substring(newsubfolder.lastIndexOf("/"));
@@ -1707,22 +1709,21 @@ public class StorageAccess {
         }
         try {
             DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
-            showToast.doIt(c.getString(R.string.rename) + " - " +
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
                     c.getString(android.R.string.ok));
             song.setFolder(newsubfolder);
             return true;
         } catch (Exception e) {
-            showToast.doIt(c.getString(R.string.rename) + " - " +
+            mainActivityInterface.getShowToast().doIt(c.getString(R.string.rename) + " - " +
                     c.getString(R.string.create_folder_error));
             return false;
         }
     }
-    public void wipeFolder(Context c, MainActivityInterface mainActivityInterface,
-                           String folder, String subfolder) {
-        Uri uri = getUriForItem(c,mainActivityInterface,folder,subfolder,null);
-        if (uriExists(c,uri)) {
+    public void wipeFolder(String folder, String subfolder) {
+        Uri uri = getUriForItem(folder,subfolder,null);
+        if (uriExists(uri)) {
             if (lollipopOrLater()) {
-                wipeFolder_SAF(c,uri);
+                wipeFolder_SAF(uri);
             } else {
                 File f = new File(uri.getPath());
                 wipeFolder_File(f);
@@ -1738,7 +1739,7 @@ public class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void wipeFolder_SAF(Context c, Uri uri) {
+    public void wipeFolder_SAF(Uri uri) {
         // Get a contract for the desired folder
         Uri desiredUri = DocumentsContract.buildDocumentUriUsingTree(uriTreeHome,DocumentsContract.getDocumentId(uri));
         try {
@@ -1747,17 +1748,17 @@ public class StorageAccess {
             e.printStackTrace();
         }
     }
-    public boolean createFolder(Context c, MainActivityInterface mainActivityInterface, String currentDir, String currentSubDir, String newFolder) {
+    public boolean createFolder(String currentDir, String currentSubDir, String newFolder) {
         // Get the uri for the parent
-        Uri dirUri = getUriForItem(c, mainActivityInterface, currentDir, currentSubDir, "");
+        Uri dirUri = getUriForItem(currentDir, currentSubDir, "");
         if (lollipopOrLater()) {
-            return createFolder_SAF(c, dirUri, newFolder);
+            return createFolder_SAF(dirUri, newFolder);
         } else {
             return createFolder_File(dirUri, newFolder);
         }
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private boolean createFolder_SAF(Context c, Uri dirUri, String newFolder) {
+    private boolean createFolder_SAF(Uri dirUri, String newFolder) {
         try {
             DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, newFolder);
             return true;
@@ -1770,7 +1771,7 @@ public class StorageAccess {
         File f = new File(root.getPath(), newName);
         return f.mkdirs();
     }
-    public ArrayList<String> getSongFolders(Context c, ArrayList<String> songIDs, boolean addMain, String toIgnore) {
+    public ArrayList<String> getSongFolders(ArrayList<String> songIDs, boolean addMain, String toIgnore) {
         ArrayList<String> availableFolders = new ArrayList<>();
         // Add the MAIN folder
         if (addMain) {
@@ -1790,7 +1791,7 @@ public class StorageAccess {
 
     // This builds an index of all the songs on the device
     @SuppressLint("NewApi")
-    public ArrayList<String> listSongs(Context c, MainActivityInterface mainActivityInterface) {
+    public ArrayList<String> listSongs() {
         ArrayList<String> noSongs = new ArrayList<>();
         // We need to make sure the locale version of MAIN is correct (change language during run)
         Configuration configuration = new Configuration(c.getResources().getConfiguration());
@@ -1799,9 +1800,9 @@ public class StorageAccess {
         try {
             // Decide if we are using storage access framework or not
             if (lollipopOrLater()) {
-                return listSongs_SAF(c, mainActivityInterface, mainfolder);
+                return listSongs_SAF(mainfolder);
             } else {
-                return listSongs_File(c, mainActivityInterface, mainfolder);
+                return listSongs_File(mainfolder);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1809,10 +1810,10 @@ public class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private ArrayList<String> listSongs_SAF(Context c, MainActivityInterface mainActivityInterface, String mainfolder) {
+    private ArrayList<String> listSongs_SAF(String mainfolder) {
         // This gets all songs (including any subfolders)
         ArrayList<String> songIds = new ArrayList<>();
-        Uri uri = getUriForItem(c, mainActivityInterface, "Songs", "", "");
+        Uri uri = getUriForItem("Songs", "", "");
 
         // Now get a documents contract at this location
         String songFolderId = getDocumentsContractId(uri);
@@ -1854,11 +1855,11 @@ public class StorageAccess {
         }
         return songIds;
     }
-    private ArrayList<String> listSongs_File(Context c, MainActivityInterface mainActivityInterface, String mainfolder) {
+    private ArrayList<String> listSongs_File(String mainfolder) {
         // We must be using an older version of Android, so stick with File access
         ArrayList<String> songIds = new ArrayList<>();  // These will be the file locations
 
-        String songsFolder = stringForFile(c, mainActivityInterface, "Songs");
+        String songsFolder = stringForFile("Songs");
         ArrayList<String> foldersToIndex = new ArrayList<>();
 
         // Add the main songs folder to the foldersToIndex.  More will be added for subfolders
@@ -1885,7 +1886,7 @@ public class StorageAccess {
 
 
     // Dealing with indexing the songs on the device
-    public void writeSongIDFile(Context c, MainActivityInterface mainActivityInterface, ArrayList<String> songIds) {
+    public void writeSongIDFile(ArrayList<String> songIds) {
         // This creates a file in the app storage with a list of song folders/filenames
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -1908,7 +1909,7 @@ public class StorageAccess {
         songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
         try {
             Log.d(TAG,"Creating new songIDFile success="+songIDFile.createNewFile());
-            OutputStream outputStream = getOutputStream(c, Uri.fromFile(songIDFile));
+            OutputStream outputStream = getOutputStream(Uri.fromFile(songIDFile));
             if (outputStream != null) {
                 writeFileFromString(stringBuilder.toString(), outputStream);
             }
@@ -1916,10 +1917,10 @@ public class StorageAccess {
             e.printStackTrace();
         }
     }
-    public ArrayList<String> getSongIDsFromFile(Context c) {
+    public ArrayList<String> getSongIDsFromFile() {
         File songIDFile = new File(c.getExternalFilesDir("Database"), "SongIds.txt");
         Uri uri = Uri.fromFile(songIDFile);
-        InputStream is = getInputStream(c, uri);
+        InputStream is = getInputStream(uri);
         String text = readTextFileToString(is);
         // Split the text into line and add to the new array
         ArrayList<String> songIDs = new ArrayList<>();
@@ -1928,27 +1929,27 @@ public class StorageAccess {
         return songIDs;
     }
     @SuppressLint("NewApi")
-    public ArrayList<String> listFilesInFolder(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder) {
+    public ArrayList<String> listFilesInFolder(String folder, String subfolder) {
         Log.d(TAG,"folder: "+folder+"  subfolder: "+subfolder);
 
         if (subfolder.startsWith("../") || subfolder.startsWith("**")) {
             folder = subfolder.replace("../","");
-            folder = subfolder.replace("**","");
+            folder = folder.replace("**","");
             subfolder = "";
         }
 
         Log.d(TAG,"folder: "+folder+"  subfolder: "+subfolder);
         if (lollipopOrLater()) {
-            return listFilesInFolder_SAF(c, mainActivityInterface, folder, subfolder);
+            return listFilesInFolder_SAF(folder, subfolder);
         } else {
-            return listFilesInFolder_File(c, mainActivityInterface, folder, subfolder);
+            return listFilesInFolder_File(folder, subfolder);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private ArrayList<String> listFilesInFolder_SAF(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder) {
+    private ArrayList<String> listFilesInFolder_SAF(String folder, String subfolder) {
         ArrayList<String> al = new ArrayList<>();
 
-        Uri locationtoindex = getUriForItem(c, mainActivityInterface, folder, subfolder, "");
+        Uri locationtoindex = getUriForItem(folder, subfolder, "");
 
         // Now get a documents contract at this location
         String id = getDocumentsContractId(locationtoindex);
@@ -1986,9 +1987,9 @@ public class StorageAccess {
         }
         return al;
     }
-    private ArrayList<String> listFilesInFolder_File(Context c, MainActivityInterface mainActivityInterface, String folder, String subfolder) {
+    private ArrayList<String> listFilesInFolder_File(String folder, String subfolder) {
         ArrayList<String> al = new ArrayList<>();
-        String filebuilder = stringForFile(c, mainActivityInterface, folder);
+        String filebuilder = stringForFile(folder);
         File f = new File(filebuilder);
         if (subfolder != null && !subfolder.isEmpty()) {
             f = new File(f, subfolder);

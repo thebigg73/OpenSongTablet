@@ -133,10 +133,10 @@ public class StorageManagementFragment extends Fragment {
 
     private ArrayList<String> getFoldersFromFile() {
         // Scan the storage
-        ArrayList<String> songIDs = mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface);
-        mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),mainActivityInterface, songIDs);
+        ArrayList<String> songIDs = mainActivityInterface.getStorageAccess().listSongs();
+        mainActivityInterface.getStorageAccess().writeSongIDFile(songIDs);
         // Each subdir ends with /
-        return mainActivityInterface.getStorageAccess().getSongFolders(requireContext(), songIDs,false,null);
+        return mainActivityInterface.getStorageAccess().getSongFolders(songIDs,false,null);
     }
 
 }

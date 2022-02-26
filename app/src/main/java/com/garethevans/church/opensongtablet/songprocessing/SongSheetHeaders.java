@@ -22,7 +22,7 @@ public class SongSheetHeaders {
         LinearLayout linearLayout = null;
 
         if (forPDF || (mainActivityInterface.getMode().equals("Performance") &&
-                mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"songSheet",false))) {
+                mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet",false))) {
 
             linearLayout = new LinearLayout(c);
             linearLayout.setOrientation(LinearLayout.VERTICAL);

@@ -144,7 +144,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
         new Thread(() -> {
             bible.buildDefaultBibleBooks();
             requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.VISIBLE));
-            bible.buildBibleFiles(requireContext(),mainActivityInterface);
+            bible.buildBibleFiles();
             requireActivity().runOnUiThread(() -> {
                 updateExposedDropDown(myView.bible, bible.getBibleFiles(), bible.getBibleFile());
                 myView.progressBar.setVisibility(View.GONE);
@@ -174,8 +174,8 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                         String chosen = getTextFromView(myView.bible);
                         if (chosen !=null && !chosen.isEmpty()) {
                             requireActivity().runOnUiThread(() -> myView.progressBar.setVisibility(View.VISIBLE));
-                            bible.setBibleFile(requireContext(),mainActivityInterface,chosen);
-                            bible.buildBibleBooks(requireContext(), mainActivityInterface);
+                            bible.setBibleFile(chosen);
+                            bible.buildBibleBooks();
                             requireActivity().runOnUiThread(() -> {
                                 updateExposedDropDown(myView.book,bible.getBibleBooks(), bible.getBibleBook());
                                 myView.progressBar.setVisibility(View.GONE);
@@ -192,7 +192,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                             bible.setBibleChapter("1");
                             bible.setBibleVerseFrom("1");
                             bible.setBibleVerseTo("1");
-                            bible.buildBibleChapters(requireContext(), mainActivityInterface);
+                            bible.buildBibleChapters();
                             requireActivity().runOnUiThread(() -> {
                                 updateExposedDropDown(myView.chapter,bible.getBibleChapters(), bible.getBibleChapter());
                                 myView.progressBar.setVisibility(View.GONE);
@@ -208,7 +208,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                             bible.setBibleChapter(chosen);
                             bible.setBibleVerseFrom("1");
                             bible.setBibleVerseTo("1");
-                            bible.buildBibleVerses(requireContext(), mainActivityInterface);
+                            bible.buildBibleVerses();
                             requireActivity().runOnUiThread(() -> {
                                 updateExposedDropDown(myView.verseFrom,bible.getBibleVerses(), bible.getBibleVerseFrom());
                                 updateExposedDropDown(myView.verseTo,bible.getBibleVerses(), bible.getBibleVerseTo());
@@ -229,7 +229,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                                 if (myView.verseTo.getText()!=null && (myView.verseTo.getText().toString().isEmpty() || rangeIsIncorrect(myView.verseFrom, chosen, false))) {
                                     myView.verseTo.setText(chosen);
                                 }
-                                bibleText = bible.getBibleText(requireContext(), mainActivityInterface);
+                                bibleText = bible.getBibleText();
                                 stretchText();
                                 if (myView.content.getText()==null || myView.content.getText().toString().isEmpty()) {
                                     myView.addToSet.setVisibility(View.GONE);
@@ -252,7 +252,7 @@ public class BibleOfflineBottomSheet extends BottomSheetDialogFragment {
                                 if (myView.verseFrom.getText()!=null && (myView.verseFrom.getText().toString().isEmpty() || rangeIsIncorrect(myView.verseFrom, chosen, true))) {
                                     myView.verseFrom.setText(chosen);
                                 }
-                                bibleText = bible.getBibleText(requireContext(), mainActivityInterface);
+                                bibleText = bible.getBibleText();
                                 stretchText();
                                 if (myView.content.getText()==null || myView.content.getText().toString().isEmpty()) {
                                     myView.addToSet.setVisibility(View.GONE);

@@ -40,15 +40,14 @@ public class CCLILogFragment extends Fragment {
         mainActivityInterface.updateToolbar(getString(R.string.ccli) + " XML");
 
         // Set up the default values
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface, "Settings", "", "ActivityLog.xml");
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
         mainActivityInterface.getCCLILog().getCurrentEntries(requireContext(), mainActivityInterface, uri);
-        mainActivityInterface.getCCLILog().getLogFileSize(requireContext(),mainActivityInterface,uri, myView.logSize);
+        mainActivityInterface.getCCLILog().getLogFileSize(mainActivityInterface,uri, myView.logSize);
         String churchName = getString(R.string.ccli_church) + ": " +
-                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "ccliChurchName","");
+                mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","");
         myView.churchDetails.setText(churchName);
         String churchLicence = getString(R.string.ccli_licence) + ": " +
-                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"ccliLicence","");
+                mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","");
         myView.churchDetails.setHint(churchLicence);
 
         TableLayout tableLayout = mainActivityInterface.getCCLILog().getTableLayout(requireContext());

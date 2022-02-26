@@ -35,10 +35,10 @@ public class OCR {
         pdfPages = new ArrayList<>();
 
         // Get the pdf uri
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Songs",folder,filename);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
 
         // Get the parcel file descriptor
-        ParcelFileDescriptor parcelFileDescriptor = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(c,uri);
+        ParcelFileDescriptor parcelFileDescriptor = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(uri);
 
         // Get the pdf renderer
         PdfRenderer pdfRenderer = mainActivityInterface.getProcessSong().getPDFRenderer(parcelFileDescriptor);
@@ -90,9 +90,8 @@ public class OCR {
 
     public void getTextFromImageFile(Context c, MainActivityInterface mainActivityInterface,
                                      String folder, String filename) {
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
-                "Songs",folder,filename);
-        Bitmap bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(c,mainActivityInterface,uri,0,0);
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
+        Bitmap bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(uri,0,0);
         getTextFromImage(mainActivityInterface,bitmap);
     }
 
@@ -114,7 +113,7 @@ public class OCR {
         // Pretending it is from a 1 page pdf
         pdfPages = new ArrayList<>();
         pageCount = 1;
-        Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromUri(c,mainActivityInterface,uri,0,0);
+        Bitmap bmp = mainActivityInterface.getProcessSong().getBitmapFromUri(uri,0,0);
         Log.d(TAG,"bmp="+bmp);
         if (bmp!=null) {
             extractTextFromBitmap(bmp, 0);

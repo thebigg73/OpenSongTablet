@@ -29,8 +29,8 @@ public class MyJSInterface {
         this.context = context;
         this.mainActivityInterface = mainActivityInterface;
         this.fragment = fragment;
-        saveFile = mainActivityInterface.getStorageAccess().getUriForItem(context, mainActivityInterface, "Received", "", "SongSelect.pdf");
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(context, mainActivityInterface, false,saveFile, null, "Received", "", "SongSelect.pdf");
+        saveFile = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "SongSelect.pdf");
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,saveFile, null, "Received", "", "SongSelect.pdf");
     }
 
     public static String getBase64StringFromBlobUrl(String blobUrl) {
@@ -64,7 +64,7 @@ public class MyJSInterface {
         Log.d(TAG, base64PDf);
         byte[] pdfAsBytes = Base64.decode(base64PDf.replaceFirst("^data:application/pdf;base64,", ""), 0);
         Log.d(TAG, "saveFile=" + saveFile);
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(context, saveFile);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(saveFile);
         outputStream.write(pdfAsBytes);
         outputStream.flush();
 

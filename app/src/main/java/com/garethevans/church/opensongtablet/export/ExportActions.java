@@ -79,17 +79,14 @@ public class ExportActions {
 
     public Uri getActualSongFile(Context c, MainActivityInterface mainActivityInterface,
                                  String subfolder, String filename) {
-        return mainActivityInterface.getStorageAccess().getUriForItem(c,
-                mainActivityInterface, "Songs", subfolder, filename);
+        return mainActivityInterface.getStorageAccess().getUriForItem("Songs", subfolder, filename);
     }
     public Uri getActualSongFile(Context c, MainActivityInterface mainActivityInterface, Song song) {
-        return mainActivityInterface.getStorageAccess().getUriForItem(c,
-                mainActivityInterface, "Songs",
+        return mainActivityInterface.getStorageAccess().getUriForItem("Songs",
                 song.getFolder(), song.getFilename());
     }
     public Uri getActualSetFile(Context c, MainActivityInterface mainActivityInterface, String filename) {
-        return mainActivityInterface.getStorageAccess().getUriForItem(c,
-                mainActivityInterface, "Sets","", filename);
+        return mainActivityInterface.getStorageAccess().getUriForItem("Sets","", filename);
     }
 
     public ArrayList<String> getListOfSets(String setToExport) {
@@ -107,8 +104,8 @@ public class ExportActions {
                                                    ArrayList<String> setNames) {
         ArrayList<Uri> extraUris = new ArrayList<>();
         for (String setName : setNames) {
-            extraUris.add(mainActivityInterface.getStorageAccess().copyFromTo(c,
-                    mainActivityInterface, "Sets", "", setName,
+            extraUris.add(mainActivityInterface.getStorageAccess().copyFromTo(
+                    "Sets", "", setName,
                     "Export", "", setName + ".osts"));
         }
         return extraUris;
@@ -118,8 +115,7 @@ public class ExportActions {
                                                 ArrayList<String> setNames) {
         ArrayList<Uri> extraUris = new ArrayList<>();
         for (String setName : setNames) {
-            extraUris.add(mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
-                    "Sets", "", setName));
+            extraUris.add(mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setName));
         }
         return extraUris;
     }
@@ -154,14 +150,14 @@ public class ExportActions {
         StringBuilder stringBuilderSet = new StringBuilder();
 
         // First up, load the set
-        Uri setUri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,"Sets","",setName);
+        Uri setUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets","",setName);
         try {
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();
-            String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, setUri);
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, setUri);
+            String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(setUri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(setUri);
             if (inputStream != null) {
                 xpp.setInput(inputStream, utf);
                 int eventType;
@@ -238,7 +234,7 @@ public class ExportActions {
                                         }
 
                                         ccli = fixNull(ccli);
-                                        if (!ccli.isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
+                                        if (!ccli.isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging",false)) {
                                             ccli = "¬ CCLI Song #" + ccli;
                                         }
 

@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,11 +42,11 @@ public class MenuSettingsFragment extends Fragment {
 
     private void setupViews() {
         boolean showAlphabetical = mainActivityInterface.getPreferences().
-                getMyPreferenceBoolean(requireContext(),"songMenuAlphaIndexShow",true);
+                getMyPreferenceBoolean("songMenuAlphaIndexShow",true);
         float fontSize = mainActivityInterface.getPreferences().
-                getMyPreferenceFloat(requireContext(),"songMenuAlphaIndexSize",12.0f);
+                getMyPreferenceFloat("songMenuAlphaIndexSize",12.0f);
         boolean showTickBoxes = mainActivityInterface.getPreferences().
-                getMyPreferenceBoolean(requireContext(),"songMenuSetTicksShow",true);
+                getMyPreferenceBoolean("songMenuSetTicksShow",true);
 
         myView.songAlphabeticalShow.setChecked(showAlphabetical);
         myView.songAlphabeticalSize.setValue(fontSize);
@@ -60,12 +59,12 @@ public class MenuSettingsFragment extends Fragment {
 
     private void setupListeners() {
         myView.songMenuCheckboxes.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(), "songMenuSetTicksShow", isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuSetTicksShow", isChecked);
             // Try to update the song menu
             mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
         });
         myView.songAlphabeticalShow.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"songMenuAlphaIndexShow",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songMenuAlphaIndexShow",isChecked);
             showHideSize(isChecked);
             // Try to update the song menu
             mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
@@ -77,7 +76,7 @@ public class MenuSettingsFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
                 float myVal = myView.songAlphabeticalSize.getValue();
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),"songMenuAlphaIndexSize", myVal);
+                mainActivityInterface.getPreferences().setMyPreferenceFloat("songMenuAlphaIndexSize", myVal);
                 // Try to update the song menu
                 mainActivityInterface.updateSongMenu("menuSettingsFragment",null, null);
             }

@@ -167,18 +167,17 @@ public class EditSongFragmentMain extends Fragment  {
         boolean selectNewFolder = false;
         if (value!=null && !value.isEmpty()) {
             // Try to create the new folder if it doesn't exist
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                    mainActivityInterface,"Songs",value,null);
-            if (!mainActivityInterface.getStorageAccess().uriExists(requireContext(),uri)) {
-                selectNewFolder = mainActivityInterface.getStorageAccess().createFolder(requireActivity(),
-                        mainActivityInterface,"Songs","",value);
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",value,null);
+            if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
+                selectNewFolder = mainActivityInterface.getStorageAccess().createFolder(
+                        "Songs","",value);
             }
         }
 
         if (selectNewFolder) {
-            ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs(requireContext(),mainActivityInterface);
-            mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),mainActivityInterface,songIds);
-            folders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),songIds,true,null);
+            ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
+            mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
+            folders = mainActivityInterface.getStorageAccess().getSongFolders(songIds,true,null);
             folders.add(newFolder);
             arrayAdapter.notifyDataSetChanged();
             myView.folder.setText(value);

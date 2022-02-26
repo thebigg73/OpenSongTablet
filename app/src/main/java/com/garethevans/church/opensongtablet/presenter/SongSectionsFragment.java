@@ -57,7 +57,7 @@ public class SongSectionsFragment extends Fragment {
         // Set the presentation order
         myView.presentationOrder.setChecked(mainActivityInterface.getPresenterSettings().getUsePresentationOrder());
         myView.presentationOrder.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"usePresentationOrder",b);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("usePresentationOrder",b);
             mainActivityInterface.getPresenterSettings().setUsePresentationOrder(b);
             mainActivityInterface.doSongLoad(mainActivityInterface.getSong().getFolder(),
                     mainActivityInterface.getSong().getFilename(),true);

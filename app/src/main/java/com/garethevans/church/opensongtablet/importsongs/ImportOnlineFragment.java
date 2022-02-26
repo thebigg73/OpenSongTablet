@@ -409,13 +409,13 @@ public class ImportOnlineFragment extends Fragment {
         // Set up the save layout
         myView.saveFilename.post(() -> myView.saveFilename.setText(newSong.getTitle()));
         // Get the folders available
-        ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(requireContext(),
-                mainActivityInterface.getStorageAccess().listSongs(requireContext(), mainActivityInterface), true, null);
+        ArrayList<String> availableFolders = mainActivityInterface.getStorageAccess().getSongFolders(
+                mainActivityInterface.getStorageAccess().listSongs(), true, null);
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),
                 R.layout.view_exposed_dropdown_item,availableFolders);
         myView.folderChoice.setAdapter(exposedDropDownArrayAdapter);
         myView.folderChoice.setText(mainActivityInterface.getPreferences().
-                getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)));
+                getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername)));
         // Set the position in the list to the chosen value
         exposedDropDownArrayAdapter.keepSelectionPosition(myView.folderChoice,availableFolders);
         changeLayouts(false,false,true);
@@ -427,7 +427,7 @@ public class ImportOnlineFragment extends Fragment {
     private void copyPDF(Uri inputUri) {
         // Prepare the output file
         String filename = "SongSelect.pdf";
-        String folder = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername));
+        String folder = mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername));
         if (myView.folderChoice.getText()!=null) {
             folder = myView.folderChoice.getText().toString();
         }
@@ -444,19 +444,17 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setFolder(folder);
         newSong.setFiletype("PDF");
 
-        Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface,"Songs",folder,filename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(requireContext(),
-                mainActivityInterface,false,outputUri,null,"Songs",folder,filename);
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(),outputUri);
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(),inputUri);
+        Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,outputUri,null,"Songs",folder,filename);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(inputUri);
         try {
             // Copy the file
             mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
 
             // Update the current song
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"whichSongFolder",folder);
-            mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"songfilename",filename);
+            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder",folder);
+            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename",filename);
 
             // Update the main and nonopensong databases
             mainActivityInterface.getSQLiteHelper().createSong(requireContext(),mainActivityInterface,folder,filename);
@@ -465,7 +463,7 @@ public class ImportOnlineFragment extends Fragment {
             mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),mainActivityInterface,newSong);
 
             // Add a record to the CCLI log if we are automatically logging activity
-            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+            if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                     "ccliAutomaticLogging",false)) {
                 mainActivityInterface.getCCLILog().addEntry(requireContext(),mainActivityInterface,newSong,"1");
             }
@@ -497,9 +495,8 @@ public class ImportOnlineFragment extends Fragment {
         if (mainActivityInterface.getSaveSong().
                 doSave(requireContext(),mainActivityInterface,newSong)) {
             // Update the songid file (used later)
-            mainActivityInterface.getStorageAccess().writeSongIDFile(requireContext(),
-                    mainActivityInterface,
-                    mainActivityInterface.getStorageAccess().getSongIDsFromFile(requireContext()));
+            mainActivityInterface.getStorageAccess().writeSongIDFile(
+                    mainActivityInterface.getStorageAccess().getSongIDsFromFile());
 
             // Add the song to the database - done already?
             /*mainActivityInterface.getSQLiteHelper().createSong(requireContext(), mainActivityInterface,
@@ -508,9 +505,9 @@ public class ImportOnlineFragment extends Fragment {
 */
             // Set the current song to this
             mainActivityInterface.getPreferences().
-                    setMyPreferenceString(requireContext(), "whichSongFolder", newSong.getFolder());
+                    setMyPreferenceString("whichSongFolder", newSong.getFolder());
             mainActivityInterface.getPreferences().
-                    setMyPreferenceString(requireContext(), "songfilename", newSong.getFilename());
+                    setMyPreferenceString("songfilename", newSong.getFilename());
 
             // Send an instruction to update the song menu (no need for full reindex)
             mainActivityInterface.updateSongMenu(newSong);

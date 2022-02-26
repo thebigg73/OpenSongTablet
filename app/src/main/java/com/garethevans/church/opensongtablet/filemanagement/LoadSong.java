@@ -77,7 +77,7 @@ public class LoadSong {
 
         // Set the song load status to false (helps check if it didn't load).  This is set to true after success
         if (!indexing) {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", false);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", false);
         }
 
         // When getting the uri, it runs a check for custom folders **Variation, etc.
@@ -86,11 +86,11 @@ public class LoadSong {
         // Determine the filetype by extension - the best songs are xml (OpenSong formatted).
         thisSong.setFiletype(getFileTypeByExtension(thisSong.getFilename()));
 
-        uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
+        uri = mainActivityInterface.getStorageAccess().getUriForItem(
                 where, thisSong.getFolder(), thisSong.getFilename());
 
         // Get the uri for the song - we know it exists as we found it!
-        if (mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
+        if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
 
             // If this is an image or a PDF (or DOC), we don't load a song object from the file
             // Instead we use the databse, but the user will have to wait!
@@ -106,7 +106,7 @@ public class LoadSong {
 
                 } else if (thisSong.getFiletype().equals("XML")) {
                     // 2. We have an XML file (likely)
-                    utf = getUTF(c, mainActivityInterface, thisSong.getFolder(),
+                    utf = getUTF(mainActivityInterface, thisSong.getFolder(),
                             thisSong.getFilename(), thisSong.getFiletype());
                     thisSong = readFileAsXML(c, mainActivityInterface, thisSong, where, uri, utf);
                 }
@@ -117,11 +117,11 @@ public class LoadSong {
                 // If they find an issue, they send the song back with a better guessed filetype
                 if (!thisSong.getFiletype().equals("XML")) {
                     // This will try to import text, chordpro or onsong and update the lyrics field
-                    thisSong.setLyrics(getSongAsText(c, mainActivityInterface, where, thisSong.getFolder(), thisSong.getFilename()));
+                    thisSong.setLyrics(getSongAsText(mainActivityInterface, where, thisSong.getFolder(), thisSong.getFilename()));
                     thisSong.setTitle(thisSong.getFilename());
                     if (thisSong.getLyrics() != null && !thisSong.getLyrics().isEmpty()) {
                         // Success (although we'll maybe process it below)
-                        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
+                        mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", true);
                     }
                 }
 
@@ -148,7 +148,7 @@ public class LoadSong {
                 }
 
                 // Fix all the rogue code
-                thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(c, mainActivityInterface.getLocale(), thisSong));
+                thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(), thisSong));
 
             } else {
                 thisSong.setTitle(thisSong.getFilename());
@@ -181,16 +181,16 @@ public class LoadSong {
         if (!thisSong.getFilename().toLowerCase(Locale.ROOT).equals("welcome to opensongapp") &&
                 thisSong.getLyrics() != null) {
             // Song was loaded correctly and was xml format
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
-            mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", thisSong.getFilename());
-            mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", thisSong.getFolder());
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", true);
+            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename", thisSong.getFilename());
+            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder", thisSong.getFolder());
         } else {
             // Something was wrong, so set the welcome song
             thisSong.setFilename("Welcome to OpenSongApp");
             thisSong.setFolder(c.getString(R.string.mainfoldername));
             mainActivityInterface.getSong().showWelcomeSong(c,thisSong);
-            mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", "Welcome to OpenSongApp");
-            mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", c.getString(R.string.mainfoldername));
+            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename", "Welcome to OpenSongApp");
+            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder", c.getString(R.string.mainfoldername));
         }
     }
 
@@ -238,18 +238,17 @@ public class LoadSong {
         }
     }
 
-    private String getUTF(Context c, MainActivityInterface mainActivityInterface,
+    private String getUTF(MainActivityInterface mainActivityInterface,
                           String folder, String filename, String filetype) {
         // Determine the file encoding
         String where = "Songs";
         if (folder.startsWith("../")) {
             folder = folder.replace("../", "");
         }
-        uri = mainActivityInterface.getStorageAccess().getUriForItem(c, 
-                mainActivityInterface, where, folder, filename);
-        if (mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
+        uri = mainActivityInterface.getStorageAccess().getUriForItem(where, folder, filename);
+        if (mainActivityInterface.getStorageAccess().uriExists(uri)) {
             if (filetype.equals("XML") && !filename.equals("Welcome to OpenSongApp")) {
-                return mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
+                return mainActivityInterface.getStorageAccess().getUTFEncoding(uri);
             } else {
                 return null;
             }
@@ -262,9 +261,9 @@ public class LoadSong {
                               String where, Uri uri, String utf) {
 
         // Extract all of the key bits of the song
-        if (mainActivityInterface.getStorageAccess().uriIsFile(c, uri)) {
+        if (mainActivityInterface.getStorageAccess().uriIsFile(uri)) {
             try {
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
                 XmlPullParserFactory factory;
                 factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
@@ -444,12 +443,11 @@ public class LoadSong {
         songsToFix = null;
     }
 
-    public void fixSongs(Context c, MainActivityInterface mainActivityInterface) {
+    public void fixSongs(MainActivityInterface mainActivityInterface) {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
-                Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem(c,
-                        mainActivityInterface,"Songs",thisSong.getFolder(),thisSong.getFilename());
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, thisSongUri);
+                Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(thisSongUri);
                 String content = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
                 try {
                     inputStream.close();
@@ -458,7 +456,7 @@ public class LoadSong {
                 }
                 if (content.contains("</song>") && (content.indexOf("</song>") + 7) < content.length()) {
                     content = content.substring(0, content.indexOf("</song>")) + "</song>";
-                    Log.d(TAG,"success = "+ mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,
+                    Log.d(TAG,"success = "+ mainActivityInterface.getStorageAccess().doStringWriteToFile(
                             "Songs", thisSong.getFolder(), thisSong.getFilename(), content));
                 }
 
@@ -466,19 +464,19 @@ public class LoadSong {
         }
         resetSongsToFix();
     }
-    public String getExtraStuff(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    public String getExtraStuff(MainActivityInterface mainActivityInterface, Song thisSong) {
         // This is only called if we save/edit a song and it has extra stuff marked
         // In which case we load it in as extracted text and add it back to the XML file as a returned string
         String extraStuff = "";
         if (thisSong.getHasExtraStuff()) {
             // This method will be called in an new thread from the calling activity
             String filename = thisSong.getFilename();
-            Uri extraUri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
+            Uri extraUri = mainActivityInterface.getStorageAccess().getUriForItem(
                     "Songs",thisSong.getFolder(),thisSong.getFilename());
-            InputStream extraIinputStream = mainActivityInterface.getStorageAccess().getInputStream(c, extraUri);
+            InputStream extraIinputStream = mainActivityInterface.getStorageAccess().getInputStream(extraUri);
                 String full_text;
                 try {
-                    if (validReadableFile(c, mainActivityInterface, extraUri, filename)) {
+                    if (validReadableFile(mainActivityInterface, extraUri, filename)) {
                         full_text = mainActivityInterface.getStorageAccess().readTextFileToString(extraIinputStream);
                     } else {
                         full_text = "";
@@ -517,10 +515,10 @@ public class LoadSong {
     }
 
 
-    private boolean validReadableFile(Context c, MainActivityInterface mainActivityInterface, Uri uri, String filename) {
+    private boolean validReadableFile(MainActivityInterface mainActivityInterface, Uri uri, String filename) {
         boolean isvalid = false;
         // Get length of file in Kb
-        float filesize = mainActivityInterface.getStorageAccess().getFileSizeFromUri(c, uri);
+        float filesize = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
         if (filename.endsWith(".txt") || filename.endsWith(".TXT") ||
                 filename.endsWith(".onsong") || filename.endsWith(".ONSONG") ||
                 filename.endsWith(".crd") || filename.endsWith(".CRD") ||
@@ -544,7 +542,7 @@ public class LoadSong {
 
         // If an XML file has unencoded ampersands or quotes, fix them
         try {
-            tofix = getSongAsText(c,mainActivityInterface,where,thisSong.getFolder(),thisSong.getFilename());
+            tofix = getSongAsText(mainActivityInterface,where,thisSong.getFolder(),thisSong.getFilename());
             if (tofix.contains("<")) {
                 String[] sections = tofix.split("<");
                 for (String bit : sections) {
@@ -564,7 +562,7 @@ public class LoadSong {
             }
 
             // Now save the song again (output stream is closed in the write file method)
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c,uri);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
             mainActivityInterface.getStorageAccess().writeFileFromString(newXML.toString(),outputStream);
 
             // Try to extract the section we need
@@ -601,9 +599,9 @@ public class LoadSong {
         return tofix;
     }
 
-    private String getSongAsText(Context c, MainActivityInterface  mainActivityInterface, String where, String folder, String filename) {
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,where, folder,filename);
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,uri);
+    private String getSongAsText(MainActivityInterface mainActivityInterface, String where, String folder, String filename) {
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(where, folder,filename);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
         String s = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
         try {
             if (inputStream!=null) {
@@ -633,7 +631,7 @@ public class LoadSong {
         return where;
     }
 
-    public String loadKeyOfSong(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+    public String loadKeyOfSong(MainActivityInterface mainActivityInterface, String folder, String filename) {
         String nextkey = "";
 
         // If the indexing is done and the song is there,
@@ -661,8 +659,8 @@ public class LoadSong {
             if (folder.contains("**") || folder.contains("../")) {
                 subfolder = folder;
             }
-            uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Songs", subfolder, filename);
-            nextutf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
+            uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs", subfolder, filename);
+            nextutf = mainActivityInterface.getStorageAccess().getUTFEncoding(uri);
         }
 
         try {
@@ -674,7 +672,7 @@ public class LoadSong {
 
                 nextkey = "";
 
-                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
+                InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
                 if (inputStream != null) {
                     xpp.setInput(inputStream, nextutf);
 

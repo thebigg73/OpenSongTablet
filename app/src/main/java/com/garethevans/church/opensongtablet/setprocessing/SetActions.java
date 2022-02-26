@@ -42,7 +42,7 @@ public class SetActions {
         initialiseTheSet(mainActivityInterface);
 
         // Split the set string in preferences into an arraylist for each item
-        buildSetItemArray(c,mainActivityInterface);
+        buildSetItemArray(mainActivityInterface);
 
         // Now build the individual items in the set with the folder, filename and key separate
         buildSetArraysFromItems(c,mainActivityInterface);
@@ -51,14 +51,14 @@ public class SetActions {
     public void initialiseTheSet(MainActivityInterface mainActivityInterface) {
         mainActivityInterface.getCurrentSet().initialiseTheSet();
     }
-    private void buildSetItemArray(Context c, MainActivityInterface mainActivityInterface) {
+    private void buildSetItemArray(MainActivityInterface mainActivityInterface) {
         // Sets may or may not have the preferred key embedded in them (old sets before V6 will not)
         // $**_folder1/song1_**$$**_folder2/song2_**A**__**$
 
         // Get the current set and the last edited version
-        String currentSet = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent","");
-        String beforeEdit = mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentBeforeEdits","");
-        String setName = mainActivityInterface.getPreferences().getMyPreferenceString(c, "setCurrentLastName", "");
+        String currentSet = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","");
+        String beforeEdit = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentBeforeEdits","");
+        String setName = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentLastName", "");
 
         // Set the initial set strings (so we can look for changes later for saving)
         mainActivityInterface.getCurrentSet().setCurrentSetString(currentSet);
@@ -149,7 +149,7 @@ public class SetActions {
             }
         } else if ((key==null || key.isEmpty()) && folder.contains(folderVariations) && lastCheck) {
             // This is a custom variation item so load the key from the file
-            key = mainActivityInterface.getLoadSong().loadKeyOfSong(c,mainActivityInterface,folder,filename);
+            key = mainActivityInterface.getLoadSong().loadKeyOfSong(mainActivityInterface,folder,filename);
         }
 
         return fixNull(key);
@@ -239,7 +239,7 @@ public class SetActions {
         // Now build the modified set string for comparision for saving
         String setCurrent = getSetAsPreferenceString(mainActivityInterface);
         mainActivityInterface.getCurrentSet().setCurrentSetString(setCurrent);
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",setCurrent);
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",setCurrent);
     }
 
     public void checkMissingKeys(Context c, MainActivityInterface mainActivityInterface) {
@@ -281,8 +281,8 @@ public class SetActions {
         // This saves the set to user preferences for loading in next time
         // Not to be confused with exporting/saving the set as a file
         String setString = getSetAsPreferenceString(mainActivityInterface);
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent", setString);
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrentBeforeEdits", setString);
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", setString);
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrentBeforeEdits", setString);
         mainActivityInterface.getCurrentSet().setCurrentSetString(setString);
         mainActivityInterface.getCurrentSet().setInitialSetString(setString);
         mainActivityInterface.updateSetList();
@@ -297,7 +297,7 @@ public class SetActions {
         // Unsaved sets will be stored in the setCurrent preference though
 
         String title;
-        String lastSetName = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrentLastName","");
+        String lastSetName = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrentLastName","");
         mainActivityInterface.getCurrentSet().setSetName(lastSetName);
 
         if (lastSetName == null || lastSetName.equals("")) {
@@ -360,8 +360,7 @@ public class SetActions {
     }
 
     public ArrayList<String> getAllSets(Context c, MainActivityInterface mainActivityInterface) {
-        return mainActivityInterface.getStorageAccess().listFilesInFolder(c,
-                mainActivityInterface, "Sets", "");
+        return mainActivityInterface.getStorageAccess().listFilesInFolder("Sets", "");
     }
     public ArrayList<String> getCategories(Context c, ArrayList<String> allSets) {
         ArrayList<String> categories = new ArrayList<>();
@@ -381,7 +380,7 @@ public class SetActions {
     public ArrayList<String> setsInCategory(Context c, MainActivityInterface mainActivityInterface,
                                             ArrayList<String> allSets) {
         ArrayList<String> availableSets = new ArrayList<>();
-        String category = mainActivityInterface.getPreferences().getMyPreferenceString(c,
+        String category = mainActivityInterface.getPreferences().getMyPreferenceString(
                 "whichSetCategory", c.getString(R.string.mainfoldername));
         boolean mainCategory = category.equals(c.getString(R.string.mainfoldername));
 
@@ -424,7 +423,7 @@ public class SetActions {
         // If this happens, the variation is transposed by the required amount
 
         // The set may have been edited and then the user clicks on a song, so save the set to preferences first
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",
                 mainActivityInterface.getCurrentSet().getCurrentSetString());
 
         // Get the current set item values
@@ -442,8 +441,7 @@ public class SetActions {
 
         // Get the uri of the original file (if it exists)
         // We receive a song object as it isn't necessarily the one loaded to MainActivity
-        Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem(
-                c, mainActivityInterface, "Songs", folder, filename);
+        Uri uriOriginal = mainActivityInterface.getStorageAccess().getUriForItem("Songs", folder, filename);
 
         Log.d(TAG,"uriOriginal="+uriOriginal);
         // Get the uri of the new variation file (Variations/filename)
@@ -453,17 +451,15 @@ public class SetActions {
             filename = mainActivityInterface.getNearbyConnections().getReceivedSongFilename();
         }
 
-        Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(c,
-                mainActivityInterface, folderVariations, "", filename);
+        Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(folderVariations, "", filename);
 
         // Make sure there is a file to write the output to (remove any existing first)
-        mainActivityInterface.getStorageAccess().deleteFile((Context)mainActivityInterface, uriVariation);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c,
-                mainActivityInterface, true, uriVariation, null, folderVariations, "", filename);
+        mainActivityInterface.getStorageAccess().deleteFile(uriVariation);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriVariation, null, folderVariations, "", filename);
 
         // Get an input/output stream reference and copy (streams are closed in copyFile())
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uriOriginal);
-        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uriVariation);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uriOriginal);
+        OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uriVariation);
         mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
     }
 
@@ -575,7 +571,7 @@ public class SetActions {
         return stringBuilder.toString();
     }
     private Song getTempSong(Context c, MainActivityInterface mainActivityInterface, String folder, String name) {
-        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,folder,name);
+        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(folder,name);
         try {
             tempSong = mainActivityInterface.getLoadSong().doLoadSong(c, mainActivityInterface, tempSong,false);
         } catch (Exception e) {
@@ -653,7 +649,7 @@ public class SetActions {
 
         String slide_lyrics = tempSong.getLyrics();
         try {
-            byte[] data = mainActivityInterface.getProcessSong().getXML(c,mainActivityInterface,tempSong).getBytes(tempSong.getEncoding());
+            byte[] data = mainActivityInterface.getProcessSong().getXML(tempSong).getBytes(tempSong.getEncoding());
             slide_lyrics = Base64.encodeToString(data, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
@@ -786,8 +782,8 @@ public class SetActions {
         for (String aSeparate_slide : separate_slide) {
             String imglinetext;
             // Try to get the image into bytes
-            String imgcode = mainActivityInterface.getStorageAccess().getImageSlide(c,
-                    mainActivityInterface, aSeparate_slide);
+            String imgcode = mainActivityInterface.getStorageAccess().getImageSlide(
+                    aSeparate_slide);
             if (!imgcode.isEmpty()) {
                 imglinetext = "        <image>" + imgcode.trim() + "</image>\n";
             } else {
@@ -839,7 +835,7 @@ public class SetActions {
         removeCacheItemsFromDB(c, mainActivityInterface, folderVariations);
 
         // Create the cache directories again as we likely deleted them in SAF
-        mainActivityInterface.getStorageAccess().createOrCheckRootFolders(c,null,mainActivityInterface);
+        mainActivityInterface.getStorageAccess().createOrCheckRootFolders(null);
 
         // Initialise the arrays that will hold the loaded information
         mainActivityInterface.getCurrentSet().initialiseTheSet();
@@ -862,8 +858,8 @@ public class SetActions {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();
-            String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(c, uri);
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, uri);
+            String utf = mainActivityInterface.getStorageAccess().getUTFEncoding(uri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
             if (inputStream != null) {
                 xpp.setInput(inputStream, utf);
                 int eventType;
@@ -886,7 +882,7 @@ public class SetActions {
                                 case "scripture":
                                     // Get Scripture
                                     try {
-                                        getScripture(c, mainActivityInterface, xpp);
+                                        getScripture(mainActivityInterface, xpp);
                                     } catch (Exception e) {
                                         Log.d(TAG, "Couldn't get scripture from set");
                                         e.printStackTrace();
@@ -957,7 +953,7 @@ public class SetActions {
         xpp.nextTag();
     }
 
-    private void getScripture(Context c, MainActivityInterface mainActivityInterface,
+    private void getScripture(MainActivityInterface mainActivityInterface,
                               XmlPullParser xpp) throws IOException, XmlPullParserException {
         // Scripture entries in a set are custom slides.  Get the data and save it
         // This will ultimately be saved in our Scripture/_cache folder
@@ -1039,7 +1035,7 @@ public class SetActions {
         }
 
         // Make sure to safe encode the filename as it will likely have : in it
-        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,
+        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
                 customLocStart+folderScripture, Uri.encode(scripture_title));
         tempSong.setTitle(scripture_title);
         tempSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(customLocStart+folderScripture, Uri.encode(scripture_title)));
@@ -1055,7 +1051,7 @@ public class SetActions {
                 tempSong.getFilename(),"");
 
         // Now create the file in the Scripture/_cache folder
-        writeTempSlide(c,mainActivityInterface,folderScripture,cache,tempSong);
+        writeTempSlide(mainActivityInterface,folderScripture,cache,tempSong);
 
         xpp.nextTag();
     }
@@ -1144,7 +1140,7 @@ public class SetActions {
 
         // Get a new tempSong ready for the info
         // Make sure to safe encode the filename as it might have unsafe characters
-        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,
+        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
                 customLocStart+folderSlides, Uri.encode(custom_title));
 
         if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
@@ -1180,7 +1176,7 @@ public class SetActions {
                 tempSong.getFilename(),"");
 
         // Now create the file in the appropriate location /_cache folder
-        writeTempSlide(c,mainActivityInterface,
+        writeTempSlide(mainActivityInterface,
                 tempSong.getFolder().replace(customLocStart,""),tempcache,tempSong);
 
     }
@@ -1258,14 +1254,13 @@ public class SetActions {
 
                             String safeFilename = mainActivityInterface.getStorageAccess().
                                     safeFilename(image_title.toString() + imagenums + image_type);
-                            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface,
-                                    folderImages, cache, safeFilename);
+                            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(folderImages, cache, safeFilename);
 
                             // Check the uri exists for the outputstream to be valid
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, true, uri, null,
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null,
                                     folderImages, cache, safeFilename);
 
-                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
+                            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
                             byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
                             mainActivityInterface.getStorageAccess().writeFileFromDecodedImageString(outputStream, decodedString);
 
@@ -1295,7 +1290,7 @@ public class SetActions {
 
         // Get a new tempSong ready for the info
         // Make sure to safe encode the filename as it might have unsafe characters
-        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(mainActivityInterface,
+        Song tempSong = mainActivityInterface.getProcessSong().initialiseSong(
                 customLocStart+folderImages, Uri.encode(image_title.toString()));
 
         tempSong.setTitle(image_title.toString());
@@ -1310,7 +1305,7 @@ public class SetActions {
         // Add the set item
         mainActivityInterface.getCurrentSet().addSetValues(tempSong.getFolder(),tempSong.getFilename(),null);
 
-        writeTempSlide(c,mainActivityInterface,folderImages,cache,tempSong);
+        writeTempSlide(mainActivityInterface,folderImages,cache,tempSong);
     }
 
     private String fixNull(String s) {
@@ -1321,31 +1316,31 @@ public class SetActions {
     }
 
     private void removeCacheItemsFromDB(Context c, MainActivityInterface mainActivityInterface, String folder) {
-        ArrayList<String> filesInFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(c, mainActivityInterface, folder, "_cache");
+        ArrayList<String> filesInFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(folder, "_cache");
         for (String filename:filesInFolder) {
             mainActivityInterface.getSQLiteHelper().deleteSong(c, mainActivityInterface, customLocStart+folder, filename);
         }
 
         // Now empty the actual folder
-        mainActivityInterface.getStorageAccess().wipeFolder(c,mainActivityInterface,folder, "_cache");
+        mainActivityInterface.getStorageAccess().wipeFolder(folder, "_cache");
 
         if (folder.equals(folderVariations)) {
             // Also cleae the non-cache folder
-            ArrayList<String> filesInNonCacheFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(c, mainActivityInterface, folder, "");
+            ArrayList<String> filesInNonCacheFolder = mainActivityInterface.getStorageAccess().listFilesInFolder(folder, "");
             for (String filename:filesInFolder) {
                 mainActivityInterface.getSQLiteHelper().deleteSong(c, mainActivityInterface, customLocStart+folder, filename);
             }
 
             // Now empty the actual folder
-            mainActivityInterface.getStorageAccess().wipeFolder(c,mainActivityInterface,folder, "");
+            mainActivityInterface.getStorageAccess().wipeFolder(folder, "");
         }
     }
 
-    private void writeTempSlide(Context c, MainActivityInterface mainActivityInterface,
+    private void writeTempSlide(MainActivityInterface mainActivityInterface,
                                 String folder, String subfolder, Song tempSong) {
         // Get the song as XML
-        tempSong.setSongXML(mainActivityInterface.getProcessSong().getXML(c, mainActivityInterface, tempSong));
-        mainActivityInterface.getStorageAccess().doStringWriteToFile(c,mainActivityInterface,folder,subfolder,tempSong.getFilename(),tempSong.getSongXML());
+        tempSong.setSongXML(mainActivityInterface.getProcessSong().getXML(tempSong));
+        mainActivityInterface.getStorageAccess().doStringWriteToFile(folder,subfolder,tempSong.getFilename(),tempSong.getSongXML());
     }
 
     private String safeNextText(XmlPullParser xpp) {

@@ -105,7 +105,7 @@ public class Pad {
 
     public boolean isCustomAutoPad(Context c) {
         String key = mainActivityInterface.getSong().getKey();
-        String customPad = mainActivityInterface.getPreferences().getMyPreferenceString(c,"customPad"+keyToFlat(key),"");
+        String customPad = mainActivityInterface.getPreferences().getMyPreferenceString("customPad"+keyToFlat(key),"");
         return isAutoPad(c) && customPad!=null && !customPad.isEmpty();
     }
 
@@ -119,11 +119,11 @@ public class Pad {
     public Uri getPadUri(Context c) {
         Uri padUri = null;
         if (isCustomAutoPad(c)) {
-            padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c,mainActivityInterface,
-                    mainActivityInterface.getPreferences().getMyPreferenceString(c,
+            padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(
+                    mainActivityInterface.getPreferences().getMyPreferenceString(
                             "customPad"+keyToFlat(mainActivityInterface.getSong().getKey()),""));
         } else if (isLinkAudio(c)) {
-            padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(c,mainActivityInterface,
+            padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(
                     mainActivityInterface.getSong().getLinkaudio());
         }
         // If none of the above, we assume an auto pad if the key has been set.
@@ -133,7 +133,7 @@ public class Pad {
     }
 
     private boolean isPadValid(Context c, Uri padUri) {
-        return mainActivityInterface.getStorageAccess().uriExists(c,padUri);
+        return mainActivityInterface.getStorageAccess().uriExists(padUri);
     }
 
     private void loadAndStart(Context c, int padNum) {
@@ -228,13 +228,13 @@ public class Pad {
         endTimer(padNum);
 
         // Get the current volume
-        final float padVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"padVol",1.0f);
-        final int fadeTime = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "padCrossFadeTime",8000);
+        final float padVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("padVol",1.0f);
+        final int fadeTime = mainActivityInterface.getPreferences().getMyPreferenceInt("padCrossFadeTime",8000);
 
         // Set left and right volumes
         float padVolL = padVol;
         float padVolR = padVol;
-        switch (mainActivityInterface.getPreferences().getMyPreferenceString(c,"padPan","C")) {
+        switch (mainActivityInterface.getPreferences().getMyPreferenceString("padPan","C")) {
             case "L":
                 padVolR = 0.0f;
                 break;
@@ -474,7 +474,7 @@ public class Pad {
                 (pad2!=null && pad2.getDuration()>0 && (pad2.isPlaying() || pad2Pause)));
     }
     public void autoStartPad(Context c) {
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"padAutoStart",false) && padsActivated) {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("padAutoStart",false) && padsActivated) {
             startPad(c);
         }
     }

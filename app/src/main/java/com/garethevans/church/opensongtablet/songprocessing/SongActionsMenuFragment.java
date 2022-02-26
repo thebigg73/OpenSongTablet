@@ -61,7 +61,7 @@ public class SongActionsMenuFragment extends Fragment {
         myView.importButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.import_graph));
         myView.edit.setOnClickListener(v -> actionAllowed(R.id.editsong_graph));
         myView.duplicate.setOnClickListener(v -> {
-            if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
+            if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
                 TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"songActionsMenuFragment",
                         getString(R.string.duplicate),getString(R.string.song_new_name),
                         getString(R.string.duplicate) + ": " +
@@ -73,7 +73,7 @@ public class SongActionsMenuFragment extends Fragment {
             }
         });
         myView.delete.setOnClickListener(v -> {
-            if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
+            if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
                 mainActivityInterface.displayAreYouSure("deleteSong",
                         getString(R.string.delete_song_warning), null,
                         "SongActionsMenuFragment", this,
@@ -93,7 +93,7 @@ public class SongActionsMenuFragment extends Fragment {
         myView.chords.setOnClickListener(v -> actionAllowed(R.id.chords_graph));
         myView.notation.setOnClickListener(v -> actionAllowed(R.id.musicScoreFragment));
         myView.midi.setOnClickListener(v -> {
-            if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
+            if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
                 mainActivityInterface.navHome();
                 MidiSongBottomSheet midiSongBottomSheet = new MidiSongBottomSheet();
                 midiSongBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "midiSongBottomSheet");
@@ -104,7 +104,7 @@ public class SongActionsMenuFragment extends Fragment {
     }
 
     private void actionAllowed(int id) {
-        if (mainActivityInterface.getProcessSong().isValidSong(requireContext(), mainActivityInterface.getSong())) {
+        if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             mainActivityInterface.navigateToFragment(null, id);
         } else {
             mainActivityInterface.getShowToast().doIt(getString(R.string.not_allowed));
@@ -116,30 +116,27 @@ public class SongActionsMenuFragment extends Fragment {
         String oldName = mainActivityInterface.getSong().getFilename();
         String oldTitle = mainActivityInterface.getSong().getTitle();
         String folder = mainActivityInterface.getSong().getFolder();
-        Uri duplicateSongUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                mainActivityInterface,"Songs",folder, newName);
+        Uri duplicateSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder, newName);
 
         // Only proceed if the song doesn't exist already
-        if (mainActivityInterface.getStorageAccess().uriExists(requireContext(),duplicateSongUri)) {
+        if (mainActivityInterface.getStorageAccess().uriExists(duplicateSongUri)) {
             // Warn the user and stop
             mainActivityInterface.getShowToast().doIt(getString(R.string.song_name_already_taken));
         } else {
             // Because we want to create a new copy, but change the title as well, we create the XML
             mainActivityInterface.getSong().setTitle(newName);
             mainActivityInterface.getSong().setFilename(newName);
-            String content = mainActivityInterface.getProcessSong().getXML(requireContext(),
-                    mainActivityInterface,mainActivityInterface.getSong());
+            String content = mainActivityInterface.getProcessSong().getXML(mainActivityInterface.getSong());
 
             // Now write the file
             if (mainActivityInterface.getSong().getFiletype().equals("PDF") ||
                 mainActivityInterface.getSong().getFiletype().equals("IMG")) {
                 // Copy the actual file
-                Uri originalUri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(),
-                        mainActivityInterface,"Songs",folder,oldName);
+                Uri originalUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,oldName);
                 InputStream inputStream = mainActivityInterface.getStorageAccess().
-                        getInputStream(requireContext(),originalUri);
+                        getInputStream(originalUri);
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().
-                        getOutputStream(requireContext(),duplicateSongUri);
+                        getOutputStream(duplicateSongUri);
                 if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
                     // Success.  Add to the non-opensong database
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
@@ -158,8 +155,8 @@ public class SongActionsMenuFragment extends Fragment {
                 }
 
             } else {
-                if (mainActivityInterface.getStorageAccess().doStringWriteToFile(requireContext(),
-                        mainActivityInterface, "Songs", mainActivityInterface.getSong().getFolder(),
+                if (mainActivityInterface.getStorageAccess().doStringWriteToFile(
+                        "Songs", mainActivityInterface.getSong().getFolder(),
                         newName, content)) {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
                     mainActivityInterface.getSong().setFilename(newName);
@@ -182,7 +179,7 @@ public class SongActionsMenuFragment extends Fragment {
     }
 
     private void loadNewSong() {
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),
+        mainActivityInterface.getPreferences().setMyPreferenceString(
                 "songfilename",mainActivityInterface.getSong().getFilename());
         mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
         mainActivityInterface.navHome();

@@ -101,7 +101,7 @@ public class PedalsFragment extends Fragment {
 
         myView.midiAsPedal.setChecked(mainActivityInterface.getPedalActions().getMidiAsPedal());
         myView.midiAsPedal.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"midiAsPedal",b);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiAsPedal",b);
             mainActivityInterface.getPedalActions().setMidiAsPedal(b);
             midiPedalAllowed();
         });
@@ -154,7 +154,7 @@ public class PedalsFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(), "scrollDistance", slider.getValue()/100f);
+                mainActivityInterface.getPreferences().setMyPreferenceFloat("scrollDistance", slider.getValue()/100f);
                 mainActivityInterface.getGestures().setScrollDistance(slider.getValue()/100f);
             }
         });

@@ -69,7 +69,7 @@ public class DisplayScalingFragment extends Fragment {
 
     private void setAutoscaleMode() {
         // Autoscale can be Y(es) W(idth) N(o)
-        String mode = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songAutoScale","W");
+        String mode = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W");
         switch (mode) {
             case "Y":
                 modeSwitches(true,false);
@@ -107,7 +107,7 @@ public class DisplayScalingFragment extends Fragment {
     private void setSliderValue(MaterialSlider slider, String prefName, float fallback,
                                 int multiplier, String unit) {
         // Get the float (% values need to be scaled by 100 multiplier
-        float val = multiplier * mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),prefName,fallback);
+        float val = multiplier * mainActivityInterface.getPreferences().getMyPreferenceFloat(prefName,fallback);
         updateHint(slider,val,unit);
         slider.setValue(val);
     }
@@ -142,12 +142,12 @@ public class DisplayScalingFragment extends Fragment {
             visibilityByBoolean(myView.manualFontSize,true);
             visibilityByBoolean(myView.autoFontSizeLayout,false);
         }
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"songAutoScale",val);
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getPreferences().setMyPreferenceString("songAutoScale",val);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
     }
 
     private boolean getChecked(String prefName, boolean fallback) {
-        return mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),prefName,fallback);
+        return mainActivityInterface.getPreferences().getMyPreferenceBoolean(prefName,fallback);
     }
     private void checkMinMaxSizes() {
         // If the min size is bigger than the max size, then swap them
@@ -178,15 +178,15 @@ public class DisplayScalingFragment extends Fragment {
     }
 
     private void updateBooleanPreference(String prefName, boolean isChecked) {
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),prefName,isChecked);
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(prefName,isChecked);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
     }
 
     private void updateSlider(MaterialSlider slider, String prefName, float multiplier, String unit) {
         // The float to store could be out of 100, or 1.  Use the multiplier to convert
         float sliderVal = slider.getValue();
-        mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),prefName, sliderVal/multiplier);
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat(prefName, sliderVal/multiplier);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
         updateHint(slider, sliderVal, unit);
     }
 

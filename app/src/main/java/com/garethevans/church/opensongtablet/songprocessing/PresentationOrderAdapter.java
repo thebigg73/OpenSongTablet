@@ -94,7 +94,7 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         MaterialTextView sectionName = holder.sectionName;
         String header = currentOrder.get(position);
         sectionName.setText(header);
-        String niceheader = mainActivityInterface.getProcessSong().beautifyHeading(c,mainActivityInterface,header);
+        String niceheader = mainActivityInterface.getProcessSong().beautifyHeading(header);
         if (!niceheader.equals(header)) {
             sectionName.setHint(niceheader);
         }

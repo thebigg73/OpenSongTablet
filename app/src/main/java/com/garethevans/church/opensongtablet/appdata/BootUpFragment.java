@@ -115,12 +115,12 @@ public class BootUpFragment extends Fragment {
     }
     private boolean storageLocationSet() {
         uriTreeString = mainActivityInterface.getPreferences().
-                    getMyPreferenceString(getContext(), "uriTree", "");
+                    getMyPreferenceString("uriTree", "");
         return !uriTreeString.isEmpty();
     }
     private boolean storageLocationValid() {
         uriTree = Uri.parse(uriTreeString);
-        return mainActivityInterface.getStorageAccess().uriTreeValid(requireContext(),uriTree);
+        return mainActivityInterface.getStorageAccess().uriTreeValid(uriTree);
     }
 
     private void requireStorageCheck() {
@@ -143,7 +143,7 @@ public class BootUpFragment extends Fragment {
 
                 // Check for saved storage locations
                 final String progress = mainActivityInterface.getStorageAccess().
-                        createOrCheckRootFolders(getContext(), uriTree, mainActivityInterface);
+                        createOrCheckRootFolders(uriTree);
                 boolean foldersok = !progress.contains("Error");
 
                 if (foldersok) {
@@ -157,11 +157,11 @@ public class BootUpFragment extends Fragment {
                     message = getString(R.string.success);
                     updateMessage();
 
-                    mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "whichMode", "Performance"));
+                    mainActivityInterface.setMode(mainActivityInterface.getPreferences().getMyPreferenceString("whichMode", "Performance"));
 
                     // Increase the boot times for prompting a user to backup their songs
-                    int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"runssincebackup",0);
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), "runssincebackup", runssincebackup+1);
+                    int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup",0);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup", runssincebackup+1);
 
                     // Set up the rest of the main activity
                     requireActivity().runOnUiThread(() -> {
@@ -204,17 +204,17 @@ public class BootUpFragment extends Fragment {
 
     // Get the last used folder/filename or reset if it didn't load
     private void setFolderAndSong() {
-        mainActivityInterface.getSong().setFolder(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "whichSongFolder",
+        mainActivityInterface.getSong().setFolder(mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",
                 getString(R.string.mainfoldername)));
 
-        mainActivityInterface.getSong().setFilename(mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "songfilename",
+        mainActivityInterface.getSong().setFilename(mainActivityInterface.getPreferences().getMyPreferenceString("songfilename",
                 getString(R.string.welcome)));
 
-        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean(getContext(),"songLoadSuccess",false)) {
+        if (!mainActivityInterface.getPreferences().getMyPreferenceBoolean("songLoadSuccess",false)) {
             mainActivityInterface.getSong().setFolder(getString(R.string.mainfoldername));
-            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"whichSongFolder",mainActivityInterface.getSong().getFolder());
+            mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder",mainActivityInterface.getSong().getFolder());
             mainActivityInterface.getSong().setFilename("Welcome to OpenSongApp");
-            mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"songfilename","Welcome to OpenSongApp");
+            mainActivityInterface.getPreferences().setMyPreferenceString("songfilename","Welcome to OpenSongApp");
         }
     }
 

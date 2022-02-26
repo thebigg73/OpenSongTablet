@@ -15,15 +15,15 @@ public class ExportFiles {
         String title = c.getString(R.string.app_name) + ": " + c.getString(R.string.ccli);
         String subject = title + " - " + c.getString(R.string.ccli_view);
         String text = c.getString(R.string.ccli_church) + ": " +
-                mainActivityInterface.getPreferences().getMyPreferenceString(c,"ccliChurchName","") + "\n";
+                mainActivityInterface.getPreferences().getMyPreferenceString("ccliChurchName","") + "\n";
         text += c.getString(R.string.ccli_licence) + ": " +
-                mainActivityInterface.getPreferences().getMyPreferenceString(c,"ccliLicence","")+ "\n\n";
+                mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence","")+ "\n\n";
         Intent emailIntent = setEmailIntent(subject,title,text);
 
         // Add the attachments
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(c, mainActivityInterface, "Settings", "", "ActivityLog.xml");
+        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
         ArrayList<Uri> uris = new ArrayList<>();
-        if (!mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
+        if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
             mainActivityInterface.getCCLILog().createBlankXML(c, mainActivityInterface, uri);
         }
         // Add the uri

@@ -39,24 +39,24 @@ public class Swipes {
         timeMs = (int)(swipeTime * maxTime);
     }
     public void loadPreferences(Context c, MainActivityInterface mainActivityInterface) {
-        swipeWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"swipeWidth",0.4f);
-        swipeHeight = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"swipeHeight",0.2f);
-        swipeTime = mainActivityInterface.getPreferences().getMyPreferenceFloat(c,"swipeTime",0.6f);
+        swipeWidth = mainActivityInterface.getPreferences().getMyPreferenceFloat("swipeWidth",0.4f);
+        swipeHeight = mainActivityInterface.getPreferences().getMyPreferenceFloat("swipeHeight",0.2f);
+        swipeTime = mainActivityInterface.getPreferences().getMyPreferenceFloat("swipeTime",0.6f);
     }
     public void fixWidth(Context c, MainActivityInterface mainActivityInterface, int width) {
         widthPx = width;
         swipeWidth = (float)widthPx/(float)viewWidth;
-        mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeWidth",swipeWidth);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat("swipeWidth",swipeWidth);
     }
     public void fixHeight(Context c, MainActivityInterface mainActivityInterface, int height) {
         heightPx = height;
         swipeHeight = (float)heightPx/(float)viewHeight;
-        mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeHeight",swipeHeight);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat("swipeHeight",swipeHeight);
     }
     public void fixTime(Context c, MainActivityInterface mainActivityInterface, int time) {
         timeMs = time;
         swipeTime = (float)timeMs/(float)maxTime;
-        mainActivityInterface.getPreferences().setMyPreferenceFloat(c,"swipeTime",swipeTime);
+        mainActivityInterface.getPreferences().setMyPreferenceFloat("swipeTime",swipeTime);
     }
 
     // The getters

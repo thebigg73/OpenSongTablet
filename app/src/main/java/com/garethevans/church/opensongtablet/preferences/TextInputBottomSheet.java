@@ -182,7 +182,7 @@ public class TextInputBottomSheet extends BottomSheetDialogFragment {
 
             // Save the preference if we didn't send null as the prefName
             if (prefName!=null) {
-                mainActivityInterface.getPreferences().setMyPreferenceString(getContext(), prefName, prefVal);
+                mainActivityInterface.getPreferences().setMyPreferenceString(prefName, prefVal);
             }
 
             // Update the calling fragment

@@ -89,10 +89,10 @@ public class BatteryStatus extends BroadcastReceiver {
     }
 
     public void updateBatteryPrefs() {
-        setBatteryTextOn(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"batteryTextOn",true));
-        setBatteryTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "batteryTextSize",9.0f));
-        setBatteryDialOn(mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"batteryDialOn",true));
-        setBatteryDialThickness(mainActivityInterface.getPreferences().getMyPreferenceInt(c, "batteryDialThickness", 4));
+        setBatteryTextOn(mainActivityInterface.getPreferences().getMyPreferenceBoolean("batteryTextOn",true));
+        setBatteryTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("batteryTextSize",9.0f));
+        setBatteryDialOn(mainActivityInterface.getPreferences().getMyPreferenceBoolean("batteryDialOn",true));
+        setBatteryDialThickness(mainActivityInterface.getPreferences().getMyPreferenceInt("batteryDialThickness", 4));
     }
 
     public void setBatteryDialOn(boolean batteryDialOn) {

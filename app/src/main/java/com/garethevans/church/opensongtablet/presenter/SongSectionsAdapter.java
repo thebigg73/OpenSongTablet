@@ -77,7 +77,7 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
             bits[0] = sectionContent.substring(0, toPos + 1);
             bits[1] = sectionContent.replace(bits[0], "").replace("[", "").
                     replace("]", "").trim();
-            bits[0] = mainActivityInterface.getProcessSong().beautifyHeading(c, mainActivityInterface, bits[0]);
+            bits[0] = mainActivityInterface.getProcessSong().beautifyHeading(bits[0]);
             bits[0] = bits[0].replace("[", "").replace("]", "").trim();
         }
 

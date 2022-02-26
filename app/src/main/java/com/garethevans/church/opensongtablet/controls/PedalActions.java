@@ -98,17 +98,17 @@ public class PedalActions {
     }
     private void setPrefs(Context c, MainActivityInterface mainActivityInterface) {
         for (int w=1; w<=8; w++) {
-            pedalCode[w] = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "pedal"+w+"Code", defPedalCodes[w]);
-            pedalMidi[w] = mainActivityInterface.getPreferences().getMyPreferenceString(c,"pedal"+w+"Midi",defPedalMidis[w]);
-            pedalShortPressAction[w] = mainActivityInterface.getPreferences().getMyPreferenceString(c,"pedal"+w+"ShortPressAction",defShortActions[w]);
-            pedalLongPressAction[w] = mainActivityInterface.getPreferences().getMyPreferenceString(c,"pedal"+w+"LongPressAction",defLongActions[w]);
+            pedalCode[w] = mainActivityInterface.getPreferences().getMyPreferenceInt("pedal"+w+"Code", defPedalCodes[w]);
+            pedalMidi[w] = mainActivityInterface.getPreferences().getMyPreferenceString("pedal"+w+"Midi",defPedalMidis[w]);
+            pedalShortPressAction[w] = mainActivityInterface.getPreferences().getMyPreferenceString("pedal"+w+"ShortPressAction",defShortActions[w]);
+            pedalLongPressAction[w] = mainActivityInterface.getPreferences().getMyPreferenceString("pedal"+w+"LongPressAction",defLongActions[w]);
         }
-        airTurnMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"airTurnMode", false);
-        keyRepeatCount = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"keyRepeatCount",20);
-        pedalScrollBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"pedalScrollBeforeMove",true);
-        pedalShowWarningBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"pedalShowWarningBeforeMove",false);
-        keyRepeatTime = mainActivityInterface.getPreferences().getMyPreferenceInt(c, "keyRepeatTime", 400);
-        midiAsPedal = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "midiAsPedal", false);
+        airTurnMode = mainActivityInterface.getPreferences().getMyPreferenceBoolean("airTurnMode", false);
+        keyRepeatCount = mainActivityInterface.getPreferences().getMyPreferenceInt("keyRepeatCount",20);
+        pedalScrollBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pedalScrollBeforeMove",true);
+        pedalShowWarningBeforeMove = mainActivityInterface.getPreferences().getMyPreferenceBoolean("pedalShowWarningBeforeMove",false);
+        keyRepeatTime = mainActivityInterface.getPreferences().getMyPreferenceInt("keyRepeatTime", 400);
+        midiAsPedal = mainActivityInterface.getPreferences().getMyPreferenceBoolean("midiAsPedal", false);
     }
 
     public void commonEventDown(int keyCode, String keyMidi) {
@@ -345,7 +345,7 @@ public class PedalActions {
                 break;
         }
         // Save the preference
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, which, bool);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(which, bool);
     }
     public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, int val) {
         switch (which) {
@@ -357,15 +357,15 @@ public class PedalActions {
                 break;
         }
         // Save the preference
-        mainActivityInterface.getPreferences().setMyPreferenceInt(c, which, val);
+        mainActivityInterface.getPreferences().setMyPreferenceInt(which, val);
     }
     public void setPedalCode(Context c, MainActivityInterface mainActivityInterface, int which, int newCode) {
         pedalCode[which] = newCode;
-        mainActivityInterface.getPreferences().setMyPreferenceInt(c,"pedal"+which+"Code",newCode);
+        mainActivityInterface.getPreferences().setMyPreferenceInt("pedal"+which+"Code",newCode);
     }
     public void setMidiCode(Context c, MainActivityInterface mainActivityInterface, int which, String newCode) {
         pedalMidi[which] = newCode;
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,"pedal"+which+"Midi",newCode);
+        mainActivityInterface.getPreferences().setMyPreferenceString("pedal"+which+"Midi",newCode);
     }
     public void setPedalPreference(Context c, MainActivityInterface mainActivityInterface, int which,
                                    boolean shortPress, String action) {
@@ -378,7 +378,7 @@ public class PedalActions {
             pref = pref + "LongPressAction";
         }
         // Save the preference
-        mainActivityInterface.getPreferences().setMyPreferenceString(c, pref, action);
+        mainActivityInterface.getPreferences().setMyPreferenceString(pref, action);
     }
     public void setMidiAsPedal(boolean midiAsPedal) {
         this.midiAsPedal = midiAsPedal;

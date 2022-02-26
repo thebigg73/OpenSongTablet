@@ -270,13 +270,13 @@ public class CustomSlideFragment extends Fragment {
                 BitmapDrawable bd;
 
                 if (uri.getPath().startsWith("../OpenSong/")) {
-                    uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(requireContext(),mainActivityInterface,uri.getPath());
+                    uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(uri.getPath());
                 }
-                if (!mainActivityInterface.getStorageAccess().uriExists(requireContext(), uri)) {
+                if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
                     Drawable notfound = ContextCompat.getDrawable(requireContext(),R.drawable.notfound);
                     thumbnail.setImageDrawable(notfound);
                 } else {
-                    InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(requireContext(), uri);
+                    InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
                     ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), dpToPx(200), dpToPx(150));
                     bd = new BitmapDrawable(getResources(), ThumbImage);
                     thumbnail.setImageDrawable(bd);
@@ -317,7 +317,7 @@ public class CustomSlideFragment extends Fragment {
                 folder = "Images";
                 break;
         }
-        ArrayList<String> filesFound = mainActivityInterface.getStorageAccess().listFilesInFolder(requireContext(),mainActivityInterface,folder,"");
+        ArrayList<String> filesFound = mainActivityInterface.getStorageAccess().listFilesInFolder(folder,"");
         TextInputBottomSheet textInputBottomSheet = new TextInputBottomSheet(this,"CustomSlideFragment",getString(R.string.load_reusable),getString(R.string.file_chooser),null,null,"",filesFound);
         textInputBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"textInputBottomSheet");
     }

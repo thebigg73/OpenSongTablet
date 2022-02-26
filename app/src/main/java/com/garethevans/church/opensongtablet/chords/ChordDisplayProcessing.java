@@ -249,7 +249,7 @@ public class ChordDisplayProcessing {
     public String getCapoPosition(Context c, MainActivityInterface mainActivityInterface) {
         // Decide if the capo position is a number or a numeral
         String capoPosition = mainActivityInterface.getSong().getCapo();
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "capoInfoAsNumerals", false)) {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("capoInfoAsNumerals", false)) {
             String[] numerals = new String[] {"","I","II","III","IV","V","VI","VII","VIII","IX","X","XI,","XII"};
             int pos = Integer.parseInt(capoPosition);
             if (pos>=0 && pos<=12) {

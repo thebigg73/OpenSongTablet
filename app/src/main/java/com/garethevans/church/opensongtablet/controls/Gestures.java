@@ -79,10 +79,10 @@ public class Gestures {
         gestureDescriptions.add(autoscroll + " + " + metronome + " + " + pad + startstop);
     }
     private void getPreferences(Context c, MainActivityInterface mainActivityInterface) {
-        doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString(c,"gestureDoubleTap","editsong");
-        longPress = mainActivityInterface.getPreferences().getMyPreferenceString(c,"gestureLongPress","addtoset");
-        swipeEnabled = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c, "swipeForSongs",true);
-        scrollDistance = mainActivityInterface.getPreferences().getMyPreferenceFloat(c, "scrollDistance", 0.7f);
+        doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString("gestureDoubleTap","editsong");
+        longPress = mainActivityInterface.getPreferences().getMyPreferenceString("gestureLongPress","addtoset");
+        swipeEnabled = mainActivityInterface.getPreferences().getMyPreferenceBoolean("swipeForSongs",true);
+        scrollDistance = mainActivityInterface.getPreferences().getMyPreferenceFloat("scrollDistance", 0.7f);
     }
     public void setScrollDistance(float scrollDistance) {
         this.scrollDistance = scrollDistance;
@@ -125,14 +125,14 @@ public class Gestures {
             this.longPress = val;
         }
         // Save the preference
-        mainActivityInterface.getPreferences().setMyPreferenceString(c, which, val);
+        mainActivityInterface.getPreferences().setMyPreferenceString(which, val);
     }
     public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, boolean bool) {
         if ("swipeForSongs".equals(which)) {
             this.swipeEnabled = bool;
         }
         // Save the preference
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, which, bool);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean(which, bool);
     }
 
 }

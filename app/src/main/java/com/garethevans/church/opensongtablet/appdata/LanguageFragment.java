@@ -43,7 +43,7 @@ public class LanguageFragment extends Fragment {
     }
 
     private void buildRadioGroup() {
-        String languageCode = mainActivityInterface.getPreferences().getMyPreferenceString(getContext(), "language", "en");
+        String languageCode = mainActivityInterface.getPreferences().getMyPreferenceString("language", "en");
         String[] languages = requireContext().getResources().getStringArray(R.array.languagelist);
         int id = -1;
         for (int x=0; x<languages.length; x++) {
@@ -59,7 +59,7 @@ public class LanguageFragment extends Fragment {
             myView.languageGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 RadioButton button = myView.languageGroup.findViewById(checkedId);
                 String tag = button.getTag().toString();
-                mainActivityInterface.getPreferences().setMyPreferenceString(getContext(),"language",tag);
+                mainActivityInterface.getPreferences().setMyPreferenceString("language",tag);
                 Snackbar.make(requireActivity().findViewById(R.id.coordinator),"You will need to restart the app to see the changes",Snackbar.LENGTH_LONG).show();
             });
             myView.languageGroup.addView(radioButton);

@@ -144,8 +144,8 @@ public class PerformanceFragment extends Fragment {
 
         removeViews();
 
-        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"whichSongFolder",getString(R.string.mainfoldername)),
-                mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"songfilename","Welcome to OpenSongApp"));
+        doSongLoad(mainActivityInterface.getPreferences().getMyPreferenceString("whichSongFolder",getString(R.string.mainfoldername)),
+                mainActivityInterface.getPreferences().getMyPreferenceString("songfilename","Welcome to OpenSongApp"));
 
         // Check if we need to show an alert
         if (mainActivityInterface.getAlertChecks().showPlayServicesAlert() ||
@@ -165,11 +165,11 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
     }
     private void loadPreferences() {
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
         mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
-        swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumDistance", 250);
-        swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMaxDistanceYError", 200);
-        swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(), "swipeMinimumVelocity", 600);
+        swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumDistance", 250);
+        swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMaxDistanceYError", 200);
+        swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumVelocity", 600);
         if (mainActivityInterface.getMode().equals("Performance")) {
             myView.mypage.setBackgroundColor(mainActivityInterface.getMyThemeColors().getLyricsBackgroundColor());
             myView.waterMark.setVisibility(View.VISIBLE);
@@ -339,8 +339,7 @@ public class PerformanceFragment extends Fragment {
         myView.imageView.setVisibility(View.VISIBLE);
 
         // Get a bmp from the image
-        Bitmap bmp = mainActivityInterface.getProcessSong().getSongBitmap(requireContext(),
-                mainActivityInterface,mainActivityInterface.getSong().getFolder(),
+        Bitmap bmp = mainActivityInterface.getProcessSong().getSongBitmap(mainActivityInterface.getSong().getFolder(),
                 mainActivityInterface.getSong().getFilename());
 
         widthBeforeScale = bmp.getWidth();
@@ -436,11 +435,10 @@ public class PerformanceFragment extends Fragment {
 
         // Now prepare the song sections views so we can measure them for scaling using a view tree observer
         mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().
-                setSongInLayout(requireContext(), mainActivityInterface,
-                        mainActivityInterface.getSong(), false, false));
+                setSongInLayout(mainActivityInterface.getSong(), false, false));
 
         // Prepare the song sheet header if required, if not, make it null
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "songSheet", false)) {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet", false)) {
             mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
                     mainActivityInterface, mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
         } else {
@@ -565,8 +563,9 @@ public class PerformanceFragment extends Fragment {
             myView.recyclerView.setVisibility(View.GONE);
             myView.zoomLayout.setPageSize(screenWidth, screenHeight);
 
-            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(requireContext(),
-                    mainActivityInterface,
+            scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(
+                    false, mainActivityInterface.getSectionViews(),
+                    mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(),
                     myView.pageHolder, myView.songView, myView.songSheetTitle,
                     screenWidth, screenHeight,
                     myView.col1, myView.col2, myView.col3);
@@ -642,7 +641,7 @@ public class PerformanceFragment extends Fragment {
     }
     private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().
-                getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")) {
+                getMyPreferenceString("songAutoScale","W").equals("N")) {
             // Set the highlighter image view to match
             myView.highlighterView.setVisibility(View.INVISIBLE);
             // Once the view is ready at the required size, deal with it
@@ -652,9 +651,9 @@ public class PerformanceFragment extends Fragment {
                 public void onGlobalLayout() {
                     // Load in the bitmap with these dimensions
                     Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
-                            getHighlighterFile(requireContext(), mainActivityInterface, 0, 0);
+                            getHighlighterFile(0, 0);
                     if (highlighterBitmap != null &&
-                            mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(), "drawingAutoDisplay", true)) {
+                            mainActivityInterface.getPreferences().getMyPreferenceBoolean("drawingAutoDisplay", true)) {
 
                         myView.highlighterView.setVisibility(View.VISIBLE);
                         ViewGroup.LayoutParams rlp = myView.highlighterView.getLayoutParams();
@@ -674,7 +673,7 @@ public class PerformanceFragment extends Fragment {
                         myView.highlighterView.setScaleY(scaleFactor);
 
                         // Hide after a certain length of time
-                        int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "timeToDisplayHighlighter", 0);
+                        int timetohide = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplayHighlighter", 0);
                         if (timetohide != 0) {
                             new Handler().postDelayed(() -> myView.highlighterView.setVisibility(View.GONE), timetohide);
                         }
@@ -700,7 +699,7 @@ public class PerformanceFragment extends Fragment {
     }
     private void getScreenshot(int w, int h, int topPadding) {
         if (!mainActivityInterface.getPreferences().
-                getMyPreferenceString(requireContext(),"songAutoScale","W").equals("N")
+                getMyPreferenceString("songAutoScale","W").equals("N")
                 && w!=0 && h!=0) {
             try {
                 Bitmap bitmap = Bitmap.createBitmap(w, h+topPadding, Bitmap.Config.ARGB_8888);
@@ -734,7 +733,7 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getSong().getNotes() != null &&
                     !mainActivityInterface.getSong().getNotes().isEmpty() &&
                     mainActivityInterface.getPreferences().
-                            getMyPreferenceBoolean(requireContext(), "stickyAuto", true)) || forceShow) {
+                            getMyPreferenceBoolean("stickyAuto", true)) || forceShow) {
                 // This is called from the MainActivity when we clicked on the page button
                 stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);
             } }

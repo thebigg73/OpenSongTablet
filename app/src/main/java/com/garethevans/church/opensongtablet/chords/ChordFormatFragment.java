@@ -50,14 +50,14 @@ public class ChordFormatFragment extends Fragment {
 
     private void setValues() {
         myView.displayChords.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                requireContext(),"displayChords", true));
+                "displayChords", true));
         showHideView(myView.capoChords,myView.displayChords.isChecked());
         showHideView(myView.capoStyle,myView.displayChords.isChecked());
         myView.capoStyle.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                requireContext(),"capoInfoAsNumerals", false));
+                "capoInfoAsNumerals", false));
         setCapoChordSlider();
         myView.onscreenCapoHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                requireContext(),"onscreenCapoHide",true));
+                "onscreenCapoHide",true));
         myView.sliderAb.setSliderPos(setSwitchSliderFromPref("prefKey_Ab",true));
         myView.sliderBb.setSliderPos(setSwitchSliderFromPref("prefKey_Bb",true));
         myView.sliderDb.setSliderPos(setSwitchSliderFromPref("prefKey_Db",true));
@@ -70,10 +70,10 @@ public class ChordFormatFragment extends Fragment {
         myView.sliderGbm.setSliderPos(setSwitchSliderFromPref("prefKey_Gbm",false));
 
         myView.assumePreferred.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                requireContext(),"chordFormatUsePreferred",false));
+                "chordFormatUsePreferred",false));
         showHideView(myView.chooseFormatLinearLayout,myView.assumePreferred.getSwitch().isChecked());
         showHideView(myView.autoChange,myView.assumePreferred.getSwitch().isChecked());
-        int formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt(getActivity(),"chordFormat",1);
+        int formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
 
         chordFormats = new ArrayList<>();
         chordFormats.add(getString(R.string.chordformat_1));
@@ -99,38 +99,37 @@ public class ChordFormatFragment extends Fragment {
         myView.chosenPreferredFormat.setHint(chordFormats.get(formattouse-1));
 
         myView.autoChange.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                requireContext(), "chordFormatAutoChange", false));
+                "chordFormatAutoChange", false));
 
     }
 
     private void setListeners() {
         myView.displayChords.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     "displayChords", b);
-            mainActivityInterface.getProcessSong().updateProcessingPreferences(requireContext(),
-                    mainActivityInterface);
+            mainActivityInterface.getProcessSong().updateProcessingPreferences();
             showHideView(myView.capoChords,b);
             showHideView(myView.capoStyle,b);
         });
         myView.capoChords.addOnChangeListener((slider, value, fromUser) -> {
             if (value==2) {
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
-                        requireContext(),"displayCapoAndNativeChords",true);
+                        "displayCapoAndNativeChords",true);
             } else if (value==1) {
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
-                        requireContext(),"displayCapoChords",true);
+                        "displayCapoChords",true);
             } else {
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
-                        requireContext(),"displayCapoAndNativeChords",false);
+                        "displayCapoAndNativeChords",false);
                 mainActivityInterface.getPreferences().setMyPreferenceBoolean(
-                        requireContext(),"displayCapoChords",false);
+                        "displayCapoChords",false);
             }
         });
         myView.capoStyle.setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.
-                getPreferences().setMyPreferenceBoolean(requireContext(),
+                getPreferences().setMyPreferenceBoolean(
                 "capoInfoAsNumerals", b));
         myView.onscreenCapoHide.setOnCheckedChangeListener((compoundButton, b) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     "onscreenCapoHide",b);
             mainActivityInterface.
                     updateOnScreenInfo("setpreferences");
@@ -148,12 +147,12 @@ public class ChordFormatFragment extends Fragment {
 
         myView.assumePreferred.getSwitch().setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(
-                    requireContext(), "chordFormatUsePreferred", b);
+                    "chordFormatUsePreferred", b);
             showHideView(myView.chooseFormatLinearLayout,b);
             showHideView(myView.autoChange,b);
         });
         myView.autoChange.getSwitch().setOnCheckedChangeListener((compoundButton, b) -> mainActivityInterface.getPreferences().setMyPreferenceBoolean(
-                requireContext(), "chordFormatAutoChange", b));
+                "chordFormatAutoChange", b));
         myView.choosePreferredFormat.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -164,7 +163,7 @@ public class ChordFormatFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 int pos = chordFormatNames.indexOf(editable.toString());
-                mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(),
+                mainActivityInterface.getPreferences().setMyPreferenceInt(
                         "chordFormat", pos+1);
                 myView.chosenPreferredFormat.setHint(chordFormats.get(pos));
             }
@@ -172,7 +171,7 @@ public class ChordFormatFragment extends Fragment {
     }
 
     private int setSwitchSliderFromPref(String prefName, boolean defaultValue) {
-        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 prefName,defaultValue)) {
             return 0;
         } else {
@@ -190,10 +189,10 @@ public class ChordFormatFragment extends Fragment {
 
     private void setCapoChordSlider() {
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                requireContext(), "displayCapoAndNativeChords",false)) {
+                "displayCapoAndNativeChords",false)) {
             myView.capoChords.setSliderPos(2);
         } else if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                requireContext(), "displayCapoChords",true)) {
+                "displayCapoChords",true)) {
             myView.capoChords.setSliderPos(1);
         } else {
             myView.capoChords.setSliderPos(0);
@@ -210,7 +209,7 @@ public class ChordFormatFragment extends Fragment {
 
         @Override
         public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     prefName, slider.getValue()==0);
         }
     }

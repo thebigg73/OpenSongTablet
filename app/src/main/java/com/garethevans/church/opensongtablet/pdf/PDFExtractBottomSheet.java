@@ -71,7 +71,7 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.extractedText);
         myView.extractedText.setText(extractedText);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.extractedText,20);
-        myView.extractedText.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(), "editTextSize",14f));
+        myView.extractedText.setTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("editTextSize",14f));
 
     }
 

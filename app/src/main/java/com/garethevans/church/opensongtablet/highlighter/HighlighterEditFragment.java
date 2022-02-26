@@ -128,7 +128,7 @@ public class HighlighterEditFragment extends Fragment {
                         into(myView.glideImage);
 
                 // Set the original highlighter file if it exists
-                mainActivityInterface.getDrawNotes().loadExistingHighlighter(requireContext(),
+                mainActivityInterface.getDrawNotes().loadExistingHighlighter(
                         mainActivityInterface, scaledWidth, scaledHeight);
 
                 // Remove the VTO as we're done!
@@ -153,8 +153,7 @@ public class HighlighterEditFragment extends Fragment {
 
     private void getImageFile() {
         // We are using an image file
-        screenShotBitmap = mainActivityInterface.getProcessSong().getSongBitmap(requireContext(),
-                mainActivityInterface,mainActivityInterface.getSong().getFolder(),
+        screenShotBitmap = mainActivityInterface.getProcessSong().getSongBitmap(mainActivityInterface.getSong().getFolder(),
                 mainActivityInterface.getSong().getFilename());
         int w = screenShotBitmap.getWidth();
         int h = screenShotBitmap.getHeight();
@@ -166,8 +165,8 @@ public class HighlighterEditFragment extends Fragment {
     private void getPDFPage() {
         // Load an image of the currently selected page
         Log.d(TAG,"pageNumber="+mainActivityInterface.getSong().getPdfPageCurrent());
-        screenShotBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(requireContext(),
-                mainActivityInterface,mainActivityInterface.getSong().getFolder(),
+        screenShotBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
+                mainActivityInterface.getSong().getFolder(),
                 mainActivityInterface.getSong().getFilename(),mainActivityInterface.getSong().getPdfPageCurrent(),
                 availableWidth,availableHeight,"Y");
 
@@ -245,12 +244,12 @@ public class HighlighterEditFragment extends Fragment {
     }
 
     private void setToolPreferences() {
-        activeTool = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(), "drawingTool", "pen");
-        drawingPenSize = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "drawingPenSize", 20);
-        drawingHighlighterSize = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "drawingHighlighterSize", 20);
-        drawingEraserSize = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "drawingEraserSize", 20);
-        drawingPenColor = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "drawingPenColor", penRed);
-        drawingHighlighterColor = mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(), "drawingHighlighterColor", highlighterYellow);
+        activeTool = mainActivityInterface.getPreferences().getMyPreferenceString("drawingTool", "pen");
+        drawingPenSize = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingPenSize", 20);
+        drawingHighlighterSize = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingHighlighterSize", 20);
+        drawingEraserSize = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingEraserSize", 20);
+        drawingPenColor = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingPenColor", penRed);
+        drawingHighlighterColor = mainActivityInterface.getPreferences().getMyPreferenceInt("drawingHighlighterColor", highlighterYellow);
         setActiveTool();
         setColors();
         setSizes();
@@ -385,7 +384,7 @@ public class HighlighterEditFragment extends Fragment {
                         break;
                 }
                 if (prefName != null) {
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), prefName, size);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(prefName, size);
                 }
                 mainActivityInterface.getDrawNotes().setCurrentPaint(size, currentColor);
                 mainActivityInterface.getDrawNotes().postInvalidate();
@@ -431,9 +430,9 @@ public class HighlighterEditFragment extends Fragment {
     public void doDelete(boolean confirmed) {
         if (confirmed) {
             // Set the original highlighter file if it exists
-            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(requireContext(), mainActivityInterface, "Highlighter", "",
+            Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "",
                     mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), requireContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
-            if (mainActivityInterface.getStorageAccess().deleteFile(requireContext(), uri)) {
+            if (mainActivityInterface.getStorageAccess().deleteFile(uri)) {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.success));
             } else {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.not_saved));
@@ -448,7 +447,7 @@ public class HighlighterEditFragment extends Fragment {
 
     private void changeTool(String tool) {
         activeTool = tool;
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "drawingTool", tool);
+        mainActivityInterface.getPreferences().setMyPreferenceString("drawingTool", tool);
         setActiveTool();
         setColors();
         setSizes();
@@ -460,11 +459,11 @@ public class HighlighterEditFragment extends Fragment {
         if (activeTool.equals("pen")) {
             drawingPenColor = colorPen;
             currentColor = colorPen;
-            mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), "drawingPenColor", colorPen);
+            mainActivityInterface.getPreferences().setMyPreferenceInt("drawingPenColor", colorPen);
         } else if (activeTool.equals("highlighter")) {
             drawingHighlighterColor = colorHighlighter;
             currentColor = colorHighlighter;
-            mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), "drawingHighlighterColor", colorHighlighter);
+            mainActivityInterface.getPreferences().setMyPreferenceInt("drawingHighlighterColor", colorHighlighter);
         }
         setColors();
         mainActivityInterface.getDrawNotes().setCurrentPaint(currentSize, currentColor);
@@ -477,11 +476,10 @@ public class HighlighterEditFragment extends Fragment {
         int orientation = requireContext().getResources().getConfiguration().orientation;
         new Thread(() -> {
             String hname = mainActivityInterface.getProcessSong().getHighlighterFilename(mainActivityInterface.getSong(), orientation == Configuration.ORIENTATION_PORTRAIT);
-            highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem(getActivity(), mainActivityInterface,
-                    "Highlighter", "", hname);
+            highlighterUri = mainActivityInterface.getStorageAccess().getUriForItem("Highlighter", "", hname);
             // Check the uri exists for the outputstream to be valid
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(getActivity(), mainActivityInterface, false,highlighterUri, null,
-                    "Highlighter", "", hname);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
+                    false,highlighterUri, null, "Highlighter", "", hname);
 
             requireActivity().runOnUiThread(() -> {
                 mainActivityInterface.getDrawNotes().setDrawingCacheEnabled(true);
@@ -495,7 +493,7 @@ public class HighlighterEditFragment extends Fragment {
                 if (highlighterUri != null && highlighterBitmap != null) {
                     Log.d(TAG, "newUri=" + highlighterUri);
                     Log.d(TAG, "bitmap=" + highlighterBitmap);
-                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(requireContext(), highlighterUri);
+                    OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(highlighterUri);
                     Log.d(TAG, "outputStream=" + outputStream);
                     mainActivityInterface.getStorageAccess().writeImage(outputStream, highlighterBitmap);
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));

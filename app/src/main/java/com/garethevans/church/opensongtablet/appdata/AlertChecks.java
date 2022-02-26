@@ -27,7 +27,7 @@ public class AlertChecks {
 
     public boolean showUpdateInfo() {
         int currentVersion = mainActivityInterface.getVersionNumber().getVersionCode();
-        int lastUsedVersion = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"lastUsedVersion",0);
+        int lastUsedVersion = mainActivityInterface.getPreferences().getMyPreferenceInt("lastUsedVersion",0);
 
         Log.d(TAG,"current: "+currentVersion+"  last: "+lastUsedVersion);
         // Decide if the current app version is newer than the previous version.
@@ -41,7 +41,7 @@ public class AlertChecks {
     public boolean showBackup() {
         // Check for the number of times the app has run without the user backing up their songs
         // If this is 10 (or more) show the backup prompt window.
-        int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt(c,"runssincebackup",0);
+        int runssincebackup = mainActivityInterface.getPreferences().getMyPreferenceInt("runssincebackup",0);
         if (runssincebackup>=10) {
             Log.d(TAG, "Need to show alert because we haven't backed up recently");
         }

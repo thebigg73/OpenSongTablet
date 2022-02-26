@@ -23,7 +23,7 @@ public class ProfileActions {
     public boolean loadProfile(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
         // This is uses to copy the external file on top of the application preferences
 
-        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c,uri);
+        InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
 
         try {
             XmlPullParserFactory factory;
@@ -93,7 +93,7 @@ public class ProfileActions {
                         switch (type) {
                             case "boolean":
                                 try {
-                                    mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, key, value.equals("true"));
+                                    mainActivityInterface.getPreferences().setMyPreferenceBoolean(key, value.equals("true"));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -102,7 +102,7 @@ public class ProfileActions {
                                 try {
                                     if (!key.equals("uriTree") && !key.equals("uriTreeHome")) {
                                         // Don't overwrite our storage location reference!!
-                                        mainActivityInterface.getPreferences().setMyPreferenceString(c, key, value);
+                                        mainActivityInterface.getPreferences().setMyPreferenceString(key, value);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -110,14 +110,14 @@ public class ProfileActions {
                                 break;
                             case "int":
                                 try {
-                                    mainActivityInterface.getPreferences().setMyPreferenceInt(c, key, Integer.parseInt(value));
+                                    mainActivityInterface.getPreferences().setMyPreferenceInt(key, Integer.parseInt(value));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 break;
                             case "float":
                                 try {
-                                    mainActivityInterface.getPreferences().setMyPreferenceFloat(c, key, Float.parseFloat(value));
+                                    mainActivityInterface.getPreferences().setMyPreferenceFloat(key, Float.parseFloat(value));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -144,16 +144,16 @@ public class ProfileActions {
         try {
             // This is used to copy the current preferences xml file to the chosen name / location
             // Check the file exists, if not create it
-            if (!mainActivityInterface.getStorageAccess().uriExists(c, uri)) {
+            if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
                 String name = uri.getLastPathSegment();
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(c, mainActivityInterface, false, uri, null, "Profiles", "", name);
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, uri, null, "Profiles", "", name);
             }
 
             // Different versions of Android save the preferences in different locations.
             Uri prefsFile = getPrefsFile(c, mainActivityInterface);
 
-            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(c, prefsFile);
-            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(c, uri);
+            InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(prefsFile);
+            OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
 
             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
         } catch (Exception e) {
@@ -173,7 +173,7 @@ public class ProfileActions {
         uri = Uri.fromFile(root);
 
         // If not there, try the default
-        if (uri==null || !mainActivityInterface.getStorageAccess().uriExists(c,uri)) {
+        if (uri==null || !mainActivityInterface.getStorageAccess().uriExists(uri)) {
             // Use the default method
             root = new File("/data/data/" + c.getPackageName() + "/shared_prefs/CurrentPreferences.xml");
             uri = Uri.fromFile(root);

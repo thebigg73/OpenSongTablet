@@ -44,7 +44,7 @@ public class AdvancedFragment extends Fragment {
     }
 
     private void setValues() {
-        myView.alertText.setText(mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"presoAlertText",""));
+        myView.alertText.setText(mainActivityInterface.getPreferences().getMyPreferenceString("presoAlertText",""));
         myView.alertSwitch.setChecked(mainActivityInterface.getPresenterSettings().getAlertOn());
         myView.presoAlertTextSize.setValue((int)mainActivityInterface.getPresenterSettings().getPresoAlertTextSize());
         myView.presoAlertTextSize.setHint((int)mainActivityInterface.getPresenterSettings().getPresoAlertTextSize() + "sp");
@@ -66,7 +66,7 @@ public class AdvancedFragment extends Fragment {
                 if (editable!=null) {
                     text = editable.toString();
                 }
-                mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(), "presoAlertText",text);
+                mainActivityInterface.getPreferences().setMyPreferenceString("presoAlertText",text);
                 mainActivityInterface.getPresenterSettings().setPresoAlertText(text);
                 displayInterface.updateDisplay("updateAlert");
             }
@@ -81,8 +81,7 @@ public class AdvancedFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(),
-                        "presoAlertTextSize",slider.getValue());
+                mainActivityInterface.getPreferences().setMyPreferenceFloat("presoAlertTextSize",slider.getValue());
                 mainActivityInterface.getPresenterSettings().setPresoAlertTextSize(slider.getValue());
                 displayInterface.updateDisplay("updateAlert");
             }

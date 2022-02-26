@@ -139,7 +139,7 @@ public class MetronomeFragment extends Fragment {
         myView.signatureDivisions.setText(timeSignature.get(1));
 
         // Get the metronome pan value
-        switch (mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"metronomePan","C")) {
+        switch (mainActivityInterface.getPreferences().getMyPreferenceString("metronomePan","C")) {
             case "C":
             default:
                 myView.metronomePan.setSliderPos(1);
@@ -153,22 +153,22 @@ public class MetronomeFragment extends Fragment {
         }
 
         // Set the visual metronome
-        myView.visualMetronome.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(requireContext(),"metronomeShowVisual",false));
+        myView.visualMetronome.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean("metronomeShowVisual",false));
 
         // Get the max bars required
-        myView.maxBars.setHint(getMaxBars(mainActivityInterface.getPreferences().getMyPreferenceInt(requireContext(),"metronomeLength",0)));
+        myView.maxBars.setHint(getMaxBars(mainActivityInterface.getPreferences().getMyPreferenceInt("metronomeLength",0)));
 
         // Get the metronome tick and tock sounds
-        String tickFile = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"metronomeTickSound","digital_high");
-        String tockFile = mainActivityInterface.getPreferences().getMyPreferenceString(requireContext(),"metronomeTockSound","digital_low");
+        String tickFile = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTickSound","digital_high");
+        String tockFile = mainActivityInterface.getPreferences().getMyPreferenceString("metronomeTockSound","digital_low");
         int positionTick = soundFiles.indexOf(tickFile);
         int positionTock = soundFiles.indexOf(tockFile);
         myView.tickSound.setText(soundNames.get(positionTick));
         myView.tockSound.setText(soundNames.get(positionTock));
 
         // Get the volumes of the metronome sounds
-        float tickVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"metronomeTickVol",0.8f);
-        float tockVol = mainActivityInterface.getPreferences().getMyPreferenceFloat(requireContext(),"metronomeTockVol",0.6f);
+        float tickVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("metronomeTickVol",0.8f);
+        float tockVol = mainActivityInterface.getPreferences().getMyPreferenceFloat("metronomeTockVol",0.6f);
         myView.tickVolume.setValue((int)(tickVol*100.0f));
         myView.tockVolume.setValue((int)(tockVol*100.0f));
         myView.tickVolume.setHint(getVolPercentage(tickVol*100.0f));
@@ -216,7 +216,7 @@ public class MetronomeFragment extends Fragment {
             mainActivityInterface.getMetronome().startMetronome(requireActivity(),requireContext(),mainActivityInterface);
         });
         myView.visualMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            mainActivityInterface.getPreferences().setMyPreferenceBoolean(requireContext(),"metronomeShowVisual",isChecked);
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeShowVisual",isChecked);
             mainActivityInterface.getMetronome().setVisualMetronome(requireContext(),mainActivityInterface);
         });
         myView.tapTempo.setOnClickListener(button -> tapTempo());
@@ -279,7 +279,7 @@ public class MetronomeFragment extends Fragment {
                 break;
         }
         Log.d(TAG,"pan="+pan);
-        mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),"metronomePan",pan);
+        mainActivityInterface.getPreferences().setMyPreferenceString("metronomePan",pan);
         mainActivityInterface.getMetronome().setVolumes(requireContext(),mainActivityInterface);
     }
     private void restartMetronome() {
@@ -411,7 +411,7 @@ public class MetronomeFragment extends Fragment {
                 case "metronomeTickSound":
                 case "metronomeTockSound":
                     position = soundNames.indexOf(exposedDropDown.getText().toString());
-                    mainActivityInterface.getPreferences().setMyPreferenceString(requireContext(),preference,soundFiles.get(position));
+                    mainActivityInterface.getPreferences().setMyPreferenceString(preference,soundFiles.get(position));
                     restartMetronome();
                     break;
             }
@@ -435,12 +435,12 @@ public class MetronomeFragment extends Fragment {
                 case "metronomeTickVol":
                 case "metronomeTockVol":
                     float newVol = slider.getValue() / 100.0f;
-                    mainActivityInterface.getPreferences().setMyPreferenceFloat(requireContext(), preference, newVol);
+                    mainActivityInterface.getPreferences().setMyPreferenceFloat(preference, newVol);
                     mainActivityInterface.getMetronome().setVolumes(requireContext(), mainActivityInterface);
                     break;
                 case "metronomeLength":
                     int bars = (int)slider.getValue();
-                    mainActivityInterface.getPreferences().setMyPreferenceInt(requireContext(), preference, bars);
+                    mainActivityInterface.getPreferences().setMyPreferenceInt(preference, bars);
                     mainActivityInterface.getMetronome().setBarsAndBeats(requireContext(),mainActivityInterface);
                     break;
             }

@@ -51,7 +51,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         this.displayInterface = displayInterface;
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
-        scaleType = mainActivityInterface.getPreferences().getMyPreferenceString(c,"songAutoScale","W");
+        scaleType = mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W");
         density = c.getResources().getDisplayMetrics().density;
         setSongInfo();
     }
@@ -63,10 +63,9 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
         pdfFolder = mainActivityInterface.getSong().getFolder();
         pdfFilename = mainActivityInterface.getSong().getFilename();
-        pdfUri = mainActivityInterface.getStorageAccess().getUriForItem(c,mainActivityInterface,
-                "Songs",pdfFolder,pdfFilename);
-        if (mainActivityInterface.getStorageAccess().uriExists(c,pdfUri)) {
-            ParcelFileDescriptor parcelFileDescriptor = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(c,pdfUri);
+        pdfUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",pdfFolder,pdfFilename);
+        if (mainActivityInterface.getStorageAccess().uriExists(pdfUri)) {
+            ParcelFileDescriptor parcelFileDescriptor = mainActivityInterface.getProcessSong().getPDFParcelFileDescriptor(pdfUri);
             PdfRenderer pdfRenderer = mainActivityInterface.getProcessSong().getPDFRenderer(parcelFileDescriptor);
             if (pdfRenderer!=null) {
                 totalPages = pdfRenderer.getPageCount();
@@ -116,9 +115,9 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     page.close();
 
                     // Set the song load success
-                    mainActivityInterface.getPreferences().setMyPreferenceBoolean(c, "songLoadSuccess", true);
-                    mainActivityInterface.getPreferences().setMyPreferenceString(c, "songfilename", mainActivityInterface.getSong().getFilename());
-                    mainActivityInterface.getPreferences().setMyPreferenceString(c, "whichSongFolder", mainActivityInterface.getSong().getFolder());
+                    mainActivityInterface.getPreferences().setMyPreferenceBoolean("songLoadSuccess", true);
+                    mainActivityInterface.getPreferences().setMyPreferenceString("songfilename", mainActivityInterface.getSong().getFilename());
+                    mainActivityInterface.getPreferences().setMyPreferenceString("whichSongFolder", mainActivityInterface.getSong().getFolder());
                 }
             }
 
@@ -177,13 +176,12 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         String pagetNumText = pageInfos.get(position).pageNumText;
         holder.pdfPageNumText.setText(pagetNumText);
 
-        Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(c,mainActivityInterface,
-                pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString(c,"songAutoScale","W"));
+        Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
+                pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W"));
         Glide.with(c).load(pdfPageBitmap).override(width,height).into(holder.pdfPageImage);
 
         // If we have a matching highlighter file...
-        Bitmap pdfHighlighter = mainActivityInterface.getProcessSong().getPDFHighlighterBitmap(c,
-                mainActivityInterface,mainActivityInterface.getSong(),width,height,pageNum);
+        Bitmap pdfHighlighter = mainActivityInterface.getProcessSong().getPDFHighlighterBitmap(mainActivityInterface.getSong(),width,height,pageNum);
         if (pdfHighlighter!=null) {
             holder.pdfPageHighlight.setVisibility(View.VISIBLE);
             Glide.with(c).load(pdfHighlighter).override(width,height).into(holder.pdfPageHighlight);

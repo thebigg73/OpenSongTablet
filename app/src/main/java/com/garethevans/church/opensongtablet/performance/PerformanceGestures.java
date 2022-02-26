@@ -65,7 +65,7 @@ public class PerformanceGestures {
 
     // Edit song
     public void editSong() {
-        if (mainActivityInterface.getProcessSong().isValidSong(c,mainActivityInterface.getSong())) {
+        if (mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             mainActivityInterface.navigateToFragment("opensongapp://settings/edit", 0);
         } else {
             mainActivityInterface.getShowToast().doIt(c.getString(R.string.not_allowed));
@@ -78,8 +78,8 @@ public class PerformanceGestures {
 
         Log.d(TAG,"itemForSet="+itemForSet);
         // Allow the song to be added, even if it is already there
-        String val = mainActivityInterface.getPreferences().getMyPreferenceString(c,"setCurrent","") + itemForSet;
-        mainActivityInterface.getPreferences().setMyPreferenceString(c,"setCurrent",val);
+        String val = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","") + itemForSet;
+        mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",val);
 
         // Tell the user that the song has been added.
         mainActivityInterface.getShowToast().doIt("\"" + mainActivityInterface.getSong().getFilename() + "\" " +
@@ -213,9 +213,9 @@ public class PerformanceGestures {
 
     // Show chords in the song display
     public void showChords() {
-        boolean displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayChords", true);
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayChords", !displayChords);
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(c,mainActivityInterface);
+        boolean displayChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayChords", true);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("displayChords", !displayChords);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
         mainActivityInterface.navHome();
     }
 
@@ -226,8 +226,8 @@ public class PerformanceGestures {
 
     // Toggle between native, capo and both
     public void showCapo() {
-        boolean displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayCapoChords", true);
-        boolean displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayCapoAndNativeChords", false);
+        boolean displayCapoChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayCapoChords", true);
+        boolean displayCapoAndNativeChords = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayCapoAndNativeChords", false);
         if (displayCapoAndNativeChords) {
             displayCapoAndNativeChords = false;
             displayCapoChords = false;
@@ -237,17 +237,17 @@ public class PerformanceGestures {
             displayCapoChords = true;
             displayCapoAndNativeChords = false;
         }
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayCapoChords", displayCapoChords);
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayCapoAndNativeChords", displayCapoAndNativeChords);
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(c,mainActivityInterface);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("displayCapoChords", displayCapoChords);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("displayCapoAndNativeChords", displayCapoAndNativeChords);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
         mainActivityInterface.navHome();
     }
 
     // Show or hide the lyrics
     public void showLyrics() {
-        boolean displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean(c,"displayLyrics", true);
-        mainActivityInterface.getPreferences().setMyPreferenceBoolean(c,"displayLyrics", !displayLyrics);
-        mainActivityInterface.getProcessSong().updateProcessingPreferences(c,mainActivityInterface);
+        boolean displayLyrics = mainActivityInterface.getPreferences().getMyPreferenceBoolean("displayLyrics", true);
+        mainActivityInterface.getPreferences().setMyPreferenceBoolean("displayLyrics", !displayLyrics);
+        mainActivityInterface.getProcessSong().updateProcessingPreferences();
         mainActivityInterface.navHome();
     }
 

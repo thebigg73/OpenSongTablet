@@ -293,8 +293,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     }
     private void setupHelpers() {
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        storageAccess = new StorageAccess(this);
+        preferences = new Preferences(this);
         softKeyboard = new SoftKeyboard();
 
         // The song stuff
@@ -331,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         convertChoPro = new ConvertChoPro();
         convertOnSong = new ConvertOnSong();
         convertTextSong = new ConvertTextSong();
-        processSong = new ProcessSong();
+        processSong = new ProcessSong(this);
         prepareFormats = new PrepareFormats();
         songSheetHeaders = new SongSheetHeaders();
         ocr = new OCR();
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         ccliLog = new CCLILog();
         exportFiles = new ExportFiles();
         exportActions = new ExportActions();
-        bible = new Bible();
+        bible = new Bible(this);
         customSlide = new CustomSlide();
         presenterSettings = new PresenterSettings(this);
         //mediaRouterCallback = new MediaRouterCallback(this);
@@ -447,12 +447,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     }
     private void initialiseStartVariables() {
-        themeColors.setThemeName(preferences.getMyPreferenceString(this, "appTheme", "dark"));
-        whichMode = preferences.getMyPreferenceString(this, "whichMode", "Performance");
+        themeColors.setThemeName(preferences.getMyPreferenceString("appTheme", "dark"));
+        whichMode = preferences.getMyPreferenceString("whichMode", "Performance");
 
         // Song location
-        song.setFilename(preferences.getMyPreferenceString(this,"songfilename","Welcome to OpenSongApp"));
-        song.setFolder(preferences.getMyPreferenceString(this, "whichSongFolder", getString(R.string.mainfoldername)));
+        song.setFilename(preferences.getMyPreferenceString("songfilename","Welcome to OpenSongApp"));
+        song.setFolder(preferences.getMyPreferenceString("whichSongFolder", getString(R.string.mainfoldername)));
 
         // Set dealt with elsewhere
         setActions.preferenceStringToArrays(this,this);
@@ -682,9 +682,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     if (arguments!=null && arguments.size()>0 && arguments.get(0).equals("success")) {
                         // Write a blank xml file with the song name in it
                         // TODO
-                        song = processSong.initialiseSong(this,song.getFolder(),"NEWSONGFILENAME");
-                        String newSongText = processSong.getXML(this,this,song);
-                        if (storageAccess.doStringWriteToFile(this,this,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
+                        song = processSong.initialiseSong(song.getFolder(),"NEWSONGFILENAME");
+                        String newSongText = processSong.getXML(song);
+                        if (storageAccess.doStringWriteToFile("Songs",song.getFolder(), song.getFilename(),newSongText)) {
                             navigateToFragment(null,R.id.editSongFragment);
                         } else {
                             showToast.doIt(getString(R.string.error));
@@ -758,7 +758,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void navHome() {
         lockDrawer(false);
-        whichMode = preferences.getMyPreferenceString(this,"whichMode","Performance");
+        whichMode = preferences.getMyPreferenceString("whichMode","Performance");
         if (navController.getCurrentDestination()!=null) {
             navController.popBackStack(navController.getCurrentDestination().getId(), true);
         }
@@ -815,7 +815,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Nearby stuff
     private void setupNearby() {
         // Set up the Nearby connection service
-        nearbyConnections.getUserNickname(this,this);
+        nearbyConnections.getUserNickname(this);
 
         // Establish a known state for Nearby
         nearbyConnections.turnOffNearby(this);
@@ -1307,9 +1307,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // If sent called from another fragment the fragName and callingFragment are used to run an update listener
             songListBuildIndex.setIndexComplete(false);
             // Get all of the files as an array list
-            ArrayList<String> songIds = storageAccess.listSongs(this, this);
+            ArrayList<String> songIds = storageAccess.listSongs();
             // Write this to text file
-            storageAccess.writeSongIDFile(this, this, songIds);
+            storageAccess.writeSongIDFile(songIds);
             // Try to create the basic databases
             sqLiteHelper.resetDatabase(this);
             nonOpenSongSQLiteHelper.initialise(this, this);
@@ -1670,12 +1670,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 newFilename = setFolder + "_" + setFilename + "_" + setKey;
             }
 
-            Uri variationUri = storageAccess.getUriForItem(this,this,"Variations","",newFilename);
+            Uri variationUri = storageAccess.getUriForItem("Variations","",newFilename);
 
             // If the file already exists, remove it as we might have edited the original
 
                 // Make this temp variation file
-                storageAccess.lollipopCreateFileForOutputStream(this,this, true,
+                storageAccess.lollipopCreateFileForOutputStream(true,
                         variationUri,null,"Variations","",newFilename);
                 // Get a tempSong we can write
                 Song copySong = new Song();
@@ -1698,9 +1698,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                         "+1",transposeTimes,copySong.getDetectedChordFormat(),
                         copySong.getDesiredChordFormat()).getLyrics());
                 // Get the song XML
-                String songXML = processSong.getXML(this,this,copySong);
+                String songXML = processSong.getXML(copySong);
                 // Save the song
-                storageAccess.doStringWriteToFile(this,this,"Variations","",newFilename,songXML);
+                storageAccess.doStringWriteToFile("Variations","",newFilename,songXML);
 
             setFolder = newFolder;
             setFilename = newFilename;
@@ -1763,7 +1763,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             boolean allowToast = true;
             switch(what) {
                 case "deleteSong":
-                    result = storageAccess.doDeleteFile(this,this,"Songs",
+                    result = storageAccess.doDeleteFile("Songs",
                             song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
                     if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
@@ -1778,16 +1778,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "ccliDelete":
-                    Uri uri = storageAccess.getUriForItem(this,this,"Settings","","ActivityLog.xml");
+                    Uri uri = storageAccess.getUriForItem("Settings","","ActivityLog.xml");
                     result = ccliLog.createBlankXML(this,this,uri);
                     break;
 
                 case "deleteItem":
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
-                    result = storageAccess.doDeleteFile(this,this,arguments.get(0),arguments.get(1),arguments.get(2));
+                    result = storageAccess.doDeleteFile(arguments.get(0),arguments.get(1),arguments.get(2));
                     if (arguments.get(2).isEmpty() && arguments.get(0).equals("Songs") && (arguments.get(1).isEmpty()||arguments.get(1)==null)) {
                         // Emptying the entire songs foler, so need to recreate it on finish
-                        storageAccess.createFolder(this,this,"Songs","","");
+                        storageAccess.createFolder("Songs","","");
                     }
                     //Rebuild the song index
                     updateSongMenu(fragName, callingFragment, arguments); // Passing the fragment allows an update to be sent to the calling fragment
@@ -1816,8 +1816,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 case "newSet":
                     // Clear the current set
                     currentSet.initialiseTheSet();
-                    preferences.setMyPreferenceString(this, "setCurrent", "");
-                    preferences.setMyPreferenceString(this, "setCurrentLastName", "");
+                    preferences.setMyPreferenceString("setCurrent", "");
+                    preferences.setMyPreferenceString("setCurrentLastName", "");
                     updateFragment("set_updateView",null,null);
                     result = true;
                     break;
@@ -1985,12 +1985,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         fullIndexRequired = true;
         ArrayList<String> songIds = new ArrayList<>();
         try {
-            songIds = storageAccess.listSongs(this, this);
+            songIds = storageAccess.listSongs();
         } catch (Exception e) {
             e.printStackTrace();
         }
         // Write a crude text file (line separated) with the song Ids (folder/file)
-        storageAccess.writeSongIDFile(this, this, songIds);
+        storageAccess.writeSongIDFile(songIds);
 
         // Try to create the basic databases
         // Non persistent, created from storage at boot (to keep updated) used to references ALL files
@@ -2083,7 +2083,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public String getMode() {
         if (whichMode==null) {
-            whichMode = preferences.getMyPreferenceString(this, "whichMode", "Performance");
+            whichMode = preferences.getMyPreferenceString("whichMode", "Performance");
         }
         return whichMode;
     }
