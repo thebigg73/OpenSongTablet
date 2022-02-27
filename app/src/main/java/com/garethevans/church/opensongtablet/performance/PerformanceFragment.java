@@ -166,7 +166,7 @@ public class PerformanceFragment extends Fragment {
     }
     private void loadPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
-        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
+        mainActivityInterface.getMyThemeColors().getDefaultColors();
         swipeMinimumDistance = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumDistance", 250);
         swipeMaxDistanceYError = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMaxDistanceYError", 200);
         swipeMinimumVelocity = mainActivityInterface.getPreferences().getMyPreferenceInt("swipeMinimumVelocity", 600);
@@ -213,7 +213,7 @@ public class PerformanceFragment extends Fragment {
             actionInterface.showSticky(false,true);
 
             // Now reset the song object (doesn't change what's already drawn on the screen)
-            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
+            mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
                     mainActivityInterface.getSong(),false));
 
             mainActivityInterface.moveToSongInSongMenu();
@@ -439,8 +439,8 @@ public class PerformanceFragment extends Fragment {
 
         // Prepare the song sheet header if required, if not, make it null
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("songSheet", false)) {
-            mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(requireContext(),
-                    mainActivityInterface, mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
+            mainActivityInterface.setSongSheetTitleLayout(mainActivityInterface.getSongSheetHeaders().getSongSheet(
+                    mainActivityInterface.getSong(), mainActivityInterface.getProcessSong().getScaleComments(), false));
         } else {
             mainActivityInterface.setSongSheetTitleLayout(null);
         }
@@ -610,7 +610,7 @@ public class PerformanceFragment extends Fragment {
     // This stuff deals with running song action stuff
     private void dealWithStuffAfterReady() {
         // Send the autoscroll information (if required)
-        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(requireContext(), heightAfterScale, screenHeight);
+        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, screenHeight);
 
         // Now deal with the highlighter file
         dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
@@ -627,7 +627,7 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
 
         // Start the pad (if the pads are activated and the pad is valid)
-        mainActivityInterface.getPad().autoStartPad(requireContext());
+        mainActivityInterface.getPad().autoStartPad();
 
         // Update any midi commands (if any)
         mainActivityInterface.getMidi().buildSongMidiMessages();

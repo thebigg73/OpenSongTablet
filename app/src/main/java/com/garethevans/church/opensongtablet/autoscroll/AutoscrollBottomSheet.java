@@ -56,8 +56,8 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
         setupViews();
 
         // Check audio link file
-        mainActivityInterface.getAutoscroll().checkLinkAudio(requireContext(),mainActivityInterface,
-                myView.linkAudio, myView.songDuration, myView.songDelay,getStringToInt(myView.songDelay.getText().toString()));
+        mainActivityInterface.getAutoscroll().checkLinkAudio(myView.linkAudio, myView.songDuration,
+                myView.songDelay,getStringToInt(myView.songDelay.getText().toString()));
 
         // Set listeners
         setupListeners();
@@ -143,8 +143,7 @@ public class AutoscrollBottomSheet extends BottomSheetDialogFragment {
                     mainActivityInterface.getSong().setAutoscrolllength(duration+"");
                     break;
             }
-            mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
-                    mainActivityInterface.getSong());
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
         }
     }
 }

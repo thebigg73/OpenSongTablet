@@ -135,7 +135,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
 
     private void doSave(String fontName) {
         fontName = fontName.replace("+"," ");
-        mainActivityInterface.getMyFonts().changeFont(getContext(),mainActivityInterface,mainActivityInterface.getWhattodo(),fontName,handler);
+        mainActivityInterface.getMyFonts().changeFont(mainActivityInterface.getWhattodo(),fontName,handler);
         new Thread(() -> requireActivity().runOnUiThread(() -> {
             mainActivityInterface.popTheBackStack(R.id.fontSetupFragment,true);
             mainActivityInterface.navigateToFragment("opensongapp://settings/display/fonts",0);

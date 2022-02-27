@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class Gestures {
 
     // This deals with on screen gestures (double tap and long press)
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     private ArrayList<String> gestures;
     private ArrayList<String> gestureDescriptions;
     private String doubleTap;
@@ -23,9 +25,11 @@ public class Gestures {
     // Initialise the class
     public Gestures(Context c) {
         // On start, set up the arrays
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
         setGestures();
-        setGestureDescriptions(c);
-        getPreferences(c,(MainActivityInterface) c);
+        setGestureDescriptions();
+        getPreferences();
     }
     private void setGestures() {
         // Set the gesture names for storing in preferences
@@ -50,7 +54,7 @@ public class Gestures {
         gestures.add("metronome_pad");
         gestures.add("autoscroll_metronome_pad");
     }
-    private void setGestureDescriptions(Context c) {
+    private void setGestureDescriptions() {
         // Set up the dropdown options
         String startstop = " (" + c.getString(R.string.start) + " / " + c.getString(R.string.stop) + ")";
         String showhide = " (" + c.getString(R.string.show) + " / " + c.getString(R.string.hide) + ")";
@@ -78,7 +82,7 @@ public class Gestures {
         gestureDescriptions.add(metronome + " + " + pad + startstop);
         gestureDescriptions.add(autoscroll + " + " + metronome + " + " + pad + startstop);
     }
-    private void getPreferences(Context c, MainActivityInterface mainActivityInterface) {
+    private void getPreferences() {
         doubleTap = mainActivityInterface.getPreferences().getMyPreferenceString("gestureDoubleTap","editsong");
         longPress = mainActivityInterface.getPreferences().getMyPreferenceString("gestureLongPress","addtoset");
         swipeEnabled = mainActivityInterface.getPreferences().getMyPreferenceBoolean("swipeForSongs",true);
@@ -118,7 +122,7 @@ public class Gestures {
     public float getScrollDistance() {
         return scrollDistance;
     }
-    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, String val) {
+    public void setPreferences(String which, String val) {
         if (which.equals("gestureDoubleTap")) {
             this.doubleTap = val;
         } else {
@@ -127,7 +131,7 @@ public class Gestures {
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceString(which, val);
     }
-    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, boolean bool) {
+    public void setPreferences(String which, boolean bool) {
         if ("swipeForSongs".equals(which)) {
             this.swipeEnabled = bool;
         }

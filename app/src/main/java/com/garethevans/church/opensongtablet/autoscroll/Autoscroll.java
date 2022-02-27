@@ -21,6 +21,7 @@ public class Autoscroll {
 
     private boolean isAutoscrolling, wasScrolling, autoscrollOK, isPaused = false, showOn = true,
             autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime;
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final String TAG = "Autoscroll";
     private int songDelay;
@@ -34,7 +35,6 @@ public class Autoscroll {
     private int autoscrollDefaultSongPreDelay;
     private int colorOn;
     private final int updateTime = 60;
-    private float initialScrollIncrement;
     private float scrollIncrement;
     private float scrollPosition;
     private float scrollCount;
@@ -48,9 +48,10 @@ public class Autoscroll {
     private TimerTask timerTask;
     private String currentTimeString, totalTimeString;
 
-    public Autoscroll(MainActivityInterface mainActivityInterface, MaterialTextView autoscrollTimeText,
+    public Autoscroll(Context c, MaterialTextView autoscrollTimeText,
                       MaterialTextView autoscrollTotalTimeText, LinearLayout autoscrollView) {
-        this.mainActivityInterface = mainActivityInterface;
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
         this.autoscrollView = autoscrollView;
         this.autoscrollTimeText = autoscrollTimeText;
         this.autoscrollTotalTimeText = autoscrollTotalTimeText;
@@ -72,7 +73,7 @@ public class Autoscroll {
         this.myRecyclerView = myRecyclerView;
     }
 
-    public void initialiseSongAutoscroll(Context c, int songHeight, int displayHeight) {
+    public void initialiseSongAutoscroll(int songHeight, int displayHeight) {
         this.displayHeight = displayHeight;
         this.songHeight = songHeight;
         autoscrollAutoStart = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
@@ -119,7 +120,7 @@ public class Autoscroll {
             totalTimeString = " / " + mainActivityInterface.getTimeTools().timeFormatFixer(songDuration);
             autoscrollTotalTimeText.post(() -> autoscrollTotalTimeText.setText(totalTimeString));
 
-            setupTimer(mainActivityInterface);
+            setupTimer();
 
             setAutoscrollOK(true);
 
@@ -150,7 +151,7 @@ public class Autoscroll {
                 timer = new Timer();
             }
             if (timerTask==null) {
-                setupTimer(mainActivityInterface);
+                setupTimer();
             }
             isPaused = false;
             autoscrollActivated = true;
@@ -185,7 +186,7 @@ public class Autoscroll {
             timer.purge();
         }
     }
-    private void setupTimer(MainActivityInterface mainActivityInterface) {
+    private void setupTimer() {
         timer = new Timer();
         timerTask = new TimerTask() {
             @Override
@@ -328,10 +329,8 @@ public class Autoscroll {
             float numberScrolls = ((songDuration-songDelay)*1000f)/updateTime;
             // The scroll distance for each scroll is calculated as follows
             scrollIncrement = (float)scrollHeight / numberScrolls;
-            initialScrollIncrement = scrollIncrement;
         } else {
             scrollIncrement = 0;
-            initialScrollIncrement = 0;
         }
 
         flashCount = 0;
@@ -358,8 +357,7 @@ public class Autoscroll {
     }
 
     // This is called from both the Autoscroll settings and bottom sheet to activate the link audio button
-    public void checkLinkAudio(Context c, MainActivityInterface mainActivityInterface,
-                                MaterialButton materialButton, MaterialEditText durationText,
+    public void checkLinkAudio(MaterialButton materialButton, MaterialEditText durationText,
                                 MaterialEditText delayText, final int delay) {
         // If link audio is set and time is valid get it and set the button action
         if (mainActivityInterface.getSong().getLinkaudio()!=null &&

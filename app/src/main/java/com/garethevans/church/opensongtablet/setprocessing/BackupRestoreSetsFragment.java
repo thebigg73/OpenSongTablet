@@ -254,7 +254,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                 if (myView!=null) {
                     myView.progressBar.setVisibility(View.GONE);
                 }
-                Intent intent = mainActivityInterface.getExportActions().exportBackup(requireContext(), backupUri, backupFilename);
+                Intent intent = mainActivityInterface.getExportActions().exportBackup(backupUri, backupFilename);
                 startActivity(Intent.createChooser(intent, getString(R.string.backup_info)));
             });
         }).start();

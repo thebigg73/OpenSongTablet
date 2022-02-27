@@ -113,8 +113,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                 mainActivityInterface.getTempSong().setLyrics(lyrics);
                 mainActivityInterface.getTempSong().setEditingAsChoPro(false);
             }
-            if (mainActivityInterface.getSaveSong().doSave(requireContext(), mainActivityInterface,
-                    mainActivityInterface.getTempSong())) {
+            if (mainActivityInterface.getSaveSong().doSave(mainActivityInterface.getTempSong())) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
                 requireActivity().runOnUiThread(() -> mainActivityInterface.navHome());
             } else {

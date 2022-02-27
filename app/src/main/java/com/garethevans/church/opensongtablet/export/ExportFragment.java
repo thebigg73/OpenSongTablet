@@ -179,19 +179,16 @@ public class ExportFragment extends Fragment {
                 if (openSongAppSet) {
                     mainActivityInterface.getPreferences().setMyPreferenceBoolean("exportOpenSongAppSet", true);
                     // Copy the set(s) to an .osts file extensions and get the uri(s)
-                    uris.addAll(mainActivityInterface.getExportActions().addOpenSongAppSetsToUris(requireContext(),
-                            mainActivityInterface, setNames));
+                    uris.addAll(mainActivityInterface.getExportActions().addOpenSongAppSetsToUris(setNames));
                 } else if (openSongSet) {
                     mainActivityInterface.getPreferences().setMyPreferenceBoolean("exportOpenSongAppSet", false);
                     // Just add the actual set file(s) (no extension)
-                    uris.addAll(mainActivityInterface.getExportActions().addOpenSongSetsToUris(requireContext(),
-                            mainActivityInterface, setNames));
+                    uris.addAll(mainActivityInterface.getExportActions().addOpenSongSetsToUris(setNames));
                 }
 
                 String[] setData = new String[2];
                 if (textSet || includeSongs) {
-                    setData = mainActivityInterface.getExportActions().parseSets(requireContext(),
-                            mainActivityInterface, setNames);
+                    setData = mainActivityInterface.getExportActions().parseSets(setNames);
                     if (textSet) {
                         mainActivityInterface.getStorageAccess().doStringWriteToFile(
                                 "Export","","Set.txt",setData[1]);
@@ -212,7 +209,7 @@ public class ExportFragment extends Fragment {
                         // Especially is we have selected more than one set)
                         if (!songsAlreadyAdded.toString().contains(id)) {
                             songsAlreadyAdded.append("\n").append(id);
-                            String[] location = mainActivityInterface.getExportActions().getFolderAndFile(requireContext(), id);
+                            String[] location = mainActivityInterface.getExportActions().getFolderAndFile(id);
                             updateProgressText(location[1]);
                             boolean likelyXML = !location[1].contains(".") || location[1].toLowerCase(Locale.ROOT).endsWith(".xml");
                             boolean likelyPDF = location[1].toLowerCase(Locale.ROOT).endsWith(".pdf");
@@ -231,8 +228,7 @@ public class ExportFragment extends Fragment {
 
                             } else if (onsong && likelyXML) {
                                 // Get the text from the file
-                                Song song = mainActivityInterface.getSQLiteHelper().getSpecificSong(requireContext(),
-                                        mainActivityInterface, location[0], location[1]);
+                                Song song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
                                 String content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(
                                         mainActivityInterface, song);
                                 if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", location[1] + ".onsong", content)) {
@@ -253,9 +249,8 @@ public class ExportFragment extends Fragment {
 
                                 requireActivity().runOnUiThread(() -> {
                                     listen.setValue(false); //Initilize with a value
-                                    Song song = mainActivityInterface.getSQLiteHelper().getSpecificSong(requireContext(),
-                                            mainActivityInterface, location[0], location[1]);
-                                    createOnTheFly(requireContext(), mainActivityInterface, song);
+                                    Song song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
+                                    createOnTheFly(song);
                                     listen.observe(getViewLifecycleOwner(), isDone -> {
                                         if (isDone) {
                                             uris.add(mainActivityInterface.getMakePDF().createTextPDF(requireContext(), mainActivityInterface,
@@ -295,7 +290,7 @@ public class ExportFragment extends Fragment {
                         // Create PDF song on the fly
                         requireActivity().runOnUiThread(() -> {
                             listen.setValue(false); //Initilize with a value
-                            createOnTheFly(requireContext(), mainActivityInterface, mainActivityInterface.getSong());
+                            createOnTheFly(mainActivityInterface.getSong());
                             listen.observe(getViewLifecycleOwner(), isDone -> {
                                 if (isDone) {
                                     listen.removeObservers(getViewLifecycleOwner());
@@ -339,7 +334,7 @@ public class ExportFragment extends Fragment {
         if ((mainActivityInterface.getSong().getFiletype().equals("PDF") && type.equals("application/pdf") && myView.pdf.isChecked()) ||
                 (mainActivityInterface.getSong().getFiletype().equals("IMG") && type.equals("image/*") && myView.image.isChecked())) {
             // This is for PDF or image songs  Only allow export in the same format
-            uri = mainActivityInterface.getExportActions().getActualSongFile(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
+            uri = mainActivityInterface.getExportActions().getActualSongFile(mainActivityInterface.getSong());
 
         } else if (mainActivityInterface.getSong().getFiletype().equals("XML")){
             // These options are for OpenSong songs
@@ -358,7 +353,7 @@ public class ExportFragment extends Fragment {
 
             } else if (type.equals("text/xml") && myView.openSong.isChecked()) {
                 // Make a copy of the file as is
-                uri = mainActivityInterface.getExportActions().getActualSongFile(requireContext(),mainActivityInterface,mainActivityInterface.getSong());
+                uri = mainActivityInterface.getExportActions().getActualSongFile(mainActivityInterface.getSong());
                 //exportFilename = getExportFilename(mainActivityInterface.getSong(),"");
 
             } else if (type.equals("text/plain") && myView.onSong.isChecked()) {
@@ -398,8 +393,7 @@ public class ExportFragment extends Fragment {
     private Uri copyOpenSongApp(Song song) {
         uri = getExportUri(song,".ost");
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(
-                mainActivityInterface.getExportActions().getActualSongFile(requireContext(),
-                        mainActivityInterface,mainActivityInterface.getSong()));
+                mainActivityInterface.getExportActions().getActualSongFile(mainActivityInterface.getSong()));
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
         mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream);
         return uri;
@@ -427,12 +421,12 @@ public class ExportFragment extends Fragment {
 
 
     // We can create nice views on the fly here by processing the Song, then populating the views
-    private void createOnTheFly(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    private void createOnTheFly(Song thisSong) {
         // Make sure any current headers/sections are wiped
         initialiseViews();
 
         // Now start preparing the views.  First up the header
-        createOnTheFlyHeader(c,mainActivityInterface,thisSong);
+        createOnTheFlyHeader(thisSong);
     }
     private void initialiseViews() {
         sectionViewsPDF = new ArrayList<>();
@@ -442,7 +436,7 @@ public class ExportFragment extends Fragment {
         myView.hiddenSections.removeAllViews();
         myView.hiddenHeader.removeAllViews();
     }
-    private void createOnTheFlyHeader(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    private void createOnTheFlyHeader(Song thisSong) {
         // Get the song sheet header
         // Once this has drawn, move to the next stage of the song sections
         float scaleComments = mainActivityInterface.getPreferences().getMyPreferenceFloat("scaleComments",0.8f);
@@ -455,16 +449,16 @@ public class ExportFragment extends Fragment {
                 headerLayoutWidth = myView.hiddenHeader.getMeasuredWidth();
                 headerLayoutHeight = myView.hiddenHeader.getMeasuredHeight();
                 myView.hiddenHeader.removeAllViews();
-                createOnTheFlySections(c,mainActivityInterface,thisSong);
+                createOnTheFlySections(thisSong);
             }
         });
 
         // Now draw it here for measuring via the VTO
-        headerLayoutPDF = mainActivityInterface.getSongSheetHeaders().getSongSheet(c,mainActivityInterface,thisSong,
+        headerLayoutPDF = mainActivityInterface.getSongSheetHeaders().getSongSheet(thisSong,
                 scaleComments,true);
         myView.hiddenHeader.addView(headerLayoutPDF);
     }
-    private void createOnTheFlySections(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    private void createOnTheFlySections(Song thisSong) {
 
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
 

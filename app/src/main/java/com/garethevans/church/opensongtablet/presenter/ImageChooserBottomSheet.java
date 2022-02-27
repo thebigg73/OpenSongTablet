@@ -81,7 +81,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
         myView.dialogHeading.setClose(this);
 
         // Update our preferences in case they have changed
-        mainActivityInterface.getPresenterSettings().getImagePreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getPresenterSettings().getImagePreferences();
 
         // Update with our chosen values
         pickThis = mainActivityInterface.getPresenterSettings().getBackgroundToUse();
@@ -196,7 +196,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
 
         // Also, if we are in presenter mode, update the 'Settings' tab previews(
         if (mainActivityInterface.getMode().equals("Presenter") && fragName.equals("presenterFragmentSettings")) {
-            mainActivityInterface.getPresenterSettings().getImagePreferences(requireContext(),mainActivityInterface);
+            mainActivityInterface.getPresenterSettings().getImagePreferences();
             mainActivityInterface.updateFragment(fragName,callingFragment,null);
         }
         displayInterface.updateDisplay("changeBackground");

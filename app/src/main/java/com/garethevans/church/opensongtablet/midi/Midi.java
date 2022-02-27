@@ -23,12 +23,14 @@ import java.util.Locale;
 public class Midi {
 
     private final String TAG = "Midi";
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private PedalMidiReceiver pedalMidiReceiver;
 
     // Initialise
-    public Midi(MainActivityInterface mainActivityInterface) {
-        this.mainActivityInterface = mainActivityInterface;
+    public Midi(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
     }
 
     private ArrayList<String> songMidiMessages = new ArrayList<>();
@@ -107,7 +109,7 @@ public class Midi {
         return notes.get(i);
     }
 
-    String getReadableStringFromHex(String s, Context c) {
+    String getReadableStringFromHex(String s) {
         // This tries to get a readable version of a midi hex line
         // e.g. try to convert 0x92 0x02 0x64 into "Channel 1 Note on Note D0 Velocity 100
         // First then, we need to split the string into sections.
@@ -314,7 +316,7 @@ public class Midi {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void enableMidiListener(Context c) {
+    public void enableMidiListener() {
         if (midiDevice!=null && midiOutputPort!=null) {
             pedalMidiReceiver = new PedalMidiReceiver(this,mainActivityInterface);
             try {
@@ -367,7 +369,7 @@ public class Midi {
             songMidiMessages.add(position,command);
         }
     }
-    public void updateSongMessages(Context c) {
+    public void updateSongMessages() {
         StringBuilder s = new StringBuilder();
         for (String message:songMidiMessages) {
             if (!message.trim().isEmpty()) {
@@ -375,7 +377,6 @@ public class Midi {
             }
         }
         mainActivityInterface.getSong().setMidi(s.toString().trim());
-        mainActivityInterface.getSaveSong().updateSong(c,mainActivityInterface,
-                mainActivityInterface.getSong());
+        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
     }
 }

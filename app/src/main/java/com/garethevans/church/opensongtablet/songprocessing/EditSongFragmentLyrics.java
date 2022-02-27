@@ -194,10 +194,10 @@ public class EditSongFragmentLyrics extends Fragment {
         myView.ocr.setOnClickListener(v -> {
             mainActivityInterface.navHome();
             if (mainActivityInterface.getSong().getFiletype().equals("PDF")) {
-                mainActivityInterface.getOCR().getTextFromPDF(requireContext(), mainActivityInterface,
+                mainActivityInterface.getOCR().getTextFromPDF(
                         mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
             } else if (mainActivityInterface.getSong().getFiletype().equals("IMG")) {
-                mainActivityInterface.getOCR().getTextFromImageFile(requireContext(),mainActivityInterface,
+                mainActivityInterface.getOCR().getTextFromImageFile(
                         mainActivityInterface.getSong().getFolder(),
                         mainActivityInterface.getSong().getFilename());
             }
@@ -270,7 +270,7 @@ public class EditSongFragmentLyrics extends Fragment {
     public void changelyricFormat() {
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("editAsChordPro",false)) {
             myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
-                    fromOpenSongToChordPro(mainActivityInterface, mainActivityInterface.getTempSong().getLyrics()));
+                    fromOpenSongToChordPro(mainActivityInterface.getTempSong().getLyrics()));
         } else {
             myView.lyrics.setText(mainActivityInterface.getConvertChoPro().
                     fromChordProToOpenSong(mainActivityInterface.getTempSong().getLyrics()));
@@ -310,12 +310,12 @@ public class EditSongFragmentLyrics extends Fragment {
         }
 
         // Transpose the OpenSong lyrics
-        mainActivityInterface.getTranspose().doTranspose(requireContext(),mainActivityInterface,
-                mainActivityInterface.getTempSong(),direction,1,1,1);
+        mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getTempSong(),
+                direction,1,1,1);
 
         // If we were using ChoPro, convert back
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            String choProLyrics =  mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface,
+            String choProLyrics =  mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(
                     mainActivityInterface.getTempSong().getLyrics());
             mainActivityInterface.getTempSong().setLyrics(choProLyrics);
         }
@@ -344,7 +344,7 @@ public class EditSongFragmentLyrics extends Fragment {
             myView.bottomSheetLayout.convertToChoPro.setBackgroundTintList(ColorStateList.valueOf(colorOn));
             myView.bottomSheetLayout.convertToOpenSong.setBackgroundTintList(ColorStateList.valueOf(colorOff));
             // Get the lyrics converted
-            String lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface,mainActivityInterface.getTempSong().getLyrics());
+            String lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface.getTempSong().getLyrics());
             // Set them into the edit box - don't include an undo/redo step, so pretend we're carrying this out
             addUndoStep = false;
             myView.lyrics.setText(lyrics);
@@ -392,13 +392,12 @@ public class EditSongFragmentLyrics extends Fragment {
 
         Log.d(TAG,"original: "+lyrics);
         // Use the text conversion to fix
-        lyrics = mainActivityInterface.getConvertTextSong().convertText(requireContext(),lyrics);
+        lyrics = mainActivityInterface.getConvertTextSong().convertText(lyrics);
         Log.d(TAG,"texttidy: "+lyrics);
 
         // Put back (includes undo step)
         if (mainActivityInterface.getTempSong().getEditingAsChoPro()) {
-            lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(
-                    mainActivityInterface, lyrics);
+            lyrics = mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(lyrics);
         }
         myView.lyrics.setText(lyrics);
         mainActivityInterface.getShowToast().doIt(getString(R.string.success));

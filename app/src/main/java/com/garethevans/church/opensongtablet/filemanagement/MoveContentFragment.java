@@ -205,10 +205,10 @@ public class MoveContentFragment extends Fragment {
                         }
 
                         // Sort the databases.
-                        mainActivityInterface.getSQLiteHelper().renameSong(requireContext(), mainActivityInterface, subfolder, newFolder, filesChosen.get(x), filesChosen.get(x));
+                        mainActivityInterface.getSQLiteHelper().renameSong(subfolder, newFolder, filesChosen.get(x), filesChosen.get(x));
                         if (!mainActivityInterface.getStorageAccess().isTextFile(uris.get(x))) {
                             // Likely to be in the persistent nonOpenSong database too
-                            mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(requireContext(), mainActivityInterface, subfolder, newFolder, filesChosen.get(x), filesChosen.get(x));
+                            mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(subfolder, newFolder, filesChosen.get(x), filesChosen.get(x));
                         }
 
                         // Try to rename highlighter files (it they exist)

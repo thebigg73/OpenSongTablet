@@ -47,11 +47,11 @@ public class DisplayPrevNext {
         this.layout = layout;
         this.prev = prev;
         this.next = next;
-        updateShow(c, mainActivityInterface);
+        updateShow();
         updateColors();
     }
 
-    public void updateShow(Context c, MainActivityInterface mainActivityInterface) {
+    public void updateShow() {
         showPrev = mainActivityInterface.getPreferences().getMyPreferenceBoolean("prevInSet", false);
         showNext = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nextInSet", true);
         prevNextSongMenu = mainActivityInterface.getPreferences().getMyPreferenceBoolean("prevNextSongMenu", false);
@@ -85,8 +85,8 @@ public class DisplayPrevNext {
         if (showNext || showPrev) {
             // Get the text from either the set or song menu
             // Decode the text which for non-songs may be Uri encoded for safety
-            String previousText = Uri.decode(getTextForButton(c,prevIndex));
-            String nextText = Uri.decode(getTextForButton(c,nextIndex));
+            String previousText = Uri.decode(getTextForButton(prevIndex));
+            String nextText = Uri.decode(getTextForButton(nextIndex));
 
             // Set the listeners
             // Use the text as it is for the filename (might be Uri encoded)
@@ -148,7 +148,7 @@ public class DisplayPrevNext {
         }
     }
 
-    private String getTextForButton(Context c, int position) {
+    private String getTextForButton(int position) {
         String text = "";
         if (position>-1) {
             if (isSetMove(position)) {
@@ -159,7 +159,7 @@ public class DisplayPrevNext {
                     String key = mainActivityInterface.getCurrentSet().getKey(position);
                     // If it isn't there, for the song key from the user database instead
                     if (key==null || key.isEmpty()) {
-                        key = mainActivityInterface.getSQLiteHelper().getKey(c,mainActivityInterface,
+                        key = mainActivityInterface.getSQLiteHelper().getKey(
                                 mainActivityInterface.getCurrentSet().getFolder(position),
                                 mainActivityInterface.getCurrentSet().getFilename(position));
                     }

@@ -109,7 +109,7 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
             if (command!=null && !command.equals("") && !command.isEmpty() && getActivity()!=null) {
                 // Get a human readable version of the midi code
                 Log.d(TAG,"command: "+command);
-                String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command,getActivity());
+                String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);
                 MidiInfo midiInfo = new MidiInfo();
                 midiInfo.midiCommand = command;
                 midiInfo.readableCommand = readable;

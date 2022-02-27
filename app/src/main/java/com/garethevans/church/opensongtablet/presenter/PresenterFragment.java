@@ -172,7 +172,7 @@ public class PresenterFragment extends Fragment {
         Log.d(TAG,"doSongLoad() called");
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);
-        mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(getContext(),mainActivityInterface,
+        mainActivityInterface.setSong(mainActivityInterface.getLoadSong().doLoadSong(
                 mainActivityInterface.getSong(),false));
 
         // Because we have loaded the song, figure out any presentation order requirements
@@ -203,8 +203,8 @@ public class PresenterFragment extends Fragment {
 
     private void getPreferences() {
         mainActivityInterface.getProcessSong().updateProcessingPreferences();
-        mainActivityInterface.getPresenterSettings().getAllPreferences(requireContext(),mainActivityInterface);
-        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
+        mainActivityInterface.getPresenterSettings().getAllPreferences();
+        mainActivityInterface.getMyThemeColors().getDefaultColors();
     }
 
     public void getSongViews() {

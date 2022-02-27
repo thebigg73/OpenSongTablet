@@ -108,7 +108,7 @@ public class SetMenuBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
         myView.shuffleSet.setOnClickListener(v -> {
-            mainActivityInterface.getSetActions().shuffleSet(requireContext(),mainActivityInterface);
+            mainActivityInterface.getSetActions().shuffleSet();
             mainActivityInterface.updateFragment("set_updateView",null,null);
             dismiss();
         });

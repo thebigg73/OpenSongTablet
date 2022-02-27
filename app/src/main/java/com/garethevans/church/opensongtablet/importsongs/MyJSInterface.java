@@ -19,15 +19,15 @@ import java.io.OutputStream;
 
 public class MyJSInterface {
 
-    private final Context context;
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final Uri saveFile;
     private final Fragment fragment;
     private final String TAG = "MyJSInterface";
 
-    public MyJSInterface(Context context, MainActivityInterface mainActivityInterface, Fragment fragment) {
-        this.context = context;
-        this.mainActivityInterface = mainActivityInterface;
+    public MyJSInterface(Context c, Fragment fragment) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
         this.fragment = fragment;
         saveFile = mainActivityInterface.getStorageAccess().getUriForItem("Received", "", "SongSelect.pdf");
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,saveFile, null, "Received", "", "SongSelect.pdf");
@@ -97,7 +97,7 @@ public class MyJSInterface {
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
 
         request.setDestinationUri(saveFile);
-        DownloadManager dm = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager dm = (DownloadManager) c.getSystemService(Context.DOWNLOAD_SERVICE);
         request.addRequestHeader("Cookie", cookie);
         if (dm != null) {
             dm.enqueue(request);

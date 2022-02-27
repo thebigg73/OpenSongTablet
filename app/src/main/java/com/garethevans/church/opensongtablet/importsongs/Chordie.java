@@ -28,7 +28,7 @@ public class Chordie {
         // Send anull uri to stop it trying to save the file
         // This will return the improved song!
         newSong.setLyrics(chopro);
-        newSong = mainActivityInterface.getConvertChoPro().convertTextToTags(c,mainActivityInterface,null,newSong);
+        newSong = mainActivityInterface.getConvertChoPro().convertTextToTags(null,newSong);
 
         // If the title is null/empty (not specified in chopro {t:), use the title from the webpage
         if (newSong.getTitle()==null || newSong.getTitle().isEmpty()) {

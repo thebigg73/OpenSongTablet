@@ -196,7 +196,7 @@ public class ChordDisplayProcessing {
     public void transposeChordsInSong(Context c, MainActivityInterface mainActivityInterface) {
         // Go through each chord and transpose it
         for (int i=0; i<chordsInSong.size(); i++) {
-            chordsInSong.set(i, mainActivityInterface.getTranspose().getKeyBeforeCapo(c, mainActivityInterface,
+            chordsInSong.set(i, mainActivityInterface.getTranspose().getKeyBeforeCapo(
                     Integer.parseInt(mainActivityInterface.getSong().getCapo()),chordsInSong.get(i)));
         }
     }
@@ -392,7 +392,7 @@ public class ChordDisplayProcessing {
         chordName = chordName.replace("$", "");
         Log.d(TAG,"chordName: "+chordName+"  isValidChord(): "+isValidChord(chordName));
         if (isValidChord(chordName)) {
-            chordName = mainActivityInterface.getTranspose().convertToPreferredChord(c, mainActivityInterface, chordName);
+            chordName = mainActivityInterface.getTranspose().convertToPreferredChord(chordName);
             TextView textView = new TextView(c);
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);

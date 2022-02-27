@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         this.fragmentManager = fragmentManager;
 
         // Search the song database for any existing tags to choose from
-        tags = mainActivityInterface.getSQLiteHelper().getThemeTags(c,mainActivityInterface);
+        tags = mainActivityInterface.getSQLiteHelper().getThemeTags();
 
         // Also add any in the current temp song tags if they aren't there already
         String currTag = mainActivityInterface.getTempSong().getTheme();
@@ -61,8 +60,7 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
         // Now get the songs which have these tags
         songsWithTags = new ArrayList<>();
         for (int x=0; x<tags.size(); x++) {
-            String which = mainActivityInterface.getSQLiteHelper().songsWithThemeTags(c,
-                    mainActivityInterface,"%"+tags.get(x)+"%");
+            String which = mainActivityInterface.getSQLiteHelper().songsWithThemeTags("%"+tags.get(x)+"%");
 
             // Check if it is only in the current tempSong
             if (mainActivityInterface.getTempSong().getTheme().contains(tags.get(x)) &&

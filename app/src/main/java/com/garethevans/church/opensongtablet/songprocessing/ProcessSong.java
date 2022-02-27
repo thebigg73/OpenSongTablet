@@ -158,7 +158,7 @@ public class ProcessSong {
         myNEWXML += "  <abcnotation>" + parseToHTMLEntities(thisSong.getAbc()) + "</abcnotation>\n";
 
         if (thisSong.getHasExtraStuff()) {
-            String extraStuff = mainActivityInterface.getLoadSong().getExtraStuff(mainActivityInterface, thisSong);
+            String extraStuff = mainActivityInterface.getLoadSong().getExtraStuff(thisSong);
             myNEWXML += "  " + extraStuff + "\n";
         }
         myNEWXML += "</song>";
@@ -841,7 +841,7 @@ public class ProcessSong {
         if (hasCapo && (displayCapoChords || displayCapoAndNativeChords)) {
             int capo = Integer.parseInt(capoText);
             String chordbit = string.substring(0,string.indexOf("____groupline____"));
-            chordbit = mainActivityInterface.getTranspose().transposeChordForCapo(c,mainActivityInterface,capo,chordbit).replaceFirst(".","˄");
+            chordbit = mainActivityInterface.getTranspose().transposeChordForCapo(capo,chordbit).replaceFirst(".","˄");
             // Add it back in with a capo identifying this part
             string = chordbit + "____groupline____" + string;
         }

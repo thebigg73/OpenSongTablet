@@ -124,7 +124,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void setFolders() {
         new Thread(() -> {
-            foundFolders = mainActivityInterface.getSQLiteHelper().getFolders(getContext(), mainActivityInterface);
+            foundFolders = mainActivityInterface.getSQLiteHelper().getFolders();
             if (getActivity()!=null) {
                 requireActivity().runOnUiThread(() -> {
                     folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.view_exposed_dropdown_item, foundFolders);
@@ -275,7 +275,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> buttonsEnabled(false));
             try {
-                songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(getActivity(), mainActivityInterface,
+                songsFound = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
                         songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
                         songListSearchByTag, songListSearchByFilter, folderSearchVal,
                         artistSearchVal, keySearchVal, tagSearchVal, filterSearchVal);

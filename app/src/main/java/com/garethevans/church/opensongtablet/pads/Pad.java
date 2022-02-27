@@ -20,6 +20,8 @@ import java.util.TimerTask;
 
 public class Pad {
 
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     private MediaPlayer pad1, pad2;
     private boolean pad1Fading, pad2Fading, orientationChanged;
     private int padToUse, currentOrientation;
@@ -39,11 +41,11 @@ public class Pad {
     private final String TAG = "Pad";
     private int lastPadPlaying = 0;
     private float pad1VolDrop, pad2VolDrop;
-    private final MainActivityInterface mainActivityInterface;
     private boolean padsActivated = false;
 
-    public Pad(MainActivityInterface mainActivityInterface, LinearLayout pad) {
-        this.mainActivityInterface = mainActivityInterface;
+    public Pad(Context c, LinearLayout pad) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
         this.pad = pad;
         padTime = pad.findViewById(R.id.padTime);
         padTotalTime = pad.findViewById(R.id.padTotalTime);
@@ -52,15 +54,15 @@ public class Pad {
     public void startPad(Context c) {
         // Decide which pad to fade (if any)
         padsActivated = true;
-        whichPadToFade(c);
+        whichPadToFade();
         endTimer(1);
         endTimer(2);
         stopAndReset(padToUse);
-        loadAndStart(c, padToUse);
+        loadAndStart(padToUse);
     }
-    public void stopPad(Context c) {
+    public void stopPad() {
         padsActivated = false;
-        whichPadToFade(c);
+        whichPadToFade();
     }
 
     private void stopAndReset(int padNum) {
@@ -96,33 +98,33 @@ public class Pad {
                 .replace("G#","Ab");
     }
 
-    public boolean isAutoPad(Context c) {
+    public boolean isAutoPad() {
         String padFile = mainActivityInterface.getSong().getPadfile();
         String key = mainActivityInterface.getSong().getKey();
         return (padFile.isEmpty() || padFile.equals("auto") || padFile.equals(c.getString(R.string.pad_auto))) &&
                 key!=null && !key.isEmpty();
     }
 
-    public boolean isCustomAutoPad(Context c) {
+    public boolean isCustomAutoPad() {
         String key = mainActivityInterface.getSong().getKey();
         String customPad = mainActivityInterface.getPreferences().getMyPreferenceString("customPad"+keyToFlat(key),"");
-        return isAutoPad(c) && customPad!=null && !customPad.isEmpty();
+        return isAutoPad() && customPad!=null && !customPad.isEmpty();
     }
 
-    public boolean isLinkAudio(Context c) {
+    public boolean isLinkAudio() {
         String padFile = mainActivityInterface.getSong().getPadfile();
         String linkAudio = mainActivityInterface.getSong().getLinkaudio();
         return (padFile.equals("link") || padFile.equals(c.getString(R.string.link_audio))) &&
                 linkAudio!=null && !linkAudio.isEmpty();
     }
 
-    public Uri getPadUri(Context c) {
+    public Uri getPadUri() {
         Uri padUri = null;
-        if (isCustomAutoPad(c)) {
+        if (isCustomAutoPad()) {
             padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(
                     mainActivityInterface.getPreferences().getMyPreferenceString(
                             "customPad"+keyToFlat(mainActivityInterface.getSong().getKey()),""));
-        } else if (isLinkAudio(c)) {
+        } else if (isLinkAudio()) {
             padUri = mainActivityInterface.getStorageAccess().fixLocalisedUri(
                     mainActivityInterface.getSong().getLinkaudio());
         }
@@ -132,33 +134,33 @@ public class Pad {
         return padUri;
     }
 
-    private boolean isPadValid(Context c, Uri padUri) {
+    private boolean isPadValid(Uri padUri) {
         return mainActivityInterface.getStorageAccess().uriExists(padUri);
     }
 
-    private void loadAndStart(Context c, int padNum) {
-        Uri padUri = getPadUri(c);
+    private void loadAndStart(int padNum) {
+        Uri padUri = getPadUri();
 
         // If the padUri is null, we likely need a default autopad assuming the key is set
         AssetFileDescriptor assetFileDescriptor = null;
         if (padUri==null && !mainActivityInterface.getSong().getKey().isEmpty()) {
-            assetFileDescriptor = getAssetPad(c,mainActivityInterface.getSong().getKey());
+            assetFileDescriptor = getAssetPad(mainActivityInterface.getSong().getKey());
         }
 
         // Decide if pad should loop
         boolean padLoop = mainActivityInterface.getSong().getPadloop().equals("true");
 
         // Decide if the pad is valid
-        boolean padValid = (assetFileDescriptor!=null || isPadValid(c,padUri)) &&
+        boolean padValid = (assetFileDescriptor!=null || isPadValid(padUri)) &&
                 !mainActivityInterface.getSong().getPadfile().equals("off");
 
         // Prepare any error message
         if (!padValid) {
             if (mainActivityInterface.getSong().getKey().isEmpty()) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_key_error));
-            } else if (isCustomAutoPad(c)) {
+            } else if (isCustomAutoPad()) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_file_error));
-            } else if (isLinkAudio(c)) {
+            } else if (isLinkAudio()) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_custom_pad_error));
             } else if (mainActivityInterface.getSong().getPadfile().equals("off")) {
                 mainActivityInterface.getShowToast().doIt(c.getString(R.string.pad_off));
@@ -174,7 +176,7 @@ public class Pad {
                         endFadeTimer(1);
                         endTimer(1);
                     });
-                    pad1.setOnPreparedListener(mediaPlayer -> doPlay(mainActivityInterface,1));
+                    pad1.setOnPreparedListener(mediaPlayer -> doPlay(1));
                     if (assetFileDescriptor != null) {
                         try {
                             pad1.setDataSource(assetFileDescriptor.getFileDescriptor(),
@@ -201,7 +203,7 @@ public class Pad {
                         endFadeTimer(2);
                         endTimer(2);
                     });
-                    pad2.setOnPreparedListener(mediaPlayer -> doPlay(mainActivityInterface, 2));
+                    pad2.setOnPreparedListener(mediaPlayer -> doPlay(2));
                     if (assetFileDescriptor != null) {
                         try {
                             pad2.setDataSource(assetFileDescriptor.getFileDescriptor(),
@@ -224,7 +226,7 @@ public class Pad {
             }
         }
     }
-    private void fadePad(Context c, int padNum) {
+    private void fadePad(int padNum) {
         endTimer(padNum);
 
         // Get the current volume
@@ -298,7 +300,7 @@ public class Pad {
         }
     }
 
-    private AssetFileDescriptor getAssetPad(Context c, String key) {
+    private AssetFileDescriptor getAssetPad(String key) {
         // Using the built in pad
         key = key.replace("Ab","G#");
         key = key.replace("Bb","A#");
@@ -376,7 +378,7 @@ public class Pad {
             return currVol;
         }
     }
-    private void doPlay(MainActivityInterface mainActivityInterface, int padNum) {
+    private void doPlay(int padNum) {
         lastPadPlaying = padNum;
         Log.d(TAG,"doPlay: padNum="+padNum);
         switch (padNum) {
@@ -473,12 +475,12 @@ public class Pad {
                 ((pad1!=null && pad1.getDuration()>0 && (pad1.isPlaying() || pad1Pause)) ||
                 (pad2!=null && pad2.getDuration()>0 && (pad2.isPlaying() || pad2Pause)));
     }
-    public void autoStartPad(Context c) {
+    public void autoStartPad() {
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("padAutoStart",false) && padsActivated) {
             startPad(c);
         }
     }
-    private void whichPadToFade(Context c) {
+    private void whichPadToFade() {
         if (isPadPlaying(1) && pad1Fading && isPadPlaying(2) && pad2Fading) {
             // Both pads are fading, so stop the other one that wasn't the last pad to start
             if (lastPadPlaying==1) {
@@ -490,9 +492,9 @@ public class Pad {
             }
         } else if (isPadPlaying(1) && !pad1Fading) {
             padToUse = 2;
-            fadePad(c,1);
+            fadePad(1);
         } else if (isPadPlaying(2) && !pad2Fading) {
-            fadePad(c,2);
+            fadePad(2);
             padToUse = 1;
         } else {
             padToUse = 1;

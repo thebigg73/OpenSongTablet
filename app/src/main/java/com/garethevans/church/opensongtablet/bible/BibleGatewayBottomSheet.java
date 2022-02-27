@@ -142,8 +142,8 @@ public class BibleGatewayBottomSheet extends BottomSheetDialogFragment {
             scripture.add(myView.translation.getText().toString());
 
             // Add to the set
-            mainActivityInterface.getCustomSlide().buildCustomSlide(requireContext(),mainActivityInterface,scripture);
-            mainActivityInterface.getCustomSlide().addItemToSet(requireContext(),mainActivityInterface,false);
+            mainActivityInterface.getCustomSlide().buildCustomSlide(scripture);
+            mainActivityInterface.getCustomSlide().addItemToSet(false);
             mainActivityInterface.getShowToast().doIt(getString(R.string.scripture)+" "+getString(R.string.added_to_set));
             if (!mainActivityInterface.getMode().equals("Presenter")) {
                 mainActivityInterface.navHome();

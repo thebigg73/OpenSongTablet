@@ -16,9 +16,14 @@ import java.util.Locale;
 public class ConvertTextSong {
 
     private final String TAG = "ConvertTextSong";
+    private final Context c;
 
     // This class is called when indexing text songs (ending in .txt or files that aren't xml, onsong or chordpro
-    public String convertText(Context c, String oldtext) {
+    public ConvertTextSong(Context c) {
+        this.c = c;
+    }
+
+    public String convertText(String oldtext) {
         StringBuilder newtext = new StringBuilder();
 
         try {
@@ -27,7 +32,7 @@ public class ConvertTextSong {
             for (String l : lines) {
 
                 // Fix lines that have tags [ ]
-                l = fixTags(c, l);
+                l = fixTags(l);
 
                 // Fix chord lines
                 l = fixChordLines(l);
@@ -44,12 +49,12 @@ public class ConvertTextSong {
         String compiledtext = newtext.toString();
 
         // Remove any blank headings if they are redundant
-        compiledtext = fixBlankHeadings(c, compiledtext);
+        compiledtext = fixBlankHeadings(compiledtext);
 
         return compiledtext;
     }
 
-    private String fixTags(Context c, String l) {
+    private String fixTags(String l) {
         // Look for potential headings but get rid of rogue spaces before and after
         if (l.contains("[") && l.contains("]") && l.length() < 15) {
             l = l.trim();
@@ -66,7 +71,7 @@ public class ConvertTextSong {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 LocaleList list = Resources.getSystem().getConfiguration().getLocales();
                 for (int i = 0; i < list.size(); i++) {
-                    containsTag |= stringContainsTag(c, list.get(i), l);
+                    containsTag |= stringContainsTag(list.get(i), l);
                 }
             } else {
                 //noinspection
@@ -77,7 +82,7 @@ public class ConvertTextSong {
                 } else {
                     locale = system.getConfiguration().locale;
                 }
-                containsTag = stringContainsTag(c, locale, l);
+                containsTag = stringContainsTag(locale, l);
             }
             if (containsTag) {
                 // Remove any colons and white space
@@ -96,8 +101,8 @@ public class ConvertTextSong {
         return l;
     }
 
-    private boolean stringContainsTag(Context context, Locale locale, String line) {
-        Resources res = getLocalizedResources(context, locale);
+    private boolean stringContainsTag(Locale locale, String line) {
+        Resources res = getLocalizedResources(locale);
         return line.contains(res.getString(R.string.verse)) || line.contains(res.getString(R.string.chorus)) ||
                 line.contains(res.getString(R.string.bridge)) || line.contains(res.getString(R.string.ending)) ||
                 line.contains(res.getString(R.string.instrumental)) || line.contains(res.getString(R.string.interlude)) ||
@@ -107,11 +112,11 @@ public class ConvertTextSong {
     }
 
     @NonNull
-    private Resources getLocalizedResources(Context context, Locale desiredLocale) {
-        Configuration conf = context.getResources().getConfiguration();
+    private Resources getLocalizedResources(Locale desiredLocale) {
+        Configuration conf = c.getResources().getConfiguration();
         conf = new Configuration(conf);
         conf.setLocale(desiredLocale);
-        Context localizedContext = context.createConfigurationContext(conf);
+        Context localizedContext = c.createConfigurationContext(conf);
         return localizedContext.getResources();
     }
 
@@ -200,7 +205,7 @@ public class ConvertTextSong {
         return l;
     }
 
-    private String fixBlankHeadings(Context c, String compiledtext) {
+    private String fixBlankHeadings(String compiledtext) {
         try {
             compiledtext = compiledtext.replace("[]\n[", "[");
             compiledtext = compiledtext.replace("[]\n\n[", "[");

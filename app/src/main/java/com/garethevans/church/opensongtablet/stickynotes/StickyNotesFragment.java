@@ -82,8 +82,7 @@ public class StickyNotesFragment extends Fragment {
         myView.saveButton.setOnClickListener(v -> {
             if (myView.stickyNotes.getText()!=null) {
                 mainActivityInterface.getSong().setNotes(myView.stickyNotes.getText().toString());
-                if (mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
-                        mainActivityInterface.getSong())) {
+                if (mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong())) {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.success));
                 } else {
                     mainActivityInterface.getShowToast().doIt(getString(R.string.error_song_not_saved));
@@ -104,7 +103,7 @@ public class StickyNotesFragment extends Fragment {
                 mainActivityInterface.getMyThemeColors().setStickyTextColor(color);
                 String theme = mainActivityInterface.getMyThemeColors().getThemeName();
                 mainActivityInterface.getPreferences().setMyPreferenceInt(theme+"_stickyBackgroundColor",color);
-                mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+                mainActivityInterface.getMyThemeColors().splitColorAndAlpha();
             }
         });
         myView.alphaSlider.addOnChangeListener((slider, value, fromUser) -> setAlphaHint(value));

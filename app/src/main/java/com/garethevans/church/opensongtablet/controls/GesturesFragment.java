@@ -79,7 +79,7 @@ public class GesturesFragment extends Fragment {
                 mydescription = myView.longPress.getText().toString();
             }
             String mygesture = mainActivityInterface.getGestures().getGestureFromDescription(mydescription);
-            mainActivityInterface.getGestures().setPreferences(requireContext(),mainActivityInterface,which,mygesture);
+            mainActivityInterface.getGestures().setPreferences(which,mygesture);
         }
     }
 }

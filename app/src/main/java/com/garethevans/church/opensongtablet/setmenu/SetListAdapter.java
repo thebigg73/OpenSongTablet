@@ -100,7 +100,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
         mainActivityInterface.getCurrentSet().addToCurrentSet(toPosition,thisSetItem,thisFolder,thisFilename,thisKey);
 
         // Update the set string
-        mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
+        mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
@@ -130,7 +130,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
             mainActivityInterface.getCurrentSet().removeFromCurrentSet(fromPosition, null);
 
             // Update the set string
-            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
+            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
             // Save the preference
             mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());

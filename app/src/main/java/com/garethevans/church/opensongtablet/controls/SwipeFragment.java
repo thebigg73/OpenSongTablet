@@ -66,7 +66,7 @@ public class SwipeFragment extends Fragment {
                 simulateSwipe();
             }
             showOrHide(isChecked);
-            mainActivityInterface.getGestures().setPreferences(requireContext(),mainActivityInterface,"swipeForSongs", isChecked);
+            mainActivityInterface.getGestures().setPreferences("swipeForSongs", isChecked);
         });
 
         // Set up the drawing area - attach the drawNotes to the desired view
@@ -123,15 +123,15 @@ public class SwipeFragment extends Fragment {
                     int newVal = Math.round(sliderVal);
                     switch (pref) {
                         case "swipeWidth":
-                            mainActivityInterface.getSwipes().fixWidth(requireContext(), mainActivityInterface, newVal);
+                            mainActivityInterface.getSwipes().fixWidth(newVal);
                             break;
 
                         case "swipeHeight":
-                            mainActivityInterface.getSwipes().fixHeight(requireContext(), mainActivityInterface, newVal);
+                            mainActivityInterface.getSwipes().fixHeight(newVal);
                             break;
 
                         case "swipeTime":
-                            mainActivityInterface.getSwipes().fixTime(requireContext(), mainActivityInterface, newVal);
+                            mainActivityInterface.getSwipes().fixTime(newVal);
                             break;
                     }
                     simulateSwipe();

@@ -25,6 +25,8 @@ import java.util.ArrayList;
 public class PageButtons {
 
     // For the actions
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
 
     // Everything available for the buttons
@@ -48,29 +50,30 @@ public class PageButtons {
     private final int translateY;
 
     public PageButtons(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
         // Set up the return interface for sending instructions back to the main activity
         actionInterface = (ActionInterface) c;
         // Prepare the arrays of available actions with matching short and long text
         prepareAvailableActions();
-        prepareAvailableButtonText(c);
-        prepareShortActionText(c);
-        prepareLongActionText(c);
+        prepareAvailableButtonText();
+        prepareShortActionText();
+        prepareLongActionText();
         prepareDrawableIds();
 
         // Now get our button preferences
-        setPreferences(c);
+        setPreferences();
 
         translateY = c.getResources().getDisplayMetrics().heightPixels;
     }
 
-    public void setMainFABS(MainActivityInterface mainActivityInterface,
-                            FloatingActionButton actionButton, FloatingActionButton custom1,
+    public void setMainFABS(FloatingActionButton actionButton, FloatingActionButton custom1,
                        FloatingActionButton custom2, FloatingActionButton custom3,
                        FloatingActionButton custom4, FloatingActionButton custom5,
                        FloatingActionButton custom6, LinearLayout pageButtonsLayout) {
         this.actionButton = actionButton;
         fabs = new ArrayList<>();
-        updateColors(mainActivityInterface);
+        updateColors();
         custom1.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom2.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
         custom3.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));
@@ -90,7 +93,7 @@ public class PageButtons {
         this.pageButtonsLayout = pageButtonsLayout;
     }
 
-    public void updateColors(MainActivityInterface mainActivityInterface) {
+    public void updateColors() {
         pageButtonColor = mainActivityInterface.getMyThemeColors().getPageButtonsSplitColor();
         pageButtonAlpha = mainActivityInterface.getMyThemeColors().getPageButtonsSplitAlpha();
         pageButtonIconColor = mainActivityInterface.getMyThemeColors().getExtraInfoTextColor();
@@ -101,7 +104,7 @@ public class PageButtons {
     }
     private final OvershootInterpolator interpolator = new OvershootInterpolator(0.75f);
 
-    public void animatePageButton(Context c, boolean open) {
+    public void animatePageButton(boolean open) {
         if (open) {
             ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();
@@ -194,7 +197,7 @@ public class PageButtons {
         actions.add("soundlevel");
         actions.add("exit");
     }
-    private void prepareAvailableButtonText(Context c) {
+    private void prepareAvailableButtonText() {
         text = new ArrayList<>();
         text.add("");
         text.add(c.getString(R.string.set_current));
@@ -232,7 +235,7 @@ public class PageButtons {
         text.add(c.getString(R.string.sound_level_meter));
         text.add(c.getString(R.string.exit));
     }
-    private void prepareShortActionText(Context c) {
+    private void prepareShortActionText() {
         shortText = new ArrayList<>();
         shortText.add("");
         shortText.add(c.getString(R.string.show));
@@ -270,7 +273,7 @@ public class PageButtons {
         shortText.add(c.getString(R.string.show) + " / " + c.getString(R.string.hide));
         shortText.add(c.getString(R.string.exit) + " " + c.getString(R.string.app_name));
     }
-    private void prepareLongActionText(Context c) {
+    private void prepareLongActionText() {
         longText = new ArrayList<>();
         longText.add("");
         longText.add("");
@@ -353,7 +356,7 @@ public class PageButtons {
     }
 
     // Build the arrays describing the buttons (action, short description, long description, drawable, etc) based on user preferences
-    private void setPreferences(Context c) {
+    private void setPreferences() {
         // Initialise the arrays
         pageButtonAction = new ArrayList<>();
         pageButtonDrawable = new ArrayList<>();
@@ -398,7 +401,7 @@ public class PageButtons {
     }
 
     // This will redesign the button for the page
-    public void setPageButton(Context c, FloatingActionButton fab, int buttonNum, boolean editing) {
+    public void setPageButton(FloatingActionButton fab, int buttonNum, boolean editing) {
         // The alpha is set on the linear layout, not the individual buttons
         pageButtonsLayout.setAlpha(pageButtonAlpha);
         fab.setBackgroundTintList(ColorStateList.valueOf(pageButtonColor));

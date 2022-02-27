@@ -104,7 +104,7 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     public void updateColors() {
-        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(), mainActivityInterface);
+        mainActivityInterface.getMyThemeColors().getDefaultColors();
     }
 
     public void updateButtons() {

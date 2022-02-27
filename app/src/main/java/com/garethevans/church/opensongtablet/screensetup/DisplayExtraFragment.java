@@ -92,15 +92,15 @@ public class DisplayExtraFragment extends Fragment {
         myView.songSheet.setOnCheckedChangeListener((buttonView, isChecked) -> updateBooleanPreference("songSheet",isChecked,null));
         myView.prevInSet.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("prevInSet",isChecked,null);
-            mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
+            mainActivityInterface.getDisplayPrevNext().updateShow();
         });
         myView.nextInSet.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("nextInSet",isChecked,null);
-            mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
+            mainActivityInterface.getDisplayPrevNext().updateShow();
         });
         myView.prevNextSongMenu.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("prevNextSongMenu", isChecked, null);
-            mainActivityInterface.getDisplayPrevNext().updateShow(requireContext(),mainActivityInterface);
+            mainActivityInterface.getDisplayPrevNext().updateShow();
         });
         myView.onscreenAutoscrollHide.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateBooleanPreference("onscreenAutoscrollHide", isChecked, null);

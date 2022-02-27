@@ -211,8 +211,8 @@ public class CustomSlideFragment extends Fragment {
                 break;
         }
 
-        mainActivityInterface.getCustomSlide().buildCustomSlide(requireContext(),mainActivityInterface,newSlide);
-        mainActivityInterface.getCustomSlide().addItemToSet(requireContext(), mainActivityInterface,true);
+        mainActivityInterface.getCustomSlide().buildCustomSlide(newSlide);
+        mainActivityInterface.getCustomSlide().addItemToSet(true);
     }
 
     private class MyTextWatcher implements TextWatcher {

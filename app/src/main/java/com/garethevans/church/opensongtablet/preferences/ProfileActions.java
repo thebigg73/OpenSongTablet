@@ -18,9 +18,15 @@ import java.io.OutputStream;
 public class ProfileActions {
 
     private final String TAG = "ProfileActions";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
 
+    public ProfileActions(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
     // Deal with loading and saving the profiles
-    public boolean loadProfile(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
+    public boolean loadProfile(Uri uri) {
         // This is uses to copy the external file on top of the application preferences
 
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
@@ -139,7 +145,7 @@ public class ProfileActions {
         return true;
     }
 
-    public boolean saveProfile(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
+    public boolean saveProfile(Uri uri) {
         boolean result = true;  // Returns true on success.  Catches throw to false
         try {
             // This is used to copy the current preferences xml file to the chosen name / location
@@ -150,7 +156,7 @@ public class ProfileActions {
             }
 
             // Different versions of Android save the preferences in different locations.
-            Uri prefsFile = getPrefsFile(c, mainActivityInterface);
+            Uri prefsFile = getPrefsFile();
 
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(prefsFile);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
@@ -164,7 +170,7 @@ public class ProfileActions {
     }
 
     @SuppressLint("SdCardPath")
-    private Uri getPrefsFile(Context c, MainActivityInterface mainActivityInterface) {
+    private Uri getPrefsFile() {
         Uri uri;
         File root;
 
@@ -181,7 +187,7 @@ public class ProfileActions {
         return uri;
     }
 
-    public void resetPreferences(MainActivityInterface mainActivityInterface) {
+    public void resetPreferences() {
         SharedPreferences.Editor editor = mainActivityInterface.getPreferences().getSharedPref().edit();
         editor.clear();
         editor.apply();

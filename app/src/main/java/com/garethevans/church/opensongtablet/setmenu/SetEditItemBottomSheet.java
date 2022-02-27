@@ -89,7 +89,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         myView.editKey.setAdapter(keyAdapter);
         myView.editKey.setText(mainActivityInterface.getCurrentSet().getKey(0));
 
-        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders(requireContext(), mainActivityInterface);
+        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
         folders.add("**"+getString(R.string.note));
         folders.add("**"+getString(R.string.variation));
         folders.add("**"+getString(R.string.scripture));
@@ -192,8 +192,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
         String newFolder;
         if (createVariation) {
             // Make the variation file which also updates the set references
-            mainActivityInterface.getSetActions().makeVariation(getContext(),
-                    mainActivityInterface, setPosition);
+            mainActivityInterface.getSetActions().makeVariation(setPosition);
             // Update the matching card
             newFolder = "**"+getString(R.string.variation);
 
@@ -218,7 +217,7 @@ public class SetEditItemBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void updateCurrentSetView() {
-        String currentSetString = mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface);
+        String currentSetString = mainActivityInterface.getSetActions().getSetAsPreferenceString();
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",currentSetString);
 
         Log.d(TAG,"set: "+currentSetString);

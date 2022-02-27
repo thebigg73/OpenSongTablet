@@ -48,7 +48,7 @@ public class SetMenuFragment extends Fragment {
         myView.progressBar.setVisibility(View.VISIBLE);
 
         new Thread(() -> {
-            mainActivityInterface.getSetActions().buildSetArraysFromItems(requireContext(),mainActivityInterface);
+            mainActivityInterface.getSetActions().buildSetArraysFromItems();
             setupAdapter();
             buildList();
             setListeners();
@@ -172,7 +172,7 @@ public class SetMenuFragment extends Fragment {
 
         // Check for icon
         setListAdapter.getSetList().get(position).songicon = mainActivityInterface.getSetActions().
-                getIconIdentifier(mainActivityInterface,folder,filename);
+                getIconIdentifier(folder,filename);
 
         updateSetTitle();
         setListAdapter.notifyItemChanged(position);
@@ -180,7 +180,7 @@ public class SetMenuFragment extends Fragment {
 
     public void updateSetTitle() {
         // Save the changes
-        String titletext = requireContext().getResources().getString(R.string.set) + ": " + mainActivityInterface.getSetActions().currentSetNameForMenu(getContext(),mainActivityInterface);
+        String titletext = requireContext().getResources().getString(R.string.set) + ": " + mainActivityInterface.getSetActions().currentSetNameForMenu();
         myView.setTitle.post(() -> myView.setTitle.setText(titletext));
     }
 

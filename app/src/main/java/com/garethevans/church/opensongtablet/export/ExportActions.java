@@ -17,6 +17,13 @@ import java.util.ArrayList;
 public class ExportActions {
 
     private final String TAG = "SetActions";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
+
+    public ExportActions(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     public Intent setShareIntent(String content, String type, Uri uri, ArrayList<Uri> uris) {
         Intent intent = new Intent();
@@ -49,7 +56,7 @@ public class ExportActions {
         return intent;
     }
 
-    public Intent exportBackup(Context c, Uri uri, String filename) {
+    public Intent exportBackup(Uri uri, String filename) {
         Intent intent = setIntent(c.getString(R.string.backup_info),filename, filename);
         ArrayList<Uri> uris = new ArrayList<>();
         uris.add(uri);
@@ -65,7 +72,7 @@ public class ExportActions {
         return intent;
     }
 
-    public String[] getFolderAndFile(Context c, String songId) {
+    public String[] getFolderAndFile(String songId) {
         String[] location = new String[2];
         if (songId.contains("/")) {
             location[0] = songId.substring(0,songId.lastIndexOf("/")).replace("/","_");
@@ -77,15 +84,14 @@ public class ExportActions {
         return location;
     }
 
-    public Uri getActualSongFile(Context c, MainActivityInterface mainActivityInterface,
-                                 String subfolder, String filename) {
+    public Uri getActualSongFile(String subfolder, String filename) {
         return mainActivityInterface.getStorageAccess().getUriForItem("Songs", subfolder, filename);
     }
-    public Uri getActualSongFile(Context c, MainActivityInterface mainActivityInterface, Song song) {
+    public Uri getActualSongFile(Song song) {
         return mainActivityInterface.getStorageAccess().getUriForItem("Songs",
                 song.getFolder(), song.getFilename());
     }
-    public Uri getActualSetFile(Context c, MainActivityInterface mainActivityInterface, String filename) {
+    public Uri getActualSetFile(String filename) {
         return mainActivityInterface.getStorageAccess().getUriForItem("Sets","", filename);
     }
 
@@ -100,8 +106,7 @@ public class ExportActions {
         return setNames;
     }
 
-    public ArrayList<Uri> addOpenSongAppSetsToUris(Context c, MainActivityInterface mainActivityInterface,
-                                                   ArrayList<String> setNames) {
+    public ArrayList<Uri> addOpenSongAppSetsToUris(ArrayList<String> setNames) {
         ArrayList<Uri> extraUris = new ArrayList<>();
         for (String setName : setNames) {
             extraUris.add(mainActivityInterface.getStorageAccess().copyFromTo(
@@ -111,8 +116,7 @@ public class ExportActions {
         return extraUris;
     }
 
-    public ArrayList<Uri> addOpenSongSetsToUris(Context c, MainActivityInterface mainActivityInterface,
-                                                ArrayList<String> setNames) {
+    public ArrayList<Uri> addOpenSongSetsToUris(ArrayList<String> setNames) {
         ArrayList<Uri> extraUris = new ArrayList<>();
         for (String setName : setNames) {
             extraUris.add(mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", setName));
@@ -121,13 +125,13 @@ public class ExportActions {
     }
 
 
-    public String[] parseSets(Context c, MainActivityInterface mainActivityInterface, ArrayList<String> setNames) {
+    public String[] parseSets(ArrayList<String> setNames) {
         String[] setData = new String[2];
         setData[0] = ""; // The ids of any songs
         setData[1] = ""; // A text line for display/email/etc.
 
         for (String setName:setNames) {
-            String[] thisSet = setParser(c,mainActivityInterface,setName);
+            String[] thisSet = setParser(setName);
             if (!thisSet[0].trim().isEmpty()) {
                 setData[0] = setData[0] + thisSet[0].trim() + "\n";
             }
@@ -142,7 +146,7 @@ public class ExportActions {
         return setData;
     }
 
-    private String[] setParser(Context c, MainActivityInterface mainActivityInterface, String setName) {
+    private String[] setParser(String setName) {
         // bits[0] will be the song ids split by new line
         // bits[1] will be a text version of the set list
         String[] bits = new String[2];
@@ -206,7 +210,7 @@ public class ExportActions {
                                             if (folder.isEmpty()) {
                                                 folder = c.getString(R.string.mainfoldername);
                                             }
-                                            Song thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface, folder, filename);
+                                            Song thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder, filename);
                                             if (key == null) {
                                                 // Not stored in the set, so look for the song value
                                                 key = thisSong.getKey();

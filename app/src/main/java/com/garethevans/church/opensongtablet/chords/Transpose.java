@@ -16,7 +16,14 @@ public class Transpose {
     // TODO TIDY UP
     private final String TAG = "Transpose";
     private ArrayList<String> chordFormatNames, chordFormatAppearances;
-    private Song miniTransposeSong = new Song();
+    private final Song miniTransposeSong = new Song();
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
+
+    public Transpose(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     //  A  A#/Bb  B/(Cb) C/(B#) C#/Db    D    D#/Eb  E/(Fb) (E#)/F   F#/Gb   G     G#/Ab
     //  A    B     H      C
@@ -168,8 +175,8 @@ public class Transpose {
     private final String[] format6Identifiers = new String[]{"i","ii","ii","iii","iii","iv","iv","v","vi","vii"};
 
     // The song is sent in and the song is sent back after processing (key and lyrics get changed)
-    public Song doTranspose(Context c, MainActivityInterface mainActivityInterface, Song thisSong,
-                     String transposeDirection, int transposeTimes, int oldChordFormat, int newChordFormat) {
+    public Song doTranspose(Song thisSong, String transposeDirection, int transposeTimes,
+                            int oldChordFormat, int newChordFormat) {
 
         // Initialise the variables that might be looked up later
         this.oldChordFormat = oldChordFormat;
@@ -187,7 +194,7 @@ public class Transpose {
             String originalkey = thisSong.getKey();
             // Update the key to the newly tranposed version
             if (originalkey != null && !originalkey.isEmpty()) {
-                thisSong.setKey(numberToKey(c, mainActivityInterface, transposeNumber(keyToNumber(originalkey), transposeDirection, transposeTimes)));
+                thisSong.setKey(numberToKey(transposeNumber(keyToNumber(originalkey), transposeDirection, transposeTimes)));
             }
 
             // Change the song format
@@ -195,7 +202,7 @@ public class Transpose {
             thisSong.setDesiredChordFormat(newChordFormat);
 
             // Transpose and write the lyrics
-            thisSong.setLyrics(transposeString(c, mainActivityInterface, thisSong));
+            thisSong.setLyrics(transposeString(thisSong));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -204,7 +211,7 @@ public class Transpose {
     }
 
     // Stuff for dealing with the song key
-    public String getKeyBeforeCapo(Context c, MainActivityInterface mainActivityInterface, int capo, String oldkey) {
+    public String getKeyBeforeCapo(int capo, String oldkey) {
         Song tempSong = new Song();
         tempSong.setLyrics("."+oldkey);
         oldChordFormat = 1;
@@ -213,7 +220,7 @@ public class Transpose {
         tempSong.setDesiredChordFormat(1);
         transposeDirection = "-1";
         transposeTimes = capo;
-        return transposeString(c,mainActivityInterface,tempSong).replace(".","");
+        return transposeString(tempSong).replace(".","");
     }
 
     public String keyToNumber(String key) {
@@ -222,7 +229,7 @@ public class Transpose {
         return key;
     }
 
-    public String numberToKey(Context c, MainActivityInterface mainActivityInterface, String key) {
+    public String numberToKey(String key) {
         // We need to decide which key the user likes the best for each one
         // Convert the key number into either a sharp or natural first
         // Then we swap sharps to flats if the user prefers these
@@ -258,7 +265,7 @@ public class Transpose {
         return key;
     }
 
-    private boolean keyUsesFlats(Context c, MainActivityInterface mainActivityInterface, String testkey) {
+    private boolean keyUsesFlats(String testkey) {
         return  (testkey.equals("Ab")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyAb",true)) ||
                 (testkey.equals("Bb")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyBb",true)) ||
                 (testkey.equals("Db")  && mainActivityInterface.getPreferences().getMyPreferenceBoolean("prefKeyDb",false)) ||
@@ -275,7 +282,7 @@ public class Transpose {
                 testkey.equals("Cm");
     }
 
-    public String transposeChordForCapo(Context c, MainActivityInterface mainActivityInterface, int capo, String string) {
+    public String transposeChordForCapo(int capo, String string) {
         // Use the miniTransposeSong
         miniTransposeSong.setLyrics(string);
         miniTransposeSong.setCapo(""+capo);
@@ -283,15 +290,15 @@ public class Transpose {
         miniTransposeSong.setDesiredChordFormat(mainActivityInterface.getSong().getDesiredChordFormat());
         transposeTimes = capo;
         transposeDirection = "-1";
-        return transposeString(c,mainActivityInterface,miniTransposeSong);
+        return transposeString(miniTransposeSong);
     }
 
     // This is the chord transpose engine
-    private String transposeString(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    private String transposeString(Song thisSong) {
 
         // Now we have the new key, we can decide if we use flats or not for any notes
         if (thisSong.getKey()!=null) {
-            forceFlats = keyUsesFlats(c, mainActivityInterface, thisSong.getKey());
+            forceFlats = keyUsesFlats(thisSong.getKey());
             usesFlats = forceFlats;
         } else {
             usesFlats = forceFlats;
@@ -662,15 +669,15 @@ public class Transpose {
 
 
 
-    String capoTranspose(Context c, MainActivityInterface mainActivityInterface) {
+    String capoTranspose() {
         // StageMode sets FullscreenActivity.capokey to "" in loadSong(), first call after sets for new song
         if (capoKey.equals("")) {
             // Get the capokey
             if (mainActivityInterface.getSong().getKey() != null) {
-                capoKeyTranspose(c, mainActivityInterface);
+                capoKeyTranspose();
             }
             // Determine if we need to force flats for the capo key
-            capoForceFlats = keyUsesFlats(c, mainActivityInterface, capoKey);
+            capoForceFlats = keyUsesFlats(capoKey);
         }
 
         // If not showing Capo chords then 'tranpose' Capo 0 to display preferred chords
@@ -684,20 +691,20 @@ public class Transpose {
         transposeDirection = "-1";
         // TODO - Line below from IV #136
         //return transposeString("." + string, !capoForceFlats, capoForceFlats).substring(1);
-        return transposeString(c, mainActivityInterface, mainActivityInterface.getSong());
+        return transposeString(mainActivityInterface.getSong());
     }
 
-    private void capoKeyTranspose(Context c, MainActivityInterface mainActivityInterface) {
-        capoKey = numberToKey(c, mainActivityInterface, transposeNumber(keyToNumber(mainActivityInterface.getSong().getKey()),
+    private void capoKeyTranspose() {
+        capoKey = numberToKey(transposeNumber(keyToNumber(mainActivityInterface.getSong().getKey()),
                 "-1", Integer.parseInt("0" + mainActivityInterface.getSong().getCapo())));
     }
 
-    private ArrayList<String> quickCapoKey(Context c, MainActivityInterface mainActivityInterface, String key) {
+    private ArrayList<String> quickCapoKey(String key) {
         // This is used to give the user a list starting with blank of either simple fret number or fret number with new capo key
         ArrayList<String> al = new ArrayList<>(Collections.singletonList(""));
         if (key!=null && !key.equals("") && !key.isEmpty()) {
             for (int i=1; i<=11; i++) {
-                al.add(i + " (" + numberToKey(c, mainActivityInterface, transposeNumber(keyToNumber(key), "-1", i)) + ")");
+                al.add(i + " (" + numberToKey(transposeNumber(keyToNumber(key), "-1", i)) + ")");
             }
         } else {
             for (int i=1; i<=11; i++) {
@@ -806,17 +813,16 @@ public class Transpose {
     }
 
 
-    public String convertToPreferredChord(Context c, MainActivityInterface mainActivityInterface, String chord) {
+    public String convertToPreferredChord(String chord) {
         // Changes Ab/G# to user's preference.  This sends out to another function which checks minor and major
-        chord = swapToPrefChords(c,mainActivityInterface,"Ab","G#", chord, false);
-        chord = swapToPrefChords(c,mainActivityInterface,"Bb","A#", chord, true);
-        chord = swapToPrefChords(c,mainActivityInterface,"Db","C#", chord, false);
-        chord = swapToPrefChords(c,mainActivityInterface,"Eb","D#", chord, true);
-        chord = swapToPrefChords(c,mainActivityInterface,"Gb","F#", chord, false);
+        chord = swapToPrefChords("Ab","G#", chord, false);
+        chord = swapToPrefChords("Bb","A#", chord, true);
+        chord = swapToPrefChords("Db","C#", chord, false);
+        chord = swapToPrefChords("Eb","D#", chord, true);
+        chord = swapToPrefChords("Gb","F#", chord, false);
         return chord;
     }
-    private String swapToPrefChords(Context c, MainActivityInterface mainActivityInterface,
-                                    String flatOption, String sharpOption, String chord,
+    private String swapToPrefChords(String flatOption, String sharpOption, String chord,
                                     boolean defaultFlatMinor) {
 
         if (chord.startsWith(flatOption+"m") || chord.startsWith(sharpOption+"m")) {
@@ -866,7 +872,7 @@ public class Transpose {
 
 
     // Commonly used array for chord format names and display values
-    public ArrayList<String> getChordFormatNames(Context c) {
+    public ArrayList<String> getChordFormatNames() {
         if (chordFormatNames==null) {
             chordFormatNames = new ArrayList<>();
             chordFormatNames.add(c.getString(R.string.chordformat_1_name));
@@ -878,7 +884,7 @@ public class Transpose {
         }
         return chordFormatNames;
     }
-    public ArrayList<String> getChordFormatAppearances(Context c) {
+    public ArrayList<String> getChordFormatAppearances() {
         if (chordFormatAppearances==null) {
             chordFormatAppearances = new ArrayList<>();
             chordFormatAppearances.add(c.getString(R.string.chordformat_1));

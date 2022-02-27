@@ -34,9 +34,9 @@ public class PerformanceGestures {
     private RecyclerView recyclerView;
 
     // Initialise
-    public PerformanceGestures(Context c, MainActivityInterface mainActivityInterface) {
+    public PerformanceGestures(Context c) {
         this.c = c;
-        this.mainActivityInterface = mainActivityInterface;
+        mainActivityInterface = (MainActivityInterface) c;
         actionInterface = (ActionInterface) c;
     }
     public void setZoomLayout(MyZoomLayout myZoomLayout) {

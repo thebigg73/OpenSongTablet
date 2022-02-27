@@ -73,7 +73,7 @@ public class BackupOSBFragment extends Fragment {
             requireActivity().runOnUiThread(() -> myView.backupName.setText(deffilename));
 
             // Get a list of available folders in the app
-            ArrayList<String> folders = mainActivityInterface.getCommonSQL().getFolders(mainActivityInterface.getSQLiteHelper().getDB(getContext()));
+            ArrayList<String> folders = mainActivityInterface.getCommonSQL().getFolders(mainActivityInterface.getSQLiteHelper().getDB());
 
             // Create a new checkbox entry (default to ticked) for each one
             requireActivity().runOnUiThread(() -> {
@@ -175,7 +175,7 @@ public class BackupOSBFragment extends Fragment {
                     myView.progressText.setText(message);
                 });
                 Log.d(TAG,"DB copied: "+mainActivityInterface.getNonOpenSongSQLiteHelper().
-                        copyUserDatabase(requireContext(), mainActivityInterface));
+                        copyUserDatabase());
                 Uri uriDB = mainActivityInterface.getStorageAccess().getUriForItem("Settings","", SQLite.NON_OS_DATABASE_NAME);
                 InputStream dbInputStream = mainActivityInterface.getStorageAccess().getInputStream(uriDB);
                 ze = new ZipEntry(SQLite.NON_OS_DATABASE_NAME);
@@ -329,7 +329,7 @@ public class BackupOSBFragment extends Fragment {
 
         mainActivityInterface.getPreferences().setMyPreferenceInt("runssincebackup",0);
 
-        Intent intent = mainActivityInterface.getExportActions().exportBackup(requireContext(),uri,backupFilename);
+        Intent intent = mainActivityInterface.getExportActions().exportBackup(uri,backupFilename);
         startActivity(Intent.createChooser(intent,getString(R.string.backup_info)));
     }
 

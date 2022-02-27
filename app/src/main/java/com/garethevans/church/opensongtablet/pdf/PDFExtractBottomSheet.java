@@ -67,7 +67,7 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
             stringBuilder.append(string).append("\n\n");
         }
 
-        String extractedText = mainActivityInterface.getConvertTextSong().convertText(requireContext(),stringBuilder.toString());
+        String extractedText = mainActivityInterface.getConvertTextSong().convertText(stringBuilder.toString());
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.extractedText);
         myView.extractedText.setText(extractedText);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.extractedText,20);
@@ -96,7 +96,7 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
         });
 
         // Populate the folder options
-        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders(requireContext(),mainActivityInterface);
+        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),myView.folder,R.layout.view_exposed_dropdown_item,folders);
         myView.folder.setAdapter(exposedDropDownArrayAdapter);
         myView.folder.setText(mainActivityInterface.getSong().getFolder());
@@ -113,14 +113,13 @@ public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
                 newSong.setTitle(myView.filename.getText().toString());
                 newSong.setLyrics(myView.extractedText.getText().toString());
                 mainActivityInterface.setSong(newSong);
-                mainActivityInterface.getSQLiteHelper().createSong(requireContext(),mainActivityInterface,newSong.getFolder(),newSong.getFilename());
-                mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),mainActivityInterface,newSong);
-                mainActivityInterface.getSaveSong().doSave(requireContext(),mainActivityInterface,newSong);
+                mainActivityInterface.getSQLiteHelper().createSong(newSong.getFolder(),newSong.getFilename());
+                mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+                mainActivityInterface.getSaveSong().doSave(newSong);
             } else {
                 //Add to the persistent database only
                 mainActivityInterface.getSong().setLyrics(myView.extractedText.getText().toString());
-                mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
-                        mainActivityInterface.getSong());
+                mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
             }
             // Open the edit song page so the user can check for updates
             mainActivityInterface.navigateToFragment("opensongapp://settings/edit",0);

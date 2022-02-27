@@ -24,6 +24,13 @@ public class CommonSQL {
     // This check we have the columns we need now
 
     private final String TAG = "CommonSQL";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
+
+    public CommonSQL(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     void updateTable(SQLiteDatabase db2) {
         // This is called if the database version changes.  It will attempt to add each column
@@ -77,7 +84,7 @@ public class CommonSQL {
     }
 
     // Create, delete and update
-    void createSong(Context c, MainActivityInterface mainActivityInterface, SQLiteDatabase db, String folder, String filename) {
+    void createSong(SQLiteDatabase db, String folder, String filename) {
         // Creates a basic song entry to the database (id, songid, folder, file)
         if (folder == null || folder.isEmpty()) {
             folder = c.getString(R.string.mainfoldername);
@@ -161,7 +168,7 @@ public class CommonSQL {
         }
     }
 
-    void insertFast(Context c, MainActivityInterface mainActivityInterface, SQLiteDatabase db) {
+    void insertFast(SQLiteDatabase db) {
         // Insert new values or ignore rows that exist already
         String sql = "INSERT OR IGNORE INTO " + SQLite.TABLE_NAME + " ( songid, filename, folder, title ) VALUES ( ?, ?, ?, ?)";
         db.beginTransactionNonExclusive();
@@ -332,7 +339,7 @@ public class CommonSQL {
         return key;
     }
 
-    public Song getSpecificSong(Context c, SQLiteDatabase db, String folder, String filename) {
+    public Song getSpecificSong(SQLiteDatabase db, String folder, String filename) {
         String songId = getAnySongId(folder, filename);
         String[] selectionArgs = new String[]{songId};
         String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "= ? ";

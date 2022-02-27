@@ -49,8 +49,8 @@ public class SongListBuildIndex {
         // This creates a basic database from the song files
         ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
         mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
-        mainActivityInterface.getSQLiteHelper().resetDatabase(c);
-        mainActivityInterface.getSQLiteHelper().insertFast(c,mainActivityInterface);
+        mainActivityInterface.getSQLiteHelper().resetDatabase();
+        mainActivityInterface.getSQLiteHelper().insertFast();
     }
 
     public String fullIndex(Context c, MainActivityInterface mainActivityInterface) {
@@ -58,7 +58,7 @@ public class SongListBuildIndex {
         // Now comes the time consuming bit that fully indexes the songs into the database
         currentlyIndexing = true;
         StringBuilder returnString = new StringBuilder();
-        try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB(c)) {
+        try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
             // Go through each entry in the database and get the folder and filename.
             // Then load the file and write the values into the sql table
             String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
@@ -98,8 +98,7 @@ public class SongListBuildIndex {
                                     // Assume XML for now!
                                     mainActivityInterface.getIndexingSong().setFiletype("XML");
 
-                                    mainActivityInterface.getLoadSong().readFileAsXML(c, mainActivityInterface,
-                                            mainActivityInterface.getIndexingSong(), "Songs",
+                                    mainActivityInterface.getLoadSong().readFileAsXML(mainActivityInterface.getIndexingSong(), "Songs",
                                             uri, utf);
 
                                 } catch (Exception e) {
@@ -108,7 +107,7 @@ public class SongListBuildIndex {
                                 }
                             } else {
                                 // Look for data in the nonopensong persistent database import
-                                mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(c, mainActivityInterface, mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
+                                mainActivityInterface.setIndexingSong(mainActivityInterface.getNonOpenSongSQLiteHelper().getSpecificSong(mainActivityInterface.getIndexingSong().getFolder(), mainActivityInterface.getIndexingSong().getFilename()));
                                 if (mainActivityInterface.getStorageAccess().isSpecificFileExtension("pdf", mainActivityInterface.getIndexingSong().getFilename())) {
                                     // This is a PDF
                                     mainActivityInterface.getIndexingSong().setFiletype("PDF");
@@ -131,8 +130,7 @@ public class SongListBuildIndex {
                             // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
                             if (mainActivityInterface.getIndexingSong().getFiletype().equals("PDF") ||
                                     mainActivityInterface.getIndexingSong().getFiletype().equals("IMG")) {
-                                mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c, mainActivityInterface,
-                                        mainActivityInterface.getIndexingSong());
+                                mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(mainActivityInterface.getIndexingSong());
                             }
                         }
                     }
@@ -141,7 +139,7 @@ public class SongListBuildIndex {
             cursor.close();
             indexRequired = false;
             indexComplete = true;
-            mainActivityInterface.getSetActions().checkMissingKeys(c,mainActivityInterface);
+            mainActivityInterface.getSetActions().checkMissingKeys();
             returnString.append(c.getString(R.string.search_index_end)).append("\n");
 
         } catch (Exception e) {
@@ -157,7 +155,7 @@ public class SongListBuildIndex {
         }
         currentlyIndexing = false;
         // Any songs with rogue endings would've been logged, so fix if needed
-        mainActivityInterface.getLoadSong().fixSongs(mainActivityInterface);
+        mainActivityInterface.getLoadSong().fixSongs();
         return returnString.toString();
     }
 
@@ -191,7 +189,7 @@ public class SongListBuildIndex {
                 try {
                     String filecontents = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
                     thisSong.setLyrics(filecontents);
-                    thisSong = mainActivityInterface.getConvertChoPro().convertTextToTags(c, mainActivityInterface, uri, thisSong);
+                    thisSong = mainActivityInterface.getConvertChoPro().convertTextToTags(uri, thisSong);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -201,7 +199,7 @@ public class SongListBuildIndex {
                     thisSong.setFiletype("iOS");
                     String filecontents = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
                     thisSong.setLyrics(filecontents);
-                    thisSong = mainActivityInterface.getConvertOnSong().convertTextToTags(c, mainActivityInterface, uri, thisSong);
+                    thisSong = mainActivityInterface.getConvertOnSong().convertTextToTags(uri, thisSong);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -217,7 +215,7 @@ public class SongListBuildIndex {
                     thisSong.setKey("");
                     thisSong.setTimesig("");
                     thisSong.setCcli("");
-                    thisSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(c, filecontents));
+                    thisSong.setLyrics(mainActivityInterface.getConvertTextSong().convertText(filecontents));
 
 
                 } catch (Exception e) {

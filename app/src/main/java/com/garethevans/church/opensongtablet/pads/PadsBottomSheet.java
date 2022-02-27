@@ -150,7 +150,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
                 myView.startStopPad.setText(getString(R.string.stop));
                 myView.startStopPad.setOnClickListener(v -> {
                     padPlaying = false;
-                    mainActivityInterface.getPad().stopPad(requireContext());
+                    mainActivityInterface.getPad().stopPad();
                     // Rerun this script to get the new icon and listener
                     updateStartStopButton();
                     // Check again in 2 seconds just in case the pad had an error
@@ -187,8 +187,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
         myView.padLinkAudio.addTextChangedListener(new MyTextWatcher("padLink"));
         myView.padLoop.setOnCheckedChangeListener((compoundButton, b) -> {
             mainActivityInterface.getSong().setPadloop(""+b);
-            mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
-                    mainActivityInterface.getSong());
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
         });
         myView.padSettings.setOnClickListener(view -> {
             mainActivityInterface.navigateToFragment("opensongapp://settings/pads",0);
@@ -246,8 +245,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
                     mainActivityInterface.getSong().setLinkaudio(editable.toString());
                     break;
             }
-            mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
-                    mainActivityInterface.getSong());
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
             Log.d(TAG,"Song saved");
         }
     }

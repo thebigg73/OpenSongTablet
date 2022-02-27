@@ -63,8 +63,8 @@ public class AutoscrollSettingsFragment extends Fragment {
         myView.songDuration.setText(mainActivityInterface.getSong().getAutoscrolllength());
         myView.songDelay.setText(mainActivityInterface.getSong().getAutoscrolldelay());
         // Check audio link file
-        mainActivityInterface.getAutoscroll().checkLinkAudio(requireContext(),mainActivityInterface,
-                myView.linkAudio, myView.songDuration, myView.songDelay,getStringToInt(myView.songDelay.getText().toString()));
+        mainActivityInterface.getAutoscroll().checkLinkAudio(myView.linkAudio, myView.songDuration,
+                myView.songDelay,getStringToInt(myView.songDelay.getText().toString()));
         myView.onscreenAutoscrollHide.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "onscreenAutoscrollHide",true));
     }
@@ -146,8 +146,7 @@ public class AutoscrollSettingsFragment extends Fragment {
                         mainActivityInterface.getSong().setAutoscrolldelay(song_duration+"");
                     }
                     mainActivityInterface.getSong().setAutoscrolllength(song_duration+"");
-                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
-                            mainActivityInterface.getSong());
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
                     break;
                 case "songDelay":
                     if (song_delay>song_duration) {
@@ -155,8 +154,7 @@ public class AutoscrollSettingsFragment extends Fragment {
                         mainActivityInterface.getSong().setAutoscrolllength(song_delay+"");
                     }
                     mainActivityInterface.getSong().setAutoscrolldelay(song_delay+"");
-                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
-                            mainActivityInterface.getSong());
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
                     break;
             }
         }

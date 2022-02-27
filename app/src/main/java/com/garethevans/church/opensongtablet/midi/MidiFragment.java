@@ -277,7 +277,7 @@ public class MidiFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("midiAsPedal", isChecked);
             mainActivityInterface.getPedalActions().setMidiAsPedal(isChecked);
             if (isChecked) {
-                mainActivityInterface.getMidi().enableMidiListener(requireContext());
+                mainActivityInterface.getMidi().enableMidiListener();
             }
         }));
         myView.midiCommand.addTextChangedListener(new MyTextWatcher());
@@ -291,7 +291,7 @@ public class MidiFragment extends Fragment {
         myView.midiAsPedal.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked && mainActivityInterface.getMidi().getMidiDevice() != null &&
                     mainActivityInterface.getMidi().getMidiOutputPort() != null) {
-                mainActivityInterface.getMidi().enableMidiListener(requireContext());
+                mainActivityInterface.getMidi().enableMidiListener();
             } else if (!isChecked && mainActivityInterface.getMidi().getMidiDevice() != null &&
                     mainActivityInterface.getMidi().getMidiOutputPort() != null) {
                 mainActivityInterface.getMidi().disableMidiListener();
@@ -633,7 +633,7 @@ public class MidiFragment extends Fragment {
                         Log.d("d", "Output port found = " + pi.getPortNumber());
                         mainActivityInterface.getMidi().setMidiOutputPort(mainActivityInterface.getMidi().getMidiDevice().openOutputPort(pi.getPortNumber()));
                         if (myView.midiAsPedal.isChecked()) {
-                            mainActivityInterface.getMidi().enableMidiListener(requireContext());
+                            mainActivityInterface.getMidi().enableMidiListener();
                         }
                         foundoutport = true;
                     }
@@ -676,7 +676,7 @@ public class MidiFragment extends Fragment {
     private void addMidiToList() {
         try {
             String command = myView.midiCode.getText().toString();
-            String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command, requireContext());
+            String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);
             mainActivityInterface.getMidi().addToSongMessages(-1,command);
 
             MidiInfo midiInfo = new MidiInfo();
@@ -687,7 +687,7 @@ public class MidiFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mainActivityInterface.getMidi().updateSongMessages(requireContext());
+        mainActivityInterface.getMidi().updateSongMessages();
     }
     // Called back from MainActivity
     public void deleteMidiFromList(int i) {
@@ -697,7 +697,7 @@ public class MidiFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mainActivityInterface.getMidi().updateSongMessages(requireContext());
+        mainActivityInterface.getMidi().updateSongMessages();
     }
 
     // Process song midi messages
@@ -721,7 +721,7 @@ public class MidiFragment extends Fragment {
         for (String command : bits) {
             if (command!=null && !command.equals("") && !command.isEmpty() && getActivity()!=null) {
                 // Get a human readable version of the midi code
-                String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command,getActivity());
+                String readable = mainActivityInterface.getMidi().getReadableStringFromHex(command);
                 MidiInfo midiInfo = new MidiInfo();
                 midiInfo.midiCommand = command;
                 midiInfo.readableCommand = readable;
@@ -737,7 +737,7 @@ public class MidiFragment extends Fragment {
 
     // Save the song messages
     private void saveSongMessages() {
-        mainActivityInterface.getMidi().updateSongMessages(requireContext());
+        mainActivityInterface.getMidi().updateSongMessages();
         try {
             // Get a string representation of the midi commands
             StringBuilder s = new StringBuilder();
@@ -759,7 +759,6 @@ public class MidiFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // Save the song
-        mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
-                mainActivityInterface.getSong());
+        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
     }
 }

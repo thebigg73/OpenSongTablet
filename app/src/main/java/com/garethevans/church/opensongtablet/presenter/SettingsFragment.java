@@ -46,7 +46,7 @@ public class SettingsFragment extends Fragment {
         myView = ModePresenterSettingsBinding.inflate(inflater,container,false);
 
         // Update the currently chosen logo and backgrounds
-        mainActivityInterface.getPresenterSettings().getAllPreferences(requireContext(),mainActivityInterface);
+        mainActivityInterface.getPresenterSettings().getAllPreferences();
         updateLogo();
         updateBackground();
         updateInfoBackground();

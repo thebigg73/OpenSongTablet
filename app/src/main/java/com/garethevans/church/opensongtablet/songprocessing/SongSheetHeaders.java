@@ -12,9 +12,15 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class SongSheetHeaders {
 
     private final String TAG = "SongSheetHeaders";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
 
-    public LinearLayout getSongSheet(Context c, MainActivityInterface mainActivityInterface,
-                                     Song thisSong, float commentScaling, boolean forPDF) {
+    public SongSheetHeaders(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+
+    public LinearLayout getSongSheet(Song thisSong, float commentScaling, boolean forPDF) {
 
         // Rather than assuming it is the current song, we get passed the song current or otherwise
         // This allows on the fly processing of other songs not processed (e.g. as part of a set)
@@ -44,27 +50,27 @@ public class SongSheetHeaders {
             float defFontSize = 8.0f;
 
             if (title!=null && !title.isEmpty()) {
-                linearLayout.addView(getSongSheetTexts(c,title,typeface,textColor,defFontSize));
+                linearLayout.addView(getSongSheetTexts(title,typeface,textColor,defFontSize));
             }
             if (author!=null && !author.isEmpty()) {
-                linearLayout.addView(getSongSheetTexts(c,author,typeface,textColor,defFontSize*commentScaling));
+                linearLayout.addView(getSongSheetTexts(author,typeface,textColor,defFontSize*commentScaling));
             }
             if (copyright!=null && !copyright.isEmpty()) {
                 if (!copyright.contains("©") && !copyright.contains(c.getString(R.string.copyright))) {
                     copyright = "©"+copyright;
                 }
-                linearLayout.addView(getSongSheetTexts(c,copyright,typeface,textColor,defFontSize*commentScaling));
+                linearLayout.addView(getSongSheetTexts(copyright,typeface,textColor,defFontSize*commentScaling));
             }
 
-            String keyCapoTempo = getKeyCapoTempo(c,mainActivityInterface, thisSong);
+            String keyCapoTempo = getKeyCapoTempo(thisSong);
 
             if (!keyCapoTempo.isEmpty()) {
-                linearLayout.addView(getSongSheetTexts(c,keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling));
+                linearLayout.addView(getSongSheetTexts(keyCapoTempo.trim(),typeface,textColor,defFontSize*commentScaling));
             }
 
             // Add a section space to the bottom of the songSheet
             if (linearLayout.getChildCount()>0) {
-                linearLayout.addView(getSongSheetTexts(c,"",typeface,textColor,defFontSize*commentScaling*0.5f));
+                linearLayout.addView(getSongSheetTexts("",typeface,textColor,defFontSize*commentScaling*0.5f));
             }
         }
 
@@ -75,7 +81,7 @@ public class SongSheetHeaders {
         return linearLayout;
     }
 
-    public TextView getSongSheetTexts(Context c, String content, Typeface typeface, int color, float size) {
+    public TextView getSongSheetTexts(String content, Typeface typeface, int color, float size) {
         TextView textView = new TextView(c);
         textView.setTypeface(typeface);
         textView.setTextColor(color);
@@ -84,7 +90,7 @@ public class SongSheetHeaders {
         return textView;
     }
 
-    public String getKeyCapoTempo(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    public String getKeyCapoTempo(Song thisSong) {
         String key = thisSong.getKey();
         String capo = thisSong.getCapo();
         String tempo = thisSong.getTempo();
@@ -95,7 +101,7 @@ public class SongSheetHeaders {
         if (capo!=null && !capo.isEmpty()) {
             keyCapoTempo += c.getString(R.string.capo) + ": " + capo + " ";
             if (key!=null && !key.isEmpty()) {
-                keyCapoTempo += "(" + mainActivityInterface.getTranspose().getKeyBeforeCapo(c, mainActivityInterface, Integer.parseInt(capo), key) + ") |";
+                keyCapoTempo += "(" + mainActivityInterface.getTranspose().getKeyBeforeCapo(Integer.parseInt(capo), key) + ") |";
             }
         } else if (key!=null && !key.isEmpty()) {
             keyCapoTempo += "| " + c.getString(R.string.key) + ": " + key + " |";

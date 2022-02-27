@@ -67,7 +67,7 @@ public class PedalsFragment extends Fragment {
         grabViews();
 
         // Initialise the array items
-        mainActivityInterface.getPedalActions().setUpPedalActions(requireContext(), mainActivityInterface);
+        mainActivityInterface.getPedalActions().setUpPedalActions();
         actionCodes = mainActivityInterface.getPedalActions().getActionCodes();
         actions = mainActivityInterface.getPedalActions().getActions();
         defKeyCodes = mainActivityInterface.getPedalActions().defPedalCodes;
@@ -230,8 +230,8 @@ public class PedalsFragment extends Fragment {
     private void setupSwitches() {
         myView.pedalToggleScrollBeforeSwipeButton.setChecked(mainActivityInterface.getPedalActions().getPedalScrollBeforeMove());
         myView.pedalToggleWarnBeforeSwipeButton.setChecked(mainActivityInterface.getPedalActions().getPedalShowWarningBeforeMove());
-        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPedalActions().setPreferences(getContext(), mainActivityInterface, "pedalScrollBeforeMove", isChecked));
-        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPedalActions().setPreferences(getContext(), mainActivityInterface, "pedalShowWarningBeforeMove", isChecked));
+        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPedalActions().setPreferences("pedalScrollBeforeMove", isChecked));
+        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getPedalActions().setPreferences("pedalShowWarningBeforeMove", isChecked));
     }
 
     private void airTurnModeActions() {
@@ -243,7 +243,7 @@ public class PedalsFragment extends Fragment {
             myView.airTurnOptions.setVisibility(View.GONE);
         }
         myView.airTurnMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getPedalActions().setPreferences(requireContext(),mainActivityInterface,"airTurnMode",isChecked);
+            mainActivityInterface.getPedalActions().setPreferences("airTurnMode",isChecked);
             if (isChecked) {
                 myView.airTurnOptions.setVisibility(View.VISIBLE);
             } else {
@@ -350,7 +350,7 @@ public class PedalsFragment extends Fragment {
         // Check for any other pedals currently set to this value and remove them.
         for (int x = 1; x <= 8; x++) {
             if (currentListening != x && mainActivityInterface.getPedalActions().getMidiCode(x).equals(midiCode)) {
-                mainActivityInterface.getPedalActions().setMidiCode(requireContext(),mainActivityInterface,x,"");
+                mainActivityInterface.getPedalActions().setMidiCode(x,"");
                 buttonMidis[x].setText(R.string.is_not_set);
             }
         }
@@ -380,17 +380,17 @@ public class PedalsFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             // Save the value via the pedalactions
-            mainActivityInterface.getPedalActions().setPedalPreference(requireContext(),mainActivityInterface,which,shortPress,getActionCodeFromAction(val));
+            mainActivityInterface.getPedalActions().setPedalPreference(which,shortPress,getActionCodeFromAction(val));
         }
     }
 
     private void setPedalPreference(int which, int pedalCode, String pedalMidi) {
         if (pedalMidi == null) {
             // Normal key press
-            mainActivityInterface.getPedalActions().setPedalCode(requireContext(), mainActivityInterface, which, pedalCode);
+            mainActivityInterface.getPedalActions().setPedalCode(which, pedalCode);
         } else {
             // Midi press
-            mainActivityInterface.getPedalActions().setMidiCode(requireContext(), mainActivityInterface, which, pedalMidi);
+            mainActivityInterface.getPedalActions().setMidiCode(which, pedalMidi);
         }
     }
 
@@ -408,7 +408,7 @@ public class PedalsFragment extends Fragment {
         @Override
         public void onStopTrackingTouch(@NonNull Slider slider) {
             // Save the value via the gestures fragment
-            mainActivityInterface.getPedalActions().setPreferences(requireContext(),mainActivityInterface,prefName,(int) slider.getValue());
+            mainActivityInterface.getPedalActions().setPreferences(prefName,(int) slider.getValue());
         }
 
     }

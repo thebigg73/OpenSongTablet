@@ -21,6 +21,8 @@ import java.util.ArrayList;
 public class SetTypeFace {
 
     private final String TAG = "SetTypeFace";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
 
     // The fonts used in the app
     private Typeface lyricFont;
@@ -29,6 +31,11 @@ public class SetTypeFace {
     private Typeface presoInfoFont;
     private Typeface stickyFont;
     private Typeface monoFont;
+
+    public SetTypeFace(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     // Set the fonts
     public void setLyricFont(Typeface lyricFont) {
@@ -71,7 +78,7 @@ public class SetTypeFace {
     }
 
     // Set the fonts used from preferences
-    public void setUpAppFonts(Context c, MainActivityInterface mainActivityInterface, Handler lyricFontHandler,
+    public void setUpAppFonts(Handler lyricFontHandler,
                               Handler chordFontHandler, Handler stickyFontHandler,
                               Handler presoFontHandler, Handler presoInfoFontHandler) {
 
@@ -87,44 +94,41 @@ public class SetTypeFace {
         if (fontLyric.equals("Lato")) {
             lyricFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(c,mainActivityInterface,fontLyric,"fontLyric",null,lyricFontHandler);
+            getGoogleFont(fontLyric,"fontLyric",null,lyricFontHandler);
         }
         if (fontChord.equals("Lato")) {
             chordFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(c,mainActivityInterface,fontChord,"fontChord",null,chordFontHandler);
+            getGoogleFont(fontChord,"fontChord",null,chordFontHandler);
         }
         if (fontSticky.equals("Lato")) {
             stickyFont = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
         } else {
-            getGoogleFont(c,mainActivityInterface,fontSticky,"fontSticky",null,stickyFontHandler);
+            getGoogleFont(fontSticky,"fontSticky",null,stickyFontHandler);
         }
         if (fontPreso.equals("Lato")) {
             presoFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(c,mainActivityInterface,fontPreso,"fontPreso",null,presoFontHandler);
+            getGoogleFont(fontPreso,"fontPreso",null,presoFontHandler);
         }
         if (fontPresoInfo.equals("Lato")) {
             presoInfoFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            getGoogleFont(c,mainActivityInterface,fontPresoInfo,"fontPresoInfo",null,presoInfoFontHandler);
+            getGoogleFont(fontPresoInfo,"fontPresoInfo",null,presoInfoFontHandler);
         }
         setMonoFont(Typeface.MONOSPACE);
     }
 
-    public void changeFont(Context c,MainActivityInterface mainActivityInterface,String which, String fontName,Handler handler) {
+    public void changeFont(String which, String fontName,Handler handler) {
         // Save the preferences
         mainActivityInterface.getPreferences().setMyPreferenceString(which,fontName);
         // Update the font
-        getGoogleFont(c,mainActivityInterface,fontName,which,null,handler);
+        getGoogleFont(fontName,which,null,handler);
     }
 
-    public void getGoogleFont(Context c, MainActivityInterface mainActivityInterface,
-                              String fontName, String which,
-                                  TextView textView, Handler handler) {
+    public void getGoogleFont(String fontName, String which, TextView textView, Handler handler) {
         FontRequest fontRequest = getFontRequest(fontName);
-        FontsContractCompat.FontRequestCallback fontRequestCallback = getFontRequestCallback(c,
-                mainActivityInterface, fontName,which,textView);
+        FontsContractCompat.FontRequestCallback fontRequestCallback = getFontRequestCallback(fontName,which,textView);
         FontsContractCompat.requestFont(c,fontRequest,fontRequestCallback,handler);
     }
 
@@ -134,9 +138,7 @@ public class SetTypeFace {
                 R.array.com_google_android_gms_fonts_certs);
     }
 
-    private FontsContractCompat.FontRequestCallback getFontRequestCallback(final Context c,
-                                                                           final MainActivityInterface mainActivityInterface,
-                                                                           final String fontName,
+    private FontsContractCompat.FontRequestCallback getFontRequestCallback(final String fontName,
                                                                            final String which,
                                                                            final TextView textView) {
         return new FontsContractCompat.FontRequestCallback() {

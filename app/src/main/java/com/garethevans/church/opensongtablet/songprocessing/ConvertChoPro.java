@@ -15,6 +15,8 @@ import java.util.List;
 public class ConvertChoPro {
 
     private final String TAG = "ConvertChoPro";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
 
     // Declare the variables;
     private String title;
@@ -31,7 +33,12 @@ public class ConvertChoPro {
     private String[] lines;
     private StringBuilder parsedLines;
 
-    public Song convertTextToTags(Context c, MainActivityInterface mainActivityInterface, Uri uri, Song thisSong) {
+    public ConvertChoPro(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+
+    public Song convertTextToTags(Uri uri, Song thisSong) {
 
         initialiseTheVariables();
 
@@ -44,7 +51,7 @@ public class ConvertChoPro {
         lyrics = makeTagsCommon(lyrics);
 
         // Fix content we recognise
-        lyrics = fixRecognisedContent(c,mainActivityInterface,lyrics);
+        lyrics = fixRecognisedContent(lyrics);
 
         // Now that we have the basics in place, we will go back through the song and extract headings
         // We have to do this separately as [] were previously identifying chords, not tags.
@@ -63,10 +70,10 @@ public class ConvertChoPro {
         } else {
             // Get the filename and subfolder (if any) that the original song was in by parsing the uri
             oldSongFileName = getOldSongFileName(uri);
-            songSubFolder = getSongFolderLocation(mainActivityInterface, uri, oldSongFileName);
+            songSubFolder = getSongFolderLocation(uri, oldSongFileName);
 
             // Prepare the new song filename
-            newSongFileName = getNewSongFileName(mainActivityInterface, uri, title);
+            newSongFileName = getNewSongFileName(uri, title);
 
             // Set the correct values
             setCorrectXMLValues(thisSong);
@@ -75,11 +82,10 @@ public class ConvertChoPro {
             String newXML = mainActivityInterface.getProcessSong().getXML(thisSong);
 
             // Get a unique uri for the new song
-            Uri newUri = getNewSongUri(c, mainActivityInterface, songSubFolder, newSongFileName);
+            Uri newUri = getNewSongUri(songSubFolder, newSongFileName);
 
             // Now write the modified song
-            writeTheImprovedSong(c, mainActivityInterface, thisSong, oldSongFileName, newSongFileName,
-                    songSubFolder, newUri, uri, newXML);
+            writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName, songSubFolder, newUri, uri, newXML);
         }
 
         thisSong.setFilename(newSongFileName);
@@ -109,7 +115,7 @@ public class ConvertChoPro {
         parsedLines = new StringBuilder();
     }
 
-    String makeTagsCommon(String s) {
+    public String makeTagsCommon(String s) {
         s = s.replace("{ns", "{new_song");
         s = s.replace("{title :", "{title:");
         s = s.replace("{Title:", "{title:");
@@ -155,7 +161,7 @@ public class ConvertChoPro {
         return s;
     }
 
-    private String fixRecognisedContent(Context c, MainActivityInterface mainActivityInterface, String l) {
+    private String fixRecognisedContent(String l) {
         // Break the filecontents into lines
         lines = l.split("\n");
 
@@ -251,7 +257,7 @@ public class ConvertChoPro {
             }
 
             // Fix guitar tab so it fits OpenSongApp formatting ;e |
-            line = tryToFixTabLine(mainActivityInterface, line);
+            line = tryToFixTabLine(line);
 
             if (line.startsWith(";;")) {
                 line = line.replace(";;", ";");
@@ -265,7 +271,7 @@ public class ConvertChoPro {
         return parsedLines.toString();
     }
 
-    String removeObsolete(String s) {
+    public String removeObsolete(String s) {
         // IV - Added removal of SongSelect license and footer tag
         if (s.contains("{new_song")
                 || s.contains("{ccli_license")
@@ -298,14 +304,14 @@ public class ConvertChoPro {
         return s;
     }
 
-    String removeTags(String s, String tagstart) {
+    public String removeTags(String s, String tagstart) {
         s = s.replace(tagstart, "");
         s = s.replace("}", "");
         s = s.trim();
         return s;
     }
 
-    String tryToFixTabLine(MainActivityInterface mainActivityInterface, String l) {
+    public String tryToFixTabLine(String l) {
         if (mainActivityInterface.getProcessSong().looksLikeGuitarTab(l)) {
             // This is a tab
             l = mainActivityInterface.getProcessSong().fixGuitarTabLine(l);
@@ -313,7 +319,7 @@ public class ConvertChoPro {
         return l;
     }
 
-    String extractChordLines(String s) {
+    public String extractChordLines(String s) {
         // IV - ChordPro, by design, requires processing to improve layout when presented in chords over lyrics format
         // IV - OpenSongApp adopts a SongSelect-ish approach to layout below
         // IV - As a result, a SongSelect extract will have an OpenSong layout close to that of a SongSelect chord sheet (Yeah!)
@@ -408,7 +414,7 @@ public class ConvertChoPro {
         return s.replaceAll("\\s+$", "");
     }
 
-    String removeOtherTags(String l) {
+    public String removeOtherTags(String l) {
         // Break it apart again
         lines = l.split("\n");
         parsedLines = new StringBuilder();
@@ -434,7 +440,7 @@ public class ConvertChoPro {
         return parsedLines.toString();
     }
 
-    String getRidOfExtraLines(String s) {
+    public String getRidOfExtraLines(String s) {
         // Get rid of double/triple line breaks
         // Fix spaces between line breaks
         s = s.replace("; ", ";");
@@ -470,7 +476,7 @@ public class ConvertChoPro {
         return s;
     }
 
-    String addSpacesToLines(String s) {
+    public String addSpacesToLines(String s) {
         lines = s.split("\n");
 
         // Reset the parsed lines
@@ -489,7 +495,7 @@ public class ConvertChoPro {
         return parsedLines.toString();
     }
 
-    Uri getNewSongUri(Context c, MainActivityInterface mainActivityInterface, String songSubFolder, String nsf) {
+    public Uri getNewSongUri(String songSubFolder, String nsf) {
         // Prepare a new uri based on the best filename, but make it unique so as not to overwrite existing files
         newSongFileName = nsf;
         Uri n = mainActivityInterface.getStorageAccess().getUriForItem("Songs", songSubFolder, newSongFileName);
@@ -517,7 +523,7 @@ public class ConvertChoPro {
         return fn;
     }
 
-    String getNewSongFileName(MainActivityInterface mainActivityInterface, Uri uri, String title) {
+    String getNewSongFileName(Uri uri, String title) {
         String fn = uri.getLastPathSegment();
         if (fn == null) {
             fn = "";
@@ -552,7 +558,7 @@ public class ConvertChoPro {
         return fn;
     }
 
-    String getSongFolderLocation(MainActivityInterface mainActivityInterface, Uri uri, String oldSongFileName) {
+    String getSongFolderLocation(Uri uri, String oldSongFileName) {
         String sf = mainActivityInterface.getStorageAccess().getPartOfUri(uri);
         sf = sf.replace("OpenSong/Songs/", "");
         sf = sf.replace(oldSongFileName, "");
@@ -566,7 +572,7 @@ public class ConvertChoPro {
         return sf;
     }
 
-    void writeTheImprovedSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong, String oldSongFileName, String nsf,
+    void writeTheImprovedSong(Song thisSong, String oldSongFileName, String nsf,
                               String songSubFolder, Uri newUri, Uri oldUri, String newXML) {
 
         newSongFileName = nsf;
@@ -591,7 +597,7 @@ public class ConvertChoPro {
                 Log.d(TAG,"attempt to deletefile="+mainActivityInterface.getStorageAccess().deleteFile(oldUri));
 
                 // Remove old song from database
-                mainActivityInterface.getSQLiteHelper().deleteSong(c,mainActivityInterface,songSubFolder,oldSongFileName);
+                mainActivityInterface.getSQLiteHelper().deleteSong(songSubFolder,oldSongFileName);
             }
 
             // Update the song filename
@@ -602,12 +608,12 @@ public class ConvertChoPro {
                 songSubFolder = c.getString(R.string.mainfoldername);
             }
 
-            if (!mainActivityInterface.getSQLiteHelper().songExists(c,mainActivityInterface,songSubFolder,newSongFileName)) {
-                mainActivityInterface.getSQLiteHelper().createSong(c,mainActivityInterface,songSubFolder,newSongFileName);
+            if (!mainActivityInterface.getSQLiteHelper().songExists(songSubFolder,newSongFileName)) {
+                mainActivityInterface.getSQLiteHelper().createSong(songSubFolder,newSongFileName);
             }
 
             // Write the song object (full details) back to the database;
-            mainActivityInterface.getSQLiteHelper().updateSong(c,mainActivityInterface,thisSong);
+            mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
         }
     }
 
@@ -674,7 +680,7 @@ public class ConvertChoPro {
         return s;
     }
 
-    private String guessTagsReplaces (String s, String m, String r) {
+    private String guessTagsReplaces(String s, String m, String r) {
         // IV - s incoming string, m matched word, r start of returned heading
         String wm = m;
         // IV - Lots of variations are considered!
@@ -774,7 +780,7 @@ public class ConvertChoPro {
         return l;
     }
 
-    public String fromOpenSongToChordPro(MainActivityInterface mainActivityInterface, String lyrics) {
+    public String fromOpenSongToChordPro(String lyrics) {
         // This receives the text from the edit song lyrics editor and changes the format
         // Allows users to enter their song as chordpro/onsong format
         // The app will convert it into OpenSong before saving.

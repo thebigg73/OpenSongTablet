@@ -59,7 +59,7 @@ public class NearbyConnectionsFragment extends Fragment {
 
     public void updateViews() {
         // Set the device name
-        myView.deviceButton.setHint(mainActivityInterface.getNearbyConnections().getUserNickname(mainActivityInterface));
+        myView.deviceButton.setHint(mainActivityInterface.getNearbyConnections().getUserNickname());
 
         // Set the default values for off/host/client
         if (mainActivityInterface.getNearbyConnections().isHost) {
@@ -141,7 +141,7 @@ public class NearbyConnectionsFragment extends Fragment {
             Handler h = new Handler();
             h.postDelayed(() -> myView.searchForHosts.performClick(),2000);
         });
-        myView.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyHostMenuOnly(requireContext(),mainActivityInterface,isChecked));
+        myView.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyHostMenuOnly(isChecked));
         myView.receiveAutoscroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostAutoscroll(isChecked));
         myView.receiveHostSections.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostSongSections(isChecked));
 
@@ -151,9 +151,9 @@ public class NearbyConnectionsFragment extends Fragment {
                 mainActivityInterface.getNearbyConnections().isHost = false;
                 mainActivityInterface.getNearbyConnections().usingNearby = false;
                 offHostClient(false,false);
-                mainActivityInterface.getNearbyConnections().stopDiscovery(requireContext());
-                mainActivityInterface.getNearbyConnections().stopAdvertising(requireContext());
-                mainActivityInterface.getNearbyConnections().turnOffNearby(requireContext());
+                mainActivityInterface.getNearbyConnections().stopDiscovery();
+                mainActivityInterface.getNearbyConnections().stopAdvertising();
+                mainActivityInterface.getNearbyConnections().turnOffNearby();
                 myView.connectionsHost.setChecked(false);
                 myView.connectionsClient.setChecked(false);
             }
@@ -163,8 +163,8 @@ public class NearbyConnectionsFragment extends Fragment {
                 mainActivityInterface.getNearbyConnections().isHost = true;
                 mainActivityInterface.getNearbyConnections().usingNearby = true;
                 offHostClient(true,false);
-                mainActivityInterface.getNearbyConnections().stopDiscovery(requireContext());
-                mainActivityInterface.getNearbyConnections().startAdvertising(requireContext(),mainActivityInterface);
+                mainActivityInterface.getNearbyConnections().stopDiscovery();
+                mainActivityInterface.getNearbyConnections().startAdvertising();
                 myView.connectionsOff.setChecked(false);
                 myView.connectionsClient.setChecked(false);
             }
@@ -174,7 +174,7 @@ public class NearbyConnectionsFragment extends Fragment {
                 mainActivityInterface.getNearbyConnections().isHost = false;
                 mainActivityInterface.getNearbyConnections().usingNearby = true;
                 offHostClient(false,true);
-                mainActivityInterface.getNearbyConnections().stopAdvertising(requireContext());
+                mainActivityInterface.getNearbyConnections().stopAdvertising();
                 // IV - Short delay to help stability
                 Handler h = new Handler();
                 h.postDelayed(() -> myView.searchForHosts.performClick(),2000);
@@ -200,7 +200,7 @@ public class NearbyConnectionsFragment extends Fragment {
                 // Start discovery and turn it off again after 10 seconds
                 myView.searchForHosts.setEnabled(false);
                 myView.searchForHosts.setText(getString(R.string.connections_searching));
-                mainActivityInterface.getNearbyConnections().startDiscovery(requireContext(),mainActivityInterface);
+                mainActivityInterface.getNearbyConnections().startDiscovery();
                 myView.searchForHosts.postDelayed(() -> {
                     try {
                         myView.searchForHosts.setText(getString(R.string.connections_discover));

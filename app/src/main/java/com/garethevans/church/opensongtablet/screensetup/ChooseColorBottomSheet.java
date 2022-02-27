@@ -162,7 +162,7 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         themePrefix = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme", "dark");
 
         // Load the chosen colours up
-        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
+        mainActivityInterface.getMyThemeColors().getDefaultColors();
         int oldColorInt;
         try {
             if (whichColor.equals("backgroundColor")) {
@@ -302,15 +302,15 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
         switch (whichColor) {
             case "pageButtonsColor":
                 mainActivityInterface.getMyThemeColors().setPageButtonsColor(newColorInt);
-                mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+                mainActivityInterface.getMyThemeColors().splitColorAndAlpha();
                 break;
             case "extraInfoTextColor":
                 mainActivityInterface.getMyThemeColors().setExtraInfoTextColor(newColorInt);
-                mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+                mainActivityInterface.getMyThemeColors().splitColorAndAlpha();
                 break;
             case "extraInfoBgColor":
                 mainActivityInterface.getMyThemeColors().setExtraInfoBgColor(newColorInt);
-                mainActivityInterface.getMyThemeColors().splitColorAndAlpha(mainActivityInterface);
+                mainActivityInterface.getMyThemeColors().splitColorAndAlpha();
                 break;
         }
 

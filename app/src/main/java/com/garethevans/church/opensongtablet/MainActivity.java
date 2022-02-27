@@ -316,46 +316,46 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         alertChecks = new AlertChecks(this);
 
         // For user preferences
-        setTypeFace = new SetTypeFace();
-        themeColors = new ThemeColors();
-        profileActions = new ProfileActions();
+        setTypeFace = new SetTypeFace(this);
+        themeColors = new ThemeColors(this);
+        profileActions = new ProfileActions(this);
 
         // The databases
         sqLiteHelper = new SQLiteHelper(this);
-        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this,this);
-        commonSQL = new CommonSQL();
+        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
+        commonSQL = new CommonSQL(this);
 
         // Converting song formats and processing song content
         chordDisplayProcessing = new ChordDisplayProcessing(this);
         chordDirectory = new ChordDirectory();
-        convertChoPro = new ConvertChoPro();
-        convertOnSong = new ConvertOnSong();
-        convertTextSong = new ConvertTextSong();
+        convertChoPro = new ConvertChoPro(this);
+        convertOnSong = new ConvertOnSong(this);
+        convertTextSong = new ConvertTextSong(this);
         processSong = new ProcessSong(this);
         prepareFormats = new PrepareFormats();
-        songSheetHeaders = new SongSheetHeaders();
-        ocr = new OCR();
-        transpose = new Transpose();
+        songSheetHeaders = new SongSheetHeaders(this);
+        ocr = new OCR(this);
+        transpose = new Transpose(this);
         abcNotation = new ABCNotation();
         song = new Song();
 
         // Loading up songs and the indexing
-        loadSong = new LoadSong();
-        saveSong = new SaveSong();
+        loadSong = new LoadSong(this);
+        saveSong = new SaveSong(this);
 
         // Sets
         currentSet = new CurrentSet();
-        setActions = new SetActions();
+        setActions = new SetActions(this);
 
         // Song actions/features
-        performanceGestures = new PerformanceGestures(this,this);
+        performanceGestures = new PerformanceGestures(this);
         pageButtons = new PageButtons(this);
         midi = new Midi(this);
-        pedalActions = new PedalActions(this,this);
+        pedalActions = new PedalActions(this);
         pad = new Pad(this, myView.onScreenInfo.getPad());
         autoscroll = new Autoscroll(this,myView.onScreenInfo.getAutoscrollTime(),
                 myView.onScreenInfo.getAutoscrollTotalTime(),myView.onScreenInfo.getAutoscroll());
-        metronome = new Metronome();
+        metronome = new Metronome(this);
         gestures = new Gestures(this);
         swipes = new Swipes(this);
         timeTools = new TimeTools();
@@ -365,9 +365,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Other file actions
         ccliLog = new CCLILog();
         exportFiles = new ExportFiles();
-        exportActions = new ExportActions();
+        exportActions = new ExportActions(this);
         bible = new Bible(this);
-        customSlide = new CustomSlide();
+        customSlide = new CustomSlide(this);
         presenterSettings = new PresenterSettings(this);
         //mediaRouterCallback = new MediaRouterCallback(this);
     }
@@ -406,12 +406,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         appActionBar = new AppActionBar(this,actionBar, myView.toolBar.myToolbar,
                 myView.toolBar.inSet, myView.toolBar.songtitleAb, myView.toolBar.songauthorAb,
                 myView.toolBar.songkeyAb, myView.toolBar.songcapoAb, myView.toolBar.digitalclock);
-        pageButtons.setMainFABS(this,
+        pageButtons.setMainFABS(
                 myView.pageButtonRight.actionFAB, myView.pageButtonRight.custom1Button,
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
                 myView.pageButtonRight.custom4Button,myView.pageButtonRight.custom5Button,
                 myView.pageButtonRight.custom6Button,myView.pageButtonRight.bottomButtons);
-        pageButtons.animatePageButton(this, false);
+        pageButtons.animatePageButton(false);
     }
 
     @Override
@@ -455,17 +455,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         song.setFolder(preferences.getMyPreferenceString("whichSongFolder", getString(R.string.mainfoldername)));
 
         // Set dealt with elsewhere
-        setActions.preferenceStringToArrays(this,this);
+        setActions.preferenceStringToArrays();
 
         // Set the locale
         fixLocale.setLocale(this,this);
         locale = fixLocale.getLocale();
 
         // ThemeColors
-        themeColors.getDefaultColors(this,this);
+        themeColors.getDefaultColors();
 
         // Typefaces
-        setTypeFace.setUpAppFonts(this,this,new Handler(),new Handler(),new Handler(),new Handler(),new Handler());
+        setTypeFace.setUpAppFonts(new Handler(),new Handler(),new Handler(),new Handler(),new Handler());
     }
     private void setListeners() {
         myView.pageButtonRight.actionFAB.setOnClickListener(v  -> {
@@ -611,7 +611,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public void onBackPressed() {
-        if (navController.getCurrentDestination()!=null &&
+        if (navController!=null && navController.getCurrentDestination()!=null &&
                 (navController.getCurrentDestination().getId()==R.id.performanceFragment ||
                         navController.getCurrentDestination().getId()==R.id.presenterFragment ||
                         navController.getCurrentDestination().getId()==R.id.storageManagementFragment)) {
@@ -794,9 +794,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     private boolean currentFragment(String fragLabel) {
-        runOnUiThread(() -> {
-            getSupportFragmentManager().executePendingTransactions();
-        });
+        runOnUiThread(() -> getSupportFragmentManager().executePendingTransactions());
 
         String currentFragment = "ERROR";
         if (navController!=null && navController.getCurrentDestination()!=null &&
@@ -815,15 +813,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Nearby stuff
     private void setupNearby() {
         // Set up the Nearby connection service
-        nearbyConnections.getUserNickname(this);
+        nearbyConnections.getUserNickname();
 
         // Establish a known state for Nearby
-        nearbyConnections.turnOffNearby(this);
+        nearbyConnections.turnOffNearby();
     }
     @Override
     public NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface) {
         // First update the mainActivityInterface used in nearby connections
-        nearbyConnections.setMainActivityInterface(mainActivityInterface);
+        nearbyConnections.setMainActivityInterface();
         // Return a reference to nearbyConnections
         return nearbyConnections;
     }
@@ -842,24 +840,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     @Override
-    public void startDiscovery(Context c, MainActivityInterface mainActivityInterface) {
-        nearbyConnections.startDiscovery(c,mainActivityInterface);
+    public void startDiscovery() {
+        nearbyConnections.startDiscovery();
     }
     @Override
-    public void startAdvertising(Context c, MainActivityInterface mainActivityInterface) {
-        nearbyConnections.startAdvertising(c,mainActivityInterface);
+    public void startAdvertising() {
+        nearbyConnections.startAdvertising();
     }
     @Override
-    public void stopDiscovery(Context c) {
-        nearbyConnections.stopDiscovery(c);
+    public void stopDiscovery() {
+        nearbyConnections.stopDiscovery();
     }
     @Override
-    public void stopAdvertising(Context c) {
-        nearbyConnections.stopAdvertising(c);
+    public void stopAdvertising() {
+        nearbyConnections.stopAdvertising();
     }
     @Override
-    public void turnOffNearby(Context c) {
-        nearbyConnections.turnOffNearby(c);
+    public void turnOffNearby() {
+        nearbyConnections.turnOffNearby();
     }
     @Override
     public void updateConnectionsLog() {
@@ -877,11 +875,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         }
     }
     @Override
-    public void doSendPayloadBytes(Context c,String infoPayload) {
+    public void doSendPayloadBytes(String infoPayload) {
         // TODO - IV addition to check if needed (obs no FullscreenActivity anymore!
         // // IV - Do not send section 0 payload when loading a song
         //        if (!FullscreenActivity.alreadyloading) {
-        nearbyConnections.doSendPayloadBytes(c,infoPayload);
+        nearbyConnections.doSendPayloadBytes(infoPayload);
         // }
     }
     @Override
@@ -975,12 +973,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // Null titles are for the default song, author, etc.
         // Otherwise a new title is passed as a string (in a settings menu)
         windowFlags.setWindowFlags();
-        appActionBar.setActionBar(this,this, what);
-        if (what==null || getMode().equals("Presenter")) {
-            menuIconVisibility(true);
-        } else {
-            menuIconVisibility(false);
-        }
+        appActionBar.setActionBar(what);
+        menuIconVisibility(what == null || getMode().equals("Presenter"));
         myView.fragmentView.setTop(appActionBar.getActionBarHeight());
     }
     private void menuIconVisibility(boolean isVisible) {
@@ -1311,13 +1305,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             // Write this to text file
             storageAccess.writeSongIDFile(songIds);
             // Try to create the basic databases
-            sqLiteHelper.resetDatabase(this);
-            nonOpenSongSQLiteHelper.initialise(this, this);
+            sqLiteHelper.resetDatabase();
+            nonOpenSongSQLiteHelper.initialise();
             // Add entries to the database that have songid, folder and filename fields
             // This is the minimum that we need for the song menu.
             // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
             // Also will later include all the stuff for the search index as well
-            sqLiteHelper.insertFast(this, this);
+            sqLiteHelper.insertFast();
             if (fragName != null) {
                 //Update the fragment
                 updateFragment(fragName, callingFragment, arguments);
@@ -1365,18 +1359,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     // Page buttons
     private void animatePageButtons() {
         float rotation = myView.pageButtonRight.actionFAB.getRotation();
-        pageButtons.animatePageButton(this, rotation == 0);
+        pageButtons.animatePageButton(rotation == 0);
     }
     @Override
     public void updatePageButtonLayout() {
         // We have changed something about the page buttons (or initialising them
         if (myView.pageButtonRight.actionFAB.getRotation()!=0) {
-            pageButtons.animatePageButton(this, false);
+            pageButtons.animatePageButton(false);
         }
-        pageButtons.updateColors(this);
-        pageButtons.setPageButton(this, myView.pageButtonRight.actionFAB, -1, false);
+        pageButtons.updateColors();
+        pageButtons.setPageButton(myView.pageButtonRight.actionFAB, -1, false);
         for (int x=0; x<6; x++) {
-            pageButtons.setPageButton(this, pageButtons.getFAB(x), x, false);
+            pageButtons.setPageButton(pageButtons.getFAB(x), x, false);
         }
     }
 
@@ -1467,9 +1461,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (metronome.metronomeValid()) {
             // Toggle the start or stop
             if (!metronome.getIsRunning()) {
-                metronome.startMetronome(this,this,this);
+                metronome.startMetronome();
             } else {
-                metronome.stopMetronome(this);
+                metronome.stopMetronome();
             }
         } else {
             // Open up the metronome settings
@@ -1646,16 +1640,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Get the song key (from the database)
         if (storageAccess.isSpecificFileExtension("imageorpdf",currentSet.getFilename(position))) {
-            songKey = nonOpenSongSQLiteHelper.getKey(this,this,setFolder,setFilename);
+            songKey = nonOpenSongSQLiteHelper.getKey(setFolder,setFilename);
         } else {
             if (setFolder.contains("**") || setFolder.contains("../")) {
                 Song quickSong = new Song();
                 quickSong.setFolder(setFolder);
                 quickSong.setFilename(setFilename);
-                quickSong = loadSong.doLoadSongFile(this,this,quickSong,false);
+                quickSong = loadSong.doLoadSongFile(quickSong,false);
                 songKey = quickSong.getKey();
             } else {
-                songKey = sqLiteHelper.getKey(this, this, setFolder, setFilename);
+                songKey = sqLiteHelper.getKey(setFolder, setFilename);
             }
         }
         if (setKey != null && songKey != null && !setKey.isEmpty() && !songKey.isEmpty() && !songKey.equals(setKey)) {
@@ -1683,10 +1677,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     // Already a variation (or other), so don't use the database
                     copySong.setFilename(setFilename);
                     copySong.setFolder(setFolder);
-                    copySong = loadSong.doLoadSongFile(this,this,copySong,false);
+                    copySong = loadSong.doLoadSongFile(copySong,false);
                 } else {
                     // Just a song, so use the database
-                    copySong = sqLiteHelper.getSpecificSong(this, this, setFolder, setFilename);
+                    copySong = sqLiteHelper.getSpecificSong(setFolder, setFilename);
                 }
                 copySong.setFolder(newFolder);
                 copySong.setFilename(newFilename);
@@ -1694,7 +1688,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 // Get the number of transpose times
                 int transposeTimes = transpose.getTransposeTimes(songKey,setKey);
                 copySong.setKey(songKey); // This will be transposed in the following...
-                copySong.setLyrics(transpose.doTranspose(this,this,copySong,
+                copySong.setLyrics(transpose.doTranspose(copySong,
                         "+1",transposeTimes,copySong.getDetectedChordFormat(),
                         copySong.getDesiredChordFormat()).getLyrics());
                 // Get the song XML
@@ -1767,9 +1761,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                             song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
                     if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
-                        nonOpenSongSQLiteHelper.deleteSong(this,this,song.getFolder(),song.getFilename());
+                        nonOpenSongSQLiteHelper.deleteSong(song.getFolder(),song.getFilename());
                     }
-                    sqLiteHelper.deleteSong(this, this, song.getFolder(),song.getFilename());
+                    sqLiteHelper.deleteSong(song.getFolder(),song.getFilename());
                     // Set the welcome song
                     song.setFilename("Welcome to OpenSongApp");
                     song.setFolder(getString(R.string.mainfoldername));
@@ -1830,8 +1824,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "resetColors":
                     // We will reset the chosen theme colours to app defaults
-                    themeColors.resetTheme(this,this);
-                    themeColors.getDefaultColors(this,this);
+                    themeColors.resetTheme();
+                    themeColors.getDefaultColors();
                     updateFragment(fragName,callingFragment,null);
                     allowToast = false;
                     break;
@@ -1929,7 +1923,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public boolean playPad() {
         // If the pad is playing, stop else start
         if (pad.isPadPlaying()) {
-            pad.stopPad(this);
+            pad.stopPad();
             return false;
         } else {
             pad.startPad(this);
@@ -1994,17 +1988,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
         // Try to create the basic databases
         // Non persistent, created from storage at boot (to keep updated) used to references ALL files
-        sqLiteHelper.resetDatabase(this);
+        sqLiteHelper.resetDatabase();
         // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
         // Updated each time a file is created, deleted, moved.
         // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
-        nonOpenSongSQLiteHelper.initialise(this, this);
+        nonOpenSongSQLiteHelper.initialise();
 
         // Add entries to the database that have songid, folder and filename fields
         // This is the minimum that we need for the song menu.
         // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
         // Also will later include all the stuff for the search index as well
-        sqLiteHelper.insertFast(this, this);
+        sqLiteHelper.insertFast();
     }
 
     @Override
@@ -2592,7 +2586,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     protected void onDestroy() {
         super.onDestroy();
         // Turn off nearby
-        nearbyConnections.turnOffNearby(this);
+        nearbyConnections.turnOffNearby();
         if (appActionBar!=null) {
             appActionBar.stopTimers();
         }
@@ -2619,7 +2613,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             autoscroll.stopTimers();
         }
         // Copy the persistent database from app storage to user storage
-        Log.d(TAG,"Persistent database backed up: "+nonOpenSongSQLiteHelper.copyUserDatabase(this,this));
+        Log.d(TAG,"Persistent database backed up: "+nonOpenSongSQLiteHelper.copyUserDatabase());
     }
 
     @Override

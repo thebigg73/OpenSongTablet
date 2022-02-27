@@ -78,7 +78,7 @@ public class FontSetupFragment extends Fragment {
         fontPreso = mainActivityInterface.getPreferences().getMyPreferenceString("fontPreso","Lato");
         fontPresoInfo = mainActivityInterface.getPreferences().getMyPreferenceString("fontPresoInfo","Lato");
         fontSticky = mainActivityInterface.getPreferences().getMyPreferenceString("fontSticky","Lato");
-        mainActivityInterface.getMyThemeColors().getDefaultColors(getContext(),mainActivityInterface);
+        mainActivityInterface.getMyThemeColors().getDefaultColors();
     }
 
     private void setupDropDowns() {
@@ -208,7 +208,7 @@ public class FontSetupFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             // The preview method in setTypeFace deals with saving
-            mainActivityInterface.getMyFonts().changeFont(getContext(),mainActivityInterface,which,s.toString(),new Handler());
+            mainActivityInterface.getMyFonts().changeFont(which,s.toString(),new Handler());
             updatePreviews();
         }
     }

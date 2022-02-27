@@ -20,13 +20,20 @@ import java.util.Locale;
 public class LoadSong {
 
     private final String TAG = "LoadSong";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     private Uri uri;
     private ArrayList<Song> songsToFix;
+
+    public LoadSong(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     // The song object is sent to get the folder/filename, but it is returned after adding to it
     // Since this could be an indexing action, getting the next key or an actual load, 
     // we just receive the song object (can't assume mainActivityInterface.getSong()
-    public Song doLoadSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong, boolean indexing) {
+    public Song doLoadSong(Song thisSong, boolean indexing) {
         // If we have finished song indexing, we get the song from the SQL database.
         // Unless, of course it is a custom file.
         // If not, we load up from the xml file
@@ -47,22 +54,21 @@ public class LoadSong {
                 thisSong.getFolder().contains("**")) {
             // This is set to true once the index is completed, so we either haven't finished indexing
             // or this is a custom slide/note as identified by the folder (which aren't indexed)
-            return doLoadSongFile(c, mainActivityInterface, thisSong, indexing);
+            return doLoadSongFile(thisSong, indexing);
         } else {
             Log.d(TAG, "Loading from the database");
             if (thisSong.getFilename().equals("Welcome to OpenSongApp")) {
                 return mainActivityInterface.getSong().showWelcomeSong(c, thisSong);
             } else {
-                thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface,
+                thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                         thisSong.getFolder(), thisSong.getFilename());
-                sortLoadingSuccessful(c,mainActivityInterface,thisSong);
+                sortLoadingSuccessful(thisSong);
                 return thisSong;
             }
         }
     }
 
-    public Song doLoadSongFile(Context c, MainActivityInterface mainActivityInterface,
-                               Song thisSong, boolean indexing) {
+    public Song doLoadSongFile(Song thisSong, boolean indexing) {
 
         // This extracts what it can from the song, and returning an updated song object.
         // Once indexing has finished, we load from the database instead
@@ -106,9 +112,9 @@ public class LoadSong {
 
                 } else if (thisSong.getFiletype().equals("XML")) {
                     // 2. We have an XML file (likely)
-                    utf = getUTF(mainActivityInterface, thisSong.getFolder(),
+                    utf = getUTF(thisSong.getFolder(),
                             thisSong.getFilename(), thisSong.getFiletype());
-                    thisSong = readFileAsXML(c, mainActivityInterface, thisSong, where, uri, utf);
+                    thisSong = readFileAsXML(thisSong, where, uri, utf);
                 }
 
 
@@ -127,21 +133,21 @@ public class LoadSong {
 
                 if (thisSong.getFiletype().equals("iOS")) {
                     // 3.  Run the OnSongConvert script (which converts then resaves)
-                    mainActivityInterface.getConvertOnSong().convertTextToTags(c, mainActivityInterface, uri, thisSong);
+                    mainActivityInterface.getConvertOnSong().convertTextToTags(uri, thisSong);
 
                     // Now read in the proper OpenSong xml file
                     try {
-                        readFileAsXML(c, mainActivityInterface, thisSong, where, uri, "UTF-8");
+                        readFileAsXML(thisSong, where, uri, "UTF-8");
                     } catch (Exception e) {
                         Log.d(TAG, "Error performing grabOpenSongXML()");
                     }
                 } else if (thisSong.getFiletype().equals("CHO") || lyricsHaveChoProTags(thisSong.getLyrics())) {
                     // 4.  Run the ChordProConvert script (which converts then resaves)
-                    thisSong = mainActivityInterface.getConvertChoPro().convertTextToTags(c, mainActivityInterface, uri, thisSong);
+                    thisSong = mainActivityInterface.getConvertChoPro().convertTextToTags(uri, thisSong);
 
                     // Now read in the proper OpenSong xml file
                     try {
-                        readFileAsXML(c, mainActivityInterface, thisSong, where, uri, "UTF-8");
+                        readFileAsXML(thisSong, where, uri, "UTF-8");
                     } catch (Exception e) {
                         Log.d(TAG, "Error performing grabOpenSongXML()");
                     }
@@ -158,19 +164,19 @@ public class LoadSong {
             thisSong = mainActivityInterface.getSong().showWelcomeSong(c,thisSong);
         } else {
             // Not found.  This will get the default 'not found' from the database query
-            thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(c,mainActivityInterface,thisSong.getFolder(),thisSong.getFilename());
+            thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(thisSong.getFolder(),thisSong.getFilename());
         }
 
         // Update the songLoadSuccess and references to the working file if it did work if we aren't indexing
         if (!indexing) {
-            sortLoadingSuccessful(c, mainActivityInterface, thisSong);
+            sortLoadingSuccessful(thisSong);
         }
 
         // Send the song back with all of its children populated!
         return thisSong;
     }
 
-    private void sortLoadingSuccessful(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    private void sortLoadingSuccessful(Song thisSong) {
         // Check if the song has been loaded (will now have a lyrics value)
         if (thisSong.getFiletype()!=null && (thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) &&
         thisSong.getLyrics()==null) {
@@ -238,8 +244,7 @@ public class LoadSong {
         }
     }
 
-    private String getUTF(MainActivityInterface mainActivityInterface,
-                          String folder, String filename, String filetype) {
+    private String getUTF(String folder, String filename, String filetype) {
         // Determine the file encoding
         String where = "Songs";
         if (folder.startsWith("../")) {
@@ -257,8 +262,7 @@ public class LoadSong {
         }
     }
 
-    public Song readFileAsXML(Context c, MainActivityInterface mainActivityInterface, Song thisSong,
-                              String where, Uri uri, String utf) {
+    public Song readFileAsXML(Song thisSong, String where, Uri uri, String utf) {
 
         // Extract all of the key bits of the song
         if (mainActivityInterface.getStorageAccess().uriIsFile(uri)) {
@@ -443,7 +447,7 @@ public class LoadSong {
         songsToFix = null;
     }
 
-    public void fixSongs(MainActivityInterface mainActivityInterface) {
+    public void fixSongs() {
         if (songsToFix!=null && songsToFix.size()>0) {
             for (Song thisSong:songsToFix) {
                 Uri thisSongUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",thisSong.getFolder(),thisSong.getFilename());
@@ -464,7 +468,7 @@ public class LoadSong {
         }
         resetSongsToFix();
     }
-    public String getExtraStuff(MainActivityInterface mainActivityInterface, Song thisSong) {
+    public String getExtraStuff(Song thisSong) {
         // This is only called if we save/edit a song and it has extra stuff marked
         // In which case we load it in as extracted text and add it back to the XML file as a returned string
         String extraStuff = "";

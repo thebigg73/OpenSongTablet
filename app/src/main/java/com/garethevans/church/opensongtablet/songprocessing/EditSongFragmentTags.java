@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -188,11 +187,11 @@ public class EditSongFragmentTags extends Fragment {
         }
         if (position >= 0 && !tagToRemove.isEmpty()) {
             ArrayList<Song> songs = mainActivityInterface.getSQLiteHelper().getSongsByFilters(
-                    requireContext(), mainActivityInterface, false, false,
+                    false, false,
                     false, true, false, null, null,
                     null, tagToRemove, null);
             for (Song thisSong : songs) {
-                thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(requireContext(),mainActivityInterface,
+                thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                         thisSong.getFolder(), thisSong.getFilename());
 
                 // Update this song object
@@ -200,18 +199,15 @@ public class EditSongFragmentTags extends Fragment {
                 thisSong.setAlttheme(removeTagFromTheme(thisSong.getAlttheme(),tagToRemove));
 
                 // Update the non-persistent database
-                mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),
-                        mainActivityInterface, thisSong);
+                mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
 
                 // Update the persistent database if it isn't an XML file, but PDF/IMG
                 if (thisSong.getFiletype().equals("PDF") || thisSong.getFiletype().equals("IMG")) {
-                    mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),
-                            mainActivityInterface, thisSong);
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(thisSong);
 
                 } else if (thisSong.getFiletype().equals("XML")) {
                     // Update the actual OpenSong file since it is XML
-                    mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
-                            thisSong);
+                    mainActivityInterface.getSaveSong().updateSong(thisSong);
                 }
             }
             // Update the array adapter in the bottom sheet fragment

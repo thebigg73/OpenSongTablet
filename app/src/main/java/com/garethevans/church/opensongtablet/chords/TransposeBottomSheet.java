@@ -99,8 +99,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         // Set up the exposed dropdown for chord formats and set to detected
         buildChordFormatOptions();
         int detectedFormatNum = mainActivityInterface.getSong().getDetectedChordFormat();
-        String detectedName = mainActivityInterface.getTranspose().getChordFormatNames(requireContext()).get(detectedFormatNum-1);
-        String detectedAppearance = mainActivityInterface.getTranspose().getChordFormatAppearances(requireContext()).get(detectedFormatNum-1);
+        String detectedName = mainActivityInterface.getTranspose().getChordFormatNames().get(detectedFormatNum-1);
+        String detectedAppearance = mainActivityInterface.getTranspose().getChordFormatAppearances().get(detectedFormatNum-1);
         myView.chordFormatFrom.setText(detectedName);
         myView.chordFormatTo.setText(detectedName);
         String detectedSummary = detectedName + ": " + detectedAppearance;
@@ -112,8 +112,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
         prefFormat = mainActivityInterface.getPreferences().getMyPreferenceInt(
                 "chordFormat",1);
         String hint = getString(R.string.chordformat_preferred_info) + " " +
-                mainActivityInterface.getTranspose().getChordFormatNames(requireContext()).get(prefFormat-1) +
-                ": " + mainActivityInterface.getTranspose().getChordFormatAppearances(requireContext()).get(prefFormat-1);
+                mainActivityInterface.getTranspose().getChordFormatNames().get(prefFormat-1) +
+                ": " + mainActivityInterface.getTranspose().getChordFormatAppearances().get(prefFormat-1);
         myView.assumePreferred.setHint(hint);
 
         usePreferredChordFormat(myView.assumePreferred.getChecked());
@@ -125,10 +125,10 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
     private void buildChordFormatOptions() {
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapterFrom = new ExposedDropDownArrayAdapter(requireContext(),
                 myView.chordFormatFrom,R.layout.view_exposed_dropdown_item,
-                mainActivityInterface.getTranspose().getChordFormatNames(requireContext()));
+                mainActivityInterface.getTranspose().getChordFormatNames());
         ExposedDropDownArrayAdapter exposedDropDownArrayAdapterTo = new ExposedDropDownArrayAdapter(requireContext(),
                 myView.chordFormatTo,R.layout.view_exposed_dropdown_item,
-                mainActivityInterface.getTranspose().getChordFormatNames(requireContext()));
+                mainActivityInterface.getTranspose().getChordFormatNames());
         myView.chordFormatFrom.setAdapter(exposedDropDownArrayAdapterFrom);
         myView.chordFormatTo.setAdapter(exposedDropDownArrayAdapterTo);
 
@@ -166,7 +166,7 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
                 } else {
                     newKey = originalKey;
                 }
-                newKey = mainActivityInterface.getTranspose().numberToKey(requireContext(),mainActivityInterface,newKey);
+                newKey = mainActivityInterface.getTranspose().numberToKey(newKey);
                 myView.keyChangeTextView.setText(getTransposeKey(newKey));
             }
         });
@@ -214,8 +214,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             myView.warningFormatMatch.setVisibility(View.GONE);
         }
 
-        myView.chordFormatFrom.setText(mainActivityInterface.getTranspose().getChordFormatNames(requireContext()).get(formattouse-1));
-        myView.chordFormatTo.setText(mainActivityInterface.getTranspose().getChordFormatNames(requireContext()).get(formattouse-1));
+        myView.chordFormatFrom.setText(mainActivityInterface.getTranspose().getChordFormatNames().get(formattouse-1));
+        myView.chordFormatTo.setText(mainActivityInterface.getTranspose().getChordFormatNames().get(formattouse-1));
     }
 
     private void getValues() {
@@ -225,8 +225,8 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             toFormat = fromFormat;
         } else {
             // Overriding the preferred defaults
-            fromFormat = mainActivityInterface.getTranspose().getChordFormatNames(requireContext()).indexOf(myView.chordFormatFrom.getText().toString())+1;
-            toFormat = mainActivityInterface.getTranspose().getChordFormatNames(requireContext()).indexOf(myView.chordFormatTo.getText().toString())+1;
+            fromFormat = mainActivityInterface.getTranspose().getChordFormatNames().indexOf(myView.chordFormatFrom.getText().toString())+1;
+            toFormat = mainActivityInterface.getTranspose().getChordFormatNames().indexOf(myView.chordFormatTo.getText().toString())+1;
         }
         // Update the song detected chord format as required by manual change
         mainActivityInterface.getSong().setDetectedChordFormat(fromFormat);
@@ -269,12 +269,11 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
             // doTranspose will write the song including any transposed capo
 
             // Do the transpose (song and key)
-            mainActivityInterface.getTranspose().doTranspose(requireContext(),mainActivityInterface,mainActivityInterface.getSong(),
+            mainActivityInterface.getTranspose().doTranspose(mainActivityInterface.getSong(),
                     transposeDirection, transposeTimes, fromFormat, toFormat);
 
             // Now save the changes
-            mainActivityInterface.getSaveSong().updateSong(requireContext(), mainActivityInterface,
-                    mainActivityInterface.getSong());
+            mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
 
             requireActivity().runOnUiThread(() -> {
                 // Update the song menu

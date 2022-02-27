@@ -87,7 +87,6 @@ public class MyZoomLayout extends FrameLayout {
             canvas.scale(scaleFactor, scaleFactor, focusX, focusY);
             calculateMaxScrolls();
             isScaling = false;
-            Log.d(TAG, "scaleFactor=" + scaleFactor + "  focusX=" + focusX + "  focusY=" + focusY);
             canvas.restore();
         }
     }
@@ -162,7 +161,6 @@ public class MyZoomLayout extends FrameLayout {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            Log.d(TAG, "onScale() called");
             scaleFactor *= detector.getScaleFactor();
             if (scaleFactor > maxScaleFactor) {
                 scaleFactor = maxScaleFactor;

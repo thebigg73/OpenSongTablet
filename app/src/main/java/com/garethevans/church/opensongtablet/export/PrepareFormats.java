@@ -24,9 +24,9 @@ public class PrepareFormats {
             thisSongSQL = new Song();
             thisSongSQL.setFolder(folder);
             thisSongSQL.setFilename(filename);
-            thisSongSQL = mainActivityInterface.getLoadSong().doLoadSongFile(c,mainActivityInterface, thisSongSQL,false);
+            thisSongSQL = mainActivityInterface.getLoadSong().doLoadSongFile(thisSongSQL,false);
         } else {
-            thisSongSQL = mainActivityInterface.getSQLiteHelper().getSpecificSong(c, mainActivityInterface, folder, filename);
+            thisSongSQL = mainActivityInterface.getSQLiteHelper().getSpecificSong(folder, filename);
         }
 
         String newFilename = folder.replace("/","_");
@@ -105,7 +105,7 @@ public class PrepareFormats {
                 replaceNulls("{copyright:", "}\n", thisSong.getCopyright()) +
                 replaceNulls("{ccli:", "}\n", thisSong.getCcli()) +
                 "\n\n" +
-                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface, replaceNulls("\n", "", thisSong.getLyrics()));
+                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(replaceNulls("\n", "", thisSong.getLyrics()));
         string = string.replace("\n\n\n", "\n\n");
 
         // IV - remove empty comments
@@ -138,7 +138,7 @@ public class PrepareFormats {
                 replaceNulls("Copyright: ", "\n", thisSong.getCopyright()) +
                 replaceNulls("CCLI: ", "\n", thisSong.getCcli()) +
                 "\n\n" +
-                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(mainActivityInterface, replaceNulls("\n", "", thisSong.getLyrics()));
+                mainActivityInterface.getConvertChoPro().fromOpenSongToChordPro(replaceNulls("\n", "", thisSong.getLyrics()));
         string = string.replace("\n\n\n", "\n\n");
 
         // IV - remove empty comments

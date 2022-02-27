@@ -480,9 +480,9 @@ public class ImportOSBFragment extends Fragment {
 
                         // Update the song index
                         if (myView.includePersistentDB.getChecked()) {
-                            mainActivityInterface.getNonOpenSongSQLiteHelper().copyUserDatabase(requireContext(),mainActivityInterface);
+                            mainActivityInterface.getNonOpenSongSQLiteHelper().copyUserDatabase();
                         }
-                        mainActivityInterface.getSQLiteHelper().insertFast(requireContext(),mainActivityInterface);
+                        mainActivityInterface.getSQLiteHelper().insertFast();
                         mainActivityInterface.setFullIndexRequired(true);
                         mainActivityInterface.fullIndex();
 

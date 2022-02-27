@@ -149,8 +149,8 @@ public class UltimateGuitar {
                     // Keep the original key ref
 
                     newSong = mainActivityInterface.getTranspose().
-                            doTranspose(c,mainActivityInterface,newSong,
-                                    "+1",transpnum,newSong.getDetectedChordFormat(),
+                            doTranspose(newSong, "+1",transpnum,
+                                    newSong.getDetectedChordFormat(),
                                     newSong.getDesiredChordFormat());
                     // Put the original key back as we only want transposed lyrics
                     newSong.setKey(key);

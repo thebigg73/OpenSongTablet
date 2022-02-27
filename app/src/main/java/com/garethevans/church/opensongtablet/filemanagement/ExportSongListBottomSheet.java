@@ -65,7 +65,7 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
 
     private void setupViews() {
         // We'll get these from the database
-        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders(requireContext(),mainActivityInterface);
+        ArrayList<String> folders = mainActivityInterface.getSQLiteHelper().getFolders();
         for (String folder:folders) {
             CheckBox checkBox = new CheckBox(requireContext());
             checkBox.setText(folder);

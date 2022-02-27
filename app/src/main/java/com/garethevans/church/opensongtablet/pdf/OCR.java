@@ -20,14 +20,13 @@ public class OCR {
     private ArrayList<String> pdfPages;
     private int pageCount;
     private String filename = null;
-    private MainActivityInterface mainActivityInterface;
+    private final MainActivityInterface mainActivityInterface;
     private final String TAG = "OCR";
 
-    public void getTextFromPDF(Context c, MainActivityInterface mainActivityInterface,
-                               String folder, String filename) {
-
-        this.mainActivityInterface = mainActivityInterface;
-
+    public OCR(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+    public void getTextFromPDF(String folder, String filename) {
         // This uses most bits of the ProcessSong methods used to display the pdf as an image
         // However we will iterate through each page and send the bitmap off for ocr recognition
         // It also processes images (png, jpg, gif) and camera intents using the same logic with 1 page
@@ -88,16 +87,13 @@ public class OCR {
         }
     }
 
-    public void getTextFromImageFile(Context c, MainActivityInterface mainActivityInterface,
-                                     String folder, String filename) {
+    public void getTextFromImageFile(String folder, String filename) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
         Bitmap bitmap = mainActivityInterface.getProcessSong().getBitmapFromUri(uri,0,0);
-        getTextFromImage(mainActivityInterface,bitmap);
+        getTextFromImage(bitmap);
     }
 
-    public void getTextFromImage(MainActivityInterface mainActivityInterface, Bitmap bmp) {
-
-        this.mainActivityInterface = mainActivityInterface;
+    public void getTextFromImage(Bitmap bmp) {
         // Just a plain jpg, png or gif converted to a bitmap
         // Pretending it is from a 1 page pdf
         pdfPages = new ArrayList<>();
@@ -107,8 +103,7 @@ public class OCR {
         }
     }
 
-    public void getTextFromCamera(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
-        this.mainActivityInterface = mainActivityInterface;
+    public void getTextFromCamera(Uri uri) {
         // The camera saves to Backgrounds/camera_capture.png (_cache) received in the call
         // Pretending it is from a 1 page pdf
         pdfPages = new ArrayList<>();

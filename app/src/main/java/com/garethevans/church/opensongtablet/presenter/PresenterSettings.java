@@ -15,6 +15,8 @@ public class PresenterSettings {
     // Anything that ProcessSong needs for creating layouts goes there instead
 
     private final String TAG = "PresenterSettings";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,
             usePresentationOrder;
     private Uri logo, backgroundImage1, backgroundImage2, backgroundVideo1, backgroundVideo2;
@@ -27,8 +29,10 @@ public class PresenterSettings {
 
 
     public PresenterSettings(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
         // Get all of the preferences on instantiation
-        getAllPreferences(c,(MainActivityInterface) c);
+        getAllPreferences();
     }
 
     // The setters
@@ -250,29 +254,29 @@ public class PresenterSettings {
 
 
     // The helpers for this class
-    public void getAllPreferences(Context c, MainActivityInterface mainActivityInterface) {
+    public void getAllPreferences() {
         // This calls all preference groups
-        getImagePreferences(c, mainActivityInterface);
-        getScreenSetupPreferences(c, mainActivityInterface);
-        getInfoPreferences(c, mainActivityInterface);
-        getAlertPreferences(c, mainActivityInterface);
+        getImagePreferences();
+        getScreenSetupPreferences();
+        getInfoPreferences();
+        getAlertPreferences();
     }
 
-    public void getImagePreferences(Context c, MainActivityInterface mainActivityInterface) {
-        setLogo(getUriFromString(c,mainActivityInterface,mainActivityInterface.
+    public void getImagePreferences() {
+        setLogo(getUriFromString(mainActivityInterface.
                         getPreferences().getMyPreferenceString("customLogo",""),
                 "ost_logo.png"));
         setLogoSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("customLogoSize",0.5f));
-        setBackgroundImage1(getUriFromString(c,mainActivityInterface,mainActivityInterface.
+        setBackgroundImage1(getUriFromString(mainActivityInterface.
                         getPreferences().getMyPreferenceString("backgroundImage1",""),
                 "ost_bg.png"));
-        setBackgroundImage2(getUriFromString(c,mainActivityInterface,mainActivityInterface.
+        setBackgroundImage2(getUriFromString(mainActivityInterface.
                         getPreferences().getMyPreferenceString("backgroundImage2",""),
                 null));
-        setBackgroundVideo1(getUriFromString(c,mainActivityInterface,mainActivityInterface.
+        setBackgroundVideo1(getUriFromString(mainActivityInterface.
                         getPreferences().getMyPreferenceString("backgroundVideo1",""),
                 null));
-        setBackgroundVideo2(getUriFromString(c,mainActivityInterface,mainActivityInterface.
+        setBackgroundVideo2(getUriFromString(mainActivityInterface.
                         getPreferences().getMyPreferenceString("backgroundVideo2",""),
                 null));
         setBackgroundToUse(mainActivityInterface.getPreferences().
@@ -282,7 +286,7 @@ public class PresenterSettings {
         setPresoBackgroundAlpha(mainActivityInterface.getPreferences().
                 getMyPreferenceFloat("presoBackgroundAlpha",1f));
     }
-    public void getScreenSetupPreferences(Context c, MainActivityInterface mainActivityInterface) {
+    public void getScreenSetupPreferences() {
         setPresoTransitionTime(mainActivityInterface.getPreferences().getMyPreferenceInt("presoTransitionTime", 800));
         setCastRotation(mainActivityInterface.getPreferences().getMyPreferenceFloat("castRotation",0.0f));
         setPresoXMargin(mainActivityInterface.getPreferences().getMyPreferenceInt("presoXMargin",0));
@@ -294,7 +298,7 @@ public class PresenterSettings {
         setFontSizePresoMax(mainActivityInterface.getPreferences().getMyPreferenceFloat("fontSizePresoMax", 40f));
         setUsePresentationOrder(mainActivityInterface.getPreferences().getMyPreferenceBoolean("usePresentationOrder", false));
     }
-    public void getInfoPreferences(Context c, MainActivityInterface mainActivityInterface) {
+    public void getInfoPreferences() {
         setPresoInfoBarAlpha(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoInfoBarAlpha",0.5f));
         setHideInfoBar(mainActivityInterface.getPreferences().getMyPreferenceBoolean("hideInfoBar",true));
         setPresoTitleTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoTitleTextSize",14f));
@@ -302,13 +306,12 @@ public class PresenterSettings {
         setPresoCopyrightTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoCopyrightTextSize",12f));
         setCcliLicence(mainActivityInterface.getPreferences().getMyPreferenceString("ccliLicence",""));
     }
-    public void getAlertPreferences(Context c, MainActivityInterface mainActivityInterface) {
+    public void getAlertPreferences() {
         setPresoAlertText(mainActivityInterface.getPreferences().getMyPreferenceString("presoAlertText",""));
         setPresoAlertTextSize(mainActivityInterface.getPreferences().getMyPreferenceFloat("presoAlertTextSize", 12f));
     }
 
-    private Uri getUriFromString(Context c, MainActivityInterface mainActivityInterface,
-                                 String uriString, String backupString) {
+    private Uri getUriFromString(String uriString, String backupString) {
         Uri uri = null;
         if (uriString!=null && !uriString.isEmpty()) {
             uri = mainActivityInterface.getStorageAccess().

@@ -68,9 +68,9 @@ public class ProfileFragment extends Fragment {
             Intent intent = result.getData();
             if (intent!=null && intent.getData()!=null) {
                 if (which.equals("load")) {
-                    success = mainActivityInterface.getProfileActions().loadProfile(requireContext(), mainActivityInterface, intent.getData());
+                    success = mainActivityInterface.getProfileActions().loadProfile(intent.getData());
                 } else {
-                    success = mainActivityInterface.getProfileActions().saveProfile(requireContext(), mainActivityInterface, intent.getData());
+                    success = mainActivityInterface.getProfileActions().saveProfile(intent.getData());
                 }
             }
         }
@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment {
 
     private void resetPreferences() {
         // Reset the preferences and start again
-        mainActivityInterface.getProfileActions().resetPreferences(mainActivityInterface);
+        mainActivityInterface.getProfileActions().resetPreferences();
         NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.setStorageLocationFragment, true)
                 .build();

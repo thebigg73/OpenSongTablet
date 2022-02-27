@@ -196,7 +196,7 @@ public class ImportOnlineFragment extends Fragment {
         webView.getSettings().setDisplayZoomControls(false);
         webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         webView.setScrollbarFadingEnabled(false);
-        webView.addJavascriptInterface(new MyJSInterface(requireContext(),mainActivityInterface,this), "HTMLOUT");
+        webView.addJavascriptInterface(new MyJSInterface(requireContext(),this), "HTMLOUT");
 
         webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
             // Show the progressBar
@@ -457,10 +457,10 @@ public class ImportOnlineFragment extends Fragment {
             mainActivityInterface.getPreferences().setMyPreferenceString("songfilename",filename);
 
             // Update the main and nonopensong databases
-            mainActivityInterface.getSQLiteHelper().createSong(requireContext(),mainActivityInterface,folder,filename);
-            mainActivityInterface.getSQLiteHelper().updateSong(requireContext(),mainActivityInterface,newSong);
-            mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(requireContext(),mainActivityInterface,folder,filename);
-            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(requireContext(),mainActivityInterface,newSong);
+            mainActivityInterface.getSQLiteHelper().createSong(folder,filename);
+            mainActivityInterface.getSQLiteHelper().updateSong(newSong);
+            mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(folder,filename);
+            mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(newSong);
 
             // Add a record to the CCLI log if we are automatically logging activity
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
@@ -493,7 +493,7 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setFolder(getFolder);
         newSong.setSongid(mainActivityInterface.getCommonSQL().getAnySongId(getFolder,getName));
         if (mainActivityInterface.getSaveSong().
-                doSave(requireContext(),mainActivityInterface,newSong)) {
+                doSave(newSong)) {
             // Update the songid file (used later)
             mainActivityInterface.getStorageAccess().writeSongIDFile(
                     mainActivityInterface.getStorageAccess().getSongIDsFromFile());

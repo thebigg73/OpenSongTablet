@@ -9,6 +9,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class ThemeColors {
 
     private final String TAG = "ThemeColors";
+    private final MainActivityInterface mainActivityInterface;
 
     // This object holds the user theme colours
     private String themeName;
@@ -44,6 +45,9 @@ public class ThemeColors {
     private int highlightChordColor;
     private int highlightHeadingColor;
 
+    public ThemeColors(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+    }
     // Set the values with updates
     public void setThemeName(String themeName) {
         this.themeName = themeName;
@@ -210,27 +214,27 @@ public class ThemeColors {
         return highlightHeadingColor;
     }
 
-    public void getDefaultColors(Context c, MainActivityInterface mainActivityInterface) {
+    public void getDefaultColors() {
         themeName = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
         switch (themeName) {
             case "dark":
             default:
-                setThemeDark(c, mainActivityInterface);
+                setThemeDark();
                 break;
             case "light":
-                setThemeLight(c, mainActivityInterface);
+                setThemeLight();
                 break;
             case "custom1":
-                setThemeCustom1(c, mainActivityInterface);
+                setThemeCustom1();
                 break;
             case "custom2":
-                setThemeCustom2(c, mainActivityInterface);
+                setThemeCustom2();
                 break;
         }
-        splitColorAndAlpha(mainActivityInterface);
+        splitColorAndAlpha();
     }
 
-    public void resetTheme(Context c, MainActivityInterface mainActivityInterface) {
+    public void resetTheme() {
         String theme = mainActivityInterface.getPreferences().getMyPreferenceString("appTheme","dark");
 
         // Some colours are the same regardless of mode
@@ -311,7 +315,7 @@ public class ThemeColors {
 
 
     }
-    private void setThemeDark(Context c, MainActivityInterface mainActivityInterface) {
+    private void setThemeDark() {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_metronomeColor",               darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_pageButtonsColor",           pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_stickyTextColor",             black));
@@ -336,7 +340,7 @@ public class ThemeColors {
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightChordColor",     transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("dark_highlightHeadingColor", transparent));
     }
-    private void setThemeLight(Context c, MainActivityInterface mainActivityInterface) {
+    private void setThemeLight() {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_metronomeColor",               darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_pageButtonsColor",           pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_stickyTextColor",             black));
@@ -361,7 +365,7 @@ public class ThemeColors {
         setHighlightChordColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightChordColor",    transparent));
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("light_highlightHeadingColor",transparent));
     }
-    private void setThemeCustom1(Context c, MainActivityInterface mainActivityInterface) {
+    private void setThemeCustom1() {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_metronomeColor",             darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_pageButtonsColor",         pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_stickyTextColor",           black));
@@ -387,7 +391,7 @@ public class ThemeColors {
         setHighlightHeadingColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom1_highlightHeadingColor",transparent));
 
     }
-    private void setThemeCustom2(Context c, MainActivityInterface mainActivityInterface) {
+    private void setThemeCustom2() {
         setMetronomeColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_metronomeColor",             darkishred));
         setPageButtonsColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_pageButtonsColor",         pageButtonColor));
         setStickyTextColor(mainActivityInterface.getPreferences().getMyPreferenceInt("custom2_stickyTextColor",           black));
@@ -566,7 +570,7 @@ public class ThemeColors {
         return color;
     }
 
-    public void splitColorAndAlpha(MainActivityInterface mainActivityInterface) {
+    public void splitColorAndAlpha() {
         // The colour will include alpha.  Strip this out
         int alpha = Math.round(Color.alpha(pageButtonsColor));
         int red = Color.red(pageButtonsColor);
@@ -575,7 +579,7 @@ public class ThemeColors {
         pageButtonsSplitColor = Color.argb(255, red, green, blue);
         pageButtonsSplitAlpha = alpha / 255f;
         // Update page buttons and extra info
-        mainActivityInterface.getPageButtons().updateColors(mainActivityInterface);
+        mainActivityInterface.getPageButtons().updateColors();
         mainActivityInterface.getDisplayPrevNext().updateColors();
         mainActivityInterface.updateOnScreenInfo("alpha");
 

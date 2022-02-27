@@ -11,6 +11,8 @@ public class ConvertOnSong {
     // To simplify this, we will extract the specific OnSongStuff first and then pass it to convertChoPro
 
     // Declare the variables;
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
     private String title;
     private String author;
     private String key;
@@ -33,7 +35,12 @@ public class ConvertOnSong {
     private String[] lines;
     private StringBuilder parsedLines;
 
-    public Song convertTextToTags(Context c, MainActivityInterface mainActivityInterface, Uri uri, Song thisSong) {
+    public ConvertOnSong(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+
+    public Song convertTextToTags(Uri uri, Song thisSong) {
 
         initialiseTheVariables();
 
@@ -49,7 +56,7 @@ public class ConvertOnSong {
         lyrics = mainActivityInterface.getConvertChoPro().makeTagsCommon(lyrics);
 
         // Fix content we recognise as OnSongTags
-        lyrics = fixRecognisedContent(lyrics, mainActivityInterface);
+        lyrics = fixRecognisedContent(lyrics);
 
         // Now that we have the basics in place, we will go back through the song and extract headings
         // We have to do this separately as [] were previously identifying chords, not tags.
@@ -64,10 +71,10 @@ public class ConvertOnSong {
 
         // Get the filename and subfolder (if any) that the original song was in by parsing the uri
         oldSongFileName = mainActivityInterface.getConvertChoPro().getOldSongFileName(uri);
-        songSubFolder = mainActivityInterface.getConvertChoPro().getSongFolderLocation(mainActivityInterface, uri, oldSongFileName);
+        songSubFolder = mainActivityInterface.getConvertChoPro().getSongFolderLocation(uri, oldSongFileName);
 
         // Prepare the new song filename
-        newSongFileName = mainActivityInterface.getConvertChoPro().getNewSongFileName(mainActivityInterface, uri, title);
+        newSongFileName = mainActivityInterface.getConvertChoPro().getNewSongFileName(uri, title);
 
         // Set the correct values
         setCorrectXMLValues(thisSong);
@@ -76,7 +83,7 @@ public class ConvertOnSong {
         String myNewXML = mainActivityInterface.getProcessSong().getXML(thisSong);
 
         // Get a unique uri for the new song
-        Uri newUri = mainActivityInterface.getConvertChoPro().getNewSongUri(c, mainActivityInterface, songSubFolder, newSongFileName);
+        Uri newUri = mainActivityInterface.getConvertChoPro().getNewSongUri(songSubFolder, newSongFileName);
         newSongFileName = newUri.getLastPathSegment();
         // Just in case it had _ appended due to name conflict.
         // Get rid of the rubbish...
@@ -88,7 +95,7 @@ public class ConvertOnSong {
         thisSong.setFilename(newSongFileName);
 
         // Now write the modified song
-        mainActivityInterface.getConvertChoPro().writeTheImprovedSong(c, mainActivityInterface, thisSong, oldSongFileName, newSongFileName,
+        mainActivityInterface.getConvertChoPro().writeTheImprovedSong(thisSong, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri, myNewXML);
 
         // Add it to the database
@@ -157,7 +164,7 @@ public class ConvertOnSong {
         return l;
     }
 
-    private String fixRecognisedContent(String l, MainActivityInterface mainActivityInterface) {
+    private String fixRecognisedContent(String l) {
         // Break the filecontents into lines
         lines = l.split("\n");
 
@@ -298,7 +305,7 @@ public class ConvertOnSong {
             }
 
             // Fix guitar tab so it fits OpenSongApp formatting ;e |
-            line = mainActivityInterface.getConvertChoPro().tryToFixTabLine(mainActivityInterface,line);
+            line = mainActivityInterface.getConvertChoPro().tryToFixTabLine(line);
 
             if (line.startsWith(";;")) {
                 line = line.replace(";;", ";");
@@ -314,7 +321,7 @@ public class ConvertOnSong {
         return parsedLines.toString();
     }
 
-    private Song setCorrectXMLValues(Song thisSong) {
+    private void setCorrectXMLValues(Song thisSong) {
         if (title == null || title.isEmpty()) {
             thisSong.setTitle(newSongFileName);
         } else {
@@ -335,8 +342,6 @@ public class ConvertOnSong {
         thisSong.setPresentationorder(flow.trim());
         thisSong.setHymnnum(number.trim());
         thisSong.setTheme(theme.trim());
-
-        return thisSong;
     }
 
 }

@@ -18,9 +18,13 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     private final Uri appDB, userDB;
     private final File appDBFile;
     private final String TAG = "NonOSSQLHelper";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
 
-    public NonOpenSongSQLiteHelper(Context c, MainActivityInterface mainActivityInterface) {
+    public NonOpenSongSQLiteHelper(Context c) {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
         appDBFile = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
         appDB = Uri.fromFile(appDBFile);
         userDB = mainActivityInterface.getStorageAccess().getUriForItem(
@@ -29,13 +33,13 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         // Check for a previous version in user storage
         // If it exists and isn't empty, copy it in to the appDB
         // If if doesn't exist, or is empty copy our appDB to the userDb
-        importDatabase(c, mainActivityInterface);
+        importDatabase();
     }
 
     // Database Version
     private static final int DATABASE_VERSION = 2;
 
-    private SQLiteDatabase getDB(Context c, MainActivityInterface mainActivityInterface) {
+    private SQLiteDatabase getDB() {
         // The version we use has to be in local app storage unfortunately.  We can copy this though
         SQLiteDatabase db2 = SQLiteDatabase.openOrCreateDatabase(appDBFile,null);
         if (db2.getVersion()!=DATABASE_VERSION) {
@@ -46,7 +50,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         return db2;
     }
 
-    private void importDatabase(Context c, MainActivityInterface mainActivityInterface) {
+    private void importDatabase() {
         // This copies in the version in the settings folder if it exists and isn't empty
         if (mainActivityInterface.getStorageAccess().uriExists(userDB) &&
         mainActivityInterface.getStorageAccess().getFileSizeFromUri(userDB)>0) {
@@ -56,11 +60,11 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         } else {
             mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, userDB,null,"Settings","",
                     SQLite.NON_OS_DATABASE_NAME);
-            Log.d(TAG,"Copy appDB to userDB: "+copyUserDatabase(c,mainActivityInterface));
+            Log.d(TAG,"Copy appDB to userDB: "+copyUserDatabase());
         }
     }
 
-    public boolean copyUserDatabase(Context c, MainActivityInterface mainActivityInterface) {
+    public boolean copyUserDatabase() {
         // This copies the app persistent database into the user's OpenSong folder
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(appDB);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(userDB);
@@ -77,9 +81,9 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         // Do nothing here as we manually update the table to match
         db2.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME + ";");
     }
-    public void initialise(Context c, MainActivityInterface mainActivityInterface) {
+    public void initialise() {
         // If the database doesn't exist, create it
-        try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
+        try (SQLiteDatabase db2 = getDB()) {
             onCreate(db2);
         }
     }
@@ -87,17 +91,17 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
 
     // Create, delete and update entries
-    public void createSong(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+    public void createSong(String folder, String filename) {
         // Creates a basic song entry to the database (id, songid, folder, file)
-        try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
-            mainActivityInterface.getCommonSQL().createSong(c, mainActivityInterface, db2, folder, filename);
+        try (SQLiteDatabase db2 = getDB()) {
+            mainActivityInterface.getCommonSQL().createSong(db2, folder, filename);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
         }
     }
-    public boolean deleteSong(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
+    public boolean deleteSong(String folder, String filename) {
         int i;
-        try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
+        try (SQLiteDatabase db2 = getDB()) {
             i = mainActivityInterface.getCommonSQL().deleteSong(db2,folder,filename);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
@@ -105,17 +109,16 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         }
         return i > -1;
     }
-    public void updateSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
-        try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
+    public void updateSong(Song thisSong) {
+        try (SQLiteDatabase db2 = getDB()) {
             mainActivityInterface.getCommonSQL().updateSong(db2,thisSong);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
         }
     }
 
-    public boolean renameSong(Context c, MainActivityInterface mainActivityInterface,
-                              String oldFolder, String newFolder, String oldName, String newName) {
-        try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
+    public boolean renameSong(String oldFolder, String newFolder, String oldName, String newName) {
+        try (SQLiteDatabase db2 = getDB()) {
             return mainActivityInterface.getCommonSQL().renameSong(db2, oldFolder,newFolder,oldName,newName);
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,8 +126,8 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public String getKey(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
-        try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
+    public String getKey(String folder, String filename) {
+        try (SQLiteDatabase db2 = getDB()) {
             return mainActivityInterface.getCommonSQL().getKey(db2, folder, filename);
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
@@ -133,8 +136,8 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     }
 
     // Check if a song exists
-    public boolean songExists(Context c, MainActivityInterface mainActivityInterface, String folder, String filename) {
-        try (SQLiteDatabase db = getDB(c,mainActivityInterface)) {
+    public boolean songExists(String folder, String filename) {
+        try (SQLiteDatabase db = getDB()) {
             return mainActivityInterface.getCommonSQL().songExists(db, folder, filename);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
@@ -144,21 +147,20 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     // TODO MIGHT REMOVE AS THE CONTENTS OF THIS DATABASE ARE PULLED INTO THE MAIN ONE AT RUNTIME
     // Find specific song
-    public Song getSpecificSong(Context c, MainActivityInterface mainActivityInterface,
-                                String folder, String filename) {
+    public Song getSpecificSong(String folder, String filename) {
         // This gets basic info from the normal temporary SQLite database
         // It then also adds in any extra stuff found in the NonOpenSongSQLite database
         Song thisSong = new Song();
         String songId = mainActivityInterface.getCommonSQL().getAnySongId(folder,filename);
-        try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB(c)) {
+        try (SQLiteDatabase db = mainActivityInterface.getSQLiteHelper().getDB()) {
             // Get the basics - error here returns the basic stuff as an exception
-            thisSong = mainActivityInterface.getCommonSQL().getSpecificSong(c,db,folder,filename);
+            thisSong = mainActivityInterface.getCommonSQL().getSpecificSong(db,folder,filename);
 
             // Now look to see if there is extra information in the saved NonOpenSongDatabase
-            try (SQLiteDatabase db2 = getDB(c,mainActivityInterface)) {
+            try (SQLiteDatabase db2 = getDB()) {
                 if (mainActivityInterface.getCommonSQL().songExists(db2,folder,filename)) {
                     // Get the more detailed values for the PDF/Image
-                    thisSong = mainActivityInterface.getCommonSQL().getSpecificSong(c,db2,folder,filename);
+                    thisSong = mainActivityInterface.getCommonSQL().getSpecificSong(db2,folder,filename);
 
                     // Update the values in the temporary main database (used for song menu and features)
                     mainActivityInterface.getCommonSQL().updateSong(db,thisSong);

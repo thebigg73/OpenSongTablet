@@ -111,7 +111,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         mainActivityInterface.getMidi().addToSongMessages(toPosition,thisCommand);
 
         // Update the song midi messages and save to the song
-        mainActivityInterface.getMidi().updateSongMessages(c);
+        mainActivityInterface.getMidi().updateSongMessages();
 
         // Notify the changes to this adapter
         MidiInfo midiInfo = midiInfos.get(fromPosition);
@@ -126,7 +126,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         // Remove from the song messages
         mainActivityInterface.getMidi().removeFromSongMessages(fromPosition);
         // Update and ave the song messages
-        mainActivityInterface.getMidi().updateSongMessages(c);
+        mainActivityInterface.getMidi().updateSongMessages();
 
         // Remover from the adapter
         midiInfos.remove(fromPosition);

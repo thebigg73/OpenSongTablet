@@ -91,7 +91,7 @@ public class PageButtonFragment extends Fragment {
 
                 // Now iterate through each button and set it up
                 for (int x = 0; x < 6; x++) {
-                    mainActivityInterface.getPageButtons().setPageButton(requireContext(), myButtons.get(x), x, true);
+                    mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x, true);
                     myButtons.get(x).setVisibility(View.VISIBLE);
                     setVisibilityFromBoolean(myLayouts.get(x), mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
                     mySwitches.get(x).setChecked(mainActivityInterface.getPageButtons().getPageButtonVisibility(x));
@@ -221,7 +221,7 @@ public class PageButtonFragment extends Fragment {
         mainActivityInterface.getPageButtons().setPageButtonShortText(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonLongText(x,foundpos);
         mainActivityInterface.getPageButtons().setPageButtonDrawable(requireContext(),x,foundpos);
-        mainActivityInterface.getPageButtons().setPageButton(requireContext(), myButtons.get(x), x,true);
+        mainActivityInterface.getPageButtons().setPageButton(myButtons.get(x), x,true);
         setTheText(x);
         mainActivityInterface.getPreferences().setMyPreferenceString("pageButton"+(x+1),mainActivityInterface.getPageButtons().getPageButtonAction(x));
         mainActivityInterface.updatePageButtonLayout();

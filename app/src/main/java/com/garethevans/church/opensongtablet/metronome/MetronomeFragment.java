@@ -134,7 +134,7 @@ public class MetronomeFragment extends Fragment {
     private void setupPreferences() {
         // Get the song values
         myView.songTempo.setText(mainActivityInterface.getSong().getTempo());
-        ArrayList<String> timeSignature = mainActivityInterface.getMetronome().processTimeSignature(mainActivityInterface);
+        ArrayList<String> timeSignature = mainActivityInterface.getMetronome().processTimeSignature();
         myView.signatureBeats.setText(timeSignature.get(0));
         myView.signatureDivisions.setText(timeSignature.get(1));
 
@@ -213,11 +213,11 @@ public class MetronomeFragment extends Fragment {
         myView.startStopButton.setOnClickListener(button -> {
             // Change the button based on what the metronome wasn't doing as it will be in a mo!
             setStartStopIcon(!mainActivityInterface.getMetronome().getIsRunning());
-            mainActivityInterface.getMetronome().startMetronome(requireActivity(),requireContext(),mainActivityInterface);
+            mainActivityInterface.getMetronome().startMetronome();
         });
         myView.visualMetronome.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("metronomeShowVisual",isChecked);
-            mainActivityInterface.getMetronome().setVisualMetronome(requireContext(),mainActivityInterface);
+            mainActivityInterface.getMetronome().setVisualMetronome();
         });
         myView.tapTempo.setOnClickListener(button -> tapTempo());
 
@@ -258,8 +258,7 @@ public class MetronomeFragment extends Fragment {
                 myView.tapTempo.setBackgroundColor(getResources().getColor(R.color.colorSecondary));
             });
             // Start the metronome
-            mainActivityInterface.getMetronome().startMetronome(requireActivity(),
-                    requireContext(),mainActivityInterface);
+            mainActivityInterface.getMetronome().startMetronome();
         };
     }
 
@@ -280,12 +279,12 @@ public class MetronomeFragment extends Fragment {
         }
         Log.d(TAG,"pan="+pan);
         mainActivityInterface.getPreferences().setMyPreferenceString("metronomePan",pan);
-        mainActivityInterface.getMetronome().setVolumes(requireContext(),mainActivityInterface);
+        mainActivityInterface.getMetronome().setVolumes();
     }
     private void restartMetronome() {
         if (mainActivityInterface.getMetronome().getIsRunning()) {
-            mainActivityInterface.getMetronome().stopMetronome(mainActivityInterface);
-            mainActivityInterface.getMetronome().startMetronome(requireActivity(),requireContext(),mainActivityInterface);
+            mainActivityInterface.getMetronome().stopMetronome();
+            mainActivityInterface.getMetronome().startMetronome();
         }
     }
 
@@ -306,7 +305,7 @@ public class MetronomeFragment extends Fragment {
         // When tapping for compound/complex time signatures
         // They sometimes go in double or triple time
         if (mainActivityInterface.getMetronome().getIsRunning()) {
-            mainActivityInterface.getMetronome().stopMetronome(mainActivityInterface);
+            mainActivityInterface.getMetronome().stopMetronome();
         }
 
         long new_time = System.currentTimeMillis();
@@ -383,8 +382,7 @@ public class MetronomeFragment extends Fragment {
             switch (preference) {
                 case "songTempo":
                     mainActivityInterface.getSong().setTempo(exposedDropDown.getText().toString());
-                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
-                            mainActivityInterface.getSong());
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
                     restartMetronome();
                     break;
                 case "songTimeSignature_beats":
@@ -405,8 +403,7 @@ public class MetronomeFragment extends Fragment {
                         mainActivityInterface.getSong().setTimesig("");
                     }
                     restartMetronome();
-                    mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
-                            mainActivityInterface.getSong());
+                    mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
                     break;
                 case "metronomeTickSound":
                 case "metronomeTockSound":
@@ -436,12 +433,12 @@ public class MetronomeFragment extends Fragment {
                 case "metronomeTockVol":
                     float newVol = slider.getValue() / 100.0f;
                     mainActivityInterface.getPreferences().setMyPreferenceFloat(preference, newVol);
-                    mainActivityInterface.getMetronome().setVolumes(requireContext(), mainActivityInterface);
+                    mainActivityInterface.getMetronome().setVolumes();
                     break;
                 case "metronomeLength":
                     int bars = (int)slider.getValue();
                     mainActivityInterface.getPreferences().setMyPreferenceInt(preference, bars);
-                    mainActivityInterface.getMetronome().setBarsAndBeats(requireContext(),mainActivityInterface);
+                    mainActivityInterface.getMetronome().setBarsAndBeats();
                     break;
             }
         }

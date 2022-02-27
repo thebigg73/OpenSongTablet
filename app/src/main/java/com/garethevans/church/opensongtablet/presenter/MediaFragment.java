@@ -93,8 +93,8 @@ public class MediaFragment extends Fragment {
 
     private void prepareAutoPad() {
         //
-        boolean isAutoPad = mainActivityInterface.getPad().isAutoPad(requireContext());
-        boolean isCustomAutoPad = mainActivityInterface.getPad().isCustomAutoPad(requireContext());
+        boolean isAutoPad = mainActivityInterface.getPad().isAutoPad();
+        boolean isCustomAutoPad = mainActivityInterface.getPad().isCustomAutoPad();
         if (isAutoPad && !isCustomAutoPad) {
             // Just use the built in pad
 
@@ -144,7 +144,7 @@ public class MediaFragment extends Fragment {
         linkAudio = mainActivityInterface.getSong().getLinkaudio();
 
         // Get the padUri
-        padUri = mainActivityInterface.getPad().getPadUri(requireContext());
+        padUri = mainActivityInterface.getPad().getPadUri();
         Log.d(TAG,"padKey: "+padKey);
         Log.d(TAG,"padFile: "+padFile);
         Log.d(TAG,"linkYouTube: "+linkYouTube);

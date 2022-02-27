@@ -10,6 +10,8 @@ import java.util.ArrayList;
 public class CustomSlide {
 
     // This object holds and deals with any custom slide objects
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
 
     // Firstly the variables used when on the create slide page
     private String createType = "note";     // Type of custom slide being created
@@ -35,7 +37,12 @@ public class CustomSlide {
     private String hymn_num;                // Notes saved with the slide
     private String key_line;                //
 
-    public void buildCustomSlide(Context c, MainActivityInterface mainActivityInterface, ArrayList<String> customSlide) {
+    public CustomSlide(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+
+    public void buildCustomSlide(ArrayList<String> customSlide) {
         resetCustomSlide();
         if (customSlide!=null && customSlide.size()>2) {
             title = customSlide.get(1);
@@ -90,7 +97,7 @@ public class CustomSlide {
         file = "";
     }
 
-    public void addItemToSet(Context c, MainActivityInterface mainActivityInterface, boolean reusable) {
+    public void addItemToSet(boolean reusable) {
         if (file != null && !file.isEmpty() && folder != null && !folder.isEmpty()) {
             // Prepare the custom slide so it can be viewed in the app
             // When exporting/saving the set, the contents get grabbed from this
@@ -135,7 +142,7 @@ public class CustomSlide {
             mainActivityInterface.getCurrentSet().addSetValues("**" + folder, file, key);
             mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
 
-            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString(mainActivityInterface));
+            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
             mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
 
             // Update the set menu

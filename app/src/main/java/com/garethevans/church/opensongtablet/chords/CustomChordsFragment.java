@@ -741,8 +741,7 @@ public class CustomChordsFragment extends Fragment {
             customChordText.append(code).append(" ");
         }
         mainActivityInterface.getSong().setCustomChords(customChordText.toString().trim());
-        mainActivityInterface.getSaveSong().updateSong(requireContext(),mainActivityInterface,
-                mainActivityInterface.getSong());
+        mainActivityInterface.getSaveSong().updateSong(mainActivityInterface.getSong());
         currentCode = "";
 
         // Load the chords in the song back up as a custom chord might fix a chord not in the database

@@ -214,11 +214,11 @@ public class SetManageFragment extends Fragment {
 
     private void getAllSets() {
         // Get a list of the files in the Sets folder
-        allSets = mainActivityInterface.getSetActions().getAllSets(requireContext(), mainActivityInterface);
+        allSets = mainActivityInterface.getSetActions().getAllSets();
     }
 
     private void listCategories() {
-        categories = mainActivityInterface.getSetActions().getCategories(requireContext(), allSets);
+        categories = mainActivityInterface.getSetActions().getCategories(allSets);
         categoriesAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.setCategory,
                 R.layout.view_exposed_dropdown_item, categories);
         myView.setCategory.setAdapter(categoriesAdapter);
@@ -246,11 +246,9 @@ public class SetManageFragment extends Fragment {
         myView.setLists.removeAllViews();
         ArrayList<String> availableSets;
         if (whattodo.equals("renameset")) {
-            availableSets = mainActivityInterface.getSetActions().listSetsWithCategories(requireContext(),
-                    mainActivityInterface,allSets);
+            availableSets = mainActivityInterface.getSetActions().listSetsWithCategories(allSets);
         } else {
-            availableSets = mainActivityInterface.getSetActions().setsInCategory(requireContext(),
-                    mainActivityInterface, allSets);
+            availableSets = mainActivityInterface.getSetActions().setsInCategory(allSets);
         }
 
         // It will also get MAIN, but it won't matter as it just replaces it
@@ -355,8 +353,7 @@ public class SetManageFragment extends Fragment {
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().
                         getOutputStream(uri);
 
-                String setXML = mainActivityInterface.getSetActions().createSetXML(
-                        requireContext(), mainActivityInterface);
+                String setXML = mainActivityInterface.getSetActions().createSetXML();
                 if (mainActivityInterface.getStorageAccess().writeFileFromString(
                         setXML, outputStream)) {
                     // Update the last loaded set now it is saved.
@@ -480,7 +477,7 @@ public class SetManageFragment extends Fragment {
 
         new Thread(() -> {
             // Empty the cache directories as new sets can have custom items
-            mainActivityInterface.getSetActions().loadSets(requireContext(), mainActivityInterface, setUris);
+            mainActivityInterface.getSetActions().loadSets(setUris);
             // Import ended
             requireActivity().runOnUiThread(() -> {
                 myView.progressBar.setVisibility(View.GONE);

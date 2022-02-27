@@ -13,8 +13,15 @@ import java.util.ArrayList;
 public class SaveSong {
 
     private final String TAG = "SaveSong";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
 
-    public boolean doSave(Context c, MainActivityInterface mainActivityInterface, Song newSong) {
+    public SaveSong(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+
+    public boolean doSave(Song newSong) {
         // This is called from the EditSong fragment where we check for file/folder changes too
         // Because we haven't written the changes, we receive the 'newSong' object to compare with the current song
 
@@ -48,11 +55,10 @@ public class SaveSong {
 
             if (folderChange || filenameChange) {
                 // We need to rename the entry in the database
-                mainActivityInterface.getSQLiteHelper().renameSong(c, mainActivityInterface,
-                        oldFolder, newSong.getFolder(), oldFilename, newSong.getFilename());
+                mainActivityInterface.getSQLiteHelper().renameSong(oldFolder, newSong.getFolder(), oldFilename, newSong.getFilename());
                 if (newSong.getFiletype().equals("PDF") || newSong.getFiletype().equals("IMG")) {
                     // If it isn't an XML file, also update the persistent database
-                    mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(c, mainActivityInterface,
+                    mainActivityInterface.getNonOpenSongSQLiteHelper().renameSong(
                             oldFolder, newSong.getFolder(), oldFilename, newSong.getFilename());
                 }
 
@@ -70,7 +76,7 @@ public class SaveSong {
             }
 
             // Now save the new song
-            boolean saveSuccessful = updateSong(c, mainActivityInterface, newSong);
+            boolean saveSuccessful = updateSong(newSong);
 
             // Now, if the save was successful and the folder/filename changes, delete the old stuff
             if ((folderChange || filenameChange) && saveSuccessful) {
@@ -91,20 +97,19 @@ public class SaveSong {
     }
 
     // This updates the current song
-    public boolean updateSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    public boolean updateSong(Song thisSong) {
         // This is called if we just want to save the current song updates stored in the current song
         // This only works is the folder and filename haven't changed (done in the step above from edit song instead)
 
         // Won't do anything if this is the 'Welcome' song
         if (checkNotWelcomeSong(thisSong)) {
             // First update the song database
-            mainActivityInterface.getSQLiteHelper().updateSong(c, mainActivityInterface, thisSong);
+            mainActivityInterface.getSQLiteHelper().updateSong(thisSong);
 
             // If this is a non-OpenSong song (PDF, IMG), update the persistent database
             if (!thisSong.getFiletype().equals("XML")) {
                 // If update fails (due to no existing row, a new one is created)
-                mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(c, mainActivityInterface,
-                        thisSong);
+                mainActivityInterface.getNonOpenSongSQLiteHelper().updateSong(thisSong);
             }
 
             // Update the CCLI log if required

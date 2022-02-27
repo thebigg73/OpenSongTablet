@@ -96,14 +96,13 @@ public class AppActionBar {
     public boolean getHideActionBar() {
         return hideActionBar;
     }
-    public void setActionBar(Context c, MainActivityInterface mainActivityInterface, String newtitle) {
+    public void setActionBar(String newtitle) {
         if (newtitle == null) {
             // We are in the Performance/Stage mode
             float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize",13.0f);
 
             // If we are in a set, show the icon
-            int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface,
-                    mainActivityInterface.getSong());
+            int positionInSet = mainActivityInterface.getSetActions().indexSongInSet(mainActivityInterface.getSong());
             if (positionInSet>-1) {
                 setIcon.setVisibility(View.VISIBLE);
                 mainActivityInterface.getCurrentSet().setIndexSongInSet(positionInSet);
@@ -139,23 +138,23 @@ public class AppActionBar {
                 hideView(key, true);
             }
             if (title!=null) {
-                title.setOnClickListener(v -> openDetails(mainActivityInterface));
+                title.setOnClickListener(v -> openDetails());
                 title.setOnLongClickListener(view -> {
-                    editSong(mainActivityInterface);
+                    editSong();
                     return true;
                 });
             }
             if (author!=null) {
-                author.setOnClickListener(v -> openDetails(mainActivityInterface));
+                author.setOnClickListener(v -> openDetails());
                 author.setOnLongClickListener(view -> {
-                    editSong(mainActivityInterface);
+                    editSong();
                     return true;
                 });
             }
             if (key!=null) {
-                key.setOnClickListener(v -> openDetails(mainActivityInterface));
+                key.setOnClickListener(v -> openDetails());
                 key.setOnLongClickListener(view -> {
-                    editSong(mainActivityInterface);
+                    editSong();
                     return true;
                 });
             }
@@ -173,13 +172,13 @@ public class AppActionBar {
         }
     }
 
-    private void openDetails(MainActivityInterface mainActivityInterface) {
+    private void openDetails() {
         if (!mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp")) {
             SongDetailsBottomSheet songDetailsBottomSheet = new SongDetailsBottomSheet();
             songDetailsBottomSheet.show(mainActivityInterface.getMyFragmentManager(), "songDetailsBottomSheet");
         }
     }
-    private void editSong(MainActivityInterface mainActivityInterface) {
+    private void editSong() {
         if (!mainActivityInterface.getSong().getTitle().equals("Welcome to OpenSongApp")) {
             mainActivityInterface.navigateToFragment("opensongapp://settings/edit", 0);
         }
@@ -300,7 +299,6 @@ public class AppActionBar {
         } else if (actionBar!=null) {
             actionBar.hide();
         }
-        actionBar.hide();
     }
 
     public void removeCallBacks() {

@@ -121,9 +121,8 @@ public class ImportOptionsFragment extends Fragment {
                         Log.d(TAG, "uri=" + uri);
                         mainActivityInterface.getSong().setFilename(cameraFilename);
                         // Add to the database
-                        mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(requireContext(),
-                                mainActivityInterface, mainActivityInterface.getSong().getFolder(),
-                                cameraFilename);
+                        mainActivityInterface.getNonOpenSongSQLiteHelper().createSong(
+                                mainActivityInterface.getSong().getFolder(), cameraFilename);
                         mainActivityInterface.updateSongMenu(mainActivityInterface.getSong());
                         mainActivityInterface.getPreferences().setMyPreferenceString(
                                 "songfilename",cameraFilename);

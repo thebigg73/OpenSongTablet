@@ -79,7 +79,7 @@ public class EditSongFragmentMain extends Fragment  {
         mainActivityInterface.getProcessSong().editBoxToMultiline(myView.songNotes);
         mainActivityInterface.getProcessSong().stretchEditBoxToLines(myView.songNotes,5);
         myView.filename.setText(mainActivityInterface.getTempSong().getFilename());
-        folders = mainActivityInterface.getSQLiteHelper().getFolders(getContext(), mainActivityInterface);
+        folders = mainActivityInterface.getSQLiteHelper().getFolders();
         newFolder = "+ " + getString(R.string.new_folder_add);
         folders.add(newFolder);
         arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), myView.folder, R.layout.view_exposed_dropdown_item, folders);

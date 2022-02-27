@@ -16,6 +16,7 @@ public class PedalActions {
 
     // TODO Airturn
     private final String TAG = "PedalActions";
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private ArrayList<String> actions, actionCodes;
     private final int[] pedalCode = new int[9]; // 8 buttons, but ignore item 0
@@ -38,14 +39,15 @@ public class PedalActions {
         }
     };
 
-    public PedalActions(Context c, MainActivityInterface mainActivityInterface) {
-        this.mainActivityInterface = mainActivityInterface;
-        setUpPedalActions(c,mainActivityInterface);
+    public PedalActions(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+        setUpPedalActions();
     }
 
-    public void setUpPedalActions(Context c, MainActivityInterface mainActivityInterface) {
-        setActions(c);
-        setPrefs(c,mainActivityInterface);
+    public void setUpPedalActions() {
+        setActions();
+        setPrefs();
     }
 
     public ArrayList<String> getActions() {
@@ -55,7 +57,7 @@ public class PedalActions {
         return actionCodes;
     }
 
-    private void setActions(Context c) {
+    private void setActions() {
         actions = new ArrayList<>();
         actionCodes = new ArrayList<>();
         String startstop = " (" + c.getString(R.string.start) + " / " + c.getString(R.string.stop) + ")";
@@ -96,7 +98,7 @@ public class PedalActions {
         actionCodes.add(id);
         actions.add(val);
     }
-    private void setPrefs(Context c, MainActivityInterface mainActivityInterface) {
+    private void setPrefs() {
         for (int w=1; w<=8; w++) {
             pedalCode[w] = mainActivityInterface.getPreferences().getMyPreferenceInt("pedal"+w+"Code", defPedalCodes[w]);
             pedalMidi[w] = mainActivityInterface.getPreferences().getMyPreferenceString("pedal"+w+"Midi",defPedalMidis[w]);
@@ -329,7 +331,7 @@ public class PedalActions {
         return pedalLongPressAction[which];
     }
 
-    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, boolean bool) {
+    public void setPreferences(String which, boolean bool) {
         switch (which) {
             case "pedalScrollBeforeMove":
                 this.pedalScrollBeforeMove = bool;
@@ -347,7 +349,7 @@ public class PedalActions {
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceBoolean(which, bool);
     }
-    public void setPreferences(Context c, MainActivityInterface mainActivityInterface, String which, int val) {
+    public void setPreferences(String which, int val) {
         switch (which) {
             case "keyRepeatCount":
                 this.keyRepeatCount = val;
@@ -359,16 +361,15 @@ public class PedalActions {
         // Save the preference
         mainActivityInterface.getPreferences().setMyPreferenceInt(which, val);
     }
-    public void setPedalCode(Context c, MainActivityInterface mainActivityInterface, int which, int newCode) {
+    public void setPedalCode(int which, int newCode) {
         pedalCode[which] = newCode;
         mainActivityInterface.getPreferences().setMyPreferenceInt("pedal"+which+"Code",newCode);
     }
-    public void setMidiCode(Context c, MainActivityInterface mainActivityInterface, int which, String newCode) {
+    public void setMidiCode(int which, String newCode) {
         pedalMidi[which] = newCode;
         mainActivityInterface.getPreferences().setMyPreferenceString("pedal"+which+"Midi",newCode);
     }
-    public void setPedalPreference(Context c, MainActivityInterface mainActivityInterface, int which,
-                                   boolean shortPress, String action) {
+    public void setPedalPreference(int which, boolean shortPress, String action) {
         String pref = "pedal"+which;
         if (shortPress) {
             pedalShortPressAction[which] = action;
