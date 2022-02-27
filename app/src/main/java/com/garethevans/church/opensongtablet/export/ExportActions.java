@@ -224,22 +224,25 @@ public class ExportActions {
 
                                         key = fixNull(key);
                                         if (!key.isEmpty()) {
-                                            key = " (" + key + ")";
+                                            key = "¬ (" + key + ")";
+                                        } else {
+                                            key = "¬ ";
                                         }
 
-                                        author = fixNull(author);
-                                        if (!author.isEmpty()) {
-                                            author = "¬ " + author;
-                                        }
+                                        author = "¬ "+fixNull(author);
 
                                         hymn = fixNull(hymn);
                                         if (!hymn.isEmpty()) {
                                             hymn = "¬ #" + hymn;
+                                        } else {
+                                            hymn = "¬ ";
                                         }
 
                                         ccli = fixNull(ccli);
                                         if (!ccli.isEmpty() && mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging",false)) {
                                             ccli = "¬ CCLI Song #" + ccli;
+                                        } else {
+                                            ccli = "¬ ";
                                         }
 
                                         title = fixNull(title);
@@ -284,7 +287,7 @@ public class ExportActions {
                                         scripture_translation = " (" + scripture_translation + ")";
                                     }
 
-                                    stringBuilderSet.append(scripture_title).append(scripture_translation).append("\n");
+                                    stringBuilderSet.append(scripture_title).append(scripture_translation).append("¬ ¬ ¬ ¬\n");
                                     break;
 
                                 case "image":

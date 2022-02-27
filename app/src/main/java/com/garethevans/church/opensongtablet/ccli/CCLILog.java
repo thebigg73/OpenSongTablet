@@ -40,7 +40,12 @@ import javax.xml.transform.stream.StreamResult;
 
 public class CCLILog {
 
-    public CCLILog() {}
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
+    public CCLILog(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     /*
     1 Created - when importing or clicking on the new
@@ -70,12 +75,12 @@ public class CCLILog {
 
     private ArrayList<String> songfile, title, author, copyright, ccli, date, time, action;
 
-    public void addEntry(Context c, MainActivityInterface mainActivityInterface, Song thisSong, String usageType) {
+    public void addEntry(Song thisSong, String usageType) {
 
         // Check if the log exists or if we need to create it
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
         if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
-            Log.d(TAG, "Creating blankXML=" + createBlankXML(c, mainActivityInterface, uri));
+            Log.d(TAG, "Creating blankXML=" + createBlankXML(uri));
         } else {
             Log.d(TAG, uri + " exists");
         }
@@ -83,10 +88,10 @@ public class CCLILog {
         // Set the date and time
         setTheDateAndTime();
 
-        doTheSaving(c, mainActivityInterface, thisSong, uri, usageType);
+        doTheSaving(thisSong, uri, usageType);
     }
 
-    public boolean createBlankXML(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
+    public boolean createBlankXML(Uri uri) {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<log>\n</log>\n";
 
@@ -107,7 +112,7 @@ public class CCLILog {
         thisdate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
-    private void doTheSaving(Context c, MainActivityInterface mainActivityInterface, Song thisSong, Uri uri, String usageType) {
+    private void doTheSaving(Song thisSong, Uri uri, String usageType) {
         try {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -215,7 +220,7 @@ public class CCLILog {
         }
     }
 
-    public void getLogFileSize(MainActivityInterface mainActivityInterface, Uri uri, TextView logFileSize) {
+    public void getLogFileSize(Uri uri, TextView logFileSize) {
         // Set the uri if it isn't already done
         float file_size_kb = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
         file_size_kb = Math.round(file_size_kb * 100);
@@ -238,7 +243,7 @@ public class CCLILog {
         action = new ArrayList<>();
     }
 
-    public void getCurrentEntries(Context c, MainActivityInterface mainActivityInterface, Uri uri) {
+    public void getCurrentEntries(Uri uri) {
 
         try {
             XmlPullParserFactory factory;
@@ -330,7 +335,7 @@ public class CCLILog {
         }
     }
 
-    public TableLayout getTableLayout(Context c) {
+    public TableLayout getTableLayout() {
         TableLayout tableLayout = new TableLayout(c);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -343,22 +348,22 @@ public class CCLILog {
                     c.getString(R.string.author), c.getString(R.string.copyright),
                     c.getString(R.string.ccli), c.getString(R.string.date),
                     c.getString(R.string.time), c.getString(R.string.action)};
-            tableLayout.addView(getRow(c, headers, true));
+            tableLayout.addView(getRow(headers, true));
 
             // Add the rows
             for (int x = 0; x < songfile.size(); x++) {
                 String[] rowVals = new String[]{songfile.get(x), title.get(x), author.get(x), copyright.get(x),
-                        ccli.get(x), date.get(x), time.get(x), getActionText(c, action.get(x))};
-                tableLayout.addView(getRow(c, rowVals, false));
+                        ccli.get(x), date.get(x), time.get(x), getActionText(action.get(x))};
+                tableLayout.addView(getRow(rowVals, false));
             }
         } else {
             // Empty
-            tableLayout.addView(getRow(c,new String[]{c.getString(R.string.empty),"","","","","","",""},false));
+            tableLayout.addView(getRow(new String[]{c.getString(R.string.empty),"","","","","","",""},false));
         }
         return tableLayout;
     }
 
-    public TableRow getRow(Context c, String[] vals, boolean isHeader) {
+    public TableRow getRow(String[] vals, boolean isHeader) {
         TableRow tableRow = new TableRow(c);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -378,11 +383,11 @@ public class CCLILog {
             }
             tableRow.addView(textView);
         }
-        colorRowColor(c,tableRow);
+        colorRowColor(tableRow);
         return tableRow;
     }
 
-    private String getActionText(Context c, String action) {
+    private String getActionText(String action) {
         String actionText;
         switch (action) {
             default:
@@ -412,7 +417,7 @@ public class CCLILog {
     }
 
     boolean colorRow = true;
-    private void colorRowColor(Context c, TableRow tableRow) {
+    private void colorRowColor(TableRow tableRow) {
         colorRow = !colorRow;
         if (colorRow) {
             tableRow.setBackgroundColor(ColorStateList.valueOf(c.getResources().getColor(R.color.colorSecondary)).getDefaultColor());

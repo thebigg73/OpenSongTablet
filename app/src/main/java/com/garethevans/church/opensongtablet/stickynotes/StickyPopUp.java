@@ -26,8 +26,14 @@ public class StickyPopUp {
     private int posY;
     private int stickyWidth;
 
-    public void floatSticky(Context c, MainActivityInterface mainActivityInterface, View viewHolder,
-                            boolean forceShow) {
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
+
+    public StickyPopUp(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+    public void floatSticky(View viewHolder, boolean forceShow) {
         // Force show is if we manually clicked on the sticky notes page button
         // If the popup is showing already, dismiss it
         // This is called when a song is about to load
@@ -45,23 +51,23 @@ public class StickyPopUp {
         // Let's display the popup sticky note
         } else {
             // Set up the views
-            getPositionAndSize(c,mainActivityInterface);
-            setupViews(c, mainActivityInterface);
+            getPositionAndSize();
+            setupViews();
             setListeners();
             popupWindow.showAtLocation(viewHolder, Gravity.TOP | Gravity.START, posX, posY);
 
             // If we want to autohide the sticky note, set a post delayed handler
             // Not when we manually opened it though
             if (!forceShow) {
-                dealWithAutohide(c, mainActivityInterface);
+                dealWithAutohide();
             }
 
             // Deal with the moveable element (from the top bar)
-            setupDrag(c,mainActivityInterface);
+            setupDrag();
         }
     }
 
-    private void setupViews(Context c, MainActivityInterface mainActivityInterface) {
+    private void setupViews() {
         // The popup
         popupWindow = new PopupWindow(c);
 
@@ -113,7 +119,7 @@ public class StickyPopUp {
         closeButton.setOnClickListener(v -> popupWindow.dismiss());
     }
 
-    private void getPositionAndSize(Context c, MainActivityInterface mainActivityInterface) {
+    private void getPositionAndSize() {
         posX = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyXPosition", -1);
         posY = mainActivityInterface.getPreferences().getMyPreferenceInt("stickyYPosition", -1);
         int w = c.getResources().getDisplayMetrics().widthPixels;
@@ -135,7 +141,7 @@ public class StickyPopUp {
         }
     }
 
-    private void setupDrag(Context c, MainActivityInterface mainActivityInterface) {
+    private void setupDrag() {
         floatWindow.setOnTouchListener(new View.OnTouchListener() {
             int orgX, orgY;
             int offsetX, offsetY;
@@ -168,7 +174,7 @@ public class StickyPopUp {
         }
     }
 
-    private void dealWithAutohide(Context c, MainActivityInterface mainActivityInterface) {
+    private void dealWithAutohide() {
         Handler handler = new Handler();
         long displayTime = mainActivityInterface.getPreferences().getMyPreferenceInt("timeToDisplaySticky",0) * 1000L;
         if (displayTime>0) {

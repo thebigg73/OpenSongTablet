@@ -155,7 +155,7 @@ public class SetActions {
             }
         } else if ((key==null || key.isEmpty()) && folder.contains(folderVariations) && lastCheck) {
             // This is a custom variation item so load the key from the file
-            key = mainActivityInterface.getLoadSong().loadKeyOfSong(mainActivityInterface,folder,filename);
+            key = mainActivityInterface.getLoadSong().loadKeyOfSong(folder,filename);
         }
 
         return fixNull(key);
@@ -591,7 +591,7 @@ public class SetActions {
             keyText = " prefKey=\"" + key + "\"";
         }
         StringBuilder sb = new StringBuilder();
-        String pathText = "";
+        String pathText;
         if (path!=null && !path.replace("/","").equals(c.getString(R.string.mainfoldername))) {
             pathText = " path=\"" + mainActivityInterface.getProcessSong().parseToHTMLEntities(path) + "\"";
         } else {

@@ -98,7 +98,7 @@ public class CustomChordsFragment extends Fragment {
         int chordFormat = mainActivityInterface.getSong().getDetectedChordFormat();
 
         // Figure out the chords in the song
-        mainActivityInterface.getChordDisplayProcessing().getChordsInSong(mainActivityInterface);
+        mainActivityInterface.getChordDisplayProcessing().findChordsInSong();
 
         // Now go through each one in turn
         for (String chord:mainActivityInterface.getChordDisplayProcessing().getChordsInSong()) {
@@ -638,7 +638,7 @@ public class CustomChordsFragment extends Fragment {
                         // Look for the remaining positions in the notesArray
                         if (noteToFind < notes.length && mainActivityInterface.getChordDisplayProcessing().
                                 getPianoNotesArray().get(x).equals(notes[noteToFind])) {
-                            mainActivityInterface.getChordDisplayProcessing().tintDrawable(requireContext(),
+                            mainActivityInterface.getChordDisplayProcessing().tintDrawable(
                                     myView.pianoChordLayout.piano.findViewById(mainActivityInterface.getChordDisplayProcessing().
                                             getPianoKeysArray().get(x)), notes[noteToFind], true);
                             // Add the piano key array true value for this key
@@ -669,7 +669,7 @@ public class CustomChordsFragment extends Fragment {
                     // Change the array value to the opposite of what is currently is
                     pianoKeysOn.set(finalPos,!pianoKeysOn.get(finalPos));
                     // Now update the tints
-                    mainActivityInterface.getChordDisplayProcessing().tintDrawable(requireContext(),
+                    mainActivityInterface.getChordDisplayProcessing().tintDrawable(
                             myView.pianoChordLayout.piano.findViewById(mainActivityInterface.
                                     getChordDisplayProcessing().getPianoKeysArray().get(finalPos)),
                             mainActivityInterface.getChordDisplayProcessing().getPianoNotesArray().

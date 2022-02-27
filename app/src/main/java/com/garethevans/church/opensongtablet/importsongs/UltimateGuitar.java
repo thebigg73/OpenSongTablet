@@ -7,24 +7,29 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class UltimateGuitar {
 
+    private final MainActivityInterface mainActivityInterface;
+
     // Song is effectively written in <pre> formatting with chords above lyrics.
     // Chord lines will have the chord identifier in them.  That can be removed
     // Text is htmlentitied - i.e. " is shown as &quot;, ' is shown as &#039;
+
+    public UltimateGuitar(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     private final String[] bitsToClear = new String[] {"</span>", "(Chords)"};
 
     // New lines are identified as new lines
 
-    public Song processContent(Context c, MainActivityInterface mainActivityInterface,
-                               Song newSong, String s) {
+    public Song processContent(Song newSong, String s) {
         // First up separate the content from the headers
         String headerTitle = getHeaderTitle(s);
 
         // Get the title and author from this
         newSong.setFiletype("XML");
-        newSong.setTitle(getTitle(mainActivityInterface,headerTitle));
+        newSong.setTitle(getTitle(headerTitle));
         newSong.setFilename(newSong.getTitle());
-        newSong.setAuthor(getAuthor(mainActivityInterface,headerTitle));
+        newSong.setAuthor(getAuthor(headerTitle));
 
         // Get the key which might be in a div
         newSong.setKey(getKey(s));
@@ -68,14 +73,14 @@ public class UltimateGuitar {
                 line = " " + line;
             }
             line = stripOutTags(line);
-            line = fixHTMLStuff(mainActivityInterface,line);
+            line = fixHTMLStuff(line);
             lyrics.append(line).append("\n");
         }
         newSong.setLyrics(lyrics.toString());
 
         // If we hae a capo (which means the key and the chords won't match in UG)
         // We will need to transpose the lyrics to match
-        newSong = fixChordsForCapo(c,mainActivityInterface,newSong);
+        newSong = fixChordsForCapo(newSong);
         return newSong;
     }
 
@@ -90,7 +95,7 @@ public class UltimateGuitar {
             return "";
         }
     }
-    private String getTitle(MainActivityInterface mainActivityInterface, String s) {
+    private String getTitle(String s) {
         // Likely to be sent something like <title>{TitleInCaps} CHORDS by {Author} @ Ultimate-Guitar.Com</title>
         // Give options in decreasing order of goodness
         int end = s.indexOf("CHORDS");
@@ -108,10 +113,10 @@ public class UltimateGuitar {
             s = s.substring(0,1).toUpperCase(mainActivityInterface.getLocale()) + s.substring(1);
         }
         s = s.trim();
-        s = fixHTMLStuff(mainActivityInterface,s);
+        s = fixHTMLStuff(s);
         return s;
     }
-    private String getAuthor(MainActivityInterface mainActivityInterface, String s) {
+    private String getAuthor(String s) {
         // Likely to be sent something like <title>{TitleInCaps} CHORDS by {Author} @ Ultimate-Guitar.Com</title>
         // Give options in decreasing order of goodness
         int end = s.indexOf("by ");
@@ -121,7 +126,7 @@ public class UltimateGuitar {
             s = "";
         }
         s = s.trim();
-        s = fixHTMLStuff(mainActivityInterface,s);
+        s = fixHTMLStuff(s);
         return s;
     }
     private String getKey(String s) {
@@ -130,7 +135,7 @@ public class UltimateGuitar {
     private String getCapo(String s) {
         return getMetaData(s,"<div class=\"label\">Capo</div>");
     }
-    private Song fixChordsForCapo(Context c, MainActivityInterface mainActivityInterface, Song newSong) {
+    private Song fixChordsForCapo(Song newSong) {
         // If there is a capo, we have to transpose the song to match
         // UG shows the capo chords and the key but they don't match!
         // We want the actual chords to be stored in the file
@@ -195,7 +200,7 @@ public class UltimateGuitar {
             return "";
         }
     }
-    private String fixHTMLStuff(MainActivityInterface mainActivityInterface, String s) {
+    private String fixHTMLStuff(String s) {
         // Fix html entities to more user friendly
         s = mainActivityInterface.getProcessSong().parseHTML(s);
         // Make it xml friendly though (no <,> or &)

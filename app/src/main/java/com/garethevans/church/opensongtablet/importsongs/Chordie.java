@@ -1,7 +1,5 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
-import android.content.Context;
-
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
@@ -11,7 +9,7 @@ public class Chordie {
     // The contents are contained in a textarea: <textarea id="chordproContent" name="chopro" style="display: none;">..</textarea>
     // This means we just need to get the best title, author, etc. and then process the chopro
 
-    public Song processContent(Context c, MainActivityInterface mainActivityInterface,
+    public Song processContent(MainActivityInterface mainActivityInterface,
                                Song newSong, String s) {
 
         // Get the chopro bit

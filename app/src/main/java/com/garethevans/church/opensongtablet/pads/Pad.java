@@ -51,7 +51,7 @@ public class Pad {
         padTotalTime = pad.findViewById(R.id.padTotalTime);
     }
 
-    public void startPad(Context c) {
+    public void startPad() {
         // Decide which pad to fade (if any)
         padsActivated = true;
         whichPadToFade();
@@ -477,7 +477,7 @@ public class Pad {
     }
     public void autoStartPad() {
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("padAutoStart",false) && padsActivated) {
-            startPad(c);
+            startPad();
         }
     }
     private void whichPadToFade() {

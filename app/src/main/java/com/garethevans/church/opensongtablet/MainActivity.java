@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         softKeyboard = new SoftKeyboard();
 
         // The song stuff
-        songListBuildIndex = new SongListBuildIndex();
+        songListBuildIndex = new SongListBuildIndex(this);
 
         // The screen display stuff
         customAnimation = new CustomAnimation();
@@ -332,9 +332,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         convertOnSong = new ConvertOnSong(this);
         convertTextSong = new ConvertTextSong(this);
         processSong = new ProcessSong(this);
-        prepareFormats = new PrepareFormats();
+        prepareFormats = new PrepareFormats(this);
         songSheetHeaders = new SongSheetHeaders(this);
         ocr = new OCR(this);
+        makePDF = new MakePDF(this);
         transpose = new Transpose(this);
         abcNotation = new ABCNotation();
         song = new Song();
@@ -363,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 myView.nextPrevInfo.prevButton, myView.nextPrevInfo.nextButton);
 
         // Other file actions
-        ccliLog = new CCLILog();
+        ccliLog = new CCLILog(this);
         exportFiles = new ExportFiles();
         exportActions = new ExportActions(this);
         bible = new Bible(this);
@@ -820,8 +821,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
     @Override
     public NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface) {
-        // First update the mainActivityInterface used in nearby connections
-        nearbyConnections.setMainActivityInterface();
         // Return a reference to nearbyConnections
         return nearbyConnections;
     }
@@ -1263,7 +1262,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         new Thread(() -> {
             runOnUiThread(() -> showToast.doIt(getString(R.string.search_index_start)));
             songListBuildIndex.setIndexComplete(false);
-            songListBuildIndex.fullIndex(this,this);
+            songListBuildIndex.fullIndex();
             runOnUiThread(() -> {
                 songListBuildIndex.setIndexRequired(false);
                 songListBuildIndex.setIndexComplete(true);
@@ -1773,7 +1772,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
                 case "ccliDelete":
                     Uri uri = storageAccess.getUriForItem("Settings","","ActivityLog.xml");
-                    result = ccliLog.createBlankXML(this,this,uri);
+                    result = ccliLog.createBlankXML(uri);
                     break;
 
                 case "deleteItem":
@@ -1926,7 +1925,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             pad.stopPad();
             return false;
         } else {
-            pad.startPad(this);
+            pad.startPad();
             // Showcase if required
             showCase.singleShowCase(this,myView.onScreenInfo.getPad(),getString(R.string.okay),getString(R.string.pad_playback_info),true,"padPlayback");
             return true;
@@ -1955,7 +1954,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         if (fullIndexRequired) {
             showToast.doIt(getString(R.string.search_index_start));
             new Thread(() -> {
-                String outcome = songListBuildIndex.fullIndex(this,this);
+                String outcome = songListBuildIndex.fullIndex();
                 if (songMenuFragment!=null) {
                     try {
                         songMenuFragment.updateSongMenu(song);

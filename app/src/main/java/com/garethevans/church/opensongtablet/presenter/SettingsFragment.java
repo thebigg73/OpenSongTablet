@@ -196,9 +196,6 @@ public class SettingsFragment extends Fragment {
 
         myView.rotateDisplay.addOnSliderTouchListener(new SliderTouchListener("castRotation"));
         myView.rotateDisplay.addOnChangeListener(new SliderChangeListener("castRotation"));
-        //myView.rotateDisplay.setOnTouchListener(new MyTouchListener());
-        //myView.rotateDisplay.setOnLongClickListener(new MyLongClickListener());
-        //myView.rotateDisplay.setOnClickListener(new MyClickListener());
 
         myView.horizontalMargin.addOnSliderTouchListener(new SliderTouchListener("presoXMargin"));
         myView.horizontalMargin.addOnChangeListener(new SliderChangeListener("presoXMargin"));

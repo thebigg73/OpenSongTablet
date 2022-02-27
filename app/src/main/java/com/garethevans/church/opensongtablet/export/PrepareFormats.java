@@ -14,9 +14,15 @@ import java.util.ArrayList;
 
 public class PrepareFormats {
 
+    private final MainActivityInterface mainActivityInterface;
+
+    public PrepareFormats(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+
     // When a user asks for a song to be exported, it is first copied to the Exports folder in the folder_filename format
-    public ArrayList<Uri> makeSongExportCopies(Context c, MainActivityInterface mainActivityInterface, String folder, String filename,
-                                               boolean desktop, boolean ost, boolean txt, boolean chopro, boolean onsong) {
+    public ArrayList<Uri> makeSongExportCopies(String folder, String filename, boolean desktop,
+                                               boolean ost, boolean txt, boolean chopro, boolean onsong) {
         ArrayList<Uri> uris = new ArrayList<>();
 
         Song thisSongSQL;
@@ -37,10 +43,10 @@ public class PrepareFormats {
         newFilename = newFilename + filename;
 
         if (desktop) {
-            uris.add(doMakeCopy(c, mainActivityInterface, folder, filename, newFilename));
+            uris.add(doMakeCopy(folder, filename, newFilename));
         }
         if (ost) {
-            uris.add(doMakeCopy(c,mainActivityInterface,folder,filename,newFilename+".ost"));
+            uris.add(doMakeCopy(folder,filename,newFilename+".ost"));
         }
         if (txt && thisSongSQL !=null) {
             String text = getSongAsText(thisSongSQL);
@@ -49,13 +55,13 @@ public class PrepareFormats {
             }
         }
         if (chopro && thisSongSQL !=null) {
-            String text = getSongAsChoPro(mainActivityInterface, thisSongSQL);
+            String text = getSongAsChoPro(thisSongSQL);
             if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename+".chopro",text)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".chopro"));
             }
         }
         if (onsong && thisSongSQL !=null) {
-            String text = getSongAsOnSong(mainActivityInterface, thisSongSQL);
+            String text = getSongAsOnSong(thisSongSQL);
             if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",newFilename+".onsong",text)) {
                 uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename+".onsong"));
             }
@@ -63,7 +69,7 @@ public class PrepareFormats {
 
         return uris;
     }
-    private Uri doMakeCopy(Context c, MainActivityInterface mainActivityInterface, String currentFolder, String currentFilename, String newFilename) {
+    private Uri doMakeCopy(String currentFolder, String currentFilename, String newFilename) {
         Uri targetFile = mainActivityInterface.getStorageAccess().getUriForItem("Songs",currentFolder,currentFilename);
         Uri destinationFile = mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,destinationFile,null,"Export","",newFilename);
@@ -94,7 +100,7 @@ public class PrepareFormats {
 
         return string;
     }
-    public String getSongAsChoPro(MainActivityInterface mainActivityInterface, Song thisSong) {
+    public String getSongAsChoPro(Song thisSong) {
         // This converts an OpenSong file into a ChordPro file
 
         String string = "{new_song}\n" + replaceNulls("{title:", "}\n", thisSong.getTitle()) +
@@ -114,7 +120,7 @@ public class PrepareFormats {
         return string;
     }
 
-    public Uri getSongAsImage(Context c, MainActivityInterface mainActivityInterface, Song thisSong) {
+    public Uri getSongAsImage(Song thisSong) {
         String newFilename = thisSong.getFolder().replace("/","_");
         if (!newFilename.endsWith("_")) {
             newFilename = newFilename + "_";
@@ -127,7 +133,7 @@ public class PrepareFormats {
         return uri;
     }
 
-    public String getSongAsOnSong(MainActivityInterface mainActivityInterface, Song thisSong) {
+    public String getSongAsOnSong(Song thisSong) {
         // This converts an OpenSong file into a OnSong file
 
         String string = replaceNulls("", "\n", thisSong.getTitle()) +

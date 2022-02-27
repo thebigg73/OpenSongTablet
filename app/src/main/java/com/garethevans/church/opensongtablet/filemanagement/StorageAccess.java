@@ -1163,15 +1163,18 @@ public class StorageAccess {
                                                   String folder, String subfolder, String filename) {
         if (lollipopOrLater()) {
             // Only need to do this for Lollipop or later
-            if (uriExists(uri)) {
+            if (uriExists(uri) && deleteOld) {
                 // Delete it to avoid overwrite errors that leaves old stuff at the end of the file
                 deleteFile_SAF(uri);
             }
             // Create the new file
             createFile(mimeType, folder, subfolder, filename);
 
-        } else if (!lollipopOrLater() && !uriExists(uri)) {
+        } else {
             // Check it exists
+            if (uriExists(uri) && deleteOld) {
+                deleteFile_File(uri);
+            }
             try {
                 if (uri != null && uri.getPath() != null) {
                     File f = new File(uri.getPath());
@@ -1492,7 +1495,12 @@ public class StorageAccess {
 
         if (filename != null && !filename.isEmpty()) {
             f = new File(f, filename);
+            Uri uri = Uri.fromFile(f);
             try {
+                if (uriExists(uri)) {
+                    // IV - Delete any old file
+                    Log.d(TAG,"Removing preexisting file: filename - "+ f.delete());
+                }
                 stuffCreated = f.createNewFile();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1642,17 +1650,22 @@ public class StorageAccess {
             if (scheme.equals("file")) {
                 return uri.getLastPathSegment();
             } else if (scheme.equals("content")) {
+                String returnString;
                 Cursor cursor = c.getContentResolver().query(uri, null, null, null, null);
                 if (cursor != null && cursor.moveToFirst()) {
                     int i = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                     if (i >= 0) {
-                        return cursor.getString(i);
+                        returnString = cursor.getString(i);
                     } else {
-                        return uri.getLastPathSegment();
+                        returnString = uri.getLastPathSegment();
                     }
                 } else {
-                    return uri.toString();
+                    returnString = uri.toString();
                 }
+                if (cursor!=null) {
+                    cursor.close();
+                }
+                return returnString;
             } else {
                 return uri.toString();
             }

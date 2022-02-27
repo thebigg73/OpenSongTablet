@@ -24,13 +24,24 @@ import java.util.Map;
 public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> implements FastScroller.SectionIndexer {
 
     private final List<Song> songList;
-    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final SparseBooleanArray checkedArray = new SparseBooleanArray();
     private final boolean showChecked;
     private final String TAG = "SongListAdapter";
 
     AdapterCallback callback;
+
+    public SongListAdapter(Context c, List<Song> songList,
+                           AdapterCallback callback) {
+        this.songList = songList;
+        mainActivityInterface = (MainActivityInterface) c;
+        this.callback = callback;
+        if (songList != null) {
+            initialiseCheckedArray(mainActivityInterface.getCurrentSet());
+        }
+        this.showChecked = mainActivityInterface.getPreferences().
+                getMyPreferenceBoolean("songMenuSetTicksShow", true);
+    }
 
     @Override
     public CharSequence getSectionText(int position) {
@@ -47,18 +58,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         void onItemLongClicked(int position, String folder, String filename, String key);
     }
 
-    public SongListAdapter(Context c, MainActivityInterface mainActivityInterface, List<Song> songList,
-                           AdapterCallback callback) {
-        this.songList = songList;
-        this.c = c;
-        this.mainActivityInterface = mainActivityInterface;
-        this.callback = callback;
-        if (songList != null) {
-            initialiseCheckedArray(mainActivityInterface.getCurrentSet());
-        }
-        this.showChecked = mainActivityInterface.getPreferences().
-                getMyPreferenceBoolean("songMenuSetTicksShow", true);
-    }
 
     public void initialiseCheckedArray(CurrentSet currentSet) {
         for (int i = 0; i < songList.size(); i++) {
@@ -198,7 +197,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                 mainActivityInterface.getCurrentSet().addSetValues(itemFolder, itemFilename, itemKey);
                 checkedArray.put(adapterPosition, true);
                 mainActivityInterface.addSetItem(mainActivityInterface.getCurrentSet().getSetItems().size()-1);
-                mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
 
             } else {
                 songItemViewHolder.itemChecked.setChecked(false);
@@ -213,8 +211,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
                         mainActivityInterface.removeSetItem(x);
                     }
                 }
-                mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
             }
+            mainActivityInterface.getCurrentSet().setCurrentSetString(mainActivityInterface.getSetActions().getSetAsPreferenceString());
             mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent", mainActivityInterface.getCurrentSet().getCurrentSetString());
         });
     }

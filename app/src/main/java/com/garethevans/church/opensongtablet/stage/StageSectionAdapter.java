@@ -25,7 +25,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     // All the helpers we need to access are in the MainActivity
     private final String TAG = "StageSectionAdapter";
-    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private final ArrayList<StageSectionInfo> sectionInfos;
@@ -36,7 +35,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private final String alphaChange = "alpha";
 
     public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface) {
-        this.c = c;
         this.mainActivityInterface = mainActivityInterface;
         this.displayInterface = displayInterface;
         density = c.getResources().getDisplayMetrics().density;

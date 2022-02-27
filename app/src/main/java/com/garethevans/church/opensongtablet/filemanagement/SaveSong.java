@@ -114,8 +114,7 @@ public class SaveSong {
 
             // Update the CCLI log if required
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging", false)) {
-                mainActivityInterface.getCCLILog().addEntry(c, mainActivityInterface,
-                        thisSong, "3"); // 3=edited
+                mainActivityInterface.getCCLILog().addEntry(thisSong, "3"); // 3=edited
             }
 
             // Update the song menu

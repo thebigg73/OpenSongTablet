@@ -67,12 +67,9 @@ public class BootUpFragment extends Fragment {
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();
 
-        myView.splashlogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hide = !hide;
-                mainActivityInterface.getAppActionBar().translateAwayActionBar(hide);
-            }
+        myView.splashlogo.setOnClickListener(view -> {
+            hide = !hide;
+            mainActivityInterface.getAppActionBar().translateAwayActionBar(hide);
         });
         startOrSetUp();
         return myView.getRoot();

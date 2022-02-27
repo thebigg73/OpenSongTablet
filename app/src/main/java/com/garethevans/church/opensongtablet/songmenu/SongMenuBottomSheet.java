@@ -97,7 +97,7 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
         });
         myView.rebuildIndex.setOnClickListener(v -> {
             if (mainActivityInterface.getSongListBuildIndex().getIndexComplete()) {
-                mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles(requireContext(),mainActivityInterface);
+                mainActivityInterface.getSongListBuildIndex().buildBasicFromFiles();
                 mainActivityInterface.indexSongs();
                 dismiss();
             } else {

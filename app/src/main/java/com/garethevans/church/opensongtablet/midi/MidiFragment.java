@@ -702,7 +702,7 @@ public class MidiFragment extends Fragment {
 
     // Process song midi messages
     private void setupAdapter() {
-        midiMessagesAdapter = new MidiMessagesAdapter(requireContext(),mainActivityInterface,false);
+        midiMessagesAdapter = new MidiMessagesAdapter(requireContext(),false);
         ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         midiMessagesAdapter.setTouchHelper(itemTouchHelper);

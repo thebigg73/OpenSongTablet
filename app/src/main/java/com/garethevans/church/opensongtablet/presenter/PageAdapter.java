@@ -10,9 +10,6 @@ public class PageAdapter extends FragmentStateAdapter {
 
     public final Fragment[] menuFragments = {new SongSectionsFragment(),
             new AdvancedFragment()};
-    //new MediaFragment(),
-    //new AlertFragment(),
-    //new SettingsFragment()
 
     private int openMenu = 1;
 

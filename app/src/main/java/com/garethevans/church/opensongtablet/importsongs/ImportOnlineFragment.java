@@ -81,7 +81,7 @@ public class ImportOnlineFragment extends Fragment {
 
     private void setupHelpers() {
         newSong = new Song();
-        ultimateGuitar = new UltimateGuitar();
+        ultimateGuitar = new UltimateGuitar(requireContext());
         chordie = new Chordie();
         songSelect = new SongSelect();
         ukuTabs = new UkuTabs();
@@ -362,11 +362,11 @@ public class ImportOnlineFragment extends Fragment {
         switch (source) {
             case "UltimateGuitar":
                 Log.d(TAG,"getting here");
-                newSong = ultimateGuitar.processContent(requireContext(),mainActivityInterface,newSong,webString);
+                newSong = ultimateGuitar.processContent(newSong,webString);
                 break;
             case "Chordie":
                 Log.d(TAG,"getting here");
-                newSong = chordie.processContent(requireContext(),mainActivityInterface,newSong,webString);
+                newSong = chordie.processContent(mainActivityInterface,newSong,webString);
                 break;
             case "SongSelect":
                 Log.d(TAG,"getting here SongSelect");
@@ -465,7 +465,7 @@ public class ImportOnlineFragment extends Fragment {
             // Add a record to the CCLI log if we are automatically logging activity
             if (mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                     "ccliAutomaticLogging",false)) {
-                mainActivityInterface.getCCLILog().addEntry(requireContext(),mainActivityInterface,newSong,"1");
+                mainActivityInterface.getCCLILog().addEntry(newSong,"1");
             }
 
             // Let the user know and show the song

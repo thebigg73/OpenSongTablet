@@ -24,7 +24,7 @@ public class ExportFiles {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Settings", "", "ActivityLog.xml");
         ArrayList<Uri> uris = new ArrayList<>();
         if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
-            mainActivityInterface.getCCLILog().createBlankXML(c, mainActivityInterface, uri);
+            mainActivityInterface.getCCLILog().createBlankXML(uri);
         }
         // Add the uri
         uris.add(uri);

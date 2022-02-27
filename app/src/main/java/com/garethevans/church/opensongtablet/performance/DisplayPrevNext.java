@@ -74,7 +74,7 @@ public class DisplayPrevNext {
         return showNext;
     }
 
-    public void setPrevNext(Context c) {
+    public void setPrevNext() {
         next.hide();
         prev.hide();
         nextVisible = false;

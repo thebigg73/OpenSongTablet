@@ -159,7 +159,7 @@ public class PerformanceFragment extends Fragment {
 
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
-        stickyPopUp = new StickyPopUp();
+        stickyPopUp = new StickyPopUp(requireContext());
         mainActivityInterface.getPerformanceGestures().setZoomLayout(myView.zoomLayout);
         mainActivityInterface.getPerformanceGestures().setRecyclerView(myView.recyclerView);
         myView.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -624,7 +624,7 @@ public class PerformanceFragment extends Fragment {
         }
 
         // Set the previous/next if we want to
-        mainActivityInterface.getDisplayPrevNext().setPrevNext(requireContext());
+        mainActivityInterface.getDisplayPrevNext().setPrevNext();
 
         // Start the pad (if the pads are activated and the pad is valid)
         mainActivityInterface.getPad().autoStartPad();
@@ -735,7 +735,7 @@ public class PerformanceFragment extends Fragment {
                     mainActivityInterface.getPreferences().
                             getMyPreferenceBoolean("stickyAuto", true)) || forceShow) {
                 // This is called from the MainActivity when we clicked on the page button
-                stickyPopUp.floatSticky(requireContext(), mainActivityInterface, myView.pageHolder, forceShow);
+                stickyPopUp.floatSticky(myView.pageHolder, forceShow);
             } }
     }
 

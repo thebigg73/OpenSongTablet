@@ -32,7 +32,7 @@ public class SongSectionsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Window w = getActivity().getWindow();
+        Window w = requireActivity().getWindow();
         if (w!=null) {
             w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
@@ -131,7 +131,9 @@ public class SongSectionsFragment extends Fragment {
 
     public void doScrollTo(int thisPos) {
         try {
-            ((LinearLayoutManager) myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(thisPos, 0);
+            if (myView.recyclerView.getLayoutManager()!=null) {
+                ((LinearLayoutManager) myView.recyclerView.getLayoutManager()).scrollToPositionWithOffset(thisPos, 0);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

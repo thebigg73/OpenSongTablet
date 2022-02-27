@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class MakePDF {
 
+    private final MainActivityInterface mainActivityInterface;
     private final int margin = 36;            // Based on 1/72 of an inch:  54/72  * 2.54 = 1cm
     private final int footerHeight = 12;      // Based on 1/72 of an inch:  90/72  * 2.54 = 2.0cm
     private int headerHeight, docWidth, docHeight, availableHeight, pageNum=1, totalPages=1;
@@ -29,20 +30,22 @@ public class MakePDF {
     private Canvas pageCanvas;
     private final String TAG = "MakePDF";
 
-    public Uri createTextPDF(Context c, MainActivityInterface mainActivityInterface,
-                             ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
+    public MakePDF(Context c) {
+        mainActivityInterface = (MainActivityInterface) c;
+    }
+    public Uri createTextPDF(ArrayList<View> sectionViews, ArrayList<Integer> sectionWidths,
                              ArrayList<Integer> sectionHeights, LinearLayout headerLayout,
                              int headerLayoutWidth, int headerLayoutHeight, String exportFilename) {
 
         Log.d(TAG,"exportFilename="+exportFilename);
 
         // Set the paint values
-        setPaintDefaults(mainActivityInterface);
+        setPaintDefaults();
 
         // Create the document
         pdfDocument = new PdfDocument();
 
-        initialiseSizes(mainActivityInterface);
+        initialiseSizes();
 
         // Start for page 1
         startPage();
@@ -54,21 +57,21 @@ public class MakePDF {
         createHeader(headerLayout, headerLayoutWidth, headerLayoutHeight);
 
         // Get the space available to the song sections and pages needed to fit them all in
-        determineSpaceAndPages(mainActivityInterface, sectionWidths, sectionHeights);
+        determineSpaceAndPages(sectionWidths, sectionHeights);
 
         // Add in the song sections and the footer at the bottom of each page.
         addSectionViews(sectionViews, sectionWidths, sectionHeights);
 
         // Save the PDF document ready for sharing
-        Uri uri = getPDFUri(mainActivityInterface,exportFilename);
+        Uri uri = getPDFUri(exportFilename);
         //pdfDocument.finishPage(page);
-        saveThePDF(mainActivityInterface, uri);
+        saveThePDF(uri);
 
         return uri;
     }
 
     // Initialise the PDF and Paint stuff
-    private void setPaintDefaults(MainActivityInterface mainActivityInterface) {
+    private void setPaintDefaults() {
         // For drawing the horizontal lines
         linePaint = new Paint();
         linePaint.setColor(Color.LTGRAY);
@@ -84,7 +87,7 @@ public class MakePDF {
     }
 
     // Initialise the sizes and page numbers
-    private void initialiseSizes(MainActivityInterface mainActivityInterface) {
+    private void initialiseSizes() {
         String pdfSize = mainActivityInterface.getPreferences().getMyPreferenceString("pdfSize","A4");
         PrintAttributes.MediaSize mediaSize;
         switch (pdfSize) {
@@ -143,8 +146,7 @@ public class MakePDF {
     }
 
     // Decide on sizes required
-    private void determineSpaceAndPages(MainActivityInterface mainActivityInterface,
-                                        ArrayList<Integer> sectionWidths,
+    private void determineSpaceAndPages(ArrayList<Integer> sectionWidths,
                                         ArrayList<Integer> sectionHeights) {
         // The max scaling is preferrably scaling the sections to the width of the screen
         // However, if this means that any section is too tall to fit the space between ther
@@ -280,7 +282,7 @@ public class MakePDF {
     }
 
     // Deal with saving the PDF so we can share it
-    private void saveThePDF(MainActivityInterface mainActivityInterface, Uri uri) {
+    private void saveThePDF(Uri uri) {
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
         try {
             pdfDocument.writeTo(outputStream);
@@ -290,7 +292,7 @@ public class MakePDF {
             e.printStackTrace();
         }
     }
-    private Uri getPDFUri(MainActivityInterface mainActivityInterface, String exportFilename) {
+    private Uri getPDFUri(String exportFilename) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export", "", exportFilename);
 
         // Remove it as we want to create a new version!

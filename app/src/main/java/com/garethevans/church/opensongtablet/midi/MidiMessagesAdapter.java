@@ -28,9 +28,9 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
     private final String TAG = "MidiMessagesAdapter";
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MidiMessagesAdapter(Context c, MainActivityInterface mainActivityInterface, boolean editing) {
+    public MidiMessagesAdapter(Context c, boolean editing) {
         this.c = c;
-        this.mainActivityInterface = mainActivityInterface;
+        mainActivityInterface = (MainActivityInterface) c;
         this.editing = editing;
         midiInfos = new ArrayList<>();
     }
@@ -135,7 +135,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onItemClicked(MainActivityInterface mainActivityInterface, int position) {
+    public void onItemClicked(int position) {
         Log.d(TAG,"onItemClicked() pos:"+position);
         // Send the midi message
         mainActivityInterface.getMidi().sendMidi(position);

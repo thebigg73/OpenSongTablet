@@ -229,8 +229,7 @@ public class ExportFragment extends Fragment {
                             } else if (onsong && likelyXML) {
                                 // Get the text from the file
                                 Song song = mainActivityInterface.getSQLiteHelper().getSpecificSong(location[0], location[1]);
-                                String content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(
-                                        mainActivityInterface, song);
+                                String content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(song);
                                 if (mainActivityInterface.getStorageAccess().doStringWriteToFile("Export", "", location[1] + ".onsong", content)) {
                                     uris.add(mainActivityInterface.getStorageAccess().getUriForItem("Export", "", location[1] + ".onsong"));
                                 }
@@ -253,9 +252,11 @@ public class ExportFragment extends Fragment {
                                     createOnTheFly(song);
                                     listen.observe(getViewLifecycleOwner(), isDone -> {
                                         if (isDone) {
-                                            uris.add(mainActivityInterface.getMakePDF().createTextPDF(requireContext(), mainActivityInterface,
+                                            uris.add(mainActivityInterface.getMakePDF().createTextPDF(
                                                     sectionViewsPDF, sectionViewWidthsPDF,
-                                                    sectionViewHeightsPDF, headerLayoutPDF, headerLayoutWidth, headerLayoutHeight, location[1] + ".pdf"));
+                                                    sectionViewHeightsPDF, headerLayoutPDF,
+                                                    headerLayoutWidth, headerLayoutHeight,
+                                                    location[1] + ".pdf"));
                                             listen.removeObservers(getViewLifecycleOwner());
                                             songsProcessed++;
                                             processingSetPDFs = false;
@@ -328,7 +329,7 @@ public class ExportFragment extends Fragment {
 
         // Sharing a song should initiate the CCLI Log of printed (value 6)
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("ccliAutomaticLogging",false)) {
-            mainActivityInterface.getCCLILog().addEntry(requireContext(),mainActivityInterface,mainActivityInterface.getSong(),"6");
+            mainActivityInterface.getCCLILog().addEntry(mainActivityInterface.getSong(),"6");
         }
 
         if ((mainActivityInterface.getSong().getFiletype().equals("PDF") && type.equals("application/pdf") && myView.pdf.isChecked()) ||
@@ -342,7 +343,7 @@ public class ExportFragment extends Fragment {
                 exportFilename = getExportFilename(mainActivityInterface.getSong(),".pdf");
 
                 // Create a PDF on the fly
-                uri = mainActivityInterface.getMakePDF().createTextPDF(requireContext(), mainActivityInterface,
+                uri = mainActivityInterface.getMakePDF().createTextPDF(
                         sectionViewsPDF, sectionViewWidthsPDF, sectionViewHeightsPDF, headerLayoutPDF,
                         headerLayoutWidth, headerLayoutHeight, exportFilename);
 
@@ -358,8 +359,7 @@ public class ExportFragment extends Fragment {
 
             } else if (type.equals("text/plain") && myView.onSong.isChecked()) {
                 // Convert the song to OnSong format and save it
-                content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(
-                        mainActivityInterface, mainActivityInterface.getSong());
+                content = mainActivityInterface.getPrepareFormats().getSongAsOnSong(mainActivityInterface.getSong());
                 uri = getExportUri(mainActivityInterface.getSong(),".onsong");
                 exportFilename = getExportFilename(mainActivityInterface.getSong(),".onsong");
                 mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",exportFilename,content);
@@ -367,8 +367,7 @@ public class ExportFragment extends Fragment {
 
             } else if (type.equals("text/plain") && myView.chordPro.isChecked()) {
                 // Convert the song to ChordPro format and save it
-                content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(
-                        mainActivityInterface, mainActivityInterface.getSong());
+                content = mainActivityInterface.getPrepareFormats().getSongAsChoPro(mainActivityInterface.getSong());
                 uri = getExportUri(mainActivityInterface.getSong(),".cho");
                 exportFilename = getExportFilename(mainActivityInterface.getSong(),".cho");
                 mainActivityInterface.getStorageAccess().doStringWriteToFile("Export","",exportFilename,content);

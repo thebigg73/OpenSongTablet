@@ -25,6 +25,13 @@ public class SongListBuildIndex {
     private boolean indexComplete;
     private boolean currentlyIndexing = false;
     private final String TAG = "SongListBuildIndex";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
+
+    public SongListBuildIndex(Context c) {
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+    }
 
     public void setIndexRequired(boolean indexRequired) {
         this.indexRequired = indexRequired;
@@ -45,7 +52,7 @@ public class SongListBuildIndex {
         return indexComplete;
     }
 
-    public void buildBasicFromFiles(Context c, MainActivityInterface mainActivityInterface) {
+    public void buildBasicFromFiles() {
         // This creates a basic database from the song files
         ArrayList<String> songIds = mainActivityInterface.getStorageAccess().listSongs();
         mainActivityInterface.getStorageAccess().writeSongIDFile(songIds);
@@ -53,7 +60,7 @@ public class SongListBuildIndex {
         mainActivityInterface.getSQLiteHelper().insertFast();
     }
 
-    public String fullIndex(Context c, MainActivityInterface mainActivityInterface) {
+    public String fullIndex() {
         // The basic database was created on boot.
         // Now comes the time consuming bit that fully indexes the songs into the database
         currentlyIndexing = true;
@@ -103,7 +110,7 @@ public class SongListBuildIndex {
 
                                 } catch (Exception e) {
                                     // OK, so this wasn't an XML file.  Try to extract as something else
-                                    mainActivityInterface.setIndexingSong(tryToFixSong(c, mainActivityInterface, mainActivityInterface.getIndexingSong(), uri));
+                                    mainActivityInterface.setIndexingSong(tryToFixSong(mainActivityInterface.getIndexingSong(), uri));
                                 }
                             } else {
                                 // Look for data in the nonopensong persistent database import
@@ -179,7 +186,7 @@ public class SongListBuildIndex {
         return false;
     }
 
-    private Song tryToFixSong(Context c, MainActivityInterface mainActivityInterface, Song thisSong, Uri uri) {
+    private Song tryToFixSong(Song thisSong, Uri uri) {
         if (uri != null) {
             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
             if (isChordPro(thisSong.getFilename())) {

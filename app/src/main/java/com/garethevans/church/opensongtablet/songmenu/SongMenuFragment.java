@@ -82,7 +82,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songListRecyclerView.setHasFixedSize(false);
         myView.songListRecyclerView.setOnClickListener(null);
         List<Song> blank = new ArrayList<>();
-        songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface, blank,
+        songListAdapter = new SongListAdapter(requireContext(), blank,
                 SongMenuFragment.this);
         myView.songListRecyclerView.setAdapter(songListAdapter);
         }
@@ -291,7 +291,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
         myView.songListRecyclerView.setOnClickListener(null);
-        songListAdapter = new SongListAdapter(requireContext(), mainActivityInterface,
+        songListAdapter = new SongListAdapter(requireContext(),
                 songsFound, SongMenuFragment.this);
         myView.songListRecyclerView.setAdapter(songListAdapter);
         myView.songListRecyclerView.setFastScrollEnabled(true);

@@ -52,7 +52,7 @@ public class MidiAdapterViewHolder  extends RecyclerView.ViewHolder  implements
     @Override
     public boolean onSingleTapUp(MotionEvent motionEvent) {
         Log.d(TAG,"onSingleTapUp()");
-        midiItemTouchInterface.onItemClicked(mainActivityInterface,getAbsoluteAdapterPosition());
+        midiItemTouchInterface.onItemClicked(getAbsoluteAdapterPosition());
         return false;
     }
 

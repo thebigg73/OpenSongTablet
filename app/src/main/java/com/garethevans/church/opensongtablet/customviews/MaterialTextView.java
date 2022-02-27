@@ -148,9 +148,6 @@ public class MaterialTextView extends LinearLayout {
         }
     }
 
-    public void setDrawableTint(int tint) {
-
-    }
     public void setMyGravity(int gravity) {
         textView.setGravity(gravity);
         hintView.setGravity(gravity);

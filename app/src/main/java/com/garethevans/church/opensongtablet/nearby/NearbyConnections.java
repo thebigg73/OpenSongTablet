@@ -83,7 +83,7 @@ public class NearbyConnections implements NearbyInterface {
                 e.printStackTrace();
             }
         }
-        stopDiscoveryRunnable = () -> stopDiscovery();
+        stopDiscoveryRunnable = this::stopDiscovery;
     }
 
     private void updateConnectionLog(String newMessage) {
@@ -97,10 +97,6 @@ public class NearbyConnections implements NearbyInterface {
         }
     }
 
-    public void setMainActivityInterface() {
-        this.mainActivityInterface = mainActivityInterface;
-    }
-
     public void setNearbyReturnActionsInterface(NearbyReturnActionsInterface nearbyReturnActionsInterface) {
         this.nearbyReturnActionsInterface = nearbyReturnActionsInterface;
     }
@@ -110,7 +106,7 @@ public class NearbyConnections implements NearbyInterface {
     public void startAdvertising() {
         if (!isAdvertising) {
             Nearby.getConnectionsClient(c)
-                    .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(c, mainActivityInterface), advertisingOptions)
+                    .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
                     .addOnSuccessListener(
                             (Void unused) -> {
                                 // We're advertising!
@@ -132,7 +128,7 @@ public class NearbyConnections implements NearbyInterface {
         if (usingNearby) {
             if (!isDiscovering) {
                 Nearby.getConnectionsClient(c)
-                        .startDiscovery(serviceId, endpointDiscoveryCallback(c, mainActivityInterface), discoveryOptions)
+                        .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
                         .addOnSuccessListener(
                                 (Void unused) -> {
                                     // We're discovering!
@@ -186,7 +182,7 @@ public class NearbyConnections implements NearbyInterface {
         return endpointId + "__" + connectionInfo.getEndpointName();
     }
 
-    private void delayAcceptConnection(Context c, MainActivityInterface mainActivityInterface, String endpointId, ConnectionInfo connectionInfo) {
+    private void delayAcceptConnection(String endpointId, ConnectionInfo connectionInfo) {
         // For stability add a small delay
         Handler waitAccept = new Handler();
         waitAccept.postDelayed(() -> {
@@ -204,13 +200,13 @@ public class NearbyConnections implements NearbyInterface {
         }, 200);
     }
 
-    private ConnectionLifecycleCallback connectionLifecycleCallback(Context c, MainActivityInterface mainActivityInterface) {
+    private ConnectionLifecycleCallback connectionLifecycleCallback() {
         return new ConnectionLifecycleCallback() {
             @Override
             public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
                 // If the device was previously connected, try to reconnect silently
                 if (connectedDeviceIds.contains(connectionInfo.getEndpointName())) {
-                    delayAcceptConnection(c, mainActivityInterface, endpointId, connectionInfo);
+                    delayAcceptConnection(endpointId, connectionInfo);
                 } else {
                     // Allow clients to connect to the host when the Connect menu is open, or the user switches off the requirement for the Connect menu to be open
                     if (mainActivityInterface.getFragmentOpen() == R.id.nearbyConnectionsFragment ||
@@ -220,7 +216,7 @@ public class NearbyConnections implements NearbyInterface {
                                 .setMessage(c.getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationToken())
                                 .setPositiveButton(
                                         c.getString(R.string.okay),
-                                        (DialogInterface dialog, int which) -> delayAcceptConnection(c, mainActivityInterface, endpointId, connectionInfo))
+                                        (DialogInterface dialog, int which) -> delayAcceptConnection(endpointId, connectionInfo))
                                 .setNegativeButton(
                                         c.getString(R.string.cancel),
                                         (DialogInterface dialog, int which) ->
@@ -315,14 +311,14 @@ public class NearbyConnections implements NearbyInterface {
         return false;
     }
 
-    private EndpointDiscoveryCallback endpointDiscoveryCallback(Context c, MainActivityInterface mainActivityInterface) {
+    private EndpointDiscoveryCallback endpointDiscoveryCallback() {
         return new EndpointDiscoveryCallback() {
             @Override
             public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
                 if (!findEndpoints(endpointId, discoveredEndpointInfo)) {
                     // Only attempt a connection if we aren't already connected
                     Nearby.getConnectionsClient(c)
-                            .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback(c, mainActivityInterface))
+                            .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
                             .addOnSuccessListener(
                                     (Void unused) -> {
                                         Log.d(TAG, "Trying to connect to host: " + endpointId);

@@ -10,6 +10,7 @@ public class Preferences extends Activity {
     public Preferences(Context c) {
         this.c = c;
     }
+
     // This is the way that preferences will be stored
     private SharedPreferences sharedPref;
     private final String TAG = "Preferences";

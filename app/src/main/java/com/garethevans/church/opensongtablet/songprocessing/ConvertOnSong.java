@@ -10,8 +10,6 @@ public class ConvertOnSong {
     // This is virtually the same as convertChoPro, but with a few extra tags
     // To simplify this, we will extract the specific OnSongStuff first and then pass it to convertChoPro
 
-    // Declare the variables;
-    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private String title;
     private String author;
@@ -36,7 +34,7 @@ public class ConvertOnSong {
     private StringBuilder parsedLines;
 
     public ConvertOnSong(Context c) {
-        this.c = c;
+        // Declare the variables;
         mainActivityInterface = (MainActivityInterface) c;
     }
 

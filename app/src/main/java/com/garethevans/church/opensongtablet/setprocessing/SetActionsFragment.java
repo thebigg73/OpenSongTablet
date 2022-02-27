@@ -103,12 +103,6 @@ public class SetActionsFragment extends Fragment {
                         if (importFilename.endsWith(".osts") || !importFilename.contains(".")) {
                             // Copy the file into the sets folder
                             InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(contentUri);
-                            /*if (location.contains("/")) {
-                                importFilename = location.substring(location.lastIndexOf("/"));
-                                importFilename = importFilename.replace("/", "");
-                            } else {
-                                importFilename = location;
-                            }*/
                             importFilename = importFilename.replace(".osts","");
 
                             Log.d(TAG,"importFile: "+importFilename);

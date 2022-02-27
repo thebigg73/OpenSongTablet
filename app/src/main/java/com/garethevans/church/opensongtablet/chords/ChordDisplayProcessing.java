@@ -28,21 +28,25 @@ public class ChordDisplayProcessing {
     private ArrayList<String> instruments, chordsInSong, fingerings, pianoNotesArray;
     private ArrayList<Integer> pianoKeysArray;
     private final String TAG = "ChordDisplayProcessing";
+    private final Context c;
+    private final MainActivityInterface mainActivityInterface;
 
     public ChordDisplayProcessing(Context c) {
-        initialiseArrays(c);
+        this.c = c;
+        mainActivityInterface = (MainActivityInterface) c;
+        initialiseArrays();
     }
-    public void initialiseArrays(Context c) {
+    public void initialiseArrays() {
         chordsInSong = new ArrayList<>();
         fingerings   = new ArrayList<>();
         pianoKeysArray = new ArrayList<>();
         pianoNotesArray = new ArrayList<>();
         instruments = new ArrayList<>();
         addPianoKeys();
-        setupInstruments(c);
+        setupInstruments();
     }
 
-    public void setupInstruments(Context c) {
+    public void setupInstruments() {
         instruments = new ArrayList<>();
         instruments.add(c.getString(R.string.guitar));
         instruments.add(c.getString(R.string.ukulele));
@@ -169,7 +173,7 @@ public class ChordDisplayProcessing {
         return pianoNotesArray;
     }
 
-    public void getChordsInSong(MainActivityInterface mainActivityInterface) {
+    public void findChordsInSong() {
         // First up, parse the lyrics for the chord lines and add them together
         String[] lines = mainActivityInterface.getSong().getLyrics().split("\n");
         StringBuilder chordsOnly = new StringBuilder();
@@ -193,14 +197,14 @@ public class ChordDisplayProcessing {
             }
         }
     }
-    public void transposeChordsInSong(Context c, MainActivityInterface mainActivityInterface) {
+    public void transposeChordsInSong() {
         // Go through each chord and transpose it
         for (int i=0; i<chordsInSong.size(); i++) {
             chordsInSong.set(i, mainActivityInterface.getTranspose().getKeyBeforeCapo(
                     Integer.parseInt(mainActivityInterface.getSong().getCapo()),chordsInSong.get(i)));
         }
     }
-    public void addCustomChords(MainActivityInterface mainActivityInterface, String forInstrument) {
+    public void addCustomChords(String forInstrument) {
         // If we have custom chords in the song add them (they are split by a space)
         // Only add this instrument though
         if (!mainActivityInterface.getSong().getCustomchords().isEmpty()) {
@@ -246,7 +250,7 @@ public class ChordDisplayProcessing {
             fingerings.add(null);
         }
     }
-    public String getCapoPosition(Context c, MainActivityInterface mainActivityInterface) {
+    public String getCapoPosition() {
         // Decide if the capo position is a number or a numeral
         String capoPosition = mainActivityInterface.getSong().getCapo();
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("capoInfoAsNumerals", false)) {
@@ -264,20 +268,19 @@ public class ChordDisplayProcessing {
 
     // The display for stringed instruments
     @SuppressLint("InflateParams")
-    public LinearLayout getChordDiagram(Context c, MainActivityInterface mainActivityInterface,
-                                        LayoutInflater inflater, String chordName, String chordString) {
+    public LinearLayout getChordDiagram(LayoutInflater inflater, String chordName, String chordString) {
         int padding = c.getResources().getDimensionPixelSize(R.dimen.chord_padding);
-        LinearLayout chordLayout = getChordLayout(c,padding);
+        LinearLayout chordLayout = getChordLayout(padding);
 
         // Set the chord name
         // Make sure it is the preferred format though (e.g. Eb/D#)
         // If it isn't a valid chord, it will be null, in which case, ignore
-        TextView chordNameTextView = getChordName(c, mainActivityInterface, chordName);
+        TextView chordNameTextView = getChordName(chordName);
         if (chordNameTextView!=null && chordString!=null) {
             chordLayout.addView(chordNameTextView);
 
             // Get chord table layout
-            TableLayout chordTable = getTableLayout(c);
+            TableLayout chordTable = getTableLayout();
 
             // The guitarstring will be in the format of 002220, xx0232, 113331_4_g_C#
             boolean fretLabel = false;
@@ -378,7 +381,7 @@ public class ChordDisplayProcessing {
         }
     }
 
-    private LinearLayout getChordLayout(Context c, int padding) {
+    private LinearLayout getChordLayout(int padding) {
         LinearLayout linearLayout = new TableLayout(c);
         ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -388,7 +391,7 @@ public class ChordDisplayProcessing {
         return linearLayout;
     }
 
-    private TextView getChordName(Context c, MainActivityInterface mainActivityInterface, String chordName) {
+    private TextView getChordName(String chordName) {
         chordName = chordName.replace("$", "");
         Log.d(TAG,"chordName: "+chordName+"  isValidChord(): "+isValidChord(chordName));
         if (isValidChord(chordName)) {
@@ -406,7 +409,7 @@ public class ChordDisplayProcessing {
         }
     }
 
-    private TableLayout getTableLayout(Context c) {
+    private TableLayout getTableLayout() {
         TableLayout chordTable = new TableLayout(c);
         LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -456,15 +459,14 @@ public class ChordDisplayProcessing {
 
     // The display for piano
     @SuppressLint("InflateParams")
-    public LinearLayout getChordDiagramPiano(Context c, MainActivityInterface mainActivityInterface,
-                                        LayoutInflater inflater, String chordName, String chordString) {
+    public LinearLayout getChordDiagramPiano(LayoutInflater inflater, String chordName, String chordString) {
         int padding = c.getResources().getDimensionPixelSize(R.dimen.chord_padding);
-        LinearLayout chordLayout = getChordLayout(c,padding);
+        LinearLayout chordLayout = getChordLayout(padding);
 
         // Set the chord name
         // Make sure it is the preferred format though (e.g. Eb/D#)
         // If it isn't a valid chord, it will be null, in which case, ignore
-        TextView chordNameTextView = getChordName(c, mainActivityInterface, chordName);
+        TextView chordNameTextView = getChordName(chordName);
         if (chordNameTextView!=null && chordString!=null) {
             chordLayout.addView(chordNameTextView);
 
@@ -483,7 +485,7 @@ public class ChordDisplayProcessing {
                 for (int x = start; x < pianoNotesArray.size(); x++) {
                     // Look for the remaining positions in the notesArray
                     if (noteToFind < notes.length && pianoNotesArray.get(x).equals(notes[noteToFind])) {
-                        tintDrawable(c, pianoChord.findViewById(pianoKeysArray.get(x)), notes[noteToFind], true);
+                        tintDrawable(pianoChord.findViewById(pianoKeysArray.get(x)), notes[noteToFind], true);
                         noteToFind++;  // Once we've found them all, this won't get called again
                     }
                 }
@@ -494,7 +496,7 @@ public class ChordDisplayProcessing {
         }
     }
 
-    public void tintDrawable(Context c, ImageView imageView, String note, boolean on) {
+    public void tintDrawable(ImageView imageView, String note, boolean on) {
         Drawable drawable;
         if (imageView!=null) {
             if (on && note.contains("#")) {

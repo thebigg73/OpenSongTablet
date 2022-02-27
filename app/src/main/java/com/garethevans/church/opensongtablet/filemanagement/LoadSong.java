@@ -123,7 +123,7 @@ public class LoadSong {
                 // If they find an issue, they send the song back with a better guessed filetype
                 if (!thisSong.getFiletype().equals("XML")) {
                     // This will try to import text, chordpro or onsong and update the lyrics field
-                    thisSong.setLyrics(getSongAsText(mainActivityInterface, where, thisSong.getFolder(), thisSong.getFilename()));
+                    thisSong.setLyrics(getSongAsText(where, thisSong.getFolder(), thisSong.getFilename()));
                     thisSong.setTitle(thisSong.getFilename());
                     if (thisSong.getLyrics() != null && !thisSong.getLyrics().isEmpty()) {
                         // Success (although we'll maybe process it below)
@@ -154,6 +154,9 @@ public class LoadSong {
                 }
 
                 // Fix all the rogue code
+                if (thisSong.getLyrics()==null || thisSong.getLyrics().isEmpty()) {
+                    thisSong.setLyrics(" ");
+                }
                 thisSong.setLyrics(mainActivityInterface.getProcessSong().parseLyrics(mainActivityInterface.getLocale(), thisSong));
 
             } else {
@@ -287,7 +290,7 @@ public class LoadSong {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     // Try to read in the xml
-                                    thisSong.setAuthor(fixXML(c, mainActivityInterface, thisSong, "author", where));
+                                    thisSong.setAuthor(fixXML(thisSong, "author", where));
                                 }
                                 break;
                             case "copyright":
@@ -307,7 +310,7 @@ public class LoadSong {
                                 } catch (Exception e) {
                                     // Try to read in the xml
                                     e.printStackTrace();
-                                    thisSong.setLyrics(fixXML(c, mainActivityInterface, thisSong, "lyrics", where));
+                                    thisSong.setLyrics(fixXML(thisSong, "lyrics", where));
                                 }
                                 break;
                             case "ccli":
@@ -480,7 +483,7 @@ public class LoadSong {
             InputStream extraIinputStream = mainActivityInterface.getStorageAccess().getInputStream(extraUri);
                 String full_text;
                 try {
-                    if (validReadableFile(mainActivityInterface, extraUri, filename)) {
+                    if (validReadableFile(extraUri, filename)) {
                         full_text = mainActivityInterface.getStorageAccess().readTextFileToString(extraIinputStream);
                     } else {
                         full_text = "";
@@ -518,8 +521,7 @@ public class LoadSong {
         return extraStuff;
     }
 
-
-    private boolean validReadableFile(MainActivityInterface mainActivityInterface, Uri uri, String filename) {
+    private boolean validReadableFile(Uri uri, String filename) {
         boolean isvalid = false;
         // Get length of file in Kb
         float filesize = mainActivityInterface.getStorageAccess().getFileSizeFromUri(uri);
@@ -538,7 +540,7 @@ public class LoadSong {
         return isvalid;
     }
 
-    private String fixXML(Context c, MainActivityInterface mainActivityInterface, Song thisSong, String section, String where) {
+    private String fixXML(Song thisSong, String section, String where) {
         // Error in the xml as this is run from a catch block - tell the user we're trying to fix it!
         mainActivityInterface.getShowToast().doIt(c.getString(R.string.fix));
         StringBuilder newXML = new StringBuilder();
@@ -546,7 +548,7 @@ public class LoadSong {
 
         // If an XML file has unencoded ampersands or quotes, fix them
         try {
-            tofix = getSongAsText(mainActivityInterface,where,thisSong.getFolder(),thisSong.getFilename());
+            tofix = getSongAsText(where,thisSong.getFolder(),thisSong.getFilename());
             if (tofix.contains("<")) {
                 String[] sections = tofix.split("<");
                 for (String bit : sections) {
@@ -603,7 +605,7 @@ public class LoadSong {
         return tofix;
     }
 
-    private String getSongAsText(MainActivityInterface mainActivityInterface, String where, String folder, String filename) {
+    private String getSongAsText(String where, String folder, String filename) {
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(where, folder,filename);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uri);
         String s = mainActivityInterface.getStorageAccess().readTextFileToString(inputStream);
@@ -617,7 +619,7 @@ public class LoadSong {
         return s;
     }
 
-    public String getTempFileLocation(Context c, String folder, String file) {
+    public String getTempFileLocation(String folder, String file) {
         String where = folder + "/" + file;
         if (folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN") || folder.equals("")) {
             where = file;
@@ -635,7 +637,7 @@ public class LoadSong {
         return where;
     }
 
-    public String loadKeyOfSong(MainActivityInterface mainActivityInterface, String folder, String filename) {
+    public String loadKeyOfSong(String folder, String filename) {
         String nextkey = "";
 
         // If the indexing is done and the song is there,

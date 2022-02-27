@@ -24,7 +24,6 @@ public class AppActionBar {
     // This holds references to the items in the ActionBar (except the battery)
     // Battery changes get sent via the mainactivityInterface
     private final String TAG = "AppActionBar";
-    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final Toolbar toolbar;
     private final ActionBar actionBar;
@@ -46,7 +45,6 @@ public class AppActionBar {
 
     public AppActionBar(Context c, ActionBar actionBar, Toolbar toolbar, ImageView setIcon, TextView title, TextView author,
                         TextView key, TextView capo, TextView clock) {
-        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
 
         this.actionBar = actionBar;

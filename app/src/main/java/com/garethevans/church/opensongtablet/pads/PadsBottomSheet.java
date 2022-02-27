@@ -166,7 +166,7 @@ public class PadsBottomSheet extends BottomSheetDialogFragment {
                 myView.startStopPad.setText(getString(R.string.start));
                 myView.startStopPad.setOnClickListener(v -> {
                     padPlaying = true;
-                    mainActivityInterface.getPad().startPad(requireContext());
+                    mainActivityInterface.getPad().startPad();
                     // Rerun this script
                     updateStartStopButton();
                     // Check again in 2 seconds just in case the pad had an error
