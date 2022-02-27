@@ -743,6 +743,8 @@
             android:contentDescription="@null"
             android:gravity="center_vertical|end"
             android:padding="3dp"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
             android:src="@drawable/ic_code_brackets_white_36dp" />
 
         <RelativeLayout
@@ -758,8 +760,9 @@
                 android:contentDescription="@null"
                 android:gravity="center_vertical|end"
                 android:padding="3dp"
-                android:src="@drawable/ic_transpose_white_36dp"
-                app:elevation="0dp" />
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                android:src="@drawable/ic_transpose_white_36dp" />
 
             <TextView
                 style="@style/MyInfoText"
@@ -787,8 +790,9 @@
                 android:contentDescription="@null"
                 android:gravity="center_vertical|end"
                 android:padding="3dp"
-                android:src="@drawable/ic_transpose_white_36dp"
-                app:elevation="0dp" />
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                android:src="@drawable/ic_transpose_white_36dp" />
 
             <TextView
                 style="@style/MyInfoText"

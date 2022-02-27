@@ -27,11 +27,9 @@ class ProfileActions {
         boolean result = true;  // Returns true on success.  Catches throw to false
         try {
             // This is used to copy the current preferences xml file to the chosen name / location
-            // Check the file exists, if not create it
-            if (!storageAccess.uriExists(c, to)) {
-                String name = to.getLastPathSegment();
-                storageAccess.lollipopCreateFileForOutputStream(c, preferences, to, null, "Profiles", "", name);
-            }
+            String name = to.getLastPathSegment();
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, to, null, "Profiles", "", name);
 
             // Different versions of Android save the preferences in different locations.
             Uri prefsFile = getPrefsFile(c, storageAccess);

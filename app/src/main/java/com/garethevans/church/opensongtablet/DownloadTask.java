@@ -82,9 +82,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                 Log.d("DownloadTask", "filename=" + filename);
 
                 // Check the uri exists for the outputstream to be valid
-                if (!storageAccess.uriExists(c, uri)) {
-                    storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "", "", filename);
-                }
+                storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "", "", filename);
                 uri = storageAccess.getUriForItem(c, preferences, "", "", filename);
 
                 Log.d("DownloadTask", "uri=" + uri);

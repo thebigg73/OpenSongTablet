@@ -31,10 +31,10 @@
         android:layout_marginBottom="0dp"
         android:contentDescription="@string/save"
         android:padding="0dp"
-        android:src="@drawable/ic_check_white_36dp"
-        app:backgroundTint="@color/toolbar"
         app:borderWidth="0dp"
         app:elevation="0dp"
+        android:src="@drawable/ic_check_white_36dp"
+        app:backgroundTint="@color/toolbar"
         app:fabSize="mini"
         app:useCompatPadding="true" />
 
@@ -49,10 +49,10 @@
         android:layout_marginBottom="0dp"
         android:contentDescription="@string/drawer_close"
         android:padding="0dp"
-        android:src="@drawable/ic_close_white_36dp"
-        app:backgroundTint="@color/toolbar"
         app:borderWidth="0dp"
         app:elevation="0dp"
+        android:src="@drawable/ic_close_white_36dp"
+        app:backgroundTint="@color/toolbar"
         app:fabSize="mini"
         app:useCompatPadding="true" />
 

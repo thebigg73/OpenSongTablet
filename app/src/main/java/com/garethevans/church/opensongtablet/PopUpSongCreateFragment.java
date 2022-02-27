@@ -280,7 +280,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         }
 
                         // Save the file
-                        storageAccess.createFile(getContext(), preferences, null, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
                         Uri uri = storageAccess.getUriForItem(getContext(), preferences, "Songs", StaticVariables.whichSongFolder,
                                 StaticVariables.songfilename);
 

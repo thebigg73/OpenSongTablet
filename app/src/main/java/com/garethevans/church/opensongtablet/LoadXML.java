@@ -543,6 +543,10 @@ public class LoadXML extends Activity {
                                 e.printStackTrace();
                                 StaticVariables.mLyrics = fixXML(c, preferences, "lyrics");
                             }
+                            // IV - When a valid xml file has no lyrics, return a space
+                            if (StaticVariables.mLyrics.equals("")) {
+                                StaticVariables.mLyrics = " ";
+                            }
                             break;
                         case "ccli":
                             StaticVariables.mCCLI = parseFromHTMLEntities(xpp.nextText());

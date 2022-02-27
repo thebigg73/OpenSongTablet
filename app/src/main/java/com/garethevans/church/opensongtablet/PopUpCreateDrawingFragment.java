@@ -138,9 +138,8 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         FloatingActionButton undo_FAB = V.findViewById(R.id.undo_FAB);
         FloatingActionButton redo_FAB = V.findViewById(R.id.redo_FAB);
 
-        // Get the screenshot size and ajust the drawing to match
+        // Get the screenshot size
         getSizes();
-        screenShot.setImageBitmap(FullscreenActivity.bmScreen);
 
         // Set the current tool image
         setCurrentTool();
@@ -189,12 +188,13 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         redo_FAB.setOnClickListener(view -> drawView.redo());
         showorhideToolOptions(isgone);
 
-        // Set the appropriate highlighter file
-        setHighlighterFile();
-
         drawView.setDrawingSize();
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+
+        // Add the images after view sizing as some Android distro's need this to scale correctly!
+        screenShot.setImageBitmap(FullscreenActivity.bmScreen);
+        setHighlighterFile();
 
         return V;
     }

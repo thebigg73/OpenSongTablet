@@ -456,23 +456,30 @@ class StorageAccess {
     }
 
     void lollipopCreateFileForOutputStream(Context c, Preferences preferences, Uri uri, String mimeType, String folder, String subfolder, String filename) {
-        if (lollipopOrLater() && !uriExists(c, uri)) {
+        // IV - This creates an empty file
+        if (lollipopOrLater()) {
             // Only need to do this for Lollipop or later
+            if (uriExists(c, uri)) {
+                deleteFile_SAF(c, uri);
+            }
             createFile(c, preferences, mimeType, folder, subfolder, filename);
-        } else if (!lollipopOrLater() && !uriExists(c, uri)){
+        } else {
             // Check it exists
             try {
                 if (uri!=null && uri.getPath()!=null) {
                     File f = new File(uri.getPath());
-                    if (!f.exists()) {
-                        if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
+                    if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
+                        if (!f.exists()) {
                             if (!f.mkdirs()) {
                                 Log.d("StorageAccess", "Unable to create file " + f);
                             }
-                        } else {
-                            if (!f.createNewFile()) {
-                                Log.d("StorageAccess", "Unable to create file " + f);
-                            }
+                        }
+                    } else {
+                        if (f.exists()) {
+                            deleteFile_File(uri);
+                        }
+                        if (!f.createNewFile()) {
+                            Log.d("StorageAccess", "Unable to create file " + f);
                         }
                     }
                 }
@@ -901,7 +908,12 @@ class StorageAccess {
 
         if (filename != null && !filename.isEmpty()) {
             f = new File(f, filename);
+            Uri uri = Uri.fromFile(f);
             try {
+                if (uriExists(c,uri)) {
+                    // IV - Delete any old file
+                    f.delete();
+                }
                 stuffCreated = f.createNewFile();
             } catch (Exception e) {
                 e.printStackTrace();

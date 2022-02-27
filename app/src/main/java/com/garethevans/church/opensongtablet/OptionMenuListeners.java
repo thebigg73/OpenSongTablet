@@ -1768,7 +1768,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
         setTextSwitch(receiveHostSongSections,c.getResources().getString(R.string.song_sections));
         setTextSwitch(receiveHostAutoscroll,c.getResources().getString(R.string.autoscroll));
-        setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
+        //setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Set the default values

@@ -421,8 +421,8 @@ public class PopUpImportExternalFile extends DialogFragment {
         Uri uri = storageAccess.getUriForItem(getContext(),preferences,"Songs","OnSong",storageAccess.safeFilename(title));
         // If the song doesn't exist, create it
         boolean exists = storageAccess.uriExists(getContext(),uri);
-        storageAccess.lollipopCreateFileForOutputStream(getContext(),preferences,uri,null,"Songs","OnSong",storageAccess.safeFilename(title));
-        if (overWrite_CheckBox.isChecked() || !exists) {
+        if (!exists | overWrite_CheckBox.isChecked()) {
+            storageAccess.lollipopCreateFileForOutputStream(getContext(),preferences,uri,null,"Songs","OnSong",storageAccess.safeFilename(title));
             OutputStream outputStream = storageAccess.getOutputStream(getContext(), uri);
             storageAccess.writeFileFromString(contents,outputStream);
         }
