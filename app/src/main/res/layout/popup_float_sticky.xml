@@ -26,10 +26,10 @@
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            app:borderWidth="0dp"
             app:elevation="0dp"
             app:fabSize="mini"
             app:backgroundTint="@color/red"
-            app:borderWidth="0dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_close_white_36dp"/>
 

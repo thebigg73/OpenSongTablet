@@ -35,6 +35,7 @@
         app:backgroundTint="@color/blue"
         app:useCompatPadding="true"
         app:borderWidth="0dp"
+        app:elevation="0dp"
         android:src="@drawable/ic_close_white_36dp"
         android:visibility="gone"
         android:contentDescription="@string/drawer_close" />

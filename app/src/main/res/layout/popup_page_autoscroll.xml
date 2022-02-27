@@ -91,9 +91,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:contentDescription="@string/link_audio"
+                    app:borderWidth="0dp"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_link_white_36dp"
                     app:backgroundTint="#888"
-                    app:elevation="0dp"
                     app:useCompatPadding="true" />
             </LinearLayout>
 

@@ -45,9 +45,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        app:borderWidth="0dp"
                         app:elevation="0dp"
                         android:src="@drawable/ic_youtube_play_white_36dp"
-                        app:borderWidth="0dp"
                         app:backgroundTint="@color/toolbar"
                         app:fabSize="mini"
                         android:contentDescription="@string/link_youtube" />
@@ -84,9 +84,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        app:borderWidth="0dp"
                         app:elevation="0dp"
                         android:src="@drawable/ic_delete_white_36dp"
-                        app:borderWidth="0dp"
                         app:backgroundTint="@color/grey"
                         app:fabSize="mini"
                         android:contentDescription="@string/delete" />
@@ -113,9 +113,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        app:borderWidth="0dp"
                         app:elevation="0dp"
                         android:src="@drawable/ic_cloud_white_36dp"
-                        app:borderWidth="0dp"
                         app:backgroundTint="@color/toolbar"
                         app:fabSize="mini"
                         android:contentDescription="@string/link_web" />
@@ -150,9 +150,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        app:borderWidth="0dp"
                         app:elevation="0dp"
                         android:src="@drawable/ic_delete_white_36dp"
-                        app:borderWidth="0dp"
                         app:backgroundTint="@color/grey"
                         app:fabSize="mini"
                         android:contentDescription="@string/delete" />

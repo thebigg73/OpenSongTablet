@@ -63,6 +63,8 @@
         app:fabSize="mini"
         app:backgroundTint="@color/purple"
         android:id="@+id/startPlay"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
         android:src="@drawable/ic_play_white_36dp"
         android:layout_above="@+id/scrubbar_SeekBar"
         android:layout_centerHorizontal="true"

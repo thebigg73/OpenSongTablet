@@ -106,9 +106,10 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/category"
+                    app:borderWidth="0dp"
+                    app:elevation="0dp"
                     android:src="@drawable/ic_plus_white_36dp"
                     app:backgroundTint="@color/blue" />
-
 
             </RelativeLayout>
 
