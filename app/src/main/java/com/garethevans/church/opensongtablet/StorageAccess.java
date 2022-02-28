@@ -456,13 +456,15 @@ class StorageAccess {
     }
 
     void lollipopCreateFileForOutputStream(Context c, Preferences preferences, Uri uri, String mimeType, String folder, String subfolder, String filename) {
-        // IV - This creates an empty file
+        // Only need to do this for Lollipop or later
         if (lollipopOrLater()) {
-            // Only need to do this for Lollipop or later
-            if (uriExists(c, uri)) {
+            // Delete any existing file (do not touch folder)
+            if (!mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR) && uriExists(c, uri)) {
                 deleteFile_SAF(c, uri);
             }
-            createFile(c, preferences, mimeType, folder, subfolder, filename);
+            if (!uriExists(c, uri)) {
+                createFile(c, preferences, mimeType, folder, subfolder, filename);
+            }
         } else {
             // Check it exists
             try {
