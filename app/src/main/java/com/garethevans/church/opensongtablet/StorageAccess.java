@@ -459,7 +459,7 @@ class StorageAccess {
         // Only need to do this for Lollipop or later
         if (lollipopOrLater()) {
             // Delete any existing file (do not touch folder)
-            if (!mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR) && uriExists(c, uri)) {
+            if (uriExists(c,uri) && (mimeType==null || !mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR))) {
                 deleteFile_SAF(c, uri);
             }
             if (!uriExists(c, uri)) {
@@ -470,7 +470,7 @@ class StorageAccess {
             try {
                 if (uri!=null && uri.getPath()!=null) {
                     File f = new File(uri.getPath());
-                    if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
+                    if (mimeType!=null && mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
                         if (!f.exists()) {
                             if (!f.mkdirs()) {
                                 Log.d("StorageAccess", "Unable to create file " + f);
