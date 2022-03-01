@@ -458,8 +458,8 @@ class StorageAccess {
     void lollipopCreateFileForOutputStream(Context c, Preferences preferences, Uri uri, String mimeType, String folder, String subfolder, String filename) {
         // Only need to do this for Lollipop or later
         if (lollipopOrLater()) {
-            // Delete any existing file (do not touch folder)
-            if (uriExists(c,uri) && (mimeType==null || !mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR))) {
+            // IV - Delete any existing file (does not touch folder)
+            if (uriExists(c,uri) && uriIsFile(c, uri)) {
                 deleteFile_SAF(c, uri);
             }
             if (!uriExists(c, uri)) {
@@ -470,13 +470,14 @@ class StorageAccess {
             try {
                 if (uri!=null && uri.getPath()!=null) {
                     File f = new File(uri.getPath());
-                    if (mimeType!=null && mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
+                    if (f.isDirectory()) {
                         if (!f.exists()) {
                             if (!f.mkdirs()) {
-                                Log.d("StorageAccess", "Unable to create file " + f);
+                                Log.d("StorageAccess", "Unable to create folder " + f);
                             }
                         }
                     } else {
+                        // IV - Delete any existing file (does not touch folder)
                         if (f.exists()) {
                             deleteFile_File(uri);
                         }
@@ -910,10 +911,9 @@ class StorageAccess {
 
         if (filename != null && !filename.isEmpty()) {
             f = new File(f, filename);
-            Uri uri = Uri.fromFile(f);
             try {
-                if (uriExists(c,uri)) {
-                    // IV - Delete any old file
+                if (f.exists() && f.isFile()) {
+                    // IV - Delete any existing file (does not touch folder)
                     f.delete();
                 }
                 stuffCreated = f.createNewFile();
