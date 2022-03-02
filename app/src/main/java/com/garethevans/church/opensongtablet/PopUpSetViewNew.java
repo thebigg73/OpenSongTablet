@@ -270,6 +270,14 @@ public class PopUpSetViewNew extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
             PopUpSetViewNew.this.doSave();
+            // IV - Display the first song
+            if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
+                setActions.prepareFirstItem(getContext(), preferences);
+                // IV - Avoid double refresh for Presentation mode, see OnDismiss()
+                if (!StaticVariables.whichMode.equals("Presentation")) {
+                    mListener.refreshAll();
+                }
+            }
             close();
         });
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
