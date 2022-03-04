@@ -1750,12 +1750,12 @@ public class ProcessSong {
 
     private int howManyColumnsAreBest(float col1, float[] col2, float[] col3, String autoScale,
                                       float fontSizeMin, boolean songAutoScaleOverrideFull,
-                                      boolean need23Columns) {
+                                      boolean need23ColumnCheck) {
         // There's a few things to consider here.  Firstly, if scaling is off, best is 1 column.
         // If we are overriding full scale to width only, or 1 col to off, best is 1 column.
 
-        Log.d(TAG,"need23Columns="+need23Columns+"  authoScale="+autoScale);
-        if (!need23Columns && (autoScale.equals("N") || autoScale.equals("W"))) {
+        Log.d(TAG,"need23Columns="+need23ColumnCheck+"  authoScale="+autoScale);
+        if (!need23ColumnCheck && (autoScale.equals("N") || autoScale.equals("W"))) {
             Log.d(TAG,"Defaulting to 1 column");
             return 1;
         }
@@ -1784,7 +1784,7 @@ public class ProcessSong {
             float newFontSize2Col = defFontSize * col2best;
 
             Log.d(TAG,"newFontSize2Col="+newFontSize2Col+"  fontSizeMin="+fontSizeMin);
-            if (!need23Columns && songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
+            if (!need23ColumnCheck && songAutoScaleOverrideFull && newFontSize2Col < fontSizeMin) {
                 thisAutoScale = "W";
                 return 1;
             }
@@ -1806,7 +1806,7 @@ public class ProcessSong {
 
     // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
     // This then returns the best (largest) scaling size as a float
-    public float addViewsToScreen(boolean need23Column, ArrayList<View> sectionViews,
+    public float addViewsToScreen(boolean need23ColumnCheck, ArrayList<View> sectionViews,
                                   ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights,
                                   RelativeLayout pageHolder,
                                   LinearLayout songView, LinearLayout songSheetView,
@@ -1830,10 +1830,16 @@ public class ProcessSong {
         float scale = c.getResources().getDisplayMetrics().density;
         padding = (int) (8 * scale);
 
+        // Reset any scaling of the views
+        for (int i=0; i<sectionViews.size(); i++) {
+            sectionViews.get(i).setScaleX(1f);
+            sectionViews.get(i).setScaleY(1f);
+        }
+
         int currentWidth = getMaxValue(sectionWidths, 0, sectionWidths.size());
         int currentHeight = getTotal(sectionHeights, 0, sectionHeights.size());
 
-        Log.d(TAG,"currentWidth="+currentWidth);
+        Log.d(TAG,"currentWidth="+currentWidth+"   currentHeight="+currentHeight+"  sections="+sectionViews.size());
 
         // Include the songSheetView if it isn't empty
         int songSheetTitleHeight = mainActivityInterface.getSongSheetTitleLayout().getHeight();
@@ -1849,7 +1855,7 @@ public class ProcessSong {
         // All scaling types need to process the single column view, either to use it or compare to 2/3 columns
         float[] scaleSize_2cols = new float[3];
         float[] scaleSize_3cols = new float[4];
-        if (songAutoScale.equals("Y") || need23Column) {
+        if (songAutoScale.equals("Y") || need23ColumnCheck) {
             // Figure out two and three columns.  Only do this if we need to to save processing time.
             scaleSize_2cols = col2Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
             scaleSize_3cols = col3Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
@@ -1857,12 +1863,24 @@ public class ProcessSong {
 
         float scaleSize_1col = col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
 
+        Log.d(TAG,"scaleSize_1col="+scaleSize_1col);
+        Log.d(TAG,"scaleSize_2cols[0]="+scaleSize_2cols[0]+"  scaleSize_2cols[1]="+scaleSize_2cols[1]+"  scaleSize_2cols[2]="+scaleSize_2cols[2]);
+        Log.d(TAG,"scaleSize_3cols[0]="+scaleSize_3cols[0]+"  scaleSize_3cols[1]="+scaleSize_3cols[1]+"  scaleSize_3cols[2]="+scaleSize_3cols[2]+"  scaleSize_3cols[3]="+scaleSize_3cols[3]);
+
         // Now decide if 1,2 or 3 columns is best
-        int howmany = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23Column);
+        int howmany = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23ColumnCheck);
 
         Log.d(TAG,"howmany="+howmany);
+
+        // If we need to move column1 down/up due to potential songSheet and it's scaling, do it
+        if (songSheetView!=null) {
+            setScaledView(songSheetView, scaleSize_1col, fontSizeMax);
+            column1.setPadding(0, (int) (songSheetTitleHeight * scaleSize_1col), 0, 0);
+        }
+
         switch (howmany) {
             case 1:
+            default:
                 // If we are using one column and resizing to width only, change the scale size
                 if (songAutoScale.equals("W") || thisAutoScale.equals("W")) {
                     scaleSize_1col = (float) screenWidth / (float) currentWidth;
@@ -1875,22 +1893,17 @@ public class ProcessSong {
                     scaleSize_1col = fontSize / defFontSize;
                 }
                 setOneColumn(mainActivityInterface.getSectionViews(), column1, column2, column3, currentWidth, currentHeight, scaleSize_1col, fontSizeMax);
-                break;
+                return scaleSize_1col;
 
             case 2:
                 setTwoColumns(sectionViews, column1, column2, column3, mainActivityInterface.getSectionHeights(), scaleSize_2cols, fontSizeMax, (int) ((float) screenWidth / 2.0f - padding));
-                break;
+                return Math.min(scaleSize_2cols[0],scaleSize_2cols[1]);
 
             case 3:
                 setThreeColumns(mainActivityInterface.getSectionViews(), column1, column2, column3, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights(), scaleSize_3cols, fontSizeMax);
-                break;
+                float col3_12_min = Math.min(scaleSize_3cols[0],scaleSize_3cols[1]);
+                return Math.min(col3_12_min,scaleSize_3cols[2]);
         }
-        // If we need to move column1 down/up due to potential songSheet and it's scaling, do it
-        if (songSheetView!=null) {
-            setScaledView(songSheetView, scaleSize_1col, fontSizeMax);
-            column1.setPadding(0, (int) (songSheetTitleHeight * scaleSize_1col), 0, 0);
-        }
-        return scaleSize_1col;
     }
 
 
@@ -2026,8 +2039,12 @@ public class ProcessSong {
                 color = ((ColorDrawable) background).getColor();
             }
             FrameLayout frameLayout = newFrameLayout(color);
+            if (sectionViews.get(i).getParent()!=null) {
+                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
+            }
             frameLayout.addView(sectionViews.get(i));
             innerCol1.addView(frameLayout);
+            Log.d(TAG,"view["+i+"].getScale()="+sectionViews.get(i).getScaleX());
         }
         for (int i = (int) scaleSize[2]; i < sectionViews.size(); i++) {
             color = Color.TRANSPARENT;
@@ -2036,8 +2053,12 @@ public class ProcessSong {
                 color = ((ColorDrawable) background).getColor();
             }
             FrameLayout frameLayout = newFrameLayout(color);
+            if (sectionViews.get(i).getParent()!=null) {
+                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
+            }
             frameLayout.addView(sectionViews.get(i));
             innerCol2.addView(frameLayout);
+            Log.d(TAG,"view["+i+"].getScale()="+sectionViews.get(i).getScaleX());
         }
         columnVisibility(column1, column2, column3, true, true, false);
         column1.addView(innerCol1);
@@ -2174,6 +2195,9 @@ public class ProcessSong {
                 color = ((ColorDrawable) background).getColor();
             }
             FrameLayout frameLayout = newFrameLayout(color);
+            if (sectionViews.get(i).getParent()!=null) {
+                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
+            }
             frameLayout.addView(sectionViews.get(i));
             innerCol1.addView(frameLayout);
         }
@@ -2184,6 +2208,9 @@ public class ProcessSong {
                 color = ((ColorDrawable) background).getColor();
             }
             FrameLayout frameLayout = newFrameLayout(color);
+            if (sectionViews.get(i).getParent()!=null) {
+                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
+            }
             frameLayout.addView(sectionViews.get(i));
             innerCol2.addView(frameLayout);
         }
@@ -2194,6 +2221,9 @@ public class ProcessSong {
                 color = ((ColorDrawable) background).getColor();
             }
             FrameLayout frameLayout = newFrameLayout(color);
+            if (sectionViews.get(i).getParent()!=null) {
+                ((ViewGroup)sectionViews.get(i).getParent()).removeView(sectionViews.get(i));
+            }
             frameLayout.addView(sectionViews.get(i));
             innerCol3.addView(frameLayout);
         }

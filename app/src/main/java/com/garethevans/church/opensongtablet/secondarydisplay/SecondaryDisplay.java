@@ -853,17 +853,22 @@ public class SecondaryDisplay extends Presentation {
 
         Log.d(TAG,"availableWidth="+availableScreenWidth+"  availableHeight="+availableScreenHeight);
 
+        // Available height needs to remember to leave space for the infobar which is always visible in this mode
+        // The bar height is constant
+        int infoHeight = Math.max(myView.songProjectionInfo1.getMeasuredHeight(),myView.songProjectionInfo2.getMeasuredHeight());
+        int modeHeight = availableScreenHeight - infoHeight;
+
         boolean need23columns = mainActivityInterface.getMode().equals("Performance");
         if (showWhich<2) {
             scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(
                     need23columns, secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
-                    myView.songContent2, null, availableScreenWidth, availableScreenHeight,
+                    myView.songContent2, null, availableScreenWidth, modeHeight,
                     myView.songContent2Col1, myView.songContent2Col2, myView.songContent2Col3);
 
         } else {
             scaleFactor = mainActivityInterface.getProcessSong().addViewsToScreen(
                     need23columns, secondaryViews, secondaryWidths, secondaryHeights, myView.allContent,
-                    myView.songContent1, null, availableScreenWidth, availableScreenHeight,
+                    myView.songContent1, null, availableScreenWidth, modeHeight,
                     myView.songContent1Col1, myView.songContent1Col2, myView.songContent1Col3);
         }
 
