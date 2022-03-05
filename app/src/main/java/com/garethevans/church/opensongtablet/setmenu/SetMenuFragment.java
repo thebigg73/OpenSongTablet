@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.setmenu;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class SetMenuFragment extends Fragment {
-
-    private final String TAG = "SetMenuFragment";
 
     private MenuSetsBinding myView;
     private LinearLayoutManager llm;
@@ -203,8 +200,6 @@ public class SetMenuFragment extends Fragment {
 
     // Called from clicking on checkboxes in song menu (via MainActivity)
     public void removeSetItem(int currentSetPosition) {
-        Log.d(TAG,"removeSetItem("+currentSetPosition+")");
-        Log.d(TAG,"item: "+setListAdapter.getSetList().get(currentSetPosition).songfilename);
         setListAdapter.getSetList().remove(currentSetPosition);
         setListAdapter.notifyItemRemoved(currentSetPosition);
         updateSetTitle();

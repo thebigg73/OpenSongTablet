@@ -34,7 +34,7 @@ public class EditSongFragmentLyrics extends Fragment {
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private float editTextSize = 11;
     private int colorOn, colorOff;
-    private boolean addUndoStep = true, asChordPro = false;
+    private boolean addUndoStep = true;
 
     @Override
     public void onAttach(@NonNull Context context) {

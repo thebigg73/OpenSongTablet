@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet.preferences;
 
 // This class is used to store the static variables the app needs
@@ -44,9 +45,6 @@ public class StaticVariables {
 
     public static PerformanceFragment performanceFragment;
 
-    // Set stuff
-    public static String previousSongInSet = "";
-    public static String nextSongInSet = "";
     public static String myNewXML;
     public static boolean homeFragment;
     public static boolean sortAlphabetically = true;
@@ -67,7 +65,6 @@ public class StaticVariables {
     public static String mBluetoothName;
     public static boolean isSong;
     public static String myXML;
-    static String nextSongKeyInSet = "";
     public static String whatsongforsetwork = "";
     public static String newSetContents = "";
     public static String settoload = "";
@@ -214,3 +211,4 @@ public class StaticVariables {
     public static Activity activity;
 
 }
+*/

@@ -25,15 +25,14 @@ import java.util.ArrayList;
 
 public class PresenterFragment extends Fragment {
 
+    // TODO Make this all work
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private ModePresenterBinding myView;
     private PageAdapter pageAdapter;
     private SongSectionsFragment songSectionsFragment;
     private SongSectionsAdapter songSectionsAdapter;
-    //private MediaFragment mediaFragment;
     private AdvancedFragment advancedFragment;
-    //private SettingsFragment settingsFragment;
     private final String TAG = "PresenterFragment";
     private boolean landscape;
 

@@ -26,7 +26,6 @@ public class SongSectionsAdapter extends RecyclerView.Adapter<SongSectionViewHol
     private final DisplayInterface displayInterface;
     private ArrayList<SongSectionInfo> songSections;
     private final PresenterFragment fragment;
-    private final String TAG = "SongSetionsAdapter";
     private final int onColor, offColor;
     private int sectionEdited = -1, currentPosition = -1;
     private final String colorChange = "color";

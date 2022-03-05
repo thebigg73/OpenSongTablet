@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
     private BottomSheetChooseColorBinding myView;
-    private final String TAG = "ChooseColorBS";
 
     private String newColorHex;
     private String alphaHex;
@@ -175,7 +173,6 @@ public class ChooseColorBottomSheet extends BottomSheetDialogFragment {
             oldColorInt = -1;
         }
 
-        Log.d(TAG, "oldColorInt="+oldColorInt);
         String oldColorHex = String.format("%08X", (oldColorInt));
         newColorHex = String.format("%08X",(oldColorInt));
         newColorInt = oldColorInt;

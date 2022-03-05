@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +22,6 @@ public class AppActionBar {
 
     // This holds references to the items in the ActionBar (except the battery)
     // Battery changes get sent via the mainactivityInterface
-    private final String TAG = "AppActionBar";
     private final MainActivityInterface mainActivityInterface;
     private final Toolbar toolbar;
     private final ActionBar actionBar;
@@ -187,7 +185,6 @@ public class AppActionBar {
     }
 
     public void updateActionBarSettings(String prefName, float value, boolean isvisible) {
-        Log.d(TAG,"prefName="+prefName+"  value="+value+"  isvisible="+isvisible);
 
         switch (prefName) {
             case "batteryDialOn":

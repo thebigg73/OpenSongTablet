@@ -30,11 +30,19 @@ public class SetActions {
     // TODO TIDY UP and check transpose bit works
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private final String itemStart = "$**_", itemEnd = "_**$",
-            keyStart = "_***", keyEnd = "***_", setCategorySeparator = "__",
-            folderVariations = "Variations", folderNotes = "Notes", folderSlides="Slides",
-            folderScripture = "Scripture", folderImages = "Images", TAG = "SetActions",
-            transposeStart = "__tr__", cache = "_cache", customLocStart = "**";
+    private final String itemStart = "$**_";
+    private final String itemEnd = "_**$";
+    private final String keyStart = "_***";
+    private final String keyEnd = "***_";
+    private final String setCategorySeparator = "__";
+    private final String folderVariations = "Variations";
+    private final String folderNotes = "Notes";
+    private final String folderSlides="Slides";
+    private final String folderScripture = "Scripture";
+    private final String folderImages = "Images";
+    private final String TAG = "SetActions";
+    private final String cache = "_cache";
+    private final String customLocStart = "**";
 
     private ArrayList<Integer> missingKeyPositions;
 

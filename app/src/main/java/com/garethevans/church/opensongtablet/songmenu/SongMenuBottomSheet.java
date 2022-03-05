@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.songmenu;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetMenuSongsBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String TAG = "SongMenuBottomSheet";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -62,7 +60,6 @@ public class SongMenuBottomSheet extends BottomSheetDialogFragment {
     private void setupViews() {
         // Set up the song title
         String songTitle = mainActivityInterface.getSong().getTitle();
-        Log.d(TAG,"songTitle: "+songTitle);
         if (!mainActivityInterface.getProcessSong().isValidSong(mainActivityInterface.getSong())) {
             myView.songEdit.setVisibility(View.GONE);
             myView.songActions.setVisibility(View.GONE);

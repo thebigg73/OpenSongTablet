@@ -1,14 +1,11 @@
 package com.garethevans.church.opensongtablet.importsongs;
 
-import android.util.Log;
-
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class HolyChords {
 
     // This extracts the song from the HolyChords website
 
-    private final String TAG = "HolyChords";
     private final String[] bitsToClear = new String[] {"<span class=\"chopds\">","<a class=\"tooltip\">",
             "<span class=\"tooltip-content\">","<span class=\"c\">","<span class=\"text\">\"","</a>",
             "</span>","-->","<!--"};
@@ -88,7 +85,6 @@ public class HolyChords {
             int end = s.indexOf(">",start);
             if (start>-1 && end>start) {
                 String bitToRemove = s.substring(start,end+1);
-                Log.d(TAG,"bitToRemove="+bitToRemove);
                 s = s.replace(bitToRemove,"");
             } else {
                 keepGoing = false;

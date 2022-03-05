@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -38,7 +37,6 @@ public class Pad {
     private final MaterialTextView padTotalTime;
     private int padLength;
     private int pad1CurrentTime = 0, pad2CurrentTime = 0;
-    private final String TAG = "Pad";
     private int lastPadPlaying = 0;
     private float pad1VolDrop, pad2VolDrop;
     private boolean padsActivated = false;
@@ -380,7 +378,6 @@ public class Pad {
     }
     private void doPlay(int padNum) {
         lastPadPlaying = padNum;
-        Log.d(TAG,"doPlay: padNum="+padNum);
         switch (padNum) {
             case 1:
                 padLength = (int)(pad1.getDuration()/1000f);
@@ -395,7 +392,6 @@ public class Pad {
                 pad2.start();
                 break;
         }
-        Log.d(TAG,"padLength:"+padLength);
         String padLengthText = " / " + mainActivityInterface.getTimeTools().timeFormatFixer(padLength);
         String display = mainActivityInterface.getTimeTools().timeFormatFixer(0);
         padTime.setText(display);

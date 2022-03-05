@@ -20,7 +20,6 @@ public class PadSettingsFragment extends Fragment {
 
     private SettingsPadsBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String TAG = "PadSettingsFragment";
     private boolean padPlaying;
 
     @Override
@@ -62,10 +61,8 @@ public class PadSettingsFragment extends Fragment {
 
     private void changePlayIcon() {
         if (padPlaying) {
-            Log.d(TAG,"Playing");
             myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_stop_white_36dp,null));
         } else {
-            Log.d(TAG,"Not playing");
             myView.startStopButton.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_play_white_36dp,null));
         }
     }

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class ExportActions {
 
-    private final String TAG = "SetActions";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
 

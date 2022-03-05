@@ -26,7 +26,6 @@ public class TransposeBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetTransposeBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String TAG = "TransposeBottomSheet";
     private int fromFormat, toFormat, prefFormat;
     private String originalKey;
 

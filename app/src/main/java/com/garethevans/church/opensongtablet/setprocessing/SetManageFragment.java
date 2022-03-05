@@ -41,7 +41,7 @@ public class SetManageFragment extends Fragment {
     private String renameSetName;
     private String renameSetCategory;
     private Uri oldSetUri, newSetUri;
-    private String oldSetText, newSetText, oldSetFilename, newSetFilename;
+    private String newSetFilename;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -401,6 +401,8 @@ public class SetManageFragment extends Fragment {
     }
 
     private void renameSet() {
+        String oldSetText;
+        String oldSetFilename;
         if (renameSetCategory == null || renameSetCategory.isEmpty() || renameSetCategory.equals(getString(R.string.mainfoldername))) {
             oldSetFilename = renameSetName;
             oldSetText = getString(R.string.mainfoldername) + "/" + renameSetName;
@@ -408,11 +410,12 @@ public class SetManageFragment extends Fragment {
             oldSetFilename = renameSetCategory + "__" + renameSetName;
             oldSetText = renameSetCategory + "/" + renameSetName;
         }
-        oldSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets","",oldSetFilename);
+        oldSetUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets","", oldSetFilename);
 
         Editable mycat = myView.setCategory.getText();
         Editable mynam = myView.setName.getText();
         if (mycat!=null && !mycat.toString().isEmpty() && mynam!=null && !mynam.toString().isEmpty()) {
+            String newSetText;
             if (mycat.toString().isEmpty() || mycat.toString().equals(getString(R.string.mainfoldername))) {
                 newSetFilename = mynam.toString();
                 newSetText = getString(R.string.mainfoldername) + "/" + mynam;
@@ -427,7 +430,7 @@ public class SetManageFragment extends Fragment {
                 mainActivityInterface.getShowToast().doIt(getString(R.string.file_exists));
             } else {
                 AreYouSureBottomSheet areYouSureBottomSheet = new AreYouSureBottomSheet("renameSet",
-                        getString(R.string.rename)+":\n"+oldSetText+" > "+newSetText,null,
+                        getString(R.string.rename)+":\n"+ oldSetText +" > "+ newSetText,null,
                         "setManageFragment", this, null);
                 areYouSureBottomSheet.show(mainActivityInterface.getMyFragmentManager(),"AreYouSureFragment");
             }

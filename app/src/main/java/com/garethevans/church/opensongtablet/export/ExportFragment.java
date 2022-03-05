@@ -31,7 +31,6 @@ public class ExportFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private ArrayList<Uri> uris;
     private Uri uri;
-    private final String TAG = "ExportFragment";
     private final MutableLiveData<Boolean> listen = new MutableLiveData<>();
     private ArrayList<View> sectionViewsPDF;
     private ArrayList<Integer> sectionViewWidthsPDF, sectionViewHeightsPDF;

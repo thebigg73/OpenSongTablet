@@ -20,29 +20,16 @@ import java.util.TimerTask;
 public class Autoscroll {
 
     private boolean isAutoscrolling, wasScrolling, autoscrollOK, isPaused = false, showOn = true,
-            autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime;
+            autoscrollAutoStart, autoscrollActivated = false, autoscrollUseDefaultTime, usingZoomLayout;
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
-    private final String TAG = "Autoscroll";
-    private int songDelay;
-    private int songDuration;
-    private int displayHeight;
-    private int songHeight;
-    private int scrollTime;
-    private int flashCount;
-    private final int flashTime = 600;
-    private int autoscrollDefaultSongLength;
-    private int autoscrollDefaultSongPreDelay;
-    private int colorOn;
-    private final int updateTime = 60;
-    private float scrollIncrement;
-    private float scrollPosition;
-    private float scrollCount;
-    private float scrollIncrementScale;
+    private int songDelay, songDuration, displayHeight, songHeight, scrollTime, flashCount,
+            autoscrollDefaultSongLength, autoscrollDefaultSongPreDelay, colorOn;
+    private final int flashTime = 600, updateTime = 60;
+    private float scrollIncrement, scrollPosition, scrollCount, scrollIncrementScale;
     private final LinearLayout autoscrollView;
     private MyZoomLayout myZoomLayout;
     private MyRecyclerView myRecyclerView;
-    private boolean usingZoomLayout;
     private final MaterialTextView autoscrollTimeText, autoscrollTotalTimeText;
     private Timer timer;
     private TimerTask timerTask;

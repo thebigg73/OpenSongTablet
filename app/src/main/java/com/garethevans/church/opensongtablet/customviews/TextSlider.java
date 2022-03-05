@@ -69,7 +69,6 @@ public class TextSlider extends LinearLayout {
         }
     }
 
-
     // The setters
     public void setTextLeft(String leftText) {
         textLeft.setText(leftText);

@@ -17,7 +17,6 @@ public class MyZoomLayout extends FrameLayout {
 
     boolean isUserTouching = false, isScaling = false, isScrolling = false, isFirstScrollEvent = true;
     private final ScaleGestureDetector scaleDetector;
-    private final String TAG = "MyZoomLayout";
     private float scaleFactor = 1.0f;
     private float focusX = 0;
     private float focusY = 0;

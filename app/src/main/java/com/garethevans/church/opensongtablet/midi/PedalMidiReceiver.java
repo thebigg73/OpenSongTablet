@@ -13,6 +13,7 @@ import java.util.Arrays;
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class PedalMidiReceiver extends MidiReceiver {
 
+    // TODO Test this
     private final Midi midi;
     private final MainActivityInterface mainActivityInterface;
     private long downTime, upTime;

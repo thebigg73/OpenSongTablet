@@ -27,7 +27,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     private final MainActivityInterface mainActivityInterface;
     private final SparseBooleanArray checkedArray = new SparseBooleanArray();
     private final boolean showChecked;
-    private final String TAG = "SongListAdapter";
 
     AdapterCallback callback;
 

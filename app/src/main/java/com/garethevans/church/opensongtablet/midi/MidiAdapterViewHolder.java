@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiItemTouchInterface;
 
 public class MidiAdapterViewHolder  extends RecyclerView.ViewHolder  implements
@@ -24,10 +23,9 @@ public class MidiAdapterViewHolder  extends RecyclerView.ViewHolder  implements
     private final ItemTouchHelper itemTouchHelper;
     private final MidiItemTouchInterface midiItemTouchInterface;
     private final GestureDetector gestureDetector;
-    private final MainActivityInterface mainActivityInterface;
     private final String TAG = "MidiAdapterViewHolder";
 
-    public MidiAdapterViewHolder(MainActivityInterface mainActivityInterface, View v, ItemTouchHelper itemTouchHelper, MidiItemTouchInterface midiItemTouchInterface) {
+    public MidiAdapterViewHolder(View v, ItemTouchHelper itemTouchHelper, MidiItemTouchInterface midiItemTouchInterface) {
         super(v);
         vCard = itemView.findViewById(R.id.cardview_layout);
         vItem = itemView.findViewById(R.id.cardview_item);
@@ -38,7 +36,6 @@ public class MidiAdapterViewHolder  extends RecyclerView.ViewHolder  implements
         gestureDetector = new GestureDetector(v.getContext(),this);
         this.itemTouchHelper = itemTouchHelper;
         this.midiItemTouchInterface = midiItemTouchInterface;
-        this.mainActivityInterface = mainActivityInterface;
     }
 
     @Override

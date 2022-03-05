@@ -38,7 +38,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
 
-    private final String TAG = "ImageChooserBottomSheet";
     private BottomSheetImageChooseBinding myView;
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;

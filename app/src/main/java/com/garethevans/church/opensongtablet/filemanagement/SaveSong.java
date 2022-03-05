@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 
 public class SaveSong {
 
-    private final String TAG = "SaveSong";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
 
@@ -43,15 +41,6 @@ public class SaveSong {
 
             // Write the changes to the current Song object
             mainActivityInterface.setSong(newSong);
-
-            Log.d(TAG,"oldFolder: " + oldFolder);
-            Log.d(TAG,"oldFilename: " + oldFilename);
-            Log.d(TAG,"newFolder: " + newSong.getFolder());
-            Log.d(TAG,"newFilename: " + newSong.getFilename());
-            Log.d(TAG,"oldLocation: " + oldLocation.get(0) + ", " + oldLocation.get(1));
-            Log.d(TAG,"folderChange: " + folderChange);
-            Log.d(TAG,"filenameChange: " + filenameChange);
-            Log.d(TAG,"newSong.getSongId()="+newSong.getSongid()+"  mainSong="+mainActivityInterface.getSong().getSongid());
 
             if (folderChange || filenameChange) {
                 // We need to rename the entry in the database

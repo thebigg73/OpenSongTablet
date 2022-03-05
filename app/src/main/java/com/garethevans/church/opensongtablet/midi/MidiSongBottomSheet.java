@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.BottomSheetSongMidiBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 public class MidiSongBottomSheet extends BottomSheetDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
-    private MidiAdapterInterface midiAdapterInterface;
     private BottomSheetSongMidiBinding myView;
     private ArrayList<MidiInfo> midiInfos;
     private LinearLayoutManager llm;
@@ -39,7 +37,6 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        midiAdapterInterface = (MidiAdapterInterface) context;
     }
 
     @NonNull
@@ -87,7 +84,7 @@ public class MidiSongBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void setupAdapter() {
-        midiMessagesAdapter = new MidiMessagesAdapter(requireContext(),false);
+        midiMessagesAdapter = new MidiMessagesAdapter(requireContext());
         ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         midiMessagesAdapter.setTouchHelper(itemTouchHelper);

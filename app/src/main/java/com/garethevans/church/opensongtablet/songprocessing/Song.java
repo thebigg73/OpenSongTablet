@@ -11,8 +11,6 @@ import java.util.ArrayList;
 
 public class Song {
 
-    private final String TAG = "Song";
-
     // The holders
     private int id;
     private String songid="";

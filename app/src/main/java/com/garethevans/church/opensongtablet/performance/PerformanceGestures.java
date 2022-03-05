@@ -4,7 +4,6 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +25,6 @@ import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
 
 public class PerformanceGestures {
 
-    private final String TAG = "PerformanceGestures";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
@@ -76,7 +74,6 @@ public class PerformanceGestures {
     public void addToSet() {
         String itemForSet = mainActivityInterface.getSetActions().whatToLookFor(mainActivityInterface.getSong());
 
-        Log.d(TAG,"itemForSet="+itemForSet);
         // Allow the song to be added, even if it is already there
         String val = mainActivityInterface.getPreferences().getMyPreferenceString("setCurrent","") + itemForSet;
         mainActivityInterface.getPreferences().setMyPreferenceString("setCurrent",val);

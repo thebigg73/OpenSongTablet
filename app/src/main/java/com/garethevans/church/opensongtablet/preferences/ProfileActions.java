@@ -163,6 +163,7 @@ public class ProfileActions {
 
             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
         } catch (Exception e) {
+            Log.d(TAG,"Error saving");
             e.printStackTrace();
             result = false;
         }

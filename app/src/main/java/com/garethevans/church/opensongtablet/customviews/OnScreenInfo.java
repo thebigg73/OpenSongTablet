@@ -18,8 +18,6 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class OnScreenInfo extends LinearLayout {
 
-    private final String TAG = "OnScreenInfo";
-
     private final LinearLayout info;
     private final MaterialTextView capoInfo;
     private final LinearLayout autoscroll;

@@ -4,7 +4,6 @@ package com.garethevans.church.opensongtablet.stage;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import java.util.List;
 public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
     // All the helpers we need to access are in the MainActivity
-    private final String TAG = "StageSectionAdapter";
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private final ArrayList<StageSectionInfo> sectionInfos;
@@ -50,7 +48,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         floatHeight = 0;
 
         for (int x=0; x<mainActivityInterface.getSectionViews().size(); x++) {
-            Log.d(TAG,"height["+x+"]="+mainActivityInterface.getSectionHeights().get(x));
             StageSectionInfo stageSectionInfo = new StageSectionInfo();
 
             float alpha = 1f;
@@ -69,7 +66,6 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
             float itemHeight = sectionHeight * scale + (4f * density);
 
-            Log.d(TAG,"itemHeight["+x+"]="+itemHeight);
             floatHeight += itemHeight;
             floatSizes.add(itemHeight);
 

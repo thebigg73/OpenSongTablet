@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 public class PDFExtractBottomSheet extends BottomSheetDialogFragment {
 
-    private final String TAG = "PDFExtractBottomSheet";
     private BottomSheetPdfExtractBinding myView;
     private MainActivityInterface mainActivityInterface;
     private final ArrayList<String> incomingPages;

@@ -19,7 +19,6 @@ public class Metronome {
 
     // This object holds all of the metronome activity
 
-    private final String TAG = "Metronome";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private Activity activity;  // For run on UI updates

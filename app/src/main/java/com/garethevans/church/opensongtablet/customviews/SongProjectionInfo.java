@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.customviews;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,7 +18,6 @@ public class SongProjectionInfo extends LinearLayout {
     private final LinearLayout castSongInfo;
     private final TextView songTitle, songAuthor, songCopyright, songCCLI;
     private final ImageView miniLogo;
-    private final String TAG = "SongProjectionInfo";
     private int viewHeight = 0;
 
     public SongProjectionInfo(Context context, @Nullable AttributeSet attrs) {
@@ -138,7 +136,6 @@ public class SongProjectionInfo extends LinearLayout {
     }
 
     public void setViewHeight(int viewHeight) {
-        Log.d(TAG,"set height to "+viewHeight);
         if (viewHeight!=0) {
             this.viewHeight = viewHeight;
         }

@@ -8,7 +8,6 @@ public class WindowFlags {
 
     private final Window w;
     private int uiOptions;
-    private final String TAG = "WindowFlags";
 
     public WindowFlags(Window w) {
         this.w = w;

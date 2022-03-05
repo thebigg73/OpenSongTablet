@@ -18,12 +18,10 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     private final Uri appDB, userDB;
     private final File appDBFile;
     private final String TAG = "NonOSSQLHelper";
-    private final Context c;
     private final MainActivityInterface mainActivityInterface;
 
     public NonOpenSongSQLiteHelper(Context c) {
         super(c, SQLite.NON_OS_DATABASE_NAME, null, DATABASE_VERSION);
-        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
         appDBFile = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
         appDB = Uri.fromFile(appDBFile);

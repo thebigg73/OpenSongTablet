@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,6 @@ public class CustomSlideFragment extends Fragment {
     private SettingsCustomSlideBinding myView;
     private MainActivityInterface mainActivityInterface;
     private ActivityResultLauncher<Intent> addImagesLauncher;
-    private final String TAG = "CustomSlideFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -256,7 +254,6 @@ public class CustomSlideFragment extends Fragment {
 
     private void addRow(Uri uri) {
         if (uri != null && uri.getPath() != null && !uri.getPath().isEmpty()) {
-            Log.d(TAG,"uri="+uri);
             try {
                 // Prepare the tag - use the file name and base 64 encode it to make it safe
                 byte[] data = uri.getPath().getBytes(StandardCharsets.UTF_8);

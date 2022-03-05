@@ -13,8 +13,6 @@ import java.net.URL;
 
 public class WebDownload {
 
-    private final String TAG = "WebDownload";
-
     // This class is used to download files from the internet
     // These can be my sample songs, or files from UG, SongSelect, etc.
     // This will be called in a new thread somewhere!

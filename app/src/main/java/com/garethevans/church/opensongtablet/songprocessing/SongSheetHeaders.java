@@ -11,7 +11,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class SongSheetHeaders {
 
-    private final String TAG = "SongSheetHeaders";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
 

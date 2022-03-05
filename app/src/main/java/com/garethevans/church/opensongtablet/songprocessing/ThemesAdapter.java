@@ -25,7 +25,6 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder
     private final MainActivityInterface mainActivityInterface;
     private final ArrayList<String> tags, songsWithTags;
     private final ArrayList<Boolean> checked = new ArrayList<>();
-    private final String TAG = "ThemesAdapter";
     private final Fragment callingFragment;
     private final String fragName;
     private final Context c;

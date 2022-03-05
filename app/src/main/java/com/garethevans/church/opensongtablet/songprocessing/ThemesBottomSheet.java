@@ -26,7 +26,6 @@ public class ThemesBottomSheet extends BottomSheetDialogFragment {
     private final String fragName;
     private MainActivityInterface mainActivityInterface;
     private ThemesAdapter themesAdapter;
-    private final String TAG = "ThemesBottomSheet";
 
     ThemesBottomSheet(Fragment callingFragment, String fragName) {
         this.callingFragment = callingFragment;

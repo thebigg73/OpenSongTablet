@@ -14,7 +14,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class MyRecyclerView extends RecyclerView {
 
-    private final String TAG = "MyRecyclerView";
     private final MainActivityInterface mainActivityInterface;
     private boolean isUserTouching;
     private boolean scrolledToTop=true;
@@ -24,7 +23,6 @@ public class MyRecyclerView extends RecyclerView {
     private float floatScrollPos;
 
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
-    //private int scrollPosition;
     private ScrollListener scrollListener;
     private ItemTouchListener itemTouchListener;
 

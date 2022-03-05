@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.songmenu;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private final String whichMenu;
     private Song randomSong;
-    private final String TAG = "RandomSongBottom";
 
     public RandomSongBottomSheet(String whichMenu) {
         this.whichMenu = whichMenu;
@@ -86,7 +84,6 @@ public class RandomSongBottomSheet extends BottomSheetDialogFragment {
         } else {
             randomNum = random.nextInt(mainActivityInterface.getSongsFound("set").size());
             randomSong = mainActivityInterface.getSongsFound("set").get(randomNum);
-            Log.d(TAG,"randomNum="+randomNum);
         }
         myView.currentRandomSong.setText(randomSong.getTitle());
         myView.currentRandomSong.setHint(randomSong.getFolder());

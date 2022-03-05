@@ -8,7 +8,6 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ThemeColors {
 
-    private final String TAG = "ThemeColors";
     private final MainActivityInterface mainActivityInterface;
 
     // This object holds the user theme colours

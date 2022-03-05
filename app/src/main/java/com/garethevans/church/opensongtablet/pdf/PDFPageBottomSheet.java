@@ -17,7 +17,6 @@ public class PDFPageBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetPdfPageBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String TAG = "PDFPageBottomSheet";
 
     @Override
     public void onAttach(@NonNull Context context) {

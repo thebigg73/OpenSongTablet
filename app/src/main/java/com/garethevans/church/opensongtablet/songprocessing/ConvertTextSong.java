@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -15,7 +14,6 @@ import java.util.Locale;
 
 public class ConvertTextSong {
 
-    private final String TAG = "ConvertTextSong";
     private final Context c;
 
     // This class is called when indexing text songs (ending in .txt or files that aren't xml, onsong or chordpro
@@ -160,8 +158,6 @@ public class ConvertTextSong {
     private String fixTabLines(String l) {
         // Look for tab lines
         if (l.contains("|") && l.contains("-")) {
-            Log.d(TAG, "Could be a tab line = " + l);
-
             // Does line start with string tuning?
             String b = l.trim().replaceFirst(";","");
             boolean isstring = (b.startsWith("A") || b.startsWith("B") || b.startsWith("D") ||
@@ -196,8 +192,6 @@ public class ConvertTextSong {
                 if (!gstring.startsWith(";")) {
                     gstring = ";" + gstring;
                 }
-                Log.d(TAG, "gstring = " + gstring);
-                Log.d(TAG, "tab = " + tab);
 
                 l = gstring + tab;
             }

@@ -27,7 +27,6 @@ import java.util.List;
 public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolder> {
 
     // All the helpers we need to access are in the MainActivity
-    private final String TAG = "ImageSlideAdapter";
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private ArrayList<ImageSlideItemInfo> slideInfos;

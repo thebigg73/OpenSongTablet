@@ -11,7 +11,6 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.BatteryManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +25,6 @@ import java.util.TimerTask;
 public class BatteryStatus extends BroadcastReceiver {
 
     private boolean isCharging;
-    private final String TAG = "BatteryStatus";
 
     private float batteryTextSize, charge;
     private int batteryDialThickness;
@@ -132,7 +130,6 @@ public class BatteryStatus extends BroadcastReceiver {
                 updateBattery();
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d(TAG, "Problem setting up the battery monitor");
             }
         }
     }

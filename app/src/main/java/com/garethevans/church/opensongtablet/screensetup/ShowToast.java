@@ -17,7 +17,6 @@ public class ShowToast {
     private final View anchor;
     private final PopupWindow popupWindow;
     private final MaterialTextView textToast;
-    private final String TAG = "ShowToast";
     private long messageEndTime = 0;
     private final Runnable hidePopupRunnable = new Runnable() {
         @Override

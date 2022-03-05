@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +27,7 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
 
     private final MainActivityInterface mainActivityInterface;
     private final RecyclerInterface recyclerInterface;
-    private final String TAG = "PresOrderAdapter";
     private final Fragment callingFragment;
-    private final BottomSheetDialogFragment bottomSheetDialogFragment;
     private final String fragName;
     private final Context c;
     private final ArrayList<String> currentOrder = new ArrayList<>();
@@ -40,18 +37,12 @@ public class PresentationOrderAdapter extends RecyclerView.Adapter<PresentationO
         this.mainActivityInterface = mainActivityInterface;
         this.callingFragment = callingFragment;
         this.fragName = fragName;
-        this.bottomSheetDialogFragment = bottomSheetDialogFragment;
         this.c = c;
         recyclerInterface = (RecyclerInterface) bottomSheet;
 
         // Process the song and get for any existing tags to choose from
          mainActivityInterface.getTempSong().setSongSectionHeadings(mainActivityInterface.getProcessSong().getSectionHeadings(
                 mainActivityInterface.getTempSong().getLyrics()));
-
-        for (String heading:mainActivityInterface.getTempSong().getSongSectionHeadings()) {
-            Log.d(TAG,"heading: "+heading);
-        }
-
 
         // If tags are duplicated, warn the user
         Set<String> check = new HashSet<>(mainActivityInterface.getTempSong().getSongSectionHeadings());

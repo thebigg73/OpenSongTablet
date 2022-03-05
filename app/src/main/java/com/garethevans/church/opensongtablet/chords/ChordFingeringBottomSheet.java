@@ -26,7 +26,6 @@ public class ChordFingeringBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetChordsFingeringBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String TAG = "ChordFingeringFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {

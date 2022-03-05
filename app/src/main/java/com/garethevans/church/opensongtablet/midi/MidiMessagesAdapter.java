@@ -20,18 +20,14 @@ import java.util.ArrayList;
 
 public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHolder> implements MidiItemTouchInterface {
 
-    private final boolean editing;
-    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private ItemTouchHelper itemTouchHelper;
     private ArrayList<MidiInfo> midiInfos;
     private final String TAG = "MidiMessagesAdapter";
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MidiMessagesAdapter(Context c, boolean editing) {
-        this.c = c;
+    public MidiMessagesAdapter(Context c) {
         mainActivityInterface = (MainActivityInterface) c;
-        this.editing = editing;
         midiInfos = new ArrayList<>();
     }
 
@@ -77,7 +73,7 @@ public class MidiMessagesAdapter extends RecyclerView.Adapter<MidiAdapterViewHol
         View itemView = LayoutInflater.
                 from(parent.getContext()).
                 inflate(R.layout.view_set_item, parent, false);
-        return new MidiAdapterViewHolder(mainActivityInterface,itemView,itemTouchHelper,this);
+        return new MidiAdapterViewHolder(itemView,itemTouchHelper,this);
     }
 
     public void setTouchHelper(ItemTouchHelper itemTouchHelper) {

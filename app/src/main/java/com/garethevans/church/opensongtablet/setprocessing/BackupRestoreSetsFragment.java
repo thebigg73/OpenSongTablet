@@ -41,7 +41,6 @@ public class BackupRestoreSetsFragment extends Fragment {
     private Uri backupUri;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private boolean success = false;
-    private final String TAG = "BackupRestoreSets";
 
     @Override
     public void onAttach(@NonNull Context context) {

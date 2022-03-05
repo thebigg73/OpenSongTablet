@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,6 @@ public class MetronomeFragment extends Fragment {
     private Runnable tapTempoRunnableCheck, tapTempoRunnableReset;
     private long old_time = 0L;
     private int total_calc_bpm = 0, total_counts = 0;
-    private final String TAG = "MetronomeFragment";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -277,7 +275,6 @@ public class MetronomeFragment extends Fragment {
                 pan = "R";
                 break;
         }
-        Log.d(TAG,"pan="+pan);
         mainActivityInterface.getPreferences().setMyPreferenceString("metronomePan",pan);
         mainActivityInterface.getMetronome().setVolumes();
     }

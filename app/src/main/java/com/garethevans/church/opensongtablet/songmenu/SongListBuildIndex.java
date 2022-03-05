@@ -24,7 +24,6 @@ public class SongListBuildIndex {
     private boolean indexRequired;
     private boolean indexComplete;
     private boolean currentlyIndexing = false;
-    private final String TAG = "SongListBuildIndex";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
 

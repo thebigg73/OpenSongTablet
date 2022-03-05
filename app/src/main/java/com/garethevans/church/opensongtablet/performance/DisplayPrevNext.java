@@ -14,7 +14,6 @@ public class DisplayPrevNext {
     // This deals with showing the previous and next song buttons and their actions
     // Even if we don't display the buttons, this sets up what to do on next/prev action (swipe, pedal, etc)
 
-    private final String TAG = "DisplayPrevNext";
     private final MainActivityInterface mainActivityInterface;
     private final Context c;
     private final LinearLayout layout;

@@ -14,7 +14,6 @@ public class PresenterSettings {
     // They are accessed using getters and setters
     // Anything that ProcessSong needs for creating layouts goes there instead
 
-    private final String TAG = "PresenterSettings";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private boolean alertOn, logoOn=true, blackscreenOn, blankscreenOn, hideInfoBar, presoShowChords,

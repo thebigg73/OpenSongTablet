@@ -26,7 +26,6 @@ public class MaterialTextView extends LinearLayout {
     private final ImageView checkMark, imageView;
     private final CheckBox checkBox;
     private final FrameLayout checkBoxHolder;
-    private final String TAG = "MaterialTextView";
 
     public MaterialTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

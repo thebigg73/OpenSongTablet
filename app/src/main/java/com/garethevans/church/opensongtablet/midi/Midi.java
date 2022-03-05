@@ -6,7 +6,6 @@ import android.media.midi.MidiInputPort;
 import android.media.midi.MidiManager;
 import android.media.midi.MidiOutputPort;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -22,7 +21,6 @@ import java.util.Locale;
 
 public class Midi {
 
-    private final String TAG = "Midi";
     private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private PedalMidiReceiver pedalMidiReceiver;
@@ -215,7 +213,6 @@ public class Midi {
     void sendMidi(int position) {
         // Send midi from the arrayList
         if (position>=0 && position<songMidiMessages.size()) {
-            Log.d(TAG,"Sending "+position+" :" + songMidiMessages.get(position));
             sendMidi(returnBytesFromHexText(songMidiMessages.get(position)));
         }
     }

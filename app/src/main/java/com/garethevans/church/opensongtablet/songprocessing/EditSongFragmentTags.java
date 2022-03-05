@@ -27,7 +27,6 @@ public class EditSongFragmentTags extends Fragment {
     private EditSongTagsBinding myView;
     private ThemesBottomSheet themesBottomSheet;
     private PresentationOrderBottomSheet presentationOrderBottomSheet;
-    private final String TAG = "EditSongFragmentTags";
 
     @Override
     public void onAttach(@NonNull Context context) {

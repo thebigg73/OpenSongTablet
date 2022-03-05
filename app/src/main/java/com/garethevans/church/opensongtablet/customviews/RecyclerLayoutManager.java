@@ -12,7 +12,6 @@ public class RecyclerLayoutManager extends LinearLayoutManager {
 
     // map of child adapter position to its height.
     private ArrayList<Integer> childSizes = new ArrayList<>();
-    private final String TAG = "RecyclerManager";
     private int size;
     private int screenSize;
 

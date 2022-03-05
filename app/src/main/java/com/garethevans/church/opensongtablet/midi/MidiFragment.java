@@ -43,8 +43,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsMidiBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
-import com.garethevans.church.opensongtablet.interfaces.MidiItemTouchInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +62,6 @@ public class MidiFragment extends Fragment {
             midiNote, midiValue;
     private ArrayList<MidiInfo> midiInfos;
     private MidiMessagesAdapter midiMessagesAdapter;
-    private MidiItemTouchInterface midiItemTouchInterface;
     private LinearLayoutManager llm;
 
 
@@ -72,7 +69,6 @@ public class MidiFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        MidiAdapterInterface midiAdapterInterface = (MidiAdapterInterface) context;
     }
 
     @Override
@@ -702,7 +698,7 @@ public class MidiFragment extends Fragment {
 
     // Process song midi messages
     private void setupAdapter() {
-        midiMessagesAdapter = new MidiMessagesAdapter(requireContext(),false);
+        midiMessagesAdapter = new MidiMessagesAdapter(requireContext());
         ItemTouchHelper.Callback callback = new MidiItemTouchHelper(midiMessagesAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         midiMessagesAdapter.setTouchHelper(itemTouchHelper);

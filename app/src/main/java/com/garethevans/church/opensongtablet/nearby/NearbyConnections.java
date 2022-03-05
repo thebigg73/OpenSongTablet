@@ -42,6 +42,7 @@ import java.util.Objects;
 
 public class NearbyConnections implements NearbyInterface {
 
+    // TODO Still to implement
     private final Context c;
     private final String TAG = "NearbyConnections";
     private final ArrayList<String> connectedEndPoints;

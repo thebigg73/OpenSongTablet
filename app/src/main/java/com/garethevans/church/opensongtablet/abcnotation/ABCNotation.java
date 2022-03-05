@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.abcnotation;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -12,8 +11,6 @@ import android.webkit.WebViewClient;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ABCNotation {
-
-    private final String TAG = "ABCNotation";
 
     @SuppressLint("SetJavaScriptEnabled")
     public void setWebView(WebView webView, MainActivityInterface mainActivityInterface,
@@ -95,9 +92,7 @@ public class ABCNotation {
         try {
             newContent = Uri.encode(newContent, "UTF-8");
         } catch  (Exception e) {
-            Log.d(TAG,"Error encoding");
         }
-        Log.d(TAG,"newContent="+newContent);
         webView.evaluateJavascript("javascript:updateABC('"+newContent+"');",null);
         if (edit) {
             webView.loadUrl("javascript:displayOnly();");

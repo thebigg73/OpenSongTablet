@@ -23,7 +23,6 @@ public class SongDetailsBottomSheet extends BottomSheetDialogFragment {
 
     private BottomSheetSongDetailsBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String TAG = "SongDetailsBottomSheet";
 
     @Override
     public void onAttach(@NonNull Context context) {

@@ -29,7 +29,6 @@ import java.util.List;
 public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
     // All the helpers we need to access are in the MainActivity
-    private final String TAG = "PDFPageAdapter";
     private final MainActivityInterface mainActivityInterface;
     private final DisplayInterface displayInterface;
     private final Context c;

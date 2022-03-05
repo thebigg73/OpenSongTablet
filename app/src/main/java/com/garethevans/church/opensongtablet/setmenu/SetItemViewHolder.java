@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.setmenu;
 
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,8 +15,6 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class SetItemViewHolder extends RecyclerView.ViewHolder implements
         View.OnTouchListener, GestureDetector.OnGestureListener {
-
-    private final String TAG = "SetItemViewHolder";
 
     final MaterialTextView vItem;
     final MaterialTextView vSongTitle;
@@ -62,7 +59,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public void onLongPress(MotionEvent event) {
-        Log.d(TAG,"event="+event);
         try {
             itemTouchHelper.startDrag(this);
         } catch (Exception e) {

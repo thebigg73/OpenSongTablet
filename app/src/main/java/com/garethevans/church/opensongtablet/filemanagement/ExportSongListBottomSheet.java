@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
     private MainActivityInterface mainActivityInterface;
     private BottomSheetExportSongListBinding myView;
     private String selectedFolders = "";
-    private final String TAG = "ExportSongListBS";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -122,7 +120,6 @@ public class ExportSongListBottomSheet extends BottomSheetDialogFragment {
             songContents.append("\n\n\n\n");
         }
 
-        Log.d(TAG,songContents.toString());
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(android.content.Intent.EXTRA_SUBJECT, requireActivity().getString(R.string.app_name) + " " +

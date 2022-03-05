@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 public class Preferences extends Activity {
 
@@ -13,7 +12,6 @@ public class Preferences extends Activity {
 
     // This is the way that preferences will be stored
     private SharedPreferences sharedPref;
-    private final String TAG = "Preferences";
     private final Context c;
 
     public SharedPreferences getSharedPref() {
@@ -66,9 +64,6 @@ public class Preferences extends Activity {
     public void setMyPreferenceString(String prefname, String value) {
         // Identify the preferences
         if (c!=null && prefname!=null) {
-            if (prefname.equals("setCurrent")) {
-                Log.d(TAG,"save preference setCurrent:"+value);
-            }
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
             sharedPref.edit().putString(prefname, value).apply();
         }

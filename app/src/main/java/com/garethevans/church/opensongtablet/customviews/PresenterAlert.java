@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class PresenterAlert extends MaterialTextView {
 
-    private final String TAG = "PresenterAlert";
     private int viewHeight = 0;
 
     public PresenterAlert(@NonNull Context context, @Nullable @org.jetbrains.annotations.Nullable AttributeSet attrs) {
@@ -41,17 +39,7 @@ public class PresenterAlert extends MaterialTextView {
             show = false;
         }
 
-        Log.d(TAG,"show:"+show);
-        Log.d(TAG,"text: "+text);
-
         updateAlertSettings(mainActivityInterface);
-        boolean isVisible = getVisibility()==View.VISIBLE;
-        boolean isInvisible = getVisibility()==View.INVISIBLE;
-        boolean isGone = getVisibility()==View.GONE;
-        float alpha = getAlpha();
-
-        Log.d(TAG,"isVisible: "+isVisible+"  isInvisible: "+isInvisible+"  isGone:"+isGone+"  alpha:"+alpha);
-
 
         if ((show && (getVisibility()==View.INVISIBLE||getVisibility()==View.GONE||getAlpha()==0)) ||
                 (!show && (getVisibility()==View.VISIBLE)||getAlpha()==1)) {

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.ModePresenterSongSectionsBinding;
-import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
@@ -24,9 +23,7 @@ import java.util.ArrayList;
 public class SongSectionsFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
-    private DisplayInterface displayInterface;
     private ModePresenterSongSectionsBinding myView;
-    private PresenterFragment presenterFragment;
     private final String TAG = "SongSectionsFragment";
 
     @Override
@@ -42,7 +39,6 @@ public class SongSectionsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        displayInterface = (DisplayInterface) context;
     }
 
     @Nullable

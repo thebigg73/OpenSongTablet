@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.controls;
 
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -9,7 +8,6 @@ import com.garethevans.church.opensongtablet.performance.PerformanceGestures;
 
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
-    private final String TAG = "GestureListener";
     private final int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
     private final MainActivityInterface mainActivityInterface;
     private final PerformanceGestures performanceGestures;
@@ -97,7 +95,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
                 performanceGestures.toggleAutoscroll();
                 break;
             default:
-                Log.d(TAG,"Gesture not recognised");
                 return false;
         }
         return true;
