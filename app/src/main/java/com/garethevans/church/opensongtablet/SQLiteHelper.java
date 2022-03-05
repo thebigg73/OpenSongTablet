@@ -361,10 +361,17 @@ class SQLiteHelper extends SQLiteOpenHelper {
                     SQLite.COLUMN_FOLDER + " ASC";
             ArrayList<String> folders = new ArrayList<>();
 
+            // IV - Pre Lollipop use (where?) causes folder names starting 'MAIN/' - pragmatic clean up here
+            String folder = "";
             Cursor cursor = db.rawQuery(q, null);
             cursor.moveToFirst();
             do {
-                folders.add(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER))));
+                folder = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER))).
+                        replace("MAIN/","").
+                        replace("c.getResources().getString(R.string.mainfoldername)/","");
+                if (!folders.contains(folder)) {
+                    folders.add(folder);
+                }
             } while (cursor.moveToNext());
             cursor.close();
             //db.close();
