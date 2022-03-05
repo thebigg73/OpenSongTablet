@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.Menu;
 import android.view.ViewConfiguration;
@@ -80,10 +81,12 @@ class MenuHandlers {
     static void forceOverFlow(Context c, ActionBar ab, Menu menu) {
         try {
             ViewConfiguration config = ViewConfiguration.get(c);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
-            if (menuKeyField != null) {
-                menuKeyField.setAccessible(true);
-                menuKeyField.setBoolean(config, false);
+            if (Build.VERSION.SDK_INT<Build.VERSION_CODES.R) {
+                Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+                if (menuKeyField != null) {
+                    menuKeyField.setAccessible(true);
+                    menuKeyField.setBoolean(config, false);
+                }
             }
         } catch (Exception ex) {
             // Ignore

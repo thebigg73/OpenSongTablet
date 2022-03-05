@@ -348,7 +348,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     private boolean userShouldConvertSongFormat(String filename) {
         filename = filename.toLowerCase(StaticVariables.locale);
 
-        return filename.endsWith(".pro") || filename.endsWith(".pro") || filename.endsWith(".chopro") ||
+        return filename.endsWith(".pro") || filename.endsWith(".chopro") ||
                 filename.endsWith(".cho") || filename.endsWith(".chordpro") ||
                 filename.endsWith(".onsong") || filename.endsWith(".txt");
     }

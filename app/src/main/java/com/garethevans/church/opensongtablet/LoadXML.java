@@ -687,17 +687,14 @@ public class LoadXML extends Activity {
         String[] vals = new String[4];
 
         // Get the android version
-        boolean fileisxml = true;
-        if (filename.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".doc") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".docx") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".png") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".gif") ||
-                filename.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
-            fileisxml = false;
-        }
+        boolean fileisxml = !filename.toLowerCase(Locale.ROOT).endsWith(".pdf") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".doc") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".docx") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".jpg") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".jpeg") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".png") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".gif") &&
+                !filename.toLowerCase(Locale.ROOT).endsWith(".bmp");
 
         String fileutf = null;
 
@@ -894,17 +891,14 @@ public class LoadXML extends Activity {
         String nextkey = "";
 
         // Get the android version
-        boolean nextisxml = true;
-        if (nextsong.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".doc") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".docx") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".png") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".gif") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
-            nextisxml = false;
-        }
+        boolean nextisxml = !nextsong.toLowerCase(Locale.ROOT).endsWith(".pdf") &&
+                !nextsong.toLowerCase(Locale.ROOT).endsWith(".doc") &&
+                !nextsong.toLowerCase(Locale.ROOT).endsWith(".docx") &&
+                !nextsong.toLowerCase(Locale.ROOT).endsWith(".jpg") &&
+                !nextsong.toLowerCase(Locale.ROOT).endsWith(".jpeg") &&
+                !nextsong.toLowerCase(Locale.ROOT).endsWith(".png") &&
+                !nextsong.toLowerCase(Locale.ROOT).endsWith(".gif") &&
+                !nextsong.toLowerCase(Locale.ROOT).endsWith(".bmp");
 
         String nextutf = null;
 

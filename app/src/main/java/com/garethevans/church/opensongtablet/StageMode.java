@@ -1793,7 +1793,7 @@ public class StageMode extends AppCompatActivity implements
                 scrollUpButton.setVisibility(View.VISIBLE);
             } else {
                 scrollUpButton.setVisibility(View.GONE);
-            };
+            }
 
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true) && StaticVariables.setView ) {
                 // IV - Code removed - No longer support Set Move buttons making section moves in Stage mode here or in mext and previous item code
@@ -3786,6 +3786,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
@@ -3862,7 +3863,7 @@ public class StageMode extends AppCompatActivity implements
                                     | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                             // Check for the freshest data.
                             getContentResolver().takePersistableUriPermission(FullscreenActivity.file_uri,
-                                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                                    takeFlags);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -4727,7 +4728,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
 
-        @SuppressWarnings("StatementWithEmptyBody")
         @Override
         protected String doInBackground(Object... objects) {
             try {
@@ -5176,7 +5176,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
 
-        @SuppressWarnings("StatementWithEmptyBody")
         @Override
         protected String doInBackground(Object... objects) {
             try {
@@ -7040,7 +7039,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // Get the next set positions and song
                 if (!cancelled) {
-                    setActions.doMoveInSet(StageMode.this, preferences);
+                    setActions.doMoveInSet(StageMode.this);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -223,7 +224,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
 
                 try {
                     // prepare note object
-                    SQLite sqLite = new SQLite(
+                    @SuppressLint("Range") SQLite sqLite = new SQLite(
                             cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_SONGID))),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME))),
@@ -278,7 +279,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
             // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                 do {
-                    String currSongId = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_SONGID));
+                    @SuppressLint("Range") String currSongId = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_SONGID));
                     String updatedId = currSongId.replace(oldFolder + "/", newFolder + "/");
                     ContentValues values = new ContentValues();
                     values.put(SQLite.COLUMN_SONGID, escapedSQL(updatedId));
@@ -308,6 +309,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    @SuppressLint("Range")
     ArrayList<SQLite> getSongsInFolder(Context c, String whichSongFolder) {
         ArrayList<SQLite> songs = new ArrayList<>();
         ArrayList<String> files = new ArrayList<>();
@@ -351,6 +353,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         return songs;
     }
 
+    @SuppressLint("Range")
     ArrayList<String> getFolders(Context c) {
         // Get the database
         try (SQLiteDatabase db = getDB(c)) {
@@ -439,6 +442,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         return childFolders;
     }
 
+    @SuppressLint("Range")
     ArrayList<SQLite> getAllSongs(Context c) {
         ArrayList<SQLite> songs = new ArrayList<>();
 

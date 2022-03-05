@@ -129,17 +129,9 @@ public class PopUpABCNotationFragment extends DialogFragment {
                     updateContent(StaticVariables.mNotation);
                 }
                 if (!FullscreenActivity.whattodo.equals("abcnotation")) {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                        abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
-                    } else {
-                        abcWebView.loadUrl("javascript:displayAndEdit();");
-                    }
+                    abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
                 } else {
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                        abcWebView.evaluateJavascript("javascript:displayOnly();", null);
-                    } else {
-                        abcWebView.loadUrl("javascript:displayOnly();");
-                    }
+                    abcWebView.evaluateJavascript("javascript:displayOnly();", null);
                 }
             }
         });
@@ -153,11 +145,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
 
     private void doSave() {
         // Try to get the text
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            abcWebView.evaluateJavascript("getTextVal()", null);
-        } else {
-            abcWebView.loadUrl("javascript:getTextVal()");
-        }
+        abcWebView.evaluateJavascript("getTextVal()", null);
     }
 
     private void updateContent(String s) {
@@ -166,24 +154,12 @@ public class PopUpABCNotationFragment extends DialogFragment {
         } catch  (Exception e) {
             Log.d("d","Error encoding");
         }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            abcWebView.evaluateJavascript("javascript:updateABC('"+s+"');", null);
-        } else {
-            abcWebView.loadUrl("javascript:updateABC('"+s+"');");
-        }
+        abcWebView.evaluateJavascript("javascript:updateABC('"+s+"');", null);
 
         if (FullscreenActivity.whattodo.equals("abcnotation")) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                abcWebView.evaluateJavascript("javascript:displayOnly();", null);
-            } else {
-                abcWebView.loadUrl("javascript:displayOnly();");
-            }
+            abcWebView.evaluateJavascript("javascript:displayOnly();", null);
         } else {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
-            } else {
-                abcWebView.loadUrl("javascript:displayAndEdit();");
-            }
+            abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
         }
     }
 

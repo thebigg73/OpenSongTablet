@@ -426,6 +426,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         Log.d("CustomSlideFragment","onActivityResult");

@@ -1,7 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -17,6 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,7 +69,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getDialog()!=null) {
+        if (getDialog() != null) {
             getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
             getDialog().setCanceledOnTouchOutside(true);
         }
@@ -76,7 +79,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         title.setText(getString(R.string.volume));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getContext());
+            CustomAnimations.animateFAB(closeMe, getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -113,7 +116,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         maxvolrange.setMax(7);
         int myprogress;
         String mytext;
-        switch (preferences.getMyPreferenceInt(getContext(),"soundMeterRange",400)) {
+        switch (preferences.getMyPreferenceInt(getContext(), "soundMeterRange", 400)) {
             case 50:
                 myprogress = 0;
                 mytext = "0 - 50";
@@ -202,27 +205,38 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                         volrangechosen = 100;
                         text = "0-100";
                         break;
-                    }
+                }
 
-                preferences.setMyPreferenceInt(getContext(),"soundMeterRange",volrangechosen);
+                preferences.setMyPreferenceInt(getContext(), "soundMeterRange", volrangechosen);
                 volval.setText(text);
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
 
-        if (audio!=null) {
-            audio=null;
+        if (audio != null) {
+            audio = null;
         }
 
         int sampleRate = 44100;
         try {
             bufferSize = AudioRecord.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO,
                     AudioFormat.ENCODING_PCM_16BIT);
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+            }
             audio = new AudioRecord(MediaRecorder.AudioSource.MIC, sampleRate,
                     AudioFormat.CHANNEL_IN_MONO,
                     AudioFormat.ENCODING_PCM_16BIT, bufferSize);

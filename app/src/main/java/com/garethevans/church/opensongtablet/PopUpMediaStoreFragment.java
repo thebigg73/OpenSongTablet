@@ -178,8 +178,8 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         mediaStore_ListView.setOnItemClickListener((parent, view, position, id) -> {
             Cursor cursor1 = ((SimpleCursorAdapter) mediaStore_ListView.getAdapter()).getCursor();
             cursor1.moveToPosition(position);
-            String fullname = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.TITLE));
-            String data = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.DATA));
+            @SuppressLint("Range") String fullname = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.TITLE));
+            @SuppressLint("Range") String data = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.DATA));
             mediaSelected.setText(fullname);
             startPlay.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_play_white_36dp,null));
             PresenterMode.mpTitle = fullname;

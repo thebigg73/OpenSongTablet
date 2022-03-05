@@ -771,7 +771,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 try {
                     // IV - For presentation mode - Get the set first item
                     if (StaticVariables.whichMode.equals("Presentation")) {
-                        setActions.prepareFirstItem(getContext(), preferences);
+                        setActions.prepareFirstItem(getContext());
                     }
 
                     FullscreenActivity.whattodo = "editset";

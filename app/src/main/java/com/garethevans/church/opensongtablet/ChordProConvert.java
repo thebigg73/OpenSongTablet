@@ -486,12 +486,12 @@ class ChordProConvert {
 
             // IV - Return lines end trimmed which keeps any intended leading spaces
             if (tempchordline.toString().trim().equals("")) {
-                return (" " + templyricline.toString()).replaceAll("\\s+$", "");
+                return (" " + templyricline).replaceAll("\\s+$", "");
             } else {
                 if (templyricline.toString().trim().equals("")) {
-                    return ("." + tempchordline.toString()).replaceAll("\\s+$", "");
+                    return ("." + tempchordline).replaceAll("\\s+$", "");
                 } else {
-                    return ("." + tempchordline.toString()).replaceAll("\\s+$", "") + "\n" + (" " + templyricline.toString()).replaceAll("\\s+$", "");
+                    return ("." + tempchordline).replaceAll("\\s+$", "") + "\n" + (" " + templyricline).replaceAll("\\s+$", "");
                 }
             }
         }

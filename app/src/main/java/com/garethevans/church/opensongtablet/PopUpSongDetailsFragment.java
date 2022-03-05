@@ -61,8 +61,10 @@ public class PopUpSongDetailsFragment extends DialogFragment {
 
         TextView title = V.findViewById(R.id.dialogtitle);
         // IV - If ReceivedSong then, if available, use the stored received song filename
+        String text;
         if (StaticVariables.songfilename.equals("ReceivedSong") && !StaticVariables.receivedSongfilename.equals("")) {
-            title.setText("ReceivedSong: " + StaticVariables.receivedSongfilename);
+            text = "ReceivedSong: " + StaticVariables.receivedSongfilename;
+            title.setText(text);
         } else {
             title.setText(StaticVariables.songfilename);
         }
@@ -75,7 +77,6 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        ProcessSong processSong = new ProcessSong();
         Preferences preferences = new Preferences();
 
         Button editSongDetails = V.findViewById(R.id.editSongDetails);
@@ -126,15 +127,15 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         }
 
         if (!StaticVariables.mKey.equals("")) {
-            songInformation.append(sprefix).append(getContext().getResources().getString(R.string.edit_song_key)).append(": ").append(StaticVariables.mKey);
+            songInformation.append(sprefix).append(requireContext().getResources().getString(R.string.edit_song_key)).append(": ").append(StaticVariables.mKey);
             sprefix = " | ";
         }
         if (!StaticVariables.mTempo.equals("")) {
-            songInformation.append(sprefix).append(getContext().getResources().getString(R.string.edit_song_tempo)).append(": ").append(StaticVariables.mTempo);
+            songInformation.append(sprefix).append(requireContext().getResources().getString(R.string.edit_song_tempo)).append(": ").append(StaticVariables.mTempo);
             sprefix = " | ";
         }
         if (!StaticVariables.mTimeSig.equals("")) {
-            songInformation.append(sprefix).append(getContext().getResources().getString(R.string.edit_song_timesig)).append(": ").append(StaticVariables.mTimeSig);
+            songInformation.append(sprefix).append(requireContext().getResources().getString(R.string.edit_song_timesig)).append(": ").append(StaticVariables.mTimeSig);
             sprefix = " | ";
         }
 

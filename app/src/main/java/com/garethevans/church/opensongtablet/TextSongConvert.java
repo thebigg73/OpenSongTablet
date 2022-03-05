@@ -5,8 +5,9 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.util.Locale;
 
@@ -171,7 +172,7 @@ class TextSongConvert {
 
             boolean isdrum = b.startsWith("Bd") || b.startsWith("BD") || b.startsWith("Sn") || b.startsWith("SN") ||
                     b.startsWith("CC") || b.startsWith("HH") || b.startsWith("Rd") || b.startsWith("T1") ||
-                    b.startsWith("T2") || b.startsWith("T2") || b.startsWith("FT") || b.startsWith("Hf") ||
+                    b.startsWith("T2") || b.startsWith("T3") || b.startsWith("FT") || b.startsWith("Hf") ||
                     b.startsWith("FH");
 
             if (l.startsWith(";")) {

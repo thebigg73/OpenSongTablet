@@ -171,7 +171,7 @@ public class PopUpFontsFragment extends DialogFragment {
     }
 
     private boolean hasPlayServices() {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS;
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireContext()) == ConnectionResult.SUCCESS;
     }
 
     private void initialiseBasicListeners() {

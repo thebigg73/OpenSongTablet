@@ -194,8 +194,10 @@ class SetActions {
             }
 
             // TODO remove
-            for (String s:StaticVariables.mTempSetList) {
-                Log.d(TAG,"mTempSetList: "+s);
+            if (StaticVariables.mTempSetList!=null) {
+                for (String s : StaticVariables.mTempSetList) {
+                    Log.d(TAG, "mTempSetList: " + s);
+                }
             }
 
             if (StaticVariables.mSetList!=null) {
@@ -204,8 +206,10 @@ class SetActions {
                 }
             }
 
-            for (String s:StaticVariables.mSet) {
-                Log.d(TAG,"mSet: "+s);
+            if (StaticVariables.mSet!=null) {
+                for (String s : StaticVariables.mSet) {
+                    Log.d(TAG, "mSet: " + s);
+                }
             }
 
         } catch (Exception e) {
@@ -795,7 +799,7 @@ class SetActions {
                                 image_content = "";
                                 slide_images.append(uri.toString()).append("\n");
                                 slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
-                                        .append("_").append(imagenums + 1).append("]\n").append(uri.toString()).append("\n\n");
+                                        .append("_").append(imagenums + 1).append("]\n").append(uri).append("\n\n");
                                 imagenums++;
                                 encodedimage = false;
                             }
@@ -840,7 +844,7 @@ class SetActions {
         return s;
     }
 
-    void prepareFirstItem(Context c,Preferences preferences) {
+    void prepareFirstItem(Context c) {
         // If we have just loaded a set, and it isn't empty,  load the first item
         if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
             StaticVariables.setView = true;
@@ -936,7 +940,7 @@ class SetActions {
         }
     }
 
-    void doMoveInSet(Context c, Preferences preferences) {
+    void doMoveInSet(Context c) {
         MyInterface mListener = (MyInterface) c;
         //boolean justmovingsections = false;
 

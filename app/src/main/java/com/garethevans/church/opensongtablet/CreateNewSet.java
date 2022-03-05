@@ -360,7 +360,7 @@ class CreateNewSet {
 
             sb.append("</slide_groups>\n</set>");
 
-            StaticVariables.newSetContents = StaticVariables.newSetContents + sb.toString();
+            StaticVariables.newSetContents = StaticVariables.newSetContents + sb;
             // Write the string to the file
             Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", StaticVariables.settoload);
 

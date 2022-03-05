@@ -406,9 +406,9 @@ public class NearbyConnections implements NearbyInterface {
         // IV - HOST: Cancel previous song transfers - a new song is being sent
         cancelTransferIds();
 
-        String infoPayload = null;
+        String infoPayload;
         String infoFilePayload = null;
-        Payload payloadFile = null;
+        Payload payloadFile;
         boolean largePayLoad = false;
 
         Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
@@ -456,7 +456,7 @@ public class NearbyConnections implements NearbyInterface {
                     Nearby.getConnectionsClient(context).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
                     Nearby.getConnectionsClient(context).sendPayload(endpointId, payloadFile);
                     // IV - Check the size.  If it is large then indicate to inform user
-                    if (payloadFile.asFile().getSize() > 30000) {
+                    if (payloadFile.asFile()!=null && payloadFile.asFile().getSize() > 30000) {
                         largePayLoad = true;
                     }
                 }

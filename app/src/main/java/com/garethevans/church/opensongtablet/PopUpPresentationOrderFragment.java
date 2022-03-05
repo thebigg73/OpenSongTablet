@@ -95,14 +95,14 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         Button deletePresOrder = V.findViewById(R.id.deletePresOrder);
 
         // Set the values
+        String newText;
         if (StaticVariables.mPresentation.equals("")) {
-            popuppresorder_presorder_title.setText(StaticVariables.mTitle + "\n\n" +
-                    getString(R.string.edit_song_presentation));
+            newText = StaticVariables.mTitle + "\n\n" + getString(R.string.edit_song_presentation);
         } else {
-            popuppresorder_presorder_title.setText(StaticVariables.mTitle + "\n\n" +
-                    StaticVariables.mPresentation + "\n\n\n" +
-                    getString(R.string.edit_song_presentation));
+            newText = StaticVariables.mTitle + "\n\n" + StaticVariables.mPresentation + "\n\n\n" +
+                    getString(R.string.edit_song_presentation);
         }
+        popuppresorder_presorder_title.setText(newText);
 
         m_mPresentation.setText(StaticVariables.mPresentation.trim());
 

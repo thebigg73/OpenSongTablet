@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -292,14 +293,15 @@ class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
                 // looping through all rows and adding to list
                 if (cursor.moveToFirst()) {
                     do {
-                        String currSongId = cursor.getString(cursor.getColumnIndex(NonOpenSongSQLite.COLUMN_SONGID));
-                        String updatedId = currSongId.replace(oldFolder + "/", newFolder + "/");
-                        ContentValues values = new ContentValues();
-                        values.put(NonOpenSongSQLite.COLUMN_SONGID, escapedSQL(updatedId));
-                        values.put(NonOpenSongSQLite.COLUMN_FOLDER, escapedSQL(newFolder));
+                        if (cursor.getColumnIndex(NonOpenSongSQLite.COLUMN_SONGID)>=0) {
+                            @SuppressLint("Range") String currSongId = cursor.getString(cursor.getColumnIndex(NonOpenSongSQLite.COLUMN_SONGID));
+                            String updatedId = currSongId.replace(oldFolder + "/", newFolder + "/");
+                            ContentValues values = new ContentValues();
+                            values.put(NonOpenSongSQLite.COLUMN_SONGID, escapedSQL(updatedId));
+                            values.put(NonOpenSongSQLite.COLUMN_FOLDER, escapedSQL(newFolder));
 
-                        db.update(NonOpenSongSQLite.TABLE_NAME, values, NonOpenSongSQLite.COLUMN_SONGID + "=?", new String[]{escapedSQL(currSongId)});
-
+                            db.update(NonOpenSongSQLite.TABLE_NAME, values, NonOpenSongSQLite.COLUMN_SONGID + "=?", new String[]{escapedSQL(currSongId)});
+                        }
                     } while (cursor.moveToNext());
                 }
 

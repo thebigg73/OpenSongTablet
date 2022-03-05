@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -261,6 +262,7 @@ public class PopUpLinks extends DialogFragment {
         requireActivity().startActivityForResult(intent, requestCode);
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         Log.d("PopUpLinks", "requestCode=" + requestCode);

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -63,6 +64,7 @@ class IndexSongs {
         utf = "UTF-8";
     }
 
+    @SuppressLint("Range")
     void fullIndex(Context c, Preferences preferences, StorageAccess storageAccess,
                    SQLiteHelper sqLiteHelper, SongXML songXML,
                    ChordProConvert chordProConvert, OnSongConvert onSongConvert,
@@ -88,7 +90,8 @@ class IndexSongs {
                 initialiseValues();
 
                 // Get the folder and filename
-                if (cursor.getColumnIndex(SQLite.COLUMN_FOLDER) > -1) {
+                if (cursor.getColumnIndex(SQLite.COLUMN_FOLDER)>=0 &&
+                        cursor.getColumnIndex(SQLite.COLUMN_FILENAME)>=0) {
                     folder = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
                     filename = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME));
 

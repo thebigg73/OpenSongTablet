@@ -26,11 +26,7 @@ class PadFunctions {
 
     static boolean getLoop() {
         // Set the looping value
-        boolean shouldloop = false;
-        if (StaticVariables.mLoopAudio.equals("true")) {
-            shouldloop = true;
-        }
-        return shouldloop;
+        return StaticVariables.mLoopAudio.equals("true");
     }
 
     static boolean getPad1Status() {

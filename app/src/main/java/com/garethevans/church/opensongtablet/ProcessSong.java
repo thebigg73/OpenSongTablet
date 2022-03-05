@@ -1634,8 +1634,8 @@ public class ProcessSong extends Activity {
         StaticVariables.songSection_holder = "";
 
         String label;
-        for (int x = 0; x < currsections.length; x++) {
-            label = getSectionHeadings(currsections[x]);
+        for (String currsection : currsections) {
+            label = getSectionHeadings(currsection);
             if (!label.equals("") && !label.equals("H__1") && !label.equals("F__1") && !FullscreenActivity.foundSongSections_heading.contains(label)) {
                 FullscreenActivity.foundSongSections_heading.add(label);
             }
@@ -3105,7 +3105,7 @@ public class ProcessSong extends Activity {
 
         // If we have header information add as [H__1] section
         if (headerInformation.length() > 0) {
-            FullscreenActivity.myLyrics = "[H__1]\n" + headerInformation.toString() + FullscreenActivity.myLyrics;
+            FullscreenActivity.myLyrics = "[H__1]\n" + headerInformation + FullscreenActivity.myLyrics;
         }
 
         // Build an [F__1] footer section
@@ -3123,7 +3123,7 @@ public class ProcessSong extends Activity {
 
         // If we have footer information add as [F__1] section
         if (footerInformation.length() > 0) {
-            FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n[F__1]\n" + footerInformation.toString();
+            FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n[F__1]\n" + footerInformation;
         }
     }
 

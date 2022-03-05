@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -73,7 +74,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getDialog()!=null) {
+        if (getDialog() != null) {
             getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
             getDialog().setCanceledOnTouchOutside(true);
         }
@@ -143,12 +144,12 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
 
         // Get scanner.  This is only allowed for Marshmallow or later
         BluetoothManager bluetoothManager = (BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-        if (bluetoothManager!=null) {
+        if (bluetoothManager != null) {
             BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
     }
@@ -176,6 +177,16 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
                 bluetoothDevices.setOnItemClickListener((adapterView, view, i, l) -> {
                     disconnectDevices(false);
                     // Display the current device
+                    if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
                     StaticVariables.midiDeviceName = bd.get(i).getName();
                     StaticVariables.midiDeviceAddress = bd.get(i).getAddress();
                     //displayCurrentDevice();
@@ -233,11 +244,21 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         Handler mHandler = new Handler();
         long SCAN_PERIOD = 8000;
         mHandler.postDelayed(() -> {
-            mBluetoothLeScanner.stopScan(scanCallback);
-            Log.d("d", "Scan timeout");
-            progressBar.setVisibility(View.GONE);
-            scanStartStop.setEnabled(true);
-            bluetoothDevices.setEnabled(true);
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+            } else {
+                mBluetoothLeScanner.stopScan(scanCallback);
+                Log.d("d", "Scan timeout");
+                progressBar.setVisibility(View.GONE);
+                scanStartStop.setEnabled(true);
+                bluetoothDevices.setEnabled(true);
+            }
 
         }, SCAN_PERIOD);
 
@@ -252,7 +273,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         ScanSettings scanSettings =
                 new ScanSettings.Builder().build();
 
-        if (mBluetoothLeScanner!=null) {
+        if (mBluetoothLeScanner != null) {
             mBluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
             StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
@@ -273,7 +294,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         @Override
         public void onBatchScanResults(List<ScanResult> results) {
             super.onBatchScanResults(results);
-            for(ScanResult result : results){
+            for (ScanResult result : results) {
                 addBluetoothDevice(result.getDevice());
             }
         }
@@ -281,16 +302,26 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         @Override
         public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
-            Log.d("d","onScanFailed: " + errorCode);
+            Log.d("d", "onScanFailed: " + errorCode);
         }
 
-        private void addBluetoothDevice(BluetoothDevice device){
-            if (device!=null && !listBluetoothDevice.contains(device)) {
-                bluetoothNames.add(device.getName());
-                listBluetoothDevice.add(device);
-                Log.d("d","name="+device.getName());
-                Log.d("d","device "+device+" added");
-                Log.d("d", "listBluetoothDevice="+listBluetoothDevice);
+        private void addBluetoothDevice(BluetoothDevice device) {
+            if (device != null && !listBluetoothDevice.contains(device)) {
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                } else {
+                    bluetoothNames.add(device.getName());
+                    listBluetoothDevice.add(device);
+                    Log.d("d", "name=" + device.getName());
+                    Log.d("d", "device " + device + " added");
+                    Log.d("d", "listBluetoothDevice=" + listBluetoothDevice);
+                }
             }
         }
     };

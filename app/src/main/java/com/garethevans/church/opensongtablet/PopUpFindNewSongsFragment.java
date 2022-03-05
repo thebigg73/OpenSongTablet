@@ -560,11 +560,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             // Go through each line and do what we need
             for (String l : lines) {
                 l = l.trim();
-                boolean emptystuff = false;
-                if (l.equals("</div") || l.contains("<div class='chord-pro-br'>") ||
-                        l.contains("<div class='chord-pro-segment'>") || l.contains("<div class='inner_col'")) {
-                    emptystuff = true;
-                }
+                boolean emptystuff = l.equals("</div") || l.contains("<div class='chord-pro-br'>") ||
+                        l.contains("<div class='chord-pro-segment'>") || l.contains("<div class='inner_col'");
 
                 if (!emptystuff && l.contains("<div class='chord-pro-disp'")) {
                     // Start section, so initialise the newline and lyrics
@@ -939,10 +936,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             l = l.replace("]:","]");
 
             // Identify the chord lines
-            boolean chordline = false;
-            if (l.contains("<a")) {
-                chordline = true;
-            }
+            boolean chordline = l.contains("<a");
 
             // Remove any hyperlinks
             while (l.contains("<a")) {

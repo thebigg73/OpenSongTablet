@@ -619,7 +619,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
                     // IV - For presentation mode - Get the set first item
                     if (StaticVariables.whichMode.equals("Presentation")) {
-                        setActions.prepareFirstItem(getContext(), preferences);
+                        setActions.prepareFirstItem(getContext());
                     }
 
                     StaticVariables.myToastMessage = getString(R.string.success);
@@ -678,7 +678,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
                 // IV - For presentation mode -  Get the set first item
                 if (StaticVariables.whichMode.equals("Presentation")) {
-                    setActions.prepareFirstItem(getContext(), preferences);
+                    setActions.prepareFirstItem(getContext());
                 }
 
                 StaticVariables.myToastMessage = getString(R.string.success);
@@ -737,6 +737,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             }
         }
 
+        @SuppressLint("Range")
         @Override
         protected String doInBackground(Object... objects) {
             File onsongdbfile = new File(requireActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
