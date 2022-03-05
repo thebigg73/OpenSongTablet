@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
+import static android.provider.DocumentsContract.Document.MIME_TYPE_DIR;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,8 +26,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-
-import static android.provider.DocumentsContract.Document.MIME_TYPE_DIR;
 
 public class PopUpSongFolderRenameFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
@@ -195,6 +195,8 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
                     // Add the new folder to the SQLite database
                     sqLiteHelper.createSong(getContext(),StaticVariables.whichSongFolder,"");
+                    // IV - We will move to this empty folder - set welcome song to avoid display of song not found
+                    StaticVariables.songfilename = "Welcome to OpenSongApp";
 
                 } else {
                     StaticVariables.myToastMessage = getString(R.string.newfolder) + " - " + getString(R.string.createfoldererror);
