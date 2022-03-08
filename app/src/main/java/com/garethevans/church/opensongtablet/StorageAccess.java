@@ -459,7 +459,7 @@ class StorageAccess {
         // Only need to do this for Lollipop or later
         if (lollipopOrLater()) {
             // IV - Delete any existing file (does not touch folder)
-            if (uriExists(c,uri) && (mimeType==null || !mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR))) {
+            if (mimeType==null && uriExists(c,uri) && !filename.equals("") && filename!=null) {
                 deleteFile_SAF(c, uri);
             }
             if (!uriExists(c, uri)) {
@@ -478,7 +478,7 @@ class StorageAccess {
                         }
                     } else {
                         // IV - Delete any existing file (does not touch folder)
-                        if (f.exists()) {
+                        if (f.exists() && !filename.equals("") && filename!=null) {
                             deleteFile_File(uri);
                         }
                         if (!f.createNewFile()) {
