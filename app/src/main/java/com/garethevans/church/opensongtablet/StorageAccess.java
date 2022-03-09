@@ -1545,7 +1545,7 @@ class StorageAccess {
         // Get rid of all the uri info up to the end of /OpenSong/Songs
         // Also adds mainfoldername if the song isn't in a subfolder
         if (uriString.contains("OpenSong/Songs/")) {
-            uriString = uriString.substring(uriString.indexOf("OpenSong/Songs/")+15);
+            uriString = uriString.substring(uriString.lastIndexOf("OpenSong/Songs/")+15);
         }
         if (!uriString.contains("/")) {
             uriString = mainfolder + "/" + uriString;
