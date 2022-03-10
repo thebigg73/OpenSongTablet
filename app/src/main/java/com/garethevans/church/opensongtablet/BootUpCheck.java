@@ -146,11 +146,13 @@ public class BootUpCheck extends AppCompatActivity {
                 installPlayServices();
             }
 
-            // Update the version and storage
-            showCurrentStorage(uriTreeHome);
+            // Update the version
             version.setText(versionCode);
 
-            // Check our state of play (based on if location is set and valid)
+            // Always update the storage location text (used in checkReadiness)
+            showCurrentStorage(uriTreeHome);
+
+            // See if we can show the start button yet
             checkReadiness();
         }
     }
@@ -482,7 +484,7 @@ public class BootUpCheck extends AppCompatActivity {
 
         }
 
-        // Always update the storage text
+        // Always update the storage location text (used in checkReadiness)
         showCurrentStorage(uriTreeHome);
 
         // See if we can show the start button yet
@@ -690,7 +692,11 @@ public class BootUpCheck extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        if (checkStorageIsValid() && storageGranted && !skiptoapp) {
+
+        // We retrieve the selected location (as set by showCurrentStorage)
+        String text = (String) progressText.getText();
+
+        if (checkStorageIsValid() && storageGranted && !skiptoapp && !text.contains("/OpenSong/")) {
             // We're good to go, but need to wait for the user to click on the start button
             goToSongsLinearLayout.setVisibility(View.VISIBLE);
             chooseStorageButton.clearAnimation();
@@ -700,7 +706,6 @@ public class BootUpCheck extends AppCompatActivity {
             // Show the storage as a pulsing button
             pulseStorageButton();
             // IV - Inform the user the folder is not usable
-            String text = (String) progressText.getText();
             progressText.setText(String.format("%s\n%s", text, getString(R.string.storage_notwritable)));
         }
     }
