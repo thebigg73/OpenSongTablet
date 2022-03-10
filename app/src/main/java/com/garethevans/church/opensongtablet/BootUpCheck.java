@@ -539,8 +539,10 @@ public class BootUpCheck extends AppCompatActivity {
         // Since the OpenSong folder may not yet exist, we check for the uriTree and if it is writeable
         try {
             if (uriTree != null) {
+                if (uriTree.toString().contains(("/OpenSong/"))) {
+                    return false;
                 // GE - added after 5.3.1 users on KitKat had problems
-                if (storageAccess.lollipopOrLater()) {
+                } else if (storageAccess.lollipopOrLater()) {
                     DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
                     if (df == null || !df.canWrite()) {
                         String s = getString(R.string.currentstorage) + ": " + getString(R.string.pleaseselect);
@@ -846,7 +848,6 @@ public class BootUpCheck extends AppCompatActivity {
     }
 
     private void startSearch() {
-        MyQuicktip.setVisibility(View.VISIBLE);
         // Deactivate the stuff we shouldn't click on while it is being prepared
         setEnabledOrDisabled(false);
 

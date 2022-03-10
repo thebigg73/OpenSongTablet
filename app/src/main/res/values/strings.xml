@@ -546,7 +546,7 @@
     <string name="storage_check">Checking storage</string>
     <string name="storage_choose">Manage storage</string>
     <string name="storage_ext">External storage</string>
-    <string name="storage_notwritable">This location cannot be reliably used.  Click the (?) button for advice.\nIf the folder already exists, use a file manager app to move it to a suitable location.</string>
+    <string name="storage_notwritable">This location cannot be reliably used.  Click the (?) button for advice.\nIf the folder exists and has content, use a file manager app to move it to a suitable location.</string>
     <string name="storage_rationale">Access to your storage is required to read and write songs and sets.</string>
     <string name="subscription">(Subscription required)</string>
     <string name="success">Success</string>
