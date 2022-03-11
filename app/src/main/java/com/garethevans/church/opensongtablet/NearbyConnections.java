@@ -197,7 +197,7 @@ public class NearbyConnections implements NearbyInterface {
 
     public String getUserNickname() {
         if (StaticVariables.deviceName==null || StaticVariables.deviceName.isEmpty()) {
-            if (FullscreenActivity.mBluetoothName.equals("Unknown")) {
+            if (FullscreenActivity.mBluetoothName == null || FullscreenActivity.mBluetoothName.equals("Unknown")) {
                 FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0,8);
                 FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
             }
