@@ -114,7 +114,7 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
 import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
-import com.garethevans.church.opensongtablet.presenter.SettingsFragment;
+import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplaySettingsFragment;
 import com.garethevans.church.opensongtablet.presenter.SongSectionsFragment;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
@@ -732,9 +732,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                     break;
 
                 case "presenterFragmentSettings":
-                    ((SettingsFragment) callingFragment).updateBackground();
-                    ((SettingsFragment) callingFragment).updateInfoBackground();
-                    ((SettingsFragment) callingFragment).updateLogo();
+                    ((SecondaryDisplaySettingsFragment) callingFragment).updateBackground();
+                    ((SecondaryDisplaySettingsFragment) callingFragment).updateInfoBackground();
+                    ((SecondaryDisplaySettingsFragment) callingFragment).updateLogo();
                     break;
 
                 case "presenterFragmentSongSections":

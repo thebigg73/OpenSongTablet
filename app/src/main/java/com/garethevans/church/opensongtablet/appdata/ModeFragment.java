@@ -31,6 +31,9 @@ public class ModeFragment extends Fragment {
         myView = SettingsModeBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.choose_app_mode));
 
+        // Link FAB to nestedScrollView
+        myView.nestedScrollView.setFabToAnimate(myView.webLink);
+
         // Highlight the current mode
         highlightMode();
 

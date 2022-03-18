@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.presenter;
+package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,18 +19,18 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.customviews.GlideApp;
-import com.garethevans.church.opensongtablet.databinding.ModePresenterSettingsBinding;
+import com.garethevans.church.opensongtablet.databinding.SettingsDisplayConnectedBinding;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.screensetup.ChooseColorBottomSheet;
 import com.google.android.material.slider.Slider;
 
-public class SettingsFragment extends Fragment {
+public class SecondaryDisplaySettingsFragment extends Fragment {
 
     private final String TAG = "SettingsFragment";
     private MainActivityInterface mainActivityInterface;
     private DisplayInterface displayInterface;
-    private ModePresenterSettingsBinding myView;
+    private SettingsDisplayConnectedBinding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -43,7 +43,7 @@ public class SettingsFragment extends Fragment {
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        myView = ModePresenterSettingsBinding.inflate(inflater,container,false);
+        myView = SettingsDisplayConnectedBinding.inflate(inflater,container,false);
 
         // Update the currently chosen logo and backgrounds
         mainActivityInterface.getPresenterSettings().getAllPreferences();

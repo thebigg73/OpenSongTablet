@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.presenter;
+package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -45,7 +45,7 @@ public class ImageChooserBottomSheet extends BottomSheetDialogFragment {
     private final Fragment callingFragment;
     private final String fragName;
 
-    ImageChooserBottomSheet(Fragment callingFragment, String fragName) {
+    public ImageChooserBottomSheet(Fragment callingFragment, String fragName) {
         // Get a reference to the fragment that requested the image chooser so we can send update
         this.callingFragment = callingFragment;
         this.fragName = fragName;

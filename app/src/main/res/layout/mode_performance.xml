@@ -57,8 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clipChildren="false"
-            android:clipToPadding="false"
-            android:visibility="visible">
+            android:clipToPadding="false">
 
             <!-- The song lyrics etc. go here -->
             <LinearLayout
@@ -103,8 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:orientation="vertical"
-                android:visibility="visible" />
+                android:orientation="vertical" />
 
             <!-- This is where images go -->
             <ImageView
@@ -130,7 +128,7 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:contentDescription="@string/image"
-                android:visibility="visible"
+                android:visibility="invisible"
                 tools:ignore="ImageContrastCheck"/>
 
         </RelativeLayout>

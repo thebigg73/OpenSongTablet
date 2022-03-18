@@ -18,7 +18,7 @@
                 android:id="@+id/themeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/theme_choose"
+                android:text="@string/theme_edit"
                 android:hint="@string/theme_dark" />
 
             <TableRow style="@style/DividerLine" />

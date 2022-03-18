@@ -759,6 +759,7 @@
     <string name="theme_custom1">Custom 1</string>
     <string name="theme_custom2">Custom 2</string>
     <string name="theme_dark">Dark theme</string>
+    <string name="theme_edit">Edit or change current theme</string>
     <string name="theme_exists">That theme already exists</string>
     <string name="theme_light">Light theme</string>
     <string name="time">Time</string>

@@ -207,31 +207,41 @@ public class SetMenuFragment extends Fragment {
     private SetItemInfo makeSetItem(int i) {
         SetItemInfo si = new SetItemInfo();
         si.songitem = (i+1) + ".";
-        si.songfolder = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
-        si.songfoldernice = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
-        si.songtitle = Uri.decode(mainActivityInterface.getCurrentSet().getSetFilenames().get(i));
-        si.songfilename = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
-        si.songkey = mainActivityInterface.getCurrentSet().getSetKeys().get(i);
+        if (i<mainActivityInterface.getCurrentSet().getSetFolders().size()) {
+            si.songfolder = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
+            si.songfoldernice = mainActivityInterface.getCurrentSet().getSetFolders().get(i);
+        }
+        if (i<mainActivityInterface.getCurrentSet().getSetFilenames().size()) {
+            si.songtitle = Uri.decode(mainActivityInterface.getCurrentSet().getSetFilenames().get(i));
+            si.songfilename = mainActivityInterface.getCurrentSet().getSetFilenames().get(i);
+        }
+        if (i<mainActivityInterface.getCurrentSet().getSetKeys().size()) {
+            si.songkey = mainActivityInterface.getCurrentSet().getSetKeys().get(i);
+        }
 
         // Decide on the icon to use for the set item
-        if (si.songfolder.equals("**Slides")) {
-            si.songicon = "Slides";
-            si.songfoldernice = getString(R.string.slide);
-        } else if (si.songfolder.equals("**Notes")) {
-            si.songicon = "Notes";
-            si.songfoldernice = getString(R.string.note);
-        } else if (si.songfolder.equals("**Scripture")) {
-            si.songicon = "Scripture";
-            si.songfoldernice = getString(R.string.scripture);
-        } else if (si.songfolder.equals("**Images")) {
-            si.songicon = "Images";
-            si.songfoldernice = getString(R.string.image);
-        } else if (si.songfolder.equals("**Variations")) {
-            si.songicon = "Variations";
-            si.songfoldernice = getString(R.string.variation);
-        } else if (si.songtitle.toLowerCase(Locale.ROOT).contains(".pdf")) {
-            si.songicon = ".pdf";
-            si.songfoldernice = getString(R.string.pdf);
+        if (si.songfolder!=null) {
+            if (si.songfolder.equals("**Slides")) {
+                si.songicon = "Slides";
+                si.songfoldernice = getString(R.string.slide);
+            } else if (si.songfolder.equals("**Notes")) {
+                si.songicon = "Notes";
+                si.songfoldernice = getString(R.string.note);
+            } else if (si.songfolder.equals("**Scripture")) {
+                si.songicon = "Scripture";
+                si.songfoldernice = getString(R.string.scripture);
+            } else if (si.songfolder.equals("**Images")) {
+                si.songicon = "Images";
+                si.songfoldernice = getString(R.string.image);
+            } else if (si.songfolder.equals("**Variations")) {
+                si.songicon = "Variations";
+                si.songfoldernice = getString(R.string.variation);
+            } else if (si.songtitle.toLowerCase(Locale.ROOT).contains(".pdf")) {
+                si.songicon = ".pdf";
+                si.songfoldernice = getString(R.string.pdf);
+            } else {
+                si.songicon = "Songs";
+            }
         } else {
             si.songicon = "Songs";
         }

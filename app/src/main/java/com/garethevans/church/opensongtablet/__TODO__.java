@@ -12,6 +12,11 @@ public class __TODO__ {
     // keepmultiline
     // editpdf
 
+    // Creating a new set doesn't untick songs in the song menu
+
+    // Exporting pdfs sometimes stops at the last item and doesn't open up share option
+    // Add song to set (long press) breaks (out of bounds)
+
     //TODO - still to complete
     // Anything still listed below needs work
     // Anything missing has been tested as okay
