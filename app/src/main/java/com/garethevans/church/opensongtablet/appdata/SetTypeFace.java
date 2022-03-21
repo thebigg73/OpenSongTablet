@@ -11,6 +11,8 @@ import androidx.core.provider.FontsContractCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -194,6 +196,10 @@ public class SetTypeFace {
         return f;
     }
 
+    private boolean hasPlayServices() {
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS;
+    }
+
     public ArrayList<String> getFontsFromGoogle() {
         ArrayList<String> fontNames;
         String response = null;
@@ -218,7 +224,7 @@ public class SetTypeFace {
 
         fontNames = new ArrayList<>();
 
-        if (response == null) {
+        if (response == null || !hasPlayServices()) {
             // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
             fontNames = bundledFonts();
 
@@ -226,39 +232,41 @@ public class SetTypeFace {
             // Split the returned JSON into lines
             String[] lines = response.split("\n");
 
-            for (String line : lines) {
-                if (line.contains("\"family\":")) {
-                    line = line.replace("\"family\"", "");
-                    line = line.replace(":", "");
-                    line = line.replace("\"", "");
-                    line = line.replace(",", "");
-                    line = line.trim();
+            if (lines.length > 0 ) {
+                for (String line : lines) {
+                    if (line.contains("\"family\":")) {
+                        line = line.replace("\"family\"", "");
+                        line = line.replace(":", "");
+                        line = line.replace("\"", "");
+                        line = line.replace(",", "");
+                        line = line.trim();
 
-                    // Fonts that don't work (there are hundred that do, so don't include the ones that don't)
-                    String notworking = "Aleo Angkor Asap_Condensed B612 B612_Mono Bai_Jamjuree " +
-                            "Barlow_Condensed Barlow_Semi_Condensed Barricecito Battambang " +
-                            "Bayon Beth_Ellen BioRhyme_Expanded Blinker Bokor Buda Cabin_Condensed " +
-                            "Calligraffitti Chakre_Petch Charm Charmonman Chenla Coda_Caption " +
-                            "Content Crimson_Pro DM_Sans DM_Serif_Display DM_Serif_Text Dangrek " +
-                            "Darker_Grotesque Encode_Sans_Condensed Encode_Sans_Expanded " +
-                            "Encode_Sans_Semi_Condensed Encode_Sans_Semi_Expanded Fahkwang " +
-                            "Farro Fasthand Fira_Code Freehand Grenze Hanuman IBM_Plex_Sans_Condensed " +
-                            "K2D Khmer KoHo Kodchasan Kosugi Kosugi_Maru Koulen Krub Lacquer " +
-                            "Libre_Barcode_128 Libre_Barcode_128_Text Libre_Barcode_39 " +
-                            "Libre_Barcode_39_Extended Libre_Barcode_39_Extended_Text Libre_Barcode_39_Text " +
-                            "Libre_Caslon_Display Libre_Caslon_Text Literata Liu_Jian_Mao_Cao " +
-                            "Long_Cang M_PLUS_1p M_PLUS_Rounded_1c Ma_Shan_Zheng Major_Mono_Display " +
-                            "Mali Markazi_Text Metal Molle Moul Moulpali Niramit Nokora Notable " +
-                            "Noto_Sans_HK Noto_Sans_JP Noto_Sans_KR Noto_Sans_SC Noto_Sans_TC " +
-                            "Noto_Serif_JP Noto_Serif_KR Noto_Serif_SC Noto_Serif_TC Open_Sans_Condensed " +
-                            "Orbitron Preahvihear Red_Hat_Display Red_Hat_Text Roboto_Condensed " +
-                            "Saira_Condensed Saira_Extra_Condensed Saira_Semi_Condensed Saira_Stencil_One " +
-                            "Sarabun Sawarabi_Gothic Sawarabi_Mincho Siemreap Single_Day Srisakdi " +
-                            "Staatliches Sunflower Suwannaphum Taprom Thasadith Ubuntu_Condensed " +
-                            "UnifrakturCook ZCOOL_KuaiLe ZCOOL_QingKe_HuangYou ZCOOL_XiaoWei Zhi_Mhang_Xing ";
+                        // Fonts that don't work (there are hundred that do, so don't include the ones that don't)
+                        String notworking = "Aleo Angkor Asap_Condensed B612 B612_Mono Bai_Jamjuree " +
+                                "Barlow_Condensed Barlow_Semi_Condensed Barricecito Battambang " +
+                                "Bayon Beth_Ellen BioRhyme_Expanded Blinker Bokor Buda Cabin_Condensed " +
+                                "Calligraffitti Chakre_Petch Charm Charmonman Chenla Coda_Caption " +
+                                "Content Crimson_Pro DM_Sans DM_Serif_Display DM_Serif_Text Dangrek " +
+                                "Darker_Grotesque Encode_Sans_Condensed Encode_Sans_Expanded " +
+                                "Encode_Sans_Semi_Condensed Encode_Sans_Semi_Expanded Fahkwang " +
+                                "Farro Fasthand Fira_Code Freehand Grenze Hanuman IBM_Plex_Sans_Condensed " +
+                                "K2D Khmer KoHo Kodchasan Kosugi Kosugi_Maru Koulen Krub Lacquer " +
+                                "Libre_Barcode_128 Libre_Barcode_128_Text Libre_Barcode_39 " +
+                                "Libre_Barcode_39_Extended Libre_Barcode_39_Extended_Text Libre_Barcode_39_Text " +
+                                "Libre_Caslon_Display Libre_Caslon_Text Literata Liu_Jian_Mao_Cao " +
+                                "Long_Cang M_PLUS_1p M_PLUS_Rounded_1c Ma_Shan_Zheng Major_Mono_Display " +
+                                "Mali Markazi_Text Metal Molle Moul Moulpali Niramit Nokora Notable " +
+                                "Noto_Sans_HK Noto_Sans_JP Noto_Sans_KR Noto_Sans_SC Noto_Sans_TC " +
+                                "Noto_Serif_JP Noto_Serif_KR Noto_Serif_SC Noto_Serif_TC Open_Sans_Condensed " +
+                                "Orbitron Preahvihear Red_Hat_Display Red_Hat_Text Roboto_Condensed " +
+                                "Saira_Condensed Saira_Extra_Condensed Saira_Semi_Condensed Saira_Stencil_One " +
+                                "Sarabun Sawarabi_Gothic Sawarabi_Mincho Siemreap Single_Day Srisakdi " +
+                                "Staatliches Sunflower Suwannaphum Taprom Thasadith Ubuntu_Condensed " +
+                                "UnifrakturCook ZCOOL_KuaiLe ZCOOL_QingKe_HuangYou ZCOOL_XiaoWei Zhi_Mhang_Xing ";
 
-                    if (!notworking.contains(line.trim().replace(" ", "_") + " ")) {
-                        fontNames.add(line);
+                        if (!notworking.contains(line.trim().replace(" ", "_") + " ")) {
+                            fontNames.add(line);
+                        }
                     }
                 }
             }

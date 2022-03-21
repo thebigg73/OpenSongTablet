@@ -53,15 +53,20 @@ public class FontSetupFragment extends Fragment {
 
             try {
                 requireActivity().runOnUiThread(() -> {
-                    // Set up the previews
-                    initialisePreviews();
-                    updatePreviews();
+                    if (fontNames!=null && fontNames.size()>0) {
+                        // Set up the previews
+                        initialisePreviews();
+                        updatePreviews();
 
-                    // Set the drop down lists
-                    setupDropDowns();
+                        // Set the drop down lists
+                        setupDropDowns();
 
-                    // Set the buttons that open the web preview selector
-                    setWebButtonListeners();
+                        // Set the buttons that open the web preview selector
+                        setWebButtonListeners();
+                        hideDropdowns(false);
+                    } else {
+                        hideDropdowns(true);
+                    }
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -70,6 +75,18 @@ public class FontSetupFragment extends Fragment {
         }).start();
 
         return myView.getRoot();
+    }
+
+    private void hideDropdowns(boolean hide) {
+        int visibility = View.VISIBLE;
+        if (hide) {
+            visibility = View.GONE;
+        }
+        myView.chordFont.setVisibility(visibility);
+        myView.lyricFont.setVisibility(visibility);
+        myView.presoFont.setVisibility(visibility);
+        myView.presoInfoFont.setVisibility(visibility);
+        myView.stickyFont.setVisibility(visibility);
     }
 
     private void getPreferences() {

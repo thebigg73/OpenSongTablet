@@ -74,9 +74,6 @@ public class SetStorageLocationFragment extends Fragment {
         // This moves the content depending on the actionbar height (0 if autohide)
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.lockDrawer(true);
-        //mainActivityInterface.showHideActionBar();
-        //mainActivityInterface.hideActionBar(true);
-        //mainActivityInterface.getAppActionBar().justShowOrHide(false);
 
         // Set up the views
         initialiseViews();

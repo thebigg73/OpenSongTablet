@@ -209,7 +209,7 @@
     <string name="create_folder_error">There was an error creating the new folder!</string>
     <string name="create_new_song">Create new song</string>
     <string name="crossfade_time">Cross-fade time</string>
-    <string name="current_location">Current location</string>
+    <string name="current_location">Selected location</string>
     <string name="custom">Custom</string>
     <string name="custom_background">Custom tag background</string>
     <string name="custom_chord_exists">A custom chord with this name already exists for this instrument</string>

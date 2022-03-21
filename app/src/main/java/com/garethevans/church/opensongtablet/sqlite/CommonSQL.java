@@ -13,6 +13,7 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 public class CommonSQL {
     // This is used to perform common tasks for the SQL database and NonOpenSongSQL database.
@@ -422,13 +423,17 @@ public class CommonSQL {
         String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
                 SQLite.COLUMN_FOLDER + " ASC";
 
+        // IV - Pre Lollipop use (where?) causes folder names starting 'MAIN/' - pragmatic clean up here
         Cursor cursor = db.rawQuery(q, null);
         cursor.moveToFirst();
 
         if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER)==0) {
             for (int x=0; x<cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
-                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER));
+                // IV - Pre Lollipop use (where?) causes folder names starting 'MAIN/' - pragmatic clean up here
+                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER)).
+                        toLowerCase(Locale.ROOT).replace("MAIN/","").
+                        replace(c.getResources().getString(R.string.mainfoldername),"");
                 folders.add(folder);
             }
         }
