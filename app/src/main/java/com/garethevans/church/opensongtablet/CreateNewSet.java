@@ -364,12 +364,11 @@ class CreateNewSet {
             // Write the string to the file
             Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", StaticVariables.settoload);
 
-            // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Sets", "", StaticVariables.settoload);
-
             Log.d("CreateNewSet","StaticVariables.settoload="+StaticVariables.settoload);
 
             if (!StaticVariables.settoload.equals("")) {
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Sets", "", StaticVariables.settoload);
                 OutputStream outputStream = storageAccess.getOutputStream(c,uri);
                 if (storageAccess.writeFileFromString(StaticVariables.newSetContents,outputStream)) {
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.currentset) +

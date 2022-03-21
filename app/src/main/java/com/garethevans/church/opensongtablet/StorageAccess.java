@@ -456,26 +456,29 @@ class StorageAccess {
     }
 
     void lollipopCreateFileForOutputStream(Context c, Preferences preferences, Uri uri, String mimeType, String folder, String subfolder, String filename) {
-        // IV - This creates an empty file
+        // Only need to do this for Lollipop or later
         if (lollipopOrLater()) {
-            // Only need to do this for Lollipop or later
-            if (uriExists(c, uri)) {
+            // IV - Delete any existing file (does not touch folder)
+            if (mimeType==null && uriExists(c,uri) && !filename.equals("") && filename!=null) {
                 deleteFile_SAF(c, uri);
             }
-            createFile(c, preferences, mimeType, folder, subfolder, filename);
+            if (!uriExists(c, uri)) {
+                createFile(c, preferences, mimeType, folder, subfolder, filename);
+            }
         } else {
             // Check it exists
             try {
                 if (uri!=null && uri.getPath()!=null) {
                     File f = new File(uri.getPath());
-                    if (mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
+                    if (mimeType!=null && mimeType.equals(DocumentsContract.Document.MIME_TYPE_DIR)) {
                         if (!f.exists()) {
                             if (!f.mkdirs()) {
-                                Log.d("StorageAccess", "Unable to create file " + f);
+                                Log.d("StorageAccess", "Unable to create folder " + f);
                             }
                         }
                     } else {
-                        if (f.exists()) {
+                        // IV - Delete any existing file (does not touch folder)
+                        if (f.exists() && !filename.equals("") && filename!=null) {
                             deleteFile_File(uri);
                         }
                         if (!f.createNewFile()) {
@@ -908,10 +911,9 @@ class StorageAccess {
 
         if (filename != null && !filename.isEmpty()) {
             f = new File(f, filename);
-            Uri uri = Uri.fromFile(f);
             try {
-                if (uriExists(c,uri)) {
-                    // IV - Delete any old file
+                if (f.exists() && f.isFile()) {
+                    // IV - Delete any existing file (does not touch folder)
                     f.delete();
                 }
                 stuffCreated = f.createNewFile();
@@ -1543,7 +1545,7 @@ class StorageAccess {
         // Get rid of all the uri info up to the end of /OpenSong/Songs
         // Also adds mainfoldername if the song isn't in a subfolder
         if (uriString.contains("OpenSong/Songs/")) {
-            uriString = uriString.substring(uriString.indexOf("OpenSong/Songs/")+15);
+            uriString = uriString.substring(uriString.lastIndexOf("OpenSong/Songs/")+15);
         }
         if (!uriString.contains("/")) {
             uriString = mainfolder + "/" + uriString;

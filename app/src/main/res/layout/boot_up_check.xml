@@ -145,25 +145,24 @@
 
                     <TextView
                         android:id="@+id/progressText"
-                        style="@style/MyHeadingText"
+                        style="@style/MyInfoText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
+                        android:layout_gravity="center_vertical"
+                        android:textColor="#ff0"/>
+
                 </LinearLayout>
 
-
-
-                    <TextView
-                        android:id="@+id/warningText"
-                        style="@style/MyWhiteHeadingText"
-                        android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
+                <TextView
+                    android:id="@+id/warningText"
+                    style="@style/MyInfoText"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/storage_warning"
                     android:textColor="#f88"
-                        android:visibility="gone"/>
-
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -290,6 +289,7 @@
                     android:textColor="#ff0" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/userGuideLinearLayout"
                 android:layout_width="match_parent"
@@ -333,6 +333,7 @@
             </LinearLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
 </RelativeLayout>

@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitletick" />
 
-        <include layout="@layout/popup_dialogtitle" />
     </FrameLayout>
 
     <ScrollView
@@ -95,8 +95,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/lorem" />
-            </LinearLayout>
 
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/choose_fonts2"
@@ -275,6 +275,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp" />
+
             </LinearLayout>
 
             <TextView
@@ -305,6 +306,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp" />
+
             </LinearLayout>
 
             <TextView

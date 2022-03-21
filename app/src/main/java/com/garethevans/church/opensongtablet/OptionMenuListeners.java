@@ -2412,7 +2412,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             }
         });
         otherEmailButton.setOnClickListener(view -> {
-            String url = "https://www.opensongapp.com/forum";
+            String url = "https://groups.google.com/g/opensongapp";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             if (mListener!=null) {

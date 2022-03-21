@@ -399,23 +399,21 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                             // Or another folder
                         } else if (ze.getName().contains(aFoldersselectedtoimport)) {
                             oktoimportthisone = true;
+                            // Check to see if the directory is created locally
+                            // If not, add it
+                            if (!createdfolders.contains(aFoldersselectedtoimport)) {
+                                Uri file_uri = storageAccess.getUriForItem(getContext(), preferences, "Songs", aFoldersselectedtoimport, "");
+                                // Check the uri exists
+                                storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences,
+                                        file_uri, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", aFoldersselectedtoimport, "");
+                                createdfolders.add(aFoldersselectedtoimport);
+                                //documentFolders.add(DocumentFile.fromSingleUri(getContext(),folder_uri));
+                                publishProgress(numfile + "&&_" + aFoldersselectedtoimport);
+                            }
                         }
                     }
 
                     if (oktoimportthisone) {
-
-                        // If the ze.getName() is a directory, then check to see if the directory is created locally
-                        // If not, add it
-                        if (ze.isDirectory()) {
-                            if (!createdfolders.contains(ze.getName())) {
-                                storageAccess.createFile(getContext(), preferences, DocumentsContract.Document.MIME_TYPE_DIR,
-                                        "Songs", ze.getName(), "");
-                                createdfolders.add(ze.getName());
-                                //documentFolders.add(DocumentFile.fromSingleUri(getContext(),folder_uri));
-                                publishProgress(numfile + "&&_" + ze.getName());
-                            }
-                        }
-
                         // If this is a file, check if it exists, if not, create it
                         if (!ze.isDirectory()) {
                             // Get a uri for the song

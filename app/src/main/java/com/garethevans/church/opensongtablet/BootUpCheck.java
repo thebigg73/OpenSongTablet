@@ -137,20 +137,22 @@ public class BootUpCheck extends AppCompatActivity {
             // Identify the views
             identifyViews();
 
+            // Set up the button actions
+            setButtonActions();
+
             // Check for Google Play availability
             if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
                 Log.d("StageMode", "onresume()  Play store isn't installed");
                 installPlayServices();
             }
 
-            // Update the version and storage
-            showCurrentStorage(uriTreeHome);
+            // Update the version
             version.setText(versionCode);
 
-            // Set up the button actions
-            setButtonActions();
+            // Always update the storage location text (used in checkReadiness)
+            showCurrentStorage(uriTreeHome);
 
-            // Check our state of play (based on if location is set and valid)
+            // See if we can show the start button yet
             checkReadiness();
         }
     }
@@ -352,7 +354,6 @@ public class BootUpCheck extends AppCompatActivity {
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-        checkReadiness();
     }
 
     private void showCurrentStorage(Uri u) {
@@ -379,18 +380,17 @@ public class BootUpCheck extends AppCompatActivity {
                 if (!text.endsWith("/" + storageAccess.appFolder)) {
                     text += "/" + storageAccess.appFolder;
                 }
-                // Decide if the user needs blocking as they have selected a subfolder of an OpenSong folder
-                if ((warningText!=null) && (text.contains("/OpenSong/"))) {
-                    uriTree = null;
-                    warningText.setVisibility(View.VISIBLE);
-                } else if (warningText!=null){
-                    warningText.setVisibility(View.GONE);
-                }
             } else if (uriTree.getPath().startsWith("/storage") || uriTreeHome.getPath().startsWith("file:///")){
                 // GE - For KitKat, the uriTreeHome will start with file:/// and the uri will start with /storage
                 text = text.replace("file:///","");
             } else {
                 uriTree = null;
+            }
+            // Decide if the user needs blocking as they have selected a subfolder of an OpenSong folder
+            if ((warningText!=null) && (text.contains("/OpenSong/"))) {
+                warningText.setVisibility(View.VISIBLE);
+            } else if (warningText!=null){
+                warningText.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -401,14 +401,16 @@ public class BootUpCheck extends AppCompatActivity {
         if (uriTree == null) {
             uriTreeHome = null;
             text = getString(R.string.pleaseselect);
-            saveUriLocation();
         }
+
+        saveUriLocation();
 
         if (progressText!=null) {
             // IV - If we have a path try to give extra info of a 'songs' count
-            if (text.startsWith("/")) {
+            if (text.startsWith("/") && (text.endsWith("/OpenSong"))) {
                 ArrayList<String> songIds;
                 try {
+                    storageAccess = new StorageAccess();
                     songIds = storageAccess.listSongs(BootUpCheck.this, preferences);
                     // Only items that don't end with / are songs!
                     int count = 0;
@@ -429,9 +431,6 @@ public class BootUpCheck extends AppCompatActivity {
             } else {
                 text = getString(R.string.currentstorage) + " (" + extra + "): " + text;
             }
-
-            // IV - Readiness may have changed
-            checkReadiness();
 
             // We aren't just passing through, so we can set the text
             progressText.setText(text);
@@ -483,11 +482,13 @@ public class BootUpCheck extends AppCompatActivity {
             preferences.setMyPreferenceString(BootUpCheck.this,"whichSongFolder",StaticVariables.whichSongFolder);
             preferences.setMyPreferenceString(BootUpCheck.this,"songfilename",StaticVariables.songfilename);
 
-            // See if we can show the start button yet
-            checkReadiness();
         }
-        // Always update the storage text
+
+        // Always update the storage location text (used in checkReadiness)
         showCurrentStorage(uriTreeHome);
+
+        // See if we can show the start button yet
+        checkReadiness();
     }
 
     private void kitKatDealWithUri(Intent resultData) {
@@ -507,13 +508,6 @@ public class BootUpCheck extends AppCompatActivity {
         if (folderLocation!=null) {
             uriTree = Uri.parse(folderLocation);
             uriTreeHome = storageAccess.homeFolder(BootUpCheck.this,uriTree,preferences);
-
-            // If we can write to this all is good, if not, tell the user (likely to be SD card)
-            if (!storageAccess.canWrite(BootUpCheck.this, uriTree)) {
-                notWriteable();
-            }
-        } else {
-            notWriteable();
         }
     }
     private void lollipopDealWithUri(Intent resultData) {
@@ -529,21 +523,8 @@ public class BootUpCheck extends AppCompatActivity {
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
         uriTreeHome = storageAccess.homeFolder(BootUpCheck.this,uriTree,preferences);
-        if (uriTree==null || uriTreeHome==null) {
-            notWriteable();
-        }
     }
 
-    private void notWriteable() {
-        uriTree = null;
-        uriTreeHome = null;
-        ShowToast showToast = new ShowToast();
-        showToast.showToastMessage(BootUpCheck.this, getString(R.string.storage_notwritable));
-        if (locations != null && locations.size() > 0) {
-            // Revert back to the blank selection as the one chosen can't be used
-            previousStorageSpinner.setSelection(0);
-        }
-    }
     private void saveUriLocation() {
         if (uriTree!=null) {
             // Save the preferences
@@ -560,8 +541,10 @@ public class BootUpCheck extends AppCompatActivity {
         // Since the OpenSong folder may not yet exist, we check for the uriTree and if it is writeable
         try {
             if (uriTree != null) {
+                if (uriTree.toString().contains(("/OpenSong/"))) {
+                    return false;
                 // GE - added after 5.3.1 users on KitKat had problems
-                if (storageAccess.lollipopOrLater()) {
+                } else if (storageAccess.lollipopOrLater()) {
                     DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
                     if (df == null || !df.canWrite()) {
                         String s = getString(R.string.currentstorage) + ": " + getString(R.string.pleaseselect);
@@ -709,17 +692,21 @@ public class BootUpCheck extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        if (checkStorageIsValid() && storageGranted && !skiptoapp) {
+
+        // We retrieve the selected location (as set by showCurrentStorage)
+        String text = (String) progressText.getText();
+
+        if (checkStorageIsValid() && storageGranted && !skiptoapp && !text.contains("/OpenSong/")) {
             // We're good to go, but need to wait for the user to click on the start button
             goToSongsLinearLayout.setVisibility(View.VISIBLE);
             chooseStorageButton.clearAnimation();
-
         } else {
             // Not ready, so hide the start button
             goToSongsLinearLayout.setVisibility(View.GONE);
             // Show the storage as a pulsing button
             pulseStorageButton();
-
+            // IV - Inform the user the folder is not usable
+            progressText.setText(String.format("%s\n%s", text, getString(R.string.storage_notwritable)));
         }
     }
 
@@ -866,7 +853,6 @@ public class BootUpCheck extends AppCompatActivity {
     }
 
     private void startSearch() {
-        MyQuicktip.setVisibility(View.VISIBLE);
         // Deactivate the stuff we shouldn't click on while it is being prepared
         setEnabledOrDisabled(false);
 

@@ -104,6 +104,9 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe, getActivity());
             closeMe.setEnabled(false);
+            if (mListener!=null) {
+                mListener.refreshAll();
+            }
             dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
@@ -180,7 +183,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        delete_FAB.setOnClickListener(view -> drawView.startNew(getActivity(),uri));
+        delete_FAB.setOnClickListener(view -> drawView.startNew(getActivity()));
         // Hide the undo/redo buttons for now
         //undo_FAB.setVisibility(View.GONE);
         undo_FAB.setOnClickListener(view -> drawView.undo());
@@ -491,6 +494,14 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
         @Override
         protected  void onPreExecute() {
+            // Remove any original file then if saveHighlight is set save the current drawing
+            try {
+                if (uri == null || !storageAccess.deleteFile(getActivity(), uri)) {
+                    Log.d("d", "Unable to delete old highlighter note");
+                }
+            } catch (Exception e) {
+                Log.d("d", "Error trying to delete old highlighter note");
+            }
             if (FullscreenActivity.saveHighlight) {
                 FullscreenActivity.highlightOn = true;
                 drawView.setDrawingCacheEnabled(true);

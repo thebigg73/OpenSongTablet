@@ -18,7 +18,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PopUpChooseFolderFragment extends DialogFragment {
 
@@ -119,6 +121,29 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String s) {
+            Preferences preferences = new Preferences();
+
+            // Sort the list
+            if (StaticVariables.locale==null) {
+                FixLocale.fixLocale(c,preferences);
+            }
+            Collator collator = Collator.getInstance(StaticVariables.locale);
+            collator.setStrength(Collator.SECONDARY);
+            Collections.sort(songfolders, collator);
+
+            // Add the main folder to the top if it isn't already there
+            int pos = songfolders.indexOf(c.getString(R.string.mainfoldername));
+            if (pos<0) {
+                // It isn't there, so add it
+                songfolders.add(0,c.getString(R.string.mainfoldername));
+
+            } else if (pos>0) {
+                // It's there, but not at the top - remove it
+                songfolders.remove(pos);
+                // Add it to the top position
+                songfolders.add(0,c.getString(R.string.mainfoldername));
+            }
+
             try {
                 ArrayAdapter<String> lva = new ArrayAdapter<>(c, R.layout.songlistitem, songfolders);
                 lv.setAdapter(lva);

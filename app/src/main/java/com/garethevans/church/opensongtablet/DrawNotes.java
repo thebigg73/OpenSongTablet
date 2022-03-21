@@ -312,23 +312,24 @@ public class DrawNotes extends View {
             }
             //drawCanvas = new Canvas(canvasBitmap);
             imageloaded = true;
+            FullscreenActivity.saveHighlight = true;
 
         } catch (Exception e) {
             Log.d("DrawNotes", "Loading the image-error");
             canvasBitmap = null;
+            FullscreenActivity.saveHighlight = false;
         } catch (OutOfMemoryError oom) {
             Log.d("DrawNotes", "Loading the image-out of memory");
             canvasBitmap = null;
+            FullscreenActivity.saveHighlight = false;
         }
-        FullscreenActivity.saveHighlight = false;
         invalidate();
     }
 
-    public void startNew(Context c, Uri uri) {
+    public void startNew(Context c) {
         if (c == null) {
             c = FullscreenActivity.mContext;
         }
-        StorageAccess storageAccess = new StorageAccess();
         //touchisup = true;
         paths = new ArrayList<>();
         undonePaths = new ArrayList<>();
@@ -341,13 +342,6 @@ public class DrawNotes extends View {
 
         imageloaded = false;
         FullscreenActivity.saveHighlight = false;
-        try {
-            if (uri == null || !storageAccess.deleteFile(c, uri)) {
-                Log.d("DrawNotes", "Unable to delete old highlighter note");
-            }
-        } catch (Exception e) {
-            Log.d("DrawNotes", "Error trying to delete old highlighter note");
-        }
         canvasBitmap = null;
         invalidate();
     }
