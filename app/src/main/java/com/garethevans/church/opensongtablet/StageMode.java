@@ -5697,24 +5697,36 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public boolean requestNearbyPermissions() {
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
+        boolean access_fine_location = checkThisPermission(Manifest.permission.ACCESS_FINE_LOCATION, getString(R.string.location_rationale), 404);
+        boolean bluetooth_scan = true;
+        boolean bluetooth_advertise = true;
+        boolean bluetooth_connect = true;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            bluetooth_scan = checkThisPermission(Manifest.permission.BLUETOOTH_SCAN, getString(R.string.location_rationale),404);
+            bluetooth_advertise = checkThisPermission(Manifest.permission.BLUETOOTH_ADVERTISE, getString(R.string.location_rationale),404);
+            bluetooth_connect = checkThisPermission(Manifest.permission.BLUETOOTH_CONNECT, getString(R.string.location_rationale),404);
+        }
+        return access_fine_location && bluetooth_scan && bluetooth_advertise && bluetooth_connect;
+    }
+
+    private boolean checkThisPermission(String permission, String rationale, int requestCode) {
+        if (ActivityCompat.checkSelfPermission(this, permission)==PackageManager.PERMISSION_GRANTED) {
             return true;
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
             try {
-                make(findViewById(R.id.mypage), R.string.location_rationale,
+                make(findViewById(R.id.mypage), rationale,
                         LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
+                        new String[]{permission}, requestCode)).show();
                 return false;
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }
         } else {
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
+            ActivityCompat.requestPermissions(this,new String[] {permission},requestCode);
             return false;
         }
     }
-
     @SuppressLint("StaticFieldLeak")
     @SuppressWarnings("deprecation")
     private class ShareSet extends AsyncTask<Object, Void, String> {
