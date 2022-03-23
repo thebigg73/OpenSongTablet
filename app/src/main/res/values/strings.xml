@@ -88,7 +88,7 @@
     <string name="ccli_licence">Licence number</string>
     <string name="ccli_reset">Reset CCLI log</string>
     <string name="ccli_view">View CCLI log</string>
-    <string name="changestorage">Change OpenSong folder location</string>
+    <string name="changestorage">Select OpenSong folder location</string>
     <string name="chapter">Chapter</string>
     <string name="choose_app_mode">Choose app mode</string>
     <string name="choose_chordformat">Choose chord format</string>
@@ -732,7 +732,7 @@
     <string name="youtube">Search YouTube for current song</string>
     <string name="zerotime" translatable="false">0:00</string>
     <string name="duplicate">Duplicate</string>
-    <string name="storage_warning">Please do not select a folder within an \'OpenSong\' folder.  You should select the parent \'OpenSong\' folder instead.</string>
+    <string name="storage_warning">Please do not select a folder within an \'OpenSong\' folder.  You should select the parent \'OpenSong\' folder instead.</string>
     <string name="rotate_display">Rotate display</string>
     <string name="warn_before_changing_song">Show a warning before moving to the next song (useful to avoid accidental presses)</string>
     <string name="bold_chords_headings">Display chords and headings in bold</string>
@@ -754,8 +754,8 @@
     <string name="filter_section">Section filtering</string>
     <string name="filter_entry">Add each filter on a new line below.</string>
     <string name="filter_structure">[*filter:V] = filtered verse section</string>
-    <string name="storage_help">Please choose the location for your \'OpenSong\' folder.  This is the default storage location for OpenSong files.  You can change this at any time from the Options menu.  Internal storage is recommended.\n\nFor an update or re-install:\nYou can use the yellow button below to find any previous \'OpenSong\' folder.</string>
-    <string name="storage_quicktip">When selecting a location:\nList storage using the menu (you may need to change settings to show all storage).\nSELECT ONLY INTERNAL OR SD CARD storage.\nInternal storage is recommended.  This may list as device storage or with your device\'s name.\nOn Android 10+ you should not select the Downloads or Root folder.  If in doubt, choose the \'Documents\' folder.</string>
+    <string name="storage_help">Please select your \'OpenSong\' folder.  This is where songs, sets and more are stored.  If you need a new folder simply select a location for one to be added.  You can change the selected folder at any time from the Options menu.  Internal storage is recommended.\n\nFor an update or re-install:\nYou can use the yellow button below to find any previous OpenSong folder.</string>
+    <string name="storage_quicktip">When selecting an OpenSong folder location:\nSELECT ONLY INTERNAL OR SD CARD storage.\nInternal storage is recommended.  This may list as device storage or with your device\'s name.\nWhen selecting you may need to change settings to show all storage.\nOn Android 10+ you should not select the Downloads or Root folder.  If in doubt, choose the \'Documents\' folder.</string>
     <string name="information">Information</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="host">Host</string>
