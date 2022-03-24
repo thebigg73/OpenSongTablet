@@ -51,7 +51,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class StorageAccess {
 
@@ -183,6 +182,12 @@ public class StorageAccess {
         return Uri.fromFile(f);
     }
 
+    public void setUriTree(Uri uriTree) {
+        this.uriTree = uriTree;
+    }
+    public void setUriTreeHome(Uri uriTreeHome) {
+        this.uriTreeHome = uriTreeHome;
+    }
 
     // Sort the initial default folders and files needed when the app installs changes storage location
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -1883,14 +1888,15 @@ public class StorageAccess {
             File folder = new File(foldersToIndex.get(i));
             File[] contents = folder.listFiles();
             // Go through each item and add songs or folders
-            assert contents != null;
-            for (File item : Objects.requireNonNull(contents)) {
-                if (item.isDirectory()) {
-                    foldersToIndex.add(item.getPath());
-                    songIds.add(songFolderAndFileOnly(item.getPath(), mainfolder) + "/");
-                    num = foldersToIndex.size();
-                } else if (item.isFile()) {
-                    songIds.add(songFolderAndFileOnly(item.getPath(), mainfolder));
+            if (contents!=null) {
+                for (File item : contents) {
+                    if (item.isDirectory()) {
+                        foldersToIndex.add(item.getPath());
+                        songIds.add(songFolderAndFileOnly(item.getPath(), mainfolder) + "/");
+                        num = foldersToIndex.size();
+                    } else if (item.isFile()) {
+                        songIds.add(songFolderAndFileOnly(item.getPath(), mainfolder));
+                    }
                 }
             }
         }
@@ -1943,15 +1949,12 @@ public class StorageAccess {
     }
     @SuppressLint("NewApi")
     public ArrayList<String> listFilesInFolder(String folder, String subfolder) {
-        Log.d(TAG,"folder: "+folder+"  subfolder: "+subfolder);
-
         if (subfolder.startsWith("../") || subfolder.startsWith("**")) {
             folder = subfolder.replace("../","");
             folder = folder.replace("**","");
             subfolder = "";
         }
 
-        Log.d(TAG,"folder: "+folder+"  subfolder: "+subfolder);
         if (lollipopOrLater()) {
             return listFilesInFolder_SAF(folder, subfolder);
         } else {

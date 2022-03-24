@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet.filemanagement;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class KitKatFolderChooseFragment extends Fragment {
     private File currentFolder;
     private ArrayList<File> foldersInDirectory;
     private StorageKitkatChooserBinding myView;
+    private final String TAG = "KitKatChooser";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,7 +60,8 @@ public class KitKatFolderChooseFragment extends Fragment {
             currentFolder = new File(directory);
 
             for (File item : items) {
-                if (item.isDirectory()) {
+                Log.d(TAG,"item:"+item);
+                if (item.isDirectory() && !item.getName().startsWith(".")) {
                     // If it is a folder, add it
                     foldersInDirectory.add(item);
                 }
@@ -68,6 +71,7 @@ public class KitKatFolderChooseFragment extends Fragment {
 
             // Now we have them in order, create a short name array
             for (File folder:foldersInDirectory) {
+                Log.d(TAG,"folder:"+folder+"  .getName():"+folder.getName());
                 folderNames.add(folder.getName());
             }
 

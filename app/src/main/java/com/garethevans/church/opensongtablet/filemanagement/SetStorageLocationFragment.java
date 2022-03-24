@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class SetStorageLocationFragment extends Fragment {
     private Uri uriTree, uriTreeHome;
     private ArrayList<String> locations;
     private File folder;
+    private final String TAG = "SetStorageLocFrag";
 
     ActivityResultLauncher<Intent> folderChooser;
     ActivityResultLauncher<String> storagePermission;
@@ -202,6 +204,8 @@ public class SetStorageLocationFragment extends Fragment {
         }
     }
     private void saveUriLocation() {
+        Log.d(TAG,"uriTree="+uriTree);
+        Log.d(TAG,"uriTreeHome="+uriTreeHome);
         if (uriTree!=null) {
             // Save the preferences
             // If we are using KitKat, we have to parse the storage
@@ -211,6 +215,8 @@ public class SetStorageLocationFragment extends Fragment {
             uriTreeHome_String = uriTreeHome_String.replace("file://","");
             mainActivityInterface.getPreferences().setMyPreferenceString("uriTree", uriTree_String);
             mainActivityInterface.getPreferences().setMyPreferenceString("uriTreeHome", uriTreeHome_String);
+            mainActivityInterface.getStorageAccess().setUriTree(uriTree);
+            mainActivityInterface.getStorageAccess().setUriTreeHome(uriTreeHome);
         } else {
             mainActivityInterface.getPreferences().setMyPreferenceString("uriTree", "");
             mainActivityInterface.getPreferences().setMyPreferenceString("uriTreeHome", "");
@@ -435,6 +441,7 @@ public class SetStorageLocationFragment extends Fragment {
         if (mainActivityInterface.getWhattodo()!=null &&
                 mainActivityInterface.getWhattodo().startsWith("kitkat:")) {
             String location = mainActivityInterface.getWhattodo().replace("kitkat:","");
+            Log.d(TAG,"location:"+location);
             if (!location.equals("null") && !location.isEmpty()) {
                 File kitkatlocation = new File(mainActivityInterface.getWhattodo().replace("kitkat:", ""));
                 mainActivityInterface.setWhattodo(null);

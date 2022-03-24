@@ -38,21 +38,22 @@
         app:drawableStartCompat="@drawable/ic_arrow_up_white_36dp"
         app:drawableTint="@color/black" />
 
-    <androidx.core.widget.NestedScrollView
+    <!--<androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1">-->
 
         <GridView
             android:id="@+id/gridView"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_gravity="fill_horizontal"
             android:numColumns="auto_fit"
-            android:padding="12dp"
-            android:stretchMode="columnWidth" />
+            android:stretchMode="columnWidth"
+            android:padding="12dp" />
 
-    </androidx.core.widget.NestedScrollView>
+    <!--</androidx.core.widget.NestedScrollView>-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/select"

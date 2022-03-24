@@ -59,8 +59,8 @@ public class NearbyConnections implements NearbyInterface {
             receiveHostAutoscroll = true,
             receiveHostSongSections = true;
     private NearbyReturnActionsInterface nearbyReturnActionsInterface;
-    private final AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
-    private final DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+    private AdvertisingOptions advertisingOptions;
+    private DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
     // The stuff used for Google Nearby for connecting devices
     private final String serviceId = "com.garethevans.church.opensongtablet";
     private String receivedSongFilename;
@@ -68,6 +68,7 @@ public class NearbyConnections implements NearbyInterface {
     private int hostSection = 0;
     private String payLoadTransferIds = "";
     private String latestfoldernamepair = "";
+    private Strategy nearbyStrategy = Strategy.P2P_STAR;
     private int pendingCurrentSection = 0;
 
     public NearbyConnections(Context c) {
@@ -79,12 +80,32 @@ public class NearbyConnections implements NearbyInterface {
             try {
                 mainActivityInterface = (MainActivityInterface) c;
                 nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        updateStrategyOptions();
         stopDiscoveryRunnable = this::stopDiscovery;
+    }
+
+    public void updateStrategyOptions() {
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyStrategyCluster",false)) {
+            nearbyStrategy = Strategy.P2P_CLUSTER;
+        } else {
+            nearbyStrategy = Strategy.P2P_STAR;
+        }
+
+        advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
+        discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
+
+        if (isDiscovering) {
+            stopDiscovery();
+            startDiscovery();
+        }
+        if (isAdvertising) {
+            stopAdvertising();
+            startAdvertising();
+        }
     }
 
     private void updateConnectionLog(String newMessage) {
@@ -102,7 +123,7 @@ public class NearbyConnections implements NearbyInterface {
         this.nearbyReturnActionsInterface = nearbyReturnActionsInterface;
     }
 
-    // Start or stop the broadcadst/discovery
+    // Start or stop the broadcast/discovery
     @Override
     public void startAdvertising() {
         if (!isAdvertising) {

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.nearby;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -61,6 +62,15 @@ public class NearbyConnectionsFragment extends Fragment {
         // Set the device name
         myView.deviceButton.setHint(mainActivityInterface.getNearbyConnections().getUserNickname());
 
+        // Set the chosen strategy
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyStrategyCluster",false)) {
+            myView.clusterMode.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));
+            myView.starMode.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAltPrimary)));
+        } else {
+            myView.starMode.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));
+            myView.clusterMode.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAltPrimary)));
+        }
+
         // Set the default values for off/host/client
         if (mainActivityInterface.getNearbyConnections().isHost) {
             myView.connectionsHost.setChecked(true);
@@ -120,6 +130,20 @@ public class NearbyConnectionsFragment extends Fragment {
     public void setListeners() {
         // The deviceId
         myView.deviceButton.setOnClickListener(v -> textInputDialog());
+
+        // The nearby strategy mode
+        myView.clusterMode.setOnClickListener(v -> {
+            myView.clusterMode.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));
+            myView.starMode.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAltPrimary)));
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyStrategyCluster",true);
+            mainActivityInterface.getNearbyConnections().updateStrategyOptions();
+        });
+        myView.starMode.setOnClickListener(v -> {
+            myView.starMode.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorSecondary)));
+            myView.clusterMode.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAltPrimary)));
+            mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyStrategyCluster",false);
+            mainActivityInterface.getNearbyConnections().updateStrategyOptions();
+        });
 
         // The client/host options
         myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> {

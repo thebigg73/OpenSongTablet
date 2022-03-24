@@ -134,14 +134,14 @@ public class Transpose {
     private final String[] fromChordsNum  = "├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤".split(" ");
     private final String[] toSharpChords1 = "»A# »C# »D# »F# »G# »»A »»B »»C »»D »»E »»F »»G".split(" ");
     private final String[] toFlatChords1 =  "»Bb »Db »Eb »Gb »Ab »»A »»B »»C »»D »»E »»F »»G".split(" ");
-    private final String[] toSharpChords2 = "»»B »C# »D# »F# »G# »»A »»H »»C »»D »»E »»F »»G".split(" ");
+    private final String[] toSharpChords2 = "»A# »C# »D# »F# »G# »»A »»H »»C »»D »»E »»F »»G".split(" ");
     private final String[] toFlatChords2 =  "»»B »Db »Eb »Gb »Ab »»A »»H »»C »»D »»E »»F »»G".split(" ");
     // IV - Solfege out format is 'SongSelect fixed DO' - Capitals = easy to read, no accents = easy to type, DO not UT and SI not TI = most common across solfege variants
     private final String[] toSharpChords4 = "LA# DO# RE# FA# «SOL# »LA »SI »DO »RE »MI »FA SOL".split(" ");
     private final String[] toFlatChords4 =  "SIb REb MIb «SOLb LAb »LA »SI »DO »RE »MI »FA SOL".split(" ");
     //  A trick! Minors arrive ending ┤m, the m is moved into the number to give numbers for minors. '┤ma' is treated as the start of major and is protected.
     private final String[] fromChordsNumM = "┤ma ┤m ├2m┤ ├5m┤ ├7m┤ ├Wm┤ ├Ym┤ ├1m┤ ├3m┤ ├4m┤ ├6m┤ ├8m┤ ├9m┤ ├Xm┤ ├2┤ ├5┤ ├7┤ ├W┤ ├Y┤ ├1┤ ├3┤ ├4┤ ├6┤ ├8┤ ├9┤ ├X┤ ¬".split(" ");
-    private final String[] toSharpChords3 = "┤¬a m┤ »»»b »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
+    private final String[] toSharpChords3 = "┤¬a m┤ »ais »cis »dis »fis »gis »»»a »»»h »»»c »»»d »»»e »»»f »»»g »Ais Cis Dis Fis Gis »»A »»H »»C »»D »»E »»F »»G m".split(" ");
     private final String[] toFlatChords3 =  "┤¬a m┤ »»»b »des »»es »ges »»as »»»a »»»h »»»c »»»d »»»e »»»f »»»g »»B Des »Es Ges »As »»A »»H »»C »»D »»E »»F »»G m".split(" ");
     private String[] fromChordNumsNash;
     private String[] fromChordNumsNashType;
