@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -37,6 +38,7 @@ import java.util.UUID;
 
 public class NearbyConnections implements NearbyInterface {
 
+    final Activity activity;
     final Context context;
     final OptionMenuListeners optionMenuListeners;
     final Preferences preferences;
@@ -45,9 +47,6 @@ public class NearbyConnections implements NearbyInterface {
     final SQLiteHelper sqLiteHelper;
 
     private boolean isDiscovering = false, isAdvertising = false;
-
-    final AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
-    final DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
 
     final NearbyReturnActionsInterface nearbyReturnActionsInterface;
 
@@ -64,10 +63,11 @@ public class NearbyConnections implements NearbyInterface {
 
     private int pendingCurrentSection = 0;
 
-    NearbyConnections(Context context, Preferences preferences, StorageAccess storageAccess,
+    NearbyConnections(Activity activity, Preferences preferences, StorageAccess storageAccess,
                       ProcessSong processSong, OptionMenuListeners optionMenuListeners,
                       SQLiteHelper sqLiteHelper) {
-        this.context = context;
+        this.context = activity;
+        this.activity = activity;
         this.optionMenuListeners = optionMenuListeners;
         this.preferences = preferences;
         this.storageAccess = storageAccess;
@@ -102,6 +102,7 @@ public class NearbyConnections implements NearbyInterface {
         if (!isAdvertising) {
             Log.d("NearbyConnections", "Nearby.getConnectionsClient(context)=" + Nearby.getConnectionsClient(context));
             Log.d("NearbyConnections", "startAdvertising()");
+            AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
             Nearby.getConnectionsClient(context)
                     .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
                     .addOnSuccessListener(
@@ -127,6 +128,7 @@ public class NearbyConnections implements NearbyInterface {
         if (StaticVariables.usingNearby) {
             Log.d("NearbyConnections", "startDiscovery()");
             if (!isDiscovering) {
+                DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
                 Nearby.getConnectionsClient(context)
                         .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
                         .addOnSuccessListener(
@@ -226,7 +228,7 @@ public class NearbyConnections implements NearbyInterface {
             connectionEndPointName = connectionInfo.getEndpointName();
 
             // The user confirmed, so we can accept the connection.
-            Nearby.getConnectionsClient(context)
+            Nearby.getConnectionsClient(activity)
                     .acceptConnection(endpointId, payloadCallback());
         }, 200);
     }
