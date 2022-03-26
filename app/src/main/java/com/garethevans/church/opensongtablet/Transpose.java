@@ -631,8 +631,6 @@ class Transpose {
         else if (contains_nash)                 StaticVariables.detectedChordFormat = 5;
         else if (contains_nashnumeral)          StaticVariables.detectedChordFormat = 6;
         else                                    StaticVariables.detectedChordFormat = 1;
-        // We set the newChordFormat default to the same as detected
-        StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
     }
 
     void writeImprovedXML (Context c, Preferences preferences) {

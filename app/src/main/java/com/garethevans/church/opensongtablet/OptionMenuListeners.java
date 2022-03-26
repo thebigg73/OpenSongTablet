@@ -1123,8 +1123,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 ShowToast.showToast(c);
             } else {
                 try {
-                    // Detect and use the existing format for a 0 transpose
-                    Transpose.checkChordFormat();
+                    // Complete using a 0 transpose
                     StaticVariables.transposeDirection = "0";
                     StaticVariables.transposeTimes = 0;
                     transpose.doTranspose(c, preferences, true, false);
@@ -1151,8 +1150,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             } else {
 
                 try {
-                    // Detect and use the existing format for transpose
-                    Transpose.checkChordFormat();
+                    // Complete using a 0 transpose
                     StaticVariables.transposeDirection = "0";
                     StaticVariables.transposeTimes = 0;
                     transpose.doTranspose(c,preferences, false, true);
@@ -1245,11 +1243,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
                 ShowToast.showToast(c);
             } else {
-                // Detect the existing format and use for a 0 tranpose unless a preferred chord format is in use
-                Transpose.checkChordFormat();
-                if (preferences.getMyPreferenceInt(c,"chordFormat",0) > 0) {
-                    StaticVariables.newChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
-                }
+                // Complete using a 0 transpose
                 StaticVariables.transposeDirection = "0";
                 StaticVariables.transposeTimes = 0;
                 transpose.doTranspose(c, preferences, false, false);

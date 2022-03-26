@@ -73,6 +73,7 @@ public class ProcessSong extends Activity {
     private Typeface typefaceChords;
     private Typeface typefacePreso;
     private Typeface typefaceMono;
+    private final Transpose transpose = new Transpose();
 
     static void processTimeSig() {
         switch (StaticVariables.mTimeSig) {
@@ -1915,7 +1916,6 @@ public class ProcessSong extends Activity {
             }
             // IV - Get the capokey here to support later getCapoNewKey call
             if (StaticVariables.mKey != null) {
-                Transpose transpose = new Transpose();
                 transpose.capoKeyTranspose(c, preferences);
             }
         }
@@ -2148,9 +2148,6 @@ public class ProcessSong extends Activity {
                                  int lyricsVerseColor, int lyricsChorusColor,
                                  int lyricsPreChorusColor, int lyricsBridgeColor, int lyricsTagColor) {
 
-        Transpose transpose = new Transpose();
-        // Added in chord format check otherwise app gets stuck with detected format
-        Transpose.checkChordFormat();
         getPreferences(c, preferences);
 
         // Decide if chords are valid to be shown
@@ -2409,9 +2406,6 @@ public class ProcessSong extends Activity {
                                       Preferences preferences,
                                       int lyricsTextColor, int lyricsChordsColor,
                                       int lyricsCapoColor, int presoFontColor, int presoShadowColor) {
-        Transpose transpose = new Transpose();
-        // Added in chord format check otherwise app gets stuck with detected format
-        Transpose.checkChordFormat();
 
         getPreferences(c, preferences);
 
@@ -3049,7 +3043,6 @@ public class ProcessSong extends Activity {
                     }
 
                     if (!StaticVariables.mKey.equals("")) {
-                        Transpose transpose = new Transpose();
                         transpose.capoKeyTranspose(c, preferences);
                         songInformation.append(" (").append(FullscreenActivity.capokey).append(")");
                     }
