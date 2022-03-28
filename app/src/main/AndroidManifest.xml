@@ -466,7 +466,7 @@
 
         <activity
             android:name="com.garethevans.church.opensongtablet.PresenterMode"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|navigation"
             android:launchMode="singleTop"
             android:windowSoftInputMode="stateUnchanged" >
 
@@ -475,7 +475,7 @@
 
         <activity
             android:name="com.garethevans.church.opensongtablet.StageMode"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|navigation"
             android:launchMode="singleTop">
 
 
