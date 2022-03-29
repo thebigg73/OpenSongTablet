@@ -38,7 +38,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
 
     <!-- Preparing for Android 12 -->
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
 
@@ -101,7 +101,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:configChanges="screenSize|orientation|keyboard"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize|stateVisible"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme">

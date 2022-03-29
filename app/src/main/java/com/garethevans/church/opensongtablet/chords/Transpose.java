@@ -714,101 +714,108 @@ public class Transpose {
     }
 
     public void checkChordFormat(Song thisSong) {
-        // We need to detect the chord formatting
-        int contains_es_is_count = 0;
-        int contains_H_count = 0;
-        int contains_do_count = 0;
-        int contains_nash_count = 0;
-        int contains_nashnumeral_count = 0;
+        // If we have specified 'use preferred' set it to that
+        if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("chordFormatUsePreferred", false)) {
+            newChordFormat = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
+            oldChordFormat = newChordFormat;
+            thisSong.setDetectedChordFormat(newChordFormat);
+            thisSong.setDesiredChordFormat(newChordFormat);
 
-        // Process to get chords separated by spaces
-        String lyrics = thisSong.getLyrics()
-                // Protect new lines
-                .replace("\n", "¬")
-                // Remove text in brackets on chord lines as they may contain text that causes problems e.g. (Repeat last x) contains La.
-                // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Kept lots of escapes to be sure they work!
-                .replaceAll("\\(.*?\\)", "")
-                .replaceAll("\\{.*?\\}", "")
-                .replaceAll("\\[.*?\\]", "")
-                // Replace chord delimters/modifiers
-                .replace("|"," ")
-                .replace(":"," ")
-                .replace ("/"," ")
-                // Why ' ~'?  We split chords like 'Am7' into 'A ~7' - the ~ stops the number being detected as nashville
-                .replace ("m", " ~") // Also hadles majors
-                .replace("sus", " ~") // Removed as conflicts with format 3 tests for chord ending's'
-                .replace ("b", " ~")
-                .replace("#"," ~")
-                // Remove multiple whitespace and trim
-                .replaceAll("\\s{2,}", " ").trim();
+        } else {
+            // We need to detect the chord formatting
+            int contains_es_is_count = 0;
+            int contains_H_count = 0;
+            int contains_do_count = 0;
+            int contains_nash_count = 0;
+            int contains_nashnumeral_count = 0;
 
-        // Check the chord format of the the song.  Go through the chord lines and look for clues
-        for (String line : lyrics.split("¬")) {
-            if (line.startsWith(".")) {
-                //  Split into individual chords
-                String[] chordsInLine = line.substring(1).split(" ");
-                String chordInLineLC;
+            // Process to get chords separated by spaces
+            String lyrics = thisSong.getLyrics()
+                    // Protect new lines
+                    .replace("\n", "¬")
+                    // Remove text in brackets on chord lines as they may contain text that causes problems e.g. (Repeat last x) contains La.
+                    // Android Studio gets confused over escapes here - suggesting removing escapes that break the regex!  Kept lots of escapes to be sure they work!
+                    .replaceAll("\\(.*?\\)", "")
+                    .replaceAll("\\{.*?\\}", "")
+                    .replaceAll("\\[.*?\\]", "")
+                    // Replace chord delimters/modifiers
+                    .replace("|", " ")
+                    .replace(":", " ")
+                    .replace("/", " ")
+                    // Why ' ~'?  We split chords like 'Am7' into 'A ~7' - the ~ stops the number being detected as nashville
+                    .replace("m", " ~") // Also hadles majors
+                    .replace("sus", " ~") // Removed as conflicts with format 3 tests for chord ending's'
+                    .replace("b", " ~")
+                    .replace("#", " ~")
+                    // Remove multiple whitespace and trim
+                    .replaceAll("\\s{2,}", " ").trim();
 
-                // Now go through each chord and add to the matching format
-                // Case is needed as lowercase chords denotes minor chords for format 3
-                // Not required for format 5 (Nashville numbers)
-                for (String chordInLine:chordsInLine) {
-                    //Log.d(TAG,"chordInLine: "+chordInLine);
-                    chordInLineLC = chordInLine.toLowerCase(Locale.ROOT);
-                    if (Arrays.asList(format6Identifiers).contains(chordInLineLC)) {
-                        contains_nashnumeral_count ++;
-                    } else if (Arrays.asList(format5Identifiers).contains(chordInLine)) {
-                        contains_nash_count ++;
-                    } else if (Arrays.asList(format4Identifiers).contains(chordInLineLC)) {
-                        contains_do_count ++;
-                        // chords ending s (es, is and s ) are identifiers for format 3 as are lowercase minor chords
-                    } else if (chordInLineLC.length() > 1 && "s".equals(chordInLineLC.substring(chordInLineLC.length() - 1)) ||
-                            (Arrays.asList(format3Identifiers).contains(chordInLine))) {
-                        contains_es_is_count ++;
-                    } else if (Arrays.asList(format2Identifiers).contains(chordInLineLC)) {
-                        contains_H_count ++;
+            // Check the chord format of the the song.  Go through the chord lines and look for clues
+            for (String line : lyrics.split("¬")) {
+                if (line.startsWith(".")) {
+                    //  Split into individual chords
+                    String[] chordsInLine = line.substring(1).split(" ");
+                    String chordInLineLC;
+
+                    // Now go through each chord and add to the matching format
+                    // Case is needed as lowercase chords denotes minor chords for format 3
+                    // Not required for format 5 (Nashville numbers)
+                    for (String chordInLine : chordsInLine) {
+                        //Log.d(TAG,"chordInLine: "+chordInLine);
+                        chordInLineLC = chordInLine.toLowerCase(Locale.ROOT);
+                        if (Arrays.asList(format6Identifiers).contains(chordInLineLC)) {
+                            contains_nashnumeral_count++;
+                        } else if (Arrays.asList(format5Identifiers).contains(chordInLine)) {
+                            contains_nash_count++;
+                        } else if (Arrays.asList(format4Identifiers).contains(chordInLineLC)) {
+                            contains_do_count++;
+                            // chords ending s (es, is and s ) are identifiers for format 3 as are lowercase minor chords
+                        } else if (chordInLineLC.length() > 1 && "s".equals(chordInLineLC.substring(chordInLineLC.length() - 1)) ||
+                                (Arrays.asList(format3Identifiers).contains(chordInLine))) {
+                            contains_es_is_count++;
+                        } else if (Arrays.asList(format2Identifiers).contains(chordInLineLC)) {
+                            contains_H_count++;
+                        }
                     }
                 }
             }
+
+            // Here we allow low levels of mis-identification
+            boolean contains_es_is = (contains_es_is_count > 2);
+            boolean contains_H = (contains_H_count > 2);
+            boolean contains_do = (contains_do_count > 4);
+            boolean contains_nash = (contains_nash_count > 4);
+            boolean contains_nashnumeral = (contains_nashnumeral_count > 4);
+
+            //Log.d(TAG, "contains_es_is_count="+contains_es_is_count);
+            //Log.d(TAG, "contains_H_count="+contains_H_count);
+            //Log.d(TAG, "contains_do_count="+contains_do_count);
+            //Log.d(TAG, "contains_nash_count="+contains_nash_count);
+            //Log.d(TAG, "contains_nashnumeral_count="+contains_nashnumeral_count);
+
+            // Set the chord style detected - Ok so the user chord format may not quite match the song - it might though!
+            int formatNum;
+
+            if (contains_do) {
+                formatNum = 4;
+            } else if (contains_H && !contains_es_is) {
+                formatNum = 2;
+            } else if (contains_H || contains_es_is) {
+                formatNum = 3;
+            } else if (contains_nash) {
+                formatNum = 5;
+            } else if (contains_nashnumeral) {
+                formatNum = 6;
+            } else {
+                formatNum = 1;
+            }
+
+            thisSong.setDetectedChordFormat(formatNum);
+            thisSong.setDesiredChordFormat(formatNum);
+
+            // We set the newChordFormat default to the same as detected
+            newChordFormat = formatNum;
         }
-
-        // Here we allow low levels of mis-identification
-        boolean contains_es_is = (contains_es_is_count > 2);
-        boolean contains_H = (contains_H_count > 2);
-        boolean contains_do = (contains_do_count > 4);
-        boolean contains_nash = (contains_nash_count > 4);
-        boolean contains_nashnumeral = (contains_nashnumeral_count > 4);
-
-        //Log.d(TAG, "contains_es_is_count="+contains_es_is_count);
-        //Log.d(TAG, "contains_H_count="+contains_H_count);
-        //Log.d(TAG, "contains_do_count="+contains_do_count);
-        //Log.d(TAG, "contains_nash_count="+contains_nash_count);
-        //Log.d(TAG, "contains_nashnumeral_count="+contains_nashnumeral_count);
-
-        // Set the chord style detected - Ok so the user chord format may not quite match the song - it might though!
-        int formatNum;
-
-        if (contains_do) {
-            formatNum = 4;
-        } else if (contains_H && !contains_es_is) {
-            formatNum = 2;
-        } else if (contains_H || contains_es_is) {
-            formatNum = 3;
-        } else if (contains_nash) {
-            formatNum = 5;
-        } else if (contains_nashnumeral) {
-            formatNum = 6;
-        } else {
-            formatNum = 1;
-        }
-
-        thisSong.setDetectedChordFormat(formatNum);
-        thisSong.setDesiredChordFormat(formatNum);
-
-        // We set the newChordFormat default to the same as detected
-        newChordFormat = formatNum;
-
-        //Log.d(TAG,"formatNum="+formatNum);
     }
 
 

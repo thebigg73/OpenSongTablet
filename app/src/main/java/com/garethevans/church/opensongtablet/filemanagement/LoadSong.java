@@ -63,6 +63,10 @@ public class LoadSong {
                 thisSong = mainActivityInterface.getSQLiteHelper().getSpecificSong(
                         thisSong.getFolder(), thisSong.getFilename());
                 sortLoadingSuccessful(thisSong);
+
+                // Get the detected chord format
+                mainActivityInterface.getTranspose().checkChordFormat(thisSong);
+
                 return thisSong;
             }
         }
@@ -173,6 +177,9 @@ public class LoadSong {
         // Update the songLoadSuccess and references to the working file if it did work if we aren't indexing
         if (!indexing) {
             sortLoadingSuccessful(thisSong);
+
+            // Get the detected chord format - don't do while indexing!
+            mainActivityInterface.getTranspose().checkChordFormat(thisSong);
         }
 
         // Send the song back with all of its children populated!
