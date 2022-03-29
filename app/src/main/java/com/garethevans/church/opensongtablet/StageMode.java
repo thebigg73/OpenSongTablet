@@ -7314,15 +7314,18 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.foundSongSections_heading = new ArrayList<>();
 
                 if (FullscreenActivity.isSong) {
+                    // Detemine formats to be used for capo / transpose
                     // Note: If chordformat = 0 (detect) then chordFormatUsePreferred is false
                     try {
                         if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
+                            // Set StaticVariables.detectedChordFormat to the preferred format
                             StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1);
-                            StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
                         } else {
-                            // CheckChordFormat returns the current format to both StaticVariables detectedChordFormat and newChordFormat
+                            // Sets StaticVariables.detectedChordFormat to the detected format
                             Transpose.checkChordFormat();
                         }
+                        // Set the newChordFormat default to be the same
+                        StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
                     } catch (Exception e) {
                         Log.d(TAG, "Error checking the chord format");
                     }

@@ -100,7 +100,6 @@ public class PopUpTransposeFragment extends DialogFragment {
         setListeners();
 
         // Initialise the transpose values
-        Transpose.checkChordFormat();
         StaticVariables.transposeDirection = "-1";
         StaticVariables.transposeTimes = 0;
 

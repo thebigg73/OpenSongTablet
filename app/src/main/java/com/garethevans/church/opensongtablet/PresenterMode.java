@@ -3510,17 +3510,22 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     FullscreenActivity.myLyrics = "";
                 }
 
-                // Note: If chordformat = 0 (detect) then chordFormatUsePreferred is false
-                try {
-                    if (preferences.getMyPreferenceBoolean(PresenterMode.this,"chordFormatUsePreferred",true)) {
-                        StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(PresenterMode.this,"chordFormat",1);
+                if (FullscreenActivity.isSong) {
+                    // Detemine formats to be used for capo / transpose
+                    // Note: If chordformat = 0 (detect) then chordFormatUsePreferred is false
+                    try {
+                        if (preferences.getMyPreferenceBoolean(PresenterMode.this, "chordFormatUsePreferred", true)) {
+                            // Set StaticVariables.detectedChordFormat to the preferred format
+                            StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(PresenterMode.this, "chordFormat", 1);
+                        } else {
+                            // Sets StaticVariables.detectedChordFormat to the detected format
+                            Transpose.checkChordFormat();
+                        }
+                        // Set the newChordFormat default to be the same
                         StaticVariables.newChordFormat = StaticVariables.detectedChordFormat;
-                    } else {
-                        // CheckChordFormat returns the current format to both StaticVariables detectedChordFormat and newChordFormat
-                        Transpose.checkChordFormat();
+                    } catch (Exception e) {
+                        Log.d(TAG, "Error checking the chord format");
                     }
-                } catch (Exception e) {
-                    Log.d(TAG, "Error checking the chord format");
                 }
 
                 // Don't process images or image slide details here.  No need.  Only do songs

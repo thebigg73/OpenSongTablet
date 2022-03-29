@@ -602,8 +602,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
                 // Transpose it
                 try {
-                    // Detect and use the existing format for transpose
-                    Transpose.checkChordFormat();
                     StaticVariables.transposeDirection = "+1";
                     StaticVariables.transposeTimes = 1;
                     selectedText = transpose.transposeString(getContext(),preferences, selectedText, false, false);
@@ -629,8 +627,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
                 // Transpose it
                 try {
-                    // Detect and use the existing format for transpose
-                    Transpose.checkChordFormat();
                     StaticVariables.transposeDirection = "-1";
                     StaticVariables.transposeTimes = 1;
                     selectedText = transpose.transposeString(getContext(),preferences, selectedText, false, false);
