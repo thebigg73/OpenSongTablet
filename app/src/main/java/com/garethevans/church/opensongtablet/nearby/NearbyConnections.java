@@ -423,6 +423,10 @@ public class NearbyConnections implements NearbyInterface {
             Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
 
             infoPayload = null;
+
+            // New method sends OpenSong songs in the format of
+            //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
+
             if (mainActivityInterface.getSong().getFiletype().equals("XML")) {
                 // By default, this should be smaller than 32kb, so probably going to send as bytes
                 // We'll measure the actual size to check though
@@ -455,12 +459,13 @@ public class NearbyConnections implements NearbyInterface {
                         infoFilePayload = "FILE:" + payloadFile.getId() + ":" +
                                 mainActivityInterface.getSong().getFolder() + "_xx____xx_" +
                                 mainActivityInterface.getSong().getFilename() + "_xx____xx_" +
-                                mainActivityInterface.getDisplayPrevNext().getSwipeDirection();
+                                mainActivityInterface.getDisplayPrevNext().getSwipeDirection() + "<?xml>";
                     }
                 } catch (Exception e) {
                     Log.d(TAG, "Error trying to send file: " + e);
                     payloadFile = null;
                 }
+                Log.d(TAG, "payloadFile="+payloadFile);
                 if (payloadFile != null) {
                     // Send the file descriptor as bytes, then the file
                     Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
@@ -550,6 +555,7 @@ public class NearbyConnections implements NearbyInterface {
                     if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
                         // For bytes this is sent automatically, but it's the file we are interested in here
                         Payload payload;
+                        Log.d(TAG,"update payloadId()="+ payloadTransferUpdate.getPayloadId());
                         if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
                             payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
                             String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());

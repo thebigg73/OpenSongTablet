@@ -123,6 +123,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         mainActivityInterface.refreshMenuItems();
+        mainActivityInterface.getAlertChecks().setAlreadySeen(true);
     }
 
     @Override

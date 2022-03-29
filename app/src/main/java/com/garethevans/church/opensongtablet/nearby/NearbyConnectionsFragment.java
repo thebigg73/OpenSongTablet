@@ -338,6 +338,7 @@ public class NearbyConnectionsFragment extends Fragment {
                     myView.connectInitiateButton.setAlpha(1f);
                     myView.connectInitiateButton.setEnabled(true);
                 } catch (Exception e) {
+                    // Probably because we closed the Fragment, it's fine!
                     e.printStackTrace();
                 }
             }, timeToEnable);
