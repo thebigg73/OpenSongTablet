@@ -522,7 +522,7 @@
     <string name="color_choose">Вибір кольору</string>
     <string name="comment">Коментар</string>
     <string name="connected_display_description">Налаштування, специфічні для виходу Chromecast/HDMI</string>
-    <string name="connections_advertise">Рекламований пристрій:</string>
+    <string name="connections_advertise_name">Рекламований пристрій:</string>
     <string name="connections_advertise_stop">Пристрій більше не рекламується</string>
     <string name="connections_description">Підключайтеся до інших пристроїв під керуванням OpenSongApp</string>
     <string name="connections_device_found">Пристрій знайдено</string>

@@ -88,7 +88,7 @@
     <string name="comment_background">"Komentarz w tle"</string>
     <string name="commentline_scale">"Skalowanie tekstu komentarz"</string>
     <string name="connected_display">"Podłączony wyświetlacz"</string>
-    <string name="connections_advertise">"Urządzenie nadawcze:"</string>
+    <string name="connections_advertise_name">"Urządzenie nadawcze:"</string>
     <string name="connections_connect">"Podłącz urządzenia"</string>
     <string name="connections_connected">"Połączony z"</string>
     <string name="connections_disconnect">"Odłącz od"</string>

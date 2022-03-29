@@ -88,15 +88,6 @@
         android:background="@color/scrim"
         android:visibility="gone"/>
 
-
-    <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
-        android:id="@+id/bottomSheetTab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        app:isDraggableX="true"
-        app:layout_dodgeInsetEdges="bottom" />
-
     <!-- The bottom dialog -->
     <include android:id="@+id/bottomSheetLayout"
         layout="@layout/bottom_sheet_edit_song_lyrics" />

@@ -87,7 +87,7 @@
     <string name="comment_background">"Fond des commentaires"</string>
     <string name="commentline_scale">"Taille du texte de commentaire"</string>
     <string name="connected_display">"Affichage connecté"</string>
-    <string name="connections_advertise">"Dispositif de diffusion:"</string>
+    <string name="connections_advertise_name">"Dispositif de diffusion:"</string>
     <string name="connections_connect">"Connecter les périphériques"</string>
     <string name="connections_connected">"Connecté à"</string>
     <string name="connections_disconnect">"Déconnectez-vous de"</string>

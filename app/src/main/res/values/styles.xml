@@ -39,6 +39,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+
 
         <!-- For the default popup like MediaRouter, Nearby permissions -->
         <item name="colorBackgroundFloating">@color/colorSecondary</item>
@@ -283,7 +286,11 @@
         <item name="android:windowFrame">@null</item>
         <item name="behavior_fitToContents">true</item>
         <item name="android:state_expanded">true</item>
-        <item name="android:layout_gravity">start</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="enableEdgeToEdge">true</item>
+        <item name="paddingBottomSystemWindowInsets">true</item>
+        <item name="backgroundTint">@color/transparent</item>
+        <item name="android:maxWidth">1600dp</item>
 
     </style>
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
@@ -292,8 +299,11 @@
     <style name="FullscreenBottomSheet" parent="BottomSheetDialogTheme">
         <item name="behavior_skipCollapsed">true</item>
         <item name="behavior_fitToContents">true</item>
+        <item name="android:layout_gravity">center_horizontal</item>
         <item name="behavior_peekHeight">0dp</item> // yep, that helped to skip collapsed state at initial
         <item name="behavior_hideable">true</item>
+        <item name="enableEdgeToEdge">true</item>
+        <item name="paddingBottomSystemWindowInsets">true</item>
     </style>
     <style name="RoundedBox" parent="FullscreenBottomSheet">
         <item name="cornerFamily">rounded</item>
@@ -400,6 +410,16 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">8dp</item>
         <item name="cornerSizeBottomRight">8dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+    <style name="MiddleButton" parent="TextBackgroundButton">
+        <item name="shapeAppearanceOverlay">@style/MiddleButtonOverlay</item>
+    </style>
+    <style name="MiddleButtonOverlay">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeTopLeft">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>

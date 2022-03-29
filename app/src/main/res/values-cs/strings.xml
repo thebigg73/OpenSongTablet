@@ -87,7 +87,7 @@
     <string name="comment_background">"Komentář pozadí"</string>
     <string name="commentline_scale">"Měřítko text komentáře"</string>
     <string name="connected_display">"Připojený displej"</string>
-    <string name="connections_advertise">"Vysílací zařízení:"</string>
+    <string name="connections_advertise_name">"Vysílací zařízení:"</string>
     <string name="connections_connect">"Připojte zařízení"</string>
     <string name="connections_connected">"Připojen k"</string>
     <string name="connections_disconnect">"Odpojit od"</string>

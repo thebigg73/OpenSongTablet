@@ -347,7 +347,7 @@
     <string name="new_category">"Nova kategorija"</string>
     <string name="nowifidirect">"Izvinite, ovaj uređaj ne podržava WiFi direct"</string>
     <string name="connections_connect">"Povezivanje uređaja"</string>
-    <string name="connections_advertise">"Uređaj za odašiljanje"</string>
+    <string name="connections_advertise_name">"Uređaj za odašiljanje"</string>
     <string name="connections_connected">"Povezan sa"</string>
     <string name="connections_host">"Pronađen domaćin:"</string>
     <string name="connections_log">"Log veze (kliknite da se očisti). Ako imate problema, resetujte WiFi i pokrenite ponovo program"</string>

@@ -183,7 +183,9 @@
     <string name="connections_actasclient_info">Listen for instructions from connected devices that are set as hosts</string>
     <string name="connections_actashost">Act as host</string>
     <string name="connections_actashost_info">Control other connected devices that are set as clients</string>
-    <string name="connections_advertise">Device being advertised: </string>
+    <string name="connections_advertise">Advertise</string>
+    <string name="connections_advertise_name">Device being advertised: </string>
+    <string name="connections_advertising">Advertising…</string>
     <string name="connections_change">Once you have made a connection, you can change between host and client as required</string>
     <string name="connections_connect">Connect devices</string>
     <string name="connections_connected">Connected to</string>
@@ -1109,9 +1111,11 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
-    <string name="connections_cluster">Cluster mode</string>
-    <string name="connections_star">star_mode</string>
-    <string name="connections_mode">Connection mode.  All connecting devices need to be set to the same mode</string>
-
+    <string name="connections_cluster">Cluster</string>
+    <string name="connections_star">Star</string>
+    <string name="connections_mode">Connection mode</string>
+    <string name="connections_mode_info">"If you have issues connecting devices, try changing the connection mode.  Older versions of the app (where there was no option to change the mode) used cluster mode by default.  All connecting devices need to be set to the same mode."</string>
+    <string name="connections_no_devices">No devices connected</string>
+    <string name="connections_advanced">Show more settings for Nearby connections and full log</string>
 
 </resources>

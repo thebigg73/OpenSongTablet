@@ -88,7 +88,7 @@
     <string name="comment_background">"Megjegyzés háttér"</string>
     <string name="commentline_scale">"Scale a megjegyzés szövegét"</string>
     <string name="connected_display">"csatlakoztatott megjelenítő"</string>
-    <string name="connections_advertise">"Broadcasting eszköz:"</string>
+    <string name="connections_advertise_name">"Broadcasting eszköz:"</string>
     <string name="connections_connect">"eszközök csatlakoztatása"</string>
     <string name="connections_connected">"Csatlakozva valamihez"</string>
     <string name="connections_disconnect">"bontása a"</string>

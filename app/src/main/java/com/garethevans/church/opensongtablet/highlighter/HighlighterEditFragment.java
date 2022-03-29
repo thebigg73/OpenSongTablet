@@ -201,10 +201,16 @@ public class HighlighterEditFragment extends Fragment {
     private void bottomSheetBar() {
         bottomSheetBehavior = BottomSheetBehavior.from(myView.bottomSheet.bottomSheet);
         bottomSheetBehavior.setHideable(false);
-        bottomSheetBehavior.setGestureInsetBottomIgnored(true);
+        myView.bottomSheet.bottomSheetTab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                bottomSheetBehavior.setPeekHeight(myView.bottomSheet.bottomSheetTab.getMeasuredHeight());
+                myView.bottomSheet.bottomSheetTab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+        //bottomSheetBehavior.setGestureInsetBottomIgnored(true);
 
-
-        myView.bottomSheetTab.setOnClickListener(v -> {
+        myView.bottomSheet.bottomSheetTab.setOnClickListener(v -> {
             if (mainActivityInterface.getDrawNotes().isEnabled()) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {

@@ -87,7 +87,7 @@
     <string name="comment_background">"Kommentaar agtergrond"</string>
     <string name="commentline_scale">"Skaal die kommentaar teks"</string>
     <string name="connected_display">"Gekoppelde skerm"</string>
-    <string name="connections_advertise">"Uitsaai toestel:"</string>
+    <string name="connections_advertise_name">"Uitsaai toestel:"</string>
     <string name="connections_connect">"Koppel toestelle"</string>
     <string name="connections_connected">"Gekoppel aan"</string>
     <string name="connections_disconnect">"Ontkoppel van"</string>

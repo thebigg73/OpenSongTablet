@@ -36,14 +36,6 @@
 
     </RelativeLayout>
 
-    <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
-        android:id="@+id/bottomSheetTab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        app:isDraggableX="true"
-        app:layout_dodgeInsetEdges="bottom" />
-
     <!-- The bottom dialog -->
     <include android:id="@+id/bottomSheet"
         layout="@layout/bottom_sheet_highlighter" />

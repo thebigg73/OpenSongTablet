@@ -88,7 +88,7 @@
     <string name="comment_background">"Φόντο σχολίου"</string>
     <string name="commentline_scale">"Κείμενο σχολίου κλίμακας"</string>
     <string name="connected_display">"Συνδεδεμένη οθόνη"</string>
-    <string name="connections_advertise">"Συσκευή εκπομπής:"</string>
+    <string name="connections_advertise_name">"Συσκευή εκπομπής:"</string>
     <string name="connections_connect">"Σύνδεση συσκευών"</string>
     <string name="connections_connected">"Συνδεδεμένος με"</string>
     <string name="connections_disconnect">"Αποσύνδεση από"</string>

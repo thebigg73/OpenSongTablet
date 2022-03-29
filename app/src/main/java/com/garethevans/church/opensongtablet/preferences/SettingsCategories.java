@@ -101,7 +101,7 @@ public class SettingsCategories extends Fragment {
         myView.connectButton.setOnClickListener(v -> {
             // Check we have the required permissions
             mainActivityInterface.setWhattodo("nearby");
-            if (mainActivityInterface.requestNearbyPermissions()) {
+            if (mainActivityInterface.requestNearbyPermissions(true)) {
                 mainActivityInterface.navigateToFragment(null, R.id.nearbyConnectionsFragment);
             }
         });

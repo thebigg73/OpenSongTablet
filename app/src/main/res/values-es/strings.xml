@@ -88,7 +88,7 @@
     <string name="comment_background">"Comentario fondo"</string>
     <string name="commentline_scale">"Escalar el texto del comentario"</string>
     <string name="connected_display">"Pantalla conectada"</string>
-    <string name="connections_advertise">"Dispositivo de radiodifusión:"</string>
+    <string name="connections_advertise_name">"Dispositivo de radiodifusión:"</string>
     <string name="connections_connect">"Conectar dispositivos"</string>
     <string name="connections_connected">"Conectado a"</string>
     <string name="connections_disconnect">"Desconectar de"</string>

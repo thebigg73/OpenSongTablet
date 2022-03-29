@@ -87,7 +87,7 @@
     <string name="comment_background">"评论背景"</string>
     <string name="commentline_scale">"缩放注释文本"</string>
     <string name="connected_display">"连接显示"</string>
-    <string name="connections_advertise">"广播设备："</string>
+    <string name="connections_advertise_name">"广播设备："</string>
     <string name="connections_connect">"连接设备"</string>
     <string name="connections_connected">"连接到"</string>
     <string name="connections_disconnect">"断开连接"</string>

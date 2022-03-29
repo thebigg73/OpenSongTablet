@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.midi;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -314,9 +315,8 @@ public class MidiFragment extends Fragment {
 
     // Check permissions
     private boolean allowBluetoothSearch(boolean switchOn) {
-        return mainActivityInterface.requestCoarseLocationPermissions() && mainActivityInterface.requestFineLocationPermissions() && switchOn;
+        return switchOn && mainActivityInterface.requestNearbyPermissions(false);
     }
-
 
     // Scan for devices (USB or Bluetooth)
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -325,7 +325,8 @@ public class MidiFragment extends Fragment {
         mainActivityInterface.getMidi().setMidiManager((MidiManager) requireActivity().getSystemService(Context.MIDI_SERVICE));
         myView.searchProgressLayout.setVisibility(View.VISIBLE);
         myView.progressBar.setVisibility(View.VISIBLE);
-        if (mainActivityInterface.getMidi().getIncludeBluetoothMidi()) {
+        if (mainActivityInterface.getMidi().getIncludeBluetoothMidi() &&
+            mainActivityInterface.requestNearbyPermissions(false)) {
             startScanBluetooth();
         } else {
             startScanUSB();
@@ -373,8 +374,10 @@ public class MidiFragment extends Fragment {
         }
     }
 
+    @SuppressLint("MissingPermission") // Permissions are checked prior to calling this!
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startScanBluetooth() {
+        // To get here, we know we have permission as we've already checked!
         bluetoothDevices = new ArrayList<>();
         myView.foundDevicesLayout.removeAllViews();
         myView.devicesText.setVisibility(View.GONE);
@@ -383,12 +386,6 @@ public class MidiFragment extends Fragment {
         long SCAN_PERIOD = 16000;
         mHandler.postDelayed(() -> {
             try {
-                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.BLUETOOTH_SCAN}, 109);
-                    }
-                    return;
-                }
                 bluetoothLeScanner.stopScan(scanCallback);
                 myView.progressBar.setVisibility(View.GONE);
                 myView.searchDevices.setEnabled(true);
@@ -396,10 +393,9 @@ public class MidiFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }, SCAN_PERIOD);
 
-        //scan specified devices only with ScanFilter
+        // Scan specified BLE devices only with ScanFilter
         ScanFilter scanFilter =
                 new ScanFilter.Builder()
                         .setServiceUuid(ParcelUuid.fromString("03B80E5A-EDE8-4B33-A751-6CE34EC4C700"))

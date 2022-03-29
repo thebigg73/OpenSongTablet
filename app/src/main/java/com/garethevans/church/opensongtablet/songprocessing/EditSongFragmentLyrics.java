@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -103,8 +104,15 @@ public class EditSongFragmentLyrics extends Fragment {
     private void bottomSheetBar() {
         bottomSheetBehavior = BottomSheetBehavior.from(myView.bottomSheetLayout.bottomSheet);
         bottomSheetBehavior.setHideable(false);
-        bottomSheetBehavior.setGestureInsetBottomIgnored(true);
-        myView.bottomSheetTab.setOnClickListener(v -> {
+        myView.bottomSheetLayout.bottomSheetTab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                bottomSheetBehavior.setPeekHeight(myView.bottomSheetLayout.bottomSheetTab.getMeasuredHeight());
+                myView.bottomSheetLayout.bottomSheetTab.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+        //bottomSheetBehavior.setGestureInsetBottomIgnored(true);
+        myView.bottomSheetLayout.bottomSheetTab.setOnClickListener(v -> {
             if (bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 myView.lyrics.setEnabled(false);

@@ -88,7 +88,7 @@
     <string name="comment_background">"Hintergrund Kommentar"</string>
     <string name="commentline_scale">"Kommentartext skalieren"</string>
     <string name="connected_display">"Verbundene Anzeige"</string>
-    <string name="connections_advertise">"Sendendes Gerät:"</string>
+    <string name="connections_advertise_name">"Sendendes Gerät:"</string>
     <string name="connections_connect">"Geräte anschließen"</string>
     <string name="connections_connected">"Angeschlossen"</string>
     <string name="connections_disconnect">"Trennen von"</string>

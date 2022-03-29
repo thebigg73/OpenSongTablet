@@ -88,7 +88,7 @@
     <string name="comment_background">"Commento sfondo"</string>
     <string name="commentline_scale">"Scalare il testo del commento"</string>
     <string name="connected_display">"Display collegato"</string>
-    <string name="connections_advertise">"Dispositivo di trasmissione:"</string>
+    <string name="connections_advertise_name">"Dispositivo di trasmissione:"</string>
     <string name="connections_connect">"Collegare i dispositivi"</string>
     <string name="connections_connected">"Collegato a"</string>
     <string name="connections_disconnect">"Scollegare da"</string>

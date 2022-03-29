@@ -57,6 +57,9 @@ public class ProcessSong {
     private final MainActivityInterface mainActivityInterface;
     private final String TAG = "ProcessSong";
     private final float defFontSize = 8.0f;
+    private int howManyColumns;
+    private float scaleSize_1col;
+    private float[] scaleSize_2cols, scaleSize_3cols;
     private boolean addSectionSpace, blockShadow, displayBoldChordsHeadings,
             displayChords, displayLyrics, displayCapoChords, displayCapoAndNativeChords,
             songAutoScaleColumnMaximise, songAutoScaleOverrideFull,
@@ -1757,7 +1760,7 @@ public class ProcessSong {
         Log.d(TAG,"need23Columns="+need23ColumnCheck+"  authoScale="+autoScale);
         if (!need23ColumnCheck && (autoScale.equals("N") || autoScale.equals("W"))) {
             Log.d(TAG,"Defaulting to 1 column");
-            return 1;
+            howManyColumns = 1;
         }
 
         float col2best = Math.min(col2[0], col2[1]);
@@ -1852,25 +1855,26 @@ public class ProcessSong {
 
         thisAutoScale = songAutoScale;
 
+        scaleSize_2cols = new float[3];
+        scaleSize_3cols = new float[5];
         // All scaling types need to process the single column view, either to use it or compare to 2/3 columns
-        float[] scaleSize_2cols = new float[3];
-        float[] scaleSize_3cols = new float[4];
         if (songAutoScale.equals("Y") || need23ColumnCheck) {
             // Figure out two and three columns.  Only do this if we need to to save processing time.
-            scaleSize_2cols = col2Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
-            scaleSize_3cols = col3Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
+            col2Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
+            col3Scale(screenWidth, screenHeight, currentHeight, songAutoScaleColumnMaximise, mainActivityInterface.getSectionWidths(), mainActivityInterface.getSectionHeights());
         }
 
-        float scaleSize_1col = col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
+        // Set the scaleSize_1col
+        col1Scale(screenWidth, screenHeight, currentWidth, currentHeight);
 
         Log.d(TAG,"scaleSize_1col="+scaleSize_1col);
         Log.d(TAG,"scaleSize_2cols[0]="+scaleSize_2cols[0]+"  scaleSize_2cols[1]="+scaleSize_2cols[1]+"  scaleSize_2cols[2]="+scaleSize_2cols[2]);
         Log.d(TAG,"scaleSize_3cols[0]="+scaleSize_3cols[0]+"  scaleSize_3cols[1]="+scaleSize_3cols[1]+"  scaleSize_3cols[2]="+scaleSize_3cols[2]+"  scaleSize_3cols[3]="+scaleSize_3cols[3]);
 
         // Now decide if 1,2 or 3 columns is best
-        int howmany = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23ColumnCheck);
+        howManyColumns = howManyColumnsAreBest(scaleSize_1col, scaleSize_2cols, scaleSize_3cols, songAutoScale, fontSizeMin, songAutoScaleOverrideFull,need23ColumnCheck);
 
-        Log.d(TAG,"howmany="+howmany);
+        Log.d(TAG,"howManyColumns="+howManyColumns);
 
         // If we need to move column1 down/up due to potential songSheet and it's scaling, do it
         if (songSheetView!=null) {
@@ -1878,7 +1882,7 @@ public class ProcessSong {
             column1.setPadding(0, (int) (songSheetTitleHeight * scaleSize_1col), 0, 0);
         }
 
-        switch (howmany) {
+        switch (howManyColumns) {
             case 1:
             default:
                 // If we are using one column and resizing to width only, change the scale size
@@ -1906,12 +1910,15 @@ public class ProcessSong {
         }
     }
 
+    public int getHowManyColumns(){
+        return howManyColumns;
+    }
 
     // 1 column stuff
-    private float col1Scale(int screenWidth, int screenHeight, int viewWidth, int viewHeight) {
+    private void col1Scale(int screenWidth, int screenHeight, int viewWidth, int viewHeight) {
         float x_scale = (float) screenWidth / (float) viewWidth;
         float y_scale = (float) screenHeight / (float) viewHeight;
-        return Math.min(x_scale, y_scale);
+        scaleSize_1col = Math.min(x_scale, y_scale);
     }
 
     private void setOneColumn(ArrayList<View> sectionViews, LinearLayout column1, LinearLayout column2, LinearLayout column3,
@@ -1947,9 +1954,9 @@ public class ProcessSong {
 
 
     // 2 column stuff
-    private float[] col2Scale(int screenWidth, int screenHeight, int totalViewHeight, boolean songAutoScaleColumnMaximise,
+    private void col2Scale(int screenWidth, int screenHeight, int totalViewHeight, boolean songAutoScaleColumnMaximise,
                               ArrayList<Integer> viewWidth, ArrayList<Integer> viewHeight) {
-        float[] colscale = new float[3];
+        scaleSize_2cols = new float[3];
 
         // Now go through the views and decide on the number for the first column (the rest is the second column)
         int col1Height = 0;
@@ -1996,23 +2003,21 @@ public class ProcessSong {
         float postScaleTotal = postCol1Scale + postCol2Scale;
 
         if (preScaleTotal >= postScaleTotal) {
-            colscale[0] = preCol1Scale;
-            colscale[1] = preCol2Scale;
-            colscale[2] = preHalfWay;
+            scaleSize_2cols[0] = preCol1Scale;
+            scaleSize_2cols[1] = preCol2Scale;
+            scaleSize_2cols[2] = preHalfWay;
         } else {
-            colscale[0] = postCol1Scale;
-            colscale[1] = postCol2Scale;
-            colscale[2] = postHalfWay;
+            scaleSize_2cols[0] = postCol1Scale;
+            scaleSize_2cols[1] = postCol2Scale;
+            scaleSize_2cols[2] = postHalfWay;
         }
 
         if (!songAutoScaleColumnMaximise) {
             // make 2 all the values of the smallest (but the same)
-            float min = Math.min(colscale[0], colscale[1]);
-            colscale[0] = min;
-            colscale[1] = min;
+            float min = Math.min(scaleSize_2cols[0], scaleSize_2cols[1]);
+            scaleSize_2cols[0] = min;
+            scaleSize_2cols[1] = min;
         }
-
-        return colscale;
     }
 
     private void setTwoColumns(ArrayList<View> sectionViews, LinearLayout column1,
@@ -2071,10 +2076,10 @@ public class ProcessSong {
     }
 
     // 3 column stuff
-    private float[] col3Scale(int screenWidth, int screenHeight, int totalViewHeight,
+    private void col3Scale(int screenWidth, int screenHeight, int totalViewHeight,
                               boolean songAutoScaleColumnMaximise, ArrayList<Integer> viewWidth,
                               ArrayList<Integer> viewHeight) {
-        float[] colscale = new float[5];
+        scaleSize_3cols = new float[5];
 
         // Find the third height of all of the views together
         float thirdViewheight = (float) totalViewHeight / 3.0f;
@@ -2161,21 +2166,19 @@ public class ProcessSong {
         float col3Yscale = (float) screenHeight / (float) col3Height;
         float col3Scale = Math.min(col3Xscale, col3Yscale);
 
-        colscale[0] = col1Scale;
-        colscale[1] = col2Scale;
-        colscale[2] = col3Scale;
-        colscale[3] = thirdWay;
-        colscale[4] = twoThirdWay;
+        scaleSize_3cols[0] = col1Scale;
+        scaleSize_3cols[1] = col2Scale;
+        scaleSize_3cols[2] = col3Scale;
+        scaleSize_3cols[3] = thirdWay;
+        scaleSize_3cols[4] = twoThirdWay;
 
         if (!songAutoScaleColumnMaximise) {
             // make 2 all the values of the smallest (but the same)
-            float min = Math.min(colscale[0], Math.min(colscale[1], colscale[2]));
-            colscale[0] = min;
-            colscale[1] = min;
-            colscale[2] = min;
+            float min = Math.min(scaleSize_3cols[0], Math.min(scaleSize_3cols[1], scaleSize_3cols[2]));
+            scaleSize_3cols[0] = min;
+            scaleSize_3cols[1] = min;
+            scaleSize_3cols[2] = min;
         }
-
-        return colscale;
     }
 
     private void setThreeColumns(ArrayList<View> sectionViews, LinearLayout column1,
@@ -2248,7 +2251,6 @@ public class ProcessSong {
         int col3h = (int) (col3Height * scaleSize[2]);
         mainActivityInterface.updateSizes(-1, Math.max(col1h, Math.max(col2h, col3h)));
     }
-
 
     // Now the stuff to read in pdf files (converts the pages to an image for displaying)
     // This uses Android built in PdfRenderer, so will only work on Lollipop+

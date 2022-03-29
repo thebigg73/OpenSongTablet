@@ -196,10 +196,9 @@ public interface MainActivityInterface {
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
     NearbyConnections getNearbyConnections();
     void updateConnectionsLog();
-    boolean requestNearbyPermissions();
-    boolean requestCoarseLocationPermissions();
-    boolean requestFineLocationPermissions();
-    void setNearbyOpen(boolean nearbyOpen);
+    boolean requestNearbyPermissions(boolean needPlayServices);
+    boolean checkForPermission(String permission);
+    void requestForPermissions(String[] permissions);
 
     // Midi
     Midi getMidi();

@@ -88,7 +88,7 @@
     <string name="comment_background">"Фон комментария"</string>
     <string name="commentline_scale">"Размер текста комментария"</string>
     <string name="connected_display">"Подключенный дисплей"</string>
-    <string name="connections_advertise">"Вещательное устройство:"</string>
+    <string name="connections_advertise_name">"Вещательное устройство:"</string>
     <string name="connections_connect">"Подключение устройств"</string>
     <string name="connections_connected">"Подключен к"</string>
     <string name="connections_disconnect">"Отключиться от"</string>

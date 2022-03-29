@@ -1,8 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
-
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -114,7 +111,6 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.ProfileActions;
 import com.garethevans.church.opensongtablet.presenter.PresenterFragment;
 import com.garethevans.church.opensongtablet.presenter.PresenterSettings;
-import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplaySettingsFragment;
 import com.garethevans.church.opensongtablet.presenter.SongSectionsFragment;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
@@ -125,6 +121,7 @@ import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.ThemeSetupFragment;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplay;
+import com.garethevans.church.opensongtablet.secondarydisplay.SecondaryDisplaySettingsFragment;
 import com.garethevans.church.opensongtablet.setmenu.SetMenuFragment;
 import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
@@ -155,6 +152,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -256,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     private ArrayList<Integer> sectionWidths, sectionHeights, songSheetTitleLayoutSize, sectionColors;
     private String whichMode, whattodo, importFilename;
     private Uri importUri;
-    private boolean doonetimeactions = true, settingsOpen = false, nearbyOpen = false, showSetMenu,
+    private boolean doonetimeactions = true, settingsOpen = false, showSetMenu,
             pageButtonActive = true, fullIndexRequired, menuOpen, firstRun=true;
     private final String TAG = "MainActivity";
     private MenuItem settingsButton;
@@ -828,16 +826,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public NearbyConnections getNearbyConnections() {
         return nearbyConnections;
     }
-    @Override
-    public void setNearbyOpen(boolean nearbyOpen) {
-        this.nearbyOpen = nearbyOpen;
-    }
     private void openNearbyFragment() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (hasNearbyPermissions()) {
             navigateToFragment("opensongapp://settings/nearby", 0);
         }
     }
+
+    private boolean hasNearbyPermissions() {
+        if (Build.VERSION.SDK_INT>30) {
+            return checkForPermission(Manifest.permission.BLUETOOTH_SCAN) &&
+                    checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE) &&
+                    checkForPermission(Manifest.permission.BLUETOOTH_CONNECT);
+        } else if (Build.VERSION.SDK_INT==29 || Build.VERSION.SDK_INT==30) {
+            return checkForPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        } else {
+            return checkForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+    }
+
     @Override
     public void startDiscovery() {
         nearbyConnections.startDiscovery();
@@ -862,7 +868,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void updateConnectionsLog() {
         // Send the command to the Nearby Connections fragment (if it exists!)
         try {
-            if (nearbyConnectionsFragment!=null && nearbyOpen) {
+            if (nearbyConnectionsFragment!=null && nearbyConnections.getConnectionsOpen()) {
                 try {
                     nearbyConnectionsFragment.updateConnectionsLog();
                 } catch (Exception e) {
@@ -882,55 +888,60 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         // }
     }
     @Override
-    public boolean requestNearbyPermissions() {
-        // Only do this if the user has Google APIs installed, otherwise, there is no point
-        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
-            return requestCoarseLocationPermissions() && requestFineLocationPermissions();
+    public boolean requestNearbyPermissions(boolean needPlayServices) {
+        // Only do this if the user has Google APIs installed or we don't need them
+        // (for midi bluetooth), otherwise, there is no point
+        if (!needPlayServices || GoogleApiAvailability.getInstance().
+                isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
+
+            // Check for the relevant Bluetooth permissions (depends on Build.SDK_VERSION)
+            if (hasNearbyPermissions()) {
+                // We have the required permissions!
+                return true;
+
+            } else {
+                // Check which one(s) we don't have and ask for them!
+                List<String> listPermissionsNeeded = new ArrayList<>();
+                if (Build.VERSION.SDK_INT > 30) {
+                    if (!checkForPermission(Manifest.permission.BLUETOOTH_SCAN)) {
+                        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN);
+                    }
+                    if (!checkForPermission(Manifest.permission.BLUETOOTH_ADVERTISE)) {
+                        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_ADVERTISE);
+                    }
+                    if (!checkForPermission(Manifest.permission.BLUETOOTH_CONNECT)) {
+                        listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT);
+                    }
+                    if (listPermissionsNeeded.size() > 0) {
+                        String[] permissions = new String[listPermissionsNeeded.size()];
+                        for (int x = 0; x < listPermissionsNeeded.size(); x++) {
+                            permissions[x] = listPermissionsNeeded.get(x);
+                        }
+                        requestForPermissions(permissions);
+                    }
+                } else if (Build.VERSION.SDK_INT == 29 || Build.VERSION.SDK_INT == 30) {
+                    requestForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION});
+                } else {
+                    requestForPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION});
+                }
+                return false;
+            }
         } else {
+            Log.d(TAG,"GooglePlayServices not installed");
             installPlayServices();
             // Not allowed on this device
             return false;
         }
     }
-    @Override
-    public boolean requestCoarseLocationPermissions() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            try {
-                make(findViewById(R.id.fragmentView), R.string.location_rationale,
-                        LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403)).show();
-                return false;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403);
-            return false;
-        }
-    }
-    @Override
-    public boolean requestFineLocationPermissions() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            try {
-                make(findViewById(R.id.coordinator), R.string.location_rationale,
-                        LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
-                return false;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404);
-            return false;
-        }
-    }
 
+    @Override
+    public boolean checkForPermission(String permission) {
+        return ActivityCompat.checkSelfPermission(this,permission) == PackageManager.PERMISSION_GRANTED;
+    }
+    @Override
+    public void requestForPermissions(String[] permissions) {
+        ActivityCompat.requestPermissions(this, permissions,403);
+    }
 
     // Instructions sent from fragments for MainActivity to deal with
     @Override
@@ -1502,7 +1513,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public ExtendedFloatingActionButton getSaveButton(){
         if (editSongFragment!=null) {
-            return ((EditSongFragment)editSongFragment).getSaveButton();
+            return editSongFragment.getSaveButton();
         } else {
             return null;
         }

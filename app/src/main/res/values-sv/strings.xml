@@ -88,7 +88,7 @@
     <string name="comment_background">"Kommentar bakgrund"</string>
     <string name="commentline_scale">"Skal kommentartext"</string>
     <string name="connected_display">"Ansluten display"</string>
-    <string name="connections_advertise">"Sändningsenhet:"</string>
+    <string name="connections_advertise_name">"Sändningsenhet:"</string>
     <string name="connections_connect">"Anslut enheter"</string>
     <string name="connections_connected">"Ansluten till"</string>
     <string name="connections_disconnect">"Koppla ifrån"</string>

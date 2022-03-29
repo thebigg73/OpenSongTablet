@@ -88,7 +88,7 @@
     <string name="comment_background">"コメントの背景"</string>
     <string name="commentline_scale">"コメントテキストを拡大縮小"</string>
     <string name="connected_display">"接続されたディスプレイ"</string>
-    <string name="connections_advertise">"放送装置："</string>
+    <string name="connections_advertise_name">"放送装置："</string>
     <string name="connections_connect">"デバイスを接続する"</string>
     <string name="connections_connected">"に接続されています"</string>
     <string name="connections_disconnect">"切断する"</string>

@@ -279,7 +279,6 @@ public class LoadSong {
                 xpp.setInput(inputStream, utf);
                 int eventType;
 
-                Log.d(TAG,"File:"+thisSong.getFolder()+"/"+thisSong.getFilename());
                 // Extract all of the stuff we need
                 eventType = xpp.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT) {

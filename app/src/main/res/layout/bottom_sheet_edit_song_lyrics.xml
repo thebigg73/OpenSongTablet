@@ -6,15 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:backgroundTint="@color/colorAltPrimary"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="0dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="32dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:layout_insetEdge="bottom">
 
+    <com.garethevans.church.opensongtablet.customviews.BottomSheetHandle
+        android:id="@+id/bottomSheetTab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        app:isDraggableX="false"
+        app:layout_dodgeInsetEdges="bottom" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorAltPrimary">
     <LinearLayout
         android:id="@+id/lyricsEdit"
         android:layout_width="match_parent"
