@@ -2475,7 +2475,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void loadSong() {
-        doSongLoad(song.getFolder(),song.getFilename(),true);
+        // If we are not in a settings window, load the song
+        // Otherwise it will happen when the user closes the settings fragments
+        if (!settingsOpen) {
+            doSongLoad(song.getFolder(), song.getFilename(), true);
+        }
     }
 
     @Override

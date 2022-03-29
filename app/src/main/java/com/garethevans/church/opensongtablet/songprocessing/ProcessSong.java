@@ -2511,17 +2511,6 @@ public class ProcessSong {
         return resizedBitmap;
     }*/
 
-    // These functions deal with nearby navigations
-    public int getNearbySection(String incoming) {
-        //TODO
-        return -1;
-    }
-
-    public ArrayList<String> getNearbyIncoming(String incoming) {
-        // TODO
-        ArrayList<String> arrayList = new ArrayList<>();
-        return arrayList;
-    }
 
 
     // This stuff deals with the highlighter notes

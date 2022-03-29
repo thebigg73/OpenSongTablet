@@ -220,9 +220,9 @@ public class PerformanceFragment extends Fragment {
 
             // Now slide out the song and after a delay start the next bit of the processing
             myView.recyclerView.post(() -> {
-                if (myView.recyclerView.getVisibility()==View.VISIBLE) {
+                if (myView.recyclerView.getVisibility() == View.VISIBLE) {
                     myView.recyclerView.startAnimation(animSlideOut);
-                    myView.recyclerView.postDelayed(() -> requireActivity().runOnUiThread(this::prepareSongViews),requireContext().getResources().getInteger(R.integer.slide_out_time));
+                    myView.recyclerView.postDelayed(() -> requireActivity().runOnUiThread(this::prepareSongViews), requireContext().getResources().getInteger(R.integer.slide_out_time));
                 }
             });
 
@@ -618,35 +618,44 @@ public class PerformanceFragment extends Fragment {
 
     // This stuff deals with running song action stuff
     private void dealWithStuffAfterReady() {
-        // Send the autoscroll information (if required)
-        mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, screenHeight);
+        // Run this after the animate in delay to stop animation jitter
+        new Handler().postDelayed(() -> {
+            // Send the autoscroll information (if required)
+            mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, screenHeight);
 
-        // Now deal with the highlighter file
-        dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
+            // Now deal with the highlighter file
+            dealWithHighlighterFile(widthBeforeScale, heightBeforeScale);
 
-        // Load up the sticky notes if the user wants them
-        dealWithStickyNotes(false, false);
+            // Load up the sticky notes if the user wants them
+            dealWithStickyNotes(false, false);
 
-        // IV - Consume any later pending client section change received from Host (-ve value)
-        if (mainActivityInterface.getSong().getCurrentSection() < 0) {
-            mainActivityInterface.getSong().setCurrentSection(-(1 + mainActivityInterface.getSong().getCurrentSection()));
-        }
+            // IV - Consume any later pending client section change received from Host (-ve value)
+            if (mainActivityInterface.getSong().getCurrentSection() < 0) {
+                mainActivityInterface.getSong().setCurrentSection(-(1 + mainActivityInterface.getSong().getCurrentSection()));
+            }
 
-        // Set the previous/next if we want to
-        mainActivityInterface.getDisplayPrevNext().setPrevNext();
+            // Set the previous/next if we want to
+            mainActivityInterface.getDisplayPrevNext().setPrevNext();
 
-        // Start the pad (if the pads are activated and the pad is valid)
-        mainActivityInterface.getPad().autoStartPad();
+            // Start the pad (if the pads are activated and the pad is valid)
+            mainActivityInterface.getPad().autoStartPad();
 
-        // Update any midi commands (if any)
-        mainActivityInterface.getMidi().buildSongMidiMessages();
+            // Update any midi commands (if any)
+            mainActivityInterface.getMidi().buildSongMidiMessages();
 
-        // Deal with capo information (if required)
-        mainActivityInterface.dealWithCapo();
+            // Deal with capo information (if required)
+            mainActivityInterface.dealWithCapo();
 
-        // Update the secondary display (if present)
-        displayInterface.updateDisplay("setSongInfo");
-        displayInterface.updateDisplay("setSongContent");
+            // Update the secondary display (if present)
+            displayInterface.updateDisplay("setSongInfo");
+            displayInterface.updateDisplay("setSongContent");
+
+            // Send a call to nearby devices to process the song at their end
+            if (mainActivityInterface.getNearbyConnections().usingNearby &&
+                    mainActivityInterface.getNearbyConnections().isHost) {
+                mainActivityInterface.getNearbyConnections().sendSongPayload();
+            }
+        },(long)getResources().getInteger(R.integer.slide_in_time));
     }
     private void dealWithHighlighterFile(int w, int h) {
         if (!mainActivityInterface.getPreferences().

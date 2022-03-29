@@ -281,7 +281,6 @@ public class NearbyConnections implements NearbyInterface {
                         // We're connected! Can now start sending and receiving data.
                         connectedEndPoints.add(endpointId);
                         isConnected = true;
-                        updateConnectionLog(c.getString(R.string.connections_connected) + " " + connectionEndPointName);
                         if (!connectedEndPointsNames.contains(connectionId)) {
                             connectedEndPointsNames.add(connectionId);
                             Log.d(TAG, connectionId + " not found, adding");
@@ -298,6 +297,7 @@ public class NearbyConnections implements NearbyInterface {
                             // We can stop discovery now
                             stopDiscovery();
                         }
+                        updateConnectionLog(c.getString(R.string.connections_connected) + " " + connectionEndPointName);
                         break;
                     case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                         Log.d(TAG,"Rejected");
@@ -416,10 +416,6 @@ public class NearbyConnections implements NearbyInterface {
         Payload payloadFile;
         boolean largePayLoad = false;
 
-        Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(
-                "Songs", mainActivityInterface.getSong().getFolder(),
-                mainActivityInterface.getSong().getFilename());
-
         // IV - Process each end point - we need a unique ParcelFileDescriptor if a file is sent
         for (String endpointId : connectedEndPoints) {
             // IV - Send current section as a pending section change (-ve offset by 1) for use by CLIENT song load
@@ -448,6 +444,10 @@ public class NearbyConnections implements NearbyInterface {
             if (infoPayload == null) {
                 payloadFile = null;
                 // We will send as a file
+                Uri uri = mainActivityInterface.getStorageAccess().getUriForItem(
+                        "Songs", mainActivityInterface.getSong().getFolder(),
+                        mainActivityInterface.getSong().getFilename());
+
                 try {
                     ParcelFileDescriptor parcelFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
                     if (parcelFileDescriptor != null) {
@@ -494,10 +494,12 @@ public class NearbyConnections implements NearbyInterface {
                     // We can deal with the incoming payload!
                     if (payload.getType() == Payload.Type.FILE) {
                         // Make a note of it.  Nothing happens until complete
+                        Log.d(TAG,"Payload.Type: FILE");
                         incomingFilePayloads.put(payload.getId(), payload);
 
                     } else if (payload.getType() == Payload.Type.BYTES) {
                         // We're dealing with bytes
+                        Log.d(TAG,"Payload.Type: BYTES");
                         String incoming = null;
                         if (payload.asBytes() != null) {
                             byte[] bytes = payload.asBytes();
@@ -529,6 +531,7 @@ public class NearbyConnections implements NearbyInterface {
                         } else if (incoming != null && incoming.contains("_xx____xx_")) {
                             payloadOpenSong(incoming);
                         }
+                        Log.d(TAG,"incoming="+incoming);
                     }
                     // not dealing with files as it is complex with scoped storage access
                     // also don't want user's download folder getting clogged!
@@ -575,7 +578,7 @@ public class NearbyConnections implements NearbyInterface {
     }
     private void payloadSection(String incoming) {
         if (!mainActivityInterface.getMode().equals("Performance")) {
-            int mysection = mainActivityInterface.getProcessSong().getNearbySection(incoming);
+            int mysection = getNearbySection(incoming);
             if (mysection >= 0) {
                 if (pendingCurrentSection < 0) {
                     // IV - A song load is pending - 'Store' the section change (-ve offset by 1) for use by song load
@@ -604,8 +607,12 @@ public class NearbyConnections implements NearbyInterface {
         // New method sends OpenSong songs in the format of
         //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
 
-        ArrayList<String> receivedBits = mainActivityInterface.getProcessSong().getNearbyIncoming(incoming);
+        ArrayList<String> receivedBits = getNearbyIncoming(incoming);
         boolean incomingChange = (!incoming.equals(incomingPrevious));
+
+        Log.d(TAG, "incomingChange: "+incomingChange);
+        Log.d(TAG, "receivedBits,size(): "+receivedBits.size());
+        Log.d(TAG, "songReceived: " + (receivedBits.size() >= 4));
 
         if (incomingChange) {
             incomingPrevious = incoming;
@@ -664,7 +671,7 @@ public class NearbyConnections implements NearbyInterface {
                     Log.d(TAG, "received: " + mainActivityInterface.getSong().getFolder() + "/" + mainActivityInterface.getSong().getFilename());
                     mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
 
-                    // Now load the song
+                    // Now load the song if we are displaying the performace/stage/presenter fragment
                     if (nearbyReturnActionsInterface != null) {
                         mainActivityInterface.getSong().setCurrentSection(pendingCurrentSection);
                         nearbyReturnActionsInterface.loadSong();
@@ -893,5 +900,28 @@ public class NearbyConnections implements NearbyInterface {
     }
 
 
+    // These functions deal with nearby navigations
+    private int getNearbySection(String incoming) {
+        //TODO
+        return -1;
+    }
+    private ArrayList<String> getNearbyIncoming(String incoming) {
+        // New method sends OpenSong songs in the format of
+        // FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
+        // Four distict parts
+        ArrayList<String> arrayList = new ArrayList<>();
+        String[] bits = incoming.split("_xx____xx_");
+        for (int i=0; i<4; i++) {
+            if (bits.length>i) {
+                arrayList.add(i,bits[i]);
+                Log.d(TAG,"bits["+i+"]="+bits[i]);
+            } else {
+                // Old format or something not right.  Avoid null values returned
+                arrayList.add(i,"");
+            }
+        }
+
+        return arrayList;
+    }
 
 }

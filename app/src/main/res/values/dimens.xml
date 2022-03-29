@@ -50,7 +50,7 @@
     <dimen name="piano_black_space_half">4dp</dimen>
     <dimen name="piano_black_space_two">19dp</dimen>
 
-    <integer name="slide_out_time">50</integer>
+    <integer name="slide_out_time">100</integer>
     <integer name="slide_in_time">120</integer>
 
 </resources>
