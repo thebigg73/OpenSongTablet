@@ -20,32 +20,81 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/songEdit"
+            <LinearLayout
+                android:id="@+id/songSpecificActions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/edit_song"
-                android:padding="16dp"
-                android:text="@string/edit_song"
-                app:mydrawable="@drawable/ic_pencil_white_36dp" />
-
+                android:orientation="vertical">
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/songActions"
+                android:id="@+id/songTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/actions_current_song"
-                android:padding="16dp"
                 android:text="@string/actions_current_song"
-                app:mydrawable="@drawable/ic_bullseye_white_36dp" />
+                android:hint="@string/title"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
 
-            <com.garethevans.church.opensongtablet.customviews.MaterialTextView
-                android:id="@+id/addToSet"
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/add_song_to_set"
-                android:padding="16dp"
-                android:text="@string/add_song_to_set"
-                app:mydrawable="@drawable/ic_plus_white_36dp" />
+                android:layout_marginBottom="8dp">
+
+                <TableRow>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/songEdit"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:drawableStart="@drawable/ic_pencil_white_36dp"
+                        android:text="@string/edit_song"/>
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/songActions"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:layout_margin="8dp"
+                        android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                        android:text="@string/actions"/>
+                </TableRow>
+                <TableRow>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/addToSet"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:layout_margin="8dp"
+                        android:drawableStart="@drawable/ic_plus_white_36dp"
+                        android:text="@string/add_song_to_set"/>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/addVariationToSet"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:layout_margin="8dp"
+                        android:drawableStart="@drawable/ic_table_edit_white_36dp"
+                        android:text="@string/variation_make"/>
+                </TableRow>
+            </TableLayout>
+            <TableRow style="@style/DividerLine"/>
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/otherOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/other_options"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:id="@+id/randomSong"

@@ -86,8 +86,7 @@ public class PerformanceGestures {
         mainActivityInterface.getDoVibrate().vibrate(c, 50);
 
         mainActivityInterface.getCurrentSet().addSetItem(itemForSet);
-        mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong().getFolder(),
-                mainActivityInterface.getSong().getFilename(), mainActivityInterface.getSong().getKey());
+        mainActivityInterface.getCurrentSet().addSetValues(mainActivityInterface.getSong());
         mainActivityInterface.updateSetList();
     }
 

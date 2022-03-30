@@ -65,7 +65,7 @@ public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
 
         setitemViewHolder.vItem.setText(si.songitem);
         String newfoldername = si.songfoldernice;
-        if (newfoldername.startsWith("**")) {
+        if (newfoldername!=null && newfoldername.startsWith("**")) {
             newfoldername = newfoldername.replace("**","");
         }
         setitemViewHolder.vSongTitle.setText(titlesongname);

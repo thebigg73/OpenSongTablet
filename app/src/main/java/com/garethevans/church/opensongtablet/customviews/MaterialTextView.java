@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.request.RequestOptions;
 import com.garethevans.church.opensongtablet.R;
 
 public class MaterialTextView extends LinearLayout {
@@ -59,7 +58,7 @@ public class MaterialTextView extends LinearLayout {
         hintView.setText(hintText);
 
         // Default colour is white, but it can be overriden programmatically
-        setImageView(drawable, context.getResources().getColor(R.color.white));
+        setImageView(drawable, 0xffffffff);
 
         showCheckMark(isChecked);
         showCheckBox(isCheckBox);
@@ -131,7 +130,7 @@ public class MaterialTextView extends LinearLayout {
     }
 
     public void setImageView(Drawable drawable, int tintColor) {
-        RequestOptions requestOptions = new RequestOptions().override(64, 64).centerInside();
+        //RequestOptions requestOptions = new RequestOptions().override(64, 64).centerInside();
         if (drawable!=null) {
             // Clone the drawable
             Drawable cloneDrawable = drawable.mutate();
@@ -139,7 +138,10 @@ public class MaterialTextView extends LinearLayout {
             ColorFilter colorFilter = new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
             if (cloneDrawable != null) {
                 cloneDrawable.setColorFilter(colorFilter);
-                GlideApp.with(this).load(cloneDrawable).apply(requestOptions).into(imageView);
+                imageView.setMaxWidth(64);
+                imageView.setMaxHeight(64);
+                imageView.setImageDrawable(cloneDrawable);
+                //GlideApp.with(this).load(cloneDrawable).apply(requestOptions).into(imageView);
             }
             imageView.setVisibility(View.VISIBLE);
         } else {

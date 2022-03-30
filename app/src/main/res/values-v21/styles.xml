@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Font and text settings -->
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/lightgrey</item>
+        <item name="colorControlActivated">@color/colorSecondary</item>
+        <item name="colorControlNormal">@color/colorSecondary</item>
+        <item name="colorControlHighlight">@color/colorSecondary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColorHighlight">@color/colorSecondary</item>
+
+        <!-- Default colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSurface">@color/colorPrimary</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOnBackground">@color/white</item>
+        <item name="colorError">@color/red</item>
+        <item name="colorOnError">@color/red</item>
+        <item name="colorButtonNormal">@color/transparent</item>
+        <item name="colorPrimaryVariant">@color/colorAltPrimary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondary</item>
+        <item name="scrimBackground">@color/scrim</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+
+        <!-- Status bar stuff -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor">@color/colorAltPrimary</item>
+
+        <!-- For the default popup like MediaRouter, Nearby permissions -->
+        <item name="colorBackgroundFloating">@color/colorSecondary</item>
+        <item name="buttonBarButtonStyle">@style/popupButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/popupButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/popupButtonStyle</item>
+        <item name="castMiniControllerStyle">@style/CustomCastMiniController</item>
+
+        <!-- Exposed popup window -->
+        <item name="popupMenuBackground">@drawable/popup_bg</item>
+        <item name="android:popupBackground">@drawable/popup_bg</item>
+
+        <!-- Override widgets throughout the app -->
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme</item>
+        <item name="sliderStyle">@style/Slider</item>
+        <item name="switchStyle">@style/Switch</item>
+        <item name="materialButtonStyle">@style/TextBackgroundButton</item>
+        <item name="checkboxStyle">@style/MaterialCheckBox</item>
+
+        <!-- New MaterialComponents attributes. -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1
+        </item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2
+        </item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3
+        </item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4
+        </item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5
+        </item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6
+        </item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1
+        </item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2
+        </item>
+        <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+
+        // Disable click sounds since we are performing or presenting!
+        <item name="android:soundEffectsEnabled">false</item>
+    </style>
+</resources>

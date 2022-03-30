@@ -1117,5 +1117,6 @@ Check out the categories in the right hand options menu.
     <string name="connections_mode_info">"If you have issues connecting devices, try changing the connection mode.  Older versions of the app (where there was no option to change the mode) used cluster mode by default.  All connecting devices need to be set to the same mode."</string>
     <string name="connections_no_devices">No devices connected</string>
     <string name="connections_advanced">Show more settings for Nearby connections and full log</string>
+    <string name="other_options">Other options</string>
 
 </resources>

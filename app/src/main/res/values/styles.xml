@@ -40,7 +40,8 @@
         <item name="windowActionBarOverlay">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:navigationBarColor"></item>
 
 
         <!-- For the default popup like MediaRouter, Nearby permissions -->
@@ -374,6 +375,7 @@
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
         <item name="iconTint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
         <item name="strokeColor">@color/colorSecondary</item>
         <item name="android:padding">8dp</item>
     </style>

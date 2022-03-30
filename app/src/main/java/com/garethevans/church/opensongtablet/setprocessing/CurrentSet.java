@@ -64,6 +64,11 @@ public class CurrentSet {
         setFilenames.add(filename);
         setKeys.add(key);
     }
+    public void addSetValues(Song thisSong) {
+        setFolders.add(thisSong.getFolder());
+        setFilenames.add(thisSong.getFilename());
+        setKeys.add(thisSong.getKey());
+    }
 
     // Get items from the set
     public ArrayList<String> getSetItems() {
@@ -195,7 +200,6 @@ public class CurrentSet {
         setFilenames.add(position,filename);
         setKeys.add(position,key);
     }
-
     public void removeFromCurrentSet(int pos, String item) {
         if (pos==-1) {
             // Don't know, so look for it
