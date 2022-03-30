@@ -466,13 +466,13 @@ public class SetActions {
         Uri uriVariation = mainActivityInterface.getStorageAccess().getUriForItem(folderVariations, "", filename);
 
         // Make sure there is a file to write the output to (remove any existing first)
-        mainActivityInterface.getStorageAccess().deleteFile(uriVariation);
         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uriVariation, null, folderVariations, "", filename);
 
         // Get an input/output stream reference and copy (streams are closed in copyFile())
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(uriOriginal);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uriVariation);
-        mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+        boolean success = mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);
+        Log.d(TAG,"file copied from "+uriOriginal+" to "+uriVariation);
     }
 
     public int getItemIcon(String valueToDecideFrom) {
