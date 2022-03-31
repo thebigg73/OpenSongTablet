@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -339,7 +340,7 @@ public class NearbyConnectionsFragment extends Fragment {
                     myView.connectInitiateButton.setEnabled(true);
                 } catch (Exception e) {
                     // Probably because we closed the Fragment, it's fine!
-                    e.printStackTrace();
+                    Log.d(TAG,"Not showing the Nearby fragment");
                 }
             }, timeToEnable);
         });

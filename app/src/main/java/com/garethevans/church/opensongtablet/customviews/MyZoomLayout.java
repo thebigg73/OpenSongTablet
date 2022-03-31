@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 
 public class MyZoomLayout extends FrameLayout {
 
+    private final String TAG = "MyZoomLayout";
     boolean isUserTouching = false, isScaling = false, isScrolling = false, isFirstScrollEvent = true;
     private final ScaleGestureDetector scaleDetector;
     private float scaleFactor = 1.0f;
@@ -35,6 +36,7 @@ public class MyZoomLayout extends FrameLayout {
         overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
+        setClipToPadding(false);
     }
 
     public MyZoomLayout(Context c, @Nullable AttributeSet attrs) {
@@ -44,6 +46,7 @@ public class MyZoomLayout extends FrameLayout {
         overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
+        setClipToPadding(false);
     }
 
     public MyZoomLayout(Context c) {
@@ -53,6 +56,7 @@ public class MyZoomLayout extends FrameLayout {
         overScroller = new OverScroller(c,new AccelerateDecelerateInterpolator());
         this.setOverScrollMode(OVER_SCROLL_ALWAYS);
         setClipChildren(false);
+        setClipToPadding(false);
     }
 
     public void setCurrentScale(float currentScale) {

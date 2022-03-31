@@ -184,12 +184,17 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("initialiseInfoBarRequired");
         displayInterface.updateDisplay("setSongInfo");
 
-        // If we are a client and connected to someone else, we move to their section
+        // IV - Consume any later pending client section change received from Host (-ve value)
         if (mainActivityInterface.getNearbyConnections().isConnected &&
                 !mainActivityInterface.getNearbyConnections().isHost &&
-                mainActivityInterface.getNearbyConnections().getReceiveHostSongSections() &&
-                mainActivityInterface.getNearbyConnections().getHostSection()<mainActivityInterface.getSong().getSongSections().size()) {
-            mainActivityInterface.getPresenterSettings().setCurrentSection(mainActivityInterface.getNearbyConnections().getHostSection());
+                mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
+            int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
+
+            // Reset the flags to off
+            mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
+            mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
+
+            mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
         } else {
             mainActivityInterface.getPresenterSettings().setCurrentSection(-1);
         }
@@ -225,6 +230,10 @@ public class PresenterFragment extends Fragment {
             mainActivityInterface.setSectionViews(mainActivityInterface.getProcessSong().setSongInLayout(
                     mainActivityInterface.getSong(), false, true));
         }
+
+        // Set the load status to the song (used to enable nearby section change listener)
+        mainActivityInterface.getSong().setCurrentlyLoading(false);
+
     }
 
     public void updateButtons() {
@@ -292,4 +301,9 @@ public class PresenterFragment extends Fragment {
     public void doScrollTo(int thisPos) {
         songSectionsFragment.doScrollTo(thisPos);
     }
+
+    public void selectSection(int section) {
+        songSectionsFragment.selectSection(section);
+    }
+
 }

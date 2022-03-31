@@ -95,7 +95,15 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             for (Object payload : payloads) {
                 if (payload.equals(alphaChange)) {
                     // We want to update the highlight colour to off
-                    holder.v.setAlpha(sectionInfos.get(position).alpha);
+                    holder.v.post(()->{
+                        try {
+                            holder.v.setAlpha(sectionInfos.get(position).alpha);
+                            float scale = sectionInfos.get(position).scale;
+                            holder.v.getLayoutParams().height = (int) (sectionInfos.get(position).height * scale);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
             }
         }
@@ -105,6 +113,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     public void onBindViewHolder(@NonNull StageViewHolder holder, int position) {
         if (position<sectionInfos.size()) {
             View v = mainActivityInterface.getSectionViews().get(position);
+
             if (v.getParent()!=null) {
                 ((ViewGroup)v.getParent()).removeView(v);
             }
@@ -114,32 +123,51 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             int height = sectionInfos.get(position).height;
             float scale = sectionInfos.get(position).scale;
             float alpha = sectionInfos.get(position).alpha;
+
             CardView cardView = (CardView) holder.v;
             if (mainActivityInterface.getMode().equals("Stage") && section == currentSection) {
                 alpha = 1.0f;
             }
-            cardView.setAlpha(alpha);
+
+            if (v.getParent()!=null) {
+                ((ViewGroup)v.getParent()).removeView(v);
+            }
 
             v.setPivotX(0);
             v.setPivotY(0);
             v.setScaleX(scale);
             v.setScaleY(scale);
-            holder.sectionView.getLayoutParams().width = (int) (width * scale);
-            holder.sectionView.getLayoutParams().height = (int) (height * scale);
-            cardView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
-            cardView.getLayoutParams().height = (int) (height * scale);
 
-            ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
-
-            holder.sectionView.addView(v);
-
-            cardView.setVisibility(View.VISIBLE);
-            cardView.setOnClickListener(view -> sectionSelected(section));
-            cardView.setOnLongClickListener(view -> {
-                // Do nothing, but consume the event
-                return true;
+            holder.sectionView.post(()-> {
+                try {
+                    holder.sectionView.getLayoutParams().width = (int) (width * scale);
+                    holder.sectionView.getLayoutParams().height = (int) (height * scale);
+                    if (v.getParent()!=null) {
+                        ((ViewGroup)v.getParent()).removeView(v);
+                    }
+                    holder.sectionView.addView(v);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
-
+            float finalAlpha = alpha;
+            cardView.post(()-> {
+                try {
+                    cardView.setVisibility(View.INVISIBLE);
+                    cardView.setAlpha(finalAlpha);
+                    cardView.getLayoutParams().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    cardView.getLayoutParams().height = (int) (height * scale);
+                    ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
+                    cardView.setVisibility(View.VISIBLE);
+                    cardView.setOnClickListener(view -> sectionSelected(section));
+                    cardView.setOnLongClickListener(view -> {
+                        // Do nothing, but consume the event
+                        return true;
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 
@@ -174,6 +202,12 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                 mainActivityInterface.getSong().setCurrentSection(position);
                 sectionInfos.get(position).alpha = 1.0f;
                 notifyItemChanged(position, alphaChange);
+
+                // Send a nearby notification (the client will ignore if not required or not ready)
+                if (mainActivityInterface.getNearbyConnections().usingNearby &&
+                mainActivityInterface.getNearbyConnections().isHost) {
+                    mainActivityInterface.getNearbyConnections().sendSongSectionPayload();
+                }
             }
         }
         currentSection = position;

@@ -49,7 +49,6 @@ public class Song {
     private String presentationorder="";
     private boolean hasExtraStuff;
     private String filetype="XML";
-    // TODO change this on song initialisation based on preferences
     private int detectedChordFormat=1;
     private int desiredChordFormat=1;
     private String encoding="UTF-8";
@@ -71,7 +70,7 @@ public class Song {
     private int thirdSplit;
     private int twoThirdSplit;
     private boolean scalingFiguredOut = false;
-    private boolean alreadyLoading = false;  // TODO From IV changes - need to check purpose!
+    private boolean currentlyLoading = false; // true when song starts loading, false once displayed
     private boolean editingAsChoPro = false;
 
     // The getters
@@ -227,8 +226,8 @@ public class Song {
     public boolean getScalingFiguredOut() {
         return scalingFiguredOut;
     }
-    public boolean getAlreadyLoading() {
-        return alreadyLoading;
+    public boolean getCurrentlyLoading() {
+        return currentlyLoading;
     }
     public boolean getEditingAsChoPro() {
         return editingAsChoPro;
@@ -370,8 +369,8 @@ public class Song {
     public void setScalingFiguredOut(boolean scalingFiguredOut) {
         this.scalingFiguredOut = scalingFiguredOut;
     }
-    public void setAlreadyLoading(boolean alreadyLoading) {
-        this.alreadyLoading = alreadyLoading;
+    public void setCurrentlyLoading(boolean currentlyLoading) {
+        this.currentlyLoading = currentlyLoading;
     }
     public void setEditingAsChoPro(boolean editingAsChoPro) {
         this.editingAsChoPro = editingAsChoPro;
@@ -441,7 +440,7 @@ public class Song {
         this.thirdSplit = toCopy.thirdSplit;
         this.twoThirdSplit = toCopy.twoThirdSplit;
         this.scalingFiguredOut = toCopy.scalingFiguredOut;
-        this.alreadyLoading = toCopy.alreadyLoading;
+        this.currentlyLoading = toCopy.currentlyLoading;
         this.lyricsUndos = toCopy.lyricsUndos;
         this.lyricsUndosPos = toCopy.lyricsUndosPos;
         this.editingAsChoPro = toCopy.editingAsChoPro;

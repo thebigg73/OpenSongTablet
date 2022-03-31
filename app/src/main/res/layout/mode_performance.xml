@@ -76,7 +76,8 @@
                     android:layout_height="wrap_content"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:id="@+id/col2"
@@ -84,7 +85,8 @@
                     android:layout_height="wrap_content"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:visibility="gone"/>
 
                 <LinearLayout
                     android:id="@+id/col3"
@@ -92,7 +94,8 @@
                     android:layout_height="wrap_content"
                     android:clipChildren="false"
                     android:clipToPadding="false"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <!-- The song sheet title if required -->

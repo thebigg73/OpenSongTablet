@@ -48,6 +48,9 @@ public class LoadSong {
         thisSong.setFolder(folder);
         thisSong.setFilename(filename);
 
+        // Set the currently loading status.  Switched off when displayed to the screen
+        thisSong.setCurrentlyLoading(true);
+
         // We will add to this song and then return it to the MainActivity object
         if (!mainActivityInterface.getSongListBuildIndex().getIndexComplete() ||
                 mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing() ||

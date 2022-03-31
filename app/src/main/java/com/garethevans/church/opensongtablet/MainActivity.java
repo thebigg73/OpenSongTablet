@@ -2465,7 +2465,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void selectSection(int i) {
-        // TODO
+        // Only do this if we are not in a settings fragment
+        if (!settingsOpen) {
+            if (whichMode.equals("Presenter") && presenterFragment != null) {
+                presenterFragment.selectSection(i);
+            } else if (!whichMode.equals("Presenter") && performanceFragment != null) {
+                performanceFragment.selectSection(i);
+            }
+        } else {
+            nearbyConnections.setWaitingForSectionChange(true);
+            nearbyConnections.setPendingCurrentSection(i);
+        }
     }
 
     @Override

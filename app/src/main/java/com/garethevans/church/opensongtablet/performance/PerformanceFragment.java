@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,7 +45,7 @@ public class PerformanceFragment extends Fragment {
     private DisplayInterface displayInterface;
     private int screenWidth, screenHeight, swipeMinimumDistance,
             swipeMaxDistanceYError, swipeMinimumVelocity, availableWidth, availableHeight,
-            widthBeforeScale, heightBeforeScale, widthAfterScale, heightAfterScale;
+            widthBeforeScale, heightBeforeScale, widthAfterScale, heightAfterScale, waitingOnViewsToDraw;
     private float scaleFactor = 1.0f;
     private ModePerformanceBinding myView;
     private Animation animSlideIn, animSlideOut;
@@ -254,6 +253,7 @@ public class PerformanceFragment extends Fragment {
         // This is called on the UI thread above
         // Reset the song views
         mainActivityInterface.setSectionViews(null);
+        waitingOnViewsToDraw = 0;
 
         // Reset the song sheet titles and views
         removeViews();
@@ -310,6 +310,7 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 heightBeforeScale = pdfPageAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
                 recyclerLayoutManager.setSizes(pdfPageAdapter.getHeights(), screenHeight);
@@ -324,8 +325,6 @@ public class PerformanceFragment extends Fragment {
 
                 // Deal with song actions to run after display (highlighter, notes, etc)
                 dealWithStuffAfterReady();
-
-                myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
         myView.recyclerView.setAdapter(pdfPageAdapter);
@@ -403,6 +402,7 @@ public class PerformanceFragment extends Fragment {
         myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 heightBeforeScale = imageSlideAdapter.getHeight();
                 heightAfterScale = heightBeforeScale;
                 recyclerLayoutManager.setSizes(imageSlideAdapter.getHeights(),screenHeight);
@@ -418,7 +418,6 @@ public class PerformanceFragment extends Fragment {
                 // Get a null screenshot
                 getScreenshot(0,0,0);
 
-                myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
         myView.recyclerView.setAdapter(imageSlideAdapter);
@@ -462,7 +461,6 @@ public class PerformanceFragment extends Fragment {
 
             ViewTreeObserver vto = myView.testPane.getViewTreeObserver();
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
                 @Override
                 public void onGlobalLayout() {
                     myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -481,25 +479,40 @@ public class PerformanceFragment extends Fragment {
             setUpTestViewListener();
         }
     }
+
     private void setUpTestViewListener() {
         myView.testPane.removeAllViews();
-        ViewTreeObserver testObs = myView.testPane.getViewTreeObserver();
-        testObs.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // The views are ready so prepare to create the song page
-                songIsReadyToDisplay();
+        waitingOnViewsToDraw = mainActivityInterface.getSectionViews().size();
 
-                // We can now remove this listener
-                myView.testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
-        // Add the views and wait for the vto
+        // Add the views and wait for the vto of each to finish
+        myView.col1.removeAllViews();
+        myView.col2.removeAllViews();
+        myView.col3.removeAllViews();
+        myView.testPane.removeAllViews();
+
         for (View view : mainActivityInterface.getSectionViews()) {
             if (view.getParent()!=null) {
                 // Still attached - remove it
                 ((ViewGroup)view.getParent()).removeView(view);
             }
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    // In case rogue calls get fired, only proceed if we should
+                    if (waitingOnViewsToDraw>0) {
+                        waitingOnViewsToDraw --;
+                        if (waitingOnViewsToDraw==0) {
+                            // This was the last item, so move on
+                            songIsReadyToDisplay();
+                            waitingOnViewsToDraw = 0;
+                        }
+                    } else {
+                        waitingOnViewsToDraw = 0;
+                    }
+
+                }
+            });
             myView.testPane.addView(view);
         }
     }
@@ -507,8 +520,8 @@ public class PerformanceFragment extends Fragment {
         try {
             // All views have now been drawn, so measure the arraylist views
             for (int x = 0; x < mainActivityInterface.getSectionViews().size(); x++) {
-                int width = mainActivityInterface.getSectionViews().get(x).getMeasuredWidth();
-                int height = mainActivityInterface.getSectionViews().get(x).getMeasuredHeight();
+                int width = mainActivityInterface.getSectionViews().get(x).getWidth();
+                int height = mainActivityInterface.getSectionViews().get(x).getHeight();
                 mainActivityInterface.addSectionSize(x, width, height);
             }
 
@@ -526,18 +539,13 @@ public class PerformanceFragment extends Fragment {
                 myView.recyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
+                        myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
                         heightBeforeScale = stageSectionAdapter.getHeight();
                         heightAfterScale = heightBeforeScale;
 
-                        Log.d(TAG, "heightBeforeScale=" + heightBeforeScale);
-
-                        for (float heights : stageSectionAdapter.getHeights()) {
-                            Log.d(TAG, "height: " + heights);
-                        }
-
-                        Log.d(TAG, "screenHeight=" + screenHeight);
-
                         recyclerLayoutManager.setSizes(stageSectionAdapter.getHeights(), screenHeight);
+                        myView.recyclerView.setHasFixedSize(false);
                         myView.recyclerView.setMaxScrollY(heightAfterScale - screenHeight);
 
                         // Slide in
@@ -549,7 +557,6 @@ public class PerformanceFragment extends Fragment {
                         // Get a null screenshot
                         getScreenshot(0, 0, 0);
 
-                        myView.recyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 });
                 myView.recyclerView.setAdapter(stageSectionAdapter);
@@ -602,7 +609,7 @@ public class PerformanceFragment extends Fragment {
 
                         // Try to take a screenshot ready for any highlighter actions that may be called
                         int finalTopPadding = topPadding;
-                        //TODO Multiple columns are covered in the width (only based on one column)
+                        //TODO Multiple columns aren't covered in the width (only based on one column)
                         getScreenshot(widthAfterScale, heightAfterScale, finalTopPadding);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -620,6 +627,9 @@ public class PerformanceFragment extends Fragment {
     private void dealWithStuffAfterReady() {
         // Run this after the animate in delay to stop animation jitter
         new Handler().postDelayed(() -> {
+            // Set the load status to the song (used to enable nearby section change listener)
+            mainActivityInterface.getSong().setCurrentlyLoading(false);
+
             // Send the autoscroll information (if required)
             mainActivityInterface.getAutoscroll().initialiseSongAutoscroll(heightAfterScale, screenHeight);
 
@@ -630,8 +640,16 @@ public class PerformanceFragment extends Fragment {
             dealWithStickyNotes(false, false);
 
             // IV - Consume any later pending client section change received from Host (-ve value)
-            if (mainActivityInterface.getSong().getCurrentSection() < 0) {
-                mainActivityInterface.getSong().setCurrentSection(-(1 + mainActivityInterface.getSong().getCurrentSection()));
+            if (mainActivityInterface.getNearbyConnections().isConnected &&
+                    !mainActivityInterface.getNearbyConnections().isHost &&
+                    mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
+                int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
+
+                // Reset the flags to off
+                mainActivityInterface.getNearbyConnections().setWaitingForSectionChange(false);
+                mainActivityInterface.getNearbyConnections().setPendingCurrentSection(-1);
+
+                mainActivityInterface.getNearbyConnections().doSectionChange(pendingSection);
             }
 
             // Set the previous/next if we want to
@@ -667,6 +685,7 @@ public class PerformanceFragment extends Fragment {
             highlighterVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     // Load in the bitmap with these dimensions
                     Bitmap highlighterBitmap = mainActivityInterface.getProcessSong().
                             getHighlighterFile(0, 0);
@@ -703,11 +722,6 @@ public class PerformanceFragment extends Fragment {
                                     e.printStackTrace();
                                 }
                             });
-                    }
-                    try {
-                        myView.highlighterView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
             });
@@ -782,7 +796,7 @@ public class PerformanceFragment extends Fragment {
 
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
     public void performanceShowSection(int position) {
-        // Scroll the recyclerView to the top of the page
+        // Scroll the recyclerView to the position
         myView.recyclerView.smoothScrollToPosition(position);
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
         displayInterface.updateDisplay("showSection");
@@ -791,6 +805,16 @@ public class PerformanceFragment extends Fragment {
         LinearLayoutManager llm = (LinearLayoutManager) myView.recyclerView.getLayoutManager();
         if (llm!=null) {
             llm.scrollToPosition(pageNumber-1);
+        }
+    }
+
+    // If a nearby host initiated a section change
+    public void selectSection(int position) {
+        if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                pdfPageAdapter.sectionSelected(position);
+        } else if (mainActivityInterface.getMode().equals("Stage")) {
+            stageSectionAdapter.sectionSelected(position);
         }
     }
 

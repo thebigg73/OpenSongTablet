@@ -154,7 +154,13 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
             for (Object payload : payloads) {
                 if (payload.equals(alphaChange)) {
                     // We want to update the highlight colour to off
-                    holder.v.setAlpha(pageInfos.get(position).alpha);
+                    holder.v.post(()->{
+                        try {
+                            holder.v.setAlpha(pageInfos.get(position).alpha);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
             }
         }
@@ -166,32 +172,67 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         int width = pageInfos.get(position).width;
         int height = pageInfos.get(position).height;
         float alpha = pageInfos.get(position).alpha;
+        String pagetNumText = pageInfos.get(position).pageNumText;
 
         CardView cardView = (CardView)holder.v;
         if (mainActivityInterface.getMode().equals("Stage") && position == currentSection) {
             alpha = 1.0f;
         }
-        cardView.setAlpha(alpha);
-        String pagetNumText = pageInfos.get(position).pageNumText;
-        holder.pdfPageNumText.setText(pagetNumText);
+        float finalAlpha = alpha;
+
+        // Update the views post to ensure drawing is ready
+        holder.pdfPageNumText.post(()-> {
+            try {
+                holder.pdfPageNumText.setText(pagetNumText);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         Bitmap pdfPageBitmap = mainActivityInterface.getProcessSong().getBitmapFromPDF(
                 pdfFolder,pdfFilename,pageNum,width,height,mainActivityInterface.getPreferences().getMyPreferenceString("songAutoScale","W"));
-        Glide.with(c).load(pdfPageBitmap).override(width,height).into(holder.pdfPageImage);
+        holder.pdfPageImage.post(()-> {
+            try {
+                Glide.with(c).load(pdfPageBitmap).override(width, height).into(holder.pdfPageImage);
+                holder.pdfPageImage.setOnClickListener(view -> sectionSelected(pageNum));
+                holder.pdfPageImage.setOnLongClickListener(view -> {
+                    // Do nothing other than consume the long press
+                    return true;
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        cardView.post(()->{
+            try {
+                cardView.setAlpha(finalAlpha);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         // If we have a matching highlighter file...
         Bitmap pdfHighlighter = mainActivityInterface.getProcessSong().getPDFHighlighterBitmap(mainActivityInterface.getSong(),width,height,pageNum);
         if (pdfHighlighter!=null) {
-            holder.pdfPageHighlight.setVisibility(View.VISIBLE);
-            Glide.with(c).load(pdfHighlighter).override(width,height).into(holder.pdfPageHighlight);
+            holder.pdfPageHighlight.post(()->{
+                try {
+                    holder.pdfPageHighlight.setVisibility(View.VISIBLE);
+                    Glide.with(c).load(pdfHighlighter).override(width, height).into(holder.pdfPageHighlight);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         } else {
-            holder.pdfPageHighlight.setVisibility(View.GONE);
+            holder.pdfPageHighlight.post(()->{
+                try {
+                    holder.pdfPageHighlight.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
-        holder.pdfPageImage.setOnClickListener(view -> sectionSelected(pageNum));
-        holder.pdfPageImage.setOnLongClickListener(view -> {
-            // Do nothing other than consume the long press
-            return true;
-        });
+
     }
 
     @Override
