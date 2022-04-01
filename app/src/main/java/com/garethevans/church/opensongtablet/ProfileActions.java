@@ -1965,6 +1965,11 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"stickyAutoDisplay",getTextValue(xppValue,"F"));
                             break;
 
+                        case "stickyBlockInfo":
+                            //stickyBlockInfo                 boolean     To switch on/off the song info block at the top
+                            preferences.setMyPreferenceBoolean(c,"stickyBlockInfo",getBooleanValue(xppValue,true));
+                            break;
+
                         case "stickyWidth":        // New preference
                             //stickyWidth                     int         The width of popup sticky notes
                             preferences.setMyPreferenceInt(c,"stickyWidth",getIntegerValue(xppValue,400));
