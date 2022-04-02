@@ -2166,13 +2166,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Override
     public void pdfScrollToPage(int pageNumber) {
-        if (performanceFragment!=null) {
-            try {
-                performanceFragment.pdfScrollToPage(pageNumber);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        performanceShowSection(pageNumber);
     }
 
     @Override

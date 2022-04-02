@@ -31,6 +31,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
     private int currentSection = 0;
     private final float maxFontSize, density, stageModeScale;
     private final String alphaChange = "alpha";
+    private final float alphaoff = 0.4f;
+    private boolean fakeClick;
 
     public StageSectionAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface) {
         this.mainActivityInterface = mainActivityInterface;
@@ -52,7 +54,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
 
             float alpha = 1f;
             if (mainActivityInterface.getMode().equals("Stage")) {
-                alpha = 0.4f;
+                alpha = alphaoff;
             }
 
             int sectionWidth = mainActivityInterface.getSectionWidths().get(x);
@@ -138,6 +140,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
             v.setScaleX(scale);
             v.setScaleY(scale);
 
+            // Update the views post to ensure drawing is ready
             holder.sectionView.post(()-> {
                 try {
                     holder.sectionView.getLayoutParams().width = (int) (width * scale);
@@ -159,7 +162,13 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                     cardView.getLayoutParams().height = (int) (height * scale);
                     ViewCompat.setBackgroundTintList(cardView, ColorStateList.valueOf(mainActivityInterface.getSectionColors().get(section)));
                     cardView.setVisibility(View.VISIBLE);
-                    cardView.setOnClickListener(view -> sectionSelected(section));
+                    cardView.setOnClickListener(view -> {
+                        if (fakeClick) {
+                            fakeClick = false;
+                        } else {
+                            sectionSelected(position);
+                        }
+                    });
                     cardView.setOnLongClickListener(view -> {
                         // Do nothing, but consume the event
                         return true;
@@ -186,6 +195,11 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         mainActivityInterface.showHideActionBar();
     }
 
+    public void clickOnSection(int position) {
+        fakeClick = true;
+        sectionSelected(position);
+    }
+
     public void sectionSelected(int position) {
         // Whatever the previously selected item was, change the alpha to the alphaOff value
         // Only do this alpha change in stage mode
@@ -194,7 +208,7 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
         onTouchAction();
 
         if (mainActivityInterface.getMode().equals("Stage")) {
-            sectionInfos.get(currentSection).alpha = 0.4f;
+            sectionInfos.get(currentSection).alpha = alphaoff;
             notifyItemChanged(currentSection, alphaChange);
 
             // Now update the newly selected position

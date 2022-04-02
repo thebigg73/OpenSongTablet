@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,11 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.TextInputBottomSheet;
 import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NearbyConnectionsFragment extends Fragment {
 
@@ -31,6 +33,10 @@ public class NearbyConnectionsFragment extends Fragment {
     private ColorStateList onColor, offColor;
     private BottomSheetBehavior<View> bottomSheetBehavior;
     private boolean advancedShown;
+    private final int countInitial = 20;
+    private int countdown;
+    private Timer timer;
+    private TimerTask timerTask;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -62,7 +68,7 @@ public class NearbyConnectionsFragment extends Fragment {
         setListeners();
 
         // Run showcase
-        showcase();
+        showcase1();
 
         return myView.getRoot();
     }
@@ -79,12 +85,14 @@ public class NearbyConnectionsFragment extends Fragment {
         if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyStrategyCluster", true)) {
             myView.bottomSheet.clusterMode.setBackgroundTintList(onColor);
             myView.bottomSheet.starMode.setBackgroundTintList(offColor);
-            mainActivityInterface.getNearbyConnections().setNearbyStrategy(Strategy.P2P_CLUSTER,false);
         } else {
             myView.bottomSheet.starMode.setBackgroundTintList(onColor);
             myView.bottomSheet.clusterMode.setBackgroundTintList(offColor);
-            mainActivityInterface.getNearbyConnections().setNearbyStrategy(Strategy.P2P_STAR,false);
         }
+
+        // Change the advertise/discover button colors
+        myView.advertiseButton.setBackgroundTintList(offColor);
+        myView.discoverButton.setBackgroundTintList(offColor);
 
         // Set the default values for off/host/client
         updateOffHostClient(mainActivityInterface.getNearbyConnections().isHost,
@@ -108,7 +116,7 @@ public class NearbyConnectionsFragment extends Fragment {
         updateConnectionsLog();
     }
 
-    private void showcase() {
+    private void showcase1() {
         ArrayList<View> targets = new ArrayList<>();
         targets.add(myView.deviceButton);
         targets.add(myView.off);
@@ -135,6 +143,26 @@ public class NearbyConnectionsFragment extends Fragment {
         rects.add(true);
         mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),
                 targets,dismisses,infos,rects,"connectionsShowCase");
+    }
+    private void showcase2() {
+        ArrayList<View> targets = new ArrayList<>();
+        targets.add(myView.connectedTo);
+        targets.add(myView.advertiseButton);
+        targets.add(myView.discoverButton);
+        ArrayList<String> dismisses = new ArrayList<>();
+        dismisses.add(null);
+        dismisses.add(null);
+        dismisses.add(null);
+        ArrayList<String> infos = new ArrayList<>();
+        infos.add(getString(R.string.connections_connected_devices_info));
+        infos.add(getString(R.string.connections_advertise_info));
+        infos.add(getString(R.string.connections_discover_info));
+        ArrayList<Boolean> rects = new ArrayList<>();
+        rects.add(true);
+        rects.add(true);
+        rects.add(true);
+        mainActivityInterface.getShowCase().sequenceShowCase(requireActivity(),
+                targets,dismisses,infos,rects,"connectionsShowCase2");
     }
 
     private void bottomSheetBar() {
@@ -192,21 +220,24 @@ public class NearbyConnectionsFragment extends Fragment {
         myView.bottomSheet.hostOptions.setVisibility(View.GONE);
         myView.bottomSheet.clientOptions.setVisibility(View.GONE);
         myView.connectedToLayout.setVisibility(View.GONE);
-        myView.connectInitiateButton.setVisibility(View.GONE);
+        myView.connectInitiateButtons.setVisibility(View.GONE);
+        clearTimer();
 
         if (isHost) {
             myView.host.setBackgroundTintList(onColor);
             myView.bottomSheet.hostOptions.setVisibility(View.VISIBLE);
             myView.connectedTo.setHint(mainActivityInterface.getNearbyConnections().getConnectedDevicesAsString());
             myView.connectedToLayout.setVisibility(View.VISIBLE);
-            myView.connectInitiateButton.setVisibility(View.VISIBLE);
+            myView.connectInitiateButtons.setVisibility(View.VISIBLE);
+            showcase2();
 
         } else if (isClient) {
             myView.client.setBackgroundTintList(onColor);
             myView.bottomSheet.clientOptions.setVisibility(View.VISIBLE);
             myView.connectedTo.setHint(mainActivityInterface.getNearbyConnections().getConnectedDevicesAsString());
             myView.connectedToLayout.setVisibility(View.VISIBLE);
-            myView.connectInitiateButton.setVisibility(View.VISIBLE);
+            myView.connectInitiateButtons.setVisibility(View.VISIBLE);
+            showcase2();
 
         } else {
             myView.off.setBackgroundTintList(onColor);
@@ -237,24 +268,18 @@ public class NearbyConnectionsFragment extends Fragment {
             myView.bottomSheet.clusterMode.setBackgroundTintList(onColor);
             myView.bottomSheet.starMode.setBackgroundTintList(offColor);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyStrategyCluster", true);
-            mainActivityInterface.getNearbyConnections().setNearbyStrategy(Strategy.P2P_CLUSTER,true);
+            mainActivityInterface.getNearbyConnections().setNearbyStrategy(Strategy.P2P_CLUSTER);
         });
         myView.bottomSheet.starMode.setOnClickListener(v -> {
             myView.bottomSheet.starMode.setBackgroundTintList(onColor);
             myView.bottomSheet.clusterMode.setBackgroundTintList(offColor);
             mainActivityInterface.getPreferences().setMyPreferenceBoolean("nearbyStrategyCluster", false);
-            mainActivityInterface.getNearbyConnections().setNearbyStrategy(Strategy.P2P_STAR,true);
+            mainActivityInterface.getNearbyConnections().setNearbyStrategy(Strategy.P2P_STAR);
         });
 
         // The client/host options
-        myView.bottomSheet.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mainActivityInterface.getNearbyConnections().keepHostFiles = isChecked;
-            if (isChecked) {
-                // IV - Re-connect to apply setting
-                Handler h = new Handler();
-                h.postDelayed(() -> myView.connectInitiateButton.performClick(), 2000);
-            }
-        });
+        myView.bottomSheet.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().keepHostFiles = isChecked);
+
         myView.bottomSheet.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> {
             mainActivityInterface.getNearbyConnections().receiveHostFiles = isChecked;
             // IV - When off turn keep off - user must make an active choice to 'keep' as it may overwrite local songs
@@ -262,9 +287,6 @@ public class NearbyConnectionsFragment extends Fragment {
                 myView.bottomSheet.keepHostFiles.setChecked(false);
                 mainActivityInterface.getNearbyConnections().setKeepHostFiles(false);
             }
-            // IV - Re-connect to apply setting
-            Handler h = new Handler();
-            h.postDelayed(() -> myView.connectInitiateButton.performClick(), 2000);
         });
         myView.bottomSheet.nearbyHostMenuOnly.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setNearbyHostMenuOnly(isChecked));
         myView.bottomSheet.receiveAutoscroll.setOnCheckedChangeListener((buttonView, isChecked) -> mainActivityInterface.getNearbyConnections().setReceiveHostAutoscroll(isChecked));
@@ -280,71 +302,31 @@ public class NearbyConnectionsFragment extends Fragment {
             mainActivityInterface.getNearbyConnections().turnOffNearby();
             myView.connectedToLayout.setVisibility(View.GONE);
             resetClientOptions();
-            myView.connectInitiateButton.setVisibility(View.GONE);
+            myView.connectInitiateButtons.setVisibility(View.GONE);
         });
         myView.host.setOnClickListener(v -> {
             updateOffHostClient(true, false);
             mainActivityInterface.getNearbyConnections().isHost = true;
             mainActivityInterface.getNearbyConnections().usingNearby = true;
-            mainActivityInterface.getNearbyConnections().stopDiscovery();
-            mainActivityInterface.getNearbyConnections().stopAdvertising();
+            myView.connectInitiateButtons.setVisibility(View.VISIBLE);
             myView.connectedTo.setHint(mainActivityInterface.getNearbyConnections().getConnectedDevicesAsString());
             myView.connectedToLayout.setVisibility(View.VISIBLE);
-            myView.connectInitiateButton.setText(getString(R.string.connections_advertise));
-            myView.connectInitiateButton.setVisibility(View.VISIBLE);
-            new Handler().postDelayed(() -> myView.connectInitiateButton.performClick(), 1000);
             resetClientOptions();
         });
         myView.client.setOnClickListener(v -> {
             updateOffHostClient(false, true);
             mainActivityInterface.getNearbyConnections().isHost = false;
             mainActivityInterface.getNearbyConnections().usingNearby = true;
-            mainActivityInterface.getNearbyConnections().stopAdvertising();
-            mainActivityInterface.getNearbyConnections().stopDiscovery();
+            myView.connectInitiateButtons.setVisibility(View.VISIBLE);
             myView.connectedTo.setHint(mainActivityInterface.getNearbyConnections().getConnectedDevicesAsString());
             myView.connectedToLayout.setVisibility(View.VISIBLE);
-
-            // IV - Short delay to help stability
-            myView.connectInitiateButton.setText(getString(R.string.connections_discover));
-            myView.connectInitiateButton.setVisibility(View.VISIBLE);
-            new Handler().postDelayed(() -> myView.connectInitiateButton.performClick(), 1000);
         });
 
-        // Discover hosts
-        myView.connectInitiateButton.setOnClickListener(b -> {
-            myView.connectInitiateButton.setEnabled(false);
-            myView.connectInitiateButton.setAlpha(0.6f);
-            long timeToEnable = 10000;
-            // If we are in host mode
-            if (mainActivityInterface.getNearbyConnections().isHost) {
-                // Broadcast for 20s
-                timeToEnable = 20000;
-                myView.connectInitiateButton.setText(getString(R.string.connections_advertising));
-                mainActivityInterface.getNearbyConnections().startAdvertising();
-            } else if (mainActivityInterface.getNearbyConnections().usingNearby) {
-                myView.connectInitiateButton.setText(getString(R.string.connections_searching));
-                mainActivityInterface.getNearbyConnections().startDiscovery();
-            }
-            myView.connectInitiateButton.setVisibility(View.VISIBLE);
+        // The advertise/discover buttons
+        myView.advertiseButton.setOnClickListener(view -> doAdvertiseAction());
+        myView.discoverButton.setOnClickListener(view -> doDiscoverAction());
 
-            myView.connectInitiateButton.postDelayed(() -> {
-                try {
-                    if (mainActivityInterface.getNearbyConnections().isHost && !mainActivityInterface.getNearbyConnections().isDiscovering) {
-                        myView.connectInitiateButton.setText(getString(R.string.connections_advertise));
-                        mainActivityInterface.getNearbyConnections().stopAdvertising();
-                    } else if (mainActivityInterface.getNearbyConnections().usingNearby && !mainActivityInterface.getNearbyConnections().isAdvertising) {
-                        myView.connectInitiateButton.setText(getString(R.string.connections_discover));
-                        mainActivityInterface.getNearbyConnections().stopDiscovery();
-                    }
-                    myView.connectInitiateButton.setAlpha(1f);
-                    myView.connectInitiateButton.setEnabled(true);
-                } catch (Exception e) {
-                    // Probably because we closed the Fragment, it's fine!
-                    Log.d(TAG,"Not showing the Nearby fragment");
-                }
-            }, timeToEnable);
-        });
-
+        // Close the bottom sheet
         myView.dimBackground.setOnClickListener(v -> myView.bottomSheet.bottomSheetTab.performClick());
 
         // Clear the log
@@ -354,8 +336,57 @@ public class NearbyConnectionsFragment extends Fragment {
         });
     }
 
+    private void doAdvertiseAction() {
+        // Stop advertising/discovering if we were already doing that
+        mainActivityInterface.getNearbyConnections().stopAdvertising();
+        mainActivityInterface.getNearbyConnections().stopDiscovery();
 
+        // Initialise the countdown
+        countdown = countInitial;
 
+        // Disable both buttons
+        myView.discoverButton.setEnabled(false);
+        myView.advertiseButton.setBackgroundTintList(onColor);
+        myView.discoverButton.setOnClickListener(view -> enableConnectionButtons());
+
+        // After a short delay, advertise
+        new Handler().postDelayed(() -> {
+            try {
+                mainActivityInterface.getNearbyConnections().startAdvertising();
+                setTimer(true, myView.advertiseButton);
+            } catch (Exception e) {
+                e.printStackTrace();
+                clearTimer();
+            }
+        },200);
+    }
+    private void doDiscoverAction() {
+        // Stop advertising/discovering if we were already doing that
+        mainActivityInterface.getNearbyConnections().stopAdvertising();
+        mainActivityInterface.getNearbyConnections().stopDiscovery();
+        myView.discoverButton.setOnClickListener(view -> enableConnectionButtons());
+
+        // Initialise the countdown
+        countdown = countInitial;
+
+        // Disable both buttons
+        myView.advertiseButton.setEnabled(false);
+        myView.discoverButton.setBackgroundTintList(onColor);
+
+        // After a short delay, advertise
+        new Handler().postDelayed(() -> {
+            try {
+                mainActivityInterface.getNearbyConnections().startDiscovery();
+                setTimer(false, myView.discoverButton);
+            } catch (Exception e) {
+                e.printStackTrace();
+                clearTimer();
+            }
+        }, 1000);
+    }
+    private void stopAction() {
+        enableConnectionButtons();
+    }
     private void resetClientOptions() {
         // IV - Reset the client options when leaving client mode
         mainActivityInterface.getNearbyConnections().setReceiveHostFiles(false);
@@ -382,4 +413,64 @@ public class NearbyConnectionsFragment extends Fragment {
         }
     }
 
+    private void setTimer(boolean advertise, MaterialButton materialButton) {
+        clearTimer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    if (countdown==0) {
+                        enableConnectionButtons();
+                    } else {
+                        updateCountdownText(advertise,materialButton);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask,0,1000);
+    }
+    private void enableConnectionButtons() {
+        clearTimer();
+        mainActivityInterface.getNearbyConnections().stopAdvertising();
+        mainActivityInterface.getNearbyConnections().stopDiscovery();
+        myView.discoverButton.post(() -> {
+            myView.discoverButton.setEnabled(true);
+            myView.discoverButton.setBackgroundTintList(offColor);
+            myView.discoverButton.setText(getString(R.string.connections_discover));
+            myView.discoverButton.setOnClickListener(view -> doDiscoverAction());
+        });
+        myView.advertiseButton.post(() -> {
+            myView.advertiseButton.setEnabled(true);
+            myView.advertiseButton.setBackgroundTintList(offColor);
+            myView.advertiseButton.setText(getString(R.string.connections_advertise));
+            myView.advertiseButton.setOnClickListener(view -> doAdvertiseAction());
+        });
+
+
+
+
+    }
+    private void clearTimer() {
+        if (timerTask!=null) {
+            timerTask.cancel();
+        }
+        if (timer!=null) {
+            timer.purge();
+        }
+    }
+
+    private String updateCountdownText(boolean advertise, MaterialButton materialButton) {
+        String text;
+        if (advertise) {
+            text = getString(R.string.connections_advertising) + "\n" + countdown;
+        } else {
+            text = getString(R.string.connections_searching) + "\n" + countdown;
+        }
+        materialButton.post(() -> materialButton.setText(text));
+        countdown --;
+        return text;
+    }
 }

@@ -35,39 +35,45 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
+
+// Big updates here
+// Users can specify Nearby connection strategy as either cluster or star
+// Regardless if devices are set as hosts or clients, they can advertise or discover
+// Changing the mode doesn't automatically advertise/discover/
 
 public class NearbyConnections implements NearbyInterface {
 
     // TODO Still to implement
     private final Context c;
     private final String TAG = "NearbyConnections";
-    private final ArrayList<String> connectedEndPoints;
-    private final ArrayList<String> connectedEndPointsNames;
-    private final ArrayList<String> connectedDeviceIds;
+    //private final ArrayList<String> connectedEndPoints;
+    private final ArrayList<String> connectedEndpoints; //  CODE__DeviceName
+    private final ArrayList<String> discoveredEndpoints;
+    //private final ArrayList<String> connectedDeviceIds;
     private final String sectionTag  = "___section___";
     private final String endpointTag = "_ep__ep_";
     private final String songTag = "_xx____xx_";
+    private final String endpointSplit = "__";
 
     // Handler for stop of discovery
     private final Handler stopDiscoveryHandler = new Handler();
     private final Runnable stopDiscoveryRunnable;
     private SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
     private SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
-    public String deviceId, connectionLog, incomingPrevious, connectionId, connectionEndPointName;
+    public String deviceId, connectionLog, incomingPrevious, connectionId;
     public boolean isConnected, isHost, receiveHostFiles, keepHostFiles, usingNearby,
             isAdvertising = false, isDiscovering = false, nearbyHostMenuOnly,
             receiveHostAutoscroll = true,
             receiveHostSongSections = true;
-    private NearbyReturnActionsInterface nearbyReturnActionsInterface;
+    private final NearbyReturnActionsInterface nearbyReturnActionsInterface;
     private AdvertisingOptions advertisingOptions;
-    private DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+    private DiscoveryOptions discoveryOptions;
     // The stuff used for Google Nearby for connecting devices
     private final String serviceId = "com.garethevans.church.opensongtablet";
     private String receivedSongFilename;
-    private MainActivityInterface mainActivityInterface;
+    private final MainActivityInterface mainActivityInterface;
     private int hostSection = 0;
     private String payLoadTransferIds = "";
     private String latestfoldernamepair = "";
@@ -82,9 +88,8 @@ public class NearbyConnections implements NearbyInterface {
         nearbyReturnActionsInterface = (NearbyReturnActionsInterface) c;
 
         // Initialise the connections
-        connectedEndPoints = new ArrayList<>();
-        connectedEndPointsNames = new ArrayList<>();
-        connectedDeviceIds = new ArrayList<>();
+        connectedEndpoints = new ArrayList<>();
+        discoveredEndpoints = new ArrayList<>();
         connectionLog = "";
 
         if (mainActivityInterface != null) {
@@ -92,11 +97,10 @@ public class NearbyConnections implements NearbyInterface {
                 nearbyHostMenuOnly = mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false);
                 if (mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyStrategyCluster",true)) {
                     nearbyStrategy = Strategy.P2P_CLUSTER;
-                    updateConnectionLog(c.getString(R.string.connections_mode) + ": " + c.getString(R.string.connections_cluster));
                 } else {
                     nearbyStrategy = Strategy.P2P_STAR;
-                    updateConnectionLog(c.getString(R.string.connections_mode) + ": " + c.getString(R.string.connections_star));
                 }
+                setNearbyStrategy(nearbyStrategy);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -117,28 +121,21 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     // Set the strategy as either cluster (many to many) or star (one to many).
-    // Additionally should a scan (advertise/discover) be initiated after changing strategy
-    public void setNearbyStrategy(Strategy nearbyStrategy, boolean restartScan) {
+    public void setNearbyStrategy(Strategy nearbyStrategy) {
         this.nearbyStrategy = nearbyStrategy;
         advertisingOptions = new AdvertisingOptions.Builder().setStrategy(nearbyStrategy).build();
         discoveryOptions = new DiscoveryOptions.Builder().setStrategy(nearbyStrategy).build();
-
-        // If we were in the process of advertising/discovering, restart.
-        // Otherwise the user can manually click the Advertise/Discover button
-        if (restartScan) {
-            if (isDiscovering) {
-                stopDiscovery();
-                startDiscovery();
-            }
-            if (isAdvertising) {
-                stopAdvertising();
-                startAdvertising();
-            }
+        if (nearbyStrategy.equals(Strategy.P2P_CLUSTER)) {
+            updateConnectionLog(c.getString(R.string.connections_mode) + ": " + c.getString(R.string.connections_cluster));
+        } else {
+            updateConnectionLog(c.getString(R.string.connections_mode)+ ": " + c.getString(R.string.connections_star));
         }
+        Log.d(TAG,"Strategy set to: "+nearbyStrategy);
     }
 
     // Updates the connnection log with this message.  This also updates the connected devices note
     private void updateConnectionLog(String newMessage) {
+        Log.d(TAG,"Connection Log update: "+newMessage);
         if (newMessage != null && mainActivityInterface != null) {
             connectionLog += newMessage + "\n";
             try {
@@ -148,7 +145,6 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
     }
-
 
     // Start or stop the advertising/discovery of devices to initiate connections
     @Override
@@ -160,6 +156,7 @@ public class NearbyConnections implements NearbyInterface {
                             (Void unused) -> {
                                 // We're advertising!
                                 updateConnectionLog(c.getString(R.string.connections_advertise_name) + " " + getUserNickname());
+                                Log.d(TAG,"Advertising: "+getUserNickname());
                                 isAdvertising = true;
                             })
                     .addOnFailureListener(
@@ -217,6 +214,7 @@ public class NearbyConnections implements NearbyInterface {
             try {
                 Nearby.getConnectionsClient(c).stopDiscovery();
                 updateConnectionLog(c.getString(R.string.connections_discover_stop));
+                Log.d(TAG,"stopDiscovery() - success");
             } catch (Exception e) {
                 Log.d(TAG, "stopDiscovery() - failure: " + e);
             }
@@ -224,93 +222,165 @@ public class NearbyConnections implements NearbyInterface {
         isDiscovering = false;
     }
 
+
+
+
+    // Deal with endpointIds.
+    // The endpointId is a random bit of code that identifies a device
+    // The connectionInfo.getEndpointName() is a user readable name of a device
+    // Once a connection is made we store both as a string like id__name
+    // These strings are stored in the connectedEndpoints arraylist
+    private String getEndpointString(String endpointId, String connectedDeviceName) {
+        return endpointId + endpointSplit + connectedDeviceName;
+    }
+    private String[] getEndpointSplit(String endpointString) {
+        if (!endpointString.contains(endpointSplit)) {
+            endpointString = endpointString + endpointSplit + c.getString(R.string.unknown);
+        }
+        String[] returnVal = new String[2];
+        String[] split = endpointString.split(endpointSplit);
+
+        if (split.length>0 && split[0]!=null) {
+            returnVal[0] = split[0];
+        } else {
+            returnVal[0] = "0000";
+        }
+        if (split.length>1 && split[1]!=null) {
+            returnVal[1] = split[1];
+        } else {
+            returnVal[1] = "Unknown";
+        }
+        return returnVal;
+    }
+    private boolean endpointRegistered(String endpointString) {
+        if (!endpointString.contains(endpointTag)) {
+            endpointString = endpointString + endpointTag;
+        }
+        boolean found = false;
+        for (String string:connectedEndpoints) {
+            if (string.contains(endpointString)) {
+                found = true;
+            }
+            Log.d(TAG,"array item: "+string+"  looking for"+endpointString);
+        }
+        return found;
+    }
+    private int endpointPositionInArray(String endpointString) {
+        return connectedEndpoints.indexOf(endpointString);
+    }
+    private boolean stillValidConnections() {
+        try {
+            if (connectedEndpoints.size() >= 1) {
+                for (String s : connectedEndpoints) {
+                    if (s != null && !s.isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+    private String getNameMatchingId(String endpointId) {
+        String nicename = endpointId;
+        // Use discovered endpoints as we may have not fully established the connection yet
+        for (String ep:discoveredEndpoints) {
+            if (ep.startsWith(endpointId)) {
+                nicename = getEndpointSplit(ep)[1];
+            }
+        }
+        return nicename;
+    }
+
+
+
+
     // Once devices are found, deal with connecting them
-    private String userConnectionInfo(String endpointId, ConnectionInfo connectionInfo) {
-        return endpointId + "__" + connectionInfo.getEndpointName();
-    }
-    private void delayAcceptConnection(String endpointId, ConnectionInfo connectionInfo) {
-        // For stability add a small delay
-        Handler waitAccept = new Handler();
-        waitAccept.postDelayed(() -> {
-            // Add a note of the nice name matching the endpointId
-            String id = userConnectionInfo(endpointId, connectionInfo);
-            Log.d(TAG, "looking for " + id);
-
-            // Take a note of the nice name matching the endpointId to use on connection STATUS_OK
-            connectionId = userConnectionInfo(endpointId, connectionInfo);
-            connectionEndPointName = connectionInfo.getEndpointName();
-
-            // The user confirmed, so we can accept the connection.
-            Nearby.getConnectionsClient(c)
-                    .acceptConnection(endpointId, payloadCallback());
-        }, 200);
-    }
+    // Deals with connecting, initiating, ending connections
     private ConnectionLifecycleCallback connectionLifecycleCallback() {
         return new ConnectionLifecycleCallback() {
             @Override
             public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
-                // If the device was previously connected, try to reconnect silently
-                Log.d(TAG,"connectionsOpen: "+connectionsOpen);
-                if (connectedDeviceIds.contains(connectionInfo.getEndpointName())) {
-                    delayAcceptConnection(endpointId, connectionInfo);
+                // Get a string for the connection
+                String endpointString = getEndpointString(endpointId,connectionInfo.getEndpointName());
+                Log.d(TAG,"connection initiated.  endpointString:"+endpointString+ "   endpointId="+endpointId);
+
+                // Check to see if this device was already registered (permission granted)
+                // If the device was previously registered, try to reconnect silently
+                if (endpointRegistered(endpointString)) {
+                    Log.d(TAG,"Previously connected to "+endpointString);
+                    delayAcceptConnection(endpointString);
+
                 } else {
+                    Log.d(TAG,"Device wasn't previously connected: "+endpointString);
                     // Allow clients to connect to the host when the Connect menu is open, or the user switches off the requirement for the Connect menu to be open
-                    if (connectionsOpen || !isHost || !mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false)) {
+                    if (connectionsOpen || !mainActivityInterface.getPreferences().getMyPreferenceBoolean("nearbyHostMenuOnly", false)) {
                         new AlertDialog.Builder(c)
-                                .setTitle(c.getString(R.string.connections_accept) + " " + connectionInfo.getEndpointName())
+                                .setTitle(c.getString(R.string.connections_accept) + " " + getEndpointSplit(endpointString)[1])
                                 .setMessage(c.getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationDigits())
                                 .setPositiveButton(
                                         c.getString(R.string.okay),
-                                        (DialogInterface dialog, int which) -> delayAcceptConnection(endpointId, connectionInfo))
+                                        (DialogInterface dialog, int which) -> delayAcceptConnection(endpointString))
                                 .setNegativeButton(
                                         c.getString(R.string.cancel),
                                         (DialogInterface dialog, int which) ->
                                                 // The user canceled, so we should reject the connection.
-                                                Nearby.getConnectionsClient(c).rejectConnection(endpointId))
+                                                Nearby.getConnectionsClient(c).rejectConnection(endpointString))
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
                     } else {
                         // The user is not accepting new connections, so we should reject the connection.
-                        Nearby.getConnectionsClient(c).rejectConnection(endpointId);
+                        Log.d(TAG,"reject connection to "+endpointString);
+                        Nearby.getConnectionsClient(c).rejectConnection(endpointString);
                     }
                 }
             }
 
             @Override
             public void onConnectionResult(@NonNull String endpointId, @NonNull ConnectionResolution connectionResolution) {
+                String endpointString = getEndpointString(endpointId,getNameMatchingId(endpointId));
+                Log.d(TAG,"endpointString:"+endpointString);
+                Log.d(TAG,"Connection result: "+connectionResolution.getStatus().getStatusMessage());
                 switch (connectionResolution.getStatus().getStatusCode()) {
                     case ConnectionsStatusCodes.STATUS_OK:
                     case ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT:
+                        Log.d(TAG,"connections status either ok or already connected");
+
                         // IV - Added handling of when already connected
+                        if (!endpointRegistered(endpointString)) {
+                            Log.d(TAG,"adding string: "+endpointString);
+                            connectedEndpoints.add(endpointString);
+                        }
                         // We're connected! Can now start sending and receiving data.
-                        connectedEndPoints.add(endpointId);
                         isConnected = true;
-                        if (!connectedEndPointsNames.contains(connectionId)) {
-                            connectedEndPointsNames.add(connectionId);
-                            Log.d(TAG, connectionId + " not found, adding");
-                        }
-                        if (!connectedDeviceIds.contains(connectionEndPointName)) {
-                            connectedDeviceIds.add(connectionEndPointName);
-                            Log.d(TAG, connectionEndPointName + " not found, adding");
-                        }
 
                         if (isHost) {
                             // try to send the current song payload
                             Log.d(TAG,"Sending payload successful:" + sendSongPayload());
-                        } else {
-                            // We can stop discovery now
-                            stopDiscovery();
                         }
-                        updateConnectionLog(c.getString(R.string.connections_connected) + " " + connectionEndPointName);
+
+                        // Send a note of all connected devices to all connected devices
+                        // Gives all devices a record of each other
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (String ep: connectedEndpoints) {
+                            Log.d(TAG,"building list of endpoints to send: "+ep);
+                            stringBuilder.append(endpointTag).append(ep);
+                        }
+                        doSendPayloadBytes(stringBuilder.toString());
+                        Log.d(TAG,"endpoints to send: "+stringBuilder);
+                        updateConnectionLog(c.getString(R.string.connections_connected) + " " + getEndpointSplit(endpointString)[1]);
                         break;
                     case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                         Log.d(TAG,"Rejected");
                         updateConnectionLog(c.getString(R.string.cancel));
                         break;
                     case ConnectionsStatusCodes.STATUS_ERROR:
+                        Log.d(TAG,"Error status code");
                         // The connection broke before it was able to be accepted.
                         // The connection was rejected by one or both sides.
-                        updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname() + " <-> " + getDeviceNameFromId(endpointId));
+                        updateConnectionLog(c.getString(R.string.connections_failure) + " " + getUserNickname() +
+                                " <-> " + getEndpointSplit(endpointString)[1]);
                         break;
                     default:
                         // Unknown status code
@@ -321,14 +391,17 @@ public class NearbyConnections implements NearbyInterface {
 
             @Override
             public void onDisconnected(@NonNull String endpointId) {
+                // The endpointId is just the id, so we need to find a nice name
+                String disconnectedFrom = getNameMatchingId(endpointId);
+                String endpointString = getEndpointString(endpointId,disconnectedFrom);
                 isConnected = false;
-                Log.d(TAG, "On disconnect");
-                connectedEndPoints.remove(endpointId);
-                String deviceName = getDeviceNameFromId(endpointId);
-                connectedEndPointsNames.remove(endpointId + "__" + deviceName);
-                // IV - Only if still in use
-                if (usingNearby) {
-                    updateConnectionLog(c.getResources().getString(R.string.connections_disconnect) + " " + deviceName);
+                Log.d(TAG, "On disconnect: "+endpointString);
+
+                int position = endpointPositionInArray(endpointString);
+                if (usingNearby && position>=0) {
+                    connectedEndpoints.remove(position);
+                    updateConnectionLog(c.getResources().getString(R.string.connections_disconnect) +
+                            " " + disconnectedFrom);
                 }
 
                 if (isHost) {
@@ -343,41 +416,32 @@ public class NearbyConnections implements NearbyInterface {
             }
         };
     }
-    private boolean stillValidConnections() {
-        try {
-            if (connectedEndPoints.size() >= 1) {
-                for (String s : connectedEndPoints) {
-                    if (s != null && !s.isEmpty()) {
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return false;
-    }
+    // This is called when devices/endpoints are discovered
     private EndpointDiscoveryCallback endpointDiscoveryCallback() {
         return new EndpointDiscoveryCallback() {
             @Override
             public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
-                if (!findEndpoints(endpointId, discoveredEndpointInfo)) {
+                String endpointString = getEndpointString(endpointId,discoveredEndpointInfo.getEndpointName());
+                Log.d(TAG,"EndpointDiscoveryCallback  endpointString:"+endpointString);
+                if (!endpointRegistered(endpointString)) {
                     // Only attempt a connection if we aren't already connected
                     Nearby.getConnectionsClient(c)
                             .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
                             .addOnSuccessListener(
                                     (Void unused) -> {
-                                        Log.d(TAG, "Trying to connect to host: " + endpointId);
+                                        Log.d(TAG, "On success.  Trying to connect to host string : " + endpointString);
                                         // We successfully requested a connection. Now both sides
                                         // must accept before the connection is established.
                                         updateConnectionLog(c.getString(R.string.connections_searching));
                                     })
                             .addOnFailureListener(
                                     (Exception e) -> {
+                                        Log.d(TAG,"On failure: "+(((ApiException) e).getStatus().getStatusMessage()));
+
                                         // IV - Added handling of when already connected
                                         if (((ApiException) e).getStatusCode() == ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT) {
                                             isConnected = true;
-                                            updateConnectionLog(c.getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
+                                            updateConnectionLog(c.getString(R.string.connections_connected) + " " + discoveredEndpointInfo.getEndpointName());
                                             // IV - Already connected so replay last incoming song
                                             if (incomingPrevious != null && !incomingPrevious.equals("")) {
                                                 String incoming = incomingPrevious;
@@ -388,7 +452,8 @@ public class NearbyConnections implements NearbyInterface {
                                             stopDiscovery();
                                         } else {
                                             // Nearby Connections failed to request the connection.
-                                            updateConnectionLog(c.getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
+                                            Log.d(TAG,"A general error");
+                                            updateConnectionLog(c.getString(R.string.connections_failure) + " " + discoveredEndpointInfo.getEndpointName());
                                         }
                                         Log.d(TAG, "Connections failure: " + e);
                                     });
@@ -397,8 +462,11 @@ public class NearbyConnections implements NearbyInterface {
 
             @Override
             public void onEndpointLost(@NonNull String endpointId) {
-                Log.d(TAG, "onEndPointlost");
-                updateConnectionLog(c.getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
+                String endpointName = getNameMatchingId(endpointId);
+                String endpointString = getEndpointString(endpointId,endpointName);
+                Log.d(TAG, "onEndPointlost: "+endpointString);
+
+                updateConnectionLog(c.getString(R.string.connections_disconnect) + " " + endpointName);
                 // Check if we have valid connections
                 isConnected = stillValidConnections();
                 // Try to connect again after 2 seconds
@@ -409,6 +477,25 @@ public class NearbyConnections implements NearbyInterface {
             }
         };
     }
+    // A delayed connections
+    private void delayAcceptConnection(String endpointString) {
+        // For stability add a small delay
+        Handler waitAccept = new Handler();
+        waitAccept.postDelayed(() -> {
+            // Add a note of the nice name on to the endpointId
+            Log.d(TAG, "about to try and accept " + endpointString);
+            if (!discoveredEndpoints.contains(endpointString)) {
+                discoveredEndpoints.add(endpointString);
+            }
+
+            // The user confirmed, so we can accept the connection.
+            Nearby.getConnectionsClient(c)
+                    .acceptConnection(getEndpointSplit(endpointString)[0], payloadCallback());
+        }, 200);
+    }
+
+
+
 
     // Deal with sending payloads as a host for clients to listen for
     public boolean sendSongPayload() {
@@ -423,7 +510,9 @@ public class NearbyConnections implements NearbyInterface {
         pendingCurrentSection = -1;
 
         // IV - Process each end point - we need a unique ParcelFileDescriptor if a file is sent
-        for (String endpointId : connectedEndPoints) {
+        for (String endpointString : connectedEndpoints) {
+            String endpointId = getEndpointSplit(endpointString)[0];
+
             // IV - Send current section as a pending section change (-ve offset by 1) for use by CLIENT song load
             infoPayload = sectionTag + (1 + mainActivityInterface.getSong().getCurrentSection());
             Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
@@ -488,15 +577,13 @@ public class NearbyConnections implements NearbyInterface {
     }
     public void sendSongSectionPayload() {
         String infoPayload = sectionTag + (mainActivityInterface.getSong().getCurrentSection());
-        // IV - Process each end point - we need a unique ParcelFileDescriptor if a file is sent
-        for (String endpointId : connectedEndPoints) {
-            doSendPayloadBytes(infoPayload);
-        }
+        doSendPayloadBytes(infoPayload);
     }
     @Override
     public void doSendPayloadBytes(String infoPayload) {
         if (isHost) {
-            for (String endpointId : connectedEndPoints) {
+            for (String endpointString : connectedEndpoints) {
+                String endpointId = getEndpointSplit(endpointString)[0];
                 Nearby.getConnectionsClient(c).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
             }
         }
@@ -632,11 +719,6 @@ public class NearbyConnections implements NearbyInterface {
 
 
     public void doSectionChange(int mysection) {
-        Log.d(TAG,"Trying to change section now");
-        Log.d(TAG,"currentSection="+mainActivityInterface.getSong().getCurrentSection());
-        Log.d(TAG,"Section to change to="+mysection);
-        Log.d(TAG,"Number of sections="+mainActivityInterface.getSong().getSongSections().size());
-
         if (mainActivityInterface.getSong().getCurrentSection() != mysection &&
                 nearbyReturnActionsInterface != null &&
                 mainActivityInterface.getSong().getSongSections().size()>mysection) {
@@ -654,10 +736,6 @@ public class NearbyConnections implements NearbyInterface {
         ArrayList<String> receivedBits = getNearbyIncoming(incoming);
         boolean incomingChange = (!incoming.equals(incomingPrevious));
 
-        Log.d(TAG, "incomingChange: "+incomingChange);
-        Log.d(TAG, "receivedBits,size(): "+receivedBits.size());
-        Log.d(TAG, "songReceived: " + (receivedBits.size() >= 4));
-
         if (incomingChange) {
             incomingPrevious = incoming;
             OutputStream outputStream;
@@ -667,8 +745,6 @@ public class NearbyConnections implements NearbyInterface {
             boolean songReceived = (receivedBits.size() >= 4);
 
             if (songReceived) {
-                Log.d(TAG, "foldernamepair " + receivedBits.get(0) + songTag + receivedBits.get(1));
-
                 if (!isHost && isConnected && receiveHostFiles) {
                     // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
                     mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
@@ -712,7 +788,6 @@ public class NearbyConnections implements NearbyInterface {
                     // If not, we get notified it doesn't exits
                     mainActivityInterface.getSong().setFolder(receivedBits.get(0));
                     mainActivityInterface.getSong().setFilename(receivedBits.get(1));
-                    Log.d(TAG, "received: " + mainActivityInterface.getSong().getFolder() + "/" + mainActivityInterface.getSong().getFilename());
                     mainActivityInterface.getDisplayPrevNext().setSwipeDirection(receivedBits.get(2));
 
                     // Now load the song if we are displaying the performace/stage/presenter fragment
@@ -734,7 +809,6 @@ public class NearbyConnections implements NearbyInterface {
         cancelTransferIds();
 
         // If songs are too big, then we receive them as a file rather than bytes
-        Log.d(TAG, "foldernamepair " + foldernamepair);
         String[] bits = foldernamepair.split(songTag);
         String folder = bits[0];
         String filename = bits[1];
@@ -762,7 +836,6 @@ public class NearbyConnections implements NearbyInterface {
         }
         mainActivityInterface.getSong().setFolder(folder);
         mainActivityInterface.getSong().setFilename(filename);
-        Log.d(TAG, "newLocation=" + newLocation);
         if (movepage) {
             if (mainActivityInterface.getDisplayPrevNext().getSwipeDirection().equals("L2R")) {
                 // Go back
@@ -787,7 +860,6 @@ public class NearbyConnections implements NearbyInterface {
                     pendingCurrentSection = 0;
                 }
             }
-            Log.d(TAG, "originalUri=" + originalUri);
             try {
                 if (mainActivityInterface.getStorageAccess().uriExists(originalUri)) {
                     mainActivityInterface.getStorageAccess().deleteFile(originalUri);
@@ -814,23 +886,15 @@ public class NearbyConnections implements NearbyInterface {
         if (!isHost) {
             Log.d(TAG, "I am a client, but the host has sent me this info about connected endpoints: " + incomingEndpoints);
             // The host has sent a note of the connected endpoints in case we become the host
-            connectedEndPoints.clear();
             String[] incomingEPs = incomingEndpoints.split(endpointTag);
-            Collections.addAll(connectedEndPoints, incomingEPs);
+            // TODO testing just now
+            for (String incomingEP: incomingEPs) {
+                Log.d(TAG,"incomingEP: "+incomingEP);
+            }
+            //connectedEndpoints.clear()
+            //Collections.addAll(connectedEndpoints, incomingEPs);
         }
     }
-    private boolean findEndpoints(String endpointId, DiscoveredEndpointInfo discoveredEndpointInfo) {
-        Log.d(TAG, "endpointId=" + endpointId);
-        Log.d(TAG, "discoveredEnpointInfo.getEndpointName()=" + discoveredEndpointInfo.getEndpointName());
-        for (String s : connectedEndPoints) {
-            Log.d(TAG, "ArrayList connectedEndPoints:" + s);
-        }
-        for (String s : connectedEndPointsNames) {
-            Log.d(TAG, "ArrayList connectedEndPointsNames:" + s);
-        }
-        return connectedEndPointsNames.contains(discoveredEndpointInfo.getEndpointName());
-    }
-
 
     // Deal with turning off Nearby and cleaning up transferIds
     @Override
@@ -850,6 +914,7 @@ public class NearbyConnections implements NearbyInterface {
         isConnected = false;
         usingNearby = false;
         incomingPrevious = "";
+        connectedEndpoints.clear();
     }
     public void cancelTransferIds() {
         // IV - Used to cancel earlier transfer Ids
@@ -885,15 +950,6 @@ public class NearbyConnections implements NearbyInterface {
     public String getReceivedSongFilename() {
         return receivedSongFilename;
     }
-    private String getDeviceNameFromId(String endpointId) {
-        // When requesting connections, the proper device name is stored in an arraylist like endpointId__deviceName
-        for (String s : connectedEndPointsNames) {
-            if (s.startsWith(endpointId + "__")) {
-                return s.replace(endpointId + "__", "");
-            }
-        }
-        return endpointId;
-    }
     public String getUserNickname() {
         String model = android.os.Build.MODEL.trim();
         // If the user has saved a value for their device name, use that instead
@@ -904,15 +960,13 @@ public class NearbyConnections implements NearbyInterface {
         return hostSection;
     }
     public String getConnectedDevicesAsString() {
-        if (connectedEndPointsNames==null || connectedEndPointsNames.isEmpty()) {
+        if (connectedEndpoints==null || connectedEndpoints.isEmpty()) {
             return c.getString(R.string.connections_no_devices);
         } else {
             StringBuilder stringBuilder = new StringBuilder();
-            for (String device:connectedEndPointsNames) {
-                if (device.contains("__")) {
-                    stringBuilder.append(device.substring(device.indexOf("__")+2))
-                    .append("\n");
-                }
+            for (String endpointString:connectedEndpoints) {
+                stringBuilder.append(getEndpointSplit(endpointString)[1])
+                        .append("\n");
             }
             return stringBuilder.toString().trim();
         }

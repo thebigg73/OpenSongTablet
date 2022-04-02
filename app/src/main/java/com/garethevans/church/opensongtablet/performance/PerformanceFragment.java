@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -796,16 +797,12 @@ public class PerformanceFragment extends Fragment {
 
     // Received from MainActivity after a user clicked on a pdf page or a Stage Mode section
     public void performanceShowSection(int position) {
+        Log.d(TAG,"position:"+position);
+
         // Scroll the recyclerView to the position
-        myView.recyclerView.smoothScrollToPosition(position);
+        myView.recyclerView.smoothScrollTo(requireContext(),recyclerLayoutManager,position);
         mainActivityInterface.getPresenterSettings().setCurrentSection(position);
         displayInterface.updateDisplay("showSection");
-    }
-    public void pdfScrollToPage(int pageNumber) {
-        LinearLayoutManager llm = (LinearLayoutManager) myView.recyclerView.getLayoutManager();
-        if (llm!=null) {
-            llm.scrollToPosition(pageNumber-1);
-        }
     }
 
     // If a nearby host initiated a section change

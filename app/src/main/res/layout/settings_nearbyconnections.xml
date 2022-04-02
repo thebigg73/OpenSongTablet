@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -37,7 +38,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:minHeight="64dp">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/off"
@@ -50,6 +52,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/host"
                         style="@style/MiddleButton"
+                        app:backgroundTint="@color/colorAltPrimary"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -58,6 +61,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/client"
                         style="@style/RightButton"
+                        app:backgroundTint="@color/colorAltPrimary"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -82,13 +86,34 @@
                     <TableRow style="@style/DividerLine" />
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/connectInitiateButton"
+                <LinearLayout
+                    android:id="@+id/connectInitiateButtons"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="@string/connections_discover" />
+                    android:minHeight="148dp"
+                    android:orientation="horizontal">
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/advertiseButton"
+                        style="@style/LeftButton"
+                        app:backgroundTint="@color/colorAltPrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/connections_advertise" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/discoverButton"
+                        style="@style/RightButton"
+                        app:backgroundTint="@color/colorAltPrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/connections_discover" />
+
+                </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

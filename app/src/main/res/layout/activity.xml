@@ -71,8 +71,6 @@
         android:layout_gravity="start"
         android:background="@color/colorAltPrimary"
         android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <include

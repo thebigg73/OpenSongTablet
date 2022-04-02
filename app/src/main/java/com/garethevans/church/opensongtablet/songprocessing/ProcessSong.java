@@ -2342,9 +2342,9 @@ public class ProcessSong {
             mainActivityInterface.getSong().setCurrentSection(0);
             page = 0;
         } else {
-            mainActivityInterface.getSong().setPdfPageCurrent(page);
-            mainActivityInterface.getSong().setPdfPageCurrent(page);
-            mainActivityInterface.getSong().setCurrentSection(page);
+            //mainActivityInterface.getSong().setPdfPageCurrent(page);
+            //mainActivityInterface.getSong().setPdfPageCurrent(page);
+            //mainActivityInterface.getSong().setCurrentSection(page);
         }
         return page;
     }

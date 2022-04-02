@@ -8,6 +8,7 @@ import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -15,6 +16,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 public class MyRecyclerView extends RecyclerView {
 
     private final MainActivityInterface mainActivityInterface;
+    private final String TAG = "MyRecyclerView";
     private boolean isUserTouching;
     private boolean scrolledToTop=true;
     private boolean scrolledToBottom=false;
@@ -25,6 +27,8 @@ public class MyRecyclerView extends RecyclerView {
     private final LinearInterpolator linearInterpolator = new LinearInterpolator();
     private ScrollListener scrollListener;
     private ItemTouchListener itemTouchListener;
+
+    RecyclerView.SmoothScroller smoothScroller;
 
     public MyRecyclerView(@NonNull Context c) {
         super(c);
@@ -38,6 +42,18 @@ public class MyRecyclerView extends RecyclerView {
         setClipToPadding(false);
         setItemAnimator(null);
         floatScrollPos = 0;
+
+    }
+
+    public void smoothScrollTo(Context c, LayoutManager layoutManager,int position) {
+        smoothScroller = new LinearSmoothScroller(c) {
+            @Override
+            protected int getVerticalSnapPreference() {
+                return LinearSmoothScroller.SNAP_TO_START;
+            }
+        };
+        smoothScroller.setTargetPosition(position);
+        layoutManager.startSmoothScroll(smoothScroller);
     }
 
     public void removeListeners() {

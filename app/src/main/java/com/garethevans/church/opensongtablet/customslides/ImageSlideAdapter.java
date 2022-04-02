@@ -61,9 +61,9 @@ public class ImageSlideAdapter  extends RecyclerView.Adapter<ImageSlideViewHolde
         totalPages = images.length;
         mainActivityInterface.getSong().setPdfPageCount(totalPages);
         if (totalPages==0) {
-            mainActivityInterface.getSong().setPdfPageCurrent(0);
+            mainActivityInterface.getSong().setPdfPageCurrent(-1);
         } else {
-            mainActivityInterface.getSong().setPdfPageCurrent(1);
+            mainActivityInterface.getSong().setPdfPageCurrent(0);
         }
         mainActivityInterface.getSong().setShowstartofpdf(true);
 

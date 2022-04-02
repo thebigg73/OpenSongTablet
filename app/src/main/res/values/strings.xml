@@ -1118,5 +1118,8 @@ Check out the categories in the right hand options menu.
     <string name="connections_no_devices">No devices connected</string>
     <string name="connections_advanced">Show more settings for Nearby connections and full log</string>
     <string name="other_options">Other options</string>
+    <string name="connections_connected_devices_info">Shows a list of currently connected devices</string>
+    <string name="connections_advertise_info">Advertise your device for others to discover</string>
+    <string name="connections_discover_info">Look for other devices that are currently advertising</string>
 
 </resources>

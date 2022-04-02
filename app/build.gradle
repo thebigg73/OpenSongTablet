@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
-
     compileSdkVersion 32
     buildToolsVersion '32.1.0-rc1'
     buildTypes {

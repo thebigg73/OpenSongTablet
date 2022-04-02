@@ -68,12 +68,14 @@ public class MaterialTextView extends LinearLayout {
     }
 
     public void setHint(String hintText) {
-        if (hintText==null) {
-            hintView.setVisibility(View.GONE);
-        } else {
-            hintView.setVisibility(View.VISIBLE);
-        }
-        hintView.setText(hintText);
+        hintView.post(() -> {
+            if (hintText==null) {
+                hintView.setVisibility(View.GONE);
+            } else {
+                hintView.setVisibility(View.VISIBLE);
+            }
+            hintView.setText(hintText);
+        });
     }
 
     public void setHintColor(int color) {

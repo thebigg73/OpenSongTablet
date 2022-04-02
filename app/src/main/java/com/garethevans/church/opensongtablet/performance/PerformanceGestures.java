@@ -4,6 +4,7 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.garethevans.church.opensongtablet.utilities.SoundLevelBottomSheet;
 public class PerformanceGestures {
 
     private final Context c;
+    private final String TAG = "PerformanceGestures";
     private final MainActivityInterface mainActivityInterface;
     private final ActionInterface actionInterface;
     private MyZoomLayout myZoomLayout;
@@ -158,14 +160,15 @@ public class PerformanceGestures {
             if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
             Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
                 int currentPage = mainActivityInterface.getSong().getPdfPageCurrent();
+                Log.d(TAG,"currentPage="+currentPage);
                 int totalPages = mainActivityInterface.getSong().getPdfPageCount();
-                if (scrollDown && currentPage<totalPages) {
+                if (scrollDown && currentPage<totalPages-1) {
                     if (recyclerView.getAdapter()!=null) {
-                        ((PDFPageAdapter) recyclerView.getAdapter()).sectionSelected(currentPage + 1);
+                        ((PDFPageAdapter) recyclerView.getAdapter()).clickOnSection(currentPage + 1);
                     }
                 } else if (!scrollDown && currentPage>0) {
                     if (recyclerView.getAdapter()!=null) {
-                        ((PDFPageAdapter) recyclerView.getAdapter()).sectionSelected(currentPage - 1);
+                        ((PDFPageAdapter) recyclerView.getAdapter()).clickOnSection(currentPage - 1);
                     }
                 }
             } else {
@@ -173,11 +176,11 @@ public class PerformanceGestures {
                 int totalPages = mainActivityInterface.getSectionViews().size()-1;
                 if (scrollDown && currentPage<totalPages) {
                     if (recyclerView.getAdapter()!=null) {
-                        ((StageSectionAdapter) recyclerView.getAdapter()).sectionSelected(currentPage + 1);
+                        ((StageSectionAdapter) recyclerView.getAdapter()).clickOnSection(currentPage + 1);
                     }
                 } else if (!scrollDown && currentPage>0) {
                     if (recyclerView.getAdapter()!=null) {
-                        ((StageSectionAdapter) recyclerView.getAdapter()).sectionSelected(currentPage - 1);
+                        ((StageSectionAdapter) recyclerView.getAdapter()).clickOnSection(currentPage - 1);
                     }
                 }
             }

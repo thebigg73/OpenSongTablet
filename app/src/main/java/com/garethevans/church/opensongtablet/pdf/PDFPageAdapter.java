@@ -39,10 +39,12 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
     private Uri pdfUri;
     private int totalPages;
     private float floatHeight;
+    private final float alphaoff = 0.4f;
     private final String scaleType;
     private final float density;
     private int currentSection = 0;
     private final String alphaChange = "alpha";
+    private boolean fakeClick;
 
     public PDFPageAdapter(Context c, MainActivityInterface mainActivityInterface, DisplayInterface displayInterface, int viewWidth, int viewHeight) {
         this.c = c;
@@ -106,7 +108,7 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     pageInfo.height = (int) itemHeight;
 
                     if (mainActivityInterface.getMode().equals("Stage")) {
-                        pageInfo.alpha = 0.4f;
+                        pageInfo.alpha = alphaoff;
                     } else {
                         pageInfo.alpha = 1f;
                     }
@@ -136,7 +138,6 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         }
     }
 
-
     @NonNull
     @Override
     public PDFPageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -156,7 +157,11 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     // We want to update the highlight colour to off
                     holder.v.post(()->{
                         try {
-                            holder.v.setAlpha(pageInfos.get(position).alpha);
+                            float alphaval = pageInfos.get(position).alpha;
+                            if (!mainActivityInterface.getMode().equals("Stage")) {
+                                alphaval = 1f;
+                            }
+                            holder.v.setAlpha(alphaval);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -194,9 +199,15 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         holder.pdfPageImage.post(()-> {
             try {
                 Glide.with(c).load(pdfPageBitmap).override(width, height).into(holder.pdfPageImage);
-                holder.pdfPageImage.setOnClickListener(view -> sectionSelected(pageNum));
-                holder.pdfPageImage.setOnLongClickListener(view -> {
-                    // Do nothing other than consume the long press
+                holder.pdfPageImage.setOnClickListener(view -> {
+                    if (fakeClick) {
+                        fakeClick = false;
+                    } else {
+                        sectionSelected(position);
+                    }
+                });
+                holder.v.setOnLongClickListener(view -> {
+                    // Do nothing other than consume the long press action
                     return true;
                 });
             } catch (Exception e) {
@@ -206,7 +217,11 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
 
         cardView.post(()->{
             try {
-                cardView.setAlpha(finalAlpha);
+                if (mainActivityInterface.getMode().equals("Stage")) {
+                    cardView.setAlpha(finalAlpha);
+                } else {
+                    cardView.setAlpha(1f);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -253,29 +268,49 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
         mainActivityInterface.showHideActionBar();
     }
 
+    public void clickOnSection(int position) {
+        fakeClick = true;
+        sectionSelected(position);
+    }
     public void sectionSelected(int position) {
-        // Whatever the previously selected item was, change the alpha to the alphaOff value
-        mainActivityInterface.getSong().setPdfPageCurrent(position);
+        if (pageInfos.size()>position) {
 
-        // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
-        onTouchAction();
-
-        // Only do this alpha change in stage mode
-        if (mainActivityInterface.getMode().equals("Stage")) {
-            pageInfos.get(currentSection).alpha = 0.4f;
-            notifyItemChanged(currentSection, alphaChange);
-
-            // Now update the newly selected position
-            if (position >= 0 && position < pageInfos.size()) {
+            try {
+                // Whatever the previously selected item was, change the alpha to the alphaOff value
                 mainActivityInterface.getSong().setPdfPageCurrent(position);
-                pageInfos.get(position).alpha = 1.0f;
-                notifyItemChanged(position, alphaChange);
+
+                // Because this is a screen touch, do the necessary UI update (check actionbar/prev/next)
+                onTouchAction();
+
+                // Only do this alpha change in stage mode
+                if (mainActivityInterface.getMode().equals("Stage")) {
+                    pageInfos.get(currentSection).alpha = alphaoff;
+                    notifyItemChanged(currentSection, alphaChange);
+
+                    // Now update the newly selected position
+                    pageInfos.get(position).alpha = 1.0f;
+                    notifyItemChanged(position, alphaChange);
+
+                }
+
+                // If stage mode or a pdf, update the presenter and send a nearby payload
+                if (mainActivityInterface.getMode().equals("Stage") ||
+                    mainActivityInterface.getSong().getFiletype().equals("PDF")) {
+                    // Send and update notification to Performance Fragment via the MainActivity (scrolls to position)
+                    displayInterface.performanceShowSection(position);
+
+                    // Send a nearby notification (the client will ignore if not required or not ready)
+                    if (mainActivityInterface.getNearbyConnections().usingNearby &&
+                            mainActivityInterface.getNearbyConnections().isHost) {
+                        mainActivityInterface.getNearbyConnections().sendSongSectionPayload();
+                    }
+                }
+                currentSection = position;
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        currentSection = position;
-
-        // Send and update notification to Performance Fragment via the MainActivity (scrolls to position)
-        displayInterface.performanceShowSection(position);
     }
 
     public ArrayList<Float> getHeights() {

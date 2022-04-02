@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     style="@style/pdfPage">
 
     <ImageView
@@ -16,7 +18,7 @@
         android:id="@+id/pdfPageHighlight"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/highlight"/>
+        android:contentDescription="@string/highlight" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/pdfPageNumText"
@@ -24,7 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:textSize="12sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:focusableInTouchMode="false"
+        android:focusable="false"/>
 
 </androidx.cardview.widget.CardView>
 

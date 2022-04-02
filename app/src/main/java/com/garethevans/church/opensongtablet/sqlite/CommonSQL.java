@@ -13,7 +13,6 @@ import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 
 public class CommonSQL {
     // This is used to perform common tasks for the SQL database and NonOpenSongSQL database.
@@ -430,10 +429,8 @@ public class CommonSQL {
         if (cursor.getColumnCount()>0 && cursor.getColumnIndex(SQLite.COLUMN_FOLDER)==0) {
             for (int x=0; x<cursor.getCount(); x++) {
                 cursor.moveToPosition(x);
-                // IV - Pre Lollipop use (where?) causes folder names starting 'MAIN/' - pragmatic clean up here
-                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER)).
-                        toLowerCase(Locale.ROOT).replace("MAIN/","").
-                        replace(c.getResources().getString(R.string.mainfoldername),"");
+                String folder = cursor.getString(cursor.getColumnIndexOrThrow(SQLite.COLUMN_FOLDER))
+                        .replace("MAIN/",c.getString(R.string.mainfoldername));
                 folders.add(folder);
             }
         }
