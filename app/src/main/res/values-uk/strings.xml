@@ -533,4 +533,5 @@
     <string name="presoShowBackground">Фону</string>
     <string name="nearby_large_file">Цей великий файл пісні ділиться</string>
     <string name="midi_delay">Буфер затримки MIDI</string>
+    <string name="forum">Допомога (googlegroups)</string>
 </resources>

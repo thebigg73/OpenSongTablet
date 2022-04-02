@@ -250,7 +250,7 @@
     <string name="folderexists">This folder already exists!</string>
     <string name="fontsize">to use when AUTOSCALE is OFF</string>
     <string name="footpedal">Assign foot pedal</string>
-    <string name="forum" translatable="false">opensongapp@googlegroups.com</string>
+    <string name="forum">Help (googlegroups)</string>
     <string name="found">You have previously used the following \'OpenSong\' folder.  You will still need to select this manually using the red button above.</string>
     <string name="full">Full</string>
     <string name="gesture1">Open song menu</string>
