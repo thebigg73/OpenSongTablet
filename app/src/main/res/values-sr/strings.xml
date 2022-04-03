@@ -389,13 +389,11 @@
     <string name="export_desktop">"Desktop file (no file extension)"</string>
     <string name="export_onsong">"OnSong song (.onsong)"</string>
     <string name="export_ost">"OpenSongApp song (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Screenshot image (.png)"</string>
     <string name="export_set">"OpenSongApp set (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>
     <string name="floating_window">"Floating window"</string>
     <string name="timer_size">"Timer size"</string>
-    <string name="scrollbuttons">"Pomicanje postavki"</string>
     <string name="scroll_amount">"Pomični iznos"</string>
     <string name="speed">"Ubrzati"</string>
     <string name="swipe">"Presavijte postavke"</string>
@@ -837,4 +835,18 @@
     <string name="duplicate_song">Napravite kopiju ove pesme</string>
     <string name="capo_hide">Autohide capo</string>
     <string name="autoscroll_hide">Autohide autoscroll</string>
+    <string name="connections_mode_single">Jedno</string>
+    <string name="other_options">Druge opcije</string>
+    <string name="theme_edit">Uredite ili promenite trenutnu temu</string>
+    <string name="connections_no_devices">Nijedan uređaj nije povezan</string>
+    <string name="connections_mode_star">Zvezda</string>
+    <string name="connections_mode_info">Ako imate problema sa povezivanjem uređaja, pokušajte da promenite način povezivanja. Režim klastera (podrazumevano) je najsvestraniji i omogućava višestrukim uređajima da se povežu jedan sa drugim, omogućavajući prebacivanje između hosta i klijenata. Režim zvezdice dozvoljava samo jednom uređaju da se poveže sa mnogima. Jednostruki režim je uspostavljanje veze između samo dva uređaja, ali sa najboljim propusnim opsegom. Svi uređaji za povezivanje moraju biti podešeni na isti režim i promena režima će prekinuti sve trenutne veze.</string>
+    <string name="connections_mode_cluster">Cluster</string>
+    <string name="connections_mode">Režim veze</string>
+    <string name="connections_discover_info">Potražite druge uređaje koji se trenutno oglašavaju</string>
+    <string name="connections_connected_devices_info">Prikazuje listu trenutno povezanih uređaja</string>
+    <string name="connections_advertising">Oglašavanje…</string>
+    <string name="connections_advertise_info">Oglasite svoj uređaj kako bi ga drugi otkrili</string>
+    <string name="connections_advertise">Oglašavajte se</string>
+    <string name="connections_advanced">Prikaži još podešavanja za veze u blizini i punu evidenciju</string>
 </resources>

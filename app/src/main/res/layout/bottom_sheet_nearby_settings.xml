@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bottomSheet"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     style="@style/FullscreenBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:layout_insetEdge="bottom"
     android:background="@null">
 
@@ -25,7 +25,8 @@
         android:layout_height="match_parent"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:background="@color/colorAltPrimary">
+        android:paddingTop="16dp"
+        android:background="@drawable/rounded_dialog">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,27 +44,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:minHeight="96dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/clusterMode"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.5"
-            app:backgroundTint="@color/colorAltPrimary"
             android:padding="8dp"
-            android:text="@string/connections_cluster"
+            android:text="@string/connections_mode_cluster"
             style="@style/LeftButton" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/starMode"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0.5"
-            app:backgroundTint="@color/colorSecondary"
             android:padding="8dp"
-            android:text="@string/connections_star"
-            style="@style/RightButton"/>
+            android:text="@string/connections_mode_star"
+            style="@style/MiddleButton"
+            app:backgroundTint="@color/colorAltPrimary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/singleMode"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:padding="8dp"
+            android:text="@string/connections_mode_single"
+            style="@style/RightButton"
+            app:backgroundTint="@color/colorAltPrimary" />
     </LinearLayout>
     <TableRow style="@style/DividerLine"/>
 
@@ -79,6 +90,13 @@
             android:layout_height="wrap_content"
             android:text="@string/nearby_host_menu_only"
             android:hint="@string/nearby_host_menu_only_info" />
+
+        <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
+            android:id="@+id/hostPassthrough"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connections_host_passthrough"
+            android:hint="@string/connections_host_passthrough_info" />
 
         <TableRow style="@style/DividerLine" />
     </LinearLayout>
@@ -124,7 +142,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/connections_log"
-        android:hint="" />
+        android:hint=""/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

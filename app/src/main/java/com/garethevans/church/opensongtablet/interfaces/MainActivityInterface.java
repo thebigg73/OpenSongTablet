@@ -153,6 +153,7 @@ public interface MainActivityInterface {
     void hideActionBar(boolean hide);
     void showHideActionBar();
     void updateToolbar(String what);
+    void updateToolbarHelp(String webAddress);
     void updateActionBarSettings(String prefName, float floatval, boolean isvisible);
 
     // Page button(s)
@@ -214,7 +215,7 @@ public interface MainActivityInterface {
     CheckInternet getCheckInternet();
     void isWebConnected(Fragment fragment, int fragId, boolean isConnected);
     void songSelectDownloadPDF(Fragment fragment, int fragId, Uri uri);
-    void openDocument(String guideId, String location);
+    void openDocument(String location);
     void installPlayServices();
 
     // General tools

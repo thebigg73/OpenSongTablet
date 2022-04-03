@@ -51,6 +51,7 @@ public class PageButtonFragment extends Fragment {
         myView = SettingsPagebuttonsBinding.inflate(inflater,container,false);
 
         mainActivityInterface.updateToolbar(getString(R.string.page_buttons));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_page_buttons));
 
         // Set up the page button icons
         setupPageButtons();

@@ -374,7 +374,6 @@
     <string name="save">"Speichern"</string>
     <string name="scale_style">"Skalierung"</string>
     <string name="scripture">"Bibeltext"</string>
-    <string name="scrollbuttons">"Scroll-Einstellungen"</string>
     <string name="scroll_amount">"Scrollweite"</string>
     <string name="scrollbuttons_toggle">Toggle Scroll-Tasten</string>
     <string name="search">"Suche"</string>
@@ -836,4 +835,18 @@
     <string name="duplicate_song">Erstellen Sie eine Kopie dieses Songs</string>
     <string name="capo_hide">Kapodaster automatisch ausblenden</string>
     <string name="autoscroll_hide">Autoscroll automatisch ausblenden</string>
+    <string name="connections_advanced">Weitere Einstellungen für Verbindungen in der Nähe und vollständiges Protokoll anzeigen</string>
+    <string name="connections_advertise">Werben</string>
+    <string name="connections_advertise_info">Werben Sie für Ihr Gerät, damit andere es entdecken können</string>
+    <string name="connections_advertising">Werbung…</string>
+    <string name="connections_connected_devices_info">Zeigt eine Liste der aktuell verbundenen Geräte an</string>
+    <string name="connections_discover_info">Suchen Sie nach anderen Geräten, die derzeit Werbung schalten</string>
+    <string name="connections_mode">Verbindungsmodus</string>
+    <string name="connections_mode_cluster">Cluster</string>
+    <string name="connections_mode_info">Wenn Sie Probleme beim Verbinden von Geräten haben, versuchen Sie, den Verbindungsmodus zu ändern. Der Cluster-Modus (Standard) ist am vielseitigsten und ermöglicht es mehreren Geräten, sich miteinander zu verbinden, was das Umschalten zwischen Host und Clients ermöglicht. Im Sternmodus kann nur ein Gerät mit vielen verbunden werden. Im Single-Modus wird eine Verbindung zwischen nur zwei Geräten hergestellt, jedoch mit der besten Bandbreite. Alle Verbindungsgeräte müssen auf denselben Modus eingestellt werden, und das Ändern des Modus beendet alle aktuellen Verbindungen.</string>
+    <string name="connections_mode_star">Stern</string>
+    <string name="connections_no_devices">Keine Geräte verbunden</string>
+    <string name="theme_edit">Bearbeiten oder ändern Sie das aktuelle Design</string>
+    <string name="other_options">Andere Optionen</string>
+    <string name="connections_mode_single">Einzel</string>
 </resources>

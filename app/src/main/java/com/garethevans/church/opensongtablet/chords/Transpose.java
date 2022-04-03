@@ -13,7 +13,6 @@ import java.util.Locale;
 
 public class Transpose {
 
-    // TODO TIDY UP
     private ArrayList<String> chordFormatNames, chordFormatAppearances;
     private final Song miniTransposeSong = new Song();
     private final Context c;

@@ -180,7 +180,6 @@
     <string name="export_desktop">"Arquivo da área de trabalho (sem extensão de arquivo)"</string>
     <string name="export_onsong">"Canção OnSong (.onsong)"</string>
     <string name="export_ost">"Canção OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Imagem de captura de tela (.png)"</string>
     <string name="export_set">"Conjunto OpenSongApp (.osts)"</string>
     <string name="export_text">"Texto (.txt)"</string>
@@ -375,7 +374,6 @@
     <string name="save">"Salvar"</string>
     <string name="scale_style">"Estilo de escala"</string>
     <string name="scripture">"Bíblia"</string>
-    <string name="scrollbuttons">"Configurações de rolagem"</string>
     <string name="scroll_amount">"Quantidade de rolagem"</string>
     <string name="scrollbuttons_toggle">Botões de rolagem de alternância</string>
     <string name="search">"Pesquisa"</string>
@@ -837,4 +835,18 @@
     <string name="duplicate_song">Criar uma cópia desta música</string>
     <string name="capo_hide">Ocultar automaticamente</string>
     <string name="autoscroll_hide">Ocultar rolagem automática</string>
+    <string name="connections_advanced">Mostrar mais configurações para conexões próximas e registro completo</string>
+    <string name="connections_advertise">Anunciar</string>
+    <string name="connections_advertise_info">Anuncie seu dispositivo para que outras pessoas descubram</string>
+    <string name="connections_advertising">Anúncio…</string>
+    <string name="connections_connected_devices_info">Mostra uma lista de dispositivos atualmente conectados</string>
+    <string name="connections_discover_info">Procure outros dispositivos que estão anunciando no momento</string>
+    <string name="connections_mode">Modo de conexão</string>
+    <string name="connections_mode_cluster">Cacho</string>
+    <string name="connections_mode_info">Se você tiver problemas para conectar dispositivos, tente alterar o modo de conexão. O modo de cluster (padrão) é o mais versátil e permite que vários dispositivos se conectem entre si, permitindo alternar entre host e clientes. O modo estrela permite que apenas um dispositivo se conecte a muitos. O modo único é estabelecer uma conexão entre apenas dois dispositivos, mas com a melhor largura de banda. Todos os dispositivos de conexão precisam ser configurados para o mesmo modo e a alteração do modo encerrará todas as conexões atuais.</string>
+    <string name="connections_mode_star">Estrela</string>
+    <string name="connections_no_devices">Nenhum dispositivo conectado</string>
+    <string name="theme_edit">Editar ou alterar o tema atual</string>
+    <string name="other_options">Outras opções</string>
+    <string name="connections_mode_single">Solteiro</string>
 </resources>

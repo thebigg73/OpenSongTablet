@@ -180,7 +180,6 @@
     <string name="export_desktop">"File del desktop (nessuna estensione di file)"</string>
     <string name="export_onsong">"Canzone OnSong (.onong)"</string>
     <string name="export_ost">"Canzone OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"PDF Screenshot (.pdf)"</string>
     <string name="export_png">"Immagine della schermata (.png)"</string>
     <string name="export_set">"Set di OpenSongApp (.osts)"</string>
     <string name="export_text">"Testo (.txt)"</string>
@@ -375,7 +374,6 @@
     <string name="save">"Salvare"</string>
     <string name="scale_style">"Scala stile"</string>
     <string name="scripture">"Sacre Scritture"</string>
-    <string name="scrollbuttons">"Impostazioni di scorrimento"</string>
     <string name="scroll_amount">"Quantità di scorrimento"</string>
     <string name="scrollbuttons_toggle">Pulsanti di scorrimento Toggle</string>
     <string name="search">"Ricerca"</string>
@@ -837,4 +835,18 @@
     <string name="sound_level_meter_info">Controlla i volumi (usa il microfono)</string>
     <string name="utilities">Utilità</string>
     <string name="utilities_info">Altri strumenti per musicisti</string>
+    <string name="connections_mode_single">Singolo</string>
+    <string name="other_options">Altre opzioni</string>
+    <string name="theme_edit">Modifica o cambia il tema corrente</string>
+    <string name="connections_no_devices">Nessun dispositivo connesso</string>
+    <string name="connections_mode_star">Stella</string>
+    <string name="connections_mode_info">Se riscontri problemi con la connessione dei dispositivi, prova a cambiare la modalità di connessione. La modalità cluster (impostazione predefinita) è la più versatile e consente a più dispositivi di connettersi tra loro consentendo il passaggio tra host e client. La modalità Star consente a un solo dispositivo di connettersi a molti. La modalità singola consente di stabilire una connessione solo tra due dispositivi, ma con la migliore larghezza di banda. Tutti i dispositivi di connessione devono essere impostati sulla stessa modalità e la modifica della modalità interromperà tutte le connessioni correnti.</string>
+    <string name="connections_mode_cluster">Grappolo</string>
+    <string name="connections_mode">Modalità di connessione</string>
+    <string name="connections_discover_info">Cerca altri dispositivi che stanno attualmente facendo pubblicità</string>
+    <string name="connections_connected_devices_info">Mostra un elenco dei dispositivi attualmente collegati</string>
+    <string name="connections_advertising">Pubblicità…</string>
+    <string name="connections_advertise_info">Pubblicizza il tuo dispositivo affinché gli altri lo scoprano</string>
+    <string name="connections_advertise">Pubblicizza</string>
+    <string name="connections_advanced">Mostra più impostazioni per le connessioni nelle vicinanze e il registro completo</string>
 </resources>

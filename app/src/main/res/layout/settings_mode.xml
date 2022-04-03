@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="fill_vertical">
 
-    <com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -46,22 +46,6 @@
 
         </LinearLayout>
 
-    </com.garethevans.church.opensongtablet.customviews.NestedScrollWithFAB>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/webLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:contentDescription="@string/help"
-        android:src="@drawable/ic_help_outline_white_36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

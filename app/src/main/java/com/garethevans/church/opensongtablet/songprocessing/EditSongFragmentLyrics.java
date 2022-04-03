@@ -225,7 +225,7 @@ public class EditSongFragmentLyrics extends Fragment {
 
         myView.bottomSheetLayout.autoFix.setOnClickListener(v -> autoFix());
 
-        myView.bottomSheetLayout.formatHelp.setOnClickListener(v -> mainActivityInterface.openDocument("songformat",null));
+        myView.bottomSheetLayout.formatHelp.setOnClickListener(v -> mainActivityInterface.openDocument(null));
 
         // Scroll listener
         myView.nestedScrollView.setExtendedFabToAnimate(editSongFragmentInterface.getSaveButton());
@@ -241,20 +241,16 @@ public class EditSongFragmentLyrics extends Fragment {
         if (editTextSize>=24) {
             editTextSize = 24;
             myView.bottomSheetLayout.textSizeUp.setEnabled(false);
-            myView.bottomSheetLayout.textSizeUp.setBackgroundColor(colorOff);
         } else {
             myView.bottomSheetLayout.textSizeUp.setEnabled(true);
-            myView.bottomSheetLayout.textSizeUp.setBackgroundColor(colorOn);
         }
 
         // Min is 8
         if (editTextSize<=8) {
             editTextSize = 8;
             myView.bottomSheetLayout.textSizeDown.setEnabled(false);
-            myView.bottomSheetLayout.textSizeDown.setBackgroundColor(colorOff);
         } else {
             myView.bottomSheetLayout.textSizeDown.setEnabled(true);
-            myView.bottomSheetLayout.textSizeDown.setBackgroundColor(colorOn);
         }
 
         // Set the text size

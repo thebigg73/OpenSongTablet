@@ -18,10 +18,6 @@ public class AboutAppFragment extends Fragment {
 
     private SettingsAboutBinding myView;
     private MainActivityInterface mainActivityInterface;
-    private final String userguide="https://www.opensongapp.com/user-guide", groups="https://groups.google.com/g/opensongapp",
-            latest = "https://www.opensongapp.com/latest-updates", paypal="https://www.paypal.me/opensongapp",
-            rate = "https://play.google.com/store/apps/details?id=", github="https://github.com/thebigg73/OpenSongTablet",
-            website = "https://www.opensongapp.com";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,13 +48,13 @@ public class AboutAppFragment extends Fragment {
     }
 
     private void setListeners() {
-        myView.visitWebsite.setOnClickListener(v -> mainActivityInterface.openDocument(null,website));
-        myView.latestVersion.setOnClickListener(v -> mainActivityInterface.openDocument(null,latest));
-        myView.manualButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,userguide));
-        myView.forumButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,groups));
-        myView.rateButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,rate+requireActivity().getPackageName()));
-        myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,paypal));
-        myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openDocument(null,github));
+        myView.visitWebsite.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_address)));
+        myView.latestVersion.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_latest)));
+        myView.manualButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_user_guide)));
+        myView.forumButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_forum)));
+        myView.rateButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.website_rate)+requireActivity().getPackageName()));
+        myView.paypalButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.paypal)));
+        myView.gitbubButton.setOnClickListener(v -> mainActivityInterface.openDocument(getString(R.string.github)));
         myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(null,R.id.languageFragment));
     }
 

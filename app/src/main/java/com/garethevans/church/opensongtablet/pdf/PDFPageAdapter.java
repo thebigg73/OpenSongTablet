@@ -300,8 +300,8 @@ public class PDFPageAdapter extends RecyclerView.Adapter<PDFPageViewHolder> {
                     displayInterface.performanceShowSection(position);
 
                     // Send a nearby notification (the client will ignore if not required or not ready)
-                    if (mainActivityInterface.getNearbyConnections().usingNearby &&
-                            mainActivityInterface.getNearbyConnections().isHost) {
+                    if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                            mainActivityInterface.getNearbyConnections().getIsHost()) {
                         mainActivityInterface.getNearbyConnections().sendSongSectionPayload();
                     }
                 }

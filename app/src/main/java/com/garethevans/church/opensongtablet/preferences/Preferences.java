@@ -333,6 +333,8 @@ public class Preferences extends Activity {
     midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically (def:false)
     multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact (def:false)
     nearbyHostMenuOnly              boolean     Should the host only listen for clients when the nearby menu is open (def:false)
+    nearbyHostPassthrough           boolean     Allows a host to pass on messages received from other hosts rather than blocking (def:true);
+    nearbyStrategy                  String      Which strategy to use for Nearby connections: cluster, star, single (def:cluster)
     nextInSet                       boolean     Should the next song in the set be shown (def:true)
     onscreenAutoscrollHide          boolean     Performance/Stage autoscroll info text at the top - should it autohide after a delay (def:true)
     onscreenCapoHide                boolean     Performance/Stage capo info text at the top - should it autohide after a delay (def:true)

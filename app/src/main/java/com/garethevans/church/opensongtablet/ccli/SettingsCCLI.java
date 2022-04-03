@@ -34,6 +34,7 @@ public class SettingsCCLI extends Fragment {
         myView = SettingsCcliBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.ccli));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_ccli));
 
         // Set current Values
         setCurrentValues();

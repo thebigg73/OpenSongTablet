@@ -180,7 +180,6 @@
     <string name="export_desktop">"Файл настольной версии Open Song (без расширения)"</string>
     <string name="export_onsong">"Файл в формате OnSong (.ongong)"</string>
     <string name="export_ost">"Файл в формате OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Скриншот PDF (.pdf)"</string>
     <string name="export_png">"Скриншот PNG (.png)"</string>
     <string name="export_set">"Список OpenSongApp (.osts)"</string>
     <string name="export_text">"Текстовый файл (.txt)"</string>
@@ -375,7 +374,6 @@
     <string name="save">"Cохранить"</string>
     <string name="scale_style">"Стиль масштаба"</string>
     <string name="scripture">"Cвященное писание"</string>
-    <string name="scrollbuttons">"Настройка кнопок прокрутки"</string>
     <string name="scroll_amount">"Интервал прокрутки"</string>
     <string name="scrollbuttons_toggle">Переключение кнопок прокрутки</string>
     <string name="search">"Поиск"</string>
@@ -837,4 +835,18 @@
     <string name="duplicate_song">Создать копию этой песни</string>
     <string name="capo_hide">Автоскрытие каподастра</string>
     <string name="autoscroll_hide">Автоскрытие автопрокрутки</string>
+    <string name="connections_advanced">Показать дополнительные настройки подключений поблизости и полный журнал</string>
+    <string name="connections_advertise">Рекламировать</string>
+    <string name="connections_advertise_info">Рекламируйте свое устройство, чтобы другие могли его обнаружить</string>
+    <string name="connections_advertising">Реклама…</string>
+    <string name="connections_connected_devices_info">Показывает список подключенных в данный момент устройств</string>
+    <string name="connections_discover_info">Ищите другие устройства, которые в настоящее время рекламируются</string>
+    <string name="connections_mode">Режим подключения</string>
+    <string name="connections_mode_cluster">Кластер</string>
+    <string name="connections_mode_info">Если у вас возникли проблемы с подключением устройств, попробуйте изменить режим подключения. Кластерный режим (по умолчанию) является наиболее универсальным и позволяет нескольким устройствам подключаться друг к другу, позволяя переключаться между хостом и клиентами. Звездный режим позволяет только одному устройству подключаться ко многим. Одиночный режим предназначен для установления соединения только между двумя устройствами, но с наилучшей пропускной способностью. Все подключаемые устройства должны быть установлены в один и тот же режим, а изменение режима приведет к завершению всех текущих подключений.</string>
+    <string name="connections_mode_star">Звезда</string>
+    <string name="connections_no_devices">Нет подключенных устройств</string>
+    <string name="theme_edit">Редактировать или изменить текущую тему</string>
+    <string name="other_options">Другие варианты</string>
+    <string name="connections_mode_single">Одинокий</string>
 </resources>

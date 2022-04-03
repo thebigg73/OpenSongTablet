@@ -373,7 +373,6 @@
     <string name="save">"Red"</string>
     <string name="scale_style">"Skaal styl"</string>
     <string name="scripture">"Skrif"</string>
-    <string name="scrollbuttons">"Scroll instellings"</string>
     <string name="scroll_amount">"Scroll bedrag"</string>
     <string name="scrollbuttons_toggle">Toggle scroll knoppies</string>
     <string name="search">"Soek"</string>
@@ -835,4 +834,18 @@
     <string name="duplicate_song">Skep \'n kopie van hierdie liedjie</string>
     <string name="capo_hide">Verberg kapo outomaties</string>
     <string name="autoscroll_hide">Versteek outoscroll outomaties</string>
+    <string name="connections_advanced">Wys meer instellings vir Naby-verbindings en volledige logboek</string>
+    <string name="connections_advertise">Adverteer</string>
+    <string name="connections_advertise_info">Adverteer jou toestel sodat ander dit kan ontdek</string>
+    <string name="connections_advertising">Adverteer tans …</string>
+    <string name="connections_connected_devices_info">Wys \'n lys van tans gekoppelde toestelle</string>
+    <string name="connections_discover_info">Soek ander toestelle wat tans adverteer</string>
+    <string name="connections_mode">Verbindingsmodus</string>
+    <string name="connections_mode_cluster">Groepering</string>
+    <string name="connections_mode_info">As jy probleme ondervind om toestelle te koppel, probeer om die verbindingsmodus te verander. Klustermodus (verstek) is die veelsydigste en laat veelvuldige toestelle toe om aan mekaar te koppel, wat dit moontlik maak om tussen gasheer en kliënte te skakel. Stermodus laat net een toestel toe om aan baie te koppel. Enkelmodus is om \'n verbinding tussen slegs twee toestelle te vestig, maar met die beste bandwydte. Alle verbindingstoestelle moet op dieselfde modus gestel word en die verandering van modus sal alle huidige verbindings beëindig.</string>
+    <string name="connections_mode_star">Ster</string>
+    <string name="connections_no_devices">Geen toestelle gekoppel nie</string>
+    <string name="other_options">Ander opsies</string>
+    <string name="theme_edit">Wysig of verander huidige tema</string>
+    <string name="connections_mode_single">Enkellopend</string>
 </resources>

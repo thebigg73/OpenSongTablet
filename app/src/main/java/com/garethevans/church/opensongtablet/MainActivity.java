@@ -145,6 +145,7 @@ import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.garethevans.church.opensongtablet.utilities.TimeTools;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -404,7 +405,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         windowFlags = new WindowFlags(this.getWindow());
         appActionBar = new AppActionBar(this,actionBar, myView.toolBar.myToolbar,
                 myView.toolBar.inSet, myView.toolBar.songtitleAb, myView.toolBar.songauthorAb,
-                myView.toolBar.songkeyAb, myView.toolBar.songcapoAb, myView.toolBar.digitalclock);
+                myView.toolBar.songkeyAb, myView.toolBar.songcapoAb, myView.toolBar.digitalclock,
+                myView.toolBar.webHelp);
         pageButtons.setMainFABS(
                 myView.pageButtonRight.actionFAB, myView.pageButtonRight.custom1Button,
                 myView.pageButtonRight.custom2Button,myView.pageButtonRight.custom3Button,
@@ -831,7 +833,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             navigateToFragment("opensongapp://settings/nearby", 0);
         }
     }
-
     private boolean hasNearbyPermissions() {
         if (Build.VERSION.SDK_INT>30) {
             return checkForPermission(Manifest.permission.BLUETOOTH_SCAN) &&
@@ -843,6 +844,28 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
             return checkForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
         }
     }
+
+    @Override
+    public void nearbyEnableConnectionButtons() {
+        if (settingsOpen && nearbyConnections.getConnectionsOpen() && nearbyConnectionsFragment!=null) {
+            try {
+                nearbyConnectionsFragment.enableConnectionButtons();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    public void nearbyUpdateCountdownText(boolean advertise, MaterialButton materialButton) {
+        if (settingsOpen && nearbyConnections.getConnectionsOpen() && nearbyConnectionsFragment!=null) {
+            try {
+                nearbyConnectionsFragment.updateCountdownText(advertise,materialButton);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     public void startDiscovery() {
@@ -986,6 +1009,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         appActionBar.setActionBar(what);
         menuIconVisibility(what == null || getMode().equals("Presenter"));
         myView.fragmentView.setTop(appActionBar.getActionBarHeight());
+    }
+    @Override
+    public void updateToolbarHelp(String webAddress) {
+        // Null or empty web addresses hide the webHelp button
+        appActionBar.updateToolbarHelp(webAddress);
     }
     private void menuIconVisibility(boolean isVisible) {
         try {
@@ -1953,7 +1981,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     public void installPlayServices() {
         Snackbar.make(myView.drawerLayout, R.string.play_services_error,
                 BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.play_services_how, v -> {
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_play_services_help)));
             startActivity(i);
         }).show();
     }
@@ -2274,52 +2302,39 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
 
     @Override
-    public void openDocument(String guideId, String location) {
-        // I could pass the address in as a location string,
-        // However, for the user-guide to avoid having to change loads of files
-        // I keep them listed here.
-        if (guideId!=null && !guideId.isEmpty()) {
-            switch (guideId) {
-                case "mode":
-                    location = "https://www.opensongapp.com/user-guide/the-app-modes";
-                    break;
-                case "storage":
-                    location = "https://www.opensongapp.com/user-guide/setting-up-and-using-opensongapp/setting-up-opensong-tablet";
-                    break;
-                case "songformat":
-                    location = "https://www.opensongapp.com/user-guide/songs/creating-new-songs";
-                    break;
-            }
-        }
-
-        try {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            if (location.startsWith("http")) {
-                intent.setData(Uri.parse(location));
-            } else {
-                String mimeType = null;
-                if (location.contains(".")) {
-                    String extension = location.substring(location.lastIndexOf(".") + 1);
-                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                    mimeType= myMime.getMimeTypeFromExtension(extension);
+    public void openDocument(String location) {
+        // Most locations are passed in from the string.xml file.  They are listed under website_xxx
+        // Otherwise they are created on the fly (for link files, importing songs, etc).
+        if (location!=null) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                if (location.startsWith("http")) {
+                    intent.setData(Uri.parse(location));
+                } else {
+                    String mimeType = null;
+                    if (location.contains(".")) {
+                        String extension = location.substring(location.lastIndexOf(".") + 1);
+                        MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                        mimeType = myMime.getMimeTypeFromExtension(extension);
+                    }
+                    if (mimeType == null) {
+                        mimeType = "*/*";
+                    }
+                    Uri uri = Uri.parse(location);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.setDataAndType(uri, mimeType);
                 }
-                if (mimeType == null) {
-                    mimeType = "*/*";
-                }
-                Uri uri = Uri.parse(location);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setDataAndType(uri,mimeType);
+
+                startActivity(intent);
+            } catch (ActivityNotFoundException nf) {
+                // No suitable application to open the document
+                showToast.doIt(getString(R.string.no_suitable_application));
+                nf.printStackTrace();
+
+            } catch (Exception e) {
+                // Probably no browser installed or no internet permission given.
+                e.printStackTrace();
             }
-
-            startActivity(intent);
-        } catch (ActivityNotFoundException nf) {
-            // No suitable application to open the document
-            showToast.doIt(getString(R.string.no_suitable_application));
-            nf.printStackTrace();
-
-        } catch (Exception e) {
-            // Probably no browser installed or no internet permission given.
-            e.printStackTrace();
         }
     }
 

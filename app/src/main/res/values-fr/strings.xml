@@ -373,7 +373,6 @@
     <string name="save">"Enregistrer"</string>
     <string name="scale_style">"Style à l'échelle"</string>
     <string name="scripture">"Texte sacré"</string>
-    <string name="scrollbuttons">"Paramètres de défilement"</string>
     <string name="scroll_amount">"Montant de défilement"</string>
     <string name="scrollbuttons_toggle">Boutons de défilement</string>
     <string name="search">"Chercher"</string>
@@ -836,4 +835,18 @@
     <string name="utilities">Utilitaires</string>
     <string name="utilities_info">Autres outils pour les musiciens</string>
     <string name="forum">Forum</string>
+    <string name="connections_advanced">Afficher plus de paramètres pour les connexions à proximité et le journal complet</string>
+    <string name="connections_advertise">Afficher</string>
+    <string name="connections_advertise_info">Annoncez votre appareil pour que les autres le découvrent</string>
+    <string name="connections_advertising">Publicité…</string>
+    <string name="connections_connected_devices_info">Affiche une liste des appareils actuellement connectés</string>
+    <string name="connections_discover_info">Recherchez d\'autres appareils qui font actuellement de la publicité</string>
+    <string name="connections_mode">Mode de connexion</string>
+    <string name="connections_mode_cluster">Groupe</string>
+    <string name="connections_mode_info">Si vous rencontrez des problèmes pour connecter des appareils, essayez de changer le mode de connexion. Le mode cluster (par défaut) est le plus polyvalent et permet à plusieurs appareils de se connecter les uns aux autres, permettant de basculer entre l\'hôte et les clients. Le mode étoile ne permet qu\'à un seul appareil de se connecter à plusieurs. Le mode simple consiste à établir une connexion entre seulement deux appareils, mais avec la meilleure bande passante. Tous les périphériques de connexion doivent être réglés sur le même mode et le changement de mode mettra fin à toutes les connexions en cours.</string>
+    <string name="connections_mode_star">Star</string>
+    <string name="connections_no_devices">Aucun appareil connecté</string>
+    <string name="theme_edit">Modifier ou changer le thème actuel</string>
+    <string name="other_options">Autres options</string>
+    <string name="connections_mode_single">Seul</string>
 </resources>

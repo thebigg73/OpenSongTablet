@@ -28,9 +28,11 @@ public class WindowFlags {
 
         v.setSystemUiVisibility(uiOptions);
 
+        w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         w.getDecorView().setOnSystemUiVisibilityChangeListener(visibility -> {
             w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             v.setSystemUiVisibility(uiOptions);
         });
     }
 }
+

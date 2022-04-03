@@ -641,8 +641,8 @@ public class PerformanceFragment extends Fragment {
             dealWithStickyNotes(false, false);
 
             // IV - Consume any later pending client section change received from Host (-ve value)
-            if (mainActivityInterface.getNearbyConnections().isConnected &&
-                    !mainActivityInterface.getNearbyConnections().isHost &&
+            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                    !mainActivityInterface.getNearbyConnections().getIsHost() &&
                     mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
                 int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
 
@@ -670,8 +670,8 @@ public class PerformanceFragment extends Fragment {
             displayInterface.updateDisplay("setSongContent");
 
             // Send a call to nearby devices to process the song at their end
-            if (mainActivityInterface.getNearbyConnections().usingNearby &&
-                    mainActivityInterface.getNearbyConnections().isHost) {
+            if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                    mainActivityInterface.getNearbyConnections().getIsHost()) {
                 mainActivityInterface.getNearbyConnections().sendSongPayload();
             }
         },(long)getResources().getInteger(R.integer.slide_in_time));

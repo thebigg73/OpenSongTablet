@@ -180,7 +180,6 @@
     <string name="export_desktop">"Skrivbordsfil (ingen filtillägg)"</string>
     <string name="export_onsong">"OnSong Song (.onsong)"</string>
     <string name="export_ost">"OpenSongApp-låt (.ost)"</string>
-    <string name="export_pdf">"Skärmdump PDF (.pdf)"</string>
     <string name="export_png">"Skärmdump (.png)"</string>
     <string name="export_set">"OpenSongApp set (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>
@@ -375,7 +374,6 @@
     <string name="save">"Spara"</string>
     <string name="scale_style">"Skala stil"</string>
     <string name="scripture">"skriften"</string>
-    <string name="scrollbuttons">"Rullningsinställningar"</string>
     <string name="scroll_amount">"Rulla beloppet"</string>
     <string name="scrollbuttons_toggle">"Växla bläddringsknapparna"</string>
     <string name="search">"Sök"</string>
@@ -837,4 +835,18 @@
     <string name="sound_level_meter_info">Kontrollera volymen (använder mikrofon)</string>
     <string name="utilities">Verktyg</string>
     <string name="utilities_info">Andra verktyg för musiker</string>
+    <string name="connections_advanced">Visa fler inställningar för Närliggande anslutningar och fullständig logg</string>
+    <string name="connections_advertise">Annonsera</string>
+    <string name="connections_advertise_info">Annonsera din enhet så att andra kan upptäcka den</string>
+    <string name="connections_advertising">Reklam…</string>
+    <string name="connections_connected_devices_info">Visar en lista över för närvarande anslutna enheter</string>
+    <string name="connections_discover_info">Leta efter andra enheter som för närvarande annonserar</string>
+    <string name="connections_mode">Anslutningsläge</string>
+    <string name="connections_mode_cluster">Klunga</string>
+    <string name="connections_mode_info">Om du har problem med att ansluta enheter, försök att ändra anslutningsläget. Klusterläge (standard) är det mest mångsidiga och tillåter flera enheter att ansluta till varandra vilket gör det möjligt att växla mellan värd och klienter. Stjärnläget tillåter bara en enhet att ansluta till många. Single mode är att upprätta en anslutning mellan endast två enheter, men med den bästa bandbredden. Alla anslutande enheter måste ställas in i samma läge och ändring av läge kommer att avsluta alla nuvarande anslutningar.</string>
+    <string name="connections_mode_star">Stjärna</string>
+    <string name="connections_no_devices">Inga enheter anslutna</string>
+    <string name="theme_edit">Redigera eller ändra aktuellt tema</string>
+    <string name="other_options">Andra alternativ</string>
+    <string name="connections_mode_single">Enda</string>
 </resources>

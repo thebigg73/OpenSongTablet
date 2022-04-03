@@ -346,7 +346,6 @@
     <string name="save">Збережемо</string>
     <string name="scale_style">Стиль масштабу</string>
     <string name="scripture">Священний писання</string>
-    <string name="scrollbuttons">Налаштування кнопок прокрутки</string>
     <string name="scroll_amount">Інтервал прокрутки</string>
     <string name="scrollbuttons_toggle">Перемикання кнопок прокрутки</string>
     <string name="search">Пошук</string>
@@ -535,7 +534,6 @@
     <string name="tag_background">Фон тегів</string>
     <string name="pad_key_error">Будь ласка, виберіть тональність цієї пісні</string>
     <string name="intro_app">OpenSongApp використовує пісні, створені в OpenSong, і відображає їх на екрані вашого пристрою.</string>
-    <string name="export_pdf">Знімок екрана PDF (.pdf)</string>
     <string name="midi_message_receive">MIDI-повідомлення для активації пісні</string>
     <string name="midi_message_sent">MIDI-повідомлення надіслано з пісні</string>
     <string name="pad_cross_fade">Подушечки з перехресним зникненням</string>
@@ -836,4 +834,18 @@
     <string name="sound_level_meter_info">Перевірити гучність (використовує мікрофон)</string>
     <string name="utilities">комунальні послуги</string>
     <string name="utilities_info">Інші інструменти для музикантів</string>
+    <string name="connections_advanced">Показати більше налаштувань для з’єднань поблизу та повного журналу</string>
+    <string name="connections_advertise">Рекламувати</string>
+    <string name="connections_advertise_info">Рекламуйте свій пристрій, щоб інші знайшли його</string>
+    <string name="connections_advertising">Реклама…</string>
+    <string name="connections_connected_devices_info">Показує список підключених на даний момент пристроїв</string>
+    <string name="connections_discover_info">Шукайте інші пристрої, які зараз рекламуються</string>
+    <string name="connections_mode">Режим підключення</string>
+    <string name="connections_mode_cluster">Кластер</string>
+    <string name="connections_mode_info">Якщо у вас виникли проблеми з підключенням пристроїв, спробуйте змінити режим підключення. Кластерний режим (за замовчуванням) є найбільш універсальним і дозволяє кільком пристроям підключатися один до одного, що дозволяє перемикатися між хостом і клієнтами. Режим зірка дозволяє лише одному пристрою підключатися до багатьох. Одиночний режим — це встановлення з’єднання лише між двома пристроями, але з найкращою пропускною здатністю. Усі під’єднувальні пристрої мають бути встановлені в однаковий режим, і зміна режиму призведе до припинення всіх поточних з’єднань.</string>
+    <string name="connections_mode_star">Зірка</string>
+    <string name="connections_no_devices">Немає підключених пристроїв</string>
+    <string name="theme_edit">Відредагувати або змінити поточну тему</string>
+    <string name="other_options">Інші варіанти</string>
+    <string name="connections_mode_single">Неодружений</string>
 </resources>

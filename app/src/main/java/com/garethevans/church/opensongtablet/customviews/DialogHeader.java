@@ -10,12 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
     private final TextView textView;
+    private final FloatingActionButton webHelp;
     private BottomSheetDialogFragment bottomSheetDialogFragment;
 
     public DialogHeader(Context context, @Nullable AttributeSet attrs) {
@@ -24,6 +26,10 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
         textView = findViewById(R.id.textView);
+        webHelp = findViewById(R.id.webHelp);
+
+        textView.setId(generateViewId());
+        webHelp.setId(generateViewId());
 
         floatingActionButton.setClickable(true);
         floatingActionButton.setOnClickListener(this);
@@ -45,6 +51,16 @@ public class DialogHeader extends LinearLayout implements View.OnClickListener {
 
     public void setClose(BottomSheetDialogFragment thisFragment) {
         bottomSheetDialogFragment = thisFragment;
+    }
+
+    public void setWebHelp(MainActivityInterface mainActivityInterface, String webAddress) {
+        // If we pass in a valid web address, we show the web help page
+        if (webAddress!=null && !webAddress.isEmpty()) {
+            webHelp.setVisibility(View.VISIBLE);
+            webHelp.setOnClickListener(v->mainActivityInterface.openDocument(webAddress));
+        } else {
+            webHelp.setVisibility(View.GONE);
+        }
     }
 
     @Override

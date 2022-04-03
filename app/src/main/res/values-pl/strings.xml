@@ -180,7 +180,6 @@
     <string name="export_desktop">"Plik pulpitu (brak rozszerzenia plików)"</string>
     <string name="export_onsong">"Piosenka OnSong (.onsong)"</string>
     <string name="export_ost">"Utwór OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Obraz zrzutu (.png)"</string>
     <string name="export_set">"Pakiet OpenSongApp (.osts)"</string>
     <string name="export_text">"Tekst (.txt)"</string>
@@ -375,7 +374,6 @@
     <string name="save">"Zachować"</string>
     <string name="scale_style">"Styl skala"</string>
     <string name="scripture">"Pismo"</string>
-    <string name="scrollbuttons">"Przewiń ustawienia"</string>
     <string name="scroll_amount">"Kwota przewijania"</string>
     <string name="scrollbuttons_toggle">Przełącz przycisków przewijania</string>
     <string name="search">"Szukaj"</string>
@@ -838,4 +836,18 @@
     <string name="sound_level_meter_info">Sprawdź głośność (używa mikrofonu)</string>
     <string name="utilities">Narzędzia</string>
     <string name="utilities_info">Inne narzędzia dla muzyków</string>
+    <string name="connections_advanced">Pokaż więcej ustawień dla połączeń w pobliżu i pełnego dziennika</string>
+    <string name="connections_advertise">Reklamować</string>
+    <string name="connections_advertise_info">Reklamuj swoje urządzenie, aby inni mogli je odkryć</string>
+    <string name="connections_advertising">Reklama…</string>
+    <string name="connections_connected_devices_info">Pokazuje listę aktualnie podłączonych urządzeń</string>
+    <string name="connections_discover_info">Poszukaj innych urządzeń, które obecnie się reklamują</string>
+    <string name="connections_mode">Tryb połączenia</string>
+    <string name="connections_mode_cluster">Grupa</string>
+    <string name="connections_mode_info">Jeśli masz problemy z połączeniem urządzeń, spróbuj zmienić tryb połączenia. Tryb klastra (domyślny) jest najbardziej wszechstronny i umożliwia łączenie się ze sobą wielu urządzeń, umożliwiając przełączanie między hostem a klientami. Tryb gwiazdy pozwala tylko jednemu urządzeniu połączyć się z wieloma. Tryb Pojedynczy polega na nawiązaniu połączenia między tylko dwoma urządzeniami, ale z najlepszą przepustowością. Wszystkie urządzenia łączące muszą być ustawione w ten sam tryb, a zmiana trybu spowoduje zakończenie wszystkich bieżących połączeń.</string>
+    <string name="connections_mode_star">Gwiazda</string>
+    <string name="connections_no_devices">Brak podłączonych urządzeń</string>
+    <string name="theme_edit">Edytuj lub zmień bieżący motyw</string>
+    <string name="other_options">Inne opcje</string>
+    <string name="connections_mode_single">Pojedynczy</string>
 </resources>

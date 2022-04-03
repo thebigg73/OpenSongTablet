@@ -35,6 +35,7 @@ public class GesturesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsGesturesBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.custom_gestures));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_custom_gestures));
 
         // Set dropDowns
         new Thread(() -> requireActivity().runOnUiThread(this::setupDropDowns)).start();

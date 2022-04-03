@@ -66,6 +66,7 @@ public class SoundLevelBottomSheet extends BottomSheetDialogFragment {
 
         myView.dialogHeader.setText(getString(R.string.volume));
         myView.dialogHeader.setClose(this);
+        myView.dialogHeader.setWebHelp(mainActivityInterface, getString(R.string.website_sound_level_meter));
 
         // Set the values
         setValues();

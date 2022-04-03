@@ -185,8 +185,8 @@ public class PresenterFragment extends Fragment {
         displayInterface.updateDisplay("setSongInfo");
 
         // IV - Consume any later pending client section change received from Host (-ve value)
-        if (mainActivityInterface.getNearbyConnections().isConnected &&
-                !mainActivityInterface.getNearbyConnections().isHost &&
+        if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                !mainActivityInterface.getNearbyConnections().getIsHost() &&
                 mainActivityInterface.getNearbyConnections().getWaitingForSectionChange()) {
             int pendingSection = mainActivityInterface.getNearbyConnections().getPendingCurrentSection();
 

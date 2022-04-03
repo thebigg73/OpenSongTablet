@@ -59,7 +59,7 @@
             android:text="@string/fix" />
         <TableRow style="@style/DividerLine"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit_format" />
@@ -67,12 +67,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:minHeight="72dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/convertToOpenSong"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 app:backgroundTint="@color/colorSecondary"
                 android:padding="8dp"
@@ -82,7 +83,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/convertToChoPro"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 app:backgroundTint="@color/colorAltPrimary"
                 android:padding="8dp"
@@ -91,7 +92,7 @@
         </LinearLayout>
         <TableRow style="@style/DividerLine"/>
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit_text_size" />
@@ -99,30 +100,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:minHeight="72dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/textSizeDown"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
                 android:padding="8dp"
+                app:backgroundTint="@color/colorAltPrimary"
                 android:text="@string/minus_1" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/textSizeUp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:layout_weight="0.5"
                 android:padding="8dp"
+                app:backgroundTint="@color/colorAltPrimary"
                 android:text="@string/plus_1" />
 
         </LinearLayout>
         <TableRow style="@style/DividerLine"/>
 
-        <com.garethevans.church.opensongtablet.customviews.MaterialTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/transposeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,24 +135,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:minHeight="72dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/transposeDown"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
                 android:padding="8dp"
+                app:backgroundTint="@color/colorAltPrimary"
                 android:text="@string/minus_1" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/transposeUp"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:layout_weight="0.5"
                 android:padding="8dp"
+                app:backgroundTint="@color/colorAltPrimary"
                 android:text="@string/plus_1" />
 
         </LinearLayout>

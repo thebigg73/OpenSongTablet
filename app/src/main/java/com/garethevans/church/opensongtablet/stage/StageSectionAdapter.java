@@ -218,8 +218,8 @@ public class StageSectionAdapter extends RecyclerView.Adapter<StageViewHolder> {
                 notifyItemChanged(position, alphaChange);
 
                 // Send a nearby notification (the client will ignore if not required or not ready)
-                if (mainActivityInterface.getNearbyConnections().usingNearby &&
-                mainActivityInterface.getNearbyConnections().isHost) {
+                if (mainActivityInterface.getNearbyConnections().hasValidConnections() &&
+                mainActivityInterface.getNearbyConnections().getIsHost()) {
                     mainActivityInterface.getNearbyConnections().sendSongSectionPayload();
                 }
             }

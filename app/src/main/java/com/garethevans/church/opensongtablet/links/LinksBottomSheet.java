@@ -160,7 +160,7 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
             address = "http://"+address.trim();
             myView.linkLocation.setText(address);
         }
-        mainActivityInterface.openDocument(null,address);
+        mainActivityInterface.openDocument(address);
     }
 
     private void searchFile(String mimeType) {
@@ -176,9 +176,9 @@ public class LinksBottomSheet extends BottomSheetDialogFragment {
         // Try to open the file or webpage if it isn't null
         if (!getLinkText().isEmpty() && !getLinkText().contains("http")) {
             Uri uri = mainActivityInterface.getStorageAccess().fixLocalisedUri(getLinkText());
-            mainActivityInterface.openDocument(null, uri.toString());
+            mainActivityInterface.openDocument(uri.toString());
         } else if (!getLinkText().isEmpty()) {
-            mainActivityInterface.openDocument(null, getLinkText());
+            mainActivityInterface.openDocument(getLinkText());
         } else {
             myView.linkLocation.requestFocus();
         }

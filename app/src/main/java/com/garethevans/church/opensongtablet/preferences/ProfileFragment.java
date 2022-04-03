@@ -40,6 +40,7 @@ public class ProfileFragment extends Fragment {
         myView = SettingsProfilesBinding.inflate(inflater,container,false);
 
         mainActivityInterface.updateToolbar(getString(R.string.profile));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_profiles));
 
         // Setup helpers
         setupHelpers();

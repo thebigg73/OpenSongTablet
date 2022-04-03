@@ -13,18 +13,17 @@
     app:titleMarginStart="0dp"
     app:contentInsetStart="0dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/actionBarBackground"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <RelativeLayout
             android:id="@+id/songandauthor"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/batteryholder"
             android:gravity="center_vertical|start">
 
             <ImageView
@@ -102,8 +101,8 @@
             android:id="@+id/batteryholder"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/webHelp"
             android:gravity="center"
             android:minWidth="48dp"
             android:maxWidth="48dp"
@@ -156,5 +155,15 @@
 
             </LinearLayout>
         </RelativeLayout>
-    </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/webHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_web_white_36dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"/>
+    </LinearLayout>
 </androidx.appcompat.widget.Toolbar>

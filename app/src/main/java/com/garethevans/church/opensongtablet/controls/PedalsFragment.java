@@ -62,6 +62,7 @@ public class PedalsFragment extends Fragment {
         myView = SettingsPedalBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.pedal));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_foot_pedal));
 
         // Grab views
         grabViews();

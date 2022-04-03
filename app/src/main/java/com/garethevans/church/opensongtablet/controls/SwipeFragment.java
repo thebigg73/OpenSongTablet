@@ -39,6 +39,7 @@ public class SwipeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsSwipesBinding.inflate(inflater, container, false);
         mainActivityInterface.updateToolbar(getString(R.string.swipe));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_swipe_settings));
 
         // register this fragement
         mainActivityInterface.registerFragment(this, "SwipeFragment");

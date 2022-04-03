@@ -183,21 +183,32 @@
     <string name="connections_actasclient_info">Listen for instructions from connected devices that are set as hosts</string>
     <string name="connections_actashost">Act as host</string>
     <string name="connections_actashost_info">Control other connected devices that are set as clients</string>
+    <string name="connections_advanced">Show more settings for Nearby connections and full log</string>
     <string name="connections_advertise">Advertise</string>
+    <string name="connections_advertise_info">Advertise your device for others to discover</string>
     <string name="connections_advertise_name">Device being advertised: </string>
     <string name="connections_advertising">Advertising…</string>
     <string name="connections_change">Once you have made a connection, you can change between host and client as required</string>
     <string name="connections_connect">Connect devices</string>
     <string name="connections_connected">Connected to</string>
+    <string name="connections_connected_devices_info">Shows a list of currently connected devices</string>
     <string name="connections_description">Connect to other devices running OpenSongApp</string>
     <string name="connections_device_name">Device name</string>
     <string name="connections_disconnect">Disconnect from</string>
     <string name="connections_discover">Discover services</string>
+    <string name="connections_discover_info">Look for other devices that are currently advertising</string>
     <string name="connections_discover_stop">Stop discovery</string>
+    <string name="connections_host_passthrough">Host passthrough</string>
+    <string name="connections_host_passthrough_info">Allow messages received from other hosts to pass through to connected clients</string>
     <string name="connections_failure">Unable to connect</string>
     <string name="connections_keephostsongs">Keep host songs</string>
     <string name="connections_keephostsongs_info">If you do not already have the host song in your library, the app will copy if for you</string>
     <string name="connections_log">Connection log (click to clear).  If you have any issues, reset your WiFi and restart the app.</string>
+    <string name="connections_mode">Connection mode</string>
+    <string name="connections_mode_cluster">Cluster</string>
+    <string name="connections_mode_info">If you have issues connecting devices, try changing the connection mode.  Cluster mode (default) is the most versatile and allows multiple devices to connect to each other allowing switching between host and clients.   Star mode only allows one device to connect to many.  Single mode is to establish a connection between only two devices, but with the best bandwith.   All connecting devices need to be set to the same mode and changing mode will end all current connections.</string>
+    <string name="connections_mode_star">Star</string>
+    <string name="connections_no_devices">No devices connected</string>
     <string name="connections_off">Close any connections and stop advertising and discovering</string>
     <string name="connections_receive_host">Receive host songs</string>
     <string name="connections_receive_host_info">View the host version of the song instead of your own</string>
@@ -513,6 +524,7 @@
     <string name="opensong" translatable="false">OpenSong</string>
     <string name="optional">Optional</string>
     <string name="other">Other</string>
+    <string name="other_options">Other options</string>
     <string name="override_fullautoscale">Override full autoscale to width only</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
     <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
@@ -558,7 +570,6 @@
     <string name="persistent_database_info">This stores extra information (key, notes, autoscroll, midi, etc.) for non OpenSong songs such as PDF files</string>
     <string name="piano">Piano</string>
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
-    <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
     <string name="play_services_how">Show me how</string>
     <string name="plus_1" translatable="false">+1</string>
     <string name="portrait">Portrait</string>
@@ -936,13 +947,32 @@ Check out the categories in the right hand options menu.
     <string name="warn_before_changing_song">Show a warning before moving on to the next song (useful to avoid accidental presses)</string>
     <string name="website">Website</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
+    <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
+    <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
+    <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
+    <string name="website_foot_pedal" translatable="false">https://www.opensongapp.com/user-manual/controls/foot-pedals</string>
+    <string name="website_forum" translatable="false">https://groups.google.com/g/opensongapp</string>
+    <string name="website_github" translatable="false">https://github.com/thebigg73/OpenSongTablet</string>
+    <string name="website_latest" translatable="false">https://www.opensongapp.com/latest-updates</string>
+    <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-connections</string>
+    <string name="website_modes" translatable="false">https://www.opensongapp.com/user-guide/the-app-modes</string>
+    <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
+    <string name="website_page_buttons" translatable="false">https://www.opensongapp.com/user-manual/controls/page-buttons</string>
+    <string name="website_paypal" translatable="false">https://www.paypal.me/opensongapp</string>
+    <string name="website_play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
+    <string name="website_profiles" translatable="false">https://www.opensongapp.com/user-manual/profiles</string>
+    <string name="website_rate" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="website_song_format" translatable="false">https://www.opensongapp.com/user-guide/songs/creating-new-songs</string>
+    <string name="website_sound_level_meter" translatable="false">https://www.opensongapp.com/user-manual/sound-level-meter</string>
+    <string name="website_storage_settings" translatable="false">https://www.opensongapp.com/user-manual/storage/storage-settings</string>
+    <string name="website_swipe_settings" translatable="false">https://www.opensongapp.com/user-manual/controls/swipe-settings</string>
+    <string name="website_user_guide" translatable="false">https://www.opensongapp.com/user-guide</string>
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="words_and_music_by">Words and music by</string>
     <string name="worshipready" translatable="false">WorshipReady.com</string>
     <string name="worshiptogether" translatable="false">WorshipTogether</string>
 
     <string name="zefania" translatable="false">Zefania</string>
-
 
 
     <!-- TODO LIKELY TO REMOVE NO USAGES FOUND -->
@@ -1090,7 +1120,6 @@ Check out the categories in the right hand options menu.
     <string name="edit_song_pitch">Pitch pipe notes for song</string>
     <string name="edit_song_restrictions">Restrictions</string>
     <string name="error_missingsection">Missing sections</string>
-    <string name="export_pdf">Screenshot PDF (.pdf)</string>
     <string name="export_png">Screenshot image (.png)</string>
     <string name="exportsavedset">Share the saved set</string>
     <string name="extracting">Extracting</string>
@@ -1111,15 +1140,6 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
-    <string name="connections_cluster">Cluster</string>
-    <string name="connections_star">Star</string>
-    <string name="connections_mode">Connection mode</string>
-    <string name="connections_mode_info">"If you have issues connecting devices, try changing the connection mode.  Older versions of the app (where there was no option to change the mode) used cluster mode by default.  All connecting devices need to be set to the same mode."</string>
-    <string name="connections_no_devices">No devices connected</string>
-    <string name="connections_advanced">Show more settings for Nearby connections and full log</string>
-    <string name="other_options">Other options</string>
-    <string name="connections_connected_devices_info">Shows a list of currently connected devices</string>
-    <string name="connections_advertise_info">Advertise your device for others to discover</string>
-    <string name="connections_discover_info">Look for other devices that are currently advertising</string>
+    <string name="connections_mode_single">Single</string>
 
 </resources>

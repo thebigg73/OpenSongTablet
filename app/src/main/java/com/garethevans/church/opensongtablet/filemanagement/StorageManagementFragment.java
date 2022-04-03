@@ -40,6 +40,7 @@ public class StorageManagementFragment extends Fragment {
         myView = StorageFolderDisplayBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.storage));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_storage_settings));
 
         // Do this as separate tasks in a new thread
         setUpThread();

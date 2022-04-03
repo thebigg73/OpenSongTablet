@@ -373,7 +373,6 @@
     <string name="save">"为了节省"</string>
     <string name="scale_style">"缩放风格"</string>
     <string name="scripture">"圣经"</string>
-    <string name="scrollbuttons">"滚动设置"</string>
     <string name="scroll_amount">"滚动量"</string>
     <string name="scrollbuttons_toggle">切换滚动按钮</string>
     <string name="search">"搜索"</string>
@@ -836,4 +835,18 @@
     <string name="sound_level_meter_info">检查音量（使用麦克风）</string>
     <string name="utilities">实用程序</string>
     <string name="utilities_info">音乐家的其他工具</string>
+    <string name="connections_advanced">显示附近连接和完整日志的更多设置</string>
+    <string name="connections_advertise">广告</string>
+    <string name="connections_advertise_info">宣传您的设备以供其他人发现</string>
+    <string name="connections_advertising">广告…</string>
+    <string name="connections_connected_devices_info">显示当前连接的设备列表</string>
+    <string name="connections_discover_info">查找当前正在投放广告的其他设备</string>
+    <string name="connections_mode">连接方式</string>
+    <string name="connections_mode_cluster">簇</string>
+    <string name="connections_mode_info">如果您在连接设备时遇到问题，请尝试更改连接模式。 集群模式（默认）是最通用的，它允许多个设备相互连接，从而允许在主机和客户端之间切换。 星型模式只允许一台设备连接多台设备。 单模式是只在两个设备之间建立连接，但带宽最好。 所有连接设备都需要设置为相同的模式，更改模式将结束所有当前连接。</string>
+    <string name="connections_mode_star">星星</string>
+    <string name="connections_no_devices">未连接任何设备</string>
+    <string name="other_options">其他选项</string>
+    <string name="theme_edit">编辑或更改当前主题</string>
+    <string name="connections_mode_single">单身的</string>
 </resources>

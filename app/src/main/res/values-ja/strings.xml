@@ -180,7 +180,6 @@
     <string name="export_desktop">"デスクトップファイル（ファイル拡張子なし）"</string>
     <string name="export_onsong">"OnSongの歌（韻）"</string>
     <string name="export_ost">"OpenSongAppの歌（.ost）"</string>
-    <string name="export_pdf">"スクリーンショットPDF（.pdf）"</string>
     <string name="export_png">"スクリーンショットイメージ（.png）"</string>
     <string name="export_set">"OpenSongAppセット（.osts）"</string>
     <string name="export_text">"テキスト（.txt）"</string>
@@ -375,7 +374,6 @@
     <string name="save">"保存するには"</string>
     <string name="scale_style">"スケールスタイル"</string>
     <string name="scripture">"聖書"</string>
-    <string name="scrollbuttons">"スクロール設定"</string>
     <string name="scroll_amount">"スクロール量"</string>
     <string name="scrollbuttons_toggle">トグルスクロールボタン</string>
     <string name="search">"サーチ"</string>
@@ -838,4 +836,18 @@
     <string name="sound_level_meter_info">音量を確認します（マイクを使用）</string>
     <string name="utilities">ユーティリティ</string>
     <string name="utilities_info">ミュージシャンのための他のツール</string>
+    <string name="connections_mode_single">独身</string>
+    <string name="other_options">他のオプション</string>
+    <string name="theme_edit">現在のテーマを編集または変更する</string>
+    <string name="connections_no_devices">デバイスが接続されていません</string>
+    <string name="connections_mode_star">星</string>
+    <string name="connections_mode_info">デバイスの接続に問題がある場合は、接続モードを変更してみてください。 クラスタモード（デフォルト）は最も用途が広く、複数のデバイスを相互に接続して、ホストとクライアントを切り替えることができます。 スターモードでは、1つのデバイスのみが多数に接続できます。 シングルモードは、2つのデバイス間のみの接続を確立することですが、最適な帯域幅を使用します。 すべての接続デバイスを同じモードに設定する必要があります。モードを変更すると、現在のすべての接続が終了します。</string>
+    <string name="connections_mode_cluster">集まる</string>
+    <string name="connections_mode">接続モード</string>
+    <string name="connections_discover_info">現在宣伝している他のデバイスを探す</string>
+    <string name="connections_connected_devices_info">現在接続されているデバイスのリストを表示します</string>
+    <string name="connections_advertising">広告…</string>
+    <string name="connections_advertise_info">他の人が発見できるようにデバイスを宣伝する</string>
+    <string name="connections_advertise">広告する</string>
+    <string name="connections_advanced">近くの接続と完全なログのその他の設定を表示する</string>
 </resources>

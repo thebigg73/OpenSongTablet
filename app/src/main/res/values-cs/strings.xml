@@ -373,7 +373,6 @@
     <string name="save">"Zachránit"</string>
     <string name="scale_style">"Stupnice měřítka"</string>
     <string name="scripture">"Písmo svaté"</string>
-    <string name="scrollbuttons">"Nastavení posunu"</string>
     <string name="scroll_amount">"Množství posunu"</string>
     <string name="scrollbuttons_toggle">Přepnout rolovací tlačítka</string>
     <string name="search">"Vyhledávání"</string>
@@ -836,4 +835,18 @@
     <string name="utilities">Utility</string>
     <string name="utilities_info">Další nástroje pro hudebníky</string>
     <string name="forum">Fórum</string>
+    <string name="connections_advanced">Zobrazit další nastavení pro připojení v okolí a úplný protokol</string>
+    <string name="connections_advertise">Inzerovat</string>
+    <string name="connections_advertise_info">Inzerujte své zařízení, aby jej mohli objevit ostatní</string>
+    <string name="connections_advertising">Reklamní…</string>
+    <string name="connections_connected_devices_info">Zobrazuje seznam aktuálně připojených zařízení</string>
+    <string name="connections_discover_info">Hledejte další zařízení, která aktuálně inzerují</string>
+    <string name="connections_mode">Režim připojení</string>
+    <string name="connections_mode_cluster">Cluster</string>
+    <string name="connections_mode_info">Pokud máte problémy s připojením zařízení, zkuste změnit režim připojení. Clusterový režim (výchozí) je nejuniverzálnější a umožňuje vzájemné propojení více zařízení, což umožňuje přepínání mezi hostitelem a klienty. Režim hvězda umožňuje připojení pouze jednoho zařízení k mnoha. Jediný režim je vytvořit spojení pouze mezi dvěma zařízeními, ale s nejlepší šířkou pásma. Všechna připojovaná zařízení musí být nastavena na stejný režim a změna režimu ukončí všechna aktuální připojení.</string>
+    <string name="connections_mode_star">Hvězda</string>
+    <string name="connections_no_devices">Nejsou připojena žádná zařízení</string>
+    <string name="other_options">Jiné možnosti</string>
+    <string name="theme_edit">Upravit nebo změnit aktuální téma</string>
+    <string name="connections_mode_single">Singl</string>
 </resources>

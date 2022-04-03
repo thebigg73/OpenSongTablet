@@ -31,6 +31,7 @@ public class AppActionBar {
     private final TextView capo;
     private final TextView clock;
     private final ImageView setIcon;
+    private final ImageView webHelp;
     private final Handler delayactionBarHide;
     private final Runnable hideActionBarRunnable;
     private final int autoHideTime = 1200;
@@ -42,7 +43,7 @@ public class AppActionBar {
     private boolean performanceMode;
 
     public AppActionBar(Context c, ActionBar actionBar, Toolbar toolbar, ImageView setIcon, TextView title, TextView author,
-                        TextView key, TextView capo, TextView clock) {
+                        TextView key, TextView capo, TextView clock, ImageView webHelp) {
         mainActivityInterface = (MainActivityInterface) c;
 
         this.actionBar = actionBar;
@@ -53,6 +54,7 @@ public class AppActionBar {
         this.capo = capo;
         this.clock = clock;
         this.setIcon = setIcon;
+        this.webHelp = webHelp;
         delayactionBarHide = new Handler();
         hideActionBarRunnable = () -> {
             if (actionBar != null && actionBar.isShowing()) {
@@ -93,6 +95,9 @@ public class AppActionBar {
         return hideActionBar;
     }
     public void setActionBar(String newtitle) {
+        // By default hide the webHelp (can be shown later)
+        webHelp.setVisibility(View.GONE);
+
         if (newtitle == null) {
             // We are in the Performance/Stage mode
             float mainsize = mainActivityInterface.getPreferences().getMyPreferenceFloat("songTitleSize",13.0f);
@@ -156,7 +161,7 @@ public class AppActionBar {
             }
 
         } else {
-            // We are in a different fragment, so don't hide the song info stuff
+            // We are in a different fragment, so hide the song info stuff
             setIcon.setVisibility(View.GONE);
             actionBar.show();
             if (title != null) {
@@ -165,6 +170,16 @@ public class AppActionBar {
                 hideView(author, true);
                 hideView(key, true);
             }
+        }
+    }
+    public void updateToolbarHelp(String webAddress) {
+        // This allows a help button to be shown in the action bar
+        // This links to the specific page in the user manul (if webAddress isn't null)
+        if (webAddress==null || webAddress.isEmpty()) {
+            webHelp.setVisibility(View.GONE);
+        } else {
+            webHelp.setVisibility(View.VISIBLE);
+            webHelp.setOnClickListener(v->mainActivityInterface.openDocument(webAddress));
         }
     }
 

@@ -30,9 +30,7 @@ public class ModeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsModeBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.choose_app_mode));
-
-        // Link FAB to nestedScrollView
-        myView.nestedScrollView.setFabToAnimate(myView.webLink);
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_app_mode));
 
         // Highlight the current mode
         highlightMode();
@@ -62,7 +60,6 @@ public class ModeFragment extends Fragment {
         myView.performanceMode.setOnClickListener(v -> updatePreference("Performance"));
         myView.stageMode.setOnClickListener(v -> updatePreference("Stage"));
         myView.presenterMode.setOnClickListener(v -> updatePreference("Presenter"));
-        myView.webLink.setOnClickListener(v -> mainActivityInterface.openDocument("mode",null));
     }
 
     private void updatePreference(String which) {

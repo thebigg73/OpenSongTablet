@@ -180,7 +180,6 @@
     <string name="export_desktop">"Επιφάνεια εργασίας (χωρίς επέκταση αρχείου)"</string>
     <string name="export_onsong">"OnSong τραγούδι (.ong)"</string>
     <string name="export_ost">"Τραγούδι OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Στιγμιότυπο PDF (.pdf)"</string>
     <string name="export_png">"Εικόνα οθόνης (.png)"</string>
     <string name="export_set">"Σετ OpenSongApp (.osts)"</string>
     <string name="export_text">"Κείμενο (.txt)"</string>
@@ -375,7 +374,6 @@
     <string name="save">"Αποθήκευση"</string>
     <string name="scale_style">"Στυλ κλίμακας"</string>
     <string name="scripture">"Scripture"</string>
-    <string name="scrollbuttons">"Ρυθμίσεις κύλισης"</string>
     <string name="scroll_amount">"Μετακινήστε το ποσό"</string>
     <string name="scrollbuttons_toggle">"Toggle scroll buttons"</string>
     <string name="search">"Ψάξιμο"</string>
@@ -837,4 +835,18 @@
     <string name="duplicate_song">Δημιουργήστε ένα αντίγραφο αυτού του τραγουδιού</string>
     <string name="capo_hide">Αυτόματη απόκρυψη capo</string>
     <string name="autoscroll_hide">Αυτόματη απόκρυψη αυτόματης κύλισης</string>
+    <string name="connections_advanced">Εμφάνιση περισσότερων ρυθμίσεων για τις συνδέσεις Nearby και το πλήρες αρχείο καταγραφής</string>
+    <string name="connections_advertise">Διαφημίζω</string>
+    <string name="connections_advertise_info">Διαφημίστε τη συσκευή σας για να την ανακαλύψουν άλλοι</string>
+    <string name="connections_advertising">Διαφήμιση…</string>
+    <string name="connections_connected_devices_info">Εμφανίζει μια λίστα με τις τρέχουσες συνδεδεμένες συσκευές</string>
+    <string name="connections_discover_info">Αναζητήστε άλλες συσκευές που διαφημίζονται αυτήν τη στιγμή</string>
+    <string name="connections_mode">Λειτουργία σύνδεσης</string>
+    <string name="connections_mode_cluster">Σύμπλεγμα</string>
+    <string name="connections_mode_info">Εάν αντιμετωπίζετε προβλήματα με τη σύνδεση συσκευών, δοκιμάστε να αλλάξετε τη λειτουργία σύνδεσης. Η λειτουργία συμπλέγματος (προεπιλογή) είναι η πιο ευέλικτη και επιτρέπει σε πολλές συσκευές να συνδέονται μεταξύ τους επιτρέποντας την εναλλαγή μεταξύ κεντρικού υπολογιστή και πελάτη. Η λειτουργία αστεριού επιτρέπει μόνο μία συσκευή να συνδέεται με πολλές. Η απλή λειτουργία είναι να δημιουργήσετε μια σύνδεση μεταξύ δύο μόνο συσκευών, αλλά με το καλύτερο εύρος ζώνης. Όλες οι συσκευές σύνδεσης πρέπει να ρυθμιστούν στην ίδια λειτουργία και η αλλαγή της λειτουργίας θα τερματίσει όλες τις τρέχουσες συνδέσεις.</string>
+    <string name="connections_mode_star">Αστέρι</string>
+    <string name="connections_no_devices">Δεν υπάρχουν συνδεδεμένες συσκευές</string>
+    <string name="theme_edit">Επεξεργαστείτε ή αλλάξτε το τρέχον θέμα</string>
+    <string name="other_options">Αλλες επιλογές</string>
+    <string name="connections_mode_single">Μονόκλινο</string>
 </resources>

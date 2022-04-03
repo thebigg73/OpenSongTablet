@@ -103,7 +103,7 @@ public class AlertInfoBottomSheet extends BottomSheetDialogFragment {
         if (mainActivityInterface.getAlertChecks().showPlayServicesAlert()) {
             Log.d(TAG, "onresume()  Play store isn't installed");
             myView.playServices.setVisibility(View.VISIBLE);
-            myView.playServicesInfo.setOnClickListener(b -> webLink(getString(R.string.play_services_help)));
+            myView.playServicesInfo.setOnClickListener(b -> webLink(getString(R.string.website_play_services_help)));
         } else {
             myView.playServices.setVisibility(View.GONE);
         }

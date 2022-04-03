@@ -180,7 +180,6 @@
     <string name="export_desktop">"Asztali fájl (nincs fájlkiterjesztés)"</string>
     <string name="export_onsong">"OnSong dal (.onsong)"</string>
     <string name="export_ost">"OpenSongApp dal (ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Screenshot-kép (.png)"</string>
     <string name="export_set">"OpenSongApp szett (.osts)"</string>
     <string name="export_text">"Szöveg (.txt)"</string>
@@ -375,7 +374,6 @@
     <string name="save">"Megtakarit"</string>
     <string name="scale_style">"Scale stílus"</string>
     <string name="scripture">"Szentírás"</string>
-    <string name="scrollbuttons">"Scroll beállítások"</string>
     <string name="scroll_amount">"Scroll összeg"</string>
     <string name="scrollbuttons_toggle">Váltás gördítőgombokat</string>
     <string name="search">"Keresés"</string>
@@ -837,4 +835,18 @@
     <string name="duplicate_song">Készítsen másolatot erről a dalról</string>
     <string name="capo_hide">Capo automatikus elrejtése</string>
     <string name="autoscroll_hide">Automatikus görgetés automatikus elrejtése</string>
+    <string name="connections_mode_single">Egyetlen</string>
+    <string name="other_options">Egyéb opciók</string>
+    <string name="theme_edit">Szerkessze vagy módosítsa az aktuális témát</string>
+    <string name="connections_no_devices">Nincsenek csatlakoztatott eszközök</string>
+    <string name="connections_mode_star">Csillag</string>
+    <string name="connections_mode_info">Ha problémái vannak az eszközök csatlakoztatásával, próbálja megváltoztatni a csatlakozási módot. A fürt mód (alapértelmezett) a legsokoldalúbb, és lehetővé teszi több eszköz egymáshoz való csatlakozását, lehetővé téve a gazdagép és az ügyfelek közötti váltást. A csillag módban csak egy eszköz csatlakozhat több eszközhöz. Az egymódú csak két eszköz között létesít kapcsolatot, de a legjobb sávszélességgel. Az összes csatlakozó eszközt ugyanarra a módra kell állítani, és az üzemmód megváltoztatása az összes jelenlegi kapcsolatot megszakítja.</string>
+    <string name="connections_mode_cluster">Fürt</string>
+    <string name="connections_mode">Csatlakozási mód</string>
+    <string name="connections_discover_info">Keressen más, jelenleg hirdetett eszközöket</string>
+    <string name="connections_connected_devices_info">Megjeleníti a jelenleg csatlakoztatott eszközök listáját</string>
+    <string name="connections_advertising">Hirdető…</string>
+    <string name="connections_advertise_info">Hirdesse eszközét, hogy mások felfedezhessék</string>
+    <string name="connections_advertise">Hirdet</string>
+    <string name="connections_advanced">További beállítások megjelenítése a Közeli kapcsolatokhoz és a teljes naplóhoz</string>
 </resources>
