@@ -170,7 +170,7 @@ public class LoadXML extends Activity {
                             .replace("Moderate", "100")
                             .replace("Slow", "80")
                             .replace("Very Slow", "60")
-                            .replace("[\\D]", "");
+                            .replaceAll("[\\D]", "");
 
                     if (!StaticVariables.mDuration.isEmpty()) {
                         try {
