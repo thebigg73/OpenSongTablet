@@ -533,4 +533,5 @@
     <string name="presoShowBackground">Tło</string>
     <string name="nearby_large_file">Udostępniam ten duży plik utworu</string>
     <string name="midi_delay">Bufor opóźnienia MIDI</string>
+    <string name="forum">Pomoc (googlegroups)</string>
 </resources>

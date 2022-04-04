@@ -216,7 +216,7 @@
     <string name="grabchordpro">"Auszug ChordPro Daten"</string>
     <string name="guitar">Gitarre</string>
     <string name="headingline_scale">"Überschrift skalieren"</string>
-    <string name="help">"Hilfe (Online)"</string>
+    <string name="help">Aide (en ligne)</string>
     <string name="hide_actionbar">"Menüleiste anzeigen / ausblenden"</string>
     <string name="hidelyricsbox">"Liedtext-Container ausblenden"</string>
     <string name="highlight">"Textmarker"</string>
@@ -533,4 +533,5 @@
     <string name="presoShowBackground">Hintergrund</string>
     <string name="nearby_large_file">Diese große Songdatei wird geteilt</string>
     <string name="midi_delay">MIDI-Verzögerungspuffer</string>
+    <string name="forum">Aide (googlegroups)</string>
 </resources>

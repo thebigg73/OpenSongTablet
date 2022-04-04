@@ -71,6 +71,19 @@
             android:textSize="12sp" />
 
         <Button
+            android:id="@+id/otherEmailButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_forum_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/forum"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
             android:id="@+id/otherTweetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,19 +96,6 @@
             android:textColor="#fff"
             android:textSize="12sp"
             tools:ignore="HardcodedText" />
-
-        <Button
-            android:id="@+id/otherEmailButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:background="@drawable/menu_button"
-            android:drawableStart="@drawable/ic_forum_white_36dp"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:text="@string/forum"
-            android:textColor="#fff"
-            android:textSize="12sp" />
 
         <Button
             android:id="@+id/otherLanguageButton"

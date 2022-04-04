@@ -533,4 +533,5 @@
     <string name="presoShowBackground">Háttér</string>
     <string name="nearby_large_file">Ezt a nagy dalfájlt megosztják</string>
     <string name="midi_delay">MIDI késleltetési puffer</string>
+    <string name="forum">Segítség (googlegroups)</string>
 </resources>

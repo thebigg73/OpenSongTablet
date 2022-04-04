@@ -533,4 +533,5 @@
     <string name="presoShowBackground">Sfon</string>
     <string name="nearby_large_file">Questo file di grandi dimensioni è stato condiviso</string>
     <string name="midi_delay">Buffer di ritardo MIDI</string>
+    <string name="forum">Guida (googlegroups)</string>
 </resources>
