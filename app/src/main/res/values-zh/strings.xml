@@ -849,4 +849,6 @@
     <string name="other_options">其他选项</string>
     <string name="theme_edit">编辑或更改当前主题</string>
     <string name="connections_mode_single">单身的</string>
+    <string name="connections_host_passthrough">主机直通</string>
+    <string name="connections_host_passthrough_info">允许从其他主机收到的消息传递到连接的客户端</string>
 </resources>

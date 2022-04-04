@@ -40,6 +40,7 @@ public class ThemeSetupFragment extends Fragment {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
 
         mainActivityInterface.updateToolbar(getString(R.string.theme));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_themes));
 
         // Initialise the themes
         setUpTheme();

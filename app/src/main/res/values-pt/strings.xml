@@ -849,4 +849,6 @@
     <string name="theme_edit">Editar ou alterar o tema atual</string>
     <string name="other_options">Outras opções</string>
     <string name="connections_mode_single">Solteiro</string>
+    <string name="connections_host_passthrough_info">Permitir que mensagens recebidas de outros hosts passem para clientes conectados</string>
+    <string name="connections_host_passthrough">Passagem do host</string>
 </resources>

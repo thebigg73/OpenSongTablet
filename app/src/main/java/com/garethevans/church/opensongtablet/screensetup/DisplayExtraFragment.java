@@ -34,6 +34,8 @@ public class DisplayExtraFragment extends Fragment {
         requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         mainActivityInterface.updateToolbar(getString(R.string.song_display));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_song_display));
+
 
         // Set up views
         setViews();

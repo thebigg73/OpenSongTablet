@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.screensetup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.songprocessing.SongDetailsBottomSheet;
 
@@ -22,6 +24,8 @@ public class AppActionBar {
 
     // This holds references to the items in the ActionBar (except the battery)
     // Battery changes get sent via the mainactivityInterface
+    private final Activity activity;
+    private final Context c;
     private final MainActivityInterface mainActivityInterface;
     private final Toolbar toolbar;
     private final ActionBar actionBar;
@@ -42,10 +46,11 @@ public class AppActionBar {
 
     private boolean performanceMode;
 
-    public AppActionBar(Context c, ActionBar actionBar, Toolbar toolbar, ImageView setIcon, TextView title, TextView author,
+    public AppActionBar(Activity activity, Context c, ActionBar actionBar, Toolbar toolbar, ImageView setIcon, TextView title, TextView author,
                         TextView key, TextView capo, TextView clock, ImageView webHelp) {
+        this.activity = activity;
+        this.c = c;
         mainActivityInterface = (MainActivityInterface) c;
-
         this.actionBar = actionBar;
         this.toolbar = toolbar;
         this.title = title;
@@ -180,6 +185,9 @@ public class AppActionBar {
         } else {
             webHelp.setVisibility(View.VISIBLE);
             webHelp.setOnClickListener(v->mainActivityInterface.openDocument(webAddress));
+            // For the first run, show the showcase as well
+            mainActivityInterface.getShowCase().singleShowCase(activity, webHelp,null,
+                    c.getString(R.string.help),false,"webHelp");
         }
     }
 

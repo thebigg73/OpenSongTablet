@@ -850,4 +850,6 @@
     <string name="theme_edit">Edytuj lub zmień bieżący motyw</string>
     <string name="other_options">Inne opcje</string>
     <string name="connections_mode_single">Pojedynczy</string>
+    <string name="connections_host_passthrough">Przejście hosta</string>
+    <string name="connections_host_passthrough_info">Zezwalaj na przekazywanie wiadomości otrzymanych od innych hostów do podłączonych klientów</string>
 </resources>

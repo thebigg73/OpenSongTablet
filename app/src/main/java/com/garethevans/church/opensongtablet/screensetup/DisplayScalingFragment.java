@@ -32,6 +32,7 @@ public class DisplayScalingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayScalingBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(getString(R.string.scaling));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_scaling));
 
         // Set up the views
         setViews();

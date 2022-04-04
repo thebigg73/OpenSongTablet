@@ -850,4 +850,6 @@
     <string name="connections_advertise_info">他の人が発見できるようにデバイスを宣伝する</string>
     <string name="connections_advertise">広告する</string>
     <string name="connections_advanced">近くの接続と完全なログのその他の設定を表示する</string>
+    <string name="connections_host_passthrough">ホストパススルー</string>
+    <string name="connections_host_passthrough_info">他のホストから受信したメッセージが接続されたクライアントに通過できるようにする</string>
 </resources>

@@ -849,4 +849,6 @@
     <string name="theme_edit">Redigera eller ändra aktuellt tema</string>
     <string name="other_options">Andra alternativ</string>
     <string name="connections_mode_single">Enda</string>
+    <string name="connections_host_passthrough">Värdgenomföring</string>
+    <string name="connections_host_passthrough_info">Tillåt meddelanden som tas emot från andra värdar att passera till anslutna klienter</string>
 </resources>

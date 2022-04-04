@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class ImportOptionsFragment extends Fragment {
     // This class asks the user which type of file should be imported.
 
     private MainActivityInterface mainActivityInterface;
+    private final String TAG = "ImportOptionsFragment";
     private SettingsImportBinding myView;
     private final String[] validFiles = new String[] {"text/plain","image/*","text/xml","application/xml","application/pdf","application/octet-stream"};
     private final String[] validBackups = new String[] {"application/zip","application/octet-stream","application/*"};
@@ -97,7 +99,13 @@ public class ImportOptionsFragment extends Fragment {
                 // Permission hasn't been allowed and we are due to explain why
                 try {
                     Snackbar.make(myView.getRoot(), R.string.camera_info,
-                            LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> cameraPermission.launch(Manifest.permission.CAMERA)).show();
+                            LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
+                                try {
+                                    cameraPermission.launch(Manifest.permission.CAMERA);
+                                } catch (Exception e) {
+                                    Log.d(TAG,"User probably left this fragment");
+                                }
+                    }).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

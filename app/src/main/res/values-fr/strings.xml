@@ -849,4 +849,6 @@
     <string name="theme_edit">Modifier ou changer le thème actuel</string>
     <string name="other_options">Autres options</string>
     <string name="connections_mode_single">Seul</string>
+    <string name="connections_host_passthrough">Intercommunication de l\'hôte</string>
+    <string name="connections_host_passthrough_info">Autoriser les messages reçus d\'autres hôtes à être transmis aux clients connectés</string>
 </resources>

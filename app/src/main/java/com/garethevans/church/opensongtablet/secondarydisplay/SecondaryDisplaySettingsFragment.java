@@ -45,6 +45,9 @@ public class SecondaryDisplaySettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayConnectedBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.updateToolbar(getString(R.string.connected_display));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_connected_display));
+
         // Update the currently chosen logo and backgrounds
         mainActivityInterface.getPresenterSettings().getAllPreferences();
         updateLogo();

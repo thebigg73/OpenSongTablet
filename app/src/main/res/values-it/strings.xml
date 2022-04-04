@@ -849,4 +849,6 @@
     <string name="connections_advertise_info">Pubblicizza il tuo dispositivo affinché gli altri lo scoprano</string>
     <string name="connections_advertise">Pubblicizza</string>
     <string name="connections_advanced">Mostra più impostazioni per le connessioni nelle vicinanze e il registro completo</string>
+    <string name="connections_host_passthrough">Passaggio dell\'ospite</string>
+    <string name="connections_host_passthrough_info">Consenti ai messaggi ricevuti da altri host di passare ai client connessi</string>
 </resources>

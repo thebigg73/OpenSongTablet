@@ -849,4 +849,6 @@
     <string name="theme_edit">Bearbeiten oder ändern Sie das aktuelle Design</string>
     <string name="other_options">Andere Optionen</string>
     <string name="connections_mode_single">Einzel</string>
+    <string name="connections_host_passthrough_info">Zulassen, dass von anderen Hosts empfangene Nachrichten an verbundene Clients weitergeleitet werden</string>
+    <string name="connections_host_passthrough">Host-Passthrough</string>
 </resources>

@@ -849,4 +849,6 @@
     <string name="connections_advertise_info">Oglasite svoj uređaj kako bi ga drugi otkrili</string>
     <string name="connections_advertise">Oglašavajte se</string>
     <string name="connections_advanced">Prikaži još podešavanja za veze u blizini i punu evidenciju</string>
+    <string name="connections_host_passthrough_info">Dozvolite da poruke primljene od drugih hostova prolaze do povezanih klijenata</string>
+    <string name="connections_host_passthrough">Host passthrough</string>
 </resources>

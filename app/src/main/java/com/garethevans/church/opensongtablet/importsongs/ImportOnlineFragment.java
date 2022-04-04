@@ -65,7 +65,9 @@ public class ImportOnlineFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsImportOnlineBinding.inflate(inflater, container, false);
+
         mainActivityInterface.updateToolbar(getString(R.string.import_basic) + " " + getString(R.string.online));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_song_online));
 
         // Setup helper
         setupHelpers();

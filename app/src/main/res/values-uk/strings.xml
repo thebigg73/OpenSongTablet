@@ -848,4 +848,6 @@
     <string name="theme_edit">Відредагувати або змінити поточну тему</string>
     <string name="other_options">Інші варіанти</string>
     <string name="connections_mode_single">Неодружений</string>
+    <string name="connections_host_passthrough">Перехід хоста</string>
+    <string name="connections_host_passthrough_info">Дозволити повідомленням, отриманим від інших хостів, передавати підключеним клієнтам</string>
 </resources>

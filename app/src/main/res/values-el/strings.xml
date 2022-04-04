@@ -849,4 +849,6 @@
     <string name="theme_edit">Επεξεργαστείτε ή αλλάξτε το τρέχον θέμα</string>
     <string name="other_options">Αλλες επιλογές</string>
     <string name="connections_mode_single">Μονόκλινο</string>
+    <string name="connections_host_passthrough_info">Επιτρέψτε στα μηνύματα που λαμβάνονται από άλλους κεντρικούς υπολογιστές να περάσουν σε συνδεδεμένους πελάτες</string>
+    <string name="connections_host_passthrough">Διέλευση κεντρικού υπολογιστή</string>
 </resources>

@@ -849,4 +849,6 @@
     <string name="theme_edit">Редактировать или изменить текущую тему</string>
     <string name="other_options">Другие варианты</string>
     <string name="connections_mode_single">Одинокий</string>
+    <string name="connections_host_passthrough_info">Разрешить передачу сообщений, полученных от других хостов, подключенным клиентам</string>
+    <string name="connections_host_passthrough">Передача хоста</string>
 </resources>

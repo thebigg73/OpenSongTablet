@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     private void setupViews() {
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar(this,actionBar, myView.toolBar.myToolbar,
+        appActionBar = new AppActionBar(this,this,actionBar, myView.toolBar.myToolbar,
                 myView.toolBar.inSet, myView.toolBar.songtitleAb, myView.toolBar.songauthorAb,
                 myView.toolBar.songkeyAb, myView.toolBar.songcapoAb, myView.toolBar.digitalclock,
                 myView.toolBar.webHelp);

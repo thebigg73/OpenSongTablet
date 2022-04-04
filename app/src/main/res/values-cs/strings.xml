@@ -849,4 +849,6 @@
     <string name="other_options">Jiné možnosti</string>
     <string name="theme_edit">Upravit nebo změnit aktuální téma</string>
     <string name="connections_mode_single">Singl</string>
+    <string name="connections_host_passthrough">Hostitelský průchod</string>
+    <string name="connections_host_passthrough_info">Umožněte zprávám přijatým od jiných hostitelů procházet připojeným klientům</string>
 </resources>

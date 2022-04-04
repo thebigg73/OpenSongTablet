@@ -43,6 +43,7 @@ public class FontSetupFragment extends Fragment {
         myView = SettingsFontsBinding.inflate(inflater, container, false);
 
         mainActivityInterface.updateToolbar(getString(R.string.font_choose));
+        mainActivityInterface.updateToolbarHelp(getString(R.string.website_fonts));
 
         getPreferences();
 

@@ -207,6 +207,7 @@
     <string name="connections_mode">Connection mode</string>
     <string name="connections_mode_cluster">Cluster</string>
     <string name="connections_mode_info">If you have issues connecting devices, try changing the connection mode.  Cluster mode (default) is the most versatile and allows multiple devices to connect to each other allowing switching between host and clients.   Star mode only allows one device to connect to many.  Single mode is to establish a connection between only two devices, but with the best bandwith.   All connecting devices need to be set to the same mode and changing mode will end all current connections.</string>
+    <string name="connections_mode_single">Single</string>
     <string name="connections_mode_star">Star</string>
     <string name="connections_no_devices">No devices connected</string>
     <string name="connections_off">Close any connections and stop advertising and discovering</string>
@@ -946,14 +947,18 @@ Check out the categories in the right hand options menu.
     <string name="wait">Wait....</string>
     <string name="warn_before_changing_song">Show a warning before moving on to the next song (useful to avoid accidental presses)</string>
     <string name="website">Website</string>
+    <string name="website_actionbar" translatable="false">https://www.opensongapp.com/user-manual/display/actionbar</string>
     <string name="website_address" translatable="false">https://www.opensongapp.com</string>
     <string name="website_app_mode" translatable="false">https://www.opensongapp.com/user-manual/app-mode</string>
     <string name="website_ccli" translatable="false">https://www.opensongapp.com/user-manual/ccli</string>
+    <string name="website_connected_display" translatable="false">https://www.opensongapp.com/user-manual/display/casting</string>
     <string name="website_custom_gestures" translatable="false">https://www.opensongapp.com/user-manual/controls/custom-gestures</string>
+    <string name="website_fonts" translatable="false">https://www.opensongapp.com/user-manual/display/fonts</string>
     <string name="website_foot_pedal" translatable="false">https://www.opensongapp.com/user-manual/controls/foot-pedals</string>
     <string name="website_forum" translatable="false">https://groups.google.com/g/opensongapp</string>
     <string name="website_github" translatable="false">https://github.com/thebigg73/OpenSongTablet</string>
     <string name="website_latest" translatable="false">https://www.opensongapp.com/latest-updates</string>
+    <string name="website_menu_settings" translatable="false">https://www.opensongapp.com/user-manual/display/menu</string>
     <string name="website_midi_connections" translatable="false">https://www.opensongapp.com/user-manual/midi/midi-connections</string>
     <string name="website_modes" translatable="false">https://www.opensongapp.com/user-guide/the-app-modes</string>
     <string name="website_nearby" translatable="false">https://www.opensongapp.com/user-manual/connect-devices</string>
@@ -962,10 +967,21 @@ Check out the categories in the right hand options menu.
     <string name="website_play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
     <string name="website_profiles" translatable="false">https://www.opensongapp.com/user-manual/profiles</string>
     <string name="website_rate" translatable="false">https://play.google.com/store/apps/details?id=</string>
+    <string name="website_scaling" translatable="false">https://www.opensongapp.com/user-manual/display/scaling</string>
+    <string name="website_song_add" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs</string>
+    <string name="website_song_camera" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/camera</string>
+    <string name="website_song_display" translatable="false">https://www.opensongapp.com/user-manual/display/song-display</string>
+    <string name="website_song_file" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/import-file</string>
     <string name="website_song_format" translatable="false">https://www.opensongapp.com/user-guide/songs/creating-new-songs</string>
+    <string name="website_song_new" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/create-new-song</string>
+    <string name="website_song_online" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/online-import</string>
+    <string name="website_song_opensongapp" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/backup-songs</string>
+    <string name="website_song_onsong" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/ios-onsong</string>
+    <string name="website_song_sample" translatable="false">https://www.opensongapp.com/user-manual/songs/add-songs/sample-songs</string>
     <string name="website_sound_level_meter" translatable="false">https://www.opensongapp.com/user-manual/sound-level-meter</string>
     <string name="website_storage_settings" translatable="false">https://www.opensongapp.com/user-manual/storage/storage-settings</string>
     <string name="website_swipe_settings" translatable="false">https://www.opensongapp.com/user-manual/controls/swipe-settings</string>
+    <string name="website_themes" translatable="false">https://www.opensongapp.com/user-manual/display/themes</string>
     <string name="website_user_guide" translatable="false">https://www.opensongapp.com/user-guide</string>
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="words_and_music_by">Words and music by</string>
@@ -1140,6 +1156,6 @@ Check out the categories in the right hand options menu.
     <string name="load_preferences">Loading preferences</string>
     <string name="look_for">Look for</string>
     <string name="lyrics_settings">Lyrics settings</string>
-    <string name="connections_mode_single">Single</string>
+
 
 </resources>

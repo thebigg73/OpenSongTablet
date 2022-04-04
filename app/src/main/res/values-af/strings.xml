@@ -848,4 +848,6 @@
     <string name="other_options">Ander opsies</string>
     <string name="theme_edit">Wysig of verander huidige tema</string>
     <string name="connections_mode_single">Enkellopend</string>
+    <string name="connections_host_passthrough_info">Laat toe dat boodskappe wat van ander gashere ontvang is, na gekoppelde kliënte deurgaan</string>
+    <string name="connections_host_passthrough">Gasheer deurloop</string>
 </resources>

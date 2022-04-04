@@ -849,4 +849,6 @@
     <string name="connections_advertise_info">Hirdesse eszközét, hogy mások felfedezhessék</string>
     <string name="connections_advertise">Hirdet</string>
     <string name="connections_advanced">További beállítások megjelenítése a Közeli kapcsolatokhoz és a teljes naplóhoz</string>
+    <string name="connections_host_passthrough_info">Engedélyezze a más gazdagépektől kapott üzenetek eljutását a csatlakoztatott ügyfelekhez</string>
+    <string name="connections_host_passthrough">Gazda áthaladása</string>
 </resources>
