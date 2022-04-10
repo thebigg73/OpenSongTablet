@@ -40,10 +40,8 @@ the Performance/Presenter fragment.
 public class BootUpFragment extends Fragment {
 
     private final String TAG = "BootUpFragment";
-    private String message;
-    private String uriTreeString;
+    private String message, uriTreeString;
     private Uri uriTree;
-    private boolean hide;
 
     private BootupLogoBinding myView;
     private MainActivityInterface mainActivityInterface;
@@ -60,17 +58,9 @@ public class BootUpFragment extends Fragment {
         myView = BootupLogoBinding.inflate(inflater, container, false);
         mainActivityInterface.registerFragment(this,"BootUpFragment");
 
-        // TODO
-        // REMOVE BEFORE RELEASE!!!!!
-        //MaterialShowcaseView.resetAll(requireActivity());
-
         // Lock the navigation drawer and hide the actionbar and floating action button
         hideMenus();
 
-        /*myView.splashlogo.setOnClickListener(view -> {
-            hide = !hide;
-            mainActivityInterface.getAppActionBar().translateAwayActionBar(hide);
-        });*/
         startOrSetUp();
         return myView.getRoot();
     }

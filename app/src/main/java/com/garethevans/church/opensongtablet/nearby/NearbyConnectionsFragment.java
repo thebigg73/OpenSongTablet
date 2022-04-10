@@ -364,16 +364,15 @@ public class NearbyConnectionsFragment extends Fragment {
         // Initialise the countdown
         mainActivityInterface.getNearbyConnections().initialiseCountdown();
 
-
-        // Disable both buttons
+        // Disable the other button
         myView.discoverButton.setEnabled(false);
         myView.advertiseButton.setBackgroundTintList(onColor);
-        myView.discoverButton.setOnClickListener(view -> enableConnectionButtons());
 
         // After a short delay, advertise
         new Handler().postDelayed(() -> {
             try {
                 mainActivityInterface.getNearbyConnections().startAdvertising();
+                myView.advertiseButton.setOnClickListener(view -> enableConnectionButtons());
                 mainActivityInterface.getNearbyConnections().setTimer(true, myView.advertiseButton);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -385,25 +384,25 @@ public class NearbyConnectionsFragment extends Fragment {
         // Stop advertising/discovering if we were already doing that
         mainActivityInterface.getNearbyConnections().stopAdvertising();
         mainActivityInterface.getNearbyConnections().stopDiscovery();
-        myView.discoverButton.setOnClickListener(view -> enableConnectionButtons());
 
         // Initialise the countdown
         mainActivityInterface.getNearbyConnections().initialiseCountdown();
 
-        // Disable both buttons
+        // Disable the other button
         myView.advertiseButton.setEnabled(false);
         myView.discoverButton.setBackgroundTintList(onColor);
 
-        // After a short delay, advertise
+        // After a short delay, discover
         new Handler().postDelayed(() -> {
             try {
                 mainActivityInterface.getNearbyConnections().startDiscovery();
+                myView.discoverButton.setOnClickListener(view -> enableConnectionButtons());
                 mainActivityInterface.getNearbyConnections().setTimer(false, myView.discoverButton);
             } catch (Exception e) {
                 e.printStackTrace();
                 mainActivityInterface.getNearbyConnections().clearTimer();
             }
-        }, 1000);
+        }, 200);
     }
     private void resetClientOptions() {
         // IV - Reset the client options when leaving client mode

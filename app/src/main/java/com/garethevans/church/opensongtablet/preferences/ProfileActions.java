@@ -152,7 +152,7 @@ public class ProfileActions {
             // Check the file exists, if not create it
             if (!mainActivityInterface.getStorageAccess().uriExists(uri)) {
                 String name = uri.getLastPathSegment();
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, uri, null, "Profiles", "", name);
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null, "Profiles", "", name);
             }
 
             // Different versions of Android save the preferences in different locations.

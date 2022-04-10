@@ -65,7 +65,6 @@ public class MidiFragment extends Fragment {
     private MidiMessagesAdapter midiMessagesAdapter;
     private LinearLayoutManager llm;
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

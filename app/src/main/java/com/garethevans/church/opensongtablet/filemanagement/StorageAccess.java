@@ -1166,9 +1166,11 @@ public class StorageAccess {
     }
     public void lollipopCreateFileForOutputStream(boolean deleteOld, Uri uri, String mimeType,
                                                   String folder, String subfolder, String filename) {
+        // deleteOld will remove any existing file before creating a new one (avoids artefacts) - xml files only
+        // We will only delete when the file isn't empty or null, otherwise folders are cleared!
         if (lollipopOrLater()) {
             // Only need to do this for Lollipop or later
-            if (uriExists(uri) && deleteOld) {
+            if (uriExists(uri) && deleteOld && filename != null && !filename.isEmpty()) {
                 // Delete it to avoid overwrite errors that leaves old stuff at the end of the file
                 deleteFile_SAF(uri);
             }
@@ -1177,7 +1179,7 @@ public class StorageAccess {
 
         } else {
             // Check it exists
-            if (uriExists(uri) && deleteOld) {
+            if (uriExists(uri) && deleteOld && filename!=null && !filename.isEmpty()) {
                 deleteFile_File(uri);
             }
             try {
@@ -1204,7 +1206,7 @@ public class StorageAccess {
         Uri fromUri = getUriForItem(fromFolder, fromSubfolder, fromName);
         Uri toUri = getUriForItem(toFolder, toSubfolder, toName);
         // Make sure the newUri is valid and exists
-        lollipopCreateFileForOutputStream(false,toUri,null,toFolder,toSubfolder,toName);
+        lollipopCreateFileForOutputStream(true, toUri,null,toFolder,toSubfolder,toName);
         // Get the input and output streams
         InputStream inputStream = getInputStream(fromUri);
         OutputStream outputStream = getOutputStream(toUri);

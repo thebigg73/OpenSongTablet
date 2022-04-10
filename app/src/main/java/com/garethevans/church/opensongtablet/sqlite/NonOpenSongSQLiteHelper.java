@@ -56,7 +56,7 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(appDB);
             Log.d(TAG,"User database copied in: "+mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream));
         } else {
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, userDB,null,"Settings","",
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, userDB,null,"Settings","",
                     SQLite.NON_OS_DATABASE_NAME);
             Log.d(TAG,"Copy appDB to userDB: "+copyUserDatabase());
         }

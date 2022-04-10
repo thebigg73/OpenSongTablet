@@ -72,7 +72,8 @@ public class PrepareFormats {
     private Uri doMakeCopy(String currentFolder, String currentFilename, String newFilename) {
         Uri targetFile = mainActivityInterface.getStorageAccess().getUriForItem("Songs",currentFolder,currentFilename);
         Uri destinationFile = mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,destinationFile,null,"Export","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
+                destinationFile,null,"Export","",newFilename);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(targetFile);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(destinationFile);
         if (mainActivityInterface.getStorageAccess().copyFile(inputStream,outputStream)) {
@@ -127,7 +128,8 @@ public class PrepareFormats {
         }
         newFilename = newFilename + thisSong.getFilename() + ".png";
         Uri uri = mainActivityInterface.getStorageAccess().getUriForItem("Export","",newFilename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, "application/pdf","Export","",newFilename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,
+                uri, "application/pdf","Export","",newFilename);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(uri);
         mainActivityInterface.getStorageAccess().writeImage(outputStream,mainActivityInterface.getScreenshot());
         return uri;

@@ -54,7 +54,7 @@ public class LoadSong {
         // We will add to this song and then return it to the MainActivity object
         if (!mainActivityInterface.getSongListBuildIndex().getIndexComplete() ||
                 mainActivityInterface.getSongListBuildIndex().getCurrentlyIndexing() ||
-                thisSong.getFolder().contains("**")) {
+                thisSong.getFolder().contains("**") || thisSong.getFolder().startsWith("../")) {
             // This is set to true once the index is completed, so we either haven't finished indexing
             // or this is a custom slide/note as identified by the folder (which aren't indexed)
             return doLoadSongFile(thisSong, indexing);

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="200"
+    android:versionCode="300"
     android:versionName="6.0.0_alpha01" >
 
     <uses-feature
