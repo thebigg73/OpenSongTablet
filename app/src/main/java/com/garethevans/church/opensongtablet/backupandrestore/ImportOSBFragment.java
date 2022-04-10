@@ -413,12 +413,12 @@ public class ImportOSBFragment extends Fragment {
                                             false, file_uri,null,"Highlighter","",filename);
                                 } else if (ze.getName().equals(SQLite.NON_OS_DATABASE_NAME)) {
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                                            false,file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
+                                            false, file_uri,null,"Settings","",SQLite.NON_OS_DATABASE_NAME);
                                 } else {
                                     filename = ze.getName().replace(filefolder, "").replace("/", "");
                                     Log.d(TAG,"Into songs: folder="+filefolder+"  filename="+filename+"  file_uri="+file_uri);
                                     mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                                            false, file_uri, null, "Songs", filefolder, filename);
+                                            true, file_uri, null, "Songs", filefolder, filename);
                                 }
                             }
                             if (alive) {

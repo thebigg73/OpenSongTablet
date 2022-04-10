@@ -2416,27 +2416,32 @@ public class ProcessSong {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap createBitmapFromPage(ArrayList<Integer> bmpSize, PdfRenderer.Page currentPage, boolean forDisplayOnly) {
-        Bitmap bitmap = Bitmap.createBitmap(bmpSize.get(0), bmpSize.get(1), Bitmap.Config.ARGB_8888);
-        // Make a canvas with which we can draw to the bitmap to make it white
-        Canvas canvas = new Canvas(bitmap);
-        // Fill with white
-        canvas.drawColor(0xffffffff);
-
-        // Be aware this pdf might have transparency.  For now, I've just set the background
-        // of the image view to white.  This is fine for most PDF files.
-        int resolution;
-        if (forDisplayOnly) {
-            resolution = PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY;
-        } else {
-            resolution = PdfRenderer.Page.RENDER_MODE_FOR_PRINT;
-        }
         try {
-            currentPage.render(bitmap, null, null, resolution);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            Bitmap bitmap = Bitmap.createBitmap(bmpSize.get(0), bmpSize.get(1), Bitmap.Config.ARGB_8888);
+            // Make a canvas with which we can draw to the bitmap to make it white
+            Canvas canvas = new Canvas(bitmap);
+            // Fill with white
+            canvas.drawColor(0xffffffff);
 
-        return bitmap;
+            // Be aware this pdf might have transparency.  For now, I've just set the background
+            // of the image view to white.  This is fine for most PDF files.
+            int resolution;
+            if (forDisplayOnly) {
+                resolution = PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY;
+            } else {
+                resolution = PdfRenderer.Page.RENDER_MODE_FOR_PRINT;
+            }
+            try {
+                currentPage.render(bitmap, null, null, resolution);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        } catch (OutOfMemoryError | Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // Not working yet

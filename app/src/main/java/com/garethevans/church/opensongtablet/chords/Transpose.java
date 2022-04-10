@@ -685,10 +685,7 @@ public class Transpose {
             transposeTimes = Integer.parseInt("0" + mainActivityInterface.getSong().getCapo());
         }
 
-        // Transpose using force, add "." for transpose and remove on return (mCapo 0 is used when displaying a song with no capo in preferred chord format)
         transposeDirection = "-1";
-        // TODO - Line below from IV #136
-        //return transposeString("." + string, !capoForceFlats, capoForceFlats).substring(1);
         return transposeString(mainActivityInterface.getSong());
     }
 

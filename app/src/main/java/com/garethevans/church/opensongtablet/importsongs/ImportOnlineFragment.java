@@ -447,7 +447,7 @@ public class ImportOnlineFragment extends Fragment {
         newSong.setFiletype("PDF");
 
         Uri outputUri = mainActivityInterface.getStorageAccess().getUriForItem("Songs",folder,filename);
-        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,outputUri,null,"Songs",folder,filename);
+        mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, outputUri,null,"Songs",folder,filename);
         OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputUri);
         InputStream inputStream = mainActivityInterface.getStorageAccess().getInputStream(inputUri);
         try {

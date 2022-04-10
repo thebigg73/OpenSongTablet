@@ -809,9 +809,11 @@ public class PerformanceFragment extends Fragment {
     public void selectSection(int position) {
         if (mainActivityInterface.getSong().getFiletype().equals("PDF") &&
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.d(TAG,"Selecting pdf page");
                 pdfPageAdapter.sectionSelected(position);
         } else if (mainActivityInterface.getMode().equals("Stage")) {
             stageSectionAdapter.sectionSelected(position);
+            Log.d(TAG,"Selecting stage mode section");
         }
     }
 

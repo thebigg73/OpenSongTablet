@@ -184,7 +184,7 @@ public class MoveContentFragment extends Fragment {
                     for (int x = 0; x < filesChosen.size(); x++) {
                         outputFile = mainActivityInterface.getStorageAccess().getUriForItem("Songs", newFolder, filesChosen.get(x));
                         mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(
-                                false,outputFile,
+                                true, outputFile,
                                 null, "Songs", newFolder, filesChosen.get(x));
                         inputStream = mainActivityInterface.getStorageAccess().getInputStream(uris.get(x));
                         outputStream = mainActivityInterface.getStorageAccess().getOutputStream(outputFile);

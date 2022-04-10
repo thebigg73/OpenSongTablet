@@ -2461,7 +2461,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
         return new ArrayList<>();
     }
 
-
     @Override
     public void updateSizes(int width, int height) {
         /*if (whichMode.equals("Performance") && isCurrentFragment(R.id.performanceFragment)) {

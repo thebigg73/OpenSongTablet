@@ -217,7 +217,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                 backupFilename = backupFilename + ".osbs";
             }
             Uri backupUri = mainActivityInterface.getStorageAccess().getUriForItem("Backups","",backupFilename);
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true,backupUri,null,"Backups","",backupFilename);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, backupUri,null,"Backups","",backupFilename);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(backupUri);
             ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
             ZipEntry ze;
@@ -280,7 +280,7 @@ public class BackupRestoreSetsFragment extends Fragment {
                         Uri file_uri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", ze.getName());
                         boolean exists = mainActivityInterface.getStorageAccess().uriExists(file_uri);
                         if (!exists || overwrite) {
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, file_uri, null, "Sets", "", ze.getName());
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, file_uri, null, "Sets", "", ze.getName());
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(file_uri);
                             // Write the file
                             int count;

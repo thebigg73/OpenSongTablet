@@ -585,7 +585,7 @@ public class ConvertChoPro {
 
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
                 && oldUri != null && newUri != null && mainActivityInterface.getStorageAccess().uriExists(oldUri)) {
-            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false,newUri,null,"Songs",songSubFolder,newSongFileName);
+            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, newUri,null,"Songs",songSubFolder,newSongFileName);
             OutputStream outputStream = mainActivityInterface.getStorageAccess().getOutputStream(newUri);
 
             Log.d(TAG,"outputStream="+outputStream);

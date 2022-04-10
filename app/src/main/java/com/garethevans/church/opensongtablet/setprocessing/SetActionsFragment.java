@@ -107,7 +107,7 @@ public class SetActionsFragment extends Fragment {
 
                             Log.d(TAG,"importFile: "+importFilename);
                             Uri copyToUri = mainActivityInterface.getStorageAccess().getUriForItem("Sets", "", importFilename);
-                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, copyToUri, null, "Sets", "", importFilename);
+                            mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, copyToUri, null, "Sets", "", importFilename);
                             OutputStream outputStream = mainActivityInterface.getStorageAccess().
                                     getOutputStream(copyToUri);
                             mainActivityInterface.getStorageAccess().copyFile(inputStream, outputStream);

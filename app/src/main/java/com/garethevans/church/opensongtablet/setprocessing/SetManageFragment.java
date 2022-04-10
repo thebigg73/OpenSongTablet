@@ -348,7 +348,7 @@ public class SetManageFragment extends Fragment {
                 mainActivityInterface.getShowToast().doIt(
                         getString(R.string.file_exists));
             } else {
-                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(false, uri, null,
+                mainActivityInterface.getStorageAccess().lollipopCreateFileForOutputStream(true, uri, null,
                         "Sets", "", setName);
                 OutputStream outputStream = mainActivityInterface.getStorageAccess().
                         getOutputStream(uri);
