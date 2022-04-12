@@ -24,7 +24,9 @@ public class ChordFormatFragment extends Fragment {
 
     private SettingsChordsFormatBinding myView;
     private ArrayList<String> chordFormats, chordFormatNames;
-    MainActivityInterface mainActivityInterface;
+    private MainActivityInterface mainActivityInterface;
+    private int formattouse;
+    private boolean usepreferred;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -69,11 +71,12 @@ public class ChordFormatFragment extends Fragment {
         myView.sliderEbm.setSliderPos(setSwitchSliderFromPref("prefKey_Ebm",true));
         myView.sliderGbm.setSliderPos(setSwitchSliderFromPref("prefKey_Gbm",false));
 
-        myView.assumePreferred.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
-                "chordFormatUsePreferred",false));
+        usepreferred = mainActivityInterface.getPreferences().getMyPreferenceBoolean(
+                "chordFormatUsePreferred",false);
+        myView.assumePreferred.setChecked(usepreferred);
         showHideView(myView.chooseFormatLinearLayout,myView.assumePreferred.getSwitch().isChecked());
         showHideView(myView.autoChange,myView.assumePreferred.getSwitch().isChecked());
-        int formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
+        formattouse = mainActivityInterface.getPreferences().getMyPreferenceInt("chordFormat",1);
 
         chordFormats = new ArrayList<>();
         chordFormats.add(getString(R.string.chordformat_1));
@@ -101,6 +104,52 @@ public class ChordFormatFragment extends Fragment {
         myView.autoChange.setChecked(mainActivityInterface.getPreferences().getMyPreferenceBoolean(
                 "chordFormatAutoChange", false));
 
+        fixChordPrefText();
+    }
+
+    private void fixChordPrefText() {
+        if (formattouse==2) {
+            setChordPrefText(new String[] {"Ab", "G#", "B", "A#", "Db", "C#", "Eb", "D#", "Gb", "F#",
+                    "ab", "g#", "b", "a#", "db", "c#", "eb", "d#", "gb", "f#"});
+        } else if (formattouse==3) {
+            setChordPrefText(new String[]{"Aes", "Gis", "B", "Ais", "Des", "Cis", "Ees", "Dis", "Ges", "Fis",
+                    "aes", "gis", "b", "ais", "des", "cis", "ees", "dis", "ges", "fis"});
+        } else if (formattouse==4) {
+            setChordPrefText(new String[] {"LAb","SOL#","SIb","LA#","REb", "DO#", "MIb", "RE#", "SOLb","FA#",
+                    "LAbm","SOL#m","SIbm","LA#m","REbm","DO#m","MIbm","RE#m","SOLbm","FA#m"});
+        } else {
+            setChordPrefText(new String[] {"Ab", "G#", "Bb","A#", "Db", "C#", "Eb", "D#", "Gb", "F#",
+                    "Abm","G#m","Bbm","A#m","Dbm","C#m","Ebm","D#m","Gbm","F#m"});
+        }
+        if (formattouse>4) {
+            myView.prefSliders.setVisibility(View.GONE);
+        } else {
+            myView.prefSliders.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setChordPrefText(String[] newText) {
+        myView.sliderAb.setTextLeft(newText[0]);
+        myView.sliderAb.setTextRight(newText[1]);
+        myView.sliderBb.setTextLeft(newText[2]);
+        myView.sliderBb.setTextRight(newText[3]);
+        myView.sliderDb.setTextLeft(newText[4]);
+        myView.sliderDb.setTextRight(newText[5]);
+        myView.sliderEb.setTextLeft(newText[6]);
+        myView.sliderEb.setTextRight(newText[7]);
+        myView.sliderGb.setTextLeft(newText[8]);
+        myView.sliderGb.setTextRight(newText[9]);
+
+        myView.sliderAbm.setTextLeft(newText[10]);
+        myView.sliderAbm.setTextRight(newText[11]);
+        myView.sliderBbm.setTextLeft(newText[12]);
+        myView.sliderBbm.setTextRight(newText[13]);
+        myView.sliderDbm.setTextLeft(newText[14]);
+        myView.sliderDbm.setTextRight(newText[15]);
+        myView.sliderEbm.setTextLeft(newText[16]);
+        myView.sliderEbm.setTextRight(newText[17]);
+        myView.sliderGbm.setTextLeft(newText[18]);
+        myView.sliderGbm.setTextRight(newText[19]);
     }
 
     private void setListeners() {
@@ -146,6 +195,7 @@ public class ChordFormatFragment extends Fragment {
         myView.sliderGbm.addOnChangeListener(new MySliderChangeListener("prefKey_Gbm"));
 
         myView.assumePreferred.getSwitch().setOnCheckedChangeListener((compoundButton, b) -> {
+            usepreferred = b;
             mainActivityInterface.getPreferences().setMyPreferenceBoolean(
                     "chordFormatUsePreferred", b);
             showHideView(myView.chooseFormatLinearLayout,b);
@@ -162,10 +212,11 @@ public class ChordFormatFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                int pos = chordFormatNames.indexOf(editable.toString());
+                formattouse = chordFormatNames.indexOf(editable.toString())+1;
                 mainActivityInterface.getPreferences().setMyPreferenceInt(
-                        "chordFormat", pos+1);
-                myView.chosenPreferredFormat.setHint(chordFormats.get(pos));
+                        "chordFormat", formattouse);
+                myView.chosenPreferredFormat.setHint(chordFormats.get(formattouse-1));
+                fixChordPrefText();
             }
         });
     }

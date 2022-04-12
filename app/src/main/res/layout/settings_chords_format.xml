@@ -48,6 +48,11 @@
 
             <TableRow style="@style/DividerLine" />
 
+            <LinearLayout
+                android:id="@+id/prefSliders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
             <com.garethevans.church.opensongtablet.customviews.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,6 +142,7 @@
                 app:value="1" />
 
             <TableRow style="@style/DividerLine" />
+        </LinearLayout>
 
             <com.garethevans.church.opensongtablet.customviews.MaterialSwitch
                 android:id="@+id/assumePreferred"
@@ -179,7 +185,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="12dp"
                 android:hint="@string/chordformat_autochange_info"
-                android:text="@string/chordformat_autochange" />
+                android:text="@string/chordformat_autochange"
+                android:layout_marginBottom="100dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
